@@ -26,8 +26,6 @@ public class RDL implements EntryPoint {
       sLogger.info("http://en.wikipedia.org/wiki/Loose_coupling");
       sLogger.info("Ajax logging window enabled");
 
-
-
       //OK so what will happen on our model load
       //Initialize logging
       GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {

@@ -8,15 +8,25 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import com.therdl.client.dto.SnipProxy;
+import com.therdl.client.dto.SnipSearchProxy;
 import com.therdl.client.presenter.Presenter;
 
+import com.therdl.client.presenter.SnipSearchPresenter;
+import com.therdl.client.view.SnipEditView;
+import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
 import com.therdl.client.presenter.WelcomePresenter;
 import com.therdl.shared.Messages;
 import com.therdl.shared.RDLConstants;
 
+import java.util.logging.Logger;
+
 public class AppController implements Presenter, ValueChangeHandler<String>{
+
+    private static Logger log = Logger.getLogger("");
 	
 	private final EventBus eventBus;
 	private final Messages messages;
@@ -27,11 +37,12 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	 * All the application views go here and are kept to be reused once created
 	 */
 	private WelcomeView welcomeView;
+    private SnipEditView<SnipProxy> snipEditView;
+    private SnipSearchView<SnipSearchProxy> snipSearchView;
 
 	
 	public AppController(EventBus eventBus) {
 		this.eventBus = eventBus;
-
 		messages = (Messages) GWT.create(Messages.class);
 		bind();
 	}
@@ -43,33 +54,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 		//register yourself as history value change handler
 		History.addValueChangeHandler(this);
 
-		// eventBus.addHandler(AddContactEvent.TYPE,
-		// new AddContactEventHandler() {
-		// public void onAddContact(AddContactEvent event) {
-		// doAddNewContact();
-		// }
-		// });
-		//
-		// eventBus.addHandler(EditContactEvent.TYPE,
-		// new EditContactEventHandler() {
-		// public void onEditContact(EditContactEvent event) {
-		// doEditContact(event.getId());
-		// }
-		// });
-		//
-		// eventBus.addHandler(EditContactCancelledEvent.TYPE,
-		// new EditContactCancelledEventHandler() {
-		// public void onEditContactCancelled(EditContactCancelledEvent event) {
-		// doEditContactCancelled();
-		// }
-		// });
-		//
-		// eventBus.addHandler(ContactUpdatedEvent.TYPE,
-		// new ContactUpdatedEventHandler() {
-		// public void onContactUpdated(ContactUpdatedEvent event) {
-		// doContactUpdated();
-		// }
-		// });
+        log.info("AppController bind() addValueChangeHandler(");
+
 	}
 	
 	@Override
@@ -91,6 +77,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
 
+        log.info("AppController onValueChange token is  "+token);
+
 		if (token != null) {
 	//***************************************WELCOME****************************
 			if (token.equals(RDLConstants.Tokens.WELCOME)) {
@@ -107,8 +95,30 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 				});
 	//***************************************SNIPS****************************			
 			}
-	}
-    }
+
+
+        else if (token.equals(RDLConstants.Tokens.SNIPS)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                public void onFailure(Throwable caught) {
+                    log.info("AppController GWT.runAsync onFailure "+RDLConstants.Tokens.SNIPS);
+                }
+
+                public void onSuccess() {
+                    log.info("AppController GWT.runAsync onSuccess "+RDLConstants.Tokens.SNIPS);
+                    if (snipSearchView == null) {
+                        snipSearchView = new SnipSearchViewImpl<SnipSearchProxy>(eventBus);
+                    }
+                    new SnipSearchPresenter(snipSearchView).go(container);
+
+                }
+            });
+        }// end else
+
+        } // end  if token != null ifif
+
+
+
+    }// end method
 
 	public EventBus getEventBus() {
 		return eventBus;

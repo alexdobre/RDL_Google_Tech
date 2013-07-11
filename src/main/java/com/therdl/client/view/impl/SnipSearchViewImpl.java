@@ -10,7 +10,11 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.WidgetHolder;
 
+import java.util.logging.Logger;
+
 public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T> {
+
+    private static Logger log = Logger.getLogger("");
 
 	private static SnipSearchViewImplUiBinder uiBinder = GWT
 			.create(SnipSearchViewImplUiBinder.class);
@@ -35,6 +39,7 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
 		appMenu =  WidgetHolder.getInstance().getAppMenu();
 		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
+        log.info("SnipSearchViewImpl constructor");
 	}
 
 
