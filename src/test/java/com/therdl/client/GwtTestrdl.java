@@ -27,13 +27,5 @@ public class GwtTestrdl extends GWTTestCase {
 
 
 
-  /**
-   * This test will send a request to the server using the greetServer method in
-   * GreetingService and verify the response.
-   */
-  public void testGreetingService() {
-
-  }
-
 
 }

@@ -17,6 +17,14 @@ h3 {
 	text-align: center;
 }
 
+.gwt-PopupPanel {
+  margin:360px 40px 0 400px;
+   z-index:1;
+  	min-height: 100px;
+  	min-width: 500px;
+}
+
+
 .mainPanel{
 	top: 0px;
 	width: 100%;

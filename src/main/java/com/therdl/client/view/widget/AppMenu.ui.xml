@@ -1,0 +1,48 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<g:MenuBar ui:field="menuBar">
+			<g:MenuItem text="Overview" ui:field="overview">
+				<g:MenuBar vertical="true">
+					<g:MenuItem text="RDL" ui:field="ovwRDL"/>
+					<g:MenuItem text="Modules" ui:field="ovwModules">
+						<g:MenuBar vertical="true">
+							<g:MenuItem text="Snips" ui:field="ovwModulesSnips"/>
+							<g:MenuItem text="FastCaps" ui:field="ovwModulesFastCaps"/>
+							<g:MenuItem text="Materials" ui:field="ovwModulesMaterials"/>
+							<g:MenuItem text="Groups" ui:field="ovwModulesGroups"/>
+							<g:MenuItem text="Services" ui:field="ovwModulesServices"/>
+						</g:MenuBar>
+					</g:MenuItem>
+					<g:MenuItem text="Basics" ui:field="ovwBasic">
+						<g:MenuBar vertical="true">
+							<g:MenuItem text="Compatibility" ui:field="ovwCompatibility"/>
+							<g:MenuItem text="EmmotionalSupport" ui:field="ovwEmmSupport"/>
+							<g:MenuItem text="Sensibilities" ui:field="ovwSensibilities"/>
+							<g:MenuItem text="Atraction &amp; Eroticism" ui:field="ovwAtraction"/>
+						</g:MenuBar>
+					</g:MenuItem>
+					<g:MenuItem text="Advanced" ui:field="ovwAdvanced">
+						<g:MenuBar vertical="true">
+							<g:MenuItem text="Seduction" ui:field="ovwSeduction"/>
+							<g:MenuItem text="Psy tendencies" ui:field="ovwPsy"/>
+							<g:MenuItem text="Affairs" ui:field="ovwAffairs"/>
+						</g:MenuBar>
+					</g:MenuItem>
+				</g:MenuBar>
+			</g:MenuItem>
+			<g:MenuItem text="Fast Caps" ui:field="fastCaps"/>
+			<g:MenuItem text="Snips" ui:field="snips"/>
+			<g:MenuItem text="Materials" ui:field="materials"/>
+			<g:MenuItem text="Groups" ui:field="groups"/>
+			<g:MenuItem text="Services" ui:field="services"/>
+			<g:MenuItem text="Profile" ui:field="profile"/>
+		</g:MenuBar>		
+	</g:HTMLPanel>
+</ui:UiBinder> 

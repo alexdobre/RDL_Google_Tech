@@ -28,7 +28,12 @@
 
     <entry-point class='com.therdl.client.RDL'/>
 
-    <!-- Specify the paths for translatable code                    -->
+    <!-- firefox -->
+
+    <set-property name="user.agent" value="gecko1_8, safari"/>
+    <!-- chrome -->
+    <!--et-property name="user.agent" value="safari"/-->
+
     <source path='client'/>
     <source path='shared'/>
 
