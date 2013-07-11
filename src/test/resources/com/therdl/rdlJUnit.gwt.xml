@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <!-- Inherit our applications main module.                      -->
+    <inherits name='com.therdl.rdl' />
+
+    <!-- Specify the path to any remote services.                   -->
+    <servlet path="/rdl/greet" class="com.therdl.server.GreetingServiceImpl" />
+
+</module>

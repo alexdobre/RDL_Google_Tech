@@ -1,0 +1,87 @@
+/** Add css rules here for your application. */
+/** Example rules used by the template application (remove for your app) */
+
+
+h1 {
+	font-size: 2em;
+	font-weight: bold;
+	color: #777777;
+	margin: 20px 0px 20px;
+	text-align: center;
+}
+
+h3 {
+	font-weight: normal;
+	color: #585858;
+	margin: 20px 0px 20px;
+	text-align: center;
+}
+
+.mainPanel{
+	top: 0px;
+	width: 100%;
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+.mainDockPanel {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.mainDockPanel td {
+	padding: 3px;
+}
+
+.textMainDockPanel {
+	min-height: 100px;
+	font-size: 2em;
+	font-weight: bold;
+	color: #777777;
+	text-align: center;
+}
+
+.appMenu {	
+	min-width: 700px;
+	left: 0;
+	top: 0;
+	right: 0;
+}
+.appMenu td{
+	color: #2E2E2E;
+	}
+	
+.layoutTable{
+	width: 100%;
+	}	
+.rdlTreeCell{
+	min-width: 200px;
+	border-right: 1px solid #222222;
+	border-top: 1px solid #222222;
+	}
+.rdlContentCell{
+	width: 80%;
+	border-top: 1px solid #222222;
+	}
+
+
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+	width: 400px;
+}
+
+.dialogVPanel {
+	margin: 5px;
+}
+
+.serverResponseLabelError {
+	color: red;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+	margin: 15px 6px 6px;
+}
