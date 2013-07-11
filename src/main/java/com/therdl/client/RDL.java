@@ -32,7 +32,7 @@ public class RDL implements EntryPoint {
       //Initialize logging
       GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
           public void onUncaughtException(Throwable e) {
-              sLogger.log(Level.SEVERE, e.getMessage(), e);
+              sLogger.log(Level.INFO, e.getMessage(), e);
           }
       });
 

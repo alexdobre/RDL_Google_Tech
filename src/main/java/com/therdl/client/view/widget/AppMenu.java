@@ -11,7 +11,11 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.shared.RDLConstants;
 
+import java.util.logging.Logger;
+
 public class AppMenu extends Composite  {
+
+    private static Logger log = Logger.getLogger("");
 
 	private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
 	@UiField MenuBar menuBar;
@@ -48,15 +52,32 @@ public class AppMenu extends Composite  {
 		fastCaps.setScheduledCommand(new Scheduler.ScheduledCommand() {			
 			@Override
 			public void execute() {
-				// TODO fire event			
+                log.info("AppMenu: fastCaps.setScheduledCommand");
 			}
 		});
 		snips.setScheduledCommand(new Scheduler.ScheduledCommand() {			
 			@Override
 			public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
 				History.newItem(RDLConstants.Tokens.SNIPS);			
 			}
 		});
+
+
+        ovwModulesFastCaps.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: sidebar fastCaps setScheduledCommand");
+            }
+        });
+
+        ovwModulesSnips.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: sidebar History.newItem RDLConstants.Tokens.SNIPS");
+                History.newItem(RDLConstants.Tokens.SNIPS);
+            }
+        });
 	}
 
 }
