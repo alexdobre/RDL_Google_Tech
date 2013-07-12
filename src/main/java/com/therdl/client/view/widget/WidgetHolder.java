@@ -16,6 +16,7 @@ public class WidgetHolder {
 	private Widget snipSearchWidget;
 	private Widget leftMenuTree;
 	private Widget snipEditor;
+    private SnipListRowWidget snipListRowWidget;
 
 	
 	//singleton implementation
@@ -55,5 +56,9 @@ public class WidgetHolder {
 		if(snipEditor == null) snipEditor = new SnipEditorWorkflow(null);
 		return snipEditor;
 	}
+
+
+
+
 
 }

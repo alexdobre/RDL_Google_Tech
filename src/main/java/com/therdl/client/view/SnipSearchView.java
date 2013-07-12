@@ -1,6 +1,8 @@
 package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.beans.SnipBean;
 
 public interface SnipSearchView<T> {
 
@@ -12,5 +14,5 @@ public interface SnipSearchView<T> {
 
 	Widget asWidget();
 
-    void getSnipDemoResult();
+    void getSnipDemoResult(AutoBean<SnipBean> bean);
 }

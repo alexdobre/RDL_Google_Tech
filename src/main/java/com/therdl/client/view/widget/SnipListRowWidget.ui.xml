@@ -2,30 +2,51 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-        .widgetlayout {
-        margin:10px 0 0 20px;
-        padding:10px 0 0 20px;
+
+        .main table {
+        width: 98%;
+        margin: 0 auto;
         }
+
+
+        .title {
+        font-weight: bold;
+        font-size: 15px;
+        color:blue;
+        }
+
+        .message {
+        line-height: 18px;
+        margin: 0 0 18px;
+        padding: 0;
+        }
+        .description {
+        line-height: 18px;
+        margin: 0 0 18px;
+        padding: 0;
+        }
+
+
 	</ui:style>
-	<g:HTMLPanel>
-		<g:DockPanel ui:field="snipListRow" width="100%" height="100%">
-			<g:Dock direction="WEST">
-				<g:FlowPanel ui:field="snipRowRating" styleName='{style.widgetlayout}'>
-					<g:Label text="Rating" width="20px" height="100%" ui:field="rating" styleName='{style.widgetlayout}'/>
-				</g:FlowPanel>
-			</g:Dock>
-			<g:Dock direction="NORTH" size='285px'  >
-				<g:HorizontalPanel styleName='{style.widgetlayout}'>
-					<g:Label text="Title lots of text here as the title can be very long" ui:field="title"/>
-					<g:Label text="Author name" ui:field="author"/>
-					<g:Label text="Rep" ui:field="authorRep"/>
-				</g:HorizontalPanel>
-			</g:Dock>
-			<g:Dock direction="CENTER">
-				<g:FlowPanel styleName='{style.widgetlayout}'>
-					<g:Label text="Content here - even more text going on into the distance till we have run out of space and put in dots ..." width="100%" height="100%" ui:field="content"/>
-				</g:FlowPanel>
-			</g:Dock>
-		</g:DockPanel>
+	<g:HTMLPanel  addStyleNames="{style.main}">
+        <div foo="">
+            <table>
+                <tr>
+                    <td>
+                        <span ui:field="title" class="{style.title}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span ui:field="servermessage" class="{style.message}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="3" >
+                        <span ui:field="content" class="{style.description}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -52,6 +52,8 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
                     log.info(""+ bean.as().getAuthor() );
                     log.info(""+ bean.as().getContent() );
                     log.info(""+ bean.as().getTimeStamp() );
+
+                    snipSearchView.getSnipDemoResult(bean);
                 }
 
                 @Override
