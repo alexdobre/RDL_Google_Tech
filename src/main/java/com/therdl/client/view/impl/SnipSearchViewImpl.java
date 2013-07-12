@@ -24,6 +24,11 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
         this.presenter = presenter;
     }
 
+    @Override
+    public void getSnipDemoResult() {
+
+    }
+
     interface SnipSearchViewImplUiBinder extends
 			UiBinder<Widget, SnipSearchViewImpl> {
 	}
@@ -36,9 +41,13 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
 
 	public SnipSearchViewImpl(EventBus eventBus) {
 		initWidget(uiBinder.createAndBindUi(this));
+
 		appMenu =  WidgetHolder.getInstance().getAppMenu();
+
 		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
+
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
+
         log.info("SnipSearchViewImpl constructor");
 	}
 

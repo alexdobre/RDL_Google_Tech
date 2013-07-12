@@ -2,18 +2,25 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		
+        .widgetlayout {
+        margin:10px 0 0 20px;
+        padding:10px 0 0 20px;
+        }
+        .buttonlayout {
+        margin:10px 0 0 30px;
+
+        }
 	</ui:style>
 	<g:HTMLPanel>
-		<g:HorizontalPanel width="100%">
-			<g:Label text="Text" ui:field="textSearch"/>
-			<g:TextBox ui:field="textBox"/>
-			<g:Label text="Core category"/>
-			<g:ListBox ui:field="coreCategoryCombo"/>
+		<g:HorizontalPanel width="100%"  styleName='{style.widgetlayout}'>
+			<g:Label text="Text" ui:field="textSearch" styleName='{style.widgetlayout}'/>
+			<g:TextBox ui:field="textBox" styleName='{style.widgetlayout}'/>
+			<g:Label text="Core category" styleName='{style.widgetlayout}'/>
+			<g:ListBox ui:field="coreCategoryCombo" styleName='{style.widgetlayout}'/>
 		</g:HorizontalPanel>
-		<g:HorizontalPanel width="50%">
-			<g:Button ui:field="searchButton" text="Search"/>
-			<g:Button ui:field="createNewButton" text="Create New"/>
+		<g:HorizontalPanel width="50%" styleName='{style.widgetlayout}'>
+			<g:Button ui:field="searchButton" text="Search" styleName='{style.buttonlayout}'/>
+			<g:Button ui:field="createNewButton" text="Create New" styleName='{style.buttonlayout}'/>
 		</g:HorizontalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

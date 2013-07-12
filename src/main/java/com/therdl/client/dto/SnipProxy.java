@@ -4,11 +4,10 @@ import java.util.Date;
 
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
 import com.google.web.bindery.requestfactory.shared.EntityProxyId;
-import com.google.web.bindery.requestfactory.shared.ProxyFor;
 import com.therdl.server.model.Snip;
 
 
-@ProxyFor(value = Snip.class)
+
 public interface SnipProxy extends EntityProxy {
 	
 	public Long getId();

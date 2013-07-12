@@ -3,26 +3,36 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style>
-		
+        .widgetlayout {
+          margin:10px 0 0 20px;
+          padding:10px 0 0 20px;
+        }
+        .searchlayout {
+        margin:20px;
+        padding:20px;
+        }
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel  >
+
 		<rdl:AppMenu ui:field="appMenu" />
-		<g:DockPanel>
-			<g:Dock direction="WEST">
-				<g:SimplePanel>
-					<rdl:LeftMenuTree ui:field="leftMenuTree" />
-				</g:SimplePanel>
+
+		<g:DockPanel >
+			<g:Dock direction="WEST"  size='150px' >
+				<g:FlowPanel styleName='{style.widgetlayout}'>
+					<rdl:LeftMenuTree ui:field="leftMenuTree"  />
+				</g:FlowPanel>
 			</g:Dock>
-			<g:Dock direction="NORTH">
-				<g:SimplePanel>
-					<rdl:SnipSearchWidget ui:field="snipSearchWidget" width="100%" height="100%" />
-				</g:SimplePanel>
+			<g:Dock direction="NORTH" size='285px'>
+				<g:FlowPanel styleName='{style.searchlayout}'>
+					<rdl:SnipSearchWidget ui:field="snipSearchWidget" width="100%" height="100%"  />
+				</g:FlowPanel>
 			</g:Dock>
-			<g:Dock direction="SOUTH">
-				<g:SimplePanel>
+			<g:Dock direction="CENTER"  >
+				<g:FlowPanel styleName='{style.widgetlayout}'>
 					<rdl:SnipListRowWidget ui:field="snipListRowWidgetTemp" width="100%" height="100%"/>
-				</g:SimplePanel>
+				</g:FlowPanel>
 			</g:Dock>
 		</g:DockPanel>
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

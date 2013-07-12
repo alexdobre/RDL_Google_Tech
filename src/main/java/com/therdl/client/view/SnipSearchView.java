@@ -11,4 +11,6 @@ public interface SnipSearchView<T> {
 	void setPresenter(Presenter<T> presenter);
 
 	Widget asWidget();
+
+    void getSnipDemoResult();
 }
