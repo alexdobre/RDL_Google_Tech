@@ -23,7 +23,7 @@ public class SnipSearchWidget extends Composite {
 	@UiField Button searchButton;
 	@UiField Button createNewButton;
 	@UiField TextBox textBox;
-	@UiField ListBox coreCategoryCombo;
+	//@UiField ListBox coreCategoryCombo;
 
 	interface SnipSearchWidgetUiBinder extends
 			UiBinder<Widget, SnipSearchWidget> {

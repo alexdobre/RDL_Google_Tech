@@ -38,7 +38,22 @@
                 </tr>
                 <tr>
                     <td>
+                        <span ui:field="author" class="{style.message}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span ui:field="stream" class="{style.message}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <span ui:field="servermessage" class="{style.message}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span ui:field="timeStamp" class="{style.message}"></span>
                     </td>
                 </tr>
                 <tr>

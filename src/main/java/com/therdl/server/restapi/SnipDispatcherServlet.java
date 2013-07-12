@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Singleton
@@ -42,12 +44,13 @@ public class SnipDispatcherServlet extends HttpServlet {
         resp.setContentType("application/json");
         SnipBean bean =  beanery.snipBean().as();
         bean.setAuthor("Demo Author");
-        bean.setContent("demo content");
+        bean.setContent("demo content:  this is a test this is a test this is a test this is a test this is a test this is a test");
         bean.setStream("demo stream");
         bean.setTitle("demo title");
+        bean.setTimeStamp(makeTimeStamp());
         String debugString = snipsService.getDebugString();
         sLogger.info("SnipDispatcherServlet:  "+debugString );
-        bean.setTimeStamp("SnipDispatcherServlet:  "+debugString  );
+        bean.setServerMessage("SnipDispatcher Servlet:  " + debugString);
 
         AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
         String asJson = AutoBeanCodex.encode(autoBean).getPayload();
@@ -57,5 +60,17 @@ public class SnipDispatcherServlet extends HttpServlet {
 
     }
 
+    private String makeTimeStamp() {
+
+
+        Date processDateTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStampString =  formatter.format(  processDateTime );
+
+
+        return timeStampString;
+    }
+
 
 }
+

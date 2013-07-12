@@ -22,6 +22,12 @@ public class SnipListRowWidget extends Composite {
     SpanElement servermessage;
     @UiField
     SpanElement content;
+    @UiField
+    SpanElement timeStamp;
+    @UiField
+    SpanElement author;
+    @UiField
+    SpanElement stream;
 
     AutoBean<SnipBean> bean;
 
@@ -33,8 +39,11 @@ public class SnipListRowWidget extends Composite {
         this.bean = bean;
         initWidget(uiBinder.createAndBindUi(this));
         title.setInnerText(bean.as().getTitle());
-        servermessage.setInnerText(bean.as().getTimeStamp());
-        content.setInnerText(bean.as().getContent());
+        servermessage.setInnerText("rdl server message: "+bean.as().getServerMessage());
+        content.setInnerText("  Content: "+bean.as().getContent());
+        timeStamp.setInnerText("Date-Time: "+bean.as().getTimeStamp());
+        author.setInnerText("Author: "+bean.as().getAuthor());
+        stream.setInnerText("Stream: "+bean.as().getStream());
     }
 
 

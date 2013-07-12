@@ -17,5 +17,8 @@ public interface SnipBean {
     String getStream();
     void setStream(String stream);
 
+    String getServerMessage();
+    void setServerMessage(String stream);
+
 
 }
