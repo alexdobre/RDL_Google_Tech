@@ -5,7 +5,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
-import com.therdl.server.restapi.SnipService;
+import com.therdl.server.api.SnipsService;
+import com.therdl.server.apiimpl.SnipServiceImpl;
+import com.therdl.server.restapi.SnipDispatcherServlet;
 import org.slf4j.LoggerFactory;
 
 
@@ -23,7 +25,9 @@ public class ServletInjector extends GuiceServletContextListener {
             @Override
             protected void configureServlets() {
 
-                serve("/rdl/getSnips").with(SnipService.class);
+                bind(SnipsService.class).to(SnipServiceImpl.class);
+
+                serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
             }
 
         }); }
