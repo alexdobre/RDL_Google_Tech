@@ -31,6 +31,17 @@
             <version>2.11.2</version>
         </dependency>
 
+        <!-- for java collections -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-gwt</artifactId>
+            <version>14.0.1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -94,13 +105,13 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
             <version>${gwtVersion}</version>
-            <scope>runtime</scope>
+            <!--scope>runtime</scope-->
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <version>${gwtVersion}</version>
-            <scope>provided</scope>
+            <!--scope>provided</scope-->
         </dependency>
         <!-- Logging -->
         <dependency>
@@ -166,11 +177,24 @@
                 <!-- Plugin configuration. There are many available options, see
                   gwt-maven-plugin documentation at codehaus.org -->
                 <configuration>
-                    <runTarget>rdl.html</runTarget>
+                    <runTarget>/</runTarget>
+                    <port>8080</port>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <i18nMessagesBundle>com.therdl.client.Messages</i18nMessagesBundle>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
+                    <webAppConfig>
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
+                </configuration>
+            </plugin>
+
 
             <!-- Copy static web files before executing gwt:run -->
             <plugin>
@@ -198,7 +222,9 @@
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
+
         </plugins>
+
     </build>
 
 </project>

@@ -1,6 +1,7 @@
 package com.therdl.server.apiimpl;
 
 
+import com.google.common.collect.Iterables;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.SnipsService;
@@ -30,18 +31,9 @@ public class SnipServiceImpl implements SnipsService {
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipServiceImpl.class);
 
 
-    @Override
-    public SnipBean getSnip(String id) {
-        return null;
-    }
 
     @Override
-    public void createSnip(SnipBean snip) {
-
-    }
-
-    @Override
-    public List<SnipBean> getAllSnips() {
+    public List<SnipBean> getAllSnips(String match) {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
         beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -69,6 +61,30 @@ public class SnipServiceImpl implements SnipsService {
 
     }
 
+
+    @Override
+    public SnipBean getLastSnip(String  match) {
+
+        List<SnipBean> beans = getAllSnips( match);
+
+        SnipBean lastBean = Iterables.getLast(beans);
+
+        return lastBean;
+    }
+
+
+
+
+    @Override
+    public SnipBean getSnip(String id) {
+        return null;
+    }
+
+    @Override
+    public void createSnip(SnipBean snip) {
+
+    }
+
     @Override
     public void deleteSnip(String id) {
 
@@ -84,6 +100,8 @@ public class SnipServiceImpl implements SnipsService {
     public String getDebugString() {
         return "Snip Service wired up for guice injection ok";
     }
+
+
 
 
     // later the url will be a cloud based schema hence exception

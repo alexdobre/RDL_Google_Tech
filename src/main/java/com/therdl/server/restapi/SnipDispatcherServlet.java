@@ -44,7 +44,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 
         String debugString = snipsService.getDebugString();
         sLogger.info("SnipDispatcherServlet:  "+debugString );
-        SnipBean  bean = snipsService.getAllSnips().get(0);
+        SnipBean  bean = snipsService.getLastSnip("demoUser id");
         bean.setServerMessage("SnipDispatcher Servlet:  " + debugString);
         AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
         String asJson = AutoBeanCodex.encode(autoBean).getPayload();

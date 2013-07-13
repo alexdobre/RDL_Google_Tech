@@ -34,6 +34,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
     private void getSnipDemoResult() {
         log.info("SnipSearchPresenter getSnipDemoResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
+        updateUrl =updateUrl.replaceAll("/therdl","");
 
         log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: "+ updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));

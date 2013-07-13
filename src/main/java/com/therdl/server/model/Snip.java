@@ -46,9 +46,6 @@ public class Snip implements Serializable{
 		return snip;
 	}
 
-
-
-
 	public String getTitle() {
 		return title;
 	}

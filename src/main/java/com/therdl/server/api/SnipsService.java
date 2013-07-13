@@ -13,15 +13,18 @@ public interface SnipsService {
 
          void createSnip(SnipBean snip);
 
-         List<SnipBean> getAllSnips();
+         // get all snips for a user
+         List<SnipBean> getAllSnips(String id);
 
 
          void deleteSnip(String id);
 
          SnipBean updateSnip(SnipBean snip);
 
-         // debug string
+         //  testing and development methods debug string
          String getDebugString();
+
+         SnipBean getLastSnip(String id);
 
 
 }
