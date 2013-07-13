@@ -28,7 +28,6 @@ import java.util.Date;
 public class SnipDispatcherServlet extends HttpServlet {
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipDispatcherServlet.class);
-    Beanery beanery;
     private final Provider<HttpSession> sessions;
     SnipsService snipsService;
 
@@ -36,22 +35,17 @@ public class SnipDispatcherServlet extends HttpServlet {
     public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService) {
         this.sessions = sessions;
         this.snipsService = snipsService;
-        beanery = AutoBeanFactorySource.create(Beanery.class);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
         resp.setContentType("application/json");
-        SnipBean bean =  beanery.snipBean().as();
-        bean.setAuthor("Demo Author");
-        bean.setContent("demo content:  this is a test this is a test this is a test this is a test this is a test this is a test");
-        bean.setStream("demo stream");
-        bean.setTitle("demo title");
-        bean.setTimeStamp(makeTimeStamp());
+
         String debugString = snipsService.getDebugString();
         sLogger.info("SnipDispatcherServlet:  "+debugString );
+        SnipBean  bean = snipsService.getAllSnips().get(0);
         bean.setServerMessage("SnipDispatcher Servlet:  " + debugString);
-
         AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
         String asJson = AutoBeanCodex.encode(autoBean).getPayload();
         sLogger.info(asJson);
@@ -60,16 +54,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 
     }
 
-    private String makeTimeStamp() {
 
-
-        Date processDateTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timeStampString =  formatter.format(  processDateTime );
-
-
-        return timeStampString;
-    }
 
 
 }

@@ -1,33 +1,72 @@
 package com.therdl.server.apiimpl;
 
 
+import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
+import com.mongodb.*;
 import com.therdl.server.api.SnipsService;
-import com.therdl.server.model.Snip;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.SnipBean;
+import org.slf4j.LoggerFactory;
+
 
 import javax.inject.Singleton;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 
 @Singleton
 public class SnipServiceImpl implements SnipsService {
 
-    // this code will eventually use various dao's for now dao code is embedded
-    // dao methods will be moved to dao objets
+    private MongoURI uri;
+    private String defaultDatabaseName;
+    private Properties configProp;
+    Beanery beanery;
+
+    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipServiceImpl.class);
 
 
     @Override
-    public Snip getSnip(String id) {
+    public SnipBean getSnip(String id) {
         return null;
     }
 
     @Override
-    public void createSnip(Snip snip) {
+    public void createSnip(SnipBean snip) {
 
     }
 
     @Override
-    public List<Snip> getAllLabs(String match) {
-        return null;
+    public List<SnipBean> getAllSnips() {
+        DB db = getMongo();
+        List<SnipBean> beans = new ArrayList<SnipBean>();
+        beanery = AutoBeanFactorySource.create(Beanery.class);
+        Set<String> colls = db.getCollectionNames();
+        for (String s : colls) {
+            sLogger.info(s);
+        }
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        DBCursor collDocs  =  coll.find();
+
+        while(collDocs.hasNext()) {
+            DBObject doc = collDocs.next();
+            SnipBean snip = beanery.snipBean().as();
+            snip.setServerMessage((String)doc.get("serverMessage"));
+            snip.setStream((String) doc.get("stream"));
+            snip.setTimeStamp((String) doc.get("timeStamp"));
+            snip.setContent((String) doc.get("content"));
+            snip.setAuthor((String) doc.get("author"));
+            snip.setTitle((String) doc.get("title"));
+            beans.add(snip);
+        }
+
+        return beans;
+
     }
 
     @Override
@@ -36,7 +75,7 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     @Override
-    public Snip updateSnip(Snip snip) {
+    public SnipBean updateSnip(SnipBean snip) {
         return null;
 
     }
@@ -45,6 +84,32 @@ public class SnipServiceImpl implements SnipsService {
     public String getDebugString() {
         return "Snip Service wired up for guice injection ok";
     }
+
+
+    // later the url will be a cloud based schema hence exception
+    private DB getMongo() {
+        configProp = new Properties();
+        try {
+            configProp.load(new FileInputStream("src/main/resources/config.properties"));
+        }  catch (IOException e) { e.printStackTrace();  }
+        defaultDatabaseName = configProp.getProperty("mongodb.default.database");
+        sLogger.info("CreateAppContext from properties  default.database  :  " + defaultDatabaseName);
+
+
+        try {
+            MongoClient mongo = new MongoClient("localhost", 27017);
+            DB db = mongo.getDB(defaultDatabaseName);
+            return db;
+
+        } catch (UnknownHostException e) {
+            sLogger.error(e.getMessage());
+            return null;
+        }
+    }
+
+
+
+
 
 
 }

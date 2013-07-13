@@ -1,21 +1,24 @@
 package com.therdl.server.api;
 
-import com.therdl.server.model.Snip;
+
+
+import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
 
 public interface SnipsService {
 
 
-         Snip getSnip(String id);
+         SnipBean getSnip(String id);
 
-         void createSnip(Snip snip);
+         void createSnip(SnipBean snip);
 
-         List<Snip> getAllLabs(String match);
+         List<SnipBean> getAllSnips();
+
 
          void deleteSnip(String id);
 
-         Snip updateSnip(Snip snip);
+         SnipBean updateSnip(SnipBean snip);
 
          // debug string
          String getDebugString();

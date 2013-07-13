@@ -15,7 +15,7 @@ public class Snip implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	private  Long id;
+
 	
 	private  String title;
 	
@@ -26,18 +26,13 @@ public class Snip implements Serializable{
 	/**
 	 * Any Snip can be authored anonymously using the user's alias
 	 */
-	private Boolean isAlias;
+	private String isAlias;
 	
 	/**
 	 * this is the date of creation
 	 */
-	private Date date;
-	
-	/**
-	   * The RequestFactory requires an Integer version property for each proxied
-	   * type, but makes no good use of it. This requirement will be removed soon.
-	   */
-	private  Integer version = 0;
+	private String date;
+
 	
 	/**
 	 * Service methods delegating to the service implementation
@@ -51,34 +46,8 @@ public class Snip implements Serializable{
 		return snip;
 	}
 
-	public static List<Snip> search(SnipSearch search) {
-        List<Snip> snips = null;
-		return snips;
-	}
 
-	public static Snip get(String id) {
-        Snip snip = null;
-		return snip;
-	}
 
-	public static Snip  delete(String id) {
-        Snip snip = null;
-        return snip;
-
-	}
-	
-	public static Snip findSnip (Long id){
-        Snip snip = null;
-        return snip;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getTitle() {
 		return title;
@@ -96,11 +65,11 @@ public class Snip implements Serializable{
 		this.author = author;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -112,20 +81,14 @@ public class Snip implements Serializable{
 		this.content = content;
 	}
 
-	public void setIsAlias(Boolean isAlias) {
+	public void setIsAlias(String isAlias) {
 		this.isAlias = isAlias;
 	}
 
-	public Boolean getIsAlias() {
+	public String getIsAlias() {
 		return isAlias;
 	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
 
-	public Integer getVersion() {
-		return version;
-	}
 	
 }

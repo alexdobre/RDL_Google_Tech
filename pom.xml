@@ -23,6 +23,15 @@
     </properties>
 
     <dependencies>
+
+        <!-- MongDB java driver to hook up to MongoDB server -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.11.2</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
