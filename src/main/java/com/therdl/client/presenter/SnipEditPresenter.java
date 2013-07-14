@@ -1,17 +1,22 @@
 package com.therdl.client.presenter;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.therdl.client.dto.SnipProxy;
 import com.therdl.client.view.SnipEditView;
 
+import java.util.logging.Logger;
+
 public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<SnipProxy> {
 
-
+    private static Logger log = Logger.getLogger("");
 	private final EventBus eventBus;
 	private final SnipEditView<SnipProxy> view;
 	private SnipProxy snipProxy;
+
+
 
 	public SnipEditPresenter( EventBus eventBus,SnipEditView<SnipProxy> view) {
 		super();
@@ -24,7 +29,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 	public void go(HasWidgets container) {
 		container.clear();
 	    container.add(view.asWidget());
-	    fetchSnip();
+	 //   fetchSnip();
 
 	}
 
@@ -46,8 +51,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 
 	@Override
 	public void onSaveButtonClicked() {
-		// TODO Auto-generated method stub
-		System.out.println("onSaveButtonClicked BEGIN ");
+
+        log.info("SnipEditPresenter  onSaveButtonClicked BEGIN ");
 
 //		SnipRequest request = appReqFactory.getSnipRequest();
 //
@@ -79,8 +84,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 
 	@Override
 	public void onCloseButtonClicked() {
-		// TODO Auto-generated method stub
-		System.out.println("onCloseButtonClicked BEGIN ");
+        log.info("SnipEditPresenter  onCloseButtonClicked  ");
 
 	}	
 

@@ -51,7 +51,8 @@ public class SnipServiceImpl implements SnipsService {
             snip.setServerMessage((String)doc.get("serverMessage"));
             snip.setStream((String) doc.get("stream"));
             snip.setTimeStamp((String) doc.get("timeStamp"));
-            snip.setContent((String) doc.get("content"));
+            snip.setContentAsString((String) doc.get("contentAsString"));
+            snip.setContentAsHtml((String) doc.get("contentAsHtml"));
             snip.setAuthor((String) doc.get("author"));
             snip.setTitle((String) doc.get("title"));
             beans.add(snip);

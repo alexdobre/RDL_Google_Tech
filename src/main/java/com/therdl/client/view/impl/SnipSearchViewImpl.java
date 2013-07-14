@@ -65,6 +65,7 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
 
         log.info("SnipSearchViewImpl getSnipDemoResult ");
         snipListRowWidget = new SnipListRowWidget(bean);
+        snipListRow.clear();
         snipListRow.add(snipListRowWidget);
 
         // debug

@@ -1,10 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:style>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
 
         .main table {
         width: 98%;
+        height:100%;
         margin: 0 auto;
         }
 
@@ -26,9 +27,16 @@
         padding: 0;
         }
 
+        .contentAsHtml {
+        display:block;
+        line-height: 18px;
+        margin:20px;
+        padding:10px;
+        }
 
-	</ui:style>
-	<g:HTMLPanel  addStyleNames="{style.main}">
+
+    </ui:style>
+    <g:HTMLPanel addStyleNames="{style.main}">
         <div foo="">
             <table>
                 <tr>
@@ -57,11 +65,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="3" >
-                        <span ui:field="content" class="{style.description}"></span>
+                    <td>
+                        <span ui:field="contentAsString" class="{style.description}"></span>
+                    </td>
+                </tr>
+                <hr/>
+                <br/>
+                <tr>
+                    <td>
+                        <span ui:field="contentAsHtml" class="{style.contentAsHtml}"></span>
                     </td>
                 </tr>
             </table>
         </div>
-	</g:HTMLPanel>
+    </g:HTMLPanel>
 </ui:UiBinder> 

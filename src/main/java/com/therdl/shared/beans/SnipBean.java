@@ -5,8 +5,11 @@ public interface SnipBean {
     String getTitle();
     void setTitle(String title);
 
-    String getContent();
-    void setContent(String content);
+    String getContentAsString();
+    void setContentAsString(String content);
+
+    String getContentAsHtml();
+    void setContentAsHtml(String shtml);
 
     String getAuthor();
     void setAuthor(String author);

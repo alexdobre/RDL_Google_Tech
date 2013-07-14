@@ -15,7 +15,11 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.WidgetHolder;
 
+import java.util.logging.Logger;
+
 public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
+
+    private static Logger log = Logger.getLogger("");
 
 	@UiTemplate("SnipEditViewImpl.ui.xml")
 	interface SnipEditViewUiBinder extends UiBinder<Widget, SnipEditViewImpl> {}
@@ -38,18 +42,18 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 		this.presenter = presenter;
 	}
 
-//	@UiHandler("saveButton")
-//	void onSaveButtonClicked(ClickEvent event) {
-//		if (presenter != null) {
-//			presenter.onSaveButtonClicked();
-//		}
-//	}
-//
-//	@UiHandler("closeButton")
-//	void onCloseButtonClicked(ClickEvent event) {
-//		if (presenter != null) {
-//			presenter.onCloseButtonClicked();
-//		}
-//	}
+    @Override
+    public void onSaveButtonClicked(ClickEvent event) {
+		if (presenter != null) {
+			presenter.onSaveButtonClicked();
+		}
+	}
+
+    @Override
+    public void onCloseButtonClicked(ClickEvent event) {
+		if (presenter != null) {
+			presenter.onCloseButtonClicked();
+		}
+	}
 
 }

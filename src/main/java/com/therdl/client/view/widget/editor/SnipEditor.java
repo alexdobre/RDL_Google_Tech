@@ -7,12 +7,9 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.ui.client.ValueBoxEditorDecorator;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Focusable;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.therdl.client.dto.SnipProxy;
 import com.therdl.client.view.widget.RichTextToolbar;
-import com.google.gwt.user.client.ui.RichTextArea;
 
 /**
  * This is the main editor in the RDL, it is the widget used to modify, create and save a Snip
@@ -25,7 +22,8 @@ public class SnipEditor extends Composite implements Editor<SnipProxy> {
 	  
 	  @UiField ValueBoxEditorDecorator<String> title;
 	  
-	  @UiField Focusable titleBox;
+	  @UiField
+      TextBox titleBox;
 	  @UiField (provided=true)RichTextArea content = new RichTextArea();
 	  
 	  @UiField (provided=true)RichTextToolbar richTextToolbar = new RichTextToolbar(content);
@@ -40,4 +38,27 @@ public class SnipEditor extends Composite implements Editor<SnipProxy> {
 		      }
 		    });
 		  }
+
+
+    public String getContentAsText() {
+
+        return content.getText();
+
+    }
+
+    public String getContentAsHtml() {
+
+        return content.getHTML();
+
+    }
+
+
+    public String getTitle() {
+
+        return  titleBox.getText();
+
+    }
+
+
+
 }

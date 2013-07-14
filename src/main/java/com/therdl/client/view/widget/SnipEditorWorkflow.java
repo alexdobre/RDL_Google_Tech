@@ -1,7 +1,7 @@
 package com.therdl.client.view.widget;
 
 import java.util.Set;
-
+import java.util.logging.Logger;
 
 
 import com.google.gwt.core.client.GWT;
@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -29,6 +30,8 @@ import com.therdl.client.view.widget.editor.SnipEditor;
  * request factory and SnipProxy
  */
 public class SnipEditorWorkflow extends Composite{
+
+    private static Logger log = Logger.getLogger("");
 
 	interface Binder extends UiBinder<DialogBox, SnipEditorWorkflow> {
 		Binder BINDER = GWT.create(Binder.class);
@@ -47,6 +50,10 @@ public class SnipEditorWorkflow extends Composite{
 	HTMLPanel contents;
 	@UiField
 	DialogBox dialog;
+    @UiField
+    Button save;
+    @UiField
+    Button cancel;
 	
 	public SnipEditorWorkflow(){		
 		initWidget(Binder.BINDER.createAndBindUi(this));
@@ -86,7 +93,12 @@ public class SnipEditorWorkflow extends Composite{
 	@UiHandler("save")
 	void onSave(ClickEvent event) {
 
-
+      String title =  snipEditor.getTitle();
+      String contentAsText =  snipEditor.getContentAsText();
+        String contentAsHtml =  snipEditor.getContentAsHtml();
+      log.info("SnipEditorWorkflow onSave title: "+title);
+      log.info("SnipEditorWorkflow onSave content as Text : "+ contentAsHtml );
+        log.info("SnipEditorWorkflow onSave content as Html : "+ contentAsHtml );
 
 	}
 
