@@ -12,10 +12,12 @@ import com.therdl.client.dto.SnipProxy;
 import com.therdl.client.dto.SnipSearchProxy;
 import com.therdl.client.presenter.Presenter;
 
+import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
 import com.therdl.client.presenter.WelcomePresenter;
@@ -113,6 +115,28 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 }
             });
         }// end else
+
+            else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+                        if (snipEditView == null) {
+                            snipEditView = new SnipEditViewImpl<SnipProxy>();
+                        }
+                        new SnipEditPresenter( eventBus, snipEditView).go(container);
+                    }
+                });
+            }
+
+
+
+
+
+
+
+
 
         } // end  if token != null ifif
 
