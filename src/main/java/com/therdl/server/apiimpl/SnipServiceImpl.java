@@ -85,6 +85,23 @@ public class SnipServiceImpl implements SnipsService {
     @Override
     public void createSnip(SnipBean snip) {
 
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+        BasicDBObject doc = new BasicDBObject("user", "testRdlUser").
+                append("title", snip.getTitle()).
+                append("contentAsString", snip.getContentAsString()).
+                append("contentAsHtml", snip.getContentAsHtml()).
+                append("author", snip.getAuthor()).
+                append("timeStamp",snip.getTimeStamp()).
+                append("stream", snip.getStream()).
+                append("action",snip.getAction()).
+                append("serverMessage", snip.getServerMessage());
+
+
+        coll.insert(doc);
+
+
+
     }
 
     @Override

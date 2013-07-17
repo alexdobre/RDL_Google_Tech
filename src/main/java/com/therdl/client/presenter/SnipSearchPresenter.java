@@ -21,6 +21,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
 	private final SnipSearchView<SnipSearchProxy> snipSearchView;
     private Beanery beanery = GWT.create(Beanery.class);
     private List<JSOModel> jSonList;
+    private AutoBean<SnipBean>  currentBean;
 	
 	public SnipSearchPresenter(SnipSearchView<SnipSearchProxy> snipSearchView){
 		this.snipSearchView = snipSearchView;
@@ -44,9 +45,12 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
         log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: "+ updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
+        currentBean = beanery.snipBean();
+        currentBean.as().setAction("getall");
+        String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
 
-            requestBuilder.sendRequest(null, new RequestCallback() {
+            requestBuilder.sendRequest(json, new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -34,11 +35,14 @@ public class SnipDispatcherServlet extends HttpServlet {
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipDispatcherServlet.class);
     private final Provider<HttpSession> sessions;
     SnipsService snipsService;
+    // for message beans
+    Beanery beanery;
 
     @Inject
     public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService) {
         this.sessions = sessions;
         this.snipsService = snipsService;
+        beanery = AutoBeanFactorySource.create(Beanery.class);
 
     }
 
@@ -49,8 +53,17 @@ public class SnipDispatcherServlet extends HttpServlet {
         String debugString = snipsService.getDebugString();
         sLogger.info("SnipDispatcherServlet:  "+debugString );
 
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = req.getReader();
+        String str;
+        while( (str = br.readLine()) != null ){
+            sb.append(str);
+        }
 
-        List<SnipBean> beans = snipsService.getAllSnips("demoUser id");
+        AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class,sb.toString());
+
+        if(actionBean.as().getAction().equals("getall") ) {
+        List < SnipBean > beans = snipsService.getAllSnips("demoUser id");
         sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
         ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
         int k = 0;
@@ -72,8 +85,18 @@ public class SnipDispatcherServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.write(gson.toJson(beanList));
 
-    }
+        }
 
+        if(actionBean.as().getAction().equals("save") ) {
+
+         // action bean is actually a bean to be submitted for saving
+
+            sLogger.info("SnipDispatcherServlet:submitted bean recieved  "+actionBean.as().getTitle());
+            snipsService.createSnip(actionBean.as());
+        }
+
+
+    }
 
 }
 

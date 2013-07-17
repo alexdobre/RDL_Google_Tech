@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.http.client.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
@@ -18,12 +19,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.requestfactory.gwt.client.RequestFactoryEditorDriver;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.therdl.client.dto.SnipProxy;
 
 import com.therdl.client.view.widget.editor.SnipEditor;
+import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
 
@@ -44,7 +47,9 @@ public class SnipEditorWorkflow extends Composite {
 
     private Driver editorDriver;
     private SnipProxy snipProxy;
-    private AutoBean<SnipBean>  currentBean;
+    private AutoBean<SnipBean> currentBean;
+
+    private Beanery beanery = GWT.create(Beanery.class);
 
     @UiField(provided = true)
     SnipEditor snipEditor = new SnipEditor();
@@ -139,10 +144,38 @@ public class SnipEditorWorkflow extends Composite {
         currentBean.as().setAuthor("demo user");
         currentBean.as().setServerMessage("submit");
         currentBean.as().setAction("save");
-        log.info("SnipEditorWorkflow submitBean bean : "+currentBean.as().toString());
+        log.info("SnipEditorWorkflow submitBean bean : " + currentBean.as().toString());
         // now submit to server
 
+        log.info("SnipEditorWorkflow submit to server");
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+        updateUrl = updateUrl.replaceAll("/therdl", "");
 
+        log.info("SnipEditorWorkflow submit updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+
+            String json = AutoBeanCodex.encode(currentBean).getPayload();
+            log.info("SnipEditorWorkflow submit json: " + json);
+            requestBuilder.sendRequest(json , new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
 
     }
 
