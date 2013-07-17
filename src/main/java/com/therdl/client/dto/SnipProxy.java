@@ -4,8 +4,6 @@ import java.util.Date;
 
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
 import com.google.web.bindery.requestfactory.shared.EntityProxyId;
-import com.therdl.server.model.Snip;
-
 
 
 public interface SnipProxy extends EntityProxy {

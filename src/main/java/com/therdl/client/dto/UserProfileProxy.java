@@ -1,11 +1,5 @@
 package com.therdl.client.dto;
 
-import java.util.ArrayList;
-
-import com.therdl.server.model.Group;
-import com.therdl.server.model.ReputationLevel;
-import com.therdl.server.model.UserProfile;
-
 //@ProxyFor(UserProfile.class)
 public interface UserProfileProxy {
 	

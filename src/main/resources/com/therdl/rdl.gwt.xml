@@ -14,7 +14,6 @@
     <inherits name='com.google.gwt.user.User' />
     <inherits name='com.google.gwt.user.theme.standard.Standard' />
     <inherits name="com.google.gwt.user.UserAgent" />
-    <inherits name='com.google.gwt.visualization.Visualization'/>
     <inherits name="com.google.web.bindery.autobean.AutoBean"/>
     <inherits name='com.google.gwt.http.HTTP'/>
     <inherits name='com.google.gwt.json.JSON'/>
