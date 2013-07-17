@@ -2,15 +2,16 @@ package com.therdl.client.view.widget.editor;
 
 
 import com.google.gwt.user.client.ui.*;
+import com.therdl.client.view.widget.SnipEditorWorkflow;
 
 public class EditorViewHeader  extends Composite {
 
-
+    SnipEditorWorkflow snipEditorWorkflow;
     private Grid grid;
 
-    public  EditorViewHeader() {
+    public  EditorViewHeader(SnipEditorWorkflow snipEditorWorkflow) {
         super();
-
+        this.snipEditorWorkflow = snipEditorWorkflow;
         grid = new Grid(3,4);
         grid.setStyleName("headerGrid");
 
@@ -31,7 +32,7 @@ public class EditorViewHeader  extends Composite {
         submitEdit.setStyleName("blogSubmitEdit-Button");
         grid.setWidget(1, 1,  submitEdit);
 
-        postListBox = new DynamicPostListBox();
+        postListBox = new DynamicPostListBox(snipEditorWorkflow);
         grid.setWidget(1, 2, postListBox);
 
 

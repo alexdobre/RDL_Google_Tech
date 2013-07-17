@@ -40,7 +40,7 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 	    appMenu =  WidgetHolder.getInstance().getAppMenu();
 	    snipEditorWorkflow = new SnipEditorWorkflow();
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
-        header = new EditorViewHeader();
+        header = new EditorViewHeader( snipEditorWorkflow);
         mainPanel.add(header);
         mainPanel.add(snipEditorWorkflow);
 

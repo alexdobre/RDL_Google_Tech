@@ -29,8 +29,8 @@
 
     <entry-point class='com.therdl.client.RDL'/>
 
-    <!-- firefox  chrome    -->
-    <set-property name="user.agent" value="gecko1_8, safari"/>
+    <!-- firefox  chrome
+    <set-property name="user.agent" value="gecko1_8, safari"/>      -->
 
 
     <source path='client'/>

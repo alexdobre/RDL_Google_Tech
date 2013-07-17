@@ -29,7 +29,7 @@ import com.therdl.client.view.widget.editor.SnipEditor;
  * Responsible for showing and dismissing the SnipEditor. Wires it up to the
  * request factory and SnipProxy
  */
-public class SnipEditorWorkflow extends Composite{
+public class SnipEditorWorkflow extends Composite {
 
     private static Logger log = Logger.getLogger("");
 
@@ -75,6 +75,13 @@ public class SnipEditorWorkflow extends Composite{
 			}
 		}, KeyUpEvent.getType());
 	}
+
+
+    public void  setContent (String s) {
+        snipEditor.setContent(s);
+
+
+    }
 
 	/**
 	 * Called by the cancel button when it is clicked. This method will just
