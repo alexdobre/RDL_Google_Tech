@@ -1,6 +1,7 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -8,14 +9,18 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.dto.SnipSearchProxy;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<SnipSearchProxy> {
     private static Logger log = Logger.getLogger("");
 	private final SnipSearchView<SnipSearchProxy> snipSearchView;
     private Beanery beanery = GWT.create(Beanery.class);
+    private List<JSOModel> jSonList;
 	
 	public SnipSearchPresenter(SnipSearchView<SnipSearchProxy> snipSearchView){
 		this.snipSearchView = snipSearchView;
@@ -47,7 +52,20 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
                 public void onResponseReceived(Request request, Response response) {
 
                     log.info("UpdateServiceImpl initialUpdate onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-                    AutoBean<SnipBean> bean   = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
+                    log.info("UpdateServiceImpl initialUpdate onResponseReceived json" + response.getText());
+
+                    JsArray<JSOModel> data =
+                            JSOModel.arrayFromJson(response.getText());
+                    jSonList = new ArrayList<JSOModel>();
+
+                    for (int i = 0; i < data.length(); i++) {
+                        jSonList.add(data.get(i));
+
+                    }
+
+                    log.info("UpdateServiceImpl initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
+
+                 AutoBean<SnipBean> bean   = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );

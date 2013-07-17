@@ -23,5 +23,8 @@ public interface SnipBean {
     String getServerMessage();
     void setServerMessage(String stream);
 
+    String getAction();
+    void setAction(String action);
+
 
 }

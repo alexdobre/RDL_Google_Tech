@@ -4,6 +4,11 @@
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style>
+        .mainPanel {
+        position:relative;
+        width:100%;
+
+        }
 	</ui:style>
 	<g:HTMLPanel>
 		<rdl:AppMenu ui:field="appMenu" />
@@ -13,10 +18,10 @@
 					<rdl:LeftMenuTree ui:field="leftMenuTree" />
 				</g:SimplePanel>
 			</g:Dock>
-			<g:Dock direction="NORTH">
-				<g:SimplePanel>
-					<rdl:SnipEditorWorkflow ui:field="snipEditorWorkflow" width="100%" />
-				</g:SimplePanel>
+			<g:Dock direction="CENTER">
+				<g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
+					<!--rdl:SnipEditorWorkflow ui:field="snipEditorWorkflow" width="100%" /-->
+				</g:FlowPanel>
 			</g:Dock>
 		</g:DockPanel>
 	</g:HTMLPanel>

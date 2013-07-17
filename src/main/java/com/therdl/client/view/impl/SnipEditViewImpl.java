@@ -6,15 +6,16 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.client.view.widget.WidgetHolder;
+import com.therdl.client.view.widget.editor.EditorViewHeader;
+import com.therdl.shared.beans.SnipBean;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
@@ -28,15 +29,38 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 	private Presenter<T> presenter;
 
 	@UiField Widget appMenu;
-	@UiField Widget snipEditorWorkflow;
 	@UiField Widget leftMenuTree;
+    @UiField FlowPanel mainPanel;
+
+    private EditorViewHeader header;
+    private SnipEditorWorkflow snipEditorWorkflow;
 	
 	public SnipEditViewImpl() {
 	    initWidget(uiBinder.createAndBindUi(this));
 	    appMenu =  WidgetHolder.getInstance().getAppMenu();
-	    snipEditorWorkflow = WidgetHolder.getInstance().getSnipSearchWidget();
+	    snipEditorWorkflow = new SnipEditorWorkflow();
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
+        header = new EditorViewHeader();
+        mainPanel.add(header);
+        mainPanel.add(snipEditorWorkflow);
+
+
+
 	  }
+
+    @Override
+    public void setSnipDropDown(List<AutoBean<SnipBean>> beans) {
+
+        for(AutoBean<SnipBean> bean : beans) {
+        header.getPostListBox().addItem(bean.as().getTitle(), bean.as().getContentAsHtml());
+        }
+
+
+    }
+
+
+
+
 	@Override
 	public void setPresenter(Presenter<T> presenter) {
 		this.presenter = presenter;
@@ -55,5 +79,7 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 			presenter.onCloseButtonClicked();
 		}
 	}
+
+
 
 }
