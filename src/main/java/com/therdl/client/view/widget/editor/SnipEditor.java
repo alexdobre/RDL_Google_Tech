@@ -59,6 +59,13 @@ public class SnipEditor extends Composite implements Editor<SnipProxy> {
 
     }
 
+    public void setEditorTitle(String s) {
+
+         titleBox.setText(s);
+
+    }
+
+
     public void setContent(String s) {
 
         content.setHTML(s);

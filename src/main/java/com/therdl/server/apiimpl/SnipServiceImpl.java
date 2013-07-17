@@ -48,6 +48,7 @@ public class SnipServiceImpl implements SnipsService {
         while(collDocs.hasNext()) {
             DBObject doc = collDocs.next();
             SnipBean snip = beanery.snipBean().as();
+            snip.setId((String)doc.get("_id").toString());
             snip.setServerMessage((String)doc.get("serverMessage"));
             snip.setStream((String) doc.get("stream"));
             snip.setTimeStamp((String) doc.get("timeStamp"));

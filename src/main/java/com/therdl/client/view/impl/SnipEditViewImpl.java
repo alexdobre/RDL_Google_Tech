@@ -51,9 +51,10 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
     @Override
     public void setSnipDropDown(List<AutoBean<SnipBean>> beans) {
 
-        for(AutoBean<SnipBean> bean : beans) {
-        header.getPostListBox().addItem(bean.as().getTitle(), bean.as().getContentAsHtml());
-        }
+        // set up header Dynamic Post List to store data as beans
+
+        header.getPostListBox().addBeans(beans);
+
 
 
     }

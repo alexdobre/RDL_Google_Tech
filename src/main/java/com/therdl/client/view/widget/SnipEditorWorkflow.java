@@ -83,6 +83,16 @@ public class SnipEditorWorkflow extends Composite {
 
     }
 
+    public void  setEditorTitle (String s) {
+        snipEditor.setEditorTitle(s);
+
+
+    }
+
+
+
+
+
 	/**
 	 * Called by the cancel button when it is clicked. This method will just
 	 * tear down the UI and clear the state of the workflow.

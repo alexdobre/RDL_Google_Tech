@@ -19,6 +19,8 @@ public class SnipListRowWidget extends Composite {
     @UiField
     SpanElement title;
     @UiField
+    SpanElement id;
+    @UiField
     SpanElement servermessage;
     @UiField
     SpanElement contentAsString;
@@ -47,6 +49,7 @@ public class SnipListRowWidget extends Composite {
         timeStamp.setInnerText("Date-Time: "+bean.as().getTimeStamp());
         author.setInnerText("Author: "+bean.as().getAuthor());
         stream.setInnerText("Stream: "+bean.as().getStream());
+        id.setInnerText("Unique_Id: "+bean.as().getId());
     }
 
 

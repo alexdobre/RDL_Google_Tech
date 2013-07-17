@@ -51,6 +51,11 @@
                 </tr>
                 <tr>
                     <td>
+                        <span ui:field="id" class="{style.message}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <span ui:field="stream" class="{style.message}"></span>
                     </td>
                 </tr>

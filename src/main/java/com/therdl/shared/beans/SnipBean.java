@@ -2,6 +2,9 @@ package com.therdl.shared.beans;
 
 public interface SnipBean {
 
+    String getId();
+    void setId(String id);
+
     String getTitle();
     void setTitle(String title);
 
