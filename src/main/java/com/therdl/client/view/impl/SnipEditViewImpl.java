@@ -55,8 +55,6 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 
         header.getPostListBox().addBeans(beans);
 
-
-
     }
 
 

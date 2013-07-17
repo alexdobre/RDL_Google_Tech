@@ -1,6 +1,7 @@
 package com.therdl.client.view.widget.editor;
 
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
@@ -9,14 +10,17 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.widget.SnipEditorWorkflow;
+import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class DynamicPostListBox extends Composite {
 
+    private static Logger log = Logger.getLogger("");
 
     final SnipEditorWorkflow snipEditorWorkflow;
 
@@ -26,6 +30,8 @@ public class DynamicPostListBox extends Composite {
 
     private List<AutoBean<SnipBean>> beans;
     private Map<String, AutoBean<SnipBean>> snipMap;
+    private AutoBean<SnipBean>  currentBean;
+    private Beanery beanery = GWT.create(Beanery.class);
 
     public DynamicPostListBox(final SnipEditorWorkflow snipEditorWorkflow) {
         this.snipEditorWorkflow = snipEditorWorkflow;
@@ -46,14 +52,14 @@ public class DynamicPostListBox extends Composite {
                 int k = dropBox.getSelectedIndex();
                 String key = dropBox.getValue(k);
 
-                AutoBean<SnipBean> bean =  snipMap.get(key);
+                currentBean =  snipMap.get(key);
 
-                snipEditorWorkflow.setContent(bean.as().getContentAsHtml());
-                snipEditorWorkflow.setEditorTitle(bean.as().getTitle());
+                snipEditorWorkflow.setContent(currentBean.as().getContentAsHtml());
+                snipEditorWorkflow.setEditorTitle(currentBean.as().getTitle());
+                onSubmit();
 
             }
         });
-
 
     }
 
@@ -74,10 +80,23 @@ public class DynamicPostListBox extends Composite {
 
             dropBox.addItem(bean.as().getTitle(), bean.as().getId());
 
-
         }
-
-
     }
+
+
+    public void  onSubmit() {
+
+         if(currentBean != null)  {
+         log.info("DynamicPostListBox: onSubmit editing bean " + currentBean.as().getTitle());
+             snipEditorWorkflow.submitBean(currentBean);
+
+         }
+
+       // create new empty bean
+        snipEditorWorkflow.submitBean(beanery.snipBean());
+    }
+
+
+
 
 }
