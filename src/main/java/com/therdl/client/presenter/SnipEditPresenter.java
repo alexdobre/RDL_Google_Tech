@@ -27,7 +27,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
     private SnipProxy snipProxy;
     private Beanery beanery = GWT.create(Beanery.class);
     private List<JSOModel> jSonList;
-    private AutoBean<SnipBean>  currentBean;
+
 
 
     public SnipEditPresenter(EventBus eventBus, SnipEditView<SnipProxy> view) {
@@ -56,7 +56,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
         log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
-        currentBean = beanery.snipBean();
+        AutoBean<SnipBean>  currentBean = beanery.snipBean();
         currentBean.as().setAction("getall");
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
@@ -96,6 +96,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
                     }
 
                     view.setSnipDropDown(beans);
+                    beans.clear();
 
                 }
 

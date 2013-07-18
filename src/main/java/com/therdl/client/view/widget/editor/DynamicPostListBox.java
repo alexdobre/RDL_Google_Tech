@@ -27,8 +27,6 @@ public class DynamicPostListBox extends Composite {
     private String title = "Select a Post";
 
     private ListBox dropBox;
-
-    private List<AutoBean<SnipBean>> beans;
     private Map<String, AutoBean<SnipBean>> snipMap;
     private AutoBean<SnipBean>  currentBean;
     private Beanery beanery = GWT.create(Beanery.class);
@@ -66,8 +64,7 @@ public class DynamicPostListBox extends Composite {
 
     public void addBeans(List<AutoBean<SnipBean>> beans) {
 
-        this.beans = beans;
-
+    //    if (snipMap !=null) snipMap.clear();
         // set up the snip map to store for the beans for reuse
 
         snipMap = new HashMap<String, AutoBean<SnipBean>>();
@@ -75,12 +72,15 @@ public class DynamicPostListBox extends Composite {
         // populate the map and the drop down
 
         for (AutoBean<SnipBean> bean : beans) {
+            String title =  bean.as().getTitle();
+            String id =  bean.as().getId();
 
             snipMap.put(bean.as().getId(), bean);
-
-            dropBox.addItem(bean.as().getTitle(), bean.as().getId());
+            dropBox.addItem(title , id );
 
         }
+
+        beans.clear();
     }
 
 
@@ -91,9 +91,12 @@ public class DynamicPostListBox extends Composite {
              snipEditorWorkflow.submitBean(currentBean);
 
          }
-
+         else {
        // create new empty bean
-        snipEditorWorkflow.submitBean(beanery.snipBean());
+        snipEditorWorkflow.submitBean(beanery.snipBean());   }
+
+         currentBean = null;
+
     }
 
 

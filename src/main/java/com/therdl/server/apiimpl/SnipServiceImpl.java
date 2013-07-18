@@ -86,7 +86,9 @@ public class SnipServiceImpl implements SnipsService {
     public void createSnip(SnipBean snip) {
 
         DB db = getMongo();
+
         DBCollection coll = db.getCollection("rdlSnipData");
+        if(snip.getId()==null)  {
         BasicDBObject doc = new BasicDBObject("user", "testRdlUser").
                 append("title", snip.getTitle()).
                 append("contentAsString", snip.getContentAsString()).
@@ -100,6 +102,7 @@ public class SnipServiceImpl implements SnipsService {
 
         coll.insert(doc);
 
+        }
 
 
     }

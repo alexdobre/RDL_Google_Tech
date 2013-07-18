@@ -54,6 +54,7 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
         // set up header Dynamic Post List to store data as beans
 
         header.getPostListBox().addBeans(beans);
+        beans.clear();
 
     }
 

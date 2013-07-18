@@ -47,7 +47,6 @@ public class SnipEditorWorkflow extends Composite {
 
     private Driver editorDriver;
     private SnipProxy snipProxy;
-    private AutoBean<SnipBean> currentBean;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -137,14 +136,13 @@ public class SnipEditorWorkflow extends Composite {
     public void submitBean(AutoBean<SnipBean> bean) {
 
         // if empty then created in Dynamic post box
-        currentBean = bean;
-        currentBean.as().setTitle(snipEditor.getTitle());
-        currentBean.as().setContentAsString(snipEditor.getContentAsText());
-        currentBean.as().setContentAsHtml(snipEditor.getContentAsHtml());
-        currentBean.as().setAuthor("demo user");
-        currentBean.as().setServerMessage("submit");
-        currentBean.as().setAction("save");
-        log.info("SnipEditorWorkflow submitBean bean : " + currentBean.as().toString());
+        bean.as().setTitle(snipEditor.getTitle());
+        bean.as().setContentAsString(snipEditor.getContentAsText());
+        bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
+        bean.as().setAuthor("demo user");
+        bean.as().setServerMessage("submit");
+        bean.as().setAction("save");
+        log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().toString());
         // now submit to server
 
         log.info("SnipEditorWorkflow submit to server");
@@ -156,7 +154,7 @@ public class SnipEditorWorkflow extends Composite {
         requestBuilder.setHeader("Content-Type", "application/json");
         try {
 
-            String json = AutoBeanCodex.encode(currentBean).getPayload();
+            String json = AutoBeanCodex.encode( bean).getPayload();
             log.info("SnipEditorWorkflow submit json: " + json);
             requestBuilder.sendRequest(json , new RequestCallback() {
 
