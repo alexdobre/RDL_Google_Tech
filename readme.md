@@ -7,7 +7,7 @@ mvn clean package
 
 Test in local stack  
 1 for gwt dev  
-mvn gwt:run
+mvn gwt:run  
 2. for production server testing
 mvn jetty:run  
 
