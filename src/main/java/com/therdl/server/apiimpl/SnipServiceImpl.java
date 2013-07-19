@@ -143,7 +143,6 @@ public class SnipServiceImpl implements SnipsService {
         updateObject.put("contentAsString",snip.getContentAsString());
         updateObject.put("contentAsHtml",snip.getContentAsHtml());
 
-
         coll.findAndModify( query,  updateObject);
 
 
@@ -152,7 +151,15 @@ public class SnipServiceImpl implements SnipsService {
 
     @Override
     public void deleteSnip(String id) {
-
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+        BasicDBObject deleteDocument = new BasicDBObject();
+        deleteDocument.append("_id" ,new ObjectId(id));
+        DBCursor cursor = coll.find(deleteDocument);
+        while (cursor.hasNext()) {
+            DBObject item = cursor.next();
+            coll.remove(item);
+        }
 
 
     }

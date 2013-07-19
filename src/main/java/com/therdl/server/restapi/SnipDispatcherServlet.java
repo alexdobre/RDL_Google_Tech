@@ -104,6 +104,13 @@ public class SnipDispatcherServlet extends HttpServlet {
 
 
         }
+        else if(actionBean.as().getAction().equals("delete") ) {
+            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
+            sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
+            snipsService.deleteSnip(actionBean.as().getId());
+
+
+        }
 
     }
 

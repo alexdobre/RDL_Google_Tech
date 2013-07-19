@@ -135,14 +135,54 @@ public class SnipEditorWorkflow extends Composite {
 
     }
 
-    /**
-     * Construct and display the UI that will be used to edit the current
-     * PersonProxy, using the given RequestContext to accumulate the edits.
-     */
-    public void edit(RequestContext requestContext) {
 
-        dialog.center();
+    public void onDelete(String id) {
+
+        log.info("SnipEditorWorkflow onDeleter");
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+        updateUrl = updateUrl.replaceAll("/therdl", "");
+
+        log.info("SnipEditorWorkflow submit updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+            AutoBean<SnipBean> actionBean = beanery.snipBean();
+            actionBean.as().setAction("delete");
+            actionBean.as().setId(id);
+            String json = AutoBeanCodex.encode( actionBean).getPayload();
+
+            log.info("SnipEditorWorkflow submit json: " + json);
+            requestBuilder.sendRequest(json , new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+                    if (response.getStatusCode() == 200) {
+                        // ok move forward
+                        log.info("SnipEditorWorkflow submit post ok now validating");
+                        validateDropDown();
+
+                    } else {
+                        log.info("SnipEditorWorkflow submit post fail");
+
+                    }
+                }
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+
+
     }
+
+
+
 
     // called by DynamicPostLisBox
     public void submitBean(AutoBean<SnipBean> bean) {

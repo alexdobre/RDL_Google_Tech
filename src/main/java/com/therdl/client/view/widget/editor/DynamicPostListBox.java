@@ -114,6 +114,11 @@ public class DynamicPostListBox extends Composite {
     }
 
 
+    public void onDelete() {
+
+        snipEditorWorkflow.onDelete( currentBean.as().getId());
 
 
+
+    }
 }
