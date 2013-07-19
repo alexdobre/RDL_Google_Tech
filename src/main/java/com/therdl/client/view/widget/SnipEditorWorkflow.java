@@ -1,10 +1,13 @@
 package com.therdl.client.view.widget;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -25,14 +28,22 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.therdl.client.dto.SnipProxy;
 
+import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.widget.editor.SnipEditor;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
 
 /**
- * Responsible for showing and dismissing the SnipEditor. Wires it up to the
- * request factory and SnipProxy
+ * Responsible for displaying the CRUD functions( Input, Output)
+ *
+ * this widget can be refactored to fit the strict MVP Pattern
+ *
+ * currently this widget is loosley coupled in the sense that it updates and validates itself on the database state
+ *
+ * independently of the main MVP model
+ *
  */
 public class SnipEditorWorkflow extends Composite {
 
@@ -60,8 +71,10 @@ public class SnipEditorWorkflow extends Composite {
     Button save;
     @UiField
     Button cancel;
+    SnipEditViewImpl view;
 
-    public SnipEditorWorkflow() {
+    public SnipEditorWorkflow(SnipEditViewImpl view) {
+        this.view = view;
         initWidget(Binder.BINDER.createAndBindUi(this));
     }
 
@@ -106,9 +119,7 @@ public class SnipEditorWorkflow extends Composite {
     }
 
     /**
-     * Called by the edit dialog's save button. This method will flush the
-     * contents of the UI into the SnipProxy that is being edited, check for
-     * errors, and send the request to the server.
+     *  just a check for now, maybe will use local storage
      */
     @UiHandler("save")
     void onSave(ClickEvent event) {
@@ -133,16 +144,16 @@ public class SnipEditorWorkflow extends Composite {
         dialog.center();
     }
 
+    // called by DynamicPostLisBox
     public void submitBean(AutoBean<SnipBean> bean) {
-
-        // if empty then created in Dynamic post box
+        log.info("SnipEditorWorkflow submitBean bean");
         bean.as().setTitle(snipEditor.getTitle());
         bean.as().setContentAsString(snipEditor.getContentAsText());
         bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
         bean.as().setAuthor("demo user");
         bean.as().setServerMessage("submit");
         bean.as().setAction("save");
-        log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().toString());
+        log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().getTitle());
         // now submit to server
 
         log.info("SnipEditorWorkflow submit to server");
@@ -161,9 +172,16 @@ public class SnipEditorWorkflow extends Composite {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
 
+                    if (response.getStatusCode() == 200) {
+                        // ok move forward
+                        log.info("SnipEditorWorkflow submit post ok now validating");
+                        validateDropDown();
 
+                    } else {
+                        log.info("SnipEditorWorkflow submit post fail");
+
+                    }
                 }
-
                 @Override
                 public void onError(Request request, Throwable exception) {
                     log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
@@ -174,6 +192,134 @@ public class SnipEditorWorkflow extends Composite {
         } catch (RequestException e) {
             log.info(e.getLocalizedMessage());
         }
+
+    }
+
+    // in the strict MVP pattern this code would be in the presenter, later can refactor
+    // called by DynamicPostLisBox
+    public void submitEditBean(AutoBean<SnipBean> bean) {
+        log.info("SnipEditorWorkflow submitEditBean bean");
+
+        bean.as().setTitle(snipEditor.getTitle());
+        bean.as().setContentAsString(snipEditor.getContentAsText());
+        bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
+        bean.as().setAuthor("demo user");
+        bean.as().setServerMessage("submit");
+        bean.as().setAction("update");
+        log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().getTitle());
+        // now submit to server
+
+        log.info("SnipEditorWorkflow submit to server");
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+        updateUrl = updateUrl.replaceAll("/therdl", "");
+
+        log.info("SnipEditorWorkflow submit updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+
+            String json = AutoBeanCodex.encode( bean).getPayload();
+            log.info("SnipEditorWorkflow submit json: " + json);
+            requestBuilder.sendRequest(json , new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+                    if (response.getStatusCode() == 200) {
+                       // ok move forward
+                        log.info("SnipEditorWorkflow submit post ok now validating");
+                        validateDropDown();
+
+                    } else {
+                        log.info("SnipEditorWorkflow submit post fail");
+
+                            }
+                }
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+
+    }
+
+    // this is to ensure the validity of the views snip display
+    // ie only dispay vaild beans
+    public void validateDropDown() {
+
+
+
+        log.info("SnipEditorWorkflow validateDropDown()");
+
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+
+        updateUrl = updateUrl.replaceAll("/therdl", "");
+
+        log.info("SnipEditorWorkflow validateDropDown( updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        AutoBean<SnipBean>  currentBean = beanery.snipBean();
+        currentBean.as().setAction("getall");
+        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        try {
+
+            requestBuilder.sendRequest(json, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+                    log.info("SnipEditorWorkflow validateDropDown(  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
+                    log.info("SnipEditorWorkflow validateDropDown( onResponseReceived json" + response.getText());
+
+                    JsArray<JSOModel> data =
+                            JSOModel.arrayFromJson(response.getText());
+                    List<JSOModel>  jSonList = new ArrayList<JSOModel>();
+
+                    for (int i = 0; i < data.length(); i++) {
+                        jSonList.add(data.get(i));
+
+                    }
+
+                    List<AutoBean<SnipBean>> beans = new ArrayList<AutoBean<SnipBean>>();
+
+                    log.info("SnipEditorWorkflow validateDropDown( onResponseReceived json" + jSonList.get(0).get("0"));
+
+                    for (int k = 0; k < jSonList.size(); k++) {
+                        String counter = ""+k;
+                        log.info("SnipEditorWorkflow validateDropDown( onResponseReceived counter " + counter);
+                        log.info("SnipEditorWorkflow validateDropDown( onResponseReceived jSonList.get(i).get(counter)" + jSonList.get(k).get(counter));
+                        AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
+
+                        log.info("" + bean.as().getTitle());
+                        log.info("" + bean.as().getAuthor());
+                        log.info("" + bean.as().getContentAsString());
+                        log.info("" + bean.as().getTimeStamp());
+                        beans.add(bean);
+                    }
+
+                    view.setSnipDropDown(beans);
+                    beans.clear();
+
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditorWorkflow validateDropDown(  onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+
+
+
 
     }
 

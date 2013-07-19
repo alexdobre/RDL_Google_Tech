@@ -64,6 +64,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 
         AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class,sb.toString());
         sb.setLength(0);
+
         if(actionBean.as().getAction().equals("getall") ) {
         List < SnipBean > beans = snipsService.getAllSnips("demoUser id");
         sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
@@ -93,11 +94,16 @@ public class SnipDispatcherServlet extends HttpServlet {
         else if(actionBean.as().getAction().equals("save") ) {
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving
-
-            sLogger.info("SnipDispatcherServlet:submitted bean recieved  "+actionBean.as().getTitle());
+            sLogger.info("SnipDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getTitle());
             snipsService.createSnip(actionBean.as());
         }
+        else if(actionBean.as().getAction().equals("update") ) {
+            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
+            sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getTitle());
+            snipsService.updateSnip(actionBean.as());
 
+
+        }
 
     }
 

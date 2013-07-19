@@ -66,8 +66,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
                 @Override
                 public void onResponseReceived(Request request, Response response) {
 
-                    log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-                    log.info("SnipSearchPresenter  onResponseReceived json" + response.getText());
+                //    log.info("SnipEditPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
+               //     log.info("SnipEditPresenter  onResponseReceived json" + response.getText());
 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
@@ -80,12 +80,12 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 
                     List<AutoBean<SnipBean>> beans = new ArrayList<AutoBean<SnipBean>>();
 
-                    log.info("SnipSearchPresenter onResponseReceived json" + jSonList.get(0).get("0"));
+                 //   log.info("SnipEditPresenter onResponseReceived json" + jSonList.get(0).get("0"));
 
                     for (int k = 0; k < jSonList.size(); k++) {
                         String counter = ""+k;
-                        log.info("SnipSearchPresenter onResponseReceived counter " + counter);
-                        log.info("SnipSearchPresenter onResponseReceived jSonList.get(i).get(counter)" + jSonList.get(k).get(counter));
+                        log.info("SnipEditPresenter onResponseReceived loop iteration " + counter);
+                        log.info("SSnipEditPresenter onResponseReceived making bean from json" + jSonList.get(k).get(counter));
                         AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
 
                         log.info("" + bean.as().getTitle());
@@ -94,7 +94,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
                         log.info("" + bean.as().getTimeStamp());
                         beans.add(bean);
                     }
-
+                    log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
                     view.setSnipDropDown(beans);
                     beans.clear();
 

@@ -7,6 +7,7 @@ import com.mongodb.*;
 import com.therdl.server.api.SnipsService;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import org.bson.types.ObjectId;
 import org.slf4j.LoggerFactory;
 
 
@@ -14,10 +15,8 @@ import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Singleton
@@ -79,12 +78,32 @@ public class SnipServiceImpl implements SnipsService {
 
     @Override
     public SnipBean getSnip(String id) {
-        return null;
+        sLogger.info("SnipServiceImpl getSnip  id: "+id);
+
+        beanery = AutoBeanFactorySource.create(Beanery.class);
+        SnipBean snip = beanery.snipBean().as();
+        DB db = getMongo();
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+        DBCollection coll = db.getCollection("rdlSnipData");
+        DBCursor cursor = coll.find(query);
+        DBObject  doc=  cursor.next();
+        snip.setId((String)doc.get("_id").toString());
+        snip.setServerMessage((String)doc.get("serverMessage"));
+        snip.setStream((String) doc.get("stream"));
+        snip.setTimeStamp((String) doc.get("timeStamp"));
+        snip.setContentAsString((String) doc.get("contentAsString"));
+        snip.setContentAsHtml((String) doc.get("contentAsHtml"));
+        snip.setAuthor((String) doc.get("author"));
+        snip.setTitle((String) doc.get("title"));
+        snip.setAction((String) doc.get("action"));
+
+        return snip;
     }
 
     @Override
     public void createSnip(SnipBean snip) {
-
+        sLogger.info("SnipServiceImpl createSnip  title: "+snip.getTitle());
         DB db = getMongo();
 
         DBCollection coll = db.getCollection("rdlSnipData");
@@ -94,7 +113,7 @@ public class SnipServiceImpl implements SnipsService {
                 append("contentAsString", snip.getContentAsString()).
                 append("contentAsHtml", snip.getContentAsHtml()).
                 append("author", snip.getAuthor()).
-                append("timeStamp",snip.getTimeStamp()).
+                append("timeStamp",makeTimeStamp()).
                 append("stream", snip.getStream()).
                 append("action",snip.getAction()).
                 append("serverMessage", snip.getServerMessage());
@@ -107,14 +126,34 @@ public class SnipServiceImpl implements SnipsService {
 
     }
 
+
     @Override
-    public void deleteSnip(String id) {
+    public void updateSnip(SnipBean snip) {
+        sLogger.info("SnipServiceImpl updateSnip  updateSnip id: "+snip.getId());
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        sLogger.info("SnipServiceImpl updateSnip  updateSnip content "+snip.getContentAsString());
+
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(snip.getId()));
+        DBCursor cursor = coll.find(query);
+
+        DBObject updateObject = cursor.next();
+        updateObject.put("contentAsString",snip.getContentAsString());
+        updateObject.put("contentAsHtml",snip.getContentAsHtml());
+
+
+        coll.findAndModify( query,  updateObject);
+
 
     }
 
+
     @Override
-    public SnipBean updateSnip(SnipBean snip) {
-        return null;
+    public void deleteSnip(String id) {
+
+
 
     }
 
@@ -124,6 +163,16 @@ public class SnipServiceImpl implements SnipsService {
     }
 
 
+    private String makeTimeStamp() {
+
+
+        Date processDateTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSS");
+        String timeStampString = formatter.format(processDateTime);
+
+
+        return timeStampString;
+    }
 
 
     // later the url will be a cloud based schema hence exception

@@ -38,7 +38,7 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 	public SnipEditViewImpl() {
 	    initWidget(uiBinder.createAndBindUi(this));
 	    appMenu =  WidgetHolder.getInstance().getAppMenu();
-	    snipEditorWorkflow = new SnipEditorWorkflow();
+	    snipEditorWorkflow = new SnipEditorWorkflow(this);
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
         header = new EditorViewHeader( snipEditorWorkflow);
         mainPanel.add(header);
@@ -52,9 +52,9 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
     public void setSnipDropDown(List<AutoBean<SnipBean>> beans) {
 
         // set up header Dynamic Post List to store data as beans
-
+        log.info("SnipEditViewImplonResponseReceived setSnipDropDown " + beans.size());
         header.getPostListBox().addBeans(beans);
-        beans.clear();
+      //  beans.clear();
 
     }
 

@@ -51,12 +51,12 @@ public class WidgetHolder {
 		if(leftMenuTree == null) leftMenuTree = new LeftMenuTree();
 		return leftMenuTree;
 	}
-
+ /*
 	public Widget getSnipEditor() {
 		if(snipEditor == null) snipEditor = new SnipEditorWorkflow(null);
 		return snipEditor;
 	}
-
+   */
 
 
 

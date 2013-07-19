@@ -19,7 +19,7 @@ public interface SnipsService {
 
          void deleteSnip(String id);
 
-         SnipBean updateSnip(SnipBean snip);
+         void updateSnip(SnipBean snip);
 
          //  testing and development methods debug string
          String getDebugString();

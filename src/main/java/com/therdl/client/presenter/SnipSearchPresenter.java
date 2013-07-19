@@ -60,6 +60,9 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
+
+                    if(data.length() == 0 )  return;
+
                     jSonList = new ArrayList<JSOModel>();
 
                     for (int i = 0; i < data.length(); i++) {
@@ -67,7 +70,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<
 
                     }
 
-                    log.info("UpdateServiceImpl initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
+                    log.info("SnipSearchPresenter  initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
 
                  AutoBean<SnipBean> bean   = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
 
