@@ -35,7 +35,7 @@ public class DynamicPostListBox extends Composite {
     public DynamicPostListBox(final SnipEditorWorkflow snipEditorWorkflow) {
         this.snipEditorWorkflow = snipEditorWorkflow;
         dropBox = new ListBox(false);
-
+        initialiseDropBox();
         FlowPanel dropBoxPanel = new FlowPanel();
         dropBoxPanel.add(new HTML(title));
         dropBoxPanel.add(dropBox);
@@ -50,7 +50,9 @@ public class DynamicPostListBox extends Composite {
 
                 int k = dropBox.getSelectedIndex();
                 String key = dropBox.getValue(k);
-
+                log.info("DynamicPostListBox  dropBox.addClickHandler SelectedIndex " + k );
+                log.info("DynamicPostListBox  dropBox.addClickHandler  key " + key  );
+                if(key.equals("-1")) return;
                 currentBean =  snipMap.get(key);
 
                 snipEditorWorkflow.setContent(currentBean.as().getContentAsHtml());
@@ -63,13 +65,23 @@ public class DynamicPostListBox extends Composite {
     }
 
 
+    private void initialiseDropBox() {
+
+        dropBox.clear();
+        dropBox.addItem("select a snip", "-1");
+        dropBox.getElement().getFirstChildElement().setAttribute("disabled" ,"disabled" );
+
+
+    }
+
+
     public void addBeans(List<AutoBean<SnipBean>> beans) {
         log.info("DynamicPostListBox addBeans adding this many beans " + beans.size());
         if(beans.size()==0) return;
     //    if (snipMap !=null) snipMap.clear();
         // set up the snip map to store for the beans for reuse
         dropBox.clear();
-
+   //     initialiseDropBox();
         snipMap = new HashMap<String, AutoBean<SnipBean>>();
         log.info("DynamicPostListBox addBeans " + beans.get(0).as().getId() );
         log.info("DynamicPostListBox addBeans " + beans.get(0).as().getTitle());
@@ -91,10 +103,15 @@ public class DynamicPostListBox extends Composite {
 
     public void  onSubmit() {
         log.info("DynamicPostListBox: onSubmit new bean ");
-       // will have no id for now
-        AutoBean<SnipBean> newBean =   beanery.snipBean();
-        snipEditorWorkflow.submitBean(newBean);
 
+        if (currentBean != null)  {
+            snipEditorWorkflow.submitBean(currentBean );
+            Window.alert("this snip exists please use submit edit" );
+            return;
+        }
+
+        AutoBean<SnipBean> newBean =   beanery.snipBean();
+        snipEditorWorkflow.submitBean(newBean );
 
     }
 
@@ -137,7 +154,7 @@ public class DynamicPostListBox extends Composite {
 
 
         snipEditorWorkflow.onDelete( currentBean.as().getId());
-
+        snipEditorWorkflow.clearEditor();
 
 
     }
@@ -146,6 +163,12 @@ public class DynamicPostListBox extends Composite {
     public void clear() {
 
         dropBox.clear();
+        initialiseDropBox();
+    }
+
+    public void onNewPost() {
+
+        currentBean = null;
 
     }
 }

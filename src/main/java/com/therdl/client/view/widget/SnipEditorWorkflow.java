@@ -189,15 +189,13 @@ public class SnipEditorWorkflow extends Composite {
     // called by DynamicPostLisBox
     public void submitBean(AutoBean<SnipBean> bean ) {
 
-        log.info("SnipEditorWorkflow submitBean bean");
-        if (bean.as().getId() != null )
-       {
-            Window.alert("this snip exists please use submit edit" );
-        return; }
+        log.info("SnipEditorWorkflow submitBean bean: "+snipEditor.getTitle());
+
         if (snipEditor.getTitle().isEmpty() )
         {
             Window.alert("A snip needs at least a title" );
-            return; }
+            return;
+        }
 
         bean.as().setTitle(snipEditor.getTitle());
         bean.as().setContentAsString(snipEditor.getContentAsText());
@@ -382,12 +380,18 @@ public class SnipEditorWorkflow extends Composite {
 
     public void createPost() {
         log.info("SnipEditorWorkflow validateDropDown createPost" );
-
-        snipEditor.setEditorTitle("");
-        snipEditor.setContent("");
+        clearEditor();
         snipEditor.setContent("Edit the tilte and content then submit");
 
     }
 
+    public void clearEditor() {
+        log.info("SnipEditorWorkflow clearEditor " );
+
+        snipEditor.setEditorTitle("");
+        snipEditor.setContent("");
+
+
+    }
 
 }
