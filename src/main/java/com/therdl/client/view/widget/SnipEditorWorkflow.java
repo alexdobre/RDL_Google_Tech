@@ -17,6 +17,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -48,6 +49,7 @@ import com.therdl.shared.beans.SnipBean;
 public class SnipEditorWorkflow extends Composite {
 
     private static Logger log = Logger.getLogger("");
+
 
     interface Binder extends UiBinder<DialogBox, SnipEditorWorkflow> {
         Binder BINDER = GWT.create(Binder.class);
@@ -138,7 +140,7 @@ public class SnipEditorWorkflow extends Composite {
 
     public void onDelete(String id) {
 
-        log.info("SnipEditorWorkflow onDeleter");
+        log.info("SnipEditorWorkflow onDelete: snip id "+id);
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
         updateUrl = updateUrl.replaceAll("/therdl", "");
 
@@ -185,8 +187,18 @@ public class SnipEditorWorkflow extends Composite {
 
 
     // called by DynamicPostLisBox
-    public void submitBean(AutoBean<SnipBean> bean) {
+    public void submitBean(AutoBean<SnipBean> bean ) {
+
         log.info("SnipEditorWorkflow submitBean bean");
+        if (bean.as().getId() != null )
+       {
+            Window.alert("this snip exists please use submit edit" );
+        return; }
+        if (snipEditor.getTitle().isEmpty() )
+        {
+            Window.alert("A snip needs at least a title" );
+            return; }
+
         bean.as().setTitle(snipEditor.getTitle());
         bean.as().setContentAsString(snipEditor.getContentAsText());
         bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
@@ -238,13 +250,16 @@ public class SnipEditorWorkflow extends Composite {
     // in the strict MVP pattern this code would be in the presenter, later can refactor
     // called by DynamicPostLisBox
     public void submitEditBean(AutoBean<SnipBean> bean) {
-        log.info("SnipEditorWorkflow submitEditBean bean");
+        if (bean.as().getId() == null )
+        {   Window.alert("this is a new snip please use submit not submit-edit" );
+        return;  }
 
+        log.info("SnipEditorWorkflow submitEditBean bean");
         bean.as().setTitle(snipEditor.getTitle());
         bean.as().setContentAsString(snipEditor.getContentAsText());
         bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
         bean.as().setAuthor("demo user");
-        bean.as().setServerMessage("submit");
+        bean.as().setServerMessage("submitEdit");
         bean.as().setAction("update");
         log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().getTitle());
         // now submit to server
@@ -318,6 +333,10 @@ public class SnipEditorWorkflow extends Composite {
 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
+                    if(data.length() == 0 ) {
+                        view.clearSnipDropDown();
+
+                        return;}
                     List<JSOModel>  jSonList = new ArrayList<JSOModel>();
 
                     for (int i = 0; i < data.length(); i++) {
@@ -358,8 +377,15 @@ public class SnipEditorWorkflow extends Composite {
             log.info(e.getLocalizedMessage());
         }
 
+    }
 
 
+    public void createPost() {
+        log.info("SnipEditorWorkflow validateDropDown createPost" );
+
+        snipEditor.setEditorTitle("");
+        snipEditor.setContent("");
+        snipEditor.setContent("Edit the tilte and content then submit");
 
     }
 

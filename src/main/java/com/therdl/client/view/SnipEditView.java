@@ -24,5 +24,7 @@ public interface SnipEditView<T> {
 
     void setSnipDropDown(List<AutoBean<SnipBean>> beans);
 
-	Widget asWidget();
+    void clearSnipDropDown();
+
+    Widget asWidget();
 }

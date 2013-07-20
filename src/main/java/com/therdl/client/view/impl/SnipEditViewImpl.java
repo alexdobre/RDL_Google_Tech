@@ -58,7 +58,15 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 
     }
 
+    @Override
+    public void clearSnipDropDown() {
 
+        // set up header Dynamic Post List to store data as beans
+        log.info("SnipEditViewImplonResponseReceived clearSnipDropDown ");
+        header.getPostListBox().clear();
+        //  beans.clear();
+
+    }
 
 
 	@Override

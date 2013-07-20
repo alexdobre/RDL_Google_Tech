@@ -133,18 +133,21 @@ public class SnipServiceImpl implements SnipsService {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
 
-        sLogger.info("SnipServiceImpl updateSnip  updateSnip content "+snip.getContentAsString());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getContentAsString());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getTitle());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getId());
 
-        BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(snip.getId()));
-        DBCursor cursor = coll.find(query);
+        BasicDBObject updateThis = new BasicDBObject();
 
-        DBObject updateObject = cursor.next();
-        updateObject.put("contentAsString",snip.getContentAsString());
-        updateObject.put("contentAsHtml",snip.getContentAsHtml());
+        updateThis.put("_id", new ObjectId(snip.getId()));
 
-        coll.findAndModify( query,  updateObject);
+        DBObject newObject =  coll.find(updateThis).toArray().get(0);
 
+        newObject.put("contentAsHtml",snip.getContentAsHtml());
+        newObject.put("title", snip.getTitle());
+        newObject.put("contentAsString",snip.getContentAsString());
+
+        coll.findAndModify(updateThis, newObject);
 
     }
 

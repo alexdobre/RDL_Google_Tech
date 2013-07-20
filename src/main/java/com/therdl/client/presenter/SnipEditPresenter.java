@@ -71,6 +71,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
+                    if(data.length() == 0 )  return;
+
                     jSonList = new ArrayList<JSOModel>();
 
                     for (int i = 0; i < data.length(); i++) {

@@ -101,8 +101,17 @@ public class DynamicPostListBox extends Composite {
 
     public void  onSubmitEdit() {
         log.info("DynamicPostListBox: SubmitEdit editing bean ");
+        if(currentBean == null) {
+            log.info("DynamicPostListBox: SubmitEdit editing bean currentBean == null ");
+
+            Window.alert("this is a new snip , please use 'new post " +
+                    "submit to create a new post" );
+            return;
+        }
+
         if(currentBean.as().getId() == null) {
-            Window.alert("this is a new , please use 'new post " +
+            log.info("DynamicPostListBox: SubmitEdit editing bean currentBean.as().getId() == null ");
+            Window.alert("this is a new snip, please use 'new post " +
                     "submit to create a new post" );
             return;
         }
@@ -116,9 +125,27 @@ public class DynamicPostListBox extends Composite {
 
     public void onDelete() {
 
+        if(currentBean == null) {
+            Window.alert("this is a new snip nothing to delete, select new post to clear the editor instead" );
+            return;
+        }
+
+        if(currentBean.as().getId() == null) {
+            Window.alert("this is a new snip nothing to delete, select new post to clear the editor instead" );
+            return;
+        }
+
+
         snipEditorWorkflow.onDelete( currentBean.as().getId());
 
 
+
+    }
+
+
+    public void clear() {
+
+        dropBox.clear();
 
     }
 }
