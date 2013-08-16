@@ -9,15 +9,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import com.therdl.client.dto.UserDataProxy;
-import com.therdl.client.event.AuthEvent.Auth;
 import com.therdl.client.view.SignInView;
 
 public class SignInViewImpl extends Composite implements SignInView {
 
   private Presenter presenter;
 
- // private ClientFactory clientFactory;
   
   private boolean alreadyInit;
 
@@ -37,72 +34,18 @@ public class SignInViewImpl extends Composite implements SignInView {
     this.presenter = presenter;
   }
 
-//  @Override
-//  public void setClientFactory(ClientFactory clientFactory) {
-//    this.clientFactory = clientFactory;
-//    
-//    // this is overkill in here, but here for example
-//    if (alreadyInit == false) {
-//      //System.out.println("SignViewImpl.setClientFactory(): init");
-//      clientFactory.getEventBus().addHandler(AuthEvent.TYPE, new AuthEventHandler() {
-//        public void onAuthEvent(AuthEvent event) {
-//          Auth e = event.getAuthEvent();
-//          setState(e, event.getUserData());
-//        }
-//      });
-//    }
-//    alreadyInit = true;
-//  }
+
 
   public void start() {
-    
-//    if (clientFactory.getIsLoggedIn() == null) {
-//      // wait for login event b/c hasn't happened yet
-//      
-//    } else if (clientFactory.getIsLoggedIn() == true) {
-//      setLoggedIn();
-//      
-//    } else if (clientFactory.getIsLoggedIn() == false) { 
-//      setLoggedOut(clientFactory.getUserData());
-//    }
+
   }
 
-  private void setState(Auth auth, UserDataProxy userData) {
-    if (auth == Auth.LOGGEDIN) {
-      setLoggedIn();
-    } else if (auth == Auth.LOGGEDOUT) {
-      setLoggedOut(userData);
-    }
-  }
+
   
   private void setLoggedIn() {
-	  //TODO do a place
-    //presenter.goTo(new WalletListPlace());
+
   }
 
 
-  /**
-   * lets use the url to show where to login at
-   * @param userData
-   */
-  private void setLoggedOut(UserDataProxy userData) {
-    if (userData == null) {
-      // this shouldn't happen, b/c we need the urls
-      return;
-    }
-   
-    String url = userData.getLoginUrl();
-    String qs = Window.Location.getQueryString();
-    if (qs != null) {
-      url += URL.encode(qs);
-    }
-    
-    // This is a must, always clean before draw
-    SafeHtmlBuilder builder = new SafeHtmlBuilder();
-    builder.appendHtmlConstant("<a href='" + url + "'>")
-    .appendEscaped("Please Sign In")
-    .appendHtmlConstant("</a>");
-    htmlSignIn.setHTML(builder.toSafeHtml());
-  }
 
 }

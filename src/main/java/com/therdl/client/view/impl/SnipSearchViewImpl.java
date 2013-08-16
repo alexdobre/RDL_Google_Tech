@@ -16,7 +16,7 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
 
-public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T> {
+public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 
     private static Logger log = Logger.getLogger("");
 
@@ -24,7 +24,7 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
 			.create(SnipSearchViewImplUiBinder.class);
 
     @Override
-    public void setPresenter(Presenter<T> presenter) {
+    public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -32,7 +32,7 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
 			UiBinder<Widget, SnipSearchViewImpl> {
 	}
 	
-	private Presenter<T> presenter;
+	private Presenter presenter;
 	
 	@UiField Widget appMenu;
 	@UiField Widget snipSearchWidget;
@@ -71,11 +71,6 @@ public class SnipSearchViewImpl<T> extends Composite implements SnipSearchView<T
         // debug
         log.info("SnipSearchViewImpl getSnipDemoResult "+ bean.as().getTitle());
 
-
-
     }
-
-
-
 
 }

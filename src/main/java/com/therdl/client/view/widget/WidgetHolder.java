@@ -2,8 +2,7 @@ package com.therdl.client.view.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
-import com.therdl.client.dto.SnipProxy;
-import com.therdl.client.view.widget.SnipEditorWorkflow.Driver;
+
 
 /**
  * A singleton widget holder for reusable widgets
@@ -51,14 +50,6 @@ public class WidgetHolder {
 		if(leftMenuTree == null) leftMenuTree = new LeftMenuTree();
 		return leftMenuTree;
 	}
- /*
-	public Widget getSnipEditor() {
-		if(snipEditor == null) snipEditor = new SnipEditorWorkflow(null);
-		return snipEditor;
-	}
-   */
-
-
 
 
 }

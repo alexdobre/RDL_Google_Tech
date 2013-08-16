@@ -8,7 +8,6 @@ import com.google.gwt.editor.ui.client.ValueBoxEditorDecorator;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import com.therdl.client.dto.SnipProxy;
 import com.therdl.client.view.widget.RichTextToolbar;
 
 /**
@@ -16,8 +15,9 @@ import com.therdl.client.view.widget.RichTextToolbar;
  * @author Alex
  *
  */
-public class SnipEditor extends Composite implements Editor<SnipProxy> {
-	  interface Binder extends UiBinder<Widget, SnipEditor> {
+public class SnipEditor extends Composite  {
+
+	   interface Binder extends UiBinder<Widget, SnipEditor> {
 	  }
 	  
 	  @UiField ValueBoxEditorDecorator<String> title;

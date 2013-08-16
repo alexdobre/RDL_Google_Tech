@@ -8,8 +8,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-import com.therdl.client.dto.SnipProxy;
-import com.therdl.client.dto.SnipSearchProxy;
 import com.therdl.client.presenter.Presenter;
 
 import com.therdl.client.presenter.SnipEditPresenter;
@@ -39,8 +37,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	 * All the application views go here and are kept to be reused once created
 	 */
 	private WelcomeView welcomeView;
-    private SnipEditView<SnipProxy> snipEditView;
-    private SnipSearchView<SnipSearchProxy> snipSearchView;
+    private SnipEditView  snipEditView;
+    private SnipSearchView  snipSearchView;
 
 	
 	public AppController(EventBus eventBus) {
@@ -82,6 +80,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         log.info("AppController onValueChange token is  "+token);
 
 		if (token != null) {
+
 	//***************************************WELCOME****************************
 			if (token.equals(RDLConstants.Tokens.WELCOME)) {
 				GWT.runAsync(new RunAsyncCallback() {
@@ -95,9 +94,11 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 						new WelcomePresenter(welcomeView).go(container);						
 					}
 				});
-	//***************************************SNIPS****************************			
+
 			}
 
+
+    //***************************************SNIPS****************************
 
         else if (token.equals(RDLConstants.Tokens.SNIPS)) {
             GWT.runAsync(new RunAsyncCallback() {
@@ -108,7 +109,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 public void onSuccess() {
                     log.info("AppController GWT.runAsync onSuccess "+RDLConstants.Tokens.SNIPS);
                     if (snipSearchView == null) {
-                        snipSearchView = new SnipSearchViewImpl<SnipSearchProxy>(eventBus);
+                        snipSearchView = new SnipSearchViewImpl(eventBus);
                     }
                     new SnipSearchPresenter(snipSearchView).go(container);
 
@@ -123,7 +124,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     public void onSuccess() {
                         if (snipEditView == null) {
-                            snipEditView = new SnipEditViewImpl<SnipProxy>();
+                            snipEditView = new SnipEditViewImpl();
                         }
                         new SnipEditPresenter( eventBus, snipEditView).go(container);
                     }
@@ -131,14 +132,16 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             }
 
 
+            //*************************************** END_SNIPS ****************************
+
+
+            //*************************************** SIGN_IN ****************************
 
 
 
 
 
-
-
-        } // end  if token != null ifif
+        } // end  if token != null
 
 
 

@@ -6,7 +6,6 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.therdl.client.dto.SnipSearchProxy;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -16,14 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter<SnipSearchProxy> {
+public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter {
     private static Logger log = Logger.getLogger("");
-	private final SnipSearchView<SnipSearchProxy> snipSearchView;
+	private final SnipSearchView snipSearchView;
     private Beanery beanery = GWT.create(Beanery.class);
     private List<JSOModel> jSonList;
     private AutoBean<SnipBean>  currentBean;
 	
-	public SnipSearchPresenter(SnipSearchView<SnipSearchProxy> snipSearchView){
+	public SnipSearchPresenter(SnipSearchView snipSearchView){
 		this.snipSearchView = snipSearchView;
         log.info("SnipSearchPresenter constructor");
 

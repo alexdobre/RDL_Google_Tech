@@ -9,7 +9,6 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.therdl.client.dto.SnipProxy;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -19,18 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<SnipProxy> {
+public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
     private static Logger log = Logger.getLogger("");
     private final EventBus eventBus;
-    private final SnipEditView<SnipProxy> view;
-    private SnipProxy snipProxy;
+    private final SnipEditView view;
+
     private Beanery beanery = GWT.create(Beanery.class);
     private List<JSOModel> jSonList;
 
 
 
-    public SnipEditPresenter(EventBus eventBus, SnipEditView<SnipProxy> view) {
+    public SnipEditPresenter(EventBus eventBus, SnipEditView view) {
         super();
 
         this.eventBus = eventBus;
@@ -120,32 +119,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 
         log.info("SnipEditPresenter  onSaveButtonClicked BEGIN ");
 
-//		SnipRequest request = appReqFactory.getSnipRequest();
-//
-//		SnipProxy snip = null;
-//		if (snip == null) { // insert|create
-//			snip = request.create(SnipProxy.class);
-//
-//		} else { // update|edit
-//			snip = request.edit(snip);
-//		}
-//
-//		// set name
-//		snip.setName(getName());
-//
-//		// set items
-//		data.setItems(getItems(request));
-//
-//		request.persist().using(data).fire(new Receiver<WalletDataProxy>() {
-//			public void onSuccess(WalletDataProxy walletData) {
-//				process(walletData);
-//			}
-//
-//			public void onFailure(ServerFailure error) {
-//				super.onFailure(error);
-//			}
-//		});
-
     }
 
     @Override
@@ -154,16 +127,9 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter<Snip
 
     }
 
-    public SnipEditView<SnipProxy> getView() {
+    public SnipEditView getView() {
         return view;
     }
 
-    public void setSnipProxy(SnipProxy snipProxy) {
-        this.snipProxy = snipProxy;
-    }
-
-    public SnipProxy getSnipProxy() {
-        return snipProxy;
-    }
 
 }

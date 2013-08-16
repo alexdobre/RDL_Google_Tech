@@ -27,7 +27,6 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.requestfactory.gwt.client.RequestFactoryEditorDriver;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
-import com.therdl.client.dto.SnipProxy;
 
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.widget.editor.SnipEditor;
@@ -55,11 +54,6 @@ public class SnipEditorWorkflow extends Composite {
         Binder BINDER = GWT.create(Binder.class);
     }
 
-    interface Driver extends RequestFactoryEditorDriver<SnipProxy, SnipEditor> {
-    }
-
-    private Driver editorDriver;
-    private SnipProxy snipProxy;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -80,11 +74,8 @@ public class SnipEditorWorkflow extends Composite {
         initWidget(Binder.BINDER.createAndBindUi(this));
     }
 
-    public SnipEditorWorkflow(SnipProxy snipProxy) {
+    public SnipEditorWorkflow() {
 
-        this.snipProxy = snipProxy;
-
-        //snipEditor = new SnipEditor();
         initWidget(Binder.BINDER.createAndBindUi(this));
         contents.addDomHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent event) {

@@ -28,7 +28,7 @@ public class Layout extends Composite {
   @UiField HTML htmlAbout;
   @UiField HTML htmlCopyright;
   
-//  private ClientFactory clientFactory;
+
 
   interface LayoutUiBinder extends UiBinder<Widget, Layout> {
   }
@@ -43,29 +43,9 @@ public class Layout extends Composite {
     drawVersion();
     
     drawCopyright();
-    
-    //addStyleName("test1");
-    //vpWidget.addStyleName("test2");
-    //vpMain.addStyleName("test3");
-    //vpFooter.addStyleName("test4");
   }
-  
-//  public void setClientFactory(ClientFactory clientFactory) {
-//    this.clientFactory = clientFactory;
-//    
-////    // inits credentials process - gets UserData or creates a user....
-////    wLogin.setClientFactory(clientFactory);
-//    
-//    // move ads after login event
-//    clientFactory.getEventBus().addHandler(AuthEvent.TYPE, new AuthEventHandler() {
-//      public void onAuthEvent(AuthEvent event) {
-//        
-//        //moveAdsDivTimed();
-//        
-//      }
-//    });
-//  }
-//  
+
+
   public SimplePanel getContentPanel() {
     return pContent;
   }
@@ -102,19 +82,7 @@ public class Layout extends Composite {
     script.setLang("javascript");
     doc.getBody().appendChild(script);
   }
-  
-  /**
-   * draw facebook thingy at bottom 
-   * it was 
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=158427050894091";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-  */
+
   private void drawFacebook() {
     String s = "<div class=\"fb-like\" data-href=\"https://mywalletinventory.appspot.com\" data-send=\"false\" data-layout=\"button_count\" data-show-faces=\"true\"></div><div id=\"fb-root\"></div>";
     htmlFacebook.setHTML(s);

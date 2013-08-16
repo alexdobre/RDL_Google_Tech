@@ -7,7 +7,7 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
 
-public interface SnipEditView<T> {
+public interface SnipEditView  {
 
 	public interface Presenter<T> {
 
@@ -16,7 +16,7 @@ public interface SnipEditView<T> {
 		void onCloseButtonClicked();
 	}
 
-	void setPresenter(Presenter<T> presenter);
+	void setPresenter(Presenter presenter);
 
     void onSaveButtonClicked(ClickEvent event);
 

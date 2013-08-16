@@ -18,7 +18,7 @@ import com.therdl.shared.beans.SnipBean;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
+public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
     private static Logger log = Logger.getLogger("");
 
@@ -26,7 +26,7 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 	interface SnipEditViewUiBinder extends UiBinder<Widget, SnipEditViewImpl> {}
 	private static SnipEditViewUiBinder uiBinder = GWT.create(SnipEditViewUiBinder.class);
 	 
-	private Presenter<T> presenter;
+	private Presenter presenter;
 
 	@UiField Widget appMenu;
 	@UiField Widget leftMenuTree;
@@ -70,7 +70,7 @@ public class SnipEditViewImpl<T> extends Composite implements SnipEditView<T> {
 
 
 	@Override
-	public void setPresenter(Presenter<T> presenter) {
+	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
 
