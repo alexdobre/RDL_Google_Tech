@@ -25,7 +25,7 @@ public class SnipServiceImpl implements SnipsService {
     private MongoURI uri;
     private String defaultDatabaseName;
     private Properties configProp;
-    Beanery beanery;
+    private Beanery beanery;
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipServiceImpl.class);
 

@@ -2,20 +2,48 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
         xmlns:g="urn:import:com.google.gwt.user.client.ui">
         <ui:style>
+
+            .container {
+            position:fixed;
+            top:10px;
+            display:block;
+            margin:10px;
+            right:10%;
+            }
+
+            .labelText  {
+            font-family: Arial, Sans-serif;
+            display:inline-block;
+            font-size: 14px;
+            text-align: left;
+            margin:10px;
+            }
+
+            .loginBox {
+            border: 1px solid #AACCEE;
+            display:inline-block;
+            font-size:12px;
+            padding: 3px;
+            width: 203px;
+            margin:10px;
+            }
+
+            .submit {
+            border: 1px solid #AACCEE;
+            display:inline-block;
+            font-size:12px;
+            padding: 3px;
+            width: 203px;
+            margin:10px;
+            }
                 
         </ui:style>
-        <g:VerticalPanel>
-                <g:Cell horizontalAlignment="ALIGN_CENTER">
-                       <p>Loading widget HERE</p>
-                </g:Cell>
-                <g:Cell horizontalAlignment="ALIGN_CENTER">
-                        <g:HTML wordWrap="true" ui:field="htmlSignIn">&nbsp;</g:HTML>
-                </g:Cell>
-                <g:HTML wordWrap="true">My Wallet Inventory</g:HTML>
-                <g:VerticalPanel>
-                        <g:HTML wordWrap="true">Store the 1800 numbers to call when your wallet is stolen here. (Do not store your account numbers here!)</g:HTML>
-                </g:VerticalPanel>
-                <g:HTML wordWrap="true">&nbsp;</g:HTML>
-                <g:HTML wordWrap="true">alpha</g:HTML>
+        <g:VerticalPanel styleName = '{style.container}'>
+            <g:Label text = "Please Login" styleName = '{style.labelText}' />
+            <g:HorizontalPanel verticalAlignment = "middle">
+                <g:TextBox ui:field = "userName" styleName = '{style.loginBox}'></g:TextBox>
+                <g:TextBox ui:field = "email" styleName = '{style.loginBox}'></g:TextBox>
+            </g:HorizontalPanel>
+            <g:Button ui:field = "submit" text = "Submit" styleName ='{style.submit}' />
         </g:VerticalPanel>
 </ui:UiBinder> 

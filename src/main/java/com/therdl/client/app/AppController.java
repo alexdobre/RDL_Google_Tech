@@ -5,9 +5,12 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.presenter.Presenter;
 
 import com.therdl.client.presenter.SnipEditPresenter;
@@ -21,6 +24,9 @@ import com.therdl.client.view.impl.WelcomeViewImpl;
 import com.therdl.client.presenter.WelcomePresenter;
 import com.therdl.shared.Messages;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.AuthUserBean;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
 
@@ -33,12 +39,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 	private HasWidgets container;
 
+    private Beanery beanery = GWT.create(Beanery.class);
+
 	/**
 	 * All the application views go here and are kept to be reused once created
 	 */
 	private WelcomeView welcomeView;
     private SnipEditView  snipEditView;
     private SnipSearchView  snipSearchView;
+    private AutoBean<AuthUserBean> authnBean = beanery.authBean();
 
 	
 	public AppController(EventBus eventBus) {
@@ -54,15 +63,16 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 		//register yourself as history value change handler
 		History.addValueChangeHandler(this);
 
-        log.info("AppController bind() addValueChangeHandler(");
+        log.info("AppController bind() addValueChangeHandler");
 
 	}
 	
 	@Override
 	public void go(final HasWidgets container) {
 		this.container = container;
-		
-		//when first accessed this app goes to the welcome page
+        // for now force the login screen
+        authnBean.as().setAuth(false);
+
 		if ("".equals(History.getToken())) {
 			History.newItem(RDLConstants.Tokens.WELCOME);
 		} else {
@@ -89,7 +99,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 					public void onSuccess() {
 						if (welcomeView == null) {
-							welcomeView = new WelcomeViewImpl(eventBus,messages);
+							welcomeView = new WelcomeViewImpl(eventBus,messages, authnBean);
 						}
 						new WelcomePresenter(welcomeView).go(container);						
 					}
@@ -139,8 +149,6 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
 
-
-
         } // end  if token != null
 
 
@@ -150,5 +158,55 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	public EventBus getEventBus() {
 		return eventBus;
 	}
+
+
+    //*************************************** Check Sign in  ****************************
+
+
+
+    public void checkUserAuth(String id) {
+
+        log.info("AppController checkUserAuthsnip id "+id);
+        String authUrl = GWT.getModuleBaseURL() + "getSession";
+        authUrl = authUrl.replaceAll("/therdl", "");
+
+        log.info("SnipEditorWorkflow submit updateUrl: " + authUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+            AutoBean<SnipBean> actionBean = beanery.snipBean();
+            actionBean.as().setAction("getUserAuth");
+            actionBean.as().setId(id);
+            String json = AutoBeanCodex.encode(actionBean).getPayload();
+
+            log.info("SnipEditorWorkflow submit json: " + json);
+            requestBuilder.sendRequest(json , new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+                    if (response.getStatusCode() == 200) {
+                        // ok move forward
+                        log.info("SnipEditorWorkflow submit post ok now validating");
+
+
+                    } else {
+                        log.info("SnipEditorWorkflow submit post fail");
+
+                    }
+                }
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+
+
+    }
 
 }

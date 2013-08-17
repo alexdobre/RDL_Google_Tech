@@ -3,36 +3,44 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.SignInView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.shared.Messages;
+import com.therdl.shared.beans.AuthUserBean;
 
 public class WelcomeViewImpl extends Composite implements WelcomeView{
 
 	private Presenter presenter;
+    private HTMLPanel menuPanel;
+    private FlowPanel contentPanel;
+    private SignInView signInView;
+    private AutoBean<AuthUserBean> authnBean;
+    private Messages messages;
 	
-	public WelcomeViewImpl(EventBus eventBus,Messages messages) {
-
-	    
+	public WelcomeViewImpl(EventBus eventBus, Messages messages, AutoBean<AuthUserBean> authnBean) {
+        this.authnBean = authnBean;
+        this.messages = messages;
 	    //add the menu
-	    HTMLPanel menuPanel = new HTMLPanel("<div></div>");
+	    menuPanel = new HTMLPanel("<div class='navbar navbar-inverse navbar-fixed-top'></div>");
 	    menuPanel.add(WidgetHolder.getInstance().getAppMenu());
 	    
-	    //add the welcome text
-	    HTMLPanel mainPanel = new HTMLPanel("<div></div>");
-	    mainPanel.add(new HTML("<h1>" + messages.mainWelcome() + "</h1>"));
-		mainPanel.add(new HTML("<h3>" + messages.mainSubtitle1() + "</h3>"));
-		mainPanel.add(new HTML("<h3>" + messages.mainSubtitle2() + "</h3>"));
-		mainPanel.add(new HTML("<h3>" + messages.mainSubtitle3() + "</h3>"));
-		mainPanel.add(new HTML("<h3>" + messages.mainSubtitle4() + "</h3>"));
-		mainPanel.add(new HTML("<h3>" + messages.mainSubtitle5() + "</h3>"));
-		
-		//wrap it nicely
-		HTMLPanel contentPanel = new HTMLPanel("<div></div>");
+	    //add splash content
+	    HTMLPanel panel = setSplashScreen(messages);
+
+		contentPanel = new FlowPanel();
 		contentPanel.add(menuPanel);
-		contentPanel.add(mainPanel);
+        if (!authnBean.as().isAuth()) {
+            signInView = new SignInViewImpl(this);
+            HTMLPanel headerPanel =  setloginheader(messages);
+            contentPanel.add(headerPanel);
+            contentPanel.add(signInView);
+
+        } else  	contentPanel.add(panel);
 		initWidget(contentPanel);
 	}
 	
@@ -40,5 +48,39 @@ public class WelcomeViewImpl extends Composite implements WelcomeView{
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
+
+
+    public  void  setloginresult(String name, String email, boolean auth) {
+      if (auth) {
+          contentPanel.clear();
+          contentPanel.add(menuPanel);
+          contentPanel.add(setSplashScreen(messages));
+
+      }
+
+    }
+
+
+    private   HTMLPanel  setSplashScreen(Messages messages) {
+
+        HTMLPanel panel = new HTMLPanel("");
+        panel.add(new HTML("<h3 class = 'brand'>" + messages.mainWelcome() + "</h3>"));
+        panel.add(new HTML("<div class = 'row span3'><div class = 'text'>" + messages.mainSubtitle1() + "</div></div>"));
+        panel.add(new HTML("<div class = 'row span3'><div class = 'text'>" + messages.mainSubtitle2() +messages.mainSubtitle3()+"</div></div>"));
+        panel.add(new HTML("<div class = 'row span3'><div class = 'text'>" +messages.mainSubtitle4()+messages.mainSubtitle5() + "</div></div>"));
+        panel.setStyleName("container");
+        return panel;
+    }
+
+    private   HTMLPanel  setloginheader(Messages messages) {
+
+        HTMLPanel panel = new HTMLPanel("<div class= 'container'>");
+        panel.add(new HTML("<h3 class='brand'>" + messages.mainWelcome() + "</h3>"));
+        panel.add(new HTML("<div class='row span4'><div class = 'text'>" + messages.mainSubtitle1() + "</div></div>"));
+        panel.setStyleName("container");
+        return panel;
+    }
+
+
 
 }

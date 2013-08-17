@@ -53,6 +53,7 @@ public class SnipDispatcherServlet extends HttpServlet {
         String debugString = snipsService.getDebugString();
         sLogger.info("SnipDispatcherServlet:  "+debugString );
 
+        // get the json
         StringBuilder sb = new StringBuilder();
         BufferedReader br = req.getReader();
         String str;

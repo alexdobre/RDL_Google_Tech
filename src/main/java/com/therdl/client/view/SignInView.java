@@ -13,6 +13,4 @@ public interface SignInView extends IsWidget {
 
   void setPresenter(Presenter presenter);
 
-  
-  void start();
 }

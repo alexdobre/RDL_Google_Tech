@@ -7,6 +7,6 @@ public interface Beanery extends AutoBeanFactory {
 
     AutoBean<SnipBean> snipBean();
 
-
+    AutoBean<AuthUserBean> authBean();
 
 }

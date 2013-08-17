@@ -14,4 +14,7 @@ mvn jetty:run
 // dev url  
 http://localhost:8080/
 
-please view open issues and contribute  
+please view open issues and contribute
+
+ https://code.google.com/p/google-guice/wiki/ServletModule
+ http://blog.palominolabs.com/2011/08/15/a-simple-java-web-stack-with-guice-jetty-jersey-and-jackson/

@@ -31,6 +31,7 @@
     <!-- firefox  chrome
     <set-property name="user.agent" value="gecko1_8, safari"/>      -->
 
+    <set-property name="user.agent" value="gecko1_8, safari"/>
 
     <source path='client'/>
     <source path='shared'/>
