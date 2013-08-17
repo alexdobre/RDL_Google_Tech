@@ -34,11 +34,7 @@ public class RDL implements EntryPoint {
           }
       });
 
-      //Firstly we initialize the AppController and it's items like EventBus
-      final EventBus eventBus = new SimpleEventBus();
-
-
-      AppController appController = new AppController(eventBus);
+      AppController appController = new AppController();
       WidgetHolder.getInstance();
       //we let the appController take over
       appController.go(RootLayoutPanel.get());

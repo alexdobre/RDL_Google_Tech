@@ -42,7 +42,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 
     private SnipListRowWidget snipListRowWidget;
 
-	public SnipSearchViewImpl(EventBus eventBus) {
+	public SnipSearchViewImpl() {
 
 		initWidget(uiBinder.createAndBindUi(this));
 

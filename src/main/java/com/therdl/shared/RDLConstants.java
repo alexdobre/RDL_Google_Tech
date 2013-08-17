@@ -7,6 +7,7 @@ public interface RDLConstants {
 		String SNIPS = "snips";
 		String SNIP_EDIT = "snipEdit";
 		String FAST_CAPS = "fastCaps";
+        String LOG_OUT = "logOut";
 		
 	}
 	

@@ -5,11 +5,14 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogOutEvent;
 
 import java.util.logging.Logger;
 
@@ -40,8 +43,12 @@ public class AppMenu extends Composite  {
 	@UiField MenuItem ovwModulesSnips;
 	@UiField MenuItem ovwModulesFastCaps;
 	@UiField MenuItem ovwModulesMaterials;
-	@UiField MenuItem ovwModulesGroups;
-	@UiField MenuItem ovwModulesServices;
+    @UiField MenuItem ovwModulesGroups;
+    @UiField MenuItem ovwModulesServices;
+    // auth flow
+    @UiField MenuItem user;
+    @UiField MenuItem email;
+    @UiField MenuItem out;
 
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
 	}
@@ -64,6 +71,14 @@ public class AppMenu extends Composite  {
 		});
 
 
+        out.setScheduledCommand (new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
+            }
+        });
+
+
         ovwModulesFastCaps.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
@@ -79,5 +94,17 @@ public class AppMenu extends Composite  {
             }
         });
 	}
+
+    public void setUser(String id) {
+
+        user.setText(id);
+
+    }
+
+    public void setEmail(String id) {
+
+
+       email.setText(id);
+    }
 
 }

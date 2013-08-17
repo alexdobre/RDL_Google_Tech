@@ -7,7 +7,7 @@ public interface WelcomeView {
 	public interface Presenter {
 		
 	}
-
+    void logout();
 	void setPresenter(Presenter presenter);
 
 	Widget asWidget();

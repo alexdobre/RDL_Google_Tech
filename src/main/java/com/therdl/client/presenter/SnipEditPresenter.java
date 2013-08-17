@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
     private static Logger log = Logger.getLogger("");
-    private final EventBus eventBus;
+
     private final SnipEditView view;
 
     private Beanery beanery = GWT.create(Beanery.class);
@@ -29,10 +29,9 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
 
 
-    public SnipEditPresenter(EventBus eventBus, SnipEditView view) {
+    public SnipEditPresenter(SnipEditView view) {
         super();
 
-        this.eventBus = eventBus;
         this.view = view;
     }
 

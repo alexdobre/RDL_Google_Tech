@@ -47,7 +47,6 @@ public class SessionServlet  extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
 
-      //  sessions.get().setAttribute(HoloConstants.TOS_ACCEPTED_KEY, authUser.getTosaccepted());
         resp.setContentType("application/json");
         // get the json
         StringBuilder sb = new StringBuilder();

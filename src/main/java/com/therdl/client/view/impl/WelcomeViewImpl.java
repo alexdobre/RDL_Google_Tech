@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SignInView;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.shared.Messages;
 import com.therdl.shared.beans.AuthUserBean;
@@ -21,13 +22,16 @@ public class WelcomeViewImpl extends Composite implements WelcomeView{
     private SignInView signInView;
     private AutoBean<AuthUserBean> authnBean;
     private Messages messages;
-	
-	public WelcomeViewImpl(EventBus eventBus, Messages messages, AutoBean<AuthUserBean> authnBean) {
+    private AppMenu appMenu;
+
+	public WelcomeViewImpl(Messages messages, AutoBean<AuthUserBean> authnBean) {
         this.authnBean = authnBean;
         this.messages = messages;
 	    //add the menu
 	    menuPanel = new HTMLPanel("<div class='navbar navbar-inverse navbar-fixed-top'></div>");
-	    menuPanel.add(WidgetHolder.getInstance().getAppMenu());
+        appMenu = (AppMenu) WidgetHolder.getInstance().getAppMenu();
+
+	    menuPanel.add(appMenu);
 	    
 	    //add splash content
 	    HTMLPanel panel = setSplashScreen(messages);
@@ -41,6 +45,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView{
             contentPanel.add(signInView);
 
         } else  	contentPanel.add(panel);
+
 		initWidget(contentPanel);
 	}
 	
@@ -55,7 +60,8 @@ public class WelcomeViewImpl extends Composite implements WelcomeView{
           contentPanel.clear();
           contentPanel.add(menuPanel);
           contentPanel.add(setSplashScreen(messages));
-
+          appMenu.setUser(name);
+          appMenu.setEmail(email);
       }
 
     }
@@ -81,6 +87,12 @@ public class WelcomeViewImpl extends Composite implements WelcomeView{
         return panel;
     }
 
+      public void logout() {
 
+          contentPanel.clear();
+          HTMLPanel panel = new HTMLPanel("");
+          panel.add(new HTML("<h3 class = 'brand'>Good bye please close browser for your security</h3>"));
+          contentPanel.add(panel);
+      }
 
 }

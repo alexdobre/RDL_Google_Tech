@@ -27,14 +27,15 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogOutEvent;
+import com.therdl.shared.events.LogOutEventEventHandler;
 
 import java.util.logging.Logger;
 
 public class AppController implements Presenter, ValueChangeHandler<String>{
 
     private static Logger log = Logger.getLogger("");
-	
-	private final EventBus eventBus;
 	private final Messages messages;
 
 	private HasWidgets container;
@@ -50,8 +51,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     private AutoBean<AuthUserBean> authnBean = beanery.authBean();
 
 	
-	public AppController(EventBus eventBus) {
-		this.eventBus = eventBus;
+	public AppController() {
+
 		messages = (Messages) GWT.create(Messages.class);
 		bind();
 	}
@@ -60,10 +61,19 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	 * Binds the event handler instances to their specific events
 	 */
 	private void bind() {
+
 		//register yourself as history value change handler
 		History.addValueChangeHandler(this);
 
         log.info("AppController bind() addValueChangeHandler");
+
+        GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler()  {
+            @Override
+            public void onLogOutEvent(LogOutEvent onLogOutEvent) {
+                History.newItem(RDLConstants.Tokens.LOG_OUT);
+                History.fireCurrentHistoryState();
+            }
+        });
 
 	}
 	
@@ -99,7 +109,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 					public void onSuccess() {
 						if (welcomeView == null) {
-							welcomeView = new WelcomeViewImpl(eventBus,messages, authnBean);
+							welcomeView = new WelcomeViewImpl(messages, authnBean);
 						}
 						new WelcomePresenter(welcomeView).go(container);						
 					}
@@ -119,7 +129,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 public void onSuccess() {
                     log.info("AppController GWT.runAsync onSuccess "+RDLConstants.Tokens.SNIPS);
                     if (snipSearchView == null) {
-                        snipSearchView = new SnipSearchViewImpl(eventBus);
+                        snipSearchView = new SnipSearchViewImpl();
                     }
                     new SnipSearchPresenter(snipSearchView).go(container);
 
@@ -136,7 +146,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                         if (snipEditView == null) {
                             snipEditView = new SnipEditViewImpl();
                         }
-                        new SnipEditPresenter( eventBus, snipEditView).go(container);
+                        new SnipEditPresenter( snipEditView).go(container);
                     }
                 });
             }
@@ -149,15 +159,33 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
 
+            else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+                        authnBean.as().setAuth(false);
+                        if (welcomeView == null) {
+                            welcomeView = new WelcomeViewImpl(messages, authnBean);
+                        }
+
+                        new WelcomePresenter(welcomeView).go(container);
+                        welcomeView.logout();
+                    }
+                });
+            }
+
+
+
+
+
         } // end  if token != null
 
 
 
     }// end method
 
-	public EventBus getEventBus() {
-		return eventBus;
-	}
 
 
     //*************************************** Check Sign in  ****************************

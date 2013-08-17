@@ -37,12 +37,15 @@
 					</g:MenuItem>
 				</g:MenuBar>
 			</g:MenuItem>
-			<g:MenuItem text="Fast Caps" ui:field="fastCaps"/>
-			<g:MenuItem text="Snips" ui:field="snips"/>
-			<g:MenuItem text="Materials" ui:field="materials"/>
-			<g:MenuItem text="Groups" ui:field="groups"/>
-			<g:MenuItem text="Services" ui:field="services"/>
-			<g:MenuItem text="Profile" ui:field="profile"/>
+			<g:MenuItem text="Fast Caps" ui:field = "fastCaps"/>
+			<g:MenuItem text="Snips" ui:field = "snips"/>
+			<g:MenuItem text="Materials" ui:field = "materials"/>
+			<g:MenuItem text="Groups" ui:field = "groups"/>
+			<g:MenuItem text="Services" ui:field = "services"/>
+			<g:MenuItem text="Profile" ui:field = "profile"/>
+            <g:MenuItem text="User" ui:field = "user"/>
+            <g:MenuItem text="email" ui:field = "email"/>
+            <g:MenuItem text="log out" ui:field = "out"/>
 		</g:MenuBar>		
 	</g:HTMLPanel>
 </ui:UiBinder> 
