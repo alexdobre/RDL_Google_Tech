@@ -14,7 +14,7 @@
             .labelText  {
             font-family: Arial, Sans-serif;
             display:inline-block;
-            font-size: 14px;
+            font-size: 11px;
             text-align: left;
             margin:10px;
             }
@@ -41,8 +41,9 @@
         <g:VerticalPanel styleName = '{style.container}'>
             <g:Label text = "Please Login" styleName = '{style.labelText}' />
             <g:HorizontalPanel verticalAlignment = "middle">
-                <g:TextBox ui:field = "userName" styleName = '{style.loginBox}'></g:TextBox>
                 <g:TextBox ui:field = "email" styleName = '{style.loginBox}'></g:TextBox>
+                <g:Label  styleName = '{style.labelText}'>Password</g:Label>
+                <g:PasswordTextBox ui:field = "password" styleName = '{style.loginBox}'></g:PasswordTextBox>
             </g:HorizontalPanel>
             <g:Button ui:field = "submit" text = "Submit" styleName ='{style.submit}' />
         </g:VerticalPanel>

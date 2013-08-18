@@ -35,7 +35,7 @@ public class SignInViewImpl extends Composite implements SignInView {
     private static SignInViewImplUiBinder uiBinder = GWT.create(SignInViewImplUiBinder.class);
 
     @UiField
-    TextBox userName;
+    PasswordTextBox password;
 
     @UiField
     TextBox email;
@@ -49,14 +49,14 @@ public class SignInViewImpl extends Composite implements SignInView {
     public SignInViewImpl(WelcomeViewImpl welcomeView) {
         this.welcomeViewImpl =welcomeView;
         initWidget(uiBinder.createAndBindUi(this));
-        userName.setText("Username");
+        password.setText("password");
         email.setText("Email");
     }
 
 
-    @UiHandler("userName")
+    @UiHandler("password")
     public void onUserFocused(FocusEvent event) {
-        userName.setText("");   }
+        password.setText("");   }
 
     @UiHandler("email")
     public void onEmailFocused(FocusEvent event) {
@@ -65,9 +65,9 @@ public class SignInViewImpl extends Composite implements SignInView {
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
         Beanery beanery = GWT.create(Beanery.class);
-        String username = userName.getText();
+        String passwordText = password.getText();
         String emailtxt =   email.getText();
-        log.info("SignInViewImpl onSubmit username " + username + " emailtxt  " + emailtxt);
+        log.info("SignInViewImpl onSubmit password " + password + " emailtxt  " + emailtxt);
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
         authUrl = authUrl.replaceAll("/therdl", "");
@@ -77,7 +77,7 @@ public class SignInViewImpl extends Composite implements SignInView {
         requestBuilder.setHeader("Content-Type", "application/json");
         try {
             AutoBean<AuthUserBean> authBean = beanery.authBean();
-            authBean.as().setName(username);
+            authBean.as().setPassword(passwordText);
             authBean.as().setEmail(emailtxt);
             String json = AutoBeanCodex.encode(authBean).getPayload();
 

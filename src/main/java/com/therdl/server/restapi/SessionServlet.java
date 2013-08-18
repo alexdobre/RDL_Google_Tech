@@ -59,6 +59,7 @@ public class SessionServlet  extends HttpServlet {
 
         AutoBean<AuthUserBean> authBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, sb.toString());
         authBean.as().setAuth(true);
+        authBean.as().setName("AuthoOk");
         AutoBeanCodex.encode(authBean).getPayload();
 
         sLogger.info( AutoBeanCodex.encode(authBean).getPayload());

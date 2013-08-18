@@ -14,6 +14,10 @@ public interface  AuthUserBean {
 
     void setEmail(String email);
 
+    String getPassword();
+
+    void setPassword(String password);       ;
+
     boolean isAuth();
 
     void setAuth(boolean auth);
