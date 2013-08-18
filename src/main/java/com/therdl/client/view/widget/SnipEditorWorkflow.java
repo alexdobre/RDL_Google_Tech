@@ -57,8 +57,10 @@ public class SnipEditorWorkflow extends Composite {
 
     private Beanery beanery = GWT.create(Beanery.class);
 
+
+
     @UiField(provided = true)
-    SnipEditor snipEditor = new SnipEditor();
+    SnipEditor snipEditor =  new SnipEditor();
     @UiField
     HTMLPanel contents;
     @UiField
@@ -102,6 +104,13 @@ public class SnipEditorWorkflow extends Composite {
     }
 
 
+    public SnipEditor getSnipEditor() {
+        return snipEditor;
+    }
+
+
+
+
     /**
      * Called by the cancel button when it is clicked. This method will just
      * tear down the UI and clear the state of the workflow.
@@ -112,7 +121,7 @@ public class SnipEditorWorkflow extends Composite {
     }
 
     /**
-     *  just a check for now, maybe will use local storage
+     *  just a check for now, maybe will use local storage , this bottom save in dialog pop up
      */
     @UiHandler("save")
     void onSave(ClickEvent event) {
@@ -128,249 +137,32 @@ public class SnipEditorWorkflow extends Composite {
 
     }
 
+     // save
+    public void submitBean(AutoBean<SnipBean> bean) {
 
+        view.submitBean(bean);
+
+
+    }
+
+    // update
+    public void submitEditBean(AutoBean<SnipBean> bean) {
+
+        view.submitEditBean(bean);
+
+    }
+
+    // delete
     public void onDelete(String id) {
 
-        log.info("SnipEditorWorkflow onDelete: snip id "+id);
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-        updateUrl = updateUrl.replaceAll("/therdl", "");
-
-        log.info("SnipEditorWorkflow submit updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        try {
-            AutoBean<SnipBean> actionBean = beanery.snipBean();
-            actionBean.as().setAction("delete");
-            actionBean.as().setId(id);
-            String json = AutoBeanCodex.encode( actionBean).getPayload();
-
-            log.info("SnipEditorWorkflow submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    if (response.getStatusCode() == 200) {
-                        // ok move forward
-                        log.info("SnipEditorWorkflow submit post ok now validating");
-                        validateDropDown();
-
-                    } else {
-                        log.info("SnipEditorWorkflow submit post fail");
-
-                    }
-                }
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
+        view.onDeleteSnip(id);
 
     }
 
-
-
-
-    // called by DynamicPostLisBox
-    public void submitBean(AutoBean<SnipBean> bean ) {
-
-        log.info("SnipEditorWorkflow submitBean bean: "+snipEditor.getTitle());
-
-        if (snipEditor.getTitle().isEmpty() )
-        {
-            Window.alert("A snip needs at least a title" );
-            return;
-        }
-
-        bean.as().setTitle(snipEditor.getTitle());
-        bean.as().setContentAsString(snipEditor.getContentAsText());
-        bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
-        bean.as().setAuthor("demo user");
-        bean.as().setServerMessage("submit");
-        bean.as().setAction("save");
-        log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().getTitle());
-        // now submit to server
-
-        log.info("SnipEditorWorkflow submit to server");
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-        updateUrl = updateUrl.replaceAll("/therdl", "");
-
-        log.info("SnipEditorWorkflow submit updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        try {
-
-            String json = AutoBeanCodex.encode( bean).getPayload();
-            log.info("SnipEditorWorkflow submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    if (response.getStatusCode() == 200) {
-                        // ok move forward
-                        log.info("SnipEditorWorkflow submit post ok now validating");
-                        validateDropDown();
-
-                    } else {
-                        log.info("SnipEditorWorkflow submit post fail");
-
-                    }
-                }
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
-    }
-
-    // in the strict MVP pattern this code would be in the presenter, later can refactor
-    // called by DynamicPostLisBox
-    public void submitEditBean(AutoBean<SnipBean> bean) {
-        if (bean.as().getId() == null )
-        {   Window.alert("this is a new snip please use submit not submit-edit" );
-        return;  }
-
-        log.info("SnipEditorWorkflow submitEditBean bean");
-        bean.as().setTitle(snipEditor.getTitle());
-        bean.as().setContentAsString(snipEditor.getContentAsText());
-        bean.as().setContentAsHtml(snipEditor.getContentAsHtml());
-        bean.as().setAuthor("demo user");
-        bean.as().setServerMessage("submitEdit");
-        bean.as().setAction("update");
-        log.info("SnipEditorWorkflow submitBean bean : " +  bean.as().getTitle());
-        // now submit to server
-
-        log.info("SnipEditorWorkflow submit to server");
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-        updateUrl = updateUrl.replaceAll("/therdl", "");
-
-        log.info("SnipEditorWorkflow submit updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        try {
-
-            String json = AutoBeanCodex.encode( bean).getPayload();
-            log.info("SnipEditorWorkflow submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    if (response.getStatusCode() == 200) {
-                       // ok move forward
-                        log.info("SnipEditorWorkflow submit post ok now validating");
-                        validateDropDown();
-
-                    } else {
-                        log.info("SnipEditorWorkflow submit post fail");
-
-                            }
-                }
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
-    }
-
-    // this is to ensure the validity of the views snip display
-    // ie only dispay vaild beans
-    public void validateDropDown() {
-
-
-
-        log.info("SnipEditorWorkflow validateDropDown()");
-
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-        updateUrl = updateUrl.replaceAll("/therdl", "");
-
-        log.info("SnipEditorWorkflow validateDropDown( updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean>  currentBean = beanery.snipBean();
-        currentBean.as().setAction("getall");
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
-        try {
-
-            requestBuilder.sendRequest(json, new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    log.info("SnipEditorWorkflow validateDropDown(  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-                    log.info("SnipEditorWorkflow validateDropDown( onResponseReceived json" + response.getText());
-
-                    JsArray<JSOModel> data =
-                            JSOModel.arrayFromJson(response.getText());
-                    if(data.length() == 0 ) {
-                        view.clearSnipDropDown();
-
-                        return;}
-                    List<JSOModel>  jSonList = new ArrayList<JSOModel>();
-
-                    for (int i = 0; i < data.length(); i++) {
-                        jSonList.add(data.get(i));
-
-                    }
-
-                    List<AutoBean<SnipBean>> beans = new ArrayList<AutoBean<SnipBean>>();
-
-                    log.info("SnipEditorWorkflow validateDropDown( onResponseReceived json" + jSonList.get(0).get("0"));
-
-                    for (int k = 0; k < jSonList.size(); k++) {
-                        String counter = ""+k;
-                        log.info("SnipEditorWorkflow validateDropDown( onResponseReceived counter " + counter);
-                        log.info("SnipEditorWorkflow validateDropDown( onResponseReceived jSonList.get(i).get(counter)" + jSonList.get(k).get(counter));
-                        AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
-
-                        log.info("" + bean.as().getTitle());
-                        log.info("" + bean.as().getAuthor());
-                        log.info("" + bean.as().getContentAsString());
-                        log.info("" + bean.as().getTimeStamp());
-                        beans.add(bean);
-                    }
-
-                    view.setSnipDropDown(beans);
-                    beans.clear();
-
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditorWorkflow validateDropDown(  onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
-    }
 
 
     public void createPost() {
-        log.info("SnipEditorWorkflow validateDropDown createPost" );
+        log.info("SnipEditorWorkflow createPost" );
         clearEditor();
         snipEditor.setContent("Edit the tilte and content then submit");
 

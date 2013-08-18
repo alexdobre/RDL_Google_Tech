@@ -3,17 +3,24 @@ package com.therdl.client.view;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
 
 public interface SnipEditView  {
 
-	public interface Presenter<T> {
+	public interface Presenter {
 
 		void onSaveButtonClicked();
 
 		void onCloseButtonClicked();
+
+        void onDeleteSnip(String id);
+
+        void submitBean(AutoBean<SnipBean> bean );
+
+        void submitEditedBean(AutoBean<SnipBean> bean);
 	}
 
 	void setPresenter(Presenter presenter);
@@ -25,6 +32,15 @@ public interface SnipEditView  {
     void setSnipDropDown(List<AutoBean<SnipBean>> beans);
 
     void clearSnipDropDown();
+
+    void onDeleteSnip(String id);
+
+    void submitBean(AutoBean<SnipBean> bean );
+
+    void submitEditBean(AutoBean<SnipBean> bean);
+
+    SnipEditorWorkflow getSnipEditorWorkflow();
+
 
     Widget asWidget();
 }

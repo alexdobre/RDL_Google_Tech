@@ -33,6 +33,8 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
     @UiField FlowPanel mainPanel;
 
     private EditorViewHeader header;
+
+
     private SnipEditorWorkflow snipEditorWorkflow;
 	
 	public SnipEditViewImpl() {
@@ -43,8 +45,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         header = new EditorViewHeader( snipEditorWorkflow);
         mainPanel.add(header);
         mainPanel.add(snipEditorWorkflow);
-
-
 
 	  }
 
@@ -69,10 +69,33 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
     }
 
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
-	}
+    // save
+    @Override
+    public void submitBean(AutoBean<SnipBean> bean) {
+
+        presenter.submitBean(bean);
+
+    }
+
+    //update
+    @Override
+    public void submitEditBean(AutoBean<SnipBean> bean) {
+        presenter.submitEditedBean(bean);
+    }
+
+
+    // delete
+    @Override
+    public void onDeleteSnip(String id) {
+        presenter.onDeleteSnip(id);
+    }
+
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+
 
     @Override
     public void onSaveButtonClicked(ClickEvent event) {
@@ -89,5 +112,8 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	}
 
 
+    public SnipEditorWorkflow getSnipEditorWorkflow() {
+        return snipEditorWorkflow;
+    }
 
 }
