@@ -62,57 +62,12 @@ public class SignInViewImpl extends Composite implements SignInView {
     public void onEmailFocused(FocusEvent event) {
         email.setText("");   }
 
+
+
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
-        Beanery beanery = GWT.create(Beanery.class);
-        String passwordText = password.getText();
-        String emailtxt =   email.getText();
-        log.info("SignInViewImpl onSubmit password " + password + " emailtxt  " + emailtxt);
-
-        String authUrl = GWT.getModuleBaseURL() + "getSession";
-        authUrl = authUrl.replaceAll("/therdl", "");
-
-        log.info("SnipEditorWorkflow submit updateUrl: " + authUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        try {
-            AutoBean<AuthUserBean> authBean = beanery.authBean();
-            authBean.as().setPassword(passwordText);
-            authBean.as().setEmail(emailtxt);
-            String json = AutoBeanCodex.encode(authBean).getPayload();
-
-            log.info("SnipEditorWorkflow submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    if (response.getStatusCode() == 200) {
-                        // ok move forward
-                        log.info("SignInViewImpl onSubmit post ok");
-                        log.info("SignInViewImpl onSubmit onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-                        log.info("SignInViewImpl onSubmit onResponseReceived json" + response.getText());
-                        JSOModel data =  JSOModel.fromJson(response.getText());
-                        String email = data.get("email");
-                        String name = data.get("name");
-                        boolean auth = data.getBoolean("auth");
-                        welcomeViewImpl.setloginresult(name, email, auth);
-
-                    } else {
-                        log.info("SignInViewImpl onSubmit  post fail");
-
-                    }
-                }
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SignInViewImpl onSubmit onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
+        log.info("SignInViewImpl onSubmit");
+        welcomeViewImpl.onSubmit();
     }
 
 
@@ -122,4 +77,11 @@ public class SignInViewImpl extends Composite implements SignInView {
     }
 
 
+    public PasswordTextBox getPassword() {
+        return password;
+    }
+
+    public TextBox getEmail() {
+        return email;
+    }
 }

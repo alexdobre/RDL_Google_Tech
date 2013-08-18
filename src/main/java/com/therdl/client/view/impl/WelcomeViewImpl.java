@@ -14,7 +14,7 @@ import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.shared.Messages;
 import com.therdl.shared.beans.AuthUserBean;
 
-public class WelcomeViewImpl extends Composite implements WelcomeView{
+public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
 	private Presenter presenter;
     private HTMLPanel menuPanel;
@@ -94,5 +94,21 @@ public class WelcomeViewImpl extends Composite implements WelcomeView{
           panel.add(new HTML("<h3 class = 'brand'>Good bye please close browser for your security</h3>"));
           contentPanel.add(panel);
       }
+
+
+
+    public SignInView getSignInView() {
+
+        return this.signInView;
+
+
+    }
+
+
+    public void onSubmit() {
+
+        presenter.doLogIn();
+    }
+
 
 }
