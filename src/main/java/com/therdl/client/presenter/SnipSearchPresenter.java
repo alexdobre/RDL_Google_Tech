@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.SnipSearchView;
+import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
@@ -39,7 +40,10 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
     private void getSnipDemoResult() {
         log.info("SnipSearchPresenter getSnipDemoResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
-        updateUrl =updateUrl.replaceAll("/therdl","");
+
+        if(Constants.DEPLOY){
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
 
         log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: "+ updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));

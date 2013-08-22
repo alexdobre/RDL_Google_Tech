@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.SnipEditView;
+import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
@@ -68,7 +69,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-        updateUrl = updateUrl.replaceAll("/therdl", "");
+
+        if(Constants.DEPLOY){
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
 
         log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -113,7 +117,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
         log.info("SnipEditPresenter onDelete: snip id "+id);
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-        updateUrl = updateUrl.replaceAll("/therdl", "");
+
+        if(Constants.DEPLOY){
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
 
         log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -182,7 +189,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-        updateUrl = updateUrl.replaceAll("/therdl", "");
+
+        if(Constants.DEPLOY){
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
 
         log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -227,7 +237,9 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        updateUrl = updateUrl.replaceAll("/therdl", "");
+        if(Constants.DEPLOY){
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
 
         log.info("SnipEditPresenter getSnipDemoResult  updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));

@@ -193,7 +193,7 @@ public class SnipServiceImpl implements SnipsService {
         }  catch (IOException e) { e.printStackTrace();  }
         defaultDatabaseName = configProp.getProperty("mongodb.default.database");
         sLogger.info("CreateAppContext from properties  default.database  :  " + defaultDatabaseName);
-
+        defaultDatabaseName = "rdl";
 
         try {
             MongoClient mongo = new MongoClient("localhost", 27017);

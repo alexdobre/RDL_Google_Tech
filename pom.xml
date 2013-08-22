@@ -203,6 +203,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <warName>therdl</warName>
                     <webappDirectory>${webappDirectory}</webappDirectory>
                 </configuration>
             </plugin>

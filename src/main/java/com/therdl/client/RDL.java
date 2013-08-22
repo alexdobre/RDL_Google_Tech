@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.widget.WidgetHolder;
+import com.therdl.shared.Messages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
