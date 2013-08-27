@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.SignInView;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -51,6 +52,7 @@ public class SignInViewImpl extends Composite implements SignInView {
         initWidget(uiBinder.createAndBindUi(this));
         password.setText("password");
         email.setText("Email");
+        this.setStyleName("signInView");
     }
 
 
@@ -84,4 +86,15 @@ public class SignInViewImpl extends Composite implements SignInView {
     public TextBox getEmail() {
         return email;
     }
+
+    @Override
+    public void setSignIsVisible(boolean state) {
+
+        this.setVisible(state);
+
+    }
+
+
+
+
 }

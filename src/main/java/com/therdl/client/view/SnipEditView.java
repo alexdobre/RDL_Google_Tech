@@ -3,6 +3,7 @@ package com.therdl.client.view;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.shared.beans.SnipBean;
 
@@ -41,6 +42,9 @@ public interface SnipEditView  {
 
     SnipEditorWorkflow getSnipEditorWorkflow();
 
+    void setloginresult(String name, String email, boolean auth);
+
+    AppMenu getAppMenu();
 
     Widget asWidget();
 }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
@@ -29,12 +30,14 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
     private Beanery beanery = GWT.create(Beanery.class);
 //    private List<JSOModel> jSon1List;
     private List<JSOModel> jSonList;
+    private final AppController controller;
 
 
-    public SnipEditPresenter(SnipEditView view) {
+    public SnipEditPresenter(SnipEditView view, AppController appController) {
         super();
         this.view = view;
         this.view.setPresenter(this);
+        this.controller =appController;
 
     }
 
@@ -42,6 +45,14 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
     public void go(HasWidgets container) {
         container.clear();
         container.add(view.asWidget());
+        if(controller.getCurrentUserBean().as().isAuth() ) {
+            log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
+            view.getAppMenu().setLogOutVisible(true);
+            view.getAppMenu().setSignUpVisible(false);
+            view.getAppMenu().setUserInfoVisible(true);
+            view.setloginresult(controller.getCurrentUserBean().as().getName(),
+                    controller.getCurrentUserBean().as().getEmail(), true  );
+        }
         fetchSnips();
 
     }

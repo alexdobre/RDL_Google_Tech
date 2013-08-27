@@ -11,21 +11,21 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.therdl.client.presenter.Presenter;
+import com.therdl.client.presenter.*;
 
-import com.therdl.client.presenter.SnipEditPresenter;
-import com.therdl.client.presenter.SnipSearchPresenter;
+import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.client.view.impl.RegisterViewImpl;
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
-import com.therdl.client.presenter.WelcomePresenter;
 import com.therdl.shared.Messages;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogOutEvent;
@@ -49,6 +49,10 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     private SnipEditView  snipEditView;
     private SnipSearchView  snipSearchView;
     private AutoBean<AuthUserBean> authnBean = beanery.authBean();
+    private RegisterView registerView;
+    private AutoBean<AuthUserBean> authBean = beanery.authBean();
+    // temp solution until IE 7, 8, 9  drop off the radar
+    private  AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
 	
 	public AppController() {
@@ -101,81 +105,151 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 		if (token != null) {
 
-	//***************************************WELCOME****************************
-			if (token.equals(RDLConstants.Tokens.WELCOME)) {
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
+            //***************************************WELCOME****************************
+            if (token.equals(RDLConstants.Tokens.WELCOME)) {
 
-					public void onSuccess() {
-						if (welcomeView == null) {
-							welcomeView = new WelcomeViewImpl(messages, authnBean);
-						}
-						new WelcomePresenter(welcomeView).go(container);						
-					}
-				});
-
-			}
-
-
-    //***************************************SNIPS****************************
-
-        else if (token.equals(RDLConstants.Tokens.SNIPS)) {
-            GWT.runAsync(new RunAsyncCallback() {
-                public void onFailure(Throwable caught) {
-                    log.info("AppController GWT.runAsync onFailure "+RDLConstants.Tokens.SNIPS);
+                if (welcomeView == null) {
+                    welcomeView = new WelcomeViewImpl(messages, authBean);
                 }
+                // in async call back this is not app controller
+                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+                log.info("AppController onValueChange Tokens.WELCOME) past line 109 ");
 
-                public void onSuccess() {
-                    log.info("AppController GWT.runAsync onSuccess "+RDLConstants.Tokens.SNIPS);
-                    if (snipSearchView == null) {
-                        snipSearchView = new SnipSearchViewImpl();
-                    }
-                    new SnipSearchPresenter(snipSearchView).go(container);
-
-                }
-            });
-        }// end else
-
-            else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
                     }
 
                     public void onSuccess() {
-                        if (snipEditView == null) {
-                            snipEditView = new SnipEditViewImpl();
+
+                        welcomePresenter.go(container);
+                        welcomeView.getSignInView().setSignIsVisible(true);
+                        // check user status if auth no login
+                        if(currentUserBean.as().isAuth()) {
+                            welcomeView.getSignInView().setSignIsVisible(false);
+                            welcomeView.setloginresult(currentUserBean.as().getName(),currentUserBean.as().getEmail(), true);
                         }
-                        new SnipEditPresenter( snipEditView).go(container);
+                    }
+                });
+
+            }
+
+
+//***************************************SNIPS****************************
+            else if (token.equals(RDLConstants.Tokens.SNIPS)) {
+                // in async call back this is not app controller
+                if (snipSearchView == null) {
+                    snipSearchView = new SnipSearchViewImpl(currentUserBean);
+                }
+
+                final SnipSearchPresenter snipSearchPresenter =  new SnipSearchPresenter(snipSearchView, this);
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                        log.info("AppController GWT.runAsync onFailure "+RDLConstants.Tokens.SNIPS);
+                    }
+
+                    public void onSuccess() {
+
+                        if(currentUserBean.as().isAuth())  {
+                            snipSearchPresenter.go(container);
+
+                        } else {
+
+                            History.newItem(RDLConstants.Tokens.WELCOME);
+                        }
+
+                    }
+                });
+            }// end el
+
+            //***************************************SNIP_EDIT****************************
+
+            else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
+                // in async call back this is not app controller
+                if (snipEditView == null) {
+                    snipEditView = new SnipEditViewImpl();
+                }
+                final SnipEditPresenter snipSearchPresenter =  new SnipEditPresenter(snipEditView, this);
+
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+
+                        snipSearchPresenter.go(container);
                     }
                 });
             }
 
-
-            //*************************************** END_SNIPS ****************************
-
-
-            //*************************************** SIGN_IN ****************************
+            //*************************************** LOG_OUT ****************************
 
 
 
             else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
+                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
                     }
 
                     public void onSuccess() {
-                        authnBean.as().setAuth(false);
+                        authBean.as().setAuth(false);
                         if (welcomeView == null) {
-                            welcomeView = new WelcomeViewImpl(messages, authnBean);
+                            welcomeView = new WelcomeViewImpl(messages, authBean);
+                            currentUserBean.as().setAuth(false);
                         }
 
-                        new WelcomePresenter(welcomeView).go(container);
+                        welcomePresenter.go(container);
                         welcomeView.logout();
                     }
                 });
             }
 
+
+
+            //*************************************** LOG_OUT ****************************
+
+
+            else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
+                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+                        authBean.as().setAuth(false);
+                        if (welcomeView == null) {
+                            welcomeView = new WelcomeViewImpl(messages, authBean);
+                            currentUserBean.as().setAuth(false);
+                        }
+
+                        welcomePresenter.go(container);
+                        welcomeView.logout();
+                    }
+                });
+            }
+
+
+            else if (token.equals(RDLConstants.Tokens.SIGN_UP)) {
+
+                if (registerView == null) {
+                    registerView = new RegisterViewImpl();
+                    currentUserBean.as().setAuth(false);
+                }
+                // in async call back this is not app controller
+                final RegisterPresenter registerPresenter =  new RegisterPresenter(registerView, this);
+                log.info("AppController Tokens.SIGN_UP ");
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+                        registerPresenter.go(container);
+
+                    }
+                });
+            }
 
 
 
@@ -236,5 +310,19 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
     }
+
+
+
+    public AutoBean<CurrentUserBean> getCurrentUserBean() {
+        return currentUserBean;
+    }
+
+    public void setCurrentUserBean(String name, String email, boolean state) {
+        this.currentUserBean.as().setAuth(state);
+        this.currentUserBean.as().setName(name);
+        this.currentUserBean.as().setEmail(email);
+    }
+
+
 
 }

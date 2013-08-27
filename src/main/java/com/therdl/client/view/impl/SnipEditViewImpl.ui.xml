@@ -11,7 +11,8 @@
         }
 	</ui:style>
 	<g:HTMLPanel>
-		<rdl:AppMenu ui:field="appMenu" />
+        <g:HTMLPanel ui:field="appMenu"  ></g:HTMLPanel>
+
 		<g:DockPanel>
 			<g:Dock direction="WEST">
 				<g:SimplePanel>

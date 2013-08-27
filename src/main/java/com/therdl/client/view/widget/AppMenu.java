@@ -22,53 +22,50 @@ public class AppMenu extends Composite  {
 
 	private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
 	@UiField MenuBar menuBar;
-	@UiField MenuItem fastCaps;
-	@UiField MenuItem snips;
-	@UiField MenuItem materials;
-	@UiField MenuItem groups;
+
+	@UiField MenuItem ideas;
+	@UiField MenuItem stories;
+	@UiField MenuItem improvements;
 	@UiField MenuItem services;
-	@UiField MenuItem profile;
-	@UiField MenuItem overview;
-	@UiField MenuItem ovwRDL;
-	@UiField MenuItem ovwCompatibility;
-	@UiField MenuItem ovwEmmSupport;
-	@UiField MenuItem ovwSensibilities;
-	@UiField MenuItem ovwAtraction;
-	@UiField MenuItem ovwBasic;
-	@UiField MenuItem ovwAdvanced;
-	@UiField MenuItem ovwSeduction;
-	@UiField MenuItem ovwPsy;
-	@UiField MenuItem ovwAffairs;
-	@UiField MenuItem ovwModules;
-	@UiField MenuItem ovwModulesSnips;
-	@UiField MenuItem ovwModulesFastCaps;
-	@UiField MenuItem ovwModulesMaterials;
-    @UiField MenuItem ovwModulesGroups;
-    @UiField MenuItem ovwModulesServices;
+
+
     // auth flow
     @UiField MenuItem user;
     @UiField MenuItem email;
     @UiField MenuItem out;
+    @UiField MenuItem signUp;
 
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
 	}
 
 	public AppMenu() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		fastCaps.setScheduledCommand(new Scheduler.ScheduledCommand() {			
-			@Override
-			public void execute() {
-                log.info("AppMenu: fastCaps.setScheduledCommand");
-			}
-		});
-		snips.setScheduledCommand(new Scheduler.ScheduledCommand() {			
+
+        // temp initialisation settings for unused functions
+        this .stories.setVisible(false);
+        this .services.setVisible(false);
+        this .improvements.setVisible(false);
+        // set the style name to position the user dropdown far right
+        this .user.setStyleName("userDropDown");
+        this .signUp.setStyleName("signUpAccount");
+        this .ideas.setStyleName("ideasMenuItem");
+
+        ideas.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			@Override
 			public void execute() {
                 log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
 				History.newItem(RDLConstants.Tokens.SNIPS);			
 			}
 		});
+
+        signUp.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
+                History.newItem(RDLConstants.Tokens.SIGN_UP);
+            }
+        });
+
 
 
         out.setScheduledCommand (new Scheduler.ScheduledCommand() {
@@ -79,32 +76,37 @@ public class AppMenu extends Composite  {
         });
 
 
-        ovwModulesFastCaps.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: sidebar fastCaps setScheduledCommand");
-            }
-        });
-
-        ovwModulesSnips.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: sidebar History.newItem RDLConstants.Tokens.SNIPS");
-                History.newItem(RDLConstants.Tokens.SNIPS);
-            }
-        });
 	}
 
     public void setUser(String id) {
+        log.info("AppMenu:setUser "+id);
+        user.setHTML(id);
 
-        user.setText(id);
 
     }
 
     public void setEmail(String id) {
+        log.info("AppMenu:setEmail "+id);
+        email.setHTML(id);
+
+    }
 
 
-       email.setText(id);
+      public void  setSignUpVisible (boolean state){
+          log.info("AppMenu: setSignUpVisible "+state);
+          signUp.setVisible(state);
+      }
+
+    public void  setUserInfoVisible (boolean state){
+        log.info("AppMenu: setUserInfoVisible "+state);
+        user.setVisible(state);
+        email.setVisible(state);
+    }
+
+    public void setLogOutVisible(boolean state) {
+        log.info("AppMenu: setLogOutVisible "+state);
+       this.out.setVisible(state);
+
     }
 
 }

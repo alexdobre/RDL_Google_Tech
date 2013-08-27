@@ -6,6 +6,7 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
@@ -22,18 +23,28 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
     private Beanery beanery = GWT.create(Beanery.class);
     private List<JSOModel> jSonList;
     private AutoBean<SnipBean>  currentBean;
-	
-	public SnipSearchPresenter(SnipSearchView snipSearchView){
-		this.snipSearchView = snipSearchView;
+    private final AppController controller;
+
+    public SnipSearchPresenter(SnipSearchView snipSearchView, AppController controller){
+        this.controller =controller;
+        this.snipSearchView = snipSearchView;
         log.info("SnipSearchPresenter constructor");
 
-	}
+    }
 	
 	@Override
 	public void go(HasWidgets container) {
         log.info("SnipSearchPresenter go adding view");
 		container.clear();
 	    container.add(snipSearchView.asWidget());
+        if(controller.getCurrentUserBean().as().isAuth() ) {
+            log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
+            snipSearchView.getAppMenu().setLogOutVisible(true);
+            snipSearchView.getAppMenu().setSignUpVisible(false);
+            snipSearchView.getAppMenu().setUserInfoVisible(true);
+            snipSearchView.setloginresult(controller.getCurrentUserBean().as().getName(),
+                    controller.getCurrentUserBean().as().getEmail(), true  );
+        }
         getSnipDemoResult();
 	}
 

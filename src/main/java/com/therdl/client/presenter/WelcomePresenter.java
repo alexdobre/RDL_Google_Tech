@@ -5,6 +5,7 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.therdl.client.app.AppController;
 import com.therdl.client.view.SignInView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.beans.AuthUserBean;
@@ -21,8 +22,11 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
     private final WelcomeView welcomeView;
     private final SignInView signInView;
+    private final AppController controller;
 
-    public WelcomePresenter(WelcomeView welcomeView) {
+
+    public WelcomePresenter(WelcomeView welcomeView, AppController controller) {
+        this.controller =controller;
         this.welcomeView = welcomeView;
         this.welcomeView.setPresenter(this);
         this.signInView = welcomeView.getSignInView();
@@ -32,6 +36,13 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
     public void go(HasWidgets container) {
         container.clear();
         container.add(welcomeView.asWidget());
+        if(!controller.getCurrentUserBean().as().isAuth() ) {
+            log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth() getSignInView().setSignIsVisible(true); ");
+            welcomeView.getSignInView().setSignIsVisible(true);
+            welcomeView.getAppMenu().setLogOutVisible(false);
+            welcomeView.getAppMenu().setSignUpVisible(true);
+            welcomeView.getAppMenu().setUserInfoVisible(false);
+        }
     }
 
 
@@ -40,21 +51,22 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         Beanery beanery = GWT.create(Beanery.class);
         String passwordText = signInView.getPassword().getText();
         String emailtxt = signInView.getEmail().getText();
-        log.info("SignInViewImpl onSubmit password " + passwordText + " emailtxt  " + emailtxt);
+        log.info("v onSubmit password " + passwordText + " emailtxt  " + emailtxt);
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
         authUrl = authUrl.replaceAll("/therdl", "");
 
-        log.info("SnipEditorWorkflow submit updateUrl: " + authUrl);
+        log.info("WelcomePresenter submit updateUrl: " + authUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
         try {
             AutoBean<AuthUserBean> authBean = beanery.authBean();
             authBean.as().setPassword(passwordText);
             authBean.as().setEmail(emailtxt);
+            authBean.as().setAction("auth");
             String json = AutoBeanCodex.encode(authBean).getPayload();
 
-            log.info("SnipEditorWorkflow submit json: " + json);
+            log.info("WelcomePresenter submit json: " + json);
             requestBuilder.sendRequest(json, new RequestCallback() {
 
                 @Override
@@ -62,17 +74,19 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
                     if (response.getStatusCode() == 200) {
                         // ok move forward
-                        log.info("SignInViewImpl onSubmit post ok");
-                        log.info("SignInViewImpl onSubmit onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-                        log.info("SignInViewImpl onSubmit onResponseReceived json" + response.getText());
+                        log.info("WelcomePresenter onSubmit post ok");
+                        log.info("WelcomePresenter onSubmit onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
+                        log.info("WelcomePresenter onSubmit onResponseReceived json" + response.getText());
                         JSOModel data = JSOModel.fromJson(response.getText());
                         String email = data.get("email");
                         String name = data.get("name");
                         boolean auth = data.getBoolean("auth");
+                        controller.setCurrentUserBean(name, email, auth);
                         welcomeView.setloginresult(name, email, auth);
 
+
                     } else {
-                        log.info("SignInViewImpl onSubmit  post fail");
+                        log.info("WelcomePresenter onSubmit  post fail");
 
                     }
                 }

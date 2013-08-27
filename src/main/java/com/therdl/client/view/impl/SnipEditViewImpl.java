@@ -28,7 +28,9 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	 
 	private Presenter presenter;
 
-	@UiField Widget appMenu;
+
+    private AppMenu appMenuPanel;
+    @UiField HTMLPanel appMenu;
 	@UiField Widget leftMenuTree;
     @UiField FlowPanel mainPanel;
 
@@ -39,7 +41,8 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	
 	public SnipEditViewImpl() {
 	    initWidget(uiBinder.createAndBindUi(this));
-	    appMenu =  WidgetHolder.getInstance().getAppMenu();
+        appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
+        appMenu.add(appMenuPanel);
 	    snipEditorWorkflow = new SnipEditorWorkflow(this);
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
         header = new EditorViewHeader( snipEditorWorkflow);
@@ -114,6 +117,27 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
     public SnipEditorWorkflow getSnipEditorWorkflow() {
         return snipEditorWorkflow;
+    }
+
+
+
+    @Override
+    public void setloginresult(String name, String email, boolean auth) {
+        if (auth) {
+            log.info("SnipSearchViewImpl setloginresult auth true "+name );
+
+            this.appMenuPanel.setLogOutVisible(true);
+            this.appMenuPanel.setSignUpVisible(false);
+            this.appMenuPanel.setUserInfoVisible(true);
+            this.appMenuPanel.setUser(name);
+            this.appMenuPanel.setEmail(email);
+        }
+
+    }
+
+    @Override
+    public AppMenu getAppMenu() {
+        return this.appMenuPanel;
     }
 
 }

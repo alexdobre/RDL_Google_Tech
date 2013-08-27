@@ -57,16 +57,35 @@ public class SessionServlet  extends HttpServlet {
         }
         br.close();
 
+        System.out.println( "SessionServlet signUp authBean json recieved" +sb.toString());
+
         AutoBean<AuthUserBean> authBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, sb.toString());
-        authBean.as().setAuth(true);
-        authBean.as().setName("AuthoOk");
-        AutoBeanCodex.encode(authBean).getPayload();
 
-        sLogger.info( AutoBeanCodex.encode(authBean).getPayload());
-        PrintWriter out = resp.getWriter();
-        out.write( AutoBeanCodex.encode(authBean).getPayload());
+        String action =  authBean.as().getAction();
+
+        if(action.equals("signUp")) {
+
+            authBean.as().setAuth(true);
+            authBean.as().setAction("newUserOk");
+            authBean.as().setName("newUser Under Construction");
+            sLogger.info( "SessionServlet signUp authBean" +AutoBeanCodex.encode(authBean).getPayload());
+            PrintWriter out = resp.getWriter();
+            out.write( AutoBeanCodex.encode(authBean).getPayload());
+
+        } // end sign up
 
 
-    }
+        else if(action.equals("auth") )  {
+
+            authBean.as().setAuth(true);
+            authBean.as().setName("Username Options  ");
+            sLogger.info( AutoBeanCodex.encode(authBean).getPayload());
+            PrintWriter out = resp.getWriter();
+            out.write( AutoBeanCodex.encode(authBean).getPayload());
+
+
+        }
+
+    } // end doPost
 
 }

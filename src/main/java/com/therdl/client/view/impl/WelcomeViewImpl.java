@@ -14,7 +14,11 @@ import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.shared.Messages;
 import com.therdl.shared.beans.AuthUserBean;
 
+import java.util.logging.Logger;
+
 public class WelcomeViewImpl extends Composite implements WelcomeView  {
+
+    private static Logger log = Logger.getLogger("");
 
 	private Presenter presenter;
     private HTMLPanel menuPanel;
@@ -23,8 +27,11 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
     private AutoBean<AuthUserBean> authnBean;
     private Messages messages;
     private AppMenu appMenu;
+    private HTMLPanel headerPanel;
+    private HTMLPanel spalshPanel;
 
-	public WelcomeViewImpl(Messages messages, AutoBean<AuthUserBean> authnBean) {
+
+    public WelcomeViewImpl(Messages messages, AutoBean<AuthUserBean> authnBean) {
         this.authnBean = authnBean;
         this.messages = messages;
 	    //add the menu
@@ -34,17 +41,29 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 	    menuPanel.add(appMenu);
 	    
 	    //add splash content
-	    HTMLPanel panel = setSplashScreen(messages);
+	    spalshPanel = setSplashScreen(messages);
 
 		contentPanel = new FlowPanel();
 		contentPanel.add(menuPanel);
+        headerPanel =  setloginheader(messages);
+        signInView = new SignInViewImpl(this);
+
+
         if (!authnBean.as().isAuth()) {
-            signInView = new SignInViewImpl(this);
-            HTMLPanel headerPanel =  setloginheader(messages);
+            log.info("WelcomeViewImpl constructor: !authnBean.as().isAuth()" );
+
             contentPanel.add(headerPanel);
             contentPanel.add(signInView);
+            signInView.setSignIsVisible(true);
 
-        } else  	contentPanel.add(panel);
+        } else  {
+            if( signInView != null )  signInView.setSignIsVisible(false);
+            log.info("WelcomeViewImpl constructor: else signInView.setSignIsVisible(false)" );
+            contentPanel.add(headerPanel);
+
+            contentPanel.add(spalshPanel);
+
+        }
 
 		initWidget(contentPanel);
 	}
@@ -52,16 +71,24 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+        log.info("WelcomeViewImpl setPresenter" );
+
+
+
 	}
 
 
     public  void  setloginresult(String name, String email, boolean auth) {
       if (auth) {
+          log.info("WelcomeViewImpl setloginresult auth true" );
           contentPanel.clear();
           contentPanel.add(menuPanel);
           contentPanel.add(setSplashScreen(messages));
           appMenu.setUser(name);
           appMenu.setEmail(email);
+          appMenu.setLogOutVisible(true);
+          appMenu.setSignUpVisible(false);
+          appMenu.setUserInfoVisible(true);
       }
 
     }
@@ -110,5 +137,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
         presenter.doLogIn();
     }
 
+    @Override
+    public AppMenu getAppMenu() {
+        return appMenu;
+    }
 
 }

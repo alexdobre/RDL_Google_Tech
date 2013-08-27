@@ -6,6 +6,7 @@ package com.therdl.shared.beans;
 public interface  AuthUserBean {
 
 
+
     String getName() ;
 
     void setName(String name);
@@ -16,11 +17,15 @@ public interface  AuthUserBean {
 
     String getPassword();
 
-    void setPassword(String password);
+    void setPassword(String password);       ;
 
     boolean isAuth();
 
     void setAuth(boolean auth);
+
+    String getAction();
+
+    void setAction(String action);
 
 
 }

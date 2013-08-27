@@ -4,17 +4,13 @@
         <ui:style>
 
             .container {
-            position:fixed;
-            top:10px;
-            display:block;
-            margin:10px;
-            right:10%;
+
             }
 
             .labelText  {
             font-family: Arial, Sans-serif;
             display:inline-block;
-            font-size: 11px;
+            font-size: 14px;
             text-align: left;
             margin:10px;
             }
@@ -22,18 +18,27 @@
             .loginBox {
             border: 1px solid #AACCEE;
             display:inline-block;
+            font-size:10px;
+            padding: 3px;
+            width: 160px;
+            margin:10px;
+            }
+
+            .pswwdBox {
+            border: 1px solid #AACCEE;
+            display:inline-block;
             font-size:12px;
             padding: 3px;
-            width: 203px;
+            width: 80px;
             margin:10px;
             }
 
             .submit {
             border: 1px solid #AACCEE;
             display:inline-block;
-            font-size:12px;
+            font-size:11px;
             padding: 3px;
-            width: 203px;
+            width: 90px;
             margin:10px;
             }
                 
@@ -43,7 +48,7 @@
             <g:HorizontalPanel verticalAlignment = "middle">
                 <g:TextBox ui:field = "email" styleName = '{style.loginBox}'></g:TextBox>
                 <g:Label  styleName = '{style.labelText}'>Password</g:Label>
-                <g:PasswordTextBox ui:field = "password" styleName = '{style.loginBox}'></g:PasswordTextBox>
+                <g:PasswordTextBox ui:field = "password" styleName = '{style.pswwdBox}'></g:PasswordTextBox>
             </g:HorizontalPanel>
             <g:Button ui:field = "submit" text = "Submit" styleName ='{style.submit}' />
         </g:VerticalPanel>

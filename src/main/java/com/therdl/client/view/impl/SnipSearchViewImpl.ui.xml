@@ -12,11 +12,11 @@
         padding:20px;
         }
 	</ui:style>
+
 	<g:HTMLPanel  >
+    <g:HTMLPanel ui:field="appMenu"  ></g:HTMLPanel>
 
-		<rdl:AppMenu ui:field="appMenu" />
-
-		<g:DockPanel >
+        <g:DockPanel >
 			<g:Dock direction="WEST"  size='150px' >
 				<g:FlowPanel styleName='{style.widgetlayout}'>
 					<rdl:LeftMenuTree ui:field="leftMenuTree"  />

@@ -1,0 +1,96 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:rdl="urn:import:com.therdl.client.view.widget">
+
+    <ui:style>
+
+        .outer {
+        width: 100%;
+        margin: 0 auto;
+
+        }
+        .main table {
+        width: 48%;
+        margin: 0 auto;
+        float:left;
+        }
+
+
+        .title {
+        text-align:left;
+        font-weight: light;
+        font-size: 14px;
+
+        }
+
+        .inputs {
+        position:relative;
+        left:20px;
+        font-weight: light;
+        font-size: 12px;
+        margin:10px 20px 20px 10px;
+        }
+
+        .description {
+        line-height: 18px;
+        margin: 0 0 18px;
+        padding: 0;
+        }
+
+        .takeBtn input, .takeBtn button{
+
+        }
+        .label{
+        font-size: 12px;
+        color:blue;
+        height:18px;
+        left:20px;
+        float:right;
+        }
+
+    </ui:style>
+    <g:HTMLPanel addStyleNames="{style.outer}">
+        <rdl:AppMenu ui:field="appMenu" />
+    <g:HTMLPanel addStyleNames="{style.main}">
+
+        <div class= 'container'>
+        <div class = 'brand '> <H4 class="{style.title}">Enter your User Information</H4> </div>
+            <table>
+                <tr>
+                    <td>
+                        <Label  class="{style.label}">User Name</Label>  </td>
+                    <td> <g:TextBox ui:field="userName" styleName="{style.inputs}"></g:TextBox >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <Label  class="{style.label}">Email</Label>  </td>
+                    <td> <g:TextBox ui:field="email" styleName="{style.inputs}"></g:TextBox >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <Label  class="{style.label}">Password</Label>  </td>
+                    <td> <g:PasswordTextBox ui:field="psswd" styleName="{style.inputs}"></g:PasswordTextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <Label class="{style.label}">Confirm Password</Label>  </td>
+                    <td> <g:PasswordTextBox  ui:field="cpsswd" styleName="{style.inputs}"></g:PasswordTextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="3" align="right" class="{style.takeBtn}">
+
+                        <g:Button ui:field="submitbBtn" >Submit Data </g:Button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </g:HTMLPanel>
+    </g:HTMLPanel>
+
+
+</ui:UiBinder>
