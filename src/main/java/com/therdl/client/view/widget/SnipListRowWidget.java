@@ -43,12 +43,12 @@ public class SnipListRowWidget extends Composite {
         this.bean = bean;
         initWidget(uiBinder.createAndBindUi(this));
         title.setInnerText(bean.as().getTitle());
-        servermessage.setInnerText("rdl server message: "+bean.as().getServerMessage());
-        contentAsString.setInnerText("Content as String: "+bean.as().getContentAsString());
-        contentAsHtml.setInnerHTML(bean.as().getContentAsHtml());
-        timeStamp.setInnerText("Date-Time: "+bean.as().getTimeStamp());
+//        servermessage.setInnerText("rdl server message: "+bean.as().getServerMessage());
+//        contentAsString.setInnerText("Content as String: "+bean.as().getContentAsString());
+//        contentAsHtml.setInnerHTML(bean.as().getContentAsHtml());
+//        timeStamp.setInnerText("Date-Time: "+bean.as().getTimeStamp());
         author.setInnerText("Author: "+bean.as().getAuthor());
-        stream.setInnerText("Stream: "+bean.as().getStream());
+//        stream.setInnerText("Stream: "+bean.as().getStream());
         id.setInnerText("Unique_Id: "+bean.as().getId());
     }
 

@@ -16,7 +16,7 @@ public interface  AuthUserBean {
 
     String getPassword();
 
-    void setPassword(String password);       ;
+    void setPassword(String password);
 
     boolean isAuth();
 

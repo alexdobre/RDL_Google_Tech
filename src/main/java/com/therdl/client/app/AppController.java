@@ -203,7 +203,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         requestBuilder.setHeader("Content-Type", "application/json");
         try {
             AutoBean<SnipBean> actionBean = beanery.snipBean();
-            actionBean.as().setAction("getUserAuth");
+//            actionBean.as().setAction("getUserAuth");
             actionBean.as().setId(id);
             String json = AutoBeanCodex.encode(actionBean).getPayload();
 

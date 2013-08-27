@@ -1,38 +1,24 @@
 package com.therdl.client.view.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.http.client.*;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.google.web.bindery.requestfactory.gwt.client.RequestFactoryEditorDriver;
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.google.web.bindery.requestfactory.shared.RequestContext;
-
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.widget.editor.SnipEditor;
 import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.logging.Logger;
 
 
 /**
@@ -40,7 +26,7 @@ import com.therdl.shared.beans.SnipBean;
  *
  * this widget can be refactored to fit the strict MVP Pattern
  *
- * currently this widget is loosley coupled in the sense that it updates and validates itself on the database state
+ * currently this widget is loosely coupled in the sense that it updates and validates itself on the database state
  *
  * independently of the main MVP model
  *
@@ -93,23 +79,16 @@ public class SnipEditorWorkflow extends Composite {
 
     public void setContent(String s) {
         snipEditor.setContent(s);
-
-
     }
 
     public void setEditorTitle(String s) {
         snipEditor.setEditorTitle(s);
-
-
     }
 
 
     public SnipEditor getSnipEditor() {
         return snipEditor;
     }
-
-
-
 
     /**
      * Called by the cancel button when it is clicked. This method will just
@@ -127,36 +106,30 @@ public class SnipEditorWorkflow extends Composite {
     void onSave(ClickEvent event) {
 
         // this could be for local storage
-
         String title = snipEditor.getTitle();
         String contentAsText = snipEditor.getContentAsText();
         String contentAsHtml = snipEditor.getContentAsHtml();
         log.info("SnipEditorWorkflow onSave title: " + title);
-        log.info("SnipEditorWorkflow onSave content as Text : " + contentAsHtml);
+//        log.info("SnipEditorWorkflow onSave content as Text : " + contentAsHtml);
         log.info("SnipEditorWorkflow onSave content as Html : " + contentAsHtml);
-
     }
 
      // save
     public void submitBean(AutoBean<SnipBean> bean) {
-
+        log.info("SnipEditorWorkflow submitBean : " + bean.toString());
         view.submitBean(bean);
-
-
     }
 
     // update
     public void submitEditBean(AutoBean<SnipBean> bean) {
-
+        log.info("SnipEditorWorkflow submitEditBean : " + bean.toString());
         view.submitEditBean(bean);
-
     }
 
     // delete
     public void onDelete(String id) {
-
+        log.info("SnipEditorWorkflow onDelete : id =  " + id);
         view.onDeleteSnip(id);
-
     }
 
 
@@ -170,11 +143,8 @@ public class SnipEditorWorkflow extends Composite {
 
     public void clearEditor() {
         log.info("SnipEditorWorkflow clearEditor " );
-
         snipEditor.setEditorTitle("");
         snipEditor.setContent("");
-
-
     }
 
 }

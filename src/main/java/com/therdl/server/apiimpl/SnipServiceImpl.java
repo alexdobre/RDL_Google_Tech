@@ -30,9 +30,17 @@ public class SnipServiceImpl implements SnipsService {
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipServiceImpl.class);
 
 
+    /**
+     * drops the collection
+     */
+    @Override
+    public void dropSnipCollection () {
+        DB db = getMongo();
+        db.getCollection("rdlSnipData").drop();
+    }
 
     @Override
-    public List<SnipBean> getAllSnips(String match) {
+    public List<SnipBean> getAllSnips() {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
         beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -46,15 +54,7 @@ public class SnipServiceImpl implements SnipsService {
 
         while(collDocs.hasNext()) {
             DBObject doc = collDocs.next();
-            SnipBean snip = beanery.snipBean().as();
-            snip.setId((String)doc.get("_id").toString());
-            snip.setServerMessage((String)doc.get("serverMessage"));
-            snip.setStream((String) doc.get("stream"));
-            snip.setTimeStamp((String) doc.get("timeStamp"));
-            snip.setContentAsString((String) doc.get("contentAsString"));
-            snip.setContentAsHtml((String) doc.get("contentAsHtml"));
-            snip.setAuthor((String) doc.get("author"));
-            snip.setTitle((String) doc.get("title"));
+            SnipBean snip = buildBeanObject(doc);
             beans.add(snip);
         }
 
@@ -62,41 +62,29 @@ public class SnipServiceImpl implements SnipsService {
 
     }
 
-
     @Override
     public SnipBean getLastSnip(String  match) {
 
-        List<SnipBean> beans = getAllSnips( match);
+        List<SnipBean> beans = getAllSnips();
 
         SnipBean lastBean = Iterables.getLast(beans);
 
         return lastBean;
     }
 
-
-
-
     @Override
     public SnipBean getSnip(String id) {
         sLogger.info("SnipServiceImpl getSnip  id: "+id);
 
         beanery = AutoBeanFactorySource.create(Beanery.class);
-        SnipBean snip = beanery.snipBean().as();
         DB db = getMongo();
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(id));
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
         DBObject  doc=  cursor.next();
-        snip.setId((String)doc.get("_id").toString());
-        snip.setServerMessage((String)doc.get("serverMessage"));
-        snip.setStream((String) doc.get("stream"));
-        snip.setTimeStamp((String) doc.get("timeStamp"));
-        snip.setContentAsString((String) doc.get("contentAsString"));
-        snip.setContentAsHtml((String) doc.get("contentAsHtml"));
-        snip.setAuthor((String) doc.get("author"));
-        snip.setTitle((String) doc.get("title"));
-        snip.setAction((String) doc.get("action"));
+
+        SnipBean snip = buildBeanObject(doc);
 
         return snip;
     }
@@ -108,47 +96,41 @@ public class SnipServiceImpl implements SnipsService {
 
         DBCollection coll = db.getCollection("rdlSnipData");
         if(snip.getId()==null)  {
-        BasicDBObject doc = new BasicDBObject("user", "testRdlUser").
-                append("title", snip.getTitle()).
-                append("contentAsString", snip.getContentAsString()).
-                append("contentAsHtml", snip.getContentAsHtml()).
-                append("author", snip.getAuthor()).
-                append("timeStamp",makeTimeStamp()).
-                append("stream", snip.getStream()).
-                append("action",snip.getAction()).
-                append("serverMessage", snip.getServerMessage());
-
-
-        coll.insert(doc);
-
+            BasicDBObject doc = buildDbObject(snip);
+            coll.insert(doc);
         }
-
-
     }
 
-
+    /**
+     * updates the object in the db
+     * @param snip : Bean object to update with
+     * @return
+     */
     @Override
     public void updateSnip(SnipBean snip) {
+
         sLogger.info("SnipServiceImpl updateSnip  updateSnip id: "+snip.getId());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getId());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getTitle());
+
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
 
-        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getContentAsString());
-        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getTitle());
-        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getId());
+        // build the search query
+        BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(snip.getId()));
 
-        BasicDBObject updateThis = new BasicDBObject();
+        // set thee id to null to avoid exception from the driver (the id could not be updated)
+        snip.setId(null);
 
-        updateThis.put("_id", new ObjectId(snip.getId()));
+        // get the db object to save
+        BasicDBObject doc = buildDbObject(snip);
 
-        DBObject newObject =  coll.find(updateThis).toArray().get(0);
+        // build the update query
+        BasicDBObject updateDocument = new BasicDBObject();
+        updateDocument.append("$set", doc);
 
-        newObject.put("contentAsHtml",snip.getContentAsHtml());
-        newObject.put("title", snip.getTitle());
-        newObject.put("contentAsString",snip.getContentAsString());
-
-        coll.findAndModify(updateThis, newObject);
-
+        // make update
+        coll.findAndModify(searchQuery, updateDocument);
     }
 
 
@@ -163,8 +145,6 @@ public class SnipServiceImpl implements SnipsService {
             DBObject item = cursor.next();
             coll.remove(item);
         }
-
-
     }
 
     @Override
@@ -184,6 +164,104 @@ public class SnipServiceImpl implements SnipsService {
         return timeStampString;
     }
 
+    /**
+     * builds the db object from Bean
+     * @param : SnipBean snip
+     * @return : BasicDBObject
+     */
+    private BasicDBObject buildDbObject(SnipBean snip) {
+
+        BasicDBObject doc = new BasicDBObject();
+
+        // if there is id in user instance , append it
+        if(snip.getId() != null){
+            doc.append("_id", snip.getId());
+        }
+
+        doc.append("title", snip.getTitle());
+        doc.append("content", snip.getContent());
+        doc.append("author", snip.getAuthor());
+        doc.append("creationDate", snip.getCreationDate());
+        doc.append("editDate", snip.getEditDate());
+        doc.append("snipType", snip.getSnipType());
+        doc.append("coreCat", snip.getCoreCat());
+        doc.append("subCat", snip.getSubCat());
+        doc.append("views", snip.getViews());
+        doc.append("rep", snip.getRep());
+        doc.append("posRef", snip.getPosRef());
+        doc.append("neutralRef", snip.getNeutralRef());
+        doc.append("negativeRef", snip.getNegativeRef());
+        doc.append("referenceType", snip.getReferenceType());
+        doc.append("parentStream", snip.getParentStream());
+        doc.append("parentTag", snip.getParentTag());
+        doc.append("parentThread", snip.getParentThread());
+        doc.append("votes", snip.getVotes());
+        doc.append("money", snip.getMoney());
+
+        BasicDBList links = new BasicDBList();
+
+        if(snip.getLinks() == null){
+            snip.setLinks(new ArrayList<SnipBean.Links>());
+        }
+
+        for (SnipBean.Links link : snip.getLinks()) {
+            BasicDBObject obj = new BasicDBObject("targetId", link.getTargetId()).
+                    append("rank", link.getRank());
+            links.add(obj);
+        }
+
+        doc.append("links", links);
+
+        return doc;
+    }
+
+    /**
+     * builds the Bean from he db object
+     * @param : DBObject doc
+     * @return : SnipBean
+     */
+    private SnipBean buildBeanObject(DBObject doc) {
+        SnipBean snip = beanery.snipBean().as();
+
+        // set the fields
+        snip.setId(doc.get("_id").toString());
+        snip.setRep((String) doc.get("rep"));
+        snip.setAuthor((String) doc.get("author"));
+        snip.setContent((String) doc.get("content"));
+        snip.setCoreCat((String) doc.get("coreCat"));
+        snip.setCreationDate((String) doc.get("creationDate"));
+        snip.setEditDate((String) doc.get("editDate"));
+        snip.setMoney((String) doc.get("money"));
+        snip.setNegativeRef((String) doc.get("negativeRef"));
+        snip.setNeutralRef((String) doc.get("neutralRef"));
+        snip.setParentStream((String) doc.get("parentStream"));
+        snip.setSnipType((String) doc.get("snipType"));
+        snip.setViews((String) doc.get("views"));
+        snip.setTitle((String) doc.get("title"));
+        snip.setReferenceType((String) doc.get("referenceType"));
+        snip.setPosRef((String) doc.get("posRef"));
+        snip.setSubCat((String) doc.get("subCat"));
+        snip.setParentTag((String) doc.get("parentTag"));
+        snip.setVotes((String) doc.get("votes"));
+        snip.setParentThread((String) doc.get("parentThread"));
+
+        List<SnipBean.Links> linksList = new ArrayList<SnipBean.Links>();
+
+        // set the List<SnipBean.Links>
+        BasicDBList links = (BasicDBList)doc.get("links");
+
+        for(Object obj : links){
+            SnipBean.Links titlesBean = beanery.snipLindsBean().as();
+
+            titlesBean.setTargetId((String)((BasicDBObject)obj).get("targetId"));
+            titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
+            linksList.add(titlesBean);
+        }
+
+        snip.setLinks(linksList);
+
+        return snip;
+    }
 
     // later the url will be a cloud based schema hence exception
     private DB getMongo() {
@@ -205,10 +283,4 @@ public class SnipServiceImpl implements SnipsService {
             return null;
         }
     }
-
-
-
-
-
-
 }

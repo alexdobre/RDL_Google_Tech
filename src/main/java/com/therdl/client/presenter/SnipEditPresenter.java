@@ -27,8 +27,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
     private final SnipEditView view;
 
     private Beanery beanery = GWT.create(Beanery.class);
+//    private List<JSOModel> jSon1List;
     private List<JSOModel> jSonList;
-
 
 
     public SnipEditPresenter(SnipEditView view) {
@@ -54,15 +54,18 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
         String html =view.getSnipEditorWorkflow().getSnipEditor().getContentAsHtml();
 
         if (bean.as().getId() == null )
-        {   Window.alert("this is a new snip please use submit not submit-edit" );
-            return;  }
+        {
+            Window.alert("this is a new snip please use submit not submit-edit" );
+            return;
+        }
 
         log.info("SnipEditPresenter submitEditBean bean");
         bean.as().setTitle(title);
-        bean.as().setContentAsString(text);
-        bean.as().setContentAsHtml(html);
+//        bean.as().setContentAsString(text);
+//        bean.as().setContentAsHtml(html);
+        bean.as().setContent(text);
         bean.as().setAuthor("demo user");
-        bean.as().setServerMessage("submitEdit");
+//        bean.as().setServerMessage("submitEdit");
         bean.as().setAction("update");
         log.info("SnipEditPresenter submitBean bean : " +  bean.as().getTitle());
         // now submit to server
@@ -70,7 +73,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(Constants.DEPLOY){
+        if(!Constants.DEPLOY){
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -118,7 +121,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
         log.info("SnipEditPresenter onDelete: snip id "+id);
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(Constants.DEPLOY){
+        if(!Constants.DEPLOY){
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -179,18 +182,20 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
         }
 
         bean.as().setTitle(title);
-        bean.as().setContentAsString(text);
-        bean.as().setContentAsHtml(html);
+//        bean.as().setContentAsString(text);
+        bean.as().setContent(text);
+//        bean.as().setContentAsHtml(html);
         bean.as().setAuthor("demo user");
-        bean.as().setServerMessage("submit");
+//        bean.as().setServerMessage("submit");
         bean.as().setAction("save");
-        log.info("SnipEditPresenter submitBean bean : " +  bean.as().getTitle());
+
+        log.info("SnipEditPresenter submitBean bean : title : " +  bean.as().getTitle());
         // now submit to server
 
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(Constants.DEPLOY){
+        if(!Constants.DEPLOY){
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -237,7 +242,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(Constants.DEPLOY){
+        if(!Constants.DEPLOY){
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -275,10 +280,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
                         log.info("SSnipEditPresenter onResponseReceived making bean from json" + jSonList.get(k).get(counter));
                         AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
 
-                        log.info("" + bean.as().getTitle());
-                        log.info("" + bean.as().getAuthor());
-                        log.info("" + bean.as().getContentAsString());
-                        log.info("" + bean.as().getTimeStamp());
+                        log.info("" + bean.as().toString());
                         beans.add(bean);
                     }
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());

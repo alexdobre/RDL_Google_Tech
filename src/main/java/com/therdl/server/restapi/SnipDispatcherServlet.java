@@ -34,10 +34,23 @@ public class SnipDispatcherServlet extends HttpServlet {
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipDispatcherServlet.class);
     private final Provider<HttpSession> sessions;
+
+    /**
+     * the service , which handles the db queries
+     */
     SnipsService snipsService;
-    // for message beans
+
+    /**
+     * for message beans
+     */
     Beanery beanery;
 
+
+    /**
+     * Guice injector
+     * @param sessions
+     * @param snipsService
+     */
     @Inject
     public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService) {
         this.sessions = sessions;
@@ -46,8 +59,16 @@ public class SnipDispatcherServlet extends HttpServlet {
 
     }
 
+    /**
+     * Maven : will be executed on POST request with 'http://localhost:8080/rdl/getSnips' URL
+     * Jboss : will be executed on POST request with 'http://localhost:8080/therdl/rdl/getSnips' URL
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
         String debugString = snipsService.getDebugString();
@@ -63,33 +84,32 @@ public class SnipDispatcherServlet extends HttpServlet {
         br.close();
 
 
-        AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class,sb.toString());
+        AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
         sb.setLength(0);
 
         if(actionBean.as().getAction().equals("getall") ) {
-        List < SnipBean > beans = snipsService.getAllSnips("demoUser id");
-        sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
-        sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
-        ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
-        int k = 0;
-        for (SnipBean bean : beans )   {
-            HashMap<String,String> 	beanBag = new HashMap<String, String>();
-            AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-            String asJson = AutoBeanCodex.encode(autoBean).getPayload();
-            beanBag.put(Integer.toString(k),asJson);
-            beanList.add(beanBag);
-            k++;
+            List < SnipBean > beans = snipsService.getAllSnips();
+            sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
+            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
+            ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
+            int k = 0;
+            for (SnipBean bean : beans )   {
+                HashMap<String,String> 	beanBag = new HashMap<String, String>();
+                AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+                String asJson = AutoBeanCodex.encode(autoBean).getPayload();
+                beanBag.put(Integer.toString(k),asJson);
+                beanList.add(beanBag);
+                k++;
+            }
 
-        }
+            sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
 
-        sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
-
-        Gson gson = new Gson();
-        sLogger.info(gson.toJson(beanList));
-        PrintWriter out = resp.getWriter();
-        out.write(gson.toJson(beanList));
-        beanList.clear();
-        actionBean.as().setAction("dump");
+            Gson gson = new Gson();
+            sLogger.info(gson.toJson(beanList));
+            PrintWriter out = resp.getWriter();
+            out.write(gson.toJson(beanList));
+            beanList.clear();
+            actionBean.as().setAction("dump");
         }
 
         else if(actionBean.as().getAction().equals("save") ) {
@@ -102,19 +122,155 @@ public class SnipDispatcherServlet extends HttpServlet {
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
             sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getTitle());
             snipsService.updateSnip(actionBean.as());
-
-
         }
         else if(actionBean.as().getAction().equals("delete") ) {
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
             sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
             snipsService.deleteSnip(actionBean.as().getId());
-
-
         }
-
-
     }
 
+    /*********************************** For demo CRUD ************************************/
+
+    /**
+     * Maven : the test (GET) URL : http://localhost:8080/rdl/getSnips
+     * Jboss : the test (GET) URL : http://localhost:8080/therdl/rdl/getSnips
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        sLogger.info("UserDispatcherServlet: doPost : " + req);
+
+        snipsService.dropSnipCollection();
+
+        createTestData("Author 1");
+        createTestData("Author 2");
+
+        // get all the users
+        List<SnipBean> snips =  snipsService.getAllSnips();
+
+        // create a StringBuilder to build the response
+        StringBuilder buff = new StringBuilder() ;
+        buff.append("Snips are created and listed <br>");
+        for (SnipBean s : snips) {
+            buff.append("<br/> <h4>" + s.getAuthor() + "</h4>");
+            buff.append(s.toString());
+        }
+
+        // the id of the first snip in the db
+        String id = snips.get(0).getId();
+
+        // get the snip with '_id' : id
+        SnipBean snip = snipsService.getSnip(id);
+
+        // get the old title
+        String oldTitle = snip.getTitle();
+
+        // modify some fields
+        snip.setTitle("The title is changed now");
+        snip.setAuthor("New Author");
+
+        // the actual update
+        snipsService.updateSnip(snip);
+
+        // get the modified snip
+        snip = snipsService.getSnip(id);
+
+        buff.append("<br/><hr><br/>Updated the snip : The 'title' and 'author' fields are changed <br/>");
+        buff.append(snip.toString());
+        buff.append("<br/><br/><br/>");
+
+        // delete the snip
+        snipsService.deleteSnip(id);
+
+        // retrieve al the user objects
+        snips =  snipsService.getAllSnips();
+
+        buff.append("Delete the snip 'id' : " + id + " <br/><br/>");
+        buff.append("Listing all the snips <br/>");
+
+        for (SnipBean s : snips) {
+            buff.append("<br/> <h4>" + s.getTitle() + "</h4>");
+            buff.append(s.toString());
+        }
+
+        // write the output string
+        PrintWriter out = resp.getWriter();
+        out.write(buff.toString());
+    }
+
+    /**
+     * makes a new timeStamp
+     *
+     * @return
+     */
+    private String makeTimeStamp() {
+        Date processDateTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSS");
+        String timeStampString = formatter.format(processDateTime);
+
+        return timeStampString;
+    }
+
+    /**
+     * Creates and inserts a sample Snip
+     * @param author  : The sample text
+     */
+    void createTestData(String author) {
+        // init the Bean
+        SnipBean snip = beanery.snipBean().as();
+
+        // set the fields
+        snip.setRep("1000");
+        snip.setAuthor(author);
+        snip.setContent("The best content");
+        snip.setCoreCat("demo user 1");
+        snip.setCreationDate(makeTimeStamp());
+        snip.setEditDate(makeTimeStamp());
+        snip.setLinks(createLink(snip));
+        snip.setMoney("100");
+        snip.setNegativeRef("11");
+        snip.setNeutralRef("11");
+        snip.setParentStream("");
+        snip.setSnipType("default");
+        snip.setViews("some view");
+        snip.setTitle("The best title ever :)");
+        snip.setReferenceType("some ref type");
+        snip.setPosRef("100");
+        snip.setSubCat("some subCat");
+        snip.setParentTag("the best tag ever :)");
+        snip.setVotes("-1");
+        snip.setParentThread("some parent thread");
+
+        // insert into db
+        snipsService.createSnip(snip);
+    }
+
+    /**
+     * Creates List<SnipBean.Links> instance for testing
+     *
+     * @param snip
+     * @return
+     */
+    private List<SnipBean.Links> createLink(SnipBean snip) {
+        List<SnipBean.Links> links = new ArrayList<>();
+
+        SnipBean.Links link1 = beanery.snipLindsBean().as();
+        link1.setTargetId("567");
+        link1.setRank("10");
+
+        SnipBean.Links link2 = beanery.snipLindsBean().as();
+        link2.setTargetId("111");
+        link2.setRank("9");
+
+        links.add(link1);
+        links.add(link2);
+
+        return links;
+    }
 }
 

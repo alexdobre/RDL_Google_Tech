@@ -1,30 +1,55 @@
 package com.therdl.server.api;
 
 
-
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
 
 public interface SnipsService {
 
+    /**
+     * for testing the crud
+     * drops the snip collection
+     */
+    public void dropSnipCollection();
 
-         SnipBean getSnip(String id);
+    /**
+     * testing and development methods debug string
+     * @return
+     */
+    String getDebugString();
+    SnipBean getLastSnip(String id);
 
-         void createSnip(SnipBean snip);
+    /**
+     * gets the snip
+     * @param id
+     * @return
+     */
+    SnipBean getSnip(String id);
 
-         // get all snips for a user
-         List<SnipBean> getAllSnips(String id);
+    /**
+     * creates the new snip
+     * @param snip
+     */
+    void createSnip(SnipBean snip);
+
+    /**
+     * get all snips for a user
+     * @return
+     */
+    List<SnipBean> getAllSnips();
 
 
-         void deleteSnip(String id);
+    /**
+     * deletes the snip
+     * @param id
+     */
+    void deleteSnip(String id);
 
-         void updateSnip(SnipBean snip);
-
-         //  testing and development methods debug string
-         String getDebugString();
-
-         SnipBean getLastSnip(String id);
-
-
+    /**
+     * updates the snip
+     * @param snip
+     * @return
+     */
+    void updateSnip(SnipBean snip);
 }

@@ -15,6 +15,7 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -55,9 +56,10 @@ public class DynamicPostListBox extends Composite {
                 if(key.equals("-1")) return;
                 currentBean =  snipMap.get(key);
 
-                snipEditorWorkflow.setContent(currentBean.as().getContentAsHtml());
+//                snipEditorWorkflow.setContent(currentBean.as().getContentAsHtml());
                 snipEditorWorkflow.setEditorTitle(currentBean.as().getTitle());
-             //   onSubmit();
+                snipEditorWorkflow.setContent(currentBean.as().getContent());
+                //   onSubmit();
 
             }
         });
@@ -66,12 +68,9 @@ public class DynamicPostListBox extends Composite {
 
 
     private void initialiseDropBox() {
-
         dropBox.clear();
         dropBox.addItem("select a snip", "-1");
         dropBox.getElement().getFirstChildElement().setAttribute("disabled" ,"disabled" );
-
-
     }
 
 
@@ -90,6 +89,9 @@ public class DynamicPostListBox extends Composite {
         for (AutoBean<SnipBean> bean : beans) {
             String title =  bean.as().getTitle();
             String id =  bean.as().getId();
+
+
+            log.info("DynamicPostListBox: addBeans added bean with id " + bean.as().getId());
 
             snipMap.put(bean.as().getId(), bean);
             dropBox.addItem(title , id );
@@ -112,7 +114,6 @@ public class DynamicPostListBox extends Composite {
 
         AutoBean<SnipBean> newBean =   beanery.snipBean();
         snipEditorWorkflow.submitBean(newBean );
-
     }
 
 

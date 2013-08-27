@@ -41,7 +41,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         log.info("SnipSearchPresenter getSnipDemoResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
-        if(Constants.DEPLOY){
+        if(!Constants.DEPLOY){
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -75,12 +75,12 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
                     log.info("SnipSearchPresenter  initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
 
-                 AutoBean<SnipBean> bean   = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
+                    AutoBean<SnipBean> bean   = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );
-                    log.info(""+ bean.as().getContentAsString() );
-                    log.info(""+ bean.as().getTimeStamp() );
+//                    log.info(""+ bean.as().getContentAsString() );
+//                    log.info(""+ bean.as().getTimeStamp() );
 
                     snipSearchView.getSnipDemoResult(bean);
                 }
@@ -88,7 +88,6 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                 @Override
                 public void onError(Request request, Throwable exception) {
                     log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-
                 }
 
             });

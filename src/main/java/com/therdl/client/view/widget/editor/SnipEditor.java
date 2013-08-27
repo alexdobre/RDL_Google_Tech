@@ -17,8 +17,7 @@ import com.therdl.client.view.widget.RichTextToolbar;
  */
 public class SnipEditor extends Composite  {
 
-	   interface Binder extends UiBinder<Widget, SnipEditor> {
-	  }
+	   interface Binder extends UiBinder<Widget, SnipEditor> {}
 	  
 	  @UiField ValueBoxEditorDecorator<String> title;
 	  
