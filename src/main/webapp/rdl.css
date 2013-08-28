@@ -16,7 +16,7 @@ div.text {
 .signInView {
 
             position:fixed;
-            top:10px;
+            top:20px;
             display:block;
             margin:10px;
             right:20%;
@@ -27,55 +27,69 @@ div.text {
 
 }
 
+ .gwt-MenuBar {
+ 	background-color:black !important;
+ }
+
  .gwt-MenuBar-horizontal {
   width:100%;
-  
-  height:34px;
-	
+  height:28px;
+	color:white;
+	background-color:black !important;
+	background: transparent url(img/hborder2.png) repeat-x !important;
  }
- 
 
+.gwt-MenuBarPopup {
+	color:white !important;
+		background: transparent !important;
+}
+
+
+.gwt-MenuBar .gwt-MenuItem-selected {
+  color:red !important;
+
+}
 
   .userDropDown {
-    color: #666666;
+  color:white;
     font-weight: bold;
-    padding: 0 10px;
+    padding:4px 10px;
     vertical-align: bottom;
     position:fixed;
+    top:0.2%;
     right:15%;
   	font:14px;
-  	 padding-top:10px;
   	 background: url("img/dropdown_arrow.gif") bottom right no-repeat; 
   	   width:130px;
   	 
   }
   
    .signUpAccount {
-    color: #666666;
+  color:white;
     font-weight: bold;
-    padding: 0 10px;
+      padding:4px 10px;
     vertical-align: bottom;
     position:fixed;
     right:5%;
+      top:0.2%;
   	font:14px;
-  	 padding-top:10px;
+
   	  
   }
 
  .ideasMenuItem {
  		font:14px;
-     color: #666666;
+  color:white;
     font-weight: bold;
-    padding: 0 10px;
+    padding:4px 10px;
     vertical-align: bottom;
      position:fixed;
     left:20px;
-     padding-top:10px;
+      top:0.2%;
+
       
  
  }
-
-
 
 
 

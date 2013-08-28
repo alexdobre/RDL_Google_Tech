@@ -4,7 +4,7 @@
     <inherits name='com.google.gwt.user.User'/>
     <inherits name='com.google.gwt.uibinder.UiBinder'/>
 
-    <inherits name='com.google.gwt.user.theme.chrome.Chrome'/>
+    <!--inherits name='com.google.gwt.user.theme.chrome.Chrome'/-->
 
     <!-- Other module inherits -->
     <inherits name='com.google.web.bindery.requestfactory.RequestFactory'/>
@@ -25,6 +25,7 @@
     <set-property name="gwt.logging.systemHandler" value="ENABLED"/>
     <set-property name="gwt.logging.developmentModeHandler" value="ENABLED"/>
     <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
+    <stylesheet src='../rdl.css' />
 
     <entry-point class='com.therdl.client.RDL'/>
 
