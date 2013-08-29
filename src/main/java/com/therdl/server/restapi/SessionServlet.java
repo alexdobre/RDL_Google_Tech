@@ -6,9 +6,12 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.SnipsService;
+import com.therdl.server.api.UserService;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
@@ -34,11 +37,12 @@ public class SessionServlet  extends HttpServlet {
 
     private final Provider<HttpSession> sessions;
     private Beanery beanery;
-
+    UserService userService;
 
     @Inject
-    public SessionServlet(Provider<HttpSession> sessions) {
+    public SessionServlet(Provider<HttpSession> sessions , UserService userService) {
         this.sessions = sessions;
+        this.userService = userService;
         beanery = AutoBeanFactorySource.create(Beanery.class);
 
 
@@ -62,13 +66,25 @@ public class SessionServlet  extends HttpServlet {
         AutoBean<AuthUserBean> authBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, sb.toString());
 
         String action =  authBean.as().getAction();
+        System.out.println( "SessionServlet signUp authBean.as().getAction() " +authBean.as().getAction());
+
 
         if(action.equals("signUp")) {
 
+            AutoBean<UserBean> newUserBean = beanery.userBean();
+            System.out.println("SessionServlet password hash = " + authBean.as().getEmail());
+            newUserBean.as().setEmail(authBean.as().getEmail());
+            System.out.println("SessionServlet password hash = " + authBean.as().getName());
+            newUserBean.as().setUsername(authBean.as().getName());
+            String password = authBean.as().getPassword();
+            String hash = BCrypt.hashpw(password, BCrypt.gensalt());
+            System.out.println("SessionServlet password hash = " + hash);
+            newUserBean.as().setPassHash(hash);
+            userService.createUser(newUserBean.as());
             authBean.as().setAuth(true);
             authBean.as().setAction("newUserOk");
-            authBean.as().setName("newUser Under Construction");
-            sLogger.info( "SessionServlet signUp authBean" +AutoBeanCodex.encode(authBean).getPayload());
+            authBean.as().setName(authBean.as().getName());
+            System.out.println("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
             PrintWriter out = resp.getWriter();
             out.write( AutoBeanCodex.encode(authBean).getPayload());
 
@@ -77,11 +93,12 @@ public class SessionServlet  extends HttpServlet {
 
         else if(action.equals("auth") )  {
 
-            authBean.as().setAuth(true);
-            authBean.as().setName("Username Options  ");
-            sLogger.info( AutoBeanCodex.encode(authBean).getPayload());
+            String password = authBean.as().getPassword();
+            AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
+            checkedUser.as().setAuth(true);
+            System.out.println(AutoBeanCodex.encode(checkedUser).getPayload());
             PrintWriter out = resp.getWriter();
-            out.write( AutoBeanCodex.encode(authBean).getPayload());
+            out.write( AutoBeanCodex.encode(checkedUser).getPayload());
 
 
         }

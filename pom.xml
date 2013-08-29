@@ -23,6 +23,13 @@
     </properties>
 
     <dependencies>
+        <!-- password hashing -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.3m</version>
+        </dependency>
+
 
         <!-- MongDB java driver to hook up to MongoDB server -->
         <dependency>

@@ -1,12 +1,15 @@
 package com.therdl.server.apiimpl;
 
 import com.google.common.collect.Iterables;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.UserService;
+import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
 import org.bson.types.ObjectId;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
@@ -42,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public List<UserBean> getAllUsers() {
         DB db = getMongo();
         List<UserBean> beans = new ArrayList<UserBean>();
-        beanery = AutoBeanFactorySource.create(Beanery.class);
+
         Set<String> colls = db.getCollectionNames();
         for (String s : colls) {
             sLogger.info(s);
@@ -58,6 +61,32 @@ public class UserServiceImpl implements UserService {
         }
         return beans;
     }
+
+    @Override
+    public  AutoBean<AuthUserBean>  findUser(AuthUserBean bean, String hash) {
+        beanery = AutoBeanFactorySource.create(Beanery.class);
+        AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
+        List<UserBean> users =getAllUsers();
+
+         for(UserBean ub : users)   {
+
+             if  (ub.getEmail().equals(bean.getEmail())) {
+                 if (BCrypt.checkpw(hash, ub.getPassHash())) {
+                     checkedUserBean.as().setName(ub.getUsername());
+                     checkedUserBean.as().setEmail(ub.getEmail());
+                     checkedUserBean.as().setAction("OkUser");
+                     return checkedUserBean;
+                 }  // end hash if
+                 }  // end email if
+
+         } // end loop
+        checkedUserBean.as().setAction("NotOkUser");
+        return  checkedUserBean;
+
+    }
+
+
+
 
     @Override
     public UserBean getLastUser(String  match) {
@@ -243,13 +272,20 @@ public class UserServiceImpl implements UserService {
 
         BasicDBList titlesList = new BasicDBList();
 
+        if(user.getTitles() != null) {
+
         for (UserBean.TitleBean title : user.getTitles()) {
             BasicDBObject obj = new BasicDBObject("titleName", title.getTitleName()).
                     append("dateGained", title.getDateGained());
             titlesList.add(obj);
         }
 
+        }
+
+
         BasicDBList friendsList = new BasicDBList();
+
+        if(user.getFriends() != null) {
 
         for (UserBean.FriendBean friends : user.getFriends()) {
 
@@ -266,22 +302,30 @@ public class UserServiceImpl implements UserService {
             friendsList.add(obj);
         }
 
+        }
+
         BasicDBList repGivenList = new BasicDBList();
 
-        for (UserBean.RepGivenBean repGiven : user.getRepGiven()) {
+        if(user.getRepGiven() != null) {
+
+            for (UserBean.RepGivenBean repGiven : user.getRepGiven()) {
             BasicDBObject obj = new BasicDBObject("snipId", repGiven.getSnipId()).
                     append("date", repGiven.getDate());
             repGivenList.add(obj);
         }
 
+        }
+
         BasicDBList votesGivenList = new BasicDBList();
+
+        if(user.getVotesGiven() != null) {
 
         for (UserBean.VotesGivenBean votesGiven : user.getVotesGiven()) {
             BasicDBObject obj = new BasicDBObject("proposalId", votesGiven.getProposalId()).
                     append("date", votesGiven.getDate());
             votesGivenList.add(obj);
         }
-
+        }
 
         doc.append("titles", titlesList);
         doc.append("friends", friendsList);
@@ -289,6 +333,8 @@ public class UserServiceImpl implements UserService {
         doc.append("votesGiven", votesGivenList);
         return doc;
     }
+
+
 
     // later the url will be a cloud based schema hence exception
     private DB getMongo() {

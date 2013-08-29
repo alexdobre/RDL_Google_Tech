@@ -1,6 +1,8 @@
 package com.therdl.server.api;
 
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.mongodb.DB;
+import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.UserBean;
 import java.util.List;
 
@@ -51,4 +53,13 @@ public interface UserService {
      * @return
      */
     void updateUser(UserBean user);
+
+
+    /**
+     * finds a user on email
+     * @param user
+     * @return   UserBean
+     */
+    AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash);
+
 }
