@@ -1,4 +1,15 @@
+body {
 
+        width:100%;
+        height:100%;
+        overflow:auto;
+}
+
+
+*{
+    margin: 0;
+    padding:0;    
+}
 
 
 div.text {
@@ -12,6 +23,46 @@ div.text {
    z-index:1;
 
 }
+
+   .gwt-HTML {
+
+    margin-left:10px !important;
+
+   }
+
+  .gwt-ListBox {
+ 
+          margin-left:10px !important;
+
+    }
+    
+    table {
+ 		margin-left:2px !important; 
+ 		margin-right:6px !important;  
+ 		border-collapse:collapse !important;
+    border-spacing: 4px !important;
+
+
+    }
+     tr { 
+
+     border-spacing:2px !important;
+        margin-left:10px !important;
+    margin-right:10px !important; a
+    }
+
+		td {
+    margin-left:10px !important;
+    margin-right:10px !important;  
+     padding: 2px;
+    
+    }
+    
+    
+   .gwt-FlowPanel {
+    height:100%;
+   
+   }
 
 .signInView {
 
@@ -90,6 +141,3 @@ div.text {
       
  
  }
-
-
-
