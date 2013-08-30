@@ -8,6 +8,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SignInView;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.shared.Constants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -55,6 +56,11 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
         authUrl = authUrl.replaceAll("/therdl", "");
+
+
+        if(!Constants.DEPLOY){
+            authUrl = authUrl.replaceAll("/therdl", "");
+        }
 
         log.info("WelcomePresenter submit updateUrl: " + authUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
