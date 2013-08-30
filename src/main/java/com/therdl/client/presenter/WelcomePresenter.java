@@ -55,8 +55,6 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         log.info("v onSubmit password " + passwordText + " emailtxt  " + emailtxt);
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
-        authUrl = authUrl.replaceAll("/therdl", "");
-
 
         if(!Constants.DEPLOY){
             authUrl = authUrl.replaceAll("/therdl", "");
