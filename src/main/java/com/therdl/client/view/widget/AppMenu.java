@@ -30,6 +30,7 @@ public class AppMenu extends Composite  {
 
 
     // auth flow
+    @UiField MenuItem userdetails;
     @UiField MenuItem user;
     @UiField MenuItem email;
     @UiField MenuItem out;
@@ -46,7 +47,7 @@ public class AppMenu extends Composite  {
         this .services.setVisible(false);
         this .improvements.setVisible(false);
         // set the style name to position the user dropdown far right
-        this .user.setStyleName("userDropDown");
+        this .userdetails.setStyleName("userDropDown");
         this .signUp.setStyleName("signUpAccount");
         this .ideas.setStyleName("ideasMenuItem");
 
@@ -99,6 +100,7 @@ public class AppMenu extends Composite  {
 
     public void  setUserInfoVisible (boolean state){
         log.info("AppMenu: setUserInfoVisible "+state);
+        userdetails.setVisible(state);
         user.setVisible(state);
         email.setVisible(state);
     }

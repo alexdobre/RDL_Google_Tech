@@ -26,10 +26,11 @@
 
             <g:MenuItem text="Sign Up for an Account" ui:field = "signUp"/>
 
-            <g:MenuItem text="User" ui:field = "user"  styleName="{style.userDropDown}">
+            <g:MenuItem text="User Details" ui:field = "userdetails"  styleName="{style.userDropDown}">
             <g:MenuBar vertical="true">
-            <g:MenuItem text="log out" ui:field = "out"/>
-            <g:MenuItem text="email" ui:field = "email"/>
+                <g:MenuItem text="User" ui:field = "user"/>
+                <g:MenuItem text="log out" ui:field = "out"/>
+                <g:MenuItem text="email" ui:field = "email"/>
             </g:MenuBar>
             </g:MenuItem>
 
