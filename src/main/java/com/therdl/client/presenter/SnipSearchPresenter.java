@@ -2,13 +2,18 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.Constants;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
@@ -17,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter {
+public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter, ValueChangeHandler<String> {
     private static Logger log = Logger.getLogger("");
 	private final SnipSearchView snipSearchView;
     private Beanery beanery = GWT.create(Beanery.class);
@@ -29,6 +34,11 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         this.controller =controller;
         this.snipSearchView = snipSearchView;
         log.info("SnipSearchPresenter constructor");
+        if(!controller.getCurrentUserBean().as().isAuth() ) {
+            History.newItem(RDLConstants.Tokens.WELCOME);
+            History.fireCurrentHistoryState();
+
+        }
 
     }
 	
@@ -43,9 +53,15 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
             snipSearchView.getAppMenu().setSignUpVisible(false);
             snipSearchView.getAppMenu().setUserInfoVisible(true);
             snipSearchView.setloginresult(controller.getCurrentUserBean().as().getName(),
-                    controller.getCurrentUserBean().as().getEmail(), true  );
+            controller.getCurrentUserBean().as().getEmail(), true  );
+            getSnipDemoResult();
         }
-        getSnipDemoResult();
+
+        else {
+            History.newItem(RDLConstants.Tokens.WELCOME);
+            History.fireCurrentHistoryState();
+        }
+
 	}
 
     private void getSnipDemoResult() {
@@ -105,4 +121,19 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         }
     }    // end initialUpdate method
 
+
+    @Override
+    public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
+        log.info("SnipSearchPresenter  onValueChange" +stringValueChangeEvent.getValue());
+        if(stringValueChangeEvent.getValue().equals("snips")) {
+
+            if(!controller.getCurrentUserBean().as().isAuth() ) {
+                History.newItem(RDLConstants.Tokens.WELCOME);
+                History.fireCurrentHistoryState();
+
+            }
+
+
+        }
+    }
 }

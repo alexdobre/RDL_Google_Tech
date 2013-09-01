@@ -2,9 +2,12 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -16,6 +19,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipListRowWidget;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widgetclosure.EditorListWidget;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
@@ -24,7 +28,7 @@ import com.therdl.shared.beans.SnipBean;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class SnipSearchViewImpl extends Composite implements SnipSearchView {
+public class SnipSearchViewImpl extends Composite implements SnipSearchView, ValueChangeHandler<String> {
 
     private static Logger log = Logger.getLogger("");
 
@@ -49,15 +53,15 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 	@UiField Widget leftMenuTree;
     @UiField
     FlowPanel snipListRow;
-
+    private  AutoBean<CurrentUserBean> currentUserBean;
     private SnipListRowWidget snipListRowWidget;
 
     private EditorListWidget editorListWidget;
 
-	public SnipSearchViewImpl(AutoBean<CurrentUserBean> authnBean) {
+	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
 
 		initWidget(uiBinder.createAndBindUi(this));
-
+        this.currentUserBean  =  currentUserBean;
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
         appMenu.add(appMenuPanel);
 		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
@@ -118,6 +122,19 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     }
 
 
+    @Override
+    public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
+        log.info("SnipSearchViewImpl  onValueChange" +stringValueChangeEvent.getValue());
+        if(stringValueChangeEvent.getValue().equals("snips")) {
 
+            if(!currentUserBean.as().isAuth() ) {
+                History.newItem(RDLConstants.Tokens.WELCOME);
+                History.fireCurrentHistoryState();
+
+            }
+
+
+        }
+    }
 
 }

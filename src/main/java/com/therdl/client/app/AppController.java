@@ -197,9 +197,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                         authBean.as().setAuth(false);
                         if (welcomeView == null) {
                             welcomeView = new WelcomeViewImpl(messages, authBean);
-                            currentUserBean.as().setAuth(false);
-                        }
 
+                        }
+                        currentUserBean.as().setAuth(false);
                         welcomePresenter.go(container);
                         welcomeView.logout();
                     }
@@ -219,9 +219,10 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     public void onSuccess() {
                         authBean.as().setAuth(false);
+                        currentUserBean.as().setAuth(false);
                         if (welcomeView == null) {
                             welcomeView = new WelcomeViewImpl(messages, authBean);
-                            currentUserBean.as().setAuth(false);
+
                         }
 
                         welcomePresenter.go(container);
