@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+    <ui:style>
+
+
+    </ui:style>
+    <!-- weird google syntax no method parenthesis in ui binder also list css embedded in editor css -->
+
+    <g:HTMLPanel styleName="{res.listCss.getText}">
+
+        <div id="menu" class="goog-tab-bar goog-tab-bar-top">
+            <div class="goog-tab goog-tab-selected">List</div>
+            <div class="goog-tab">Closure view 1</div>
+            <div class="goog-tab">Closure view 2</div>
+            <div class="goog-tab goog-tab-disabled">Admin Panel</div>
+        </div>
+        <!-- Use goog-tab-bar-clear to separate the tabs from the content. -->
+        <div class="goog-tab-bar-clear"></div>
+        <div id="menu_content" class="goog-tab-content">
+        </div>
+        -
+    </g:HTMLPanel>
+
+</ui:UiBinder>

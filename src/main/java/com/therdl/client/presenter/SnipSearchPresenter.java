@@ -21,7 +21,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
     private static Logger log = Logger.getLogger("");
 	private final SnipSearchView snipSearchView;
     private Beanery beanery = GWT.create(Beanery.class);
-    private List<JSOModel> jSonList;
+    private ArrayList<JSOModel> jSonList;
     private AutoBean<SnipBean>  currentBean;
     private final AppController controller;
 
@@ -81,19 +81,18 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
                     for (int i = 0; i < data.length(); i++) {
                         jSonList.add(data.get(i));
-
                     }
 
                     log.info("SnipSearchPresenter  initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
 
-                    AutoBean<SnipBean> bean   = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
+                    AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );
 //                    log.info(""+ bean.as().getContentAsString() );
 //                    log.info(""+ bean.as().getTimeStamp() );
 
-                    snipSearchView.getSnipDemoResult(bean);
+                    snipSearchView.getSnipListDemoResult(data);
                 }
 
                 @Override

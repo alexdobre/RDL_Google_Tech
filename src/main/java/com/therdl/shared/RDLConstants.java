@@ -9,7 +9,7 @@ public interface RDLConstants {
 		String FAST_CAPS = "fastCaps";
         String LOG_OUT = "logOut";
         String SIGN_UP = "signUp";
-		
+
 	}
 	
 	public interface History {

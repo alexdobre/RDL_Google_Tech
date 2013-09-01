@@ -13,6 +13,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widget.editor.EditorViewHeader;
+import com.therdl.client.view.widgetclosure.EditorClientWidget;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
@@ -38,7 +39,9 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
 
     private SnipEditorWorkflow snipEditorWorkflow;
-	
+
+	private EditorClientWidget closureEditorWidget;
+
 	public SnipEditViewImpl() {
 	    initWidget(uiBinder.createAndBindUi(this));
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
@@ -46,9 +49,16 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	    snipEditorWorkflow = new SnipEditorWorkflow(this);
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
         header = new EditorViewHeader( snipEditorWorkflow);
-        mainPanel.add(header);
-        mainPanel.add(snipEditorWorkflow);
 
+        // init closure editor widget
+        closureEditorWidget = new EditorClientWidget();
+
+        mainPanel.add(header);
+        // comment editor widget built via gwt
+      //  mainPanel.add(snipEditorWorkflow);
+
+        // add closure widget into the view
+        mainPanel.add(closureEditorWidget);
 	  }
 
     @Override

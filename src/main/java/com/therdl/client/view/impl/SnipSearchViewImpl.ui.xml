@@ -28,7 +28,7 @@
 				</g:FlowPanel>
 			</g:Dock>
 			<g:Dock direction="CENTER"  >
-				<g:FlowPanel  ui:field="snipListRow" styleName='{style.widgetlayout}'>
+				<g:FlowPanel  ui:field="snipListRow" styleName='{style.widgetlayout}' width="100%" height="100%" >
 				</g:FlowPanel>
 			</g:Dock>
 		</g:DockPanel>

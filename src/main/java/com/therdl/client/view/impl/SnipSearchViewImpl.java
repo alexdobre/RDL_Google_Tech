@@ -1,6 +1,7 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,10 +15,13 @@ import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipListRowWidget;
 import com.therdl.client.view.widget.WidgetHolder;
+import com.therdl.client.view.widgetclosure.EditorListWidget;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class SnipSearchViewImpl extends Composite implements SnipSearchView {
@@ -48,6 +52,8 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 
     private SnipListRowWidget snipListRowWidget;
 
+    private EditorListWidget editorListWidget;
+
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> authnBean) {
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -58,6 +64,8 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 
 		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
 
+        // init closure's editor list widget to show snip list
+        editorListWidget = new EditorListWidget();
         log.info("SnipSearchViewImpl constructor");
 	}
 
@@ -78,6 +86,17 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         log.info("SnipSearchViewImpl getSnipDemoResult "+ bean.as().getTitle());
 
     }
+
+    /**
+     *  shows closure editor list widget with the snip data
+     */
+
+    @Override
+    public void getSnipListDemoResult(JsArray<JSOModel> snips) {
+        snipListRow.add(editorListWidget);
+        editorListWidget.bootStrapList(editorListWidget, snips);
+    }
+
 
     @Override
     public void setloginresult(String name, String email, boolean auth) {
