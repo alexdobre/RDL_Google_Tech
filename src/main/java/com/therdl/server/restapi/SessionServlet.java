@@ -95,7 +95,12 @@ public class SessionServlet  extends HttpServlet {
 
             String password = authBean.as().getPassword();
             AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
+            if(checkedUser.as().getAction().equals("OkUser")) {
             checkedUser.as().setAuth(true);
+            } else {
+            checkedUser.as().setAuth(false);
+            }
+
             System.out.println(AutoBeanCodex.encode(checkedUser).getPayload());
             PrintWriter out = resp.getWriter();
             out.write( AutoBeanCodex.encode(checkedUser).getPayload());

@@ -2,6 +2,7 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -9,6 +10,7 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.view.SignInView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.Constants;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -85,13 +87,14 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                         String email = data.get("email");
                         String name = data.get("name");
                         boolean auth = data.getBoolean("auth");
+                        if (!auth) {
+                            log.info("WelcomePresenter onResponseReceived  !auth  ");
+                            welcomeView.getSignInView().getLoginFail().setVisible(true);
+                        }   else {
                         controller.setCurrentUserBean(name, email, auth);
                         welcomeView.setloginresult(name, email, auth);
-
-
-                    } else {
-                        log.info("WelcomePresenter onSubmit  post fail");
-
+                        welcomeView.getSignInView().getLoginFail().setVisible(false);
+                        }
                     }
                 }
 

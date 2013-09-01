@@ -137,7 +137,17 @@ div.text {
      position:fixed;
     left:20px;
       top:0.2%;
-
-      
- 
  }
+ 
+ .logFail {
+ 
+             width:220px !important;
+            height:18px !important;
+ 	   color:red;
+ 	     margin-top:10px !important;
+ }
+ 
+ 
+ 
+ 
+ 

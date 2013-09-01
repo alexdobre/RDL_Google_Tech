@@ -44,6 +44,11 @@ public class SignInViewImpl extends Composite implements SignInView {
     @UiField
     Button submit;
 
+
+
+    @UiField
+    Label loginFail;
+
     interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
     }
 
@@ -53,6 +58,7 @@ public class SignInViewImpl extends Composite implements SignInView {
         password.setText("password");
         email.setText("Email");
         this.setStyleName("signInView");
+        loginFail.setStyleName("logFail");
     }
 
 
@@ -85,6 +91,11 @@ public class SignInViewImpl extends Composite implements SignInView {
 
     public TextBox getEmail() {
         return email;
+    }
+
+    @Override
+    public Label getLoginFail() {
+        return loginFail;
     }
 
     @Override

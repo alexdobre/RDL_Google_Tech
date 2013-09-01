@@ -47,6 +47,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 		contentPanel.add(menuPanel);
         headerPanel =  setloginheader(messages);
         signInView = new SignInViewImpl(this);
+        signInView.getLoginFail().setVisible(false);
 
 
         if (!authnBean.as().isAuth()) {
@@ -81,6 +82,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
     public  void  setloginresult(String name, String email, boolean auth) {
       if (auth) {
           log.info("WelcomeViewImpl setloginresult auth true" );
+
           contentPanel.clear();
           contentPanel.add(menuPanel);
           contentPanel.add(setSplashScreen(messages));

@@ -15,6 +15,7 @@
             margin:10px;
             }
 
+
             .loginBox {
             border: 1px solid #AACCEE;
             display:inline-block;
@@ -33,6 +34,16 @@
             margin:10px;
             }
 
+
+            .submitPanel {
+
+            width:320px !important;
+            height:60px !important;
+
+
+            }
+
+
             .submit {
             border: 1px solid #AACCEE;
             display:inline-block;
@@ -50,6 +61,9 @@
                 <g:Label  styleName = '{style.labelText}'>Password</g:Label>
                 <g:PasswordTextBox ui:field = "password" styleName = '{style.pswwdBox}'></g:PasswordTextBox>
             </g:HorizontalPanel>
+            <g:HorizontalPanel   styleName = '{style.submitPanel}' >
             <g:Button ui:field = "submit" text = "Submit" styleName ='{style.submit}' />
+            <g:Label ui:field = "loginFail" >Login fails please check details</g:Label>
+            </g:HorizontalPanel>
         </g:VerticalPanel>
 </ui:UiBinder> 
