@@ -3,9 +3,12 @@ package com.therdl.client.presenter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -13,7 +16,9 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Constants;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
@@ -21,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
+public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , ValueChangeHandler<String> {
 
     private static Logger log = Logger.getLogger("");
 
@@ -33,11 +38,17 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
     private final AppController controller;
 
 
+
     public SnipEditPresenter(SnipEditView view, AppController appController) {
         super();
         this.view = view;
         this.view.setPresenter(this);
         this.controller =appController;
+        if(!controller.getCurrentUserBean().as().isAuth() ) {
+            History.newItem(RDLConstants.Tokens.WELCOME);
+            History.fireCurrentHistoryState();
+
+        }
 
     }
 
@@ -332,4 +343,16 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter {
     }
 
 
+    @Override
+    public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
+        log.info("SnipEditPresenter  onValueChange" +stringValueChangeEvent.getValue());
+        if(stringValueChangeEvent.getValue().equals("snips")) {
+
+            if(!controller.getCurrentUserBean().as().isAuth() ) {
+                History.newItem(RDLConstants.Tokens.WELCOME);
+                History.fireCurrentHistoryState();
+
+            }
+        }
+    }
 }

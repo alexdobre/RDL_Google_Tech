@@ -167,9 +167,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
                 // in async call back this is not app controller
                 if (snipEditView == null) {
-                    snipEditView = new SnipEditViewImpl();
+                    snipEditView = new SnipEditViewImpl(currentUserBean);
                 }
-                final SnipEditPresenter snipSearchPresenter =  new SnipEditPresenter(snipEditView, this);
+                final SnipEditPresenter snipEditPresenter =  new SnipEditPresenter(snipEditView, this);
 
 
                 GWT.runAsync(new RunAsyncCallback() {
@@ -177,8 +177,13 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
 
                     public void onSuccess() {
+                        if(currentUserBean.as().isAuth())  {
+                        snipEditPresenter.go(container);
+                    }
+                        else {
 
-                        snipSearchPresenter.go(container);
+                            History.newItem(RDLConstants.Tokens.WELCOME);
+                        }
                     }
                 });
             }

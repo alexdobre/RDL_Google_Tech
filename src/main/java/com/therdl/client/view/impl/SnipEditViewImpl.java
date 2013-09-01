@@ -14,6 +14,7 @@ import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widget.editor.EditorViewHeader;
 import com.therdl.client.view.widgetclosure.EditorClientWidget;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
@@ -36,14 +37,16 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
     @UiField FlowPanel mainPanel;
 
     private EditorViewHeader header;
-
+    private  AutoBean<CurrentUserBean> currentUserBean;
 
     private SnipEditorWorkflow snipEditorWorkflow;
 
 	private EditorClientWidget closureEditorWidget;
 
-	public SnipEditViewImpl() {
+	public SnipEditViewImpl( AutoBean<CurrentUserBean> currentUserBean) {
 	    initWidget(uiBinder.createAndBindUi(this));
+        this.currentUserBean  =  currentUserBean;
+
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
         appMenu.add(appMenuPanel);
 	    snipEditorWorkflow = new SnipEditorWorkflow(this);
