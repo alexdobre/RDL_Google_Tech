@@ -139,10 +139,8 @@ public class SnipEditorWorkflow extends Composite {
 
      // save
     public void submitBean(AutoBean<SnipBean> bean) {
-
+        log.info("SnipEditorWorkflow submitBean title : " + bean.as().getTitle());
         view.submitBean(bean);
-
-
     }
 
     // update

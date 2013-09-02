@@ -59,7 +59,23 @@ public class SnipServiceImpl implements SnipsService {
         }
 
         return beans;
+    }
 
+    @Override
+    public List<SnipBean> getSnipsWith(String title) {
+        DB db = getMongo();
+        List<SnipBean> beans = new ArrayList<SnipBean>();
+        BasicDBObject query = new BasicDBObject();
+        query.put("title", title);
+        DBCollection coll = db.getCollection("rdlSnipData");
+        DBCursor cursor = coll.find(query);
+
+        while(cursor.hasNext()) {
+            DBObject doc = cursor.next();
+            SnipBean snip = buildBeanObject(doc);
+            beans.add(snip);
+        }
+        return beans;
     }
 
     @Override
@@ -82,7 +98,7 @@ public class SnipServiceImpl implements SnipsService {
         query.put("_id", new ObjectId(id));
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
-        DBObject  doc=  cursor.next();
+        DBObject  doc =  cursor.next();
 
         SnipBean snip = buildBeanObject(doc);
 
@@ -132,7 +148,6 @@ public class SnipServiceImpl implements SnipsService {
         // make update
         coll.findAndModify(searchQuery, updateDocument);
     }
-
 
     @Override
     public void deleteSnip(String id) {

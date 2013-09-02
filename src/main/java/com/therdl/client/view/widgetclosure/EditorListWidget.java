@@ -87,9 +87,8 @@ public class EditorListWidget extends Composite {
         // data now have the following format: [{"0":"{}"},{"1":"{}"}]: Change that like this [{},{}]
         var dataJs = [];
         for(var i=0; i<data.length; i++) {
-           dataJs.push(eval('(' + data[i][i] + ')'));
+            dataJs.push(eval('(' + data[i][i] + ')'));
         }
-
         // calls closure js function from tabdev.js
           $wnd.widjdev.tabdev.setTabs(menu, dataJs);
 

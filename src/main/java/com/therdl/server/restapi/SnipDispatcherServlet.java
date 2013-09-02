@@ -112,6 +112,31 @@ public class SnipDispatcherServlet extends HttpServlet {
             actionBean.as().setAction("dump");
         }
 
+        else if(actionBean.as().getAction().equals("search") ) {
+            List < SnipBean > beans = snipsService.getSnipsWith(actionBean.as().getTitle());
+            sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
+            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
+            ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
+            int k = 0;
+            for (SnipBean bean : beans )   {
+                HashMap<String,String> 	beanBag = new HashMap<String, String>();
+                AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+                String asJson = AutoBeanCodex.encode(autoBean).getPayload();
+                beanBag.put(Integer.toString(k),asJson);
+                beanList.add(beanBag);
+                k++;
+            }
+
+            sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
+
+            Gson gson = new Gson();
+            sLogger.info(gson.toJson(beanList));
+            PrintWriter out = resp.getWriter();
+            out.write(gson.toJson(beanList));
+            beanList.clear();
+            actionBean.as().setAction("dump");
+        }
+
         else if(actionBean.as().getAction().equals("save") ) {
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving

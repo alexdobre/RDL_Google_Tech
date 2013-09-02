@@ -136,9 +136,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 //***************************************SNIPS****************************
             else if (token.equals(RDLConstants.Tokens.SNIPS)) {
-                // in async call back this is not app controller
                 if (snipSearchView == null) {
-                    snipSearchView = new SnipSearchViewImpl(currentUserBean);
+                     snipSearchView = new SnipSearchViewImpl(currentUserBean);
                 }
 
                 final SnipSearchPresenter snipSearchPresenter =  new SnipSearchPresenter(snipSearchView, this);
@@ -149,15 +148,11 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
 
                     public void onSuccess() {
-
                         if(currentUserBean.as().isAuth())  {
                             snipSearchPresenter.go(container);
-
                         } else {
-
                             History.newItem(RDLConstants.Tokens.WELCOME);
                         }
-
                     }
                 });
             }// end el
