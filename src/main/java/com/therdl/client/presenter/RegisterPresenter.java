@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * user signs up for application here
  * simple but good looking formv iew
  */
-public class RegisterPresenter  implements Presenter, RegisterView.Presenter {
+public class RegisterPresenter implements Presenter, RegisterView.Presenter {
 
     private static Logger log = Logger.getLogger("");
     private RegisterView registerView;
@@ -34,10 +34,9 @@ public class RegisterPresenter  implements Presenter, RegisterView.Presenter {
     private Beanery beanery = GWT.create(Beanery.class);
 
 
-
     public RegisterPresenter(RegisterView registerView, AppController appController) {
-        this.controller =appController;
-        this.registerView  = registerView;
+        this.controller = appController;
+        this.registerView = registerView;
         registerView.setPresenter(this);
     }
 
@@ -53,15 +52,15 @@ public class RegisterPresenter  implements Presenter, RegisterView.Presenter {
         log.info("RegisterPresenter submitNewUser with  bean as ");
         log.info(AutoBeanCodex.encode(bean).getPayload());
 
-        String updateUrl = GWT.getModuleBaseURL()+"getSession";
+        String updateUrl = GWT.getModuleBaseURL() + "getSession";
 
-        if(!Constants.DEPLOY){
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
-        log.info("RegisterPresenter submitNewUser with  updateUrl: "+ updateUrl);
+        log.info("RegisterPresenter submitNewUser with  updateUrl: " + updateUrl);
 
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
         bean.as().setAction("signUp");
         String json = AutoBeanCodex.encode(bean).getPayload();
@@ -76,14 +75,14 @@ public class RegisterPresenter  implements Presenter, RegisterView.Presenter {
                     log.info("RegisterPresenter submitNewUser  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
                     log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
 
-                    AutoBean<AuthUserBean> bean   = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
+                    AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
 
-                    log.info("RegisterPresenter submitNewUser bean.as().getName() "+ bean.as().getName() );
-                    log.info("RegisterPresenter submitNewUser bean.as().getEmail() "+ bean.as().getEmail() );
-                    log.info("RegisterPresenter submitNewUser bean.as().getAction() "+ bean.as().getAction() );
-                    log.info("RegisterPresenter submitNewUser bean.as().isAuth() "+ bean.as().isAuth() );
+                    log.info("RegisterPresenter submitNewUser bean.as().getName() " + bean.as().getName());
+                    log.info("RegisterPresenter submitNewUser bean.as().getEmail() " + bean.as().getEmail());
+                    log.info("RegisterPresenter submitNewUser bean.as().getAction() " + bean.as().getAction());
+                    log.info("RegisterPresenter submitNewUser bean.as().isAuth() " + bean.as().isAuth());
 
-                    controller.setCurrentUserBean(bean.as().getName(),bean.as().getEmail(), true );
+                    controller.setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
 
                     History.newItem(RDLConstants.Tokens.WELCOME);
 
@@ -97,7 +96,8 @@ public class RegisterPresenter  implements Presenter, RegisterView.Presenter {
 
             });
 
-        } catch (RequestException e) { log.info(e.getLocalizedMessage());
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
         }  // end try
     }
 }
