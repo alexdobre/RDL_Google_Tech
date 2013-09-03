@@ -33,7 +33,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
     private AppMenu appMenuPanel;
     @UiField HTMLPanel appMenu;
-	@UiField Widget leftMenuTree;
     @UiField FlowPanel mainPanel;
 
     private EditorViewHeader header;
@@ -50,7 +49,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
         appMenu.add(appMenuPanel);
 	    snipEditorWorkflow = new SnipEditorWorkflow(this);
-		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
+
         header = new EditorViewHeader( snipEditorWorkflow);
 
         // init closure editor widget

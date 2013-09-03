@@ -45,10 +45,7 @@ public class WidgetHolder {
 		return snipSearchWidget;
 	}
 
-	public Widget getLeftMenuTree() {
-		if(leftMenuTree == null) leftMenuTree = new LeftMenuTree();
-		return leftMenuTree;
-	}
+
 
 
 }

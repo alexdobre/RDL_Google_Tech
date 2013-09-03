@@ -17,11 +17,7 @@
     <g:HTMLPanel ui:field="appMenu"  ></g:HTMLPanel>
 
         <g:DockPanel >
-			<g:Dock direction="WEST"  size='150px' >
-				<g:FlowPanel styleName='{style.widgetlayout}'>
-					<rdl:LeftMenuTree ui:field="leftMenuTree"  />
-				</g:FlowPanel>
-			</g:Dock>
+
 			<g:Dock direction="NORTH" size='285px'>
 				<g:FlowPanel styleName='{style.searchlayout}'>
 					<rdl:SnipSearchWidget ui:field="snipSearchWidget" width="100%" height="100%"  />

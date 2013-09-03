@@ -51,7 +51,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
 
     @UiField HTMLPanel appMenu;
     @UiField Widget snipSearchWidget;
-	@UiField Widget leftMenuTree;
     @UiField
     FlowPanel snipListRow;
     private  AutoBean<CurrentUserBean> currentUserBean;
@@ -68,7 +67,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
         snipSearchWidget = new SnipSearchWidget(this);
 //		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
 
-        leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
+
 
         // init closure's editor list widget to show snip list
         editorListWidget = new EditorListWidget();

@@ -24,11 +24,7 @@
         <g:HTMLPanel ui:field="appMenu"  ></g:HTMLPanel>
 
 		<g:DockPanel>
-			<g:Dock direction="WEST">
-				<g:SimplePanel>
-					<rdl:LeftMenuTree ui:field="leftMenuTree" />
-				</g:SimplePanel>
-			</g:Dock>
+
 			<g:Dock direction="CENTER">
 				<g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
 					<!--rdl:SnipEditorWorkflow ui:field="snipEditorWorkflow" width="100%" /-->
