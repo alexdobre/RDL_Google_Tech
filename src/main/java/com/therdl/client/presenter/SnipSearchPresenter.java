@@ -106,8 +106,6 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );
-//                    log.info(""+ bean.as().getContentAsString() );
-//                    log.info(""+ bean.as().getTimeStamp() );
 
                     snipSearchView.getSnipListDemoResult(data);
                 }
@@ -170,10 +168,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );
-//                    log.info(""+ bean.as().getContentAsString() );
-//                    log.info(""+ bean.as().getTimeStamp() );
 
-//                    snipSearchView.getSnipListDemoResult(data);
                     snipSearchView.updateListWidget(data);
                 }
 
