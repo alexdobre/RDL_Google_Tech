@@ -52,4 +52,6 @@ public interface SnipsService {
      * @return
      */
     void updateSnip(SnipBean snip);
+
+    List<SnipBean> getSnipsWith(String title);
 }

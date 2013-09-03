@@ -17,6 +17,7 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipListRowWidget;
+import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widgetclosure.EditorListWidget;
 import com.therdl.shared.RDLConstants;
@@ -60,13 +61,14 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
 
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  currentUserBean;
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
         appMenu.add(appMenuPanel);
-		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
+        snipSearchWidget = new SnipSearchWidget(this);
+//		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
 
-		leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
+        leftMenuTree = WidgetHolder.getInstance().getLeftMenuTree();
 
         // init closure's editor list widget to show snip list
         editorListWidget = new EditorListWidget();
@@ -97,10 +99,16 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
 
     @Override
     public void getSnipListDemoResult(JsArray<JSOModel> snips) {
+        log.info("SnipSearchViewImpl getSnipListDemoResult "+ snips.length());
         snipListRow.add(editorListWidget);
         editorListWidget.bootStrapList(editorListWidget, snips);
     }
 
+    @Override
+    public void updateListWidget(JsArray<JSOModel> snips){
+        log.info("SnipSearchViewImpl updateListWidget "+ snips.length());
+        editorListWidget.bootStrapList(editorListWidget, snips);
+    }
 
     @Override
     public void setloginresult(String name, String email, boolean auth) {
@@ -121,6 +129,10 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
         return this.appMenuPanel;
     }
 
+    @Override
+    public void searchSnips(String match) {
+        presenter.searchSnips(match);
+    }
 
     @Override
     public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
@@ -130,11 +142,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
             if(!currentUserBean.as().isAuth() ) {
                 History.newItem(RDLConstants.Tokens.WELCOME);
                 History.fireCurrentHistoryState();
-
             }
-
-
         }
     }
-
 }

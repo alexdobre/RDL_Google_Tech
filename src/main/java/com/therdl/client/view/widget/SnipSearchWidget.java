@@ -13,30 +13,46 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.therdl.client.view.SnipSearchView;
+import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.RDLConstants;
+
+import java.util.logging.Logger;
 
 public class SnipSearchWidget extends Composite {
 
-	private static SnipSearchWidgetUiBinder uiBinder = GWT
+    private static Logger log = Logger.getLogger("");
+    private static SnipSearchWidgetUiBinder uiBinder = GWT
 			.create(SnipSearchWidgetUiBinder.class);
 	@UiField Label textSearch;
 	@UiField Button searchButton;
 	@UiField Button createNewButton;
 	@UiField TextBox textBox;
-	//@UiField ListBox coreCategoryCombo;
+    static SnipSearchView view;
+    //@UiField ListBox coreCategoryCombo;
 
 	interface SnipSearchWidgetUiBinder extends
 			UiBinder<Widget, SnipSearchWidget> {
 	}
 
-	public SnipSearchWidget() {
-		initWidget(uiBinder.createAndBindUi(this));
+    /**
+     * default constructor
+     */
+    public SnipSearchWidget() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public SnipSearchWidget(SnipSearchViewImpl snipSearchView) {
+        initWidget(uiBinder.createAndBindUi(this));
+        view = snipSearchView;
 	}
 
 	@UiHandler("searchButton")
 	void onSearchButtonClick(ClickEvent event) {
 		//TODO what to do on search button click
-	}
+        log.info("SnipSearchWidget Search : onClick " + textBox.getText());
+        view.searchSnips(textBox.getText());
+    }
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
 		History.newItem(RDLConstants.Tokens.SNIP_EDIT);

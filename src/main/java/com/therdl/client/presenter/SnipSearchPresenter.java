@@ -31,8 +31,9 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
     private final AppController controller;
 
     public SnipSearchPresenter(SnipSearchView snipSearchView, AppController controller){
-        this.controller =controller;
+        this.controller = controller;
         this.snipSearchView = snipSearchView;
+        this.snipSearchView.setPresenter(this);
         log.info("SnipSearchPresenter constructor");
         if(!controller.getCurrentUserBean().as().isAuth() ) {
             History.newItem(RDLConstants.Tokens.WELCOME);
@@ -121,6 +122,70 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
         }
     }    // end initialUpdate method
 
+    /**
+     * Handles snips searching request | response
+     * @param match : title of the snip currently
+     */
+    @Override
+    public void searchSnips(String match) {
+        log.info("SnipSearchPresenter getSnipSearchResult");
+        String updateUrl =GWT.getModuleBaseURL()+"getSnips";
+
+        if(!Constants.DEPLOY){
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
+
+        log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: "+ updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        currentBean = beanery.snipBean();
+        currentBean.as().setAction("search");
+        currentBean.as().setTitle(match);
+
+        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        try {
+
+            requestBuilder.sendRequest(json, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+                    log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
+                    log.info("SnipSearchPresenter onResponseReceived json" + response.getText());
+
+                    JsArray<JSOModel> data =
+                            JSOModel.arrayFromJson(response.getText());
+
+                    if(data.length() == 0 )  return;
+
+                    jSonList = new ArrayList<JSOModel>();
+
+                    for (int i = 0; i < data.length(); i++) {
+                        jSonList.add(data.get(i));
+                    }
+
+                    log.info("SnipSearchPresenter  initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
+
+                    AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class,  jSonList.get(0).get("0"));
+
+                    log.info(""+ bean.as().getTitle() );
+                    log.info(""+ bean.as().getAuthor() );
+//                    log.info(""+ bean.as().getContentAsString() );
+//                    log.info(""+ bean.as().getTimeStamp() );
+
+//                    snipSearchView.getSnipListDemoResult(data);
+                    snipSearchView.updateListWidget(data);
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
+                }
+
+            });
+        } catch (RequestException e) { log.info(e.getLocalizedMessage());
+        }
+    }    // end initialUpdate method
 
     @Override
     public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {

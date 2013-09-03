@@ -1,6 +1,5 @@
 package com.therdl.client.view.widget;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 
 

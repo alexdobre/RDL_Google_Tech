@@ -13,5 +13,5 @@ public class Constants {
      * false : will optimize the paths for maven
      */
     //public static final boolean DEPLOY = false;
-    public static final boolean DEPLOY =  false;
+    public static final boolean DEPLOY =  true;
 }
