@@ -137,9 +137,10 @@ div.text {
     font-weight: bold;
     padding:4px 10px;
     vertical-align: bottom;
-
+  	width:42px;
     left:20px;
       top:0.2%;
+        	background: url("img/dropdown_arrow.png") bottom right no-repeat;
  }
  
  .logFail {
