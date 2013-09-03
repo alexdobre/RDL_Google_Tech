@@ -102,25 +102,27 @@ div.text {
 }
 
   .userDropDown {
+       position:absolute;
   color:white;
     font-weight: bold;
     padding:4px 10px;
     vertical-align: bottom;
-    position:fixed;
     top:0.2%;
     right:15%;
   	font:14px;
-  	 background: url("img/dropdown_arrow.png") bottom right no-repeat;
-  	   width:80px;
+  	background: url("img/dropdown_arrow.png") bottom right no-repeat;
+  	width:80px;
+
   	 
   }
   
    .signUpAccount {
+        position:absolute;
   color:white;
     font-weight: bold;
       padding:4px 10px;
     vertical-align: bottom;
-    position:fixed;
+
     right:5%;
       top:0.2%;
   	font:14px;
@@ -129,12 +131,13 @@ div.text {
   }
 
  .ideasMenuItem {
+      position:absolute;
  		font:14px;
   color:white;
     font-weight: bold;
     padding:4px 10px;
     vertical-align: bottom;
-     position:fixed;
+
     left:20px;
       top:0.2%;
  }

@@ -24,6 +24,10 @@ public class AppMenu extends Composite  {
 	@UiField MenuBar menuBar;
 
 	@UiField MenuItem ideas;
+    // ideas drop down
+    @UiField MenuItem snipSearch;
+    @UiField MenuItem snipEdit;
+
 	@UiField MenuItem stories;
 	@UiField MenuItem improvements;
 	@UiField MenuItem services;
@@ -51,13 +55,22 @@ public class AppMenu extends Composite  {
         this .signUp.setStyleName("signUpAccount");
         this .ideas.setStyleName("ideasMenuItem");
 
-        ideas.setScheduledCommand(new Scheduler.ScheduledCommand() {
+        snipEdit.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			@Override
 			public void execute() {
                 log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
-				History.newItem(RDLConstants.Tokens.SNIPS);			
+				History.newItem(RDLConstants.Tokens.SNIP_EDIT);
 			}
 		});
+
+        snipSearch.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
+                History.newItem(RDLConstants.Tokens.SNIPS);
+            }
+        });
+
 
         signUp.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
