@@ -191,29 +191,34 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
     @Override
     public void submitBean(AutoBean<SnipBean> bean) {
 
-        String title =view.getSnipEditorWorkflow().getSnipEditor().getTitle();
-        String text =view.getSnipEditorWorkflow().getSnipEditor().getContentAsText();
-        String html =view.getSnipEditorWorkflow().getSnipEditor().getContentAsHtml();
+        // get snip data from EditorClient widget
+        String title = view.getEditorClientWidget().getSnipData().get("title");
+        String contentAsText = view.getEditorClientWidget().getSnipData().get("contentAsString");
+        String contentAsHtml = view.getEditorClientWidget().getSnipData().get("contentAsHtml");
+        String coreCat = view.getEditorClientWidget().getSnipData().get("coreCat");
+        String subCat = view.getEditorClientWidget().getSnipData().get("subCat");
 
         log.info("SnipEditPresenter submitBean bean: "+title);
 
-        if (title.isEmpty() )
-        {
+        if (title.isEmpty()) {
             Window.alert("A snip needs at least a title");
             return;
         }
 
+        // put snip data into the bean
         bean.as().setTitle(title);
+        bean.as().setCoreCat(coreCat);
+        bean.as().setSubCat(subCat);
 //        bean.as().setContentAsString(text);
-        bean.as().setContent(text);
+        bean.as().setContent(contentAsText);
 //        bean.as().setContentAsHtml(html);
         bean.as().setAuthor("demo user");
 //        bean.as().setServerMessage("submit");
         bean.as().setAction("save");
 
         log.info("SnipEditPresenter submitBean bean : title : " +  bean.as().getTitle());
-        // now submit to server
 
+        // now submit to server
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -224,9 +229,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
+
         try {
 
-            String json = AutoBeanCodex.encode( bean).getPayload();
+            String json = AutoBeanCodex.encode(bean).getPayload();
             log.info("SnipEditPresenter submit json: " + json);
             requestBuilder.sendRequest(json , new RequestCallback() {
 
@@ -237,16 +243,13 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
                         fetchSnips();
-
                     } else {
                         log.info("SnipEditPresenter submit post fail");
-
                     }
                 }
                 @Override
                 public void onError(Request request, Throwable exception) {
                     log.info("SnipEditPresenter submit onError)" + exception.getLocalizedMessage());
-
                 }
 
             });

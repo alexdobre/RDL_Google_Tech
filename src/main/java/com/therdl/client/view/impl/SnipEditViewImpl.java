@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -40,7 +39,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
     private SnipEditorWorkflow snipEditorWorkflow;
 
-	private EditorClientWidget closureEditorWidget;
+	private EditorClientWidget editorClientWidget;
 
 	public SnipEditViewImpl( AutoBean<CurrentUserBean> currentUserBean) {
         log.info("SnipEditViewImpl constructor");
@@ -54,14 +53,14 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         header = new EditorViewHeader( snipEditorWorkflow);
 
         // init closure editor widget
-        closureEditorWidget =  (EditorClientWidget) WidgetHolder.getInstance().getEditorClientWidget();
+        editorClientWidget = new EditorClientWidget(this);
 
         mainPanel.add(header);
-        // comment editor widget built via gwt
+    //    // comment editor widget built via gwt
       //  mainPanel.add(snipEditorWorkflow);
 
         // add closure widget into the view
-        mainPanel.add(closureEditorWidget);
+        mainPanel.add(editorClientWidget);
 	  }
 
     @Override
@@ -132,7 +131,9 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         return snipEditorWorkflow;
     }
 
-
+    public EditorClientWidget getEditorClientWidget() {
+        return editorClientWidget;
+    }
 
     @Override
     public void setloginresult(String name, String email, boolean auth) {

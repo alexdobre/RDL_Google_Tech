@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipEditorWorkflow;
+import com.therdl.client.view.widgetclosure.EditorClientWidget;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
@@ -41,6 +42,8 @@ public interface SnipEditView  {
     void submitEditBean(AutoBean<SnipBean> bean);
 
     SnipEditorWorkflow getSnipEditorWorkflow();
+
+    EditorClientWidget getEditorClientWidget();
 
     void setloginresult(String name, String email, boolean auth);
 

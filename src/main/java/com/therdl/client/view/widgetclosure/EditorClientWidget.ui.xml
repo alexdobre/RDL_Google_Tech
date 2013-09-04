@@ -5,23 +5,14 @@
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:style>
 
-
-        .main {
-        padding: 10px;
-        width:100%;
-        height:100%;
-        }
-
-
-
-
-
-
-
     </ui:style>
     <!-- weird google syntax no method parenthesis in ui binder -->
     <g:HTMLPanel styleName="{res.editorCss.getText}">
         <div id="editorContainer"></div>
+        <div class="bottomBarContaner">
+            <g:Button ui:field="saveSnip">Save Draft</g:Button>
+            <g:Button ui:field="postSnip">Post</g:Button>
+        </div>
 
         <!--<div class= "left-panel">
 

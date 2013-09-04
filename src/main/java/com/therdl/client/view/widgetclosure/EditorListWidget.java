@@ -5,7 +5,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.cssbundles.Resources;
@@ -49,7 +51,6 @@ public class EditorListWidget extends Composite {
     }
 
     private void injectScript() {
-
         //if(!isInjected) {
             ScriptInjector.fromString(Resources.INSTANCE.widjdevList().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
             isInjected = true;
