@@ -29,9 +29,7 @@ public class EditorClientWidget extends Composite  {
 	public EditorClientWidget() {
         Resources.INSTANCE.editorCss().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
-
-
-	}
+    }
 
     @Override
     protected void onLoad() {
@@ -50,49 +48,29 @@ public class EditorClientWidget extends Composite  {
     }
 
     private void injectScript() {
-
-        if(!isInjected) {
-        ScriptInjector.fromString(Resources.INSTANCE.dialogView().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
-        isInjected = true;
-        }
+        // uncomment condition because when switching list and editor views second time the js scripts does not included into the html
+        //if(!isInjected) {
+            ScriptInjector.fromString(Resources.INSTANCE.dialogView().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
+            isInjected = true;
+        //}
     }
 
-
+    /*
+     * JS native function which calls SnipEditor cinstructor function from the snipeditor.js
+     */
 
     private native void bootStrapEditor(EditorClientWidget w ) /*-{
-
-        $wnd.widjdev.setEditor.leftPanelsetup('btn3', function() { w.@com.therdl.client.view.widgetclosure.EditorClientWidget::btnGetContentClick()() });
-        $wnd.widjdev.setEditor.leftPanelsetup('btn4', function() { w.@com.therdl.client.view.widgetclosure.EditorClientWidget::btnSetContentClick()() });
-
-	    var dialog1 = new $wnd.widjdev.Dialog();
-        $wnd.widjdev.Dialog.setDialog();
-
-	}-*/;
+	    var snipEditor = new $wnd.widjdev.SnipEditor();
+    }-*/;
 
     private native void resetDom() /*-{
-
-         var toolbars  = $doc.getElementsByClassName('goog-toolbar');
-
-         if (toolbars) {
-
-           while(toolbars.length > 0)  {
-                toolbars[0].parentNode.removeChild(toolbars[0]);
-                 }
-
-         }
-
-        var popUps  = $doc.getElementsByClassName('modal-dialog');
-
-                if (popUps) {
-
-           while(popUps.length > 0)  {
-                popUps[0].parentNode.removeChild(popUps[0]);
-                 }
-
-         }
-         console.log($wnd.widjdev.Dialog);
-         $wnd.widjdev.Dialog = null;
-
+        // removes dom objects, the container is the editorContainer
+        var editorContainer  = $doc.getElementById('editorContainer');
+        if(editorContainer) {
+            while (editorContainer.lastChild)
+                editorContainer.removeChild(editorContainer.lastChild);
+        }
+        $wnd.widjdev.SnipEditor = null;
     }-*/;
 
 
@@ -110,16 +88,13 @@ public class EditorClientWidget extends Composite  {
     }
 
     private native void getEditor() /*-{
-
-      $wnd.document.getElementById('editorDiv').display= 'block';
+        $wnd.document.getElementById('editorDiv').display= 'block';
     }-*/;
 
 
 
     private native String getContent() /*-{
-
-       return $wnd.widjdev.setEditor.getcontents();
-
+        return $wnd.widjdev.setEditor.getcontents();
     }-*/;
 
 
@@ -129,9 +104,7 @@ public class EditorClientWidget extends Composite  {
 
 
     private native void hideEditor() /*-{
-    $wnd.document.getElementById('editorDiv').display= 'none';
-
-
+        $wnd.document.getElementById('editorDiv').display= 'none';
     }-*/;
 
 

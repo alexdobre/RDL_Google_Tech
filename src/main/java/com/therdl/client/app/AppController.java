@@ -173,10 +173,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     public void onSuccess() {
                         if(currentUserBean.as().isAuth())  {
-                        snipEditPresenter.go(container);
-                    }
-                        else {
-
+                            snipEditPresenter.go(container);
+                        } else {
                             History.newItem(RDLConstants.Tokens.WELCOME);
                         }
                     }

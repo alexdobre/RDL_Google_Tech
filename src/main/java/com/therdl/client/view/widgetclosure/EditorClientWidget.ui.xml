@@ -21,14 +21,16 @@
     </ui:style>
     <!-- weird google syntax no method parenthesis in ui binder -->
     <g:HTMLPanel styleName="{res.editorCss.getText}">
-        <div class= "left-panel">
+        <div id="editorContainer"></div>
+
+        <!--<div class= "left-panel">
 
 
             <div id="btn3" class="goog-custom-button goog-custom-button-collapse-left goog-custom-button-collapse-left"> <div >GetContent</div> </div>
 
             <div id="btn4" class="goog-custom-button goog-custom-button-collapse-left goog-custom-button-collapse-left"> <div >SetContent</div> </div>
 
-        </div>
+        </div>   -->
 
 
                                                            -

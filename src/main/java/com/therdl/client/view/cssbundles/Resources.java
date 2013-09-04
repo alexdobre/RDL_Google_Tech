@@ -21,7 +21,7 @@ public interface Resources extends ClientBundle {
     @Source("tabdev.js")
     public TextResource widjdevList();
 
-    @Source("dialogview.js")
+    @Source("snipeditor.js")
     public TextResource dialogView();
 
 

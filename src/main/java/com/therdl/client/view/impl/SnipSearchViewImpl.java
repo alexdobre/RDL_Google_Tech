@@ -70,7 +70,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
 
 
         // init closure's editor list widget to show snip list
-        editorListWidget = new EditorListWidget();
+        editorListWidget = (EditorListWidget) WidgetHolder.getInstance().getEditorListWidget();
         log.info("SnipSearchViewImpl constructor");
 	}
 

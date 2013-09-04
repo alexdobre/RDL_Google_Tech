@@ -43,6 +43,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	private EditorClientWidget closureEditorWidget;
 
 	public SnipEditViewImpl( AutoBean<CurrentUserBean> currentUserBean) {
+        log.info("SnipEditViewImpl constructor");
 	    initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  currentUserBean;
 
@@ -53,7 +54,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         header = new EditorViewHeader( snipEditorWorkflow);
 
         // init closure editor widget
-        closureEditorWidget = new EditorClientWidget();
+        closureEditorWidget =  (EditorClientWidget) WidgetHolder.getInstance().getEditorClientWidget();
 
         mainPanel.add(header);
         // comment editor widget built via gwt

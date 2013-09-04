@@ -50,10 +50,10 @@ public class EditorListWidget extends Composite {
 
     private void injectScript() {
 
-        if(!isInjected) {
+        //if(!isInjected) {
             ScriptInjector.fromString(Resources.INSTANCE.widjdevList().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
             isInjected = true;
-        }
+        //}
     }
 
     private native void resetDom() /*-{
