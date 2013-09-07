@@ -15,11 +15,17 @@ max-width:300px;
  height: auto;
 }
 
+  .gwt-PopupPanel {
+   z-index:500;
+  margin:300px 0 20px 800px;
+
+  }
+
 
 
 iframe {
 padding-top:10px;
-z-index: 3000;
+z-index: -1;
 }
 
 h3 {
@@ -38,10 +44,7 @@ margin:10px;
 padding:10px;
 }
 
-.gwt-PopupPanel {
-z-index:1;
-margin:340px 0 0 300px;
-}
+
 
 table {
 margin-left:2px!important;
@@ -70,8 +73,9 @@ height:100%;
 position:fixed;
 top:20px;
 display:block;
-right:20%;
-width:260px;
+background-color:white!important;
+border:2px solid grey;
+width:440px;
 height:180px;
 margin:10px;
 padding:10px;
@@ -117,6 +121,17 @@ width:60px;
 padding:4px 10px;
 }
 
+.login  {
+position:absolute;
+color:#FFF;
+font-weight:700;
+vertical-align:bottom;
+font:14px;
+width:100px;
+right:20%!important;
+padding:4px 10px;
+}
+
 .signUpAccount {
 position:absolute;
 color:#FFF;
@@ -141,12 +156,6 @@ background:url(img/dropdown_arrow.png)  right no-repeat;
 padding:4px 10px;
 }
 
-.logFail {
-width:220px!important;
-height:18px!important;
-color:red;
-margin-top:10px!important;
-}
 
 .gwt-HTML,.gwt-ListBox {
 margin-left:10px!important;
@@ -176,7 +185,10 @@ width:62px;
 left:300px!important;
 width:100px;
 }
-       .displayDiv {
+  
+
+       
+ .displayDiv {
         display:block;
         height:60px;
         margin:10px 20px 10px 0;
@@ -184,7 +196,7 @@ width:100px;
 
         }
 
-        .buttonRow {
+ .buttonRow {
         display:block;
         height:40px;
         width:600px;

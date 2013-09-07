@@ -9,6 +9,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.RegisterView;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.FieldVerifier;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -33,24 +34,30 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
     private Beanery beanery = GWT.create(Beanery.class);
 
 
-    public RegisterViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+    @UiField
+    AppMenu appMenu;
 
-    }
-
-    @UiField Widget appMenu;
     @UiField
     TextBox userName;
+
     @UiField
     TextBox  email;
+
     @UiField
     PasswordTextBox psswd;
+
     @UiField
     PasswordTextBox cpsswd;
+
     @UiField
     Button submitbBtn;
 
-    String username;  String  password;  String eMail;
+    private String username;  private String  password;  private String eMail;
+
+    public RegisterViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+        appMenu.setSignUpView();
+    }
 
     /**
      *

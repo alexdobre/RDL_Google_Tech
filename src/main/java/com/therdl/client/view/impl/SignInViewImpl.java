@@ -23,7 +23,7 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
 
-public class SignInViewImpl extends Composite implements SignInView {
+public class SignInViewImpl extends PopupPanel implements SignInView {
 
     private static Logger log = Logger.getLogger("");
 
@@ -45,7 +45,6 @@ public class SignInViewImpl extends Composite implements SignInView {
     Button submit;
 
 
-
     @UiField
     Label loginFail;
 
@@ -53,29 +52,48 @@ public class SignInViewImpl extends Composite implements SignInView {
     }
 
     public SignInViewImpl(WelcomeViewImpl welcomeView) {
-        this.welcomeViewImpl =welcomeView;
-        initWidget(uiBinder.createAndBindUi(this));
+        super(true);
+        add(uiBinder.createAndBindUi(this));
+        this.welcomeViewImpl = welcomeView;
         password.setText("password");
         email.setText("Email");
         this.setStyleName("signInView");
-        loginFail.setStyleName("logFail");
+
     }
 
 
     @UiHandler("password")
     public void onUserFocused(FocusEvent event) {
-        password.setText("");   }
+        password.setText("");
+    }
 
     @UiHandler("email")
     public void onEmailFocused(FocusEvent event) {
-        email.setText("");   }
-
+        email.setText("");
+    }
 
 
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
         log.info("SignInViewImpl onSubmit");
-        welcomeViewImpl.onSubmit();
+
+        String eMail = email.getText();
+        String psswd = password.getText();
+
+        log.info("SignInViewImpl onSubmit eMail psswd "+eMail+" : "+psswd);
+
+
+
+         if(eMail != null && !eMail.equals("Email") && psswd != null && !password.equals(  "password" )) {
+             log.info("SignInViewImpl onSubmit to server flow ");
+        welcomeViewImpl.onSubmit(eMail, psswd );
+
+         } else {
+
+            loginFail.setVisible(true);
+            loginFail.setText("please enter a valid username and password");
+
+         }
     }
 
 
@@ -104,8 +122,6 @@ public class SignInViewImpl extends Composite implements SignInView {
         this.setVisible(state);
 
     }
-
-
 
 
 }

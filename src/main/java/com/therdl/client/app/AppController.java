@@ -36,28 +36,32 @@ import java.util.logging.Logger;
 public class AppController implements Presenter, ValueChangeHandler<String>{
 
     private static Logger log = Logger.getLogger("");
-	private final Messages messages;
 
 	private HasWidgets container;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
 	/**
-	 * All the application views go here and are kept to be reused once created
+	 * Current authentication rules are anyone can view bit only registered user can edit
 	 */
 	private WelcomeView welcomeView;
     private SnipEditView  snipEditView;
     private SnipSearchView  snipSearchView;
     private AutoBean<AuthUserBean> authnBean = beanery.authBean();
     private RegisterView registerView;
+    /**
+     * seperate authorisation from user state with 2 user beans, currrent user and authorised user
+     * for example auth user will have initial password for sign up
+     * current user as a persistant client side bean will not contain password info and any time
+     */
     private AutoBean<AuthUserBean> authBean = beanery.authBean();
     // temp solution until IE 7, 8, 9  drop off the radar
     private  AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
+
 	
 	public AppController() {
 
-		messages = (Messages) GWT.create(Messages.class);
 		bind();
 	}
 	  
@@ -84,10 +88,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	@Override
 	public void go(final HasWidgets container) {
 		this.container = container;
-        // for now force the login screen
-        authnBean.as().setAuth(true);
-        this.currentUserBean.as().setAuth(true);
-
+        this.currentUserBean.as().setAuth(false);
+        this.currentUserBean.as().setRegistered(false);
 		if ("".equals(History.getToken())) {
 			History.newItem(RDLConstants.Tokens.WELCOME);
 		} else {
@@ -110,10 +112,11 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             if (token.equals(RDLConstants.Tokens.WELCOME)) {
 
                 if (welcomeView == null) {
-                    welcomeView = new WelcomeViewImpl(messages, authBean);
+                    welcomeView = new WelcomeViewImpl( currentUserBean);
                 }
                 // in async call back this is not app controller
                 final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+
                 log.info("AppController onValueChange Tokens.WELCOME) past line 109 ");
 
                 GWT.runAsync(new RunAsyncCallback() {
@@ -123,11 +126,12 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     public void onSuccess() {
 
                         welcomePresenter.go(container);
-                        welcomeView.getSignInView().setSignIsVisible(true);
+                        // use app menu
+
                         // check user status if auth no login
                         if(currentUserBean.as().isAuth()) {
-                            welcomeView.getSignInView().setSignIsVisible(false);
-                            welcomeView.setloginresult(currentUserBean.as().getName(),currentUserBean.as().getEmail(), true);
+                            // use app menu
+                            welcomeView.setloginresult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
                         }
                     }
                 });
@@ -135,7 +139,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             }
 
 
-//***************************************SNIPS****************************
+            //***************************************SNIPS****************************
             else if (token.equals(RDLConstants.Tokens.SNIPS)) {
                 if (snipSearchView == null) {
                      snipSearchView = new SnipSearchViewImpl(currentUserBean);
@@ -149,17 +153,16 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
 
                     public void onSuccess() {
-                        if(currentUserBean.as().isAuth())  {
+
                             snipSearchPresenter.go(container);
-                        } else {
-                            History.newItem(RDLConstants.Tokens.WELCOME);
-                        }
+
                     }
                 });
-            }// end el
+
+            }// end else
 
             //***************************************SNIP_EDIT****************************
-
+            // only authorised users
             else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
                 // in async call back this is not app controller
                 if (snipEditView == null) {
@@ -187,15 +190,18 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
             else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
+
                 final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+
+
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
                     }
 
                     public void onSuccess() {
-                        authBean.as().setAuth(false);
+                        currentUserBean.as().setAuth(false);
                         if (welcomeView == null) {
-                            welcomeView = new WelcomeViewImpl(messages, authBean);
+                            welcomeView = new WelcomeViewImpl( currentUserBean);
 
                         }
                         currentUserBean.as().setAuth(false);
@@ -208,27 +214,6 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
             //*************************************** LOG_OUT ****************************
-
-
-            else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
-                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
-                GWT.runAsync(new RunAsyncCallback() {
-                    public void onFailure(Throwable caught) {
-                    }
-
-                    public void onSuccess() {
-                        authBean.as().setAuth(false);
-                        currentUserBean.as().setAuth(false);
-                        if (welcomeView == null) {
-                            welcomeView = new WelcomeViewImpl(messages, authBean);
-
-                        }
-
-                        welcomePresenter.go(container);
-                        welcomeView.logout();
-                    }
-                });
-            }
 
 
             else if (token.equals(RDLConstants.Tokens.SIGN_UP)) {
@@ -259,58 +244,6 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
     }// end method
-
-
-
-    //*************************************** Check Sign in  ****************************
-
-
-
-    public void checkUserAuth(String id) {
-
-        log.info("AppController checkUserAuthsnip id "+id);
-        String authUrl = GWT.getModuleBaseURL() + "getSession";
-        authUrl = authUrl.replaceAll("/therdl", "");
-
-        log.info("SnipEditorWorkflow submit updateUrl: " + authUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        try {
-            AutoBean<SnipBean> actionBean = beanery.snipBean();
-//            actionBean.as().setAction("getUserAuth");
-            actionBean.as().setId(id);
-            String json = AutoBeanCodex.encode(actionBean).getPayload();
-
-            log.info("SnipEditorWorkflow submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    if (response.getStatusCode() == 200) {
-                        // ok move forward
-                        log.info("SnipEditorWorkflow submit post ok now validating");
-
-
-                    } else {
-                        log.info("SnipEditorWorkflow submit post fail");
-
-                    }
-                }
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditorWorkflow submit onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
-
-    }
-
 
 
     public AutoBean<CurrentUserBean> getCurrentUserBean() {

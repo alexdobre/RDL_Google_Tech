@@ -55,10 +55,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         // init closure editor widget
         editorClientWidget = new EditorClientWidget(this);
 
-     //   mainPanel.add(header);
-    //    // comment editor widget built via gwt
-      //  mainPanel.add(snipEditorWorkflow);
-
         // add closure widget into the view
         mainPanel.add(editorClientWidget);
 	  }
@@ -145,6 +141,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
             this.appMenuPanel.setUserInfoVisible(true);
             this.appMenuPanel.setUser(name);
             this.appMenuPanel.setEmail(email);
+            this.appMenuPanel.setLogInVisible(false);
         }
 
     }

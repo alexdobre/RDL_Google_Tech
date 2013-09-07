@@ -8,6 +8,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SignInView;
@@ -16,7 +17,10 @@ import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.shared.Messages;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
+import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
 
@@ -34,8 +38,8 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
 	private Presenter presenter;
 
-    private SignInView signInView;
-    private AutoBean<AuthUserBean> authnBean;
+    private SignInViewImpl signInView;
+    private AutoBean<CurrentUserBean> currentUser;
 
     @UiField
     AppMenu appMenu;
@@ -62,9 +66,10 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
 
 
-    public WelcomeViewImpl(Messages messages, AutoBean<AuthUserBean> authnBean) {
+    public WelcomeViewImpl( AutoBean<CurrentUserBean> currentUser) {
         initWidget(uiBinder.createAndBindUi(this));
-        appMenu.setUserInfoVisible(false);
+        this.currentUser = currentUser;
+      //  appMenu.setUserInfoVisible(false);
         appMenu.setLogOutVisible(false);
         appMenu.setLogOutVisible(false);
         appMenu.setMainGroupVisible(true);
@@ -81,26 +86,34 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
         ServicesButton.setSize("100px","40px");
         ServicesButton.getElement().getStyle().setProperty("margin", "10px");
         ServicesButton.getElement().getStyle().setProperty("padding", "10px");
-        this.authnBean = authnBean;
+
+        appMenu.setSignUpVisible(true);
+
+        GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler()  {
+
+            @Override
+            public void onLogInEvent(LogInEvent onLoginEvent) {
+                showLoginPopUp();
+            }
+        });
+
+
+    }
+
+
+    public void showLoginPopUp() {
 
         signInView = new SignInViewImpl(this);
+        signInView.setGlassEnabled(true);
+        signInView.setModal(true);
+        signInView.setPopupPosition(20,30);
+        signInView.show();
         signInView.getLoginFail().setVisible(false);
 
 
-        if (!authnBean.as().isAuth()) {
-            log.info("WelcomeViewImpl constructor: !authnBean.as().isAuth()" );
 
+    }
 
-
-        } else  {
-            if( signInView != null )
-            log.info("WelcomeViewImpl constructor: else signInView.setSignIsVisible(false)" );
-
-
-        }
-
-	}
-	
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
@@ -115,12 +128,13 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
       if (auth) {
           log.info("WelcomeViewImpl setloginresult auth true" );
 
-
+          signInView.hide();
           appMenu.setUser(name);
           appMenu.setEmail(email);
           appMenu.setLogOutVisible(true);
           appMenu.setSignUpVisible(false);
           appMenu.setUserInfoVisible(true);
+          appMenu.setLogInVisible(false);
       }
 
     }
@@ -134,17 +148,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
 
 
-    public SignInView getSignInView() {
+    public void onSubmit(String emailtxt, String passwordText) {
 
-        return this.signInView;
-
-
-    }
-
-
-    public void onSubmit() {
-
-        presenter.doLogIn();
+        presenter.doLogIn(emailtxt, passwordText);
     }
 
     @Override

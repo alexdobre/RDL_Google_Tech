@@ -19,7 +19,7 @@
             <g:MenuItem text="Stories" ui:field = "stories"/>
             <g:MenuItem text="Improvements" ui:field = "improvements"/>
             <g:MenuItem text="Services" ui:field = "services"/>
-
+            <g:MenuItem text="log in" ui:field = "login"/>
             <g:MenuItem text="Sign Up for an Account" ui:field = "signUp"/>
 
             <g:MenuItem text="User Details" ui:field = "userdetails">

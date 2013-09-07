@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
 import com.therdl.shared.events.LogOutEvent;
 
 
@@ -41,6 +42,7 @@ public class AppMenu extends Composite  {
     @UiField MenuItem email;
     @UiField MenuItem out;
     @UiField MenuItem signUp;
+    @UiField MenuItem login;
 
     interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
     }
@@ -59,6 +61,8 @@ public class AppMenu extends Composite  {
         this .stories.setStyleName("stories");;
         this .services.setStyleName("services");
         this .improvements.setStyleName("improvements");
+        this .login.setStyleName("login");
+
 
         snipEdit.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
@@ -90,11 +94,18 @@ public class AppMenu extends Composite  {
         out.setScheduledCommand (new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.TokenslogoutS");
+                log.info("AppMenu: logout");
                 GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
             }
         });
 
+        login.setScheduledCommand (new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: login");
+                GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
+            }
+        });
 
         home.setScheduledCommand (new Scheduler.ScheduledCommand() {
             @Override
@@ -137,12 +148,29 @@ public class AppMenu extends Composite  {
 
     }
 
+    public void setLogInVisible(boolean state) {
+        log.info("AppMenu: setLogInVisible "+state);
+        this.login.setVisible(state);
+
+    }
+
     public void setMainGroupVisible(boolean state) {
         log.info("AppMenu: setMainGroupVisible "+state);
         this .stories.setVisible(state);
         this .services.setVisible(state);
         this .improvements.setVisible(state);
 
+
+    }
+
+
+
+    public void setSignUpView() {
+        log.info("AppMenu: setSignUpView ");
+        this.login.setVisible(false);
+        setMainGroupVisible(false);
+        setSignUpVisible(false);
+        setUserInfoVisible (false);
 
     }
 

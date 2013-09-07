@@ -37,6 +37,7 @@ public class RDL implements EntryPoint {
 
       AppController appController = new AppController();
       WidgetHolder.getInstance();
+      // need this for landing page
       RootLayoutPanel rp = RootLayoutPanel.get();
       rp.setSize("100%","1200px");
       //we let the appController take over

@@ -7,7 +7,7 @@ public interface WelcomeView {
 
 	public interface Presenter {
 
-        void  doLogIn();
+        void  doLogIn(String emailtxt, String passwordText);
 
 	}
 
@@ -17,7 +17,7 @@ public interface WelcomeView {
 
 	Widget asWidget();
 
-    SignInView getSignInView();
+
 
     void  setloginresult(String name, String email, boolean auth);
 

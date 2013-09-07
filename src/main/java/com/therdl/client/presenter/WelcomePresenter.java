@@ -24,7 +24,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
 
     private final WelcomeView welcomeView;
-    private final SignInView signInView;
+
     private final AppController controller;
 
 
@@ -32,7 +32,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         this.controller =controller;
         this.welcomeView = welcomeView;
         this.welcomeView.setPresenter(this);
-        this.signInView = welcomeView.getSignInView();
+
     }
 
     @Override
@@ -40,8 +40,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         container.clear();
         container.add(welcomeView.asWidget());
         if(!controller.getCurrentUserBean().as().isAuth() ) {
-            log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth() getSignInView().setSignIsVisible(true); ");
-            welcomeView.getSignInView().setSignIsVisible(true);
+            log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
             welcomeView.getAppMenu().setLogOutVisible(false);
             welcomeView.getAppMenu().setSignUpVisible(true);
             welcomeView.getAppMenu().setUserInfoVisible(false);
@@ -49,11 +48,9 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
     }
 
 
-    public void doLogIn() {
+    public void doLogIn( String emailtxt, String passwordText ) {
 
         Beanery beanery = GWT.create(Beanery.class);
-        String passwordText = signInView.getPassword().getText();
-        String emailtxt = signInView.getEmail().getText();
         log.info("v onSubmit password " + passwordText + " emailtxt  " + emailtxt);
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
@@ -89,11 +86,13 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                         boolean auth = data.getBoolean("auth");
                         if (!auth) {
                             log.info("WelcomePresenter onResponseReceived  !auth  ");
-                            welcomeView.getSignInView().getLoginFail().setVisible(true);
+                            // use app menu
+
                         }   else {
                         controller.setCurrentUserBean(name, email, auth);
                         welcomeView.setloginresult(name, email, auth);
-                        welcomeView.getSignInView().getLoginFail().setVisible(false);
+                            // use app menu
+
                         }
                     }
                 }

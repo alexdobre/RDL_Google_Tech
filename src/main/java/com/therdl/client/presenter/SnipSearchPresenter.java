@@ -59,8 +59,9 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
         }
 
         else {
-            History.newItem(RDLConstants.Tokens.WELCOME);
-            History.fireCurrentHistoryState();
+            snipSearchView.getAppMenu().setUserInfoVisible(false);
+            snipSearchView.getAppMenu().setUserInfoVisible(false);
+            getSnipDemoResult();
         }
 
 	}

@@ -16,4 +16,8 @@ public interface CurrentUserBean {
 
     void setAuth(boolean auth);
 
+    boolean isRegistered();
+
+    void setRegistered(boolean b);
+
 }

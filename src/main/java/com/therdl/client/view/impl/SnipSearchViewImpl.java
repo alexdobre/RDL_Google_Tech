@@ -29,7 +29,7 @@ import com.therdl.shared.beans.SnipBean;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class SnipSearchViewImpl extends Composite implements SnipSearchView, ValueChangeHandler<String> {
+public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private static Logger log = Logger.getLogger("");
 
@@ -65,8 +65,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
         appMenu.add(appMenuPanel);
         snipSearchWidget = new SnipSearchWidget(this);
-//		snipSearchWidget = WidgetHolder.getInstance().getSnipSearchWidget();
-
 
 
         // init closure's editor list widget to show snip list
@@ -118,7 +116,14 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
             this.appMenuPanel.setSignUpVisible(false);
             this.appMenuPanel.setUserInfoVisible(true);
             this.appMenuPanel.setUser(name);
-            this.appMenuPanel.setEmail(email);
+            this.appMenuPanel.setLogInVisible(false);
+        }
+
+        else {
+            this.appMenuPanel.setLogOutVisible(false);
+            this.appMenuPanel.setSignUpVisible(true);
+            this.appMenuPanel.setUserInfoVisible(false);
+            this.appMenuPanel.setLogInVisible(true);
         }
 
     }
@@ -133,15 +138,4 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView, Val
         presenter.searchSnips(match);
     }
 
-    @Override
-    public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
-        log.info("SnipSearchViewImpl  onValueChange" +stringValueChangeEvent.getValue());
-        if(stringValueChangeEvent.getValue().equals("snips")) {
-
-            if(!currentUserBean.as().isAuth() ) {
-                History.newItem(RDLConstants.Tokens.WELCOME);
-                History.fireCurrentHistoryState();
-            }
-        }
-    }
 }
