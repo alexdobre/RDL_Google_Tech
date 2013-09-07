@@ -14,23 +14,24 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogOutEvent;
 
+
 import java.util.logging.Logger;
 
 public class AppMenu extends Composite  {
 
     private static Logger log = Logger.getLogger("");
 
-	private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
-	@UiField MenuBar menuBar;
+    private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
+    @UiField MenuBar menuBar;
 
-	@UiField MenuItem ideas;
+    @UiField MenuItem ideas;
     // ideas drop down
     @UiField MenuItem snipSearch;
     @UiField MenuItem snipEdit;
 
-	@UiField MenuItem stories;
-	@UiField MenuItem improvements;
-	@UiField MenuItem services;
+    @UiField MenuItem stories;
+    @UiField MenuItem improvements;
+    @UiField MenuItem services;
 
 
     // auth flow
@@ -40,11 +41,11 @@ public class AppMenu extends Composite  {
     @UiField MenuItem out;
     @UiField MenuItem signUp;
 
-	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
-	}
+    interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
+    }
 
-	public AppMenu() {
-		initWidget(uiBinder.createAndBindUi(this));
+    public AppMenu() {
+        initWidget(uiBinder.createAndBindUi(this));
 
         // temp initialisation settings for unused functions
         this .stories.setVisible(false);
@@ -54,19 +55,22 @@ public class AppMenu extends Composite  {
         this .userdetails.setStyleName("userDropDown");
         this .signUp.setStyleName("signUpAccount");
         this .ideas.setStyleName("ideasMenuItem");
+        this .stories.setStyleName("stories");;
+        this .services.setStyleName("services");
+        this .improvements.setStyleName("improvements");
 
         snipEdit.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			@Override
-			public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
-				History.newItem(RDLConstants.Tokens.SNIP_EDIT);
-			}
-		});
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.edit");
+                History.newItem(RDLConstants.Tokens.SNIP_EDIT);
+            }
+        });
 
         snipSearch.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.search");
                 History.newItem(RDLConstants.Tokens.SNIPS);
             }
         });
@@ -75,7 +79,7 @@ public class AppMenu extends Composite  {
         signUp.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.SNIPS");
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
                 History.newItem(RDLConstants.Tokens.SIGN_UP);
             }
         });
@@ -85,12 +89,13 @@ public class AppMenu extends Composite  {
         out.setScheduledCommand (new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.TokenslogoutS");
                 GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
             }
         });
 
 
-	}
+    }
 
     public void setUser(String id) {
         log.info("AppMenu:setUser "+id);
@@ -106,10 +111,10 @@ public class AppMenu extends Composite  {
     }
 
 
-      public void  setSignUpVisible (boolean state){
-          log.info("AppMenu: setSignUpVisible "+state);
-          signUp.setVisible(state);
-      }
+    public void  setSignUpVisible (boolean state){
+        log.info("AppMenu: setSignUpVisible "+state);
+        signUp.setVisible(state);
+    }
 
     public void  setUserInfoVisible (boolean state){
         log.info("AppMenu: setUserInfoVisible "+state);
@@ -120,7 +125,16 @@ public class AppMenu extends Composite  {
 
     public void setLogOutVisible(boolean state) {
         log.info("AppMenu: setLogOutVisible "+state);
-       this.out.setVisible(state);
+        this.out.setVisible(state);
+
+    }
+
+    public void setMainGroupVisible(boolean state) {
+        log.info("AppMenu: setMainGroupVisible "+state);
+        this .stories.setVisible(state);
+        this .services.setVisible(state);
+        this .improvements.setVisible(state);
+
 
     }
 

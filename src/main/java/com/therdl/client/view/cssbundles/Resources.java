@@ -3,6 +3,7 @@ package com.therdl.client.view.cssbundles;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.TextResource;
 
 public interface Resources extends ClientBundle {
@@ -23,6 +24,10 @@ public interface Resources extends ClientBundle {
 
     @Source("snipeditor.js")
     public TextResource dialogView();
+
+    @Source("RDL_logo_large copy.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource landingImage();
 
 
 

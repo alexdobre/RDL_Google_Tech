@@ -85,7 +85,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	public void go(final HasWidgets container) {
 		this.container = container;
         // for now force the login screen
-        authnBean.as().setAuth(false);
+        authnBean.as().setAuth(true);
+        this.currentUserBean.as().setAuth(true);
 
 		if ("".equals(History.getToken())) {
 			History.newItem(RDLConstants.Tokens.WELCOME);
