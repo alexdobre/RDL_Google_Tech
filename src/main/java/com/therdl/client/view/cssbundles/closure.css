@@ -15,6 +15,14 @@
 
 }
 
+#snipComboParent{
+    margin:20px;
+}
+
+.clearEditorBtnParent {
+    margin-right:10px;
+}
+
 .editorDiv {
     width: 720px;
     height: 300px;
@@ -23,7 +31,7 @@
 }
 
 .bottomBarContaner {
-    width: 700px;
+    width: 720px;
     height: 40px;
     background-color:#fafafa;
     border: 1px solid grey;
@@ -33,7 +41,7 @@
 }
 
 .toolbar {
-    width: 720px;
+
 }
 
 .snipLabel {

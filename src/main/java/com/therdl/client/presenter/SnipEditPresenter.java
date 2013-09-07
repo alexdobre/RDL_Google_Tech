@@ -71,21 +71,25 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
     @Override
     public void submitEditedBean(AutoBean<SnipBean> bean) {
 
-        String title =view.getSnipEditorWorkflow().getSnipEditor().getTitle();
-        String text =view.getSnipEditorWorkflow().getSnipEditor().getContentAsText();
-        String html =view.getSnipEditorWorkflow().getSnipEditor().getContentAsHtml();
+        // get snip data from EditorClient widget
+        String title = view.getEditorClientWidget().getSnipData().get("title");
+        String contentAsText = view.getEditorClientWidget().getSnipData().get("contentAsString");
+        String contentAsHtml = view.getEditorClientWidget().getSnipData().get("contentAsHtml");
+        String coreCat = view.getEditorClientWidget().getSnipData().get("coreCat");
+        String subCat = view.getEditorClientWidget().getSnipData().get("subCat");
 
-        if (bean.as().getId() == null )
-        {
+        if (bean.as().getId() == null) {
             Window.alert("this is a new snip please use submit not submit-edit" );
             return;
         }
 
         log.info("SnipEditPresenter submitEditBean bean");
         bean.as().setTitle(title);
+        bean.as().setCoreCat(coreCat);
+        bean.as().setSubCat(subCat);
 //        bean.as().setContentAsString(text);
 //        bean.as().setContentAsHtml(html);
-        bean.as().setContent(text);
+        bean.as().setContent(contentAsText);
         bean.as().setAuthor("demo user");
 //        bean.as().setServerMessage("submitEdit");
         bean.as().setAction("update");
@@ -311,6 +315,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
                     view.setSnipDropDown(beans);
                     beans.clear();
+
+
+                    // set snip combo in EditorClientWidget
+                    view.getEditorClientWidget().setSnipComboBox(data);
 
                 }
 

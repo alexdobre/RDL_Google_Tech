@@ -1,6 +1,7 @@
 package com.therdl.client.view.widgetclosure;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -81,17 +82,42 @@ public class EditorClientWidget extends Composite  {
         log.info("snipTitle="+snipData.get("title"));
         log.info("coreCat="+snipData.get("coreCat"));
         log.info("subCat="+snipData.get("subCat"));
+        log.info("currentSnipId="+snipData.get("currentSnipId"));
 
         AutoBean<SnipBean> newBean = beanery.snipBean();
-        snipEditView.submitBean(newBean);
+        if(snipData.get("currentSnipId").equals("")) {
+            snipEditView.submitBean(newBean);
+            Window.alert("saved");
+        } else {
+            newBean.as().setId(snipData.get("currentSnipId"));
+            snipEditView.submitEditBean(newBean);
+            Window.alert("edited");
+        }
+
+        clearEditor();
     }
 
     /*
      * JS native function which calls SnipEditor constructor function from the snipeditor.js
      */
 
-    private native void bootStrapEditor(EditorClientWidget w ) /*-{
+    private native void bootStrapEditor(EditorClientWidget w) /*-{
 	    var snipEditor = new $wnd.widjdev.SnipEditor();
+    }-*/;
+
+    public native void setSnipComboBox(JsArray<JSOModel> data) /*-{
+        // clear snip combo to init with new data
+        var snipComboParent  = $doc.getElementById('snipComboParent');
+        if(snipComboParent) {
+            while (snipComboParent.lastChild)
+                snipComboParent.removeChild(snipComboParent.lastChild);
+        }
+        // this will call a function from snipeditor.js which will create a combo box with snip titles
+        $wnd.widjdev.SnipEditor.setSnipComboBox(data);
+    }-*/;
+
+    private native void clearEditor() /*-{
+        $wnd.widjdev.SnipEditor.clearEditor();
     }-*/;
 
     private native void resetDom() /*-{
