@@ -25,7 +25,7 @@ public interface Resources extends ClientBundle {
     @Source("snipeditor.js")
     public TextResource dialogView();
 
-    @Source("RDL_logo_large copy.gif")
+    @Source("RDL_logo_large copy.png")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource landingImage();
 

@@ -28,6 +28,7 @@ public class AppMenu extends Composite  {
     // ideas drop down
     @UiField MenuItem snipSearch;
     @UiField MenuItem snipEdit;
+    @UiField MenuItem home;
 
     @UiField MenuItem stories;
     @UiField MenuItem improvements;
@@ -95,6 +96,13 @@ public class AppMenu extends Composite  {
         });
 
 
+        home.setScheduledCommand (new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.TokenslogoutS");
+                History.newItem(RDLConstants.Tokens.WELCOME);
+            }
+        });
     }
 
     public void setUser(String id) {

@@ -9,11 +9,13 @@ height:1200px;
 
 .splashLogo {
 position:absolute;
-left:-20px;
-z-index:-5;
-width:260px;
-height:180px;
+left:-8px;
+z-index:-500;
+max-width:300px;
+ height: auto;
 }
+
+
 
 iframe {
 padding-top:10px;
@@ -109,8 +111,9 @@ vertical-align:bottom;
 top:.2%;
 right:15%;
 font:14px;
-background:url(img/dropdown_arrow.png) bottom right no-repeat;
-width:80px;
+background:url(img/dropdown_arrow.png)  right no-repeat;
+background-position: 90% 22%; 
+width:60px;
 padding:4px 10px;
 }
 
@@ -134,7 +137,7 @@ vertical-align:bottom;
 width:62px;
 left:20px;
 top:.2%;
-background:url(img/dropdown_arrow.png) bottom right no-repeat;
+background:url(img/dropdown_arrow.png)  right no-repeat;
 padding:4px 10px;
 }
 

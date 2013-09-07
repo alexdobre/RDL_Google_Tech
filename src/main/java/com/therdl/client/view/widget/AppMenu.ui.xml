@@ -12,6 +12,7 @@
                 <g:MenuBar vertical="true">
                     <g:MenuItem text="Search Snips" ui:field = "snipSearch"/>
                     <g:MenuItem text="Edit Snips" ui:field = "snipEdit"/>
+                    <g:MenuItem text="Home" ui:field = "home"/>
                 </g:MenuBar>
             </g:MenuItem>
 
