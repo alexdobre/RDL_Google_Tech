@@ -11,8 +11,9 @@
         <div id="snipComboParent"></div>
         <div id="editorContainer"></div>
         <div class="bottomBarContaner">
-            <g:Button ui:field="saveSnip">Save Draft</g:Button>
+            <g:Button ui:field="saveSnip">Save Snip</g:Button>
             <g:Button ui:field="postSnip">Post</g:Button>
+            <g:Button ui:field="deleteSnip">Delete Snip</g:Button>
         </div>
 
         <!--<div class= "left-panel">

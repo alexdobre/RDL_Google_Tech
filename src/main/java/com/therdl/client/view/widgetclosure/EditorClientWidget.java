@@ -40,6 +40,9 @@ public class EditorClientWidget extends Composite  {
     Button saveSnip;
     @UiField
     Button postSnip;
+    @UiField
+    Button deleteSnip;
+
     SnipEditViewImpl snipEditView;
 
 	public EditorClientWidget(SnipEditViewImpl snipEditView) {
@@ -92,6 +95,20 @@ public class EditorClientWidget extends Composite  {
             newBean.as().setId(snipData.get("currentSnipId"));
             snipEditView.submitEditBean(newBean);
             Window.alert("edited");
+        }
+
+        clearEditor();
+    }
+
+    @UiHandler("deleteSnip")
+    void onDeleteSnip(ClickEvent event) {
+        // test data
+        JSOModel snipData = getSnipData();
+        if(snipData.get("currentSnipId").equals("")) {
+            Window.alert("there is no selected snip to delete");
+        } else {
+            snipEditView.onDeleteSnip(snipData.get("currentSnipId"));
+            Window.alert("deleted");
         }
 
         clearEditor();
