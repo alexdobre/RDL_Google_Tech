@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
@@ -13,14 +12,11 @@ import java.util.logging.Logger;
 public class EditorViewHeader  extends Composite {
 
     private static Logger log = Logger.getLogger("");
-
-    SnipEditorWorkflow snipEditorWorkflow;
     private Grid grid;
     private AutoBean<SnipBean> currentBean;
 
-    public  EditorViewHeader(SnipEditorWorkflow snipEditorWorkflow) {
+    public  EditorViewHeader() {
         super();
-        this.snipEditorWorkflow = snipEditorWorkflow;
         grid = new Grid(3,4);
         grid.setStyleName("headerGrid");
 
@@ -41,7 +37,7 @@ public class EditorViewHeader  extends Composite {
         submitEdit.setStyleName("blogSubmitEdit-Button");
    //     grid.setWidget(1, 1,  submitEdit);
 
-        postListBox = new DynamicPostListBox(snipEditorWorkflow);
+        postListBox = new DynamicPostListBox();
         grid.setWidget(1, 2, postListBox);
 
 
@@ -125,7 +121,7 @@ public class EditorViewHeader  extends Composite {
 
 
     private void clearEditor() {
-        snipEditorWorkflow.createPost();
+
     }
 
 }

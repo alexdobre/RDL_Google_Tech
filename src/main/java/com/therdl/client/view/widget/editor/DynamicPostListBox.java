@@ -10,12 +10,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,7 +22,7 @@ public class DynamicPostListBox extends Composite {
 
     private static Logger log = Logger.getLogger("");
 
-    final SnipEditorWorkflow snipEditorWorkflow;
+
 
     private String title = "Select a Post";
 
@@ -33,8 +31,8 @@ public class DynamicPostListBox extends Composite {
     private AutoBean<SnipBean>  currentBean;
     private Beanery beanery = GWT.create(Beanery.class);
 
-    public DynamicPostListBox(final SnipEditorWorkflow snipEditorWorkflow) {
-        this.snipEditorWorkflow = snipEditorWorkflow;
+    public DynamicPostListBox() {
+
         dropBox = new ListBox(false);
         initialiseDropBox();
         FlowPanel dropBoxPanel = new FlowPanel();
@@ -55,11 +53,6 @@ public class DynamicPostListBox extends Composite {
                 log.info("DynamicPostListBox  dropBox.addClickHandler  key " + key  );
                 if(key.equals("-1")) return;
                 currentBean =  snipMap.get(key);
-
-//                snipEditorWorkflow.setContent(currentBean.as().getContentAsHtml());
-                snipEditorWorkflow.setEditorTitle(currentBean.as().getTitle());
-                snipEditorWorkflow.setContent(currentBean.as().getContent());
-                //   onSubmit();
 
             }
         });
@@ -107,13 +100,13 @@ public class DynamicPostListBox extends Composite {
         log.info("DynamicPostListBox: onSubmit new bean ");
 
         if (currentBean != null)  {
-            snipEditorWorkflow.submitBean(currentBean );
+
             Window.alert("this snip exists please use submit edit" );
             return;
         }
 
         AutoBean<SnipBean> newBean =   beanery.snipBean();
-        snipEditorWorkflow.submitBean(newBean );
+
     }
 
 
@@ -135,7 +128,7 @@ public class DynamicPostListBox extends Composite {
         }
 
             log.info("DynamicPostListBox: onSubmit editing bean " + currentBean.as().getTitle());
-            snipEditorWorkflow.submitEditBean(currentBean);
+
 
 
     }
@@ -152,11 +145,6 @@ public class DynamicPostListBox extends Composite {
             Window.alert("this is a new snip nothing to delete, select new post to clear the editor instead" );
             return;
         }
-
-
-        snipEditorWorkflow.onDelete( currentBean.as().getId());
-        snipEditorWorkflow.clearEditor();
-
 
     }
 

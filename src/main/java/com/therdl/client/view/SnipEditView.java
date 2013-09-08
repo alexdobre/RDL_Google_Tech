@@ -4,7 +4,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.client.view.widgetclosure.EditorClientWidget;
 import com.therdl.shared.beans.SnipBean;
 
@@ -40,8 +39,6 @@ public interface SnipEditView  {
     void submitBean(AutoBean<SnipBean> bean );
 
     void submitEditBean(AutoBean<SnipBean> bean);
-
-    SnipEditorWorkflow getSnipEditorWorkflow();
 
     EditorClientWidget getEditorClientWidget();
 

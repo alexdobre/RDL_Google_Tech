@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.SnipEditorWorkflow;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widget.editor.EditorViewHeader;
 import com.therdl.client.view.widgetclosure.EditorClientWidget;
@@ -37,7 +36,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
     private EditorViewHeader header;
     private  AutoBean<CurrentUserBean> currentUserBean;
 
-    private SnipEditorWorkflow snipEditorWorkflow;
+
 
 	private EditorClientWidget editorClientWidget;
 
@@ -48,9 +47,9 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
         appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
         appMenu.add(appMenuPanel);
-	    snipEditorWorkflow = new SnipEditorWorkflow(this);
 
-        header = new EditorViewHeader( snipEditorWorkflow);
+
+        header = new EditorViewHeader( );
 
         // init closure editor widget
         editorClientWidget = new EditorClientWidget(this);
@@ -122,10 +121,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 		}
 	}
 
-
-    public SnipEditorWorkflow getSnipEditorWorkflow() {
-        return snipEditorWorkflow;
-    }
 
     public EditorClientWidget getEditorClientWidget() {
         return editorClientWidget;
