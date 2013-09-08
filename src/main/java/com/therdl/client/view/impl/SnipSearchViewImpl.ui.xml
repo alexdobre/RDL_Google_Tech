@@ -14,7 +14,7 @@
 	</ui:style>
 
 	<g:HTMLPanel  >
-    <g:HTMLPanel ui:field="appMenu"  ></g:HTMLPanel>
+        <rdl:AppMenu ui:field="appMenu"/>
 
         <g:DockPanel >
 

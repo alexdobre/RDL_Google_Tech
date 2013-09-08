@@ -26,7 +26,7 @@ public interface SnipSearchView {
 
 	Widget asWidget();
 
-    void getSnipDemoResult(AutoBean<SnipBean> bean);
+
 
     void getSnipListDemoResult(JsArray<JSOModel> snips);
 

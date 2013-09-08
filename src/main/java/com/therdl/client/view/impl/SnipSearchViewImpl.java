@@ -46,10 +46,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 	}
 	
 	private Presenter presenter;
-
-    private AppMenu appMenuPanel;
-
-    @UiField HTMLPanel appMenu;
+    @UiField AppMenu appMenu;
     @UiField Widget snipSearchWidget;
     @UiField
     FlowPanel snipListRow;
@@ -61,34 +58,11 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
 
         initWidget(uiBinder.createAndBindUi(this));
-        this.currentUserBean  =  currentUserBean;
-        appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
-        appMenu.add(appMenuPanel);
-        snipSearchWidget = new SnipSearchWidget(this);
-
-
-        // init closure's editor list widget to show snip list
-        editorListWidget = (EditorListWidget) WidgetHolder.getInstance().getEditorListWidget();
         log.info("SnipSearchViewImpl constructor");
+        this.currentUserBean  =  currentUserBean;
+        snipSearchWidget = new SnipSearchWidget(this);
+        editorListWidget = (EditorListWidget) WidgetHolder.getInstance().getEditorListWidget();
 	}
-
-    /**
-     * this is a temporary debug method to test server development, soon to be changed to refelt
-     * evolution of the code base
-     */
-
-    @Override
-    public void getSnipDemoResult(AutoBean<SnipBean> bean) {
-
-        log.info("SnipSearchViewImpl getSnipDemoResult ");
-        snipListRowWidget = new SnipListRowWidget(bean);
-        snipListRow.clear();
-        snipListRow.add(snipListRowWidget);
-
-        // debug
-        log.info("SnipSearchViewImpl getSnipDemoResult "+ bean.as().getTitle());
-
-    }
 
     /**
      *  shows closure editor list widget with the snip data
@@ -112,25 +86,25 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         if (auth) {
             log.info("SnipSearchViewImpl setloginresult auth true "+name );
 
-            this.appMenuPanel.setLogOutVisible(true);
-            this.appMenuPanel.setSignUpVisible(false);
-            this.appMenuPanel.setUserInfoVisible(true);
-            this.appMenuPanel.setUser(name);
-            this.appMenuPanel.setLogInVisible(false);
+            this.appMenu.setLogOutVisible(true);
+            this.appMenu.setSignUpVisible(false);
+            this.appMenu.setUserInfoVisible(true);
+            this.appMenu.setUser(name);
+            this.appMenu.setLogInVisible(false);
         }
 
         else {
-            this.appMenuPanel.setLogOutVisible(false);
-            this.appMenuPanel.setSignUpVisible(true);
-            this.appMenuPanel.setUserInfoVisible(false);
-            this.appMenuPanel.setLogInVisible(true);
+            this.appMenu.setLogOutVisible(false);
+            this.appMenu.setSignUpVisible(true);
+            this.appMenu.setUserInfoVisible(false);
+            this.appMenu.setLogInVisible(true);
         }
 
     }
 
     @Override
     public AppMenu getAppMenu() {
-        return this.appMenuPanel;
+        return this.appMenu;
     }
 
     @Override
