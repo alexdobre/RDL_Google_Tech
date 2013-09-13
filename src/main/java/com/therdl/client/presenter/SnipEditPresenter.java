@@ -44,6 +44,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         this.view = view;
         this.view.setPresenter(this);
         this.controller =appController;
+        // user must be authorised to edit
         if(!controller.getCurrentUserBean().as().isAuth() ) {
             History.newItem(RDLConstants.Tokens.WELCOME);
             History.fireCurrentHistoryState();
@@ -56,6 +57,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
     public void go(HasWidgets container) {
         container.clear();
         container.add(view.asWidget());
+        // user must be authorised to edit
         if(controller.getCurrentUserBean().as().isAuth() ) {
             log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
             view.getAppMenu().setLogOutVisible(true);
@@ -87,15 +89,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         bean.as().setTitle(title);
         bean.as().setCoreCat(coreCat);
         bean.as().setSubCat(subCat);
-//        bean.as().setContentAsString(text);
-//        bean.as().setContentAsHtml(html);
         bean.as().setContent(contentAsText);
         bean.as().setAuthor("demo user");
-//        bean.as().setServerMessage("submitEdit");
         bean.as().setAction("update");
         log.info("SnipEditPresenter submitBean bean : " +  bean.as().getTitle());
-        // now submit to server
-
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -106,6 +103,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
+        // now submit to server
         try {
 
             String json = AutoBeanCodex.encode( bean).getPayload();
@@ -138,7 +136,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     }
 
-
+   // delete
 
     @Override
     public void onDeleteSnip(String id) {
@@ -192,6 +190,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     }
 
+    // submit <=> save
     @Override
     public void submitBean(AutoBean<SnipBean> bean) {
 
@@ -213,11 +212,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         bean.as().setTitle(title);
         bean.as().setCoreCat(coreCat);
         bean.as().setSubCat(subCat);
-//        bean.as().setContentAsString(text);
         bean.as().setContent(contentAsText);
-//        bean.as().setContentAsHtml(html);
         bean.as().setAuthor("demo user");
-//        bean.as().setServerMessage("submit");
         bean.as().setAction("save");
 
         log.info("SnipEditPresenter submitBean bean : title : " +  bean.as().getTitle());
@@ -264,7 +260,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
 
 
-
+    // this methoud used to validate snip drop down in edit view
     private void fetchSnips() {
 
         log.info("SnipEditPresenter getSnipDemoResult");
@@ -288,7 +284,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                 @Override
                 public void onResponseReceived(Request request, Response response) {
 
-
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
                     if(data.length() == 0 )  return;
@@ -304,9 +299,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
 
                     for (int k = 0; k < jSonList.size(); k++) {
+                        // used to index the incoming json array
                         String counter = ""+k;
-                        log.info("SnipEditPresenter onResponseReceived loop iteration " + counter);
-                        log.info("SSnipEditPresenter onResponseReceived making bean from json" + jSonList.get(k).get(counter));
                         AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
 
                         log.info("" + bean.as().toString());
@@ -315,8 +309,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
                     view.setSnipDropDown(beans);
                     beans.clear();
-
-
                     // set snip combo in EditorClientWidget
                     view.getEditorClientWidget().setSnipComboBox(data);
 

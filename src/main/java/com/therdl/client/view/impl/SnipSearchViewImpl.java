@@ -2,31 +2,19 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.SnipListRowWidget;
 import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widgetclosure.EditorListWidget;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
@@ -46,12 +34,16 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 	}
 	
 	private Presenter presenter;
-    @UiField AppMenu appMenu;
-    @UiField Widget snipSearchWidget;
+    @UiField
+    AppMenu appMenu;
+
+    @UiField
+    Widget snipSearchWidget;
+
     @UiField
     FlowPanel snipListRow;
+
     private  AutoBean<CurrentUserBean> currentUserBean;
-    private SnipListRowWidget snipListRowWidget;
 
     private EditorListWidget editorListWidget;
 

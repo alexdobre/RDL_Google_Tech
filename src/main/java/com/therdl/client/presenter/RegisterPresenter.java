@@ -22,15 +22,13 @@ import java.util.logging.Logger;
 
 /**
  * user signs up for application here
- * simple but good looking formv iew
+ * simple but good looking formv view
  */
 public class RegisterPresenter implements Presenter, RegisterView.Presenter {
 
     private static Logger log = Logger.getLogger("");
     private RegisterView registerView;
     private final AppController controller;
-    // idea here is to use a unifome object structure in the client to help new devs get up to sppeed
-    // ie they only need to learn one block of code and it is the same wherever the client updates
     private Beanery beanery = GWT.create(Beanery.class);
 
 
@@ -49,11 +47,9 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
 
     @Override
     public void submitNewUser(AutoBean<AuthUserBean> bean) {
-        log.info("RegisterPresenter submitNewUser with  bean as ");
         log.info(AutoBeanCodex.encode(bean).getPayload());
-
         String updateUrl = GWT.getModuleBaseURL() + "getSession";
-
+         // handle jboss urls for deploy
         if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
@@ -72,18 +68,12 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
 
-                    log.info("RegisterPresenter submitNewUser  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
                     log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
-
+                    // deserialise the bean
                     AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
-
-                    log.info("RegisterPresenter submitNewUser bean.as().getName() " + bean.as().getName());
-                    log.info("RegisterPresenter submitNewUser bean.as().getEmail() " + bean.as().getEmail());
-                    log.info("RegisterPresenter submitNewUser bean.as().getAction() " + bean.as().getAction());
-                    log.info("RegisterPresenter submitNewUser bean.as().isAuth() " + bean.as().isAuth());
-
+                   // on success user is authorised on sign up
                     controller.setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
-
+                     // return to welcome page
                     History.newItem(RDLConstants.Tokens.WELCOME);
 
                 }

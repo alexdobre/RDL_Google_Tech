@@ -81,6 +81,13 @@ margin:10px;
 padding:10px;
 }
 
+.listDisplay {
+
+width:100%;
+
+
+}
+
 .gwt-MenuBar {
 background-color:#000!important;
 }

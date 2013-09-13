@@ -15,8 +15,6 @@ public interface SnipSearchView {
 
     public interface Presenter {
         /**
-         * the presenter implementation of snips search
-         * basically makes an ajax call to the server to search the snips based on 'match'
          * @param match : title of the snip currently
          */
         void searchSnips(String match);

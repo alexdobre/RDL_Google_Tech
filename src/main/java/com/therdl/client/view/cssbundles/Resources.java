@@ -25,10 +25,48 @@ public interface Resources extends ClientBundle {
     @Source("snipeditor.js")
     public TextResource dialogView();
 
-    @Source("RDL_logo_large copy.png")
+    @Source("imagebund/RDL_logo_large copy.png")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource landingImage();
 
+    @Source("imagebund/FastCap.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource FastCapImage();
+
+    @Source("imagebund/Habit.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource HabitImage();
+
+    @Source("imagebund/Material.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource MaterialImage();
+
+    @Source("imagebund/Pledge.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource PledgeImage();
+  /*
+    @Source("imagebund/Tag.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource TagImage();        */
+
+    @Source("imagebund/Post.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource PostImage();
+
+    @Source("imagebund/Proposal.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource ProposalImage();
+
+    @Source("imagebund/Snip.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource SnipImage();
 
 
+    @Source("imagebund/Stream.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource StreamImage();
+    /*
+    @Source("imagebund/Thread.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource ThreadImage();   */
 }

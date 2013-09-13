@@ -4,8 +4,10 @@
 	xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style>
         .widgetlayout {
-          margin:10px 0 0 20px;
+          margin:10px 0 0 30px;
           padding:10px 0 0 20px;
+          position:absolute;
+          top:14%;
         }
         .searchlayout {
         margin:20px;
@@ -16,9 +18,9 @@
 	<g:HTMLPanel  >
         <rdl:AppMenu ui:field="appMenu"/>
 
-        <g:DockPanel >
+        <g:DockPanel  width="100%" height="100%"  >
 
-			<g:Dock direction="NORTH" size='285px'>
+			<g:Dock direction="NORTH" size='100%'>
 				<g:FlowPanel styleName='{style.searchlayout}'>
 					<rdl:SnipSearchWidget ui:field="snipSearchWidget" width="100%" height="100%"  />
 				</g:FlowPanel>

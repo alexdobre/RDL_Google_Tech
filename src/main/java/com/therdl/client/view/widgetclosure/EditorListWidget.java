@@ -28,6 +28,7 @@ public class EditorListWidget extends Composite {
         Resources.INSTANCE.listCss().ensureInjected();
 
         initWidget(uiBinder.createAndBindUi(this));
+        setStyleName("listDisplay");
 
     }
 

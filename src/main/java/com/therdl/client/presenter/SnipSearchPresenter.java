@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter, ValueChangeHandler<String> {
+public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter  {
     private static Logger log = Logger.getLogger("");
 	private final SnipSearchView snipSearchView;
     private Beanery beanery = GWT.create(Beanery.class);
@@ -35,11 +35,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
         this.snipSearchView = snipSearchView;
         this.snipSearchView.setPresenter(this);
         log.info("SnipSearchPresenter constructor");
-        if(!controller.getCurrentUserBean().as().isAuth() ) {
-            History.newItem(RDLConstants.Tokens.WELCOME);
-            History.fireCurrentHistoryState();
-
-        }
+        // anyone can view snips no auth code needed
 
     }
 	
@@ -48,6 +44,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
         log.info("SnipSearchPresenter go adding view");
 		container.clear();
 	    container.add(snipSearchView.asWidget());
+        // use auth code here to handle app menu options
         if(controller.getCurrentUserBean().as().isAuth() ) {
             log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
             snipSearchView.getAppMenu().setLogOutVisible(true);
@@ -55,26 +52,26 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
             snipSearchView.getAppMenu().setUserInfoVisible(true);
             snipSearchView.setloginresult(controller.getCurrentUserBean().as().getName(),
             controller.getCurrentUserBean().as().getEmail(), true  );
-            getSnipDemoResult();
+            getInitialList();
         }
 
         else {
             snipSearchView.getAppMenu().setUserInfoVisible(false);
             snipSearchView.getAppMenu().setUserInfoVisible(false);
-            getSnipDemoResult();
+            getInitialList();
         }
 
 	}
 
-    private void getSnipDemoResult() {
-        log.info("SnipSearchPresenter getSnipDemoResult");
+    private void getInitialList() {
+        log.info("SnipSearchPresenter getInitialList");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
         if(!Constants.DEPLOY){
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
-        log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: "+ updateUrl);
+        log.info("SnipSearchPresenter getInitialList  updateUrl: "+ updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
         currentBean = beanery.snipBean();
@@ -183,18 +180,5 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter,
         }
     }    // end initialUpdate method
 
-    @Override
-    public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
-        log.info("SnipSearchPresenter  onValueChange" +stringValueChangeEvent.getValue());
-        if(stringValueChangeEvent.getValue().equals("snips")) {
 
-            if(!controller.getCurrentUserBean().as().isAuth() ) {
-                History.newItem(RDLConstants.Tokens.WELCOME);
-                History.fireCurrentHistoryState();
-
-            }
-
-
-        }
-    }
 }
