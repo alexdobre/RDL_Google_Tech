@@ -28,7 +28,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	 
 	private Presenter presenter;
 
-
     private AppMenu appMenuPanel;
     @UiField HTMLPanel appMenu;
     @UiField FlowPanel mainPanel;

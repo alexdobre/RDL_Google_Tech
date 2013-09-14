@@ -14,9 +14,7 @@ public class WidgetHolder {
 	private Widget appMenu;
 	private Widget snipSearchWidget;
     private Widget editorListWidget;
-    private SnipListRowWidget snipListRowWidget;
 
-	
 	//singleton implementation
 	private static WidgetHolder instance;
 	
@@ -28,8 +26,6 @@ public class WidgetHolder {
 	private WidgetHolder(){
 		this.appMenu = buildAppMenu();
 	}
-	
-
 	
 	private Widget buildAppMenu() {
 		return new AppMenu().asWidget();

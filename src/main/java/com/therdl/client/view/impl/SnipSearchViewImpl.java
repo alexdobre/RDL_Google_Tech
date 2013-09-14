@@ -34,6 +34,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 	}
 	
 	private Presenter presenter;
+
     @UiField
     AppMenu appMenu;
 
@@ -53,7 +54,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         log.info("SnipSearchViewImpl constructor");
         this.currentUserBean  =  currentUserBean;
         snipSearchWidget = new SnipSearchWidget(this);
-        editorListWidget = (EditorListWidget) WidgetHolder.getInstance().getEditorListWidget();
+        editorListWidget =  new EditorListWidget();
 	}
 
     /**

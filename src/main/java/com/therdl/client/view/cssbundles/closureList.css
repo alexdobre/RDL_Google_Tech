@@ -5,40 +5,41 @@
       margin: 0;
       border: 1px solid #6b90da;
       border-top: 0;
-      padding: 4px 8px 4px 40px;
+      padding: 4px 8px 4px 0px;
       background: #fff;
       overflow: auto;
     }
 
       textarea { padding: 0.5em; margin: 0.2em; width: 40%; height: 6em; border: solid 1px; }
 
-      .row {   border: solid 1px #333;  width:55%; font-size: 12px; padding-top: 5px;
+      .listRow {   border: solid 1px #333;  width:60%; height:150px; font-size: 12px; padding-top: 5px;
              margin-top:5px;border-top: 5px solid #657acc;
             }
-      .row  .summary, .row .description { padding: 0.5em;  }
-      .row  .summary { font-weight: normal; }
-      .row  .userImg { width:50px; } /* back to front */
-      .row .snipImg { width: 64px; }
-      .row .firstColDiv { margin-right:5px; display:inline-block;}
-      .row .snipImgParent { position:absolute; display:inline-block;}
-      .row .leftPanel {margin-left:5px;float:left;}
-      .row .userTitleDiv {margin-top:2px;display: block;}
-      .row .leftPanelTop {display: block;}
-      .row .listContentDiv {margin:2px;}
-      .row .secondColDiv {margin:0px 10px 2px 20px; float: left;}
-      .row .contentDiv {display: inline-block;}
-      .row .thirdColDiv {float:left;margin-left: 3px;}
-      .row .forthColDiv {float:left;margin-left: 10px;}
-      .row .titleLabel {font-weight: bold; font-weight: 17px; margin-right:5px; display: inline-block}
-      .row .snipContentDiv {border: solid 1px; width:300px; height:50px;display: inline-block}
-      .row .userNameDiv, .postCountDiv, .viewCountDiv {display: inline-block; }
-      .row .thirdColDivChild2 {margin-top: 20px;}
-      .row .userNameDiv {margin-left:20px;}
-      .row .postCountDiv, .viewCountDiv {margin-left:50px;}
-      .row .creationDateDiv {margin-top:23px;}
-      .row .catDiv{margin-top:20px;}
-      .row .catDiv, .subCatDiv {color: #657acc;}
-      .row .imgBadge {width:27px; height:30px;}
+      .listRow  .summary, .listRow .description { padding: 0.5em;  }
+      .listRow  .summary { font-weight: normal; }
+      .listRow  .userImg { width:40px; } /* back to front */
+      .listRow .snipImg { width: 80px; }
+      .listRow .firstColDiv { margin-right:5px; display:inline-block;width:80px;}
+      .listRow .snipImgParent { position:absolute; display:inline-block;left:50px;}
+      .listRow .userImgParent { position:absolute; display:inline-block;}
+      .listRow .leftPanel {margin-left:5px;float:left;}
+      .listRow .userTitleDiv {margin-top:2px;display:inline-block;width:120px; bottom:2%;}
+      .listRow .leftPanelTop {display: block;}
+      .listRow .listContentDiv {margin:2px;}
+      .listRow .secondColDiv {margin:0px 10px 2px 20px; float: left;}
+      .listRow .contentDiv {display: inline-block;}
+      .listRow .thirdColDiv {float:left;margin-left: 3px;}
+      .listRow .forthColDiv {float:left;margin-left: 10px;}
+      .listRow .titleLabel {font-weight: bold; font-weight: 17px; margin-right:5px; display: inline-block}
+      .listRow .snipContentDiv {border: solid 1px; width:300px; height:50px;display: inline-block; padding:10px;}
+      .listRow .userNameDiv, .postCountDiv, .viewCountDiv {display: inline-block; }
+      .listRow .thirdColDivChild2 {margin-top: 20px;}
+      .listRow .userNameDiv {margin-left:20px;}
+      .listRow .postCountDiv, .viewCountDiv {margin-left:50px;}
+      .listRow .creationDateDiv {margin-top:23px;}
+      .listRow .catDiv{margin-top:20px;}
+      .listRow .catDiv, .subCatDiv {color: #657acc;}
+      .listRow .imgBadge {width:27px; height:30px;}
 
 
 
