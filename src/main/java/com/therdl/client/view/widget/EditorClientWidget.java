@@ -1,4 +1,4 @@
-package com.therdl.client.view.widgetclosure;
+package com.therdl.client.view.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -31,7 +30,7 @@ public class EditorClientWidget extends Composite  {
 
 
 	interface EditorClientViewUiBinder extends
-			UiBinder<Widget, com.therdl.client.view.widgetclosure.EditorClientWidget> {
+			UiBinder<Widget, EditorClientWidget> {
 	}
 
     boolean isInjected;

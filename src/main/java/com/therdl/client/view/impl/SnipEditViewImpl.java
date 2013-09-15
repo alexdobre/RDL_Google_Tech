@@ -9,9 +9,8 @@ import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.client.view.widget.editor.EditorViewHeader;
-import com.therdl.client.view.widgetclosure.EditorClientWidget;
+import com.therdl.client.view.widget.EditorClientWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -28,9 +27,10 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	 
 	private Presenter presenter;
 
-    private AppMenu appMenuPanel;
-    @UiField HTMLPanel appMenu;
-    @UiField FlowPanel mainPanel;
+    @UiField
+    AppMenu appMenu;
+    @UiField
+    FlowPanel mainPanel;
 
     private EditorViewHeader header;
     private  AutoBean<CurrentUserBean> currentUserBean;
@@ -43,10 +43,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         log.info("SnipEditViewImpl constructor");
 	    initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  currentUserBean;
-
-        appMenuPanel = (AppMenu) WidgetHolder.getInstance().getAppMenu();
-        appMenu.add(appMenuPanel);
-
 
         header = new EditorViewHeader( );
 
@@ -130,19 +126,19 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         if (auth) {
             log.info("SnipSearchViewImpl setloginresult auth true "+name );
 
-            this.appMenuPanel.setLogOutVisible(true);
-            this.appMenuPanel.setSignUpVisible(false);
-            this.appMenuPanel.setUserInfoVisible(true);
-            this.appMenuPanel.setUser(name);
-            this.appMenuPanel.setEmail(email);
-            this.appMenuPanel.setLogInVisible(false);
+            this.appMenu.setLogOutVisible(true);
+            this.appMenu.setSignUpVisible(false);
+            this.appMenu.setUserInfoVisible(true);
+            this.appMenu.setUser(name);
+            this.appMenu.setEmail(email);
+            this.appMenu.setLogInVisible(false);
         }
 
     }
 
     @Override
     public AppMenu getAppMenu() {
-        return this.appMenuPanel;
+        return this.appMenu;
     }
 
 }

@@ -23,19 +23,19 @@ public class EditorViewHeader  extends Composite {
 
         // 1st Row
         categoryListBox = new CategoryListBox("Select a Category");
-     //   grid.setWidget(0, 0,categoryListBox);
+
 
         newPost.setStyleName("newPost");
-     //   grid.setWidget(0, 1,  newPost);
+
 
         delete.setStyleName("deleteButton");
-    //    grid.setWidget(0, 2,  delete);
+
 
         submit.setStyleName("blogsubmit-Button");
-    //    grid.setWidget(1, 0,  submit);
+
 
         submitEdit.setStyleName("blogSubmitEdit-Button");
-   //     grid.setWidget(1, 1,  submitEdit);
+
 
         postListBox = new DynamicPostListBox();
         grid.setWidget(1, 2, postListBox);

@@ -10,9 +10,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.SearchListWidget;
 import com.therdl.client.view.widget.SnipSearchWidget;
-import com.therdl.client.view.widget.WidgetHolder;
-import com.therdl.client.view.widgetclosure.EditorListWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import java.util.logging.Logger;
@@ -46,7 +45,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private  AutoBean<CurrentUserBean> currentUserBean;
 
-    private EditorListWidget editorListWidget;
+    private SearchListWidget editorListWidget;
 
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
 
@@ -54,7 +53,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         log.info("SnipSearchViewImpl constructor");
         this.currentUserBean  =  currentUserBean;
         snipSearchWidget = new SnipSearchWidget(this);
-        editorListWidget =  new EditorListWidget();
+        editorListWidget =  new SearchListWidget();
 	}
 
     /**

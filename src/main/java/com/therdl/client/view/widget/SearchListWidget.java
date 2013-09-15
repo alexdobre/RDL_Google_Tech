@@ -1,29 +1,23 @@
-package com.therdl.client.view.widgetclosure;
+package com.therdl.client.view.widget;
 
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SnipBean;
 
-import java.util.ArrayList;
+public class SearchListWidget extends Composite {
 
-public class EditorListWidget extends Composite {
-    // put test data to pass the js function
 
-    private static EditorListViewUiBinder uiBinder = GWT.create(EditorListViewUiBinder.class);
+    private static SearchListViewUiBinder uiBinder = GWT.create(SearchListViewUiBinder.class);
 
-    interface EditorListViewUiBinder extends  UiBinder<Widget, EditorListWidget> {  }
+    interface SearchListViewUiBinder extends  UiBinder<Widget, SearchListWidget> {  }
 
-    public EditorListWidget() {
+    public SearchListWidget() {
 
         Resources.INSTANCE.listCss().ensureInjected();
 
@@ -32,13 +26,12 @@ public class EditorListWidget extends Composite {
 
     }
 
-    boolean isInjected;
 
     @Override
     protected void onLoad() {
         super.onLoad();
         injectScript();
-    //    bootStrapList(this);
+
         this.setVisible(true);
     }
 
@@ -52,10 +45,10 @@ public class EditorListWidget extends Composite {
     }
 
     private void injectScript() {
-        //if(!isInjected) {
+
             ScriptInjector.fromString(Resources.INSTANCE.widjdevList().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
-            isInjected = true;
-        //}
+
+
     }
 
     private native void resetDom() /*-{
@@ -84,7 +77,7 @@ public class EditorListWidget extends Composite {
 
 
     // JSNI set up code. This will call js function, data is converted like this [{},{}]
-    public native void  bootStrapList(EditorListWidget w, JsArray<JSOModel> data ) /*-{
+    public native void  bootStrapList(SearchListWidget w, JsArray<JSOModel> data ) /*-{
         var menu = $doc.getElementById('menu');
         // data now have the following format: [{"0":"{}"},{"1":"{}"}]: Change that like this [{},{}]
         var dataJs = [];

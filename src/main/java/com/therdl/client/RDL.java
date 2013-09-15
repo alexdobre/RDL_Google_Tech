@@ -2,12 +2,8 @@ package com.therdl.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.therdl.client.app.AppController;
-import com.therdl.client.view.widget.WidgetHolder;
 import com.therdl.shared.Messages;
 
 import java.util.logging.Level;
@@ -36,7 +32,6 @@ public class RDL implements EntryPoint {
       });
 
       AppController appController = new AppController();
-      WidgetHolder.getInstance();
       // need this for landing page
       RootLayoutPanel rp = RootLayoutPanel.get();
       rp.setSize("100%","1200px");

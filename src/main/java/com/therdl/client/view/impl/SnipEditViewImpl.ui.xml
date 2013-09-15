@@ -21,7 +21,7 @@
 
 	</ui:style>
 	<g:HTMLPanel styleName="{style.outerPanel}" >
-        <g:HTMLPanel ui:field="appMenu"  ></g:HTMLPanel>
+        <rdl:AppMenu ui:field="appMenu" />
 
 		<g:DockPanel>
 
