@@ -92,7 +92,7 @@ public class EditorListWidget extends Composite {
             dataJs.push(eval('(' + data[i][i] + ')'));
         }
         // calls closure js function from tabdev.js
-          $wnd.widjdev.tabdev.setTabs(menu, dataJs);
+          $wnd.widjdev.tabdev.setTabs(menu, dataJs, 5);
 
 	}-*/;
 
