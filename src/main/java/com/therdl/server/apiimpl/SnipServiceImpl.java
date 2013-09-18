@@ -66,7 +66,8 @@ public class SnipServiceImpl implements SnipsService {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
-        query.put("title", title);
+    //    query.put("title", title);
+        query.put("title",  java.util.regex.Pattern.compile(title));
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
 
