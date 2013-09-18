@@ -3,12 +3,11 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:style>
 
-
     </ui:style>
     <g:HTMLPanel>
         <g:MenuBar ui:field="menuBar" >
 
-            <g:MenuItem text="Ideas" ui:field = "ideas">
+            <g:MenuItem text="Ideas" ui:field = "ideas" >
                 <g:MenuBar vertical="true">
                     <g:MenuItem text="Search Snips" ui:field = "snipSearch"/>
                     <g:MenuItem text="Edit Snips" ui:field = "snipEdit"/>
