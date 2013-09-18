@@ -6,14 +6,14 @@
         .widgetlayout {
           margin:10px 0 0 30px;
           padding:10px 0 0 20px;
-          position:absolute;
-          top:14%;
+
         }
         .searchlayout {
+        position:absolute;
         margin:20px;
         padding:20px;
         width:600px;
-        height:220px;
+        height:140px;
         }
 	</ui:style>
 

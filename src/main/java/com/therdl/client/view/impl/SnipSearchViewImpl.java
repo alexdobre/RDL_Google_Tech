@@ -69,6 +69,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     @Override
     public void updateListWidget(JsArray<JSOModel> snips, int pSize){
         log.info("SnipSearchViewImpl updateListWidget "+ snips.length());
+        snipListRow.add(searcListWidget);
         searcListWidget.bootStrapList(searcListWidget, snips, pSize);
     }
 

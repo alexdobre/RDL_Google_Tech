@@ -86,17 +86,23 @@ padding:10px;
 position:absolute;
 color:#FFF;
 font-weight:700;
-vertical-align:bottom;
-top:4%;
+top:1%;
 left:5%;
 font:12px;
-width:45%;
-border:2px solid red;
-height:280px;
-
-
+width:600px;;
+height:70px;
 
 }
+
+
+.listDisplay {
+position:absolute;
+width:100%;
+top:15%;
+height:100%;
+
+}
+
 
 .filterOptions {
 
@@ -109,13 +115,6 @@ height:280px;
  height:180px;
  margin:10px;
  padding:10px;
-
-
-}
-
-.listDisplay {
-
-width:100%;
 
 
 }

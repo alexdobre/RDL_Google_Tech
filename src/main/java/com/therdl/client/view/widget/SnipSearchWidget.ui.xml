@@ -3,10 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
 
-        .main {
-         margin-top: 5px;
-         display:block;
-        }
+
 
 
         .widgetlayout {
@@ -54,8 +51,6 @@
 
         }
 
-
-
         .buttonlayout {
          margin:10px 0 0 10px;
          width:520px;
@@ -65,7 +60,7 @@
         }
 
 	</ui:style>
-	<g:HTMLPanel styleName="{style.main}">
+	<g:HTMLPanel >
 		<g:HorizontalPanel styleName='{style.widgetlayout}'  >
 			<g:Label text="Enter Search Text"  styleName='{style.leftLabel}'   />
 			<g:TextBox ui:field="matchText"  styleName='{style.rightTextBox}'  />

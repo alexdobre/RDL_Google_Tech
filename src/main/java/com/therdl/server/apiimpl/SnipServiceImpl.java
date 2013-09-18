@@ -237,6 +237,8 @@ public class SnipServiceImpl implements SnipsService {
      * @return : SnipBean
      */
     private SnipBean buildBeanObject(DBObject doc) {
+
+        if(beanery == null)   beanery = AutoBeanFactorySource.create(Beanery.class);
         SnipBean snip = beanery.snipBean().as();
 
         // set the fields
