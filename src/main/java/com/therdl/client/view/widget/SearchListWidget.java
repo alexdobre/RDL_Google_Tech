@@ -77,7 +77,7 @@ public class SearchListWidget extends Composite {
 
 
     // JSNI set up code. This will call js function, data is converted like this [{},{}]
-    public native void  bootStrapList(SearchListWidget w, JsArray<JSOModel> data ) /*-{
+    public native void  bootStrapList(SearchListWidget w, JsArray<JSOModel> data, int pSize) /*-{
         var menu = $doc.getElementById('menu');
         // data now have the following format: [{"0":"{}"},{"1":"{}"}]: Change that like this [{},{}]
         var dataJs = [];
@@ -85,7 +85,7 @@ public class SearchListWidget extends Composite {
             dataJs.push(eval('(' + data[i][i] + ')'));
         }
         // calls closure js function from tabdev.js
-          $wnd.widjdev.tabdev.setTabs(menu, dataJs, 5);
+          $wnd.widjdev.tabdev.setTabs(menu, dataJs, pSize);
 
 	}-*/;
 

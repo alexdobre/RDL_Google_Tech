@@ -12,6 +12,8 @@
         .searchlayout {
         margin:20px;
         padding:20px;
+        width:600px;
+        height:220px;
         }
 	</ui:style>
 
@@ -21,8 +23,8 @@
         <g:DockPanel  width="100%" height="100%"  >
 
 			<g:Dock direction="NORTH" size='100%'>
-				<g:FlowPanel styleName='{style.searchlayout}'>
-					<rdl:SnipSearchWidget ui:field="snipSearchWidget" width="100%" height="100%"  />
+				<g:FlowPanel ui:field="snipSearchWidgetPanel" styleName='{style.searchlayout}'>
+
 				</g:FlowPanel>
 			</g:Dock>
 			<g:Dock direction="CENTER"  >

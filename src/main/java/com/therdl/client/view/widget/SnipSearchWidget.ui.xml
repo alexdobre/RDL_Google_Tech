@@ -4,37 +4,77 @@
 	<ui:style>
 
         .main {
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 12px;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        width: 400px;
-        margin-top: 5px;
+         margin-top: 5px;
+         display:block;
         }
-        .main table{
-        display:block;
-        }
+
+
         .widgetlayout {
-        margin:10px 20px 0 0;
-        padding:10px 0 0 10px;
-        }
-        .buttonlayout {
-         margin:10px 0 0 60px;
+        margin:10px 0 0 10px;
+        width:520px;
+        height:30px;
+        display:block;
+
 
         }
+
+        .widgetParameters {
+
+        display:inline-block;
+        width:80px;
+        height:18px;
+        margin:10px 20px 0 0 ;
+        font-size:10px;
+
+        }
+
+        .optionParameters {
+        position:absolute;
+        display:inline-block;
+        left:360px;
+        font-size:10px;
+        }
+
+        .leftLabel {
+        display:inline-block;
+        width:120px;
+        height:20px;
+        position:absolute;
+        float:left;
+        color:black;
+        }
+
+
+        .rightTextBox {
+        display:inline-block;
+        width:180px;
+        height:20px;
+        position:absolute;
+        left:160px;
+
+        }
+
+
+
+        .buttonlayout {
+         margin:10px 0 0 10px;
+         width:520px;
+         height:30px;
+         display:block;
+
+        }
+
 	</ui:style>
 	<g:HTMLPanel styleName="{style.main}">
-		<g:HorizontalPanel width="100%"  >
-			<g:Label text="Text" ui:field="textSearch" styleName='{style.widgetlayout}'/>
-			<g:TextBox ui:field="textBox" styleName='{style.widgetlayout}'/>
-			<!--g:Label text="Core category" styleName='{style.widgetlayout}'/-->
-			<!--g:ListBox ui:field="coreCategoryCombo" styleName='{style.widgetlayout}'/-->
+		<g:HorizontalPanel styleName='{style.widgetlayout}'  >
+			<g:Label text="Enter Search Text"  styleName='{style.leftLabel}'   />
+			<g:TextBox ui:field="matchText"  styleName='{style.rightTextBox}'  />
+            <g:Button ui:field="optionsButton" text="Select Search Options" styleName='{style.optionParameters}' />
 		</g:HorizontalPanel>
-		<g:HorizontalPanel width="100%">
-			<g:Button ui:field="searchButton" text="Search" styleName='{style.buttonlayout}'/>
-			<g:Button ui:field="createNewButton" text="Create New" styleName='{style.buttonlayout}'/>
+		<g:HorizontalPanel styleName='{style.buttonlayout}'>
+			<g:Button ui:field="searchButton" text="Search" styleName='{style.widgetParameters}'  />
+			<g:Button ui:field="createNewButton" text="Create New" styleName='{style.widgetParameters}'  />
 		</g:HorizontalPanel>
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

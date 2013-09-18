@@ -1,0 +1,57 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        .container {
+
+        }
+
+        .labelText  {
+        font-family: Arial, Sans-serif;
+        display:inline-block;
+        font-size: 14px;
+        text-align: left;
+        margin:10px;
+        }
+
+
+
+        .paging {
+        border: 1px solid #AACCEE;
+        display:inline-block;
+        font-size:10px;
+        padding: 3px;
+        width: 160px;
+        margin:10px;
+        }
+
+        .submitPanel {
+        display:block;
+        width:420px !important;
+        height:60px !important;
+        }
+
+
+        .submit {
+        position:absolute;
+        border: 1px solid #AACCEE;
+        display:inline-block;
+        font-size:11px;
+        padding: 3px;
+        width: 70px;
+        margin:10px;
+        }
+
+    </ui:style>
+    <g:VerticalPanel styleName = '{style.container}'>
+        <g:Label text = "Select Search Options" styleName = '{style.labelText}' />
+        <g:HorizontalPanel verticalAlignment = "middle">
+            <g:TextBox ui:field = "paging" styleName = '{style.paging}'></g:TextBox>
+            <g:Label  styleName = '{style.labelText}'>PageSize</g:Label>
+
+        </g:HorizontalPanel>
+        <g:HTMLPanel   styleName = '{style.submitPanel}' >
+            <g:Button ui:field = "submit" text = "Set Options" styleName ='{style.submit}' > </g:Button>
+        </g:HTMLPanel>
+    </g:VerticalPanel>
+</ui:UiBinder>

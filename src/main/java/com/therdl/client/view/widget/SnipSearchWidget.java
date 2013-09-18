@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
+import com.therdl.client.view.widget.search.FilterOptions;
 import com.therdl.shared.RDLConstants;
 
 import java.util.logging.Logger;
@@ -22,43 +23,60 @@ import java.util.logging.Logger;
 public class SnipSearchWidget extends Composite {
 
     private static Logger log = Logger.getLogger("");
-    private static SnipSearchWidgetUiBinder uiBinder = GWT
-			.create(SnipSearchWidgetUiBinder.class);
-	@UiField Label textSearch;
+
+    private static SnipSearchWidgetUiBinder uiBinder = GWT.create(SnipSearchWidgetUiBinder.class);
+
+    FilterOptions filterOptions;
+
 	@UiField Button searchButton;
 	@UiField Button createNewButton;
-	@UiField TextBox textBox;
-    static SnipSearchView view;
-    //@UiField ListBox coreCategoryCombo;
+    @UiField Button optionsButton;
+	@UiField TextBox matchText;
 
-	interface SnipSearchWidgetUiBinder extends
-			UiBinder<Widget, SnipSearchWidget> {
-	}
+    SnipSearchView view;
 
-    /**
-     * default constructor
-     */
-    public SnipSearchWidget() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SnipSearchWidget> { }
 
     public SnipSearchWidget(SnipSearchViewImpl snipSearchView) {
         initWidget(uiBinder.createAndBindUi(this));
-        view = snipSearchView;
+        this.view = snipSearchView;
+        this.setStyleName("snipSearchPanel");
 	}
+
+
+    @UiHandler("optionsButton")
+    void selectSearchOptions(ClickEvent event) {
+
+        log.info("SnipSearchWidget optionsButton " );
+
+        filterOptions = new FilterOptions(this);
+        filterOptions.setGlassEnabled(true);
+        filterOptions.setModal(true);
+        filterOptions.setPopupPosition(0,10);
+        filterOptions.show();
+
+
+    }
+
 
 	@UiHandler("searchButton")
 	void onSearchButtonClick(ClickEvent event) {
-		//TODO what to do on search button click
-        log.info("SnipSearchWidget Search : onClick " + textBox.getText());
-        view.searchSnips(textBox.getText());
+
+        log.info("SnipSearchWidget Search : onClick " + matchText.getText());
+        if(view == null)   log.info("SnipSearchWidget Search : onClick view is null "  );
+        view.searchSnips(matchText.getText());
     }
+
+
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
 		History.newItem(RDLConstants.Tokens.SNIP_EDIT);
 	}
-	@UiHandler("textBox")
-	void onTextBoxKeyUp(KeyUpEvent event) {
-		//TODO IF ENTER then search
-	}
+
+
+    public void triggerSearch(String pageSize) {
+
+        view.doFilterSearch(pageSize);
+    }
+
 }

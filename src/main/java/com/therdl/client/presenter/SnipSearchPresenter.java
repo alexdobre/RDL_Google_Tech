@@ -2,24 +2,18 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.Constants;
-import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter  {
@@ -52,13 +46,13 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
             snipSearchView.getAppMenu().setUserInfoVisible(true);
             snipSearchView.setloginresult(controller.getCurrentUserBean().as().getName(),
             controller.getCurrentUserBean().as().getEmail(), true  );
-            getInitialList();
+          //  getInitialList();
         }
 
         else {
             snipSearchView.getAppMenu().setUserInfoVisible(false);
             snipSearchView.getAppMenu().setUserInfoVisible(false);
-            getInitialList();
+       //     getInitialList();
         }
 
 	}
@@ -121,9 +115,10 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
     /**
      * Handles snips searching request | response
      * @param match : title of the snip currently
+     * @param pSize
      */
     @Override
-    public void searchSnips(String match) {
+    public void searchSnips(String match, final int pSize) {
         log.info("SnipSearchPresenter getSnipSearchResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
@@ -167,7 +162,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );
 
-                    snipSearchView.updateListWidget(data);
+                    snipSearchView.updateListWidget(data, pSize);
                 }
 
                 @Override

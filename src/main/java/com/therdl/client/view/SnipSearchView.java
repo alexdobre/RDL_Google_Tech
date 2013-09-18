@@ -11,13 +11,14 @@ import java.util.ArrayList;
 
 public interface SnipSearchView {
 
-    void updateListWidget(JsArray<JSOModel> snips);
+    void updateListWidget(JsArray<JSOModel> snips, int pSize);
 
     public interface Presenter {
         /**
          * @param match : title of the snip currently
+         * @param pSize
          */
-        void searchSnips(String match);
+        void searchSnips(String match, int pSize);
 	}
 
 	void setPresenter(Presenter presenter);
@@ -37,4 +38,7 @@ public interface SnipSearchView {
      * @param match : title of the snip currently
      */
     void searchSnips(String match);
+
+    void doFilterSearch(String pageSize);
+
 }

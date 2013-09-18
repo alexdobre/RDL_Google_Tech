@@ -20,32 +20,34 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private static Logger log = Logger.getLogger("");
 
-	private static SnipSearchViewImplUiBinder uiBinder = GWT
-			.create(SnipSearchViewImplUiBinder.class);
+	private static SnipSearchViewImplUiBinder uiBinder = GWT.create(SnipSearchViewImplUiBinder.class);
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
-    interface SnipSearchViewImplUiBinder extends
-			UiBinder<Widget, SnipSearchViewImpl> {
-	}
+    interface SnipSearchViewImplUiBinder extends UiBinder<Widget, SnipSearchViewImpl> { }
 	
 	private Presenter presenter;
+    // paging parameter
+    int pSize = 5;
+
+
+    SnipSearchWidget snipSearchWidget;
 
     @UiField
     AppMenu appMenu;
 
     @UiField
-    Widget snipSearchWidget;
+    FlowPanel snipSearchWidgetPanel;
 
     @UiField
     FlowPanel snipListRow;
 
     private  AutoBean<CurrentUserBean> currentUserBean;
 
-    private SearchListWidget editorListWidget;
+    private SearchListWidget searcListWidget;
 
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
 
@@ -53,24 +55,21 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         log.info("SnipSearchViewImpl constructor");
         this.currentUserBean  =  currentUserBean;
         snipSearchWidget = new SnipSearchWidget(this);
-        editorListWidget =  new SearchListWidget();
+        snipSearchWidgetPanel.add(snipSearchWidget);
+        searcListWidget =  new SearchListWidget();
 	}
-
-    /**
-     *  shows closure editor list widget with the snip data
-     */
 
     @Override
     public void getSnipListDemoResult(JsArray<JSOModel> snips) {
         log.info("SnipSearchViewImpl getSnipListDemoResult "+ snips.length());
-        snipListRow.add(editorListWidget);
-        editorListWidget.bootStrapList(editorListWidget, snips);
+        snipListRow.add(searcListWidget);
+        searcListWidget.bootStrapList(searcListWidget, snips, pSize);
     }
 
     @Override
-    public void updateListWidget(JsArray<JSOModel> snips){
+    public void updateListWidget(JsArray<JSOModel> snips, int pSize){
         log.info("SnipSearchViewImpl updateListWidget "+ snips.length());
-        editorListWidget.bootStrapList(editorListWidget, snips);
+        searcListWidget.bootStrapList(searcListWidget, snips, pSize);
     }
 
     @Override
@@ -101,7 +100,18 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     @Override
     public void searchSnips(String match) {
-        presenter.searchSnips(match);
+        log.info("SnipSearchViewImpl searchSnips " + match+" : "+ pSize);
+        presenter.searchSnips(match, pSize);
     }
+
+    @Override
+    public void doFilterSearch(String pageSize) {
+
+          int filterPageSize = Integer.parseInt(pageSize);
+          this.pSize =filterPageSize;
+
+    }
+
+
 
 }
