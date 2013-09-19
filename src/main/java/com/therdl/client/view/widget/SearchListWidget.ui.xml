@@ -12,8 +12,8 @@
     <g:HTMLPanel styleName="{res.listCss.getText}">
 
         <div id="menu" class="goog-tab-bar goog-tab-bar-top">
-            <div class="goog-tab goog-tab-selected">List</div>
-            <div class="goog-tab ">List2</div>
+            <!--<div class="goog-tab goog-tab-selected">List</div>
+            <div class="goog-tab ">List2</div>   -->
         </div>
         <!-- Use goog-tab-bar-clear to separate the tabs from the content. -->
         <div class="goog-tab-bar-clear"></div>

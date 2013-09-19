@@ -85,7 +85,13 @@ public class SearchListWidget extends Composite {
             dataJs.push(eval('(' + data[i][i] + ')'));
         }
         // calls closure js function from tabdev.js
-          $wnd.widjdev.tabdev.setTabs(menu, dataJs, pSize);
+
+        var tabCount = Math.ceil(dataJs.length/pSize);
+        if(dataJs.length == 0) {
+            pSize = 1;
+            tabCount = 1;
+        }
+          $wnd.widjdev.tabdev.setTabs(menu, dataJs, pSize, tabCount);
 
 	}-*/;
 
