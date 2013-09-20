@@ -2,11 +2,8 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
@@ -55,6 +52,13 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     @Override
     public void go(HasWidgets container) {
+        container.clear();
+        container.add(view.asWidget());
+        fetchSnips();
+    }
+
+    @Override
+    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(view.asWidget());
         // user must be authorised to edit

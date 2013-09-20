@@ -2,20 +2,17 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
-import com.therdl.client.view.SignInView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.Constants;
-import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInEvent;
 import com.therdl.shared.events.LogInOkEvent;
 
 import java.util.logging.Logger;
@@ -40,6 +37,12 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
     @Override
     public void go(HasWidgets container) {
+        container.clear();
+        container.add(welcomeView.asWidget());
+    }
+
+    @Override
+    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(welcomeView.asWidget());
         if(!controller.getCurrentUserBean().as().isAuth() ) {

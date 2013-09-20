@@ -132,7 +132,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
     }
 
 
-
+    // reset app menu on log out
       public void logout() {
 
           appMenu.setLogOutVisible(false);

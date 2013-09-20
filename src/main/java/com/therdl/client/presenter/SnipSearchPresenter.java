@@ -10,6 +10,7 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
@@ -32,9 +33,16 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         // anyone can view snips no auth code needed
 
     }
-	
-	@Override
-	public void go(HasWidgets container) {
+
+    @Override
+    public void go(HasWidgets container) {
+        log.info("SnipSearchPresenter go adding view");
+        container.clear();
+        container.add(snipSearchView.asWidget());
+    }
+
+    @Override
+	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         log.info("SnipSearchPresenter go adding view");
 		container.clear();
 	    container.add(snipSearchView.asWidget());

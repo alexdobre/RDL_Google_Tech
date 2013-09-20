@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.RegisterView;
@@ -33,8 +34,8 @@ public class ServicesViewImpl extends Composite implements ServicesView {
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-
-
+    @UiField
+    HTMLPanel profile;
 
     @UiField
     AppMenu appMenu;
@@ -59,10 +60,11 @@ public class ServicesViewImpl extends Composite implements ServicesView {
 
     }
 
-    private void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
+    @Override
+    public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
         if (currentUserBean.as().isAuth()) {
             log.info("ServicesViewImpl setAppMenu auth true "+currentUserBean.as().getName() );
-
+            profile.setVisible(true);
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
             this.appMenu.setUserInfoVisible(true);
@@ -72,6 +74,7 @@ public class ServicesViewImpl extends Composite implements ServicesView {
         }
 
         else {
+            profile.setVisible(false);
             this.appMenu.setLogOutVisible(false);
             this.appMenu.setSignUpVisible(true);
             this.appMenu.setUserInfoVisible(false);

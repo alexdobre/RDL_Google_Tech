@@ -1,7 +1,6 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -11,13 +10,8 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.view.RegisterView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -40,6 +34,12 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
 
     @Override
     public void go(HasWidgets container) {
+        container.clear();
+        container.add(registerView.asWidget());
+    }
+
+    @Override
+    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(registerView.asWidget());
 

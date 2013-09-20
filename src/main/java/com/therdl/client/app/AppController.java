@@ -4,23 +4,18 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.presenter.*;
 
 import com.therdl.client.view.*;
 import com.therdl.client.view.impl.*;
-import com.therdl.shared.Messages;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
@@ -90,8 +85,20 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 			History.fireCurrentHistoryState();
 		}
 	}
-	
-	/**
+
+    @Override
+    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+        this.container = container;
+        this.currentUserBean.as().setAuth(false);
+        this.currentUserBean.as().setRegistered(false);
+        if ("".equals(History.getToken())) {
+            History.newItem(RDLConstants.Tokens.WELCOME);
+        } else {
+            History.fireCurrentHistoryState();
+        }
+    }
+
+    /**
 	 * This binds the history tokens with the different application states
 	 */
 	@Override
@@ -115,7 +122,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     public void onSuccess() {
 
-                        welcomePresenter.go(container);
+                        welcomePresenter.go(container, currentUserBean);
 
                         if(currentUserBean.as().isAuth()) {
                             welcomeView.setloginresult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
@@ -139,7 +146,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     public void onSuccess() {
 
-                            snipSearchPresenter.go(container);
+                            snipSearchPresenter.go(container, currentUserBean);
 
                     }
                 });
@@ -162,7 +169,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     public void onSuccess() {
                         if(currentUserBean.as().isAuth())  {
-                            snipEditPresenter.go(container);
+                            snipEditPresenter.go(container, currentUserBean);
                         } else {
                             History.newItem(RDLConstants.Tokens.WELCOME);
                         }
@@ -187,7 +194,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                         }
                         currentUserBean.as().setAuth(false);
-                        welcomePresenter.go(container);
+                        welcomePresenter.go(container, currentUserBean);
                         welcomeView.logout();
                     }
                 });
@@ -210,7 +217,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
 
                     public void onSuccess() {
-                        registerPresenter.go(container);
+                        registerPresenter.go(container, currentUserBean);
 
                     }
                 });
@@ -234,7 +241,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 }
 
                 public void onSuccess() {
-                    servicesPresenter.go(container);
+                    servicesPresenter.go(container, currentUserBean);
 
                 }
             });
