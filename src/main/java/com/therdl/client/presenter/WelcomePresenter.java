@@ -14,6 +14,9 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
+import com.therdl.shared.events.LogInOkEvent;
 
 import java.util.logging.Logger;
 
@@ -92,6 +95,9 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                         controller.setCurrentUserBean(name, email, auth);
                         welcomeView.setloginresult(name, email, auth);
                             // use app menu
+                            // try and update any open view
+                            GuiEventBus.EVENT_BUS.fireEvent(new LogInOkEvent());
+
 
                         }
                     }

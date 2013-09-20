@@ -135,11 +135,15 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
       public void logout() {
 
+          appMenu.setLogOutVisible(false);
+          appMenu.setSignUpVisible(true);
+          appMenu.setUserInfoVisible(false);
+          appMenu.setLogInVisible(true);
 
       }
 
 
-
+    // called form signin view pop up to initiate log in flow
     public void onSubmit(String emailtxt, String passwordText) {
 
         presenter.doLogIn(emailtxt, passwordText);

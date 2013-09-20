@@ -9,13 +9,9 @@ public interface RDLConstants {
 		String FAST_CAPS = "fastCaps";
         String LOG_OUT = "logOut";
         String SIGN_UP = "signUp";
+        String SERVICES = "services";
 
 	}
 	
-	public interface History {
-		String ENTER_PAGE = "enterPage";
-		String MAIN_PAGE = "mainPage";
-		String RDL_PAGE = "rdlPage";
-	}
 
 }

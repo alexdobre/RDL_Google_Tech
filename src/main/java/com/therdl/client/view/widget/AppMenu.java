@@ -110,10 +110,21 @@ public class AppMenu extends Composite  {
         home.setScheduledCommand (new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.TokenslogoutS");
+                log.info("AppMenu: History.newItem RDLConstants.Tokens home");
                 History.newItem(RDLConstants.Tokens.WELCOME);
             }
         });
+
+        services.setScheduledCommand (new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens services");
+                History.newItem(RDLConstants.Tokens.SERVICES);
+            }
+        });
+
+
+
     }
 
     public void setUser(String id) {

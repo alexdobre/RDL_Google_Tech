@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:rdl="urn:import:com.therdl.client.view.widget">
+
+    <ui:style>
+
+
+        .outer {
+        width: 100%;
+        margin: 0 auto;
+
+        }
+
+    </ui:style>
+    <g:HTMLPanel addStyleNames="{style.outer}">
+        <rdl:AppMenu ui:field="appMenu" />
+
+
+
+
+
+    </g:HTMLPanel>
+</ui:UiBinder>

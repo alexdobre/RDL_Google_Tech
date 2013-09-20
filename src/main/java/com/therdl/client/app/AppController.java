@@ -13,14 +13,8 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.presenter.*;
 
-import com.therdl.client.view.RegisterView;
-import com.therdl.client.view.SnipEditView;
-import com.therdl.client.view.SnipSearchView;
-import com.therdl.client.view.WelcomeView;
-import com.therdl.client.view.impl.RegisterViewImpl;
-import com.therdl.client.view.impl.SnipEditViewImpl;
-import com.therdl.client.view.impl.SnipSearchViewImpl;
-import com.therdl.client.view.impl.WelcomeViewImpl;
+import com.therdl.client.view.*;
+import com.therdl.client.view.impl.*;
 import com.therdl.shared.Messages;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
@@ -57,6 +51,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     private SnipEditView  snipEditView;
     private SnipSearchView  snipSearchView;
     private RegisterView registerView;
+    private ServicesView servicesView;
 	
 	public AppController() {
 
@@ -76,6 +71,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler()  {
             @Override
             public void onLogOutEvent(LogOutEvent onLogOutEvent) {
+                currentUserBean.as().setAuth(false);
                 History.newItem(RDLConstants.Tokens.LOG_OUT);
                 History.fireCurrentHistoryState();
             }
@@ -199,7 +195,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
 
-            //*************************************** LOG_OUT ****************************
+            //*************************************** SIGN_UP ****************************
             else if (token.equals(RDLConstants.Tokens.SIGN_UP)) {
 
                 if (registerView == null) {
@@ -219,9 +215,35 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
                 });
             }
-        } // end  if token != null
-    }// end method
 
+
+
+
+        //*************************************** SERVICES ****************************
+        else if (token.equals(RDLConstants.Tokens.SERVICES)) {
+
+            if (servicesView == null) {
+                servicesView = new ServicesViewImpl(currentUserBean);
+
+            }
+
+            final ServicesPresenter servicesPresenter =  new ServicesPresenter(servicesView);
+            log.info("AppController Tokens.SERVICES ");
+            GWT.runAsync(new RunAsyncCallback() {
+                public void onFailure(Throwable caught) {
+                }
+
+                public void onSuccess() {
+                    servicesPresenter.go(container);
+
+                }
+            });
+        }
+
+
+        } // end  if token != null
+
+    }// end onValueChanged
 
     public AutoBean<CurrentUserBean> getCurrentUserBean() {
         return currentUserBean;
