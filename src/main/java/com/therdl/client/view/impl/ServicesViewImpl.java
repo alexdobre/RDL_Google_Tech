@@ -1,11 +1,12 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.ServicesView;
@@ -38,13 +39,20 @@ public class ServicesViewImpl extends Composite implements ServicesView {
     HTMLPanel profile;
 
     @UiField
+    FormPanel uploadForm;
+
+    @UiField
     AppMenu appMenu;
 
 
     public ServicesViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  cUserBean;
-         setAppMenu(currentUserBean);
+        setAppMenu(currentUserBean);
+        setUploadForm();
+
+
+
 
 
         // user has just sucessfully logged in update app menu
@@ -59,6 +67,7 @@ public class ServicesViewImpl extends Composite implements ServicesView {
 
 
     }
+
 
     @Override
     public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
@@ -87,6 +96,69 @@ public class ServicesViewImpl extends Composite implements ServicesView {
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+    }
+
+
+
+    private void setUploadForm() {
+        uploadForm.setAction("/avatarUpload");
+        uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+        uploadForm.setMethod(FormPanel.METHOD_POST);
+        // Create a panel to hold all of the form widgets.
+        VerticalPanel panel = new VerticalPanel();
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.setStyleName("formUplaodDataPanel");
+        HTML shtml = new HTML("AVATAR UPLOAD");
+        shtml.setStyleName("uploadHeader");
+        panel.add(shtml);
+        InlineLabel label = new InlineLabel();
+        label.setText("image text");
+        hp.add(label);
+        uploadForm.setWidget(panel);
+
+        // Create a TextBox, giving it a name so that it will be submitted.
+        final TextBox tb = new TextBox();
+        tb.setStyleName("textBoxFormElement");
+        tb.setName("textBoxFormSubmit");
+
+        hp.add(tb);
+        panel.add(hp);
+
+        // Create a FileUpload widget.
+        FileUpload upload = new FileUpload();
+        upload.setName("uploadFormElement");
+        panel.add(upload);
+
+        // Add a 'submit' button.
+        panel.add(new Button("Submit", new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                uploadForm.submit();
+            }
+        }));
+
+        // Add an event handler to the form.
+        uploadForm.addSubmitHandler(new FormPanel.SubmitHandler() {
+            public void onSubmit(FormPanel.SubmitEvent event) {
+                // This event is fired just before the form is submitted. We can take
+                // this opportunity to perform validation.
+                if (tb.getText().length() == 0) {
+                    Window.alert("The text box must not be empty");
+                    event.cancel();
+                }
+            }
+        });
+        uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                // When the form submission is successfully completed, this event is
+                // fired. Assuming the service returned a response of type text/html,
+                // we can get the result text here (see the FormPanel documentation for
+                // further explanation).
+                Window.alert(event.getResults());
+            }
+        });
+
+        uploadForm.setStyleName("uploadForm");
+
     }
 
 

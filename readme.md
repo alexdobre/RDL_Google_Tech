@@ -19,3 +19,4 @@ please view open issues and contribute
  https://code.google.com/p/google-guice/wiki/ServletModule
  http://blog.palominolabs.com/2011/08/15/a-simple-java-web-stack-with-guice-jetty-jersey-and-jackson/
  https://code.google.com/p/google-web-toolkit-incubator/wiki/LoginSecurityFAQ
+ http://www.adrianwalker.org/2011/03/gwt-file-upload-with-event-based.html

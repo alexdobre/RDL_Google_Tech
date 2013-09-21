@@ -49,12 +49,7 @@
             <div class="col-lg-6 col-offset-3">
                 <g:HTMLPanel ui:field = "profile"  addStyleNames="{style.profile}">
                     <div style="padding:20px;">
-                        <form class="form-search form-inline">
-                            <div class="input-append">
-                                <input type="text" class="search-query" placeholder="Path to file" />
-                                <button type="submit" class="btn-upload">UpLoad Avatar Image</button>
-                            </div>
-                        </form>
+                        <g:FormPanel  ui:field = "uploadForm" />
                     </div>
 
                 </g:HTMLPanel>
