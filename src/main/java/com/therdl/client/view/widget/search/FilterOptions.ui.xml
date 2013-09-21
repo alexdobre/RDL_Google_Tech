@@ -11,24 +11,33 @@
         display:inline-block;
         font-size: 14px;
         text-align: left;
-        margin:10px;
+      /*  margin:10px;    */
         }
 
 
 
-        .paging {
-        border: 1px solid #AACCEE;
-        display:inline-block;
-        font-size:10px;
-        padding: 3px;
-        width: 160px;
-        margin:10px;
+        .textField {
+            border: 1px solid #AACCEE;
+            display:inline-block;
+            font-size:10px;
+            padding: 3px;
+            width: 160px;
+            margin:10px;
+        }
+
+        .dateField {
+            width: 70px;
+            border: 1px solid #AACCEE;
+            display:inline-block;
+            font-size:10px;
+            padding: 3px;
+            margin:10px;
         }
 
         .submitPanel {
         display:block;
-        width:420px !important;
-        height:60px !important;
+        width:350px !important;
+        height:270px !important;
         }
 
 
@@ -45,13 +54,40 @@
     </ui:style>
     <g:VerticalPanel styleName = '{style.container}'>
         <g:Label text = "Select Search Options" styleName = '{style.labelText}' />
-        <g:HorizontalPanel verticalAlignment = "middle">
-            <g:TextBox ui:field = "paging" styleName = '{style.paging}'></g:TextBox>
-            <g:Label  styleName = '{style.labelText}'>PageSize</g:Label>
 
-        </g:HorizontalPanel>
-        <g:HTMLPanel   styleName = '{style.submitPanel}' >
-            <g:Button ui:field = "submit" text = "Set Options" styleName ='{style.submit}' > </g:Button>
+        <g:HTMLPanel   styleName = '{style.submitPanel}' ui:field="container">
+            <table>
+                <tr>
+                    <td>Date</td>
+                    <td>
+                        <g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}'></g:TextBox>
+                        <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}'></g:TextBox>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><g:Label  styleName = '{style.labelText}'>Page Size</g:Label></td>
+                    <td><g:TextBox ui:field = "paging" styleName = '{style.textField}'></g:TextBox></td>
+                </tr>
+
+                <tr>
+                    <td><g:Label  styleName = '{style.labelText}'>Content</g:Label></td>
+                    <td><g:TextBox ui:field = "content" styleName = '{style.textField}'></g:TextBox></td>
+                </tr>
+
+                <tr>
+                    <td><g:Label  styleName = '{style.labelText}'>Author</g:Label></td>
+                    <td><g:TextBox ui:field = "author" styleName = '{style.textField}'></g:TextBox></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><g:Button ui:field = "submit" text = "Set Options" styleName ='{style.submit}'> </g:Button></td>
+                </tr>
+
+            </table>
+
         </g:HTMLPanel>
+
     </g:VerticalPanel>
 </ui:UiBinder>

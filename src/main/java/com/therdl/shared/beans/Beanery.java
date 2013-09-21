@@ -13,6 +13,7 @@ public interface Beanery extends AutoBeanFactory {
     AutoBean<UserBean> userBean();
     AutoBean<AuthUserBean> authBean();
     AutoBean<CurrentUserBean> currentUserBean();
+    AutoBean<SearchOptionsBean> searchOptionsBean();
 
     /**
      * nested objects

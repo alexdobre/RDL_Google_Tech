@@ -14,4 +14,6 @@ public class Constants {
      */
     //public static final boolean DEPLOY = false;
     public static final boolean DEPLOY =  true;
+
+    public static final int DEFAULT_PAGE_SIZE = 5;
 }

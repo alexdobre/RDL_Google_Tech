@@ -13,10 +13,12 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.widget.search.FilterOptions;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.SearchOptionsBean;
 
 import java.util.logging.Logger;
 
@@ -33,7 +35,7 @@ public class SnipSearchWidget extends Composite {
     @UiField Button optionsButton;
 	@UiField TextBox matchText;
 
-    SnipSearchView view;
+    public SnipSearchView view;
 
 	interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SnipSearchWidget> { }
 
@@ -74,9 +76,9 @@ public class SnipSearchWidget extends Composite {
 	}
 
 
-    public void triggerSearch(String pageSize) {
+    public void triggerSearch(AutoBean<SearchOptionsBean> searchOptionsBean) {
 
-        view.doFilterSearch(pageSize);
+        view.doFilterSearch(searchOptionsBean);
     }
 
 }
