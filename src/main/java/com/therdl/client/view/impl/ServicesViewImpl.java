@@ -127,14 +127,18 @@ public class ServicesViewImpl extends Composite implements ServicesView {
         // Create a FileUpload widget.
         FileUpload upload = new FileUpload();
         upload.setName("uploadFormElement");
+        upload.setStylePrimaryName("uploadFormElement");
         panel.add(upload);
 
-        // Add a 'submit' button.
-        panel.add(new Button("Submit", new ClickHandler() {
+        Button submit =new Button("Submit", new ClickHandler() {
             public void onClick(ClickEvent event) {
                 uploadForm.submit();
             }
-        }));
+        });
+        submit.setStylePrimaryName("uploadSubmit");
+
+        // Add a 'submit' button.
+        panel.add(submit);
 
         // Add an event handler to the form.
         uploadForm.addSubmitHandler(new FormPanel.SubmitHandler() {
