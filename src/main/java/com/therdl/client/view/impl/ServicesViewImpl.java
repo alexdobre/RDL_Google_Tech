@@ -11,6 +11,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.ServicesView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
@@ -99,9 +100,13 @@ public class ServicesViewImpl extends Composite implements ServicesView {
     }
 
 
-
+    // pleae note as we are using the gwt form upload widget we break the mvp here in a small way only
     private void setUploadForm() {
-        uploadForm.setAction("/avatarUpload");
+        String uploadUrl =GWT.getModuleBaseURL()+"avatarUpload";
+        if(!Constants.DEPLOY){
+            uploadUrl = uploadUrl.replaceAll("/therdl", "");
+        }
+        uploadForm.setAction(uploadUrl);
         uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
         uploadForm.setMethod(FormPanel.METHOD_POST);
         // Create a panel to hold all of the form widgets.

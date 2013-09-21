@@ -11,6 +11,7 @@ import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
 import com.therdl.server.restapi.SessionServlet;
 import com.therdl.server.restapi.SnipDispatcherServlet;
+import com.therdl.server.restapi.UploadServlet;
 import com.therdl.server.restapi.UserDispatcherServlet;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,7 @@ public class ServletInjector extends GuiceServletContextListener {
                 serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
                 serve("/rdl/getUsers").with(UserDispatcherServlet.class);
                 serve("/rdl/getSession").with(SessionServlet.class);
+                serve("/rdl/avatarUpload").with(UploadServlet.class);
             }
         });
     }
