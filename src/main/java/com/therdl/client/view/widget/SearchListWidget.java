@@ -45,10 +45,7 @@ public class SearchListWidget extends Composite {
     }
 
     private void injectScript() {
-
-            ScriptInjector.fromString(Resources.INSTANCE.widjdevList().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
-
-
+        ScriptInjector.fromString(Resources.INSTANCE.widjdevList().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
     }
 
     private native void resetDom() /*-{

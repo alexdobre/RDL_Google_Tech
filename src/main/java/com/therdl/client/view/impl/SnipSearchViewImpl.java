@@ -14,6 +14,8 @@ import com.therdl.client.view.widget.SearchListWidget;
 import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
+import com.therdl.shared.beans.SearchOptionsBean;
+
 import java.util.logging.Logger;
 
 public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
@@ -30,6 +32,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     interface SnipSearchViewImplUiBinder extends UiBinder<Widget, SnipSearchViewImpl> { }
 	
 	private Presenter presenter;
+
     // paging parameter
     int pSize = 5;
 
@@ -106,10 +109,10 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     }
 
     @Override
-    public void doFilterSearch(String pageSize) {
+    public void doFilterSearch(AutoBean<SearchOptionsBean> searchOptionsBean) {
 
-          int filterPageSize = Integer.parseInt(pageSize);
-          this.pSize =filterPageSize;
+          int filterPageSize = searchOptionsBean.as().getPageSize();
+          this.pSize = filterPageSize;
 
     }
 
