@@ -124,14 +124,14 @@ public class ServicesViewImpl extends Composite implements ServicesView {
         // Create a TextBox, giving it a name so that it will be submitted.
         final TextBox tb = new TextBox();
         tb.setStyleName("textBoxFormElement");
-        tb.setName("textBoxFormSubmit");
+        tb.setName("avatarText");
 
         hp.add(tb);
         panel.add(hp);
 
         // Create a FileUpload widget.
         FileUpload upload = new FileUpload();
-        upload.setName("uploadFormElement");
+        upload.setName("fileElement");
         upload.setStylePrimaryName("uploadFormElement");
         panel.add(upload);
 
