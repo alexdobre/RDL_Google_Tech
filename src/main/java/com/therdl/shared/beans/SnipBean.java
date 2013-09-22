@@ -17,6 +17,9 @@ public interface SnipBean {
     String getId();
     void setId(String id);
 
+    String getAvatarUrl();
+    void setAvatarUrl(String avatarUrl);
+
     String getTitle();
     void setTitle(String title);
 

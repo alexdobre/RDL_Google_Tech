@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -32,6 +33,7 @@ public class UploadServlet extends HttpServlet {
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(UploadServlet.class);
     private final Provider<HttpSession> session;
+
     private Beanery beanery;
     private String avatarText;
     private  FileStorage pictureStorage;
@@ -80,12 +82,17 @@ public class UploadServlet extends HttpServlet {
 
                 System.out.println( "UploadServlet file size "+ out.size());
                 System.out.println( "UploadServlet user id "+ userId);
-                System.out.println( "UploadServlet user getContentType "+ item.getContentType());
+                System.out.println( "UploadServlet getContentType "+ item.getContentType());
+                System.out.println("UploadServlet   getServletContext().getRealPath() " + getServletContext().getRealPath("/"));
+                String contextRoot = getServletContext().getRealPath("/");
+
                 String  contentType =  item.getContentType();
                 String fileExtension =  contentType.substring(contentType.indexOf("/")+1);
                 System.out.println( "UploadServlet fileExtension "+ fileExtension);
                 FileData  fileData = new FileData(userId, out.toByteArray(), "binary");
-                pictureStorage = new LocalFileStorage("userAvatar");
+                String avatarDirUrl = contextRoot+ File.separator+"userAvatar";
+                System.out.println( "UploadServlet getContentType "+ avatarDirUrl);
+                pictureStorage = new LocalFileStorage(avatarDirUrl);
                 pictureStorage.storeFile(fileData, fileExtension);
 
 
@@ -99,6 +106,5 @@ public class UploadServlet extends HttpServlet {
         }
 
     }
-
 
 }
