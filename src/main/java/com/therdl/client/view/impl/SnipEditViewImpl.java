@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.editor.EditorViewHeader;
 import com.therdl.client.view.widget.EditorClientWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -32,10 +31,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
     @UiField
     FlowPanel mainPanel;
 
-    private EditorViewHeader header;
     private  AutoBean<CurrentUserBean> currentUserBean;
-
-
 
 	private EditorClientWidget editorClientWidget;
 
@@ -44,35 +40,12 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 	    initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  currentUserBean;
 
-        header = new EditorViewHeader( );
-
         // init closure editor widget
         editorClientWidget = new EditorClientWidget(this);
 
         // add closure widget into the view
         mainPanel.add(editorClientWidget);
 	  }
-
-    @Override
-    public void setSnipDropDown(List<AutoBean<SnipBean>> beans) {
-
-        // set up header Dynamic Post List to store data as beans
-        log.info("SnipEditViewImplonResponseReceived setSnipDropDown " + beans.size());
-        header.getPostListBox().addBeans(beans);
-      //  beans.clear();
-
-    }
-
-    @Override
-    public void clearSnipDropDown() {
-
-        // set up header Dynamic Post List to store data as beans
-        log.info("SnipEditViewImplonResponseReceived clearSnipDropDown ");
-        header.getPostListBox().clear();
-        //  beans.clear();
-
-    }
-
 
     // save
     @Override

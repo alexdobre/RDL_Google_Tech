@@ -311,7 +311,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                         beans.add(bean);
                     }
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
-                    view.setSnipDropDown(beans);
                     beans.clear();
                     // set snip combo in EditorClientWidget
                     view.getEditorClientWidget().setSnipComboBox(data);

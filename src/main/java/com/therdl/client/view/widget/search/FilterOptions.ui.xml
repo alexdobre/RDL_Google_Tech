@@ -22,7 +22,7 @@
             font-size:10px;
             padding: 3px;
             width: 160px;
-            margin:10px;
+            margin:5px;
         }
 
         .dateField {
@@ -31,7 +31,12 @@
             display:inline-block;
             font-size:10px;
             padding: 3px;
-            margin:10px;
+            margin:5px;
+        }
+
+        .categoryField {
+            width: 160px;
+            margin:5px;
         }
 
         .submitPanel {
@@ -62,6 +67,13 @@
                     <td>
                         <g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}'></g:TextBox>
                         <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}'></g:TextBox>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Category</td>
+                    <td>
+                        <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'></g:ListBox>
                     </td>
                 </tr>
 

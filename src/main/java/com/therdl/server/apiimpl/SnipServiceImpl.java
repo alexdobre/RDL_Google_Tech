@@ -62,12 +62,20 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     @Override
-    public List<SnipBean> getSnipsWith(String title) {
+    public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
-    //    query.put("title", title);
-        query.put("title",  java.util.regex.Pattern.compile(title));
+
+        if(searchOptions.getTitle() != null)
+            query.put("title",  java.util.regex.Pattern.compile(searchOptions.getTitle()));
+        if(searchOptions.getAuthor() != null)
+            query.put("author", searchOptions.getAuthor());
+        if(searchOptions.getContent() != null)
+            query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent()));
+        if(searchOptions.getCoreCat() != null)
+            query.put("coreCat", searchOptions.getCoreCat());
+
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
 

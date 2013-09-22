@@ -22,9 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -112,8 +110,8 @@ public class SnipDispatcherServlet extends HttpServlet {
             actionBean.as().setAction("dump");
         }
 
-        else if(actionBean.as().getAction().equals("search") ) {
-            List < SnipBean > beans = snipsService.getSnipsWith(actionBean.as().getTitle());
+        else if(actionBean.as().getAction().equals("search")) {
+            List < SnipBean > beans = snipsService.searchSnipsWith(actionBean.as());
             sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
             ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();

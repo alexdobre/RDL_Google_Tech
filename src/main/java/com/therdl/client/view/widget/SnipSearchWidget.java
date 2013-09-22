@@ -35,7 +35,7 @@ public class SnipSearchWidget extends Composite {
     @UiField Button optionsButton;
 	@UiField TextBox matchText;
 
-    public SnipSearchView view;
+    SnipSearchView view;
 
 	interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SnipSearchWidget> { }
 
@@ -63,9 +63,10 @@ public class SnipSearchWidget extends Composite {
 
 	@UiHandler("searchButton")
 	void onSearchButtonClick(ClickEvent event) {
-
         log.info("SnipSearchWidget Search : onClick " + matchText.getText());
-        if(view == null)   log.info("SnipSearchWidget Search : onClick view is null "  );
+        if(view == null)
+            log.info("SnipSearchWidget Search : onClick view is null");
+
         view.searchSnips(matchText.getText());
     }
 
@@ -77,7 +78,6 @@ public class SnipSearchWidget extends Composite {
 
 
     public void triggerSearch(AutoBean<SearchOptionsBean> searchOptionsBean) {
-
         view.doFilterSearch(searchOptionsBean);
     }
 

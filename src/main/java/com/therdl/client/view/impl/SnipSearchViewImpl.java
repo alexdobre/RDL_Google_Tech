@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,6 +13,8 @@ import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SearchListWidget;
 import com.therdl.client.view.widget.SnipSearchWidget;
+import com.therdl.shared.Constants;
+import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SearchOptionsBean;
@@ -49,8 +52,11 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     FlowPanel snipListRow;
 
     private  AutoBean<CurrentUserBean> currentUserBean;
+    private  AutoBean<SearchOptionsBean> currentSearchOptionsBean;
 
     private SearchListWidget searcListWidget;
+
+    private Beanery beanery = GWT.create(Beanery.class);
 
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
 
@@ -105,17 +111,27 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     @Override
     public void searchSnips(String match) {
         log.info("SnipSearchViewImpl searchSnips " + match+" : "+ pSize);
-        presenter.searchSnips(match, pSize);
+
+        if(currentSearchOptionsBean == null && match.equals("")) {
+            Window.alert("there is no any search option");
+            return;
+        }
+
+        if(currentSearchOptionsBean != null) {
+            currentSearchOptionsBean.as().setTitle(match);
+        } else {
+            currentSearchOptionsBean = beanery.searchOptionsBean();
+            currentSearchOptionsBean.as().setTitle(match);
+            currentSearchOptionsBean.as().setPageSize(Constants.DEFAULT_PAGE_SIZE);
+        }
+
+        presenter.searchSnips(currentSearchOptionsBean);
+        currentSearchOptionsBean = null;
     }
 
     @Override
     public void doFilterSearch(AutoBean<SearchOptionsBean> searchOptionsBean) {
-
-          int filterPageSize = searchOptionsBean.as().getPageSize();
-          this.pSize = filterPageSize;
-
+        currentSearchOptionsBean = searchOptionsBean;
     }
-
-
 
 }

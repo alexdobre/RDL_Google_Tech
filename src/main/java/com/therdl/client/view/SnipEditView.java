@@ -30,10 +30,6 @@ public interface SnipEditView  {
 
     void onCloseButtonClicked(ClickEvent event);
 
-    void setSnipDropDown(List<AutoBean<SnipBean>> beans);
-
-    void clearSnipDropDown();
-
     void onDeleteSnip(String id);
 
     void submitBean(AutoBean<SnipBean> bean );
