@@ -1,15 +1,9 @@
 package com.therdl.shared.beans;
 
-import java.util.Date;
-
-/**
- * Created with IntelliJ IDEA.
- * User: serinekar
- * Date: 9/21/13
- * Time: 1:50 PM
- * To change this template use File | Settings | File Templates.
- */
 public interface SearchOptionsBean {
+
+    String getTitle();
+    void setTitle(String title);
 
     int getPageSize();
     void setPageSize(int pageSize);
@@ -25,4 +19,7 @@ public interface SearchOptionsBean {
 
     String getDateTo();
     void setDateTo(String dateTo);
+
+    String getCoreCat();
+    void setCoreCat(String coreCat);
 }

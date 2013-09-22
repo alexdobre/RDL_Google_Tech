@@ -15,6 +15,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.shared.Constants;
+import com.therdl.shared.CoreCategory;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SearchOptionsBean;
 
@@ -57,6 +58,9 @@ public class FilterOptions extends PopupPanel  {
     @UiField
     HTMLPanel container;
 
+    @UiField
+    ListBox categoryList;
+
     DatePicker datePicker;
 
     private Beanery beanery = GWT.create(Beanery.class);
@@ -66,9 +70,14 @@ public class FilterOptions extends PopupPanel  {
         add(uiBinder.createAndBindUi(this));
         snipSearchWidget =view;
         this.setStyleName("filterOptions");
-
+        createCategoryList();
     }
 
+    void createCategoryList() {
+        categoryList.addItem("Select a category");
+        for(CoreCategory item : CoreCategory.values())
+            categoryList.addItem(item.getShortName());
+    }
 
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
@@ -82,20 +91,42 @@ public class FilterOptions extends PopupPanel  {
             searchOptionsBean.as().setPageSize(Constants.DEFAULT_PAGE_SIZE);
         }
 
+        boolean isOptionsSet = false;
+
         String contentText = content.getText();
-        searchOptionsBean.as().setContent(contentText);
+        if(!contentText.equals("")) {
+            searchOptionsBean.as().setContent(contentText);
+            isOptionsSet = true;
+        }
 
         String authorText = author.getText();
-        searchOptionsBean.as().setAuthor(authorText);
+        if(!authorText.equals("")) {
+            searchOptionsBean.as().setAuthor(authorText);
+            isOptionsSet = true;
+        }
 
         String dateFromText = dateFrom.getText();
-        searchOptionsBean.as().setDateFrom(dateFromText);
+        if(!dateFromText.equals("")) {
+            searchOptionsBean.as().setDateFrom(dateFromText);
+            isOptionsSet = true;
+        }
 
         String dateToText = dateTo.getText();
-        searchOptionsBean.as().setDateTo(dateToText);
+        if(!dateToText.equals("")) {
+            searchOptionsBean.as().setDateTo(dateToText);
+            isOptionsSet = true;
+        }
 
-        snipSearchWidget.triggerSearch(searchOptionsBean);
-        log.info("FilterOptions onSubmit");
+        int catIndex = categoryList.getSelectedIndex();
+        if(catIndex != 0) {
+            searchOptionsBean.as().setCoreCat(categoryList.getItemText(catIndex));
+            isOptionsSet = true;
+        }
+
+        if(isOptionsSet) {
+            snipSearchWidget.triggerSearch(searchOptionsBean);
+            log.info("FilterOptions onSubmit");
+        }
         this.hide();
     }
 
@@ -125,8 +156,8 @@ public class FilterOptions extends PopupPanel  {
             }
         });
 
-        int x=dateField.getAbsoluteLeft();
-        int y=dateField.getAbsoluteTop();
+        int x = dateField.getAbsoluteLeft();
+        int y = dateField.getAbsoluteTop();
         popupPanel.setPopupPosition(x, y+20);
         popupPanel.setStyleName("datePicker");
         // Set the default value

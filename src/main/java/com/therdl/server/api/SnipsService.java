@@ -53,5 +53,5 @@ public interface SnipsService {
      */
     void updateSnip(SnipBean snip);
 
-    List<SnipBean> getSnipsWith(String title);
+    List<SnipBean> searchSnipsWith(SnipBean snip);
 }

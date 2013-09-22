@@ -15,11 +15,7 @@ public interface SnipSearchView {
     void updateListWidget(JsArray<JSOModel> snips, int pSize);
 
     public interface Presenter {
-        /**
-         * @param match : title of the snip currently
-         * @param pSize
-         */
-        void searchSnips(String match, int pSize);
+        void searchSnips(AutoBean<SearchOptionsBean> searchOptionsBean);
 	}
 
 	void setPresenter(Presenter presenter);

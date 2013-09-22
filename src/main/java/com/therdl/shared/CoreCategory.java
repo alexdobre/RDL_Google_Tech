@@ -17,7 +17,20 @@ public enum CoreCategory {
 	SEDUCTION("Seduction","Seduction",5,"red"),
 	PSY_TEND("Psy Tendencies","Common psychological tendencies and how they impact relationships",6,"violet"),
 	AFFAIRS("Affairs","The mechanisms of affairs",7,"orange");
-		
-	CoreCategory(String shortName, String name, Integer number, String colCode){		
+
+    private final String shortName;
+    private final String name;
+    private final int number;
+    private final String colCode;
+
+	CoreCategory(String shortName, String name, int number, String colCode){
+        this.shortName = shortName;
+        this.name = name;
+        this.number = number;
+        this.colCode = colCode;
 	}
+
+    public String getShortName() {
+        return shortName;
+    }
 }

@@ -9,10 +9,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.shared.Constants;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.*;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -122,11 +119,10 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
     /**
      * Handles snips searching request | response
-     * @param match : title of the snip currently
-     * @param pSize
+     * @param searchOptionsBean : bean of the snip search options
      */
     @Override
-    public void searchSnips(String match, final int pSize) {
+    public void searchSnips(final AutoBean<SearchOptionsBean> searchOptionsBean) {
         log.info("SnipSearchPresenter getSnipSearchResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
@@ -139,7 +135,18 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         requestBuilder.setHeader("Content-Type", "application/json");
         currentBean = beanery.snipBean();
         currentBean.as().setAction("search");
-        currentBean.as().setTitle(match);
+        currentBean.as().setTitle(searchOptionsBean.as().getTitle());
+        currentBean.as().setAuthor(searchOptionsBean.as().getAuthor());
+        currentBean.as().setContent(searchOptionsBean.as().getContent());
+        currentBean.as().setCoreCat(searchOptionsBean.as().getCoreCat());
+
+        log.info("title="+searchOptionsBean.as().getTitle());
+        log.info("content="+searchOptionsBean.as().getContent());
+        log.info("pageSize="+searchOptionsBean.as().getPageSize());
+        log.info("author="+searchOptionsBean.as().getAuthor());
+        log.info("dateFrom="+searchOptionsBean.as().getDateFrom());
+        log.info("dateTo="+searchOptionsBean.as().getDateTo());
+        log.info("coreCat="+searchOptionsBean.as().getCoreCat());
 
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
@@ -163,7 +170,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                         jSonList.add(data.get(i));
                     }
 
-                    snipSearchView.updateListWidget(data, pSize);
+                    snipSearchView.updateListWidget(data, searchOptionsBean.as().getPageSize());
                 }
 
                 @Override
