@@ -80,13 +80,16 @@ public class UploadServlet extends HttpServlet {
 
                 System.out.println( "UploadServlet file size "+ out.size());
                 System.out.println( "UploadServlet user id "+ userId);
-
+                System.out.println( "UploadServlet user getContentType "+ item.getContentType());
+                String  contentType =  item.getContentType();
+                String fileExtension =  contentType.substring(contentType.indexOf("/")+1);
+                System.out.println( "UploadServlet fileExtension "+ fileExtension);
                 FileData  fileData = new FileData(userId, out.toByteArray(), "binary");
-                pictureStorage = new LocalFileStorage("profile-pics/" + userId + "small.jpg");
-                pictureStorage.storeFile(fileData);
+                pictureStorage = new LocalFileStorage("userAvatar");
+                pictureStorage.storeFile(fileData, fileExtension);
 
 
-                }// end if file
+                }  // end if file
 
               else continue;
             }

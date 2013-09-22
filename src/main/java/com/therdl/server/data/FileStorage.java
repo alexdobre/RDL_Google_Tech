@@ -13,8 +13,10 @@ public interface FileStorage {
 
     /**
      * Put a file into storage.
+     *
      * @param file the file data
+     * @param fileExtension
      * @return a URL that can be used to obtain the file
      */
-    String storeFile(FileData file);
+    String storeFile(FileData file, String fileExtension);
 }
