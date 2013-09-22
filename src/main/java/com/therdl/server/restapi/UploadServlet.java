@@ -4,7 +4,10 @@ import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.FileData;
+import com.therdl.server.data.FileStorage;
+import com.therdl.server.data.LocalFileStorage;
 import com.therdl.shared.beans.Beanery;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -28,13 +31,14 @@ import java.io.InputStream;
 public class UploadServlet extends HttpServlet {
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(UploadServlet.class);
-    private final Provider<HttpSession> sessions;
+    private final Provider<HttpSession> session;
     private Beanery beanery;
     private String avatarText;
+    private  FileStorage pictureStorage;
 
     @Inject
-    public UploadServlet(Provider<HttpSession> sessions , UserService userService) {
-        this.sessions = sessions;
+    public UploadServlet(Provider<HttpSession> session , UserService userService) {
+        this.session = session;
         beanery = AutoBeanFactorySource.create(Beanery.class);
 
 
@@ -44,6 +48,9 @@ public class UploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
 
         System.out.println( "UploadServlet is go ");
+        String userId = (String) session.get().getAttribute("userid" );
+
+
         ServletFileUpload upload = new ServletFileUpload();
         try{
             FileItemIterator iter = upload.getItemIterator(req);
@@ -52,13 +59,9 @@ public class UploadServlet extends HttpServlet {
                 FileItemStream item = iter.next();
 
                 String name = item.getFieldName();
-                System.out.println( "item.getFieldName() "+ name);
-                if (name.equals("avatarText"))  {
-                    avatarText = name;
-                    continue;
-                } // end image text
+                System.out.println( "item.getName(); "+ item.getName());
 
-               else  if (name.equals("fileElement")) {
+               if (name.equals("fileElement")) {
                 InputStream stream = item.openStream();
 
 
@@ -76,14 +79,16 @@ public class UploadServlet extends HttpServlet {
                 }
 
                 System.out.println( "UploadServlet file size "+ out.size());
+                System.out.println( "UploadServlet user id "+ userId);
 
-                FileData  fileData = new FileData(name, out.toByteArray(), "binary");
+                FileData  fileData = new FileData(userId, out.toByteArray(), "binary");
+                pictureStorage = new LocalFileStorage("profile-pics/" + userId + "small.jpg");
+                pictureStorage.storeFile(fileData);
+
 
                 }// end if file
 
-                else {
-                 continue;     // do nothing
-                }
+              else continue;
             }
         }
         catch(Exception e){

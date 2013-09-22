@@ -35,13 +35,13 @@ public class SessionServlet  extends HttpServlet {
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SessionServlet.class);
 
-    private final Provider<HttpSession> sessions;
+    private final Provider<HttpSession> session;
     private Beanery beanery;
     UserService userService;
 
     @Inject
     public SessionServlet(Provider<HttpSession> sessions , UserService userService) {
-        this.sessions = sessions;
+        this.session = sessions;
         this.userService = userService;
         beanery = AutoBeanFactorySource.create(Beanery.class);
 
@@ -84,6 +84,7 @@ public class SessionServlet  extends HttpServlet {
             authBean.as().setAuth(true);
             authBean.as().setAction("newUserOk");
             authBean.as().setName(authBean.as().getName());
+            session.get().setAttribute("userid",newUserBean.as().getEmail() );
             System.out.println("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
             PrintWriter out = resp.getWriter();
             out.write( AutoBeanCodex.encode(authBean).getPayload());
@@ -97,6 +98,7 @@ public class SessionServlet  extends HttpServlet {
             AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
             if(checkedUser.as().getAction().equals("OkUser")) {
             checkedUser.as().setAuth(true);
+            session.get().setAttribute("userid",checkedUser.as().getEmail() );
             } else {
             checkedUser.as().setAuth(false);
             }

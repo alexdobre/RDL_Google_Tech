@@ -111,23 +111,13 @@ public class ServicesViewImpl extends Composite implements ServicesView {
         uploadForm.setMethod(FormPanel.METHOD_POST);
         // Create a panel to hold all of the form widgets.
         VerticalPanel panel = new VerticalPanel();
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.setStyleName("formUplaodDataPanel");
+
         HTML shtml = new HTML("AVATAR UPLOAD");
         shtml.setStyleName("uploadHeader");
         panel.add(shtml);
-        InlineLabel label = new InlineLabel();
-        label.setText("image text");
-        hp.add(label);
+
         uploadForm.setWidget(panel);
 
-        // Create a TextBox, giving it a name so that it will be submitted.
-        final TextBox tb = new TextBox();
-        tb.setStyleName("textBoxFormElement");
-        tb.setName("avatarText");
-
-        hp.add(tb);
-        panel.add(hp);
 
         // Create a FileUpload widget.
         FileUpload upload = new FileUpload();
@@ -148,20 +138,12 @@ public class ServicesViewImpl extends Composite implements ServicesView {
         // Add an event handler to the form.
         uploadForm.addSubmitHandler(new FormPanel.SubmitHandler() {
             public void onSubmit(FormPanel.SubmitEvent event) {
-                // This event is fired just before the form is submitted. We can take
-                // this opportunity to perform validation.
-                if (tb.getText().length() == 0) {
-                    Window.alert("The text box must not be empty");
-                    event.cancel();
-                }
+
             }
         });
         uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                // When the form submission is successfully completed, this event is
-                // fired. Assuming the service returned a response of type text/html,
-                // we can get the result text here (see the FormPanel documentation for
-                // further explanation).
+
                 Window.alert(event.getResults());
             }
         });
