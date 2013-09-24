@@ -26,15 +26,9 @@ public class AppMenu extends Composite  {
     @UiField MenuBar menuBar;
 
     @UiField MenuItem ideas;
-    // ideas drop down
-    @UiField MenuItem snipSearch;
-    @UiField MenuItem snipEdit;
     @UiField MenuItem home;
-
-    @UiField MenuItem stories;
     @UiField MenuItem improvements;
-    @UiField MenuItem services;
-
+    @UiField MenuItem profile;
 
     // auth flow
     @UiField MenuItem userdetails;
@@ -50,29 +44,16 @@ public class AppMenu extends Composite  {
     public AppMenu() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        // temp initialisation settings for unused functions
-        this .stories.setVisible(false);
-        this .services.setVisible(false);
-        this .improvements.setVisible(false);
         // set the style name to position the user dropdown far right
         this .userdetails.setStyleName("userDropDown");
         this .signUp.setStyleName("signUpAccount");
+        this .home.setStyleName("homeMenuItem");
         this .ideas.setStyleName("ideasMenuItem");
-        this .stories.setStyleName("stories");;
-        this .services.setStyleName("services");
         this .improvements.setStyleName("improvements");
         this .login.setStyleName("login");
 
 
-        snipEdit.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.edit");
-                History.newItem(RDLConstants.Tokens.SNIP_EDIT);
-            }
-        });
-
-        snipSearch.setScheduledCommand(new Scheduler.ScheduledCommand() {
+        ideas.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
                 log.info("AppMenu: History.newItem RDLConstants.Tokens.search");
@@ -115,14 +96,13 @@ public class AppMenu extends Composite  {
             }
         });
 
-        services.setScheduledCommand (new Scheduler.ScheduledCommand() {
+        profile.setScheduledCommand (new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens services");
-                History.newItem(RDLConstants.Tokens.SERVICES);
+                log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
+                History.newItem(RDLConstants.Tokens.PROFILE);
             }
         });
-
 
 
     }
@@ -167,8 +147,6 @@ public class AppMenu extends Composite  {
 
     public void setMainGroupVisible(boolean state) {
         log.info("AppMenu: setMainGroupVisible "+state);
-        this .stories.setVisible(state);
-        this .services.setVisible(state);
         this .improvements.setVisible(state);
 
 

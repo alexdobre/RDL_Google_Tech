@@ -121,8 +121,8 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
           log.info("WelcomeViewImpl setloginresult auth true" );
 
           signInView.hide();
-          appMenu.setUser(name);
-          appMenu.setEmail(email);
+          appMenu.setUser("User name: "+name);
+          appMenu.setEmail("User email: "+email);
           appMenu.setLogOutVisible(true);
           appMenu.setSignUpVisible(false);
           appMenu.setUserInfoVisible(true);

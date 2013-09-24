@@ -8,8 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.RegisterView;
-import com.therdl.client.view.ServicesView;
+import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
@@ -21,18 +20,18 @@ import java.util.logging.Logger;
 /**
  *
  */
-public class ServicesViewImpl extends Composite implements ServicesView {
+public class ProfileViewImpl extends Composite implements ProfileView {
 
     private static Logger log = Logger.getLogger("");
     private final  AutoBean<CurrentUserBean> currentUserBean;
 
 
-    interface ServicesViewImplUiBinder extends UiBinder<Widget, ServicesViewImpl> {
+    interface ProfileViewImplUiBinder extends UiBinder<Widget, ProfileViewImpl> {
     }
 
-    private static ServicesViewImplUiBinder uiBinder = GWT.create(ServicesViewImplUiBinder.class);
+    private static ProfileViewImplUiBinder uiBinder = GWT.create(ProfileViewImplUiBinder.class);
 
-    private ServicesView.Presenter presenter;
+    private ProfileView.Presenter presenter;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -46,7 +45,7 @@ public class ServicesViewImpl extends Composite implements ServicesView {
     AppMenu appMenu;
 
 
-    public ServicesViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
+    public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  cUserBean;
         setAppMenu(currentUserBean);
@@ -73,7 +72,7 @@ public class ServicesViewImpl extends Composite implements ServicesView {
     @Override
     public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
         if (currentUserBean.as().isAuth()) {
-            log.info("ServicesViewImpl setAppMenu auth true "+currentUserBean.as().getName() );
+            log.info("ProfileViewImpl setAppMenu auth true "+currentUserBean.as().getName() );
             profile.setVisible(true);
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
@@ -112,7 +111,7 @@ public class ServicesViewImpl extends Composite implements ServicesView {
         // Create a panel to hold all of the form widgets.
         VerticalPanel panel = new VerticalPanel();
 
-        HTML shtml = new HTML("AVATAR UPLOAD");
+        HTML shtml = new HTML("AVATAR UPLOAD only jpeg image 200*200px supported");
         shtml.setStyleName("uploadHeader");
         panel.add(shtml);
 

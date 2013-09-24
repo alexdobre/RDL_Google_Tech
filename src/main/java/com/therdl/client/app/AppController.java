@@ -46,7 +46,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     private SnipEditView  snipEditView;
     private SnipSearchView  snipSearchView;
     private RegisterView registerView;
-    private ServicesView servicesView;
+    private ProfileView profileView;
 	
 	public AppController() {
 
@@ -226,22 +226,22 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
 
-        //*************************************** SERVICES ****************************
-        else if (token.equals(RDLConstants.Tokens.SERVICES)) {
+        //*************************************** PROFILE ****************************
+        else if (token.equals(RDLConstants.Tokens.PROFILE)) {
 
-            if (servicesView == null) {
-                servicesView = new ServicesViewImpl(currentUserBean);
+            if (profileView == null) {
+                profileView = new ProfileViewImpl(currentUserBean);
 
             }
 
-            final ServicesPresenter servicesPresenter =  new ServicesPresenter(servicesView);
+            final ProfilePresenter profilePresenter =  new ProfilePresenter(profileView);
             log.info("AppController Tokens.SERVICES ");
             GWT.runAsync(new RunAsyncCallback() {
                 public void onFailure(Throwable caught) {
                 }
 
                 public void onSuccess() {
-                    servicesPresenter.go(container, currentUserBean);
+                    profilePresenter.go(container, currentUserBean);
 
                 }
             });

@@ -7,25 +7,19 @@
     <g:HTMLPanel>
         <g:MenuBar ui:field="menuBar" >
 
-            <g:MenuItem text="Ideas" ui:field = "ideas" >
-                <g:MenuBar vertical="true">
-                    <g:MenuItem text="Search Snips" ui:field = "snipSearch"/>
-                    <g:MenuItem text="Edit Snips" ui:field = "snipEdit"/>
-                    <g:MenuItem text="Home" ui:field = "home"/>
-                </g:MenuBar>
-            </g:MenuItem>
-
-            <g:MenuItem text="Stories" ui:field = "stories"/>
+            <g:MenuItem text="Ideas" ui:field = "ideas"/>
+            <g:MenuItem text="Home" ui:field = "home"/>
             <g:MenuItem text="Improvements" ui:field = "improvements"/>
-            <g:MenuItem text="Services" ui:field = "services"/>
             <g:MenuItem text="log in" ui:field = "login"/>
             <g:MenuItem text="Sign Up for an Account" ui:field = "signUp"/>
 
             <g:MenuItem text="User Details" ui:field = "userdetails">
                 <g:MenuBar vertical="true">
-                    <g:MenuItem text="User" ui:field = "user"/>
-                    <g:MenuItem text="log out" ui:field = "out"/>
+                    <g:MenuItem text="User Name" ui:field = "user"/>
                     <g:MenuItem text="email" ui:field = "email"/>
+                    <g:MenuItem text="User Profile" ui:field = "profile"/>
+                    <g:MenuItem text="log out" ui:field = "out"/>
+
                 </g:MenuBar>
             </g:MenuItem>
 

@@ -8,7 +8,7 @@ import com.therdl.shared.beans.CurrentUserBean;
 /**
  *
  */
-public interface ServicesView  extends IsWidget {
+public interface ProfileView extends IsWidget {
 
 
     public interface Presenter {

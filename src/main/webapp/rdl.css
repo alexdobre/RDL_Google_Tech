@@ -149,6 +149,56 @@ td {
     color:red!important;
 }
 
+/** menu items **/
+
+.homeMenuItem {
+   position:absolute;
+    color:#FFF;
+    font-weight:700;
+    vertical-align:bottom;
+    left:1%;
+    top:.2%;
+    font:14px;
+    padding:4px 10px;
+}
+
+.ideasMenuItem {
+    position:absolute;
+    font:14px;
+    color:#FFF;
+    font-weight:700;
+    vertical-align:bottom;
+    width:62px;
+    left:100px;
+    top:.2%;
+    padding:4px 10px;
+}
+
+
+.improvements {
+    position:absolute;
+    font:14px;
+    color:#FFF;
+    font-weight:700;
+    vertical-align:bottom;
+    top:.2%;
+    padding:4px 10px;
+    left:200px!important;
+    width:100px;
+}
+
+
+.login  {
+    position:absolute;
+    color:#FFF;
+    font-weight:700;
+    vertical-align:bottom;
+    font:14px;
+    width:100px;
+    right:20%!important;
+    padding:4px 10px;
+}
+
 .userDropDown {
     position:absolute;
     color:#FFF;
@@ -163,16 +213,6 @@ td {
     padding:4px 10px;
 }
 
-.login  {
-    position:absolute;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    font:14px;
-    width:100px;
-    right:20%!important;
-    padding:4px 10px;
-}
 
 .signUpAccount {
     position:absolute;
@@ -185,22 +225,9 @@ td {
     padding:4px 10px;
 }
 
-.ideasMenuItem {
-    position:absolute;
-    font:14px;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    width:62px;
-    left:20px;
-    top:.2%;
-    background:url(img/dropdown_arrow.png)  right no-repeat;
-    padding:4px 10px;
-}
 
 
 .uploadForm {
-
  position:absolute;
    display:block;
     top:20px;
@@ -219,7 +246,7 @@ td {
         color: #fff !important;
         text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
 
-    width:250px;
+    width:320px;
     height:190px;
     margin:10px;
     padding:10px;
@@ -257,33 +284,6 @@ td {
 .gwt-HTML,.gwt-ListBox {
     margin-left:10px!important;
 }
-
-.stories,.services,.improvements {
-    position:absolute;
-    font:14px;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    top:.2%;
-    padding:4px 10px;
-}
-
-.stories {
-    left:100px!important;
-    width:62px;
-}
-
-.services {
-    left:200px!important;
-    width:62px;
-}
-
-.improvements {
-    left:300px!important;
-    width:100px;
-}
-
-
 
 .displayDiv {
     display:block;
