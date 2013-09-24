@@ -82,6 +82,7 @@ public class SnipDispatcherServlet extends HttpServlet {
         br.close();
         sLogger.info("SnipDispatcherServlet: sb.toString()  "+sb.toString() );
 
+        // action bean as not all fields may have been set
         AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
         sb.setLength(0);
 
@@ -139,6 +140,10 @@ public class SnipDispatcherServlet extends HttpServlet {
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving
             sLogger.info("SnipDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getTitle());
+            // check that user id has been set for this bean
+            String id = (String) sessions.get().getAttribute("userid");
+            String userAvatarUrl =   "userAvatar/"+id+"small.jpg";
+            actionBean.as().setAvatarUrl(userAvatarUrl);
             snipsService.createSnip(actionBean.as());
         }
         else if(actionBean.as().getAction().equals("update") ) {

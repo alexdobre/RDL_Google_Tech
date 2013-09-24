@@ -90,8 +90,9 @@ public class UploadServlet extends HttpServlet {
                 String fileExtension =  contentType.substring(contentType.indexOf("/")+1);
                 System.out.println( "UploadServlet fileExtension "+ fileExtension);
                 FileData  fileData = new FileData(userId, out.toByteArray(), "binary");
+                // url to find correct directory for file upload on server
                 String avatarDirUrl = contextRoot+ File.separator+"userAvatar";
-                System.out.println( "UploadServlet getContentType "+ avatarDirUrl);
+                System.out.println( "UploadServlet avatar DirUrl "+ avatarDirUrl);
                 pictureStorage = new LocalFileStorage(avatarDirUrl);
                 pictureStorage.storeFile(fileData, fileExtension);
 

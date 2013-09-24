@@ -59,7 +59,8 @@ public class LocalFileStorage  implements FileStorage  {
          // now construct file and write the image data to the file
          System.out.println("LocalFileStorage fileUrl "+fileData.getName());
          System.out.println("LocalFileStorage fileUrl "+fileExtension);
-         String fileUrl = storageUrl+File.separator+ fileData.getName()+"small."+fileExtension;
+         // for now only handle jpeg images
+         String fileUrl = storageUrl+File.separator+ fileData.getName()+"small.jpg";
          System.out.println("LocalFileStorage fileUrl");
 
          File file = new File(fileUrl);
