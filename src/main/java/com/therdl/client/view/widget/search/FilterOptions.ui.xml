@@ -34,6 +34,31 @@
             margin:5px;
         }
 
+        .posRef {
+            width: 45px;
+            border: 2px solid #758211;
+            font-size:10px;
+            padding: 3px;
+            margin-left:5px;
+        }
+
+        .neutralRef {
+            width: 45px;
+            border: 2px solid #a7a77c;
+            font-size:10px;
+            padding: 3px;
+            margin-left:5px;
+        }
+
+        .negativeRef {
+            width: 45px;
+            border: 2px solid #920E05;
+            font-size:10px;
+            padding: 3px;
+            margin-left:5px;
+        }
+
+
         .categoryField {
             width: 160px;
             margin:5px;
@@ -60,10 +85,10 @@
     <g:VerticalPanel styleName = '{style.container}'>
         <g:Label text = "Select Search Options" styleName = '{style.labelText}' />
 
-        <g:HTMLPanel   styleName = '{style.submitPanel}' ui:field="container">
+        <g:HTMLPanel styleName = '{style.submitPanel}' ui:field="container">
             <table>
                 <tr>
-                    <td>Date</td>
+                    <td><g:Label  styleName = '{style.labelText}'>Date</g:Label></td>
                     <td>
                         <g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}'></g:TextBox>
                         <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}'></g:TextBox>
@@ -71,10 +96,24 @@
                 </tr>
 
                 <tr>
-                    <td>Category</td>
+                    <td><g:Label  styleName = '{style.labelText}'>Category</g:Label></td>
                     <td>
                         <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'></g:ListBox>
                     </td>
+                </tr>
+
+                <tr>
+                    <td><g:Label  styleName = '{style.labelText}'>Ref</g:Label></td>
+                    <td>
+                        <g:TextBox ui:field = "posRef" styleName = '{style.posRef}'></g:TextBox>
+                        <g:TextBox ui:field = "neutralRef" styleName = '{style.neutralRef}'></g:TextBox>
+                        <g:TextBox ui:field = "negativeRef" styleName = '{style.negativeRef}'></g:TextBox>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><g:Label  styleName = '{style.labelText}'>Reputation</g:Label></td>
+                    <td><g:TextBox ui:field = "snipRep" styleName = '{style.textField}'></g:TextBox></td>
                 </tr>
 
                 <tr>

@@ -14,10 +14,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SearchListWidget;
 import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.shared.Constants;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SearchOptionsBean;
+import com.therdl.shared.beans.*;
 
 import java.util.logging.Logger;
 
@@ -52,7 +49,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     FlowPanel snipListRow;
 
     private  AutoBean<CurrentUserBean> currentUserBean;
-    private  AutoBean<SearchOptionsBean> currentSearchOptionsBean;
+    private  AutoBean<SnipBean> currentSearchOptionsBean;
 
     private SearchListWidget searcListWidget;
 
@@ -120,7 +117,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         if(currentSearchOptionsBean != null) {
             currentSearchOptionsBean.as().setTitle(match);
         } else {
-            currentSearchOptionsBean = beanery.searchOptionsBean();
+            currentSearchOptionsBean = beanery.snipBean();
             currentSearchOptionsBean.as().setTitle(match);
             currentSearchOptionsBean.as().setPageSize(Constants.DEFAULT_PAGE_SIZE);
         }
@@ -130,7 +127,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     }
 
     @Override
-    public void doFilterSearch(AutoBean<SearchOptionsBean> searchOptionsBean) {
+    public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean) {
         currentSearchOptionsBean = searchOptionsBean;
     }
 

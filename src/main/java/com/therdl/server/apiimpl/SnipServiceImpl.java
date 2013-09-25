@@ -73,6 +73,15 @@ public class SnipServiceImpl implements SnipsService {
             query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent()));
         if(searchOptions.getCoreCat() != null)
             query.put("coreCat", searchOptions.getCoreCat());
+        if(searchOptions.getPosRef() != null)
+            query.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
+        if(searchOptions.getNeutralRef() != null)
+            query.put("neutralRef", new BasicDBObject("$gte", searchOptions.getNeutralRef()));
+        if(searchOptions.getNegativeRef() != null)
+            query.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
+        if(searchOptions.getRep() != null) {
+            query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+        }
 
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
@@ -251,21 +260,21 @@ public class SnipServiceImpl implements SnipsService {
         snip.setAvatarUrl((String)doc.get("avatarUrl"));
         // set the fields
         snip.setId(doc.get("_id").toString());
-        snip.setRep((String) doc.get("rep"));
+        snip.setRep((Integer) doc.get("rep"));
         snip.setAuthor((String) doc.get("author"));
         snip.setContent((String) doc.get("content"));
         snip.setCoreCat((String) doc.get("coreCat"));
         snip.setCreationDate((String) doc.get("creationDate"));
         snip.setEditDate((String) doc.get("editDate"));
         snip.setMoney((String) doc.get("money"));
-        snip.setNegativeRef((String) doc.get("negativeRef"));
-        snip.setNeutralRef((String) doc.get("neutralRef"));
+        snip.setNegativeRef((Integer) doc.get("negativeRef"));
+        snip.setNeutralRef((Integer) doc.get("neutralRef"));
         snip.setParentStream((String) doc.get("parentStream"));
         snip.setSnipType((String) doc.get("snipType"));
         snip.setViews((String) doc.get("views"));
         snip.setTitle((String) doc.get("title"));
         snip.setReferenceType((String) doc.get("referenceType"));
-        snip.setPosRef((String) doc.get("posRef"));
+        snip.setPosRef((Integer) doc.get("posRef"));
         snip.setSubCat((String) doc.get("subCat"));
         snip.setParentTag((String) doc.get("parentTag"));
         snip.setVotes((String) doc.get("votes"));

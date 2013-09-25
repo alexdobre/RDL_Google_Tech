@@ -122,7 +122,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
      * @param searchOptionsBean : bean of the snip search options
      */
     @Override
-    public void searchSnips(final AutoBean<SearchOptionsBean> searchOptionsBean) {
+    public void searchSnips(final AutoBean<SnipBean> searchOptionsBean) {
         log.info("SnipSearchPresenter getSnipSearchResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
@@ -140,13 +140,22 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         currentBean.as().setContent(searchOptionsBean.as().getContent());
         currentBean.as().setCoreCat(searchOptionsBean.as().getCoreCat());
 
+        currentBean.as().setPosRef(searchOptionsBean.as().getPosRef());
+        currentBean.as().setNeutralRef(searchOptionsBean.as().getNeutralRef());
+        currentBean.as().setNegativeRef(searchOptionsBean.as().getNegativeRef());
+        currentBean.as().setRep(searchOptionsBean.as().getRep());
+
         log.info("title="+searchOptionsBean.as().getTitle());
         log.info("content="+searchOptionsBean.as().getContent());
         log.info("pageSize="+searchOptionsBean.as().getPageSize());
         log.info("author="+searchOptionsBean.as().getAuthor());
-        log.info("dateFrom="+searchOptionsBean.as().getDateFrom());
-        log.info("dateTo="+searchOptionsBean.as().getDateTo());
+        log.info("dateFrom="+searchOptionsBean.as().getCreationDate());
+        log.info("dateTo="+searchOptionsBean.as().getCreationDate());
         log.info("coreCat="+searchOptionsBean.as().getCoreCat());
+        log.info("posRef="+searchOptionsBean.as().getPosRef());
+        log.info("neutralRef="+searchOptionsBean.as().getNeutralRef());
+        log.info("negativeRef="+searchOptionsBean.as().getNegativeRef());
+        log.info("rep="+searchOptionsBean.as().getRep());
 
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {

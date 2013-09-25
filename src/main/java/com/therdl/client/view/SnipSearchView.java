@@ -5,17 +5,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SearchOptionsBean;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
 
 public interface SnipSearchView {
 
     void updateListWidget(JsArray<JSOModel> snips, int pSize);
 
     public interface Presenter {
-        void searchSnips(AutoBean<SearchOptionsBean> searchOptionsBean);
+        void searchSnips(AutoBean<SnipBean> searchOptionsBean);
 	}
 
 	void setPresenter(Presenter presenter);
@@ -36,6 +33,6 @@ public interface SnipSearchView {
      */
     void searchSnips(String match);
 
-    void doFilterSearch(AutoBean<SearchOptionsBean> searchOptionsBean);
+    void doFilterSearch(AutoBean<SnipBean> searchOptionsBean);
 
 }

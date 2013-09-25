@@ -12,12 +12,11 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.shared.Constants;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.SearchOptionsBean;
+import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
 
@@ -56,6 +55,18 @@ public class FilterOptions extends PopupPanel  {
     TextBox dateTo;
 
     @UiField
+    TextBox posRef;
+
+    @UiField
+    TextBox neutralRef;
+
+    @UiField
+    TextBox negativeRef;
+
+    @UiField
+    TextBox snipRep;
+
+    @UiField
     HTMLPanel container;
 
     @UiField
@@ -82,7 +93,7 @@ public class FilterOptions extends PopupPanel  {
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
 
-        AutoBean<SearchOptionsBean> searchOptionsBean = beanery.searchOptionsBean();
+        AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 
         String pageSize = paging.getText();
         if(!pageSize.equals("")) {
@@ -107,19 +118,43 @@ public class FilterOptions extends PopupPanel  {
 
         String dateFromText = dateFrom.getText();
         if(!dateFromText.equals("")) {
-            searchOptionsBean.as().setDateFrom(dateFromText);
+            searchOptionsBean.as().setCreationDate(dateFromText);
             isOptionsSet = true;
         }
 
         String dateToText = dateTo.getText();
         if(!dateToText.equals("")) {
-            searchOptionsBean.as().setDateTo(dateToText);
+            searchOptionsBean.as().setCreationDate(dateToText);
             isOptionsSet = true;
         }
 
         int catIndex = categoryList.getSelectedIndex();
         if(catIndex != 0) {
             searchOptionsBean.as().setCoreCat(categoryList.getItemText(catIndex));
+            isOptionsSet = true;
+        }
+
+        String posRefText = posRef.getText();
+        if(!posRefText.equals("")) {
+            searchOptionsBean.as().setPosRef(Integer.parseInt(posRefText));
+            isOptionsSet = true;
+        }
+
+        String neutralRefText = neutralRef.getText();
+        if(!neutralRefText.equals("")) {
+            searchOptionsBean.as().setNeutralRef(Integer.parseInt(neutralRefText));
+            isOptionsSet = true;
+        }
+
+        String negativeRefText = negativeRef.getText();
+        if(!negativeRefText.equals("")) {
+            searchOptionsBean.as().setNegativeRef(Integer.parseInt(negativeRefText));
+            isOptionsSet = true;
+        }
+
+        String snipRepText = snipRep.getText();
+        if(!snipRepText.equals("")) {
+            searchOptionsBean.as().setRep(Integer.parseInt(snipRepText));
             isOptionsSet = true;
         }
 

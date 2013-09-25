@@ -47,17 +47,17 @@ public interface SnipBean {
     String getViews();
     void setViews(String views);
 
-    String getRep();
-    void setRep(String rep);
+    Integer getRep();
+    void setRep(Integer rep);
 
-    String getPosRef();
-    void setPosRef(String posRef);
+    Integer getPosRef();
+    void setPosRef(Integer posRef);
 
-    String getNeutralRef();
-    void setNeutralRef(String neutralRef);
+    Integer getNeutralRef();
+    void setNeutralRef(Integer neutralRef);
 
-    String getNegativeRef();
-    void setNegativeRef(String negativeRef);
+    Integer getNegativeRef();
+    void setNegativeRef(Integer negativeRef);
 
     String getReferenceType();
     void setReferenceType(String referenceType);
@@ -79,6 +79,9 @@ public interface SnipBean {
 
     String getMoney();
     void setMoney(String money);
+
+    int getPageSize();
+    void setPageSize(int pageSize);
 
     /**
      * nested interfaces
