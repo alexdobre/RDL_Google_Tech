@@ -24,9 +24,7 @@ import java.util.Set;
 @Singleton
 public class UserServiceImpl implements UserService {
 
-    private MongoURI uri;
     private String defaultDatabaseName;
-    private Properties configProp;
     private Beanery beanery;
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -338,12 +336,7 @@ public class UserServiceImpl implements UserService {
 
     // later the url will be a cloud based schema hence exception
     private DB getMongo() {
-        configProp = new Properties();
-        try {
-            configProp.load(new FileInputStream("src/main/resources/config.properties"));
-        }  catch (IOException e) { e.printStackTrace();  }
-        defaultDatabaseName = configProp.getProperty("mongodb.default.database");
-        sLogger.info("CreateAppContext from properties  default.database  :  " + defaultDatabaseName);
+
         defaultDatabaseName = "rdl";
 
         try {
