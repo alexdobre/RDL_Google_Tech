@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 public class ProfileViewImpl extends Composite implements ProfileView {
 
     private static Logger log = Logger.getLogger("");
-    private final  AutoBean<CurrentUserBean> currentUserBean;
 
+    private final  AutoBean<CurrentUserBean> currentUserBean;
 
     interface ProfileViewImplUiBinder extends UiBinder<Widget, ProfileViewImpl> {
     }
@@ -39,14 +39,15 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     HTMLPanel profileUpLoadFormPanel;
 
     @UiField
-    HTMLPanel profileImagePanel;
-
-    @UiField
     FormPanel uploadForm;
 
     @UiField
     AppMenu appMenu;
 
+    @UiField
+    FlowPanel profileImagePanel;
+
+    Image pic;
 
     public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -56,7 +57,20 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         profileUpLoadFormPanel.setStyleName("profileUpLoadFormPanel");
         profileImagePanel.setStyleName("profileImagePanel");
 
+        // check if user has an avatar
+        log.info("ProfileViewImpl check if user has an avatar ");
+        if(currentUserBean.as().getAvatarUrl() != null ) {
+            log.info("ProfileViewImpl getAvatarUrl()!= null: "+currentUserBean.as().getAvatarUrl() );
+            // can set the parameters for the avatar place holder here
 
+            pic = new Image(currentUserBean.as().getAvatarUrl());
+
+            profileImagePanel.add(pic);
+            profileImagePanel.setVisible(true);
+            pic .setStyleName("profileImage");
+            pic.setVisible(true);
+
+        }
 
 
         // user has just sucessfully logged in update app menu
@@ -68,7 +82,6 @@ public class ProfileViewImpl extends Composite implements ProfileView {
                 setAppMenu(currentUserBean);
             }
         });
-
 
     }
 
@@ -152,6 +165,19 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         });
 
         uploadForm.setStyleName("uploadForm");
+
+    }
+
+
+    @Override
+    public void setAvatarWhenViewIsNotNull() {
+
+        pic = new Image(currentUserBean.as().getAvatarUrl());
+        profileImagePanel.add(pic);
+        profileImagePanel.setVisible(true);
+        pic .setStyleName("profileImage");
+        pic.setVisible(true);
+
 
     }
 

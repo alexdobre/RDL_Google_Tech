@@ -7,12 +7,18 @@ public interface UserBean {
     /**
      * this field is not being saved in the db
      * it is mainly the action for the server to handle the request
+     * this bean hangs around on the server
      * @return
      */
     String getAction();
     void setAction(String action);
 
     /**************************** Getters and Setters ******************************/
+
+
+
+    String getAvatarUrl();
+    void setAvatarUrl(String avatarUrl);
 
     String getId();
     void setId(String id);

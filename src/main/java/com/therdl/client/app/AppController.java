@@ -204,7 +204,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             if (profileView == null) {
                 profileView = new ProfileViewImpl(currentUserBean);
 
-            }
+            } else  profileView.setAvatarWhenViewIsNotNull();
 
             final ProfilePresenter profilePresenter =  new ProfilePresenter(profileView);
             log.info("AppController Tokens.SERVICES ");
@@ -276,10 +276,24 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         return currentUserBean;
     }
 
-    public void setCurrentUserBean(String name, String email, boolean state) {
+
+    // set in WelcomePresenter dologin
+    public void setCurrentUserBean(String name, String email,String avatarUrl,  boolean state) {
         this.currentUserBean.as().setAuth(state);
         this.currentUserBean.as().setName(name);
         this.currentUserBean.as().setEmail(email);
+        this.currentUserBean.as().setAvatarUrl(avatarUrl);
     }
+
+
+
+    // set in RegisterPresenter submitNewUser onResponseReceived
+    public void setCurrentUserBean(String name, String email,  boolean state) {
+        this.currentUserBean.as().setAuth(state);
+        this.currentUserBean.as().setName(name);
+        this.currentUserBean.as().setEmail(email);
+
+    }
+
 
 }

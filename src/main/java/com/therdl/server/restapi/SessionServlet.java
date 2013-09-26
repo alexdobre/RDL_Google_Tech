@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -95,10 +96,16 @@ public class SessionServlet  extends HttpServlet {
         else if(action.equals("auth") )  {
 
             String password = authBean.as().getPassword();
+            // get the user from the database if exists
             AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
+
             if(checkedUser.as().getAction().equals("OkUser")) {
+            String avatarUrl = "userAvatar"+ File.separator+ checkedUser.as().getName()+"small.jpg";
+            checkedUser.as().setAvatarUrl(avatarUrl);
             checkedUser.as().setAuth(true);
+            // we can use this server side to obtain userId from session
             session.get().setAttribute("userid",checkedUser.as().getEmail() );
+
             } else {
             checkedUser.as().setAuth(false);
             }

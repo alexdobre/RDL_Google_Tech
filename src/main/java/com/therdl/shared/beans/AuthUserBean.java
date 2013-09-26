@@ -5,7 +5,10 @@ package com.therdl.shared.beans;
  */
 public interface  AuthUserBean {
 
+    // AuthUserBean needs the avatar url to pass to currentuserbean
+    String getAvatarUrl();
 
+    void setAvatarUrl(String avatarUrl);
 
     String getName() ;
 

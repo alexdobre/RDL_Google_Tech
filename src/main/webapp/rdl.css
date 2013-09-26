@@ -229,21 +229,28 @@ td {
 
  .profileImagePanel {
         position:absolute;
-        display:inline-block;
-        border: 2px solid red:
-        height:140px;
-        width:140px;
-        border: 2px solid red;
-        margin:20px;
+        display:inline-block;  
+        height:240px;
+        width:240px;
+        margin-right:20px;
 
         }
-
- .profileUpLoadFormPanel {
+        
+  .profileImage {
+        z-index:500;
         position:absolute;
         display:inline-block;
-        left:340px;
-        margin:20px;
+        height:220px;
+        width:220px;
+  }
 
+ .profileUpLoadFormPanel {
+        position:relative;
+        display:inline-block;
+        left:340px;
+        margin-left:20px;
+ 				width:340px;
+    		height:220px;
         }
 
 .uploadForm {

@@ -22,6 +22,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
     private static Logger log = Logger.getLogger("");
 
+    private String avatarUrl = null;
 
     private final WelcomeView welcomeView;
 
@@ -89,6 +90,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                         JSOModel data = JSOModel.fromJson(response.getText());
                         String email = data.get("email");
                         String name = data.get("name");
+
                         boolean auth = data.getBoolean("auth");
                         if (!auth) {
                             log.info("WelcomePresenter onResponseReceived  !auth  ");
@@ -96,7 +98,12 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                             welcomeView.showLoginFail();
 
                         }   else {
-                        controller.setCurrentUserBean(name, email, auth);
+
+                            if (data.get("name") != null) {
+                                log.info("WelcomePresenter  avatarurl exists" + data.get("avatarUrl"));
+                                avatarUrl = data.get("avatarUrl");
+                            }
+                        controller.setCurrentUserBean(name, email, avatarUrl,  auth);
                         welcomeView.setloginresult(name, email, auth);
                             // use app menu
                             // try and update any open view

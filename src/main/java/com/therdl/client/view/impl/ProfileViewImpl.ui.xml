@@ -18,6 +18,8 @@
         .headerText {
          font-size:14px;
          margin:20px;
+         top:40px;
+         display:block;
 
         }
 
@@ -28,9 +30,11 @@
     <g:HTMLPanel addStyleNames="{style.outer}">
         <rdl:AppMenu ui:field="appMenu" />
 
-                <g:HTMLPanel ui:field = "profileImagePanel" >
-                    <span  class="{style.headerText}">This is place holder for image</span>
-                </g:HTMLPanel>
+        <span  class="{style.headerText}">User Profile Data</span>
+
+
+        <g:FlowPanel ui:field = "profileImagePanel"></g:FlowPanel>
+
 
                 <g:HTMLPanel ui:field = "profileUpLoadFormPanel"  >
                     <g:FormPanel  ui:field = "uploadForm" />

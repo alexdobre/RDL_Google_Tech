@@ -20,6 +20,6 @@ public interface ProfileView extends IsWidget {
 
     void setAppMenu(AutoBean<CurrentUserBean> currentUserBean);
 
-
+    void setAvatarWhenViewIsNotNull();
 
 }
