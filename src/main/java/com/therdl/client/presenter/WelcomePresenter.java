@@ -93,6 +93,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                         if (!auth) {
                             log.info("WelcomePresenter onResponseReceived  !auth  ");
                             // use app menu
+                            welcomeView.showLoginFail();
 
                         }   else {
                         controller.setCurrentUserBean(name, email, auth);

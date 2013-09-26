@@ -120,6 +120,30 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
     }
 
 
+
+    @Override
+    public void setloginresult(String name, String email, boolean auth) {
+        if (auth) {
+            log.info("SnipSearchViewImpl setloginresult auth true "+name );
+
+            this.appMenu.setLogOutVisible(true);
+            this.appMenu.setSignUpVisible(false);
+            this.appMenu.setUserInfoVisible(true);
+            this.appMenu.setUser(name);
+            this.appMenu.setLogInVisible(false);
+        }
+
+        else {
+            this.appMenu.setLogOutVisible(false);
+            this.appMenu.setSignUpVisible(true);
+            this.appMenu.setUserInfoVisible(false);
+            this.appMenu.setLogInVisible(true);
+        }
+
+    }
+
+
+
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;

@@ -88,6 +88,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
             this.appMenu.setSignUpVisible(false);
             this.appMenu.setUserInfoVisible(true);
             this.appMenu.setUser(name);
+            this.appMenu.setEmail(email);
             this.appMenu.setLogInVisible(false);
         }
 

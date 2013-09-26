@@ -17,7 +17,7 @@ public interface WelcomeView {
 
 	Widget asWidget();
 
-
+    void showLoginFail();
 
     void  setloginresult(String name, String email, boolean auth);
 

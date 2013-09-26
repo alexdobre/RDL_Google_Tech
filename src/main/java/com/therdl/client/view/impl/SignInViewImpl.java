@@ -20,6 +20,9 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInOkEvent;
+import com.therdl.shared.events.LogInOkEventEventHandler;
 
 import java.util.logging.Logger;
 
@@ -58,6 +61,17 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         password.setText("password");
         email.setText("Email");
         this.setStyleName("signInView");
+
+        // user has just sucessfully logged in update app menu
+        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler()  {
+
+            @Override
+            public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
+
+                hide();
+            }
+        });
+
 
     }
 
@@ -122,6 +136,8 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         this.setVisible(state);
 
     }
+
+
 
 
 }

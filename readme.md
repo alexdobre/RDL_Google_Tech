@@ -3,16 +3,31 @@ The RDL main web application
 
 Build Instructions  
 
-mvn clean package
 
 Test in local stack  
-1 for gwt dev  
-mvn gwt:run  
-2. for production server testing
-mvn jetty:run  
 
-// dev url  
-http://localhost:8080/
+1. in com.therdl.shared.Constants.java  
+set public static final boolean DEPLOY = false;  
+2 compile  
+mvn clean package  
+3. for production server testing  
+mvn jetty:run  
+4. local development dev url  
+http://localhost:8080/  
+  
+Run on Application Server JBOSS  
+1. in com.therdl.shared.Constants.java  
+ set public static final boolean DEPLOY = true;  
+2. compile  
+ mvn clean package  
+it should build the therdl.war file in “~/RDL_Google_Tech/target” directory  
+then set up in your application server  
+
+3. deployed url  
+url http://<your host>:<your port if not 80>/therdl  
+
+
+
 
 please view open issues and contribute
 

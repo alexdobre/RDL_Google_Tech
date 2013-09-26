@@ -107,7 +107,15 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
             this.appMenu.setLogInVisible(false);
         }
 
+        else {
+            this.appMenu.setLogOutVisible(false);
+            this.appMenu.setSignUpVisible(true);
+            this.appMenu.setUserInfoVisible(false);
+            this.appMenu.setLogInVisible(true);
+        }
+
     }
+
 
     @Override
     public AppMenu getAppMenu() {

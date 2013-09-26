@@ -36,7 +36,10 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     private Beanery beanery = GWT.create(Beanery.class);
 
     @UiField
-    HTMLPanel profile;
+    HTMLPanel profileUpLoadFormPanel;
+
+    @UiField
+    HTMLPanel profileImagePanel;
 
     @UiField
     FormPanel uploadForm;
@@ -50,7 +53,8 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         this.currentUserBean  =  cUserBean;
         setAppMenu(currentUserBean);
         setUploadForm();
-
+        profileUpLoadFormPanel.setStyleName("profileUpLoadFormPanel");
+        profileImagePanel.setStyleName("profileImagePanel");
 
 
 
@@ -73,7 +77,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
         if (currentUserBean.as().isAuth()) {
             log.info("ProfileViewImpl setAppMenu auth true "+currentUserBean.as().getName() );
-            profile.setVisible(true);
+            profileUpLoadFormPanel.setVisible(true);
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
             this.appMenu.setUserInfoVisible(true);
@@ -83,7 +87,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         }
 
         else {
-            profile.setVisible(false);
+            profileUpLoadFormPanel.setVisible(false);
             this.appMenu.setLogOutVisible(false);
             this.appMenu.setSignUpVisible(true);
             this.appMenu.setUserInfoVisible(false);

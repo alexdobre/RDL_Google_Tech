@@ -260,6 +260,7 @@ public class SnipServiceImpl implements SnipsService {
         snip.setAvatarUrl((String)doc.get("avatarUrl"));
         // set the fields
         snip.setId(doc.get("_id").toString());
+
         snip.setRep((Integer) doc.get("rep"));
         snip.setAuthor((String) doc.get("author"));
         snip.setContent((String) doc.get("content"));
@@ -287,7 +288,6 @@ public class SnipServiceImpl implements SnipsService {
 
         for(Object obj : links){
             SnipBean.Links titlesBean = beanery.snipLindsBean().as();
-
             titlesBean.setTargetId((String)((BasicDBObject)obj).get("targetId"));
             titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
             linksList.add(titlesBean);

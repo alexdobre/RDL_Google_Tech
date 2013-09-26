@@ -20,9 +20,6 @@ public interface RegisterView  extends IsWidget {
 
     void setPresenter(Presenter presenter);
 
-
-
-
-
+    void setloginresult(String name, String email, boolean auth);
 
 }

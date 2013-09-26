@@ -177,31 +177,6 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 });
             }
 
-            //*************************************** LOG_OUT ****************************
-            else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
-
-                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
-                log.info("AppController Tokens.LOG_OUT ");
-
-                GWT.runAsync(new RunAsyncCallback() {
-                    public void onFailure(Throwable caught) {
-                    }
-
-                    public void onSuccess() {
-                        currentUserBean.as().setAuth(false);
-                        if (welcomeView == null) {
-                            welcomeView = new WelcomeViewImpl( currentUserBean);
-
-                        }
-                        currentUserBean.as().setAuth(false);
-                        welcomePresenter.go(container, currentUserBean);
-                        welcomeView.logout();
-                    }
-                });
-            }
-
-
-
             //*************************************** SIGN_UP ****************************
             else if (token.equals(RDLConstants.Tokens.SIGN_UP)) {
 
@@ -223,9 +198,6 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 });
             }
 
-
-
-
         //*************************************** PROFILE ****************************
         else if (token.equals(RDLConstants.Tokens.PROFILE)) {
 
@@ -246,6 +218,54 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 }
             });
         }
+
+
+            //*************************************** LOG_OUT ****************************
+            else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
+
+                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+                log.info("AppController Tokens.LOG_OUT ");
+                if (welcomeView != null ) {
+
+                    welcomeView.logout();
+                }
+                if (snipSearchView != null) {
+                    snipSearchView.setloginresult(" ", " ", false);
+                }
+
+                if (snipEditView != null) {
+                    snipEditView.setloginresult(" ", " ", false);
+                }
+
+                if (registerView != null) {
+                    registerView.setloginresult(" ", " ", false);
+                }
+
+                if (profileView == null) {
+                    profileView.setAppMenu(currentUserBean);
+
+                }
+
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+                        currentUserBean.as().setAuth(false);
+                        if (welcomeView == null) {
+                            welcomeView = new WelcomeViewImpl( currentUserBean);
+
+                        }
+                        currentUserBean.as().setAuth(false);
+                        welcomePresenter.go(container, currentUserBean);
+                        welcomeView.logout();
+                    }
+                });
+            }
+
+
+
 
 
         } // end  if token != null

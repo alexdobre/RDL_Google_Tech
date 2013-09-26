@@ -26,4 +26,6 @@ public interface SignInView extends IsWidget {
 
     Label getLoginFail();
 
+
+
 }

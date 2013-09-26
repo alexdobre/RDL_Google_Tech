@@ -106,6 +106,15 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
     }
 
+    @Override
+    public void showLoginFail() {
+
+        signInView.getLoginFail().setVisible(true);
+        signInView.getLoginFail().setText("Login Fails please check your credentials");
+
+
+    }
+
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
@@ -116,18 +125,25 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 	}
 
 
-    public  void  setloginresult(String name, String email, boolean auth) {
-      if (auth) {
-          log.info("WelcomeViewImpl setloginresult auth true" );
+    @Override
+    public void setloginresult(String name, String email, boolean auth) {
+        if (auth) {
+            log.info("SnipSearchViewImpl setloginresult auth true "+name );
 
-          signInView.hide();
-          appMenu.setUser("User name: "+name);
-          appMenu.setEmail("User email: "+email);
-          appMenu.setLogOutVisible(true);
-          appMenu.setSignUpVisible(false);
-          appMenu.setUserInfoVisible(true);
-          appMenu.setLogInVisible(false);
-      }
+            this.appMenu.setLogOutVisible(true);
+            this.appMenu.setSignUpVisible(false);
+            this.appMenu.setUserInfoVisible(true);
+            this.appMenu.setUser(name);
+            this.appMenu.setEmail(email);
+            this.appMenu.setLogInVisible(false);
+        }
+
+        else {
+            this.appMenu.setLogOutVisible(false);
+            this.appMenu.setSignUpVisible(true);
+            this.appMenu.setUserInfoVisible(false);
+            this.appMenu.setLogInVisible(true);
+        }
 
     }
 
@@ -155,15 +171,11 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
     }
 
 
-
-
-
     @UiHandler("IdeasButton")
     public void onMouseOver(MouseOverEvent event)
     {
         hoverDiv.setInnerHTML(ideas);
     }
-
 
 
     @UiHandler("StoriesButton")

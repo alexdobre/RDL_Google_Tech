@@ -225,14 +225,32 @@ td {
     padding:4px 10px;
 }
 
+/** profile **/
 
+ .profileImagePanel {
+        position:absolute;
+        display:inline-block;
+        border: 2px solid red:
+        height:140px;
+        width:140px;
+        border: 2px solid red;
+        margin:20px;
+
+        }
+
+ .profileUpLoadFormPanel {
+        position:absolute;
+        display:inline-block;
+        left:340px;
+        margin:20px;
+
+        }
 
 .uploadForm {
  position:absolute;
    display:block;
     top:20px;
-    display:block;
-          background-color: hsl(0, 69%, 22%) !important;
+        background-color: hsl(0, 69%, 22%) !important;
         background-repeat: repeat-x;
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b42121", endColorstr="#5e1111");
         background-image: -khtml-gradient(linear, left top, left bottom, from(#b42121), to(#5e1111));
