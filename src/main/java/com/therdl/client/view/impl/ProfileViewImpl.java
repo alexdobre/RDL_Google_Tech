@@ -185,7 +185,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     @Override
     public void setAvatarWhenViewIsNotNull() {
-
+        log.info("ProfileViewImpl setAvatarWhenViewIsNotNull"+ currentUserBean.as().getAvatarUrl());
         pic = new Image(currentUserBean.as().getAvatarUrl());
         profileImagePanel.add(pic);
         profileImagePanel.setVisible(true);

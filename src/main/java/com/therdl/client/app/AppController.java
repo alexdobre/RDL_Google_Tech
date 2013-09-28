@@ -70,7 +70,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             }
         });
 
-        // logout event handler
+        // RefreshEvent event handler
         GuiEventBus.EVENT_BUS.addHandler(RefreshEvent.TYPE, new RefreshEventHandler()  {
 
             @Override
@@ -212,9 +212,12 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         else if (token.equals(RDLConstants.Tokens.PROFILE)) {
 
             if (profileView == null) {
+                log.info("AppController profileView == null ");
                 profileView = new ProfileViewImpl(currentUserBean);
 
-            } else  profileView.setAvatarWhenViewIsNotNull();
+            } else {
+                log.info("AppController profileView == null else ");
+                profileView.setAvatarWhenViewIsNotNull();  }
 
             final ProfilePresenter profilePresenter =  new ProfilePresenter(profileView);
             log.info("AppController Tokens.SERVICES ");
