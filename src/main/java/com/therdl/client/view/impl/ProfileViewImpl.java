@@ -8,9 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Constants;
+import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
@@ -160,7 +162,19 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
 
-                Window.alert(event.getResults());
+           // rawResult =<pre style="word-wrap: break-word; white-space: pre-wrap;">{"action":"ok"}</pre>
+                String rawResult = event.getResults();
+                String jsonResult = rawResult.substring(rawResult.indexOf("{"), rawResult.indexOf("}")+1);
+
+                log.info("ProfileViewImpl addSubmitCompleteHandler parsed resutls"+ jsonResult);
+
+                AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, jsonResult);
+
+                log.info("ProfileViewImpl addSubmitCompleteHandlerbean.as().getAction()"+ bean.as().getAction());
+                if (bean.as().getAction().equals("ok")) {
+                    // go to the home page for now so refresh event is initiated
+                    GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
+                }   else  Window.alert(bean.as().getAction());
             }
         });
 

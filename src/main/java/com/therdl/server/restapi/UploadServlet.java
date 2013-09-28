@@ -1,12 +1,16 @@
 package com.therdl.server.restapi;
 
 import com.google.inject.Singleton;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.FileData;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.data.LocalFileStorage;
+import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.SnipBean;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -20,10 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  */
@@ -35,6 +36,7 @@ public class UploadServlet extends HttpServlet {
     private final Provider<HttpSession> session;
 
     private Beanery beanery;
+
     private String avatarText;
     private  FileStorage pictureStorage;
 
@@ -51,7 +53,6 @@ public class UploadServlet extends HttpServlet {
 
         System.out.println( "UploadServlet is go ");
         String userId = (String) session.get().getAttribute("userid" );
-
 
         ServletFileUpload upload = new ServletFileUpload();
         try{
@@ -105,6 +106,12 @@ public class UploadServlet extends HttpServlet {
         catch(Exception e){
             throw new RuntimeException(e);
         }
+
+        AutoBean<AuthUserBean> actionBean = beanery.authBean();
+        actionBean.as().setAction("ok");
+        PrintWriter out = resp.getWriter();
+        out.write(AutoBeanCodex.encode(actionBean).getPayload());
+
 
     }
 

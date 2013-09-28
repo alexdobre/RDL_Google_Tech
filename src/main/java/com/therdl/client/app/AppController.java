@@ -16,9 +16,7 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogOutEvent;
-import com.therdl.shared.events.LogOutEventEventHandler;
+import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
 
@@ -72,7 +70,19 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             }
         });
 
-	}
+        // logout event handler
+        GuiEventBus.EVENT_BUS.addHandler(RefreshEvent.TYPE, new RefreshEventHandler()  {
+
+            @Override
+            public void onRefreshEvent(RefreshEvent e) {
+
+                History.newItem(RDLConstants.Tokens.WELCOME );
+                History.fireCurrentHistoryState();
+            }
+        });
+
+
+    }
 	
 	@Override
 	public void go(final HasWidgets container) {
