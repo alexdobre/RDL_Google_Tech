@@ -12,8 +12,8 @@ public class Constants {
      * true  : will optimize the paths for jboss
      * false : will optimize the paths for maven
      */
-    public static final boolean DEPLOY = false;
-   // public static final boolean DEPLOY =  true;
+   // public static final boolean DEPLOY = false;
+    public static final boolean DEPLOY =  true;
 
     public static final int DEFAULT_PAGE_SIZE = 5;
 }
