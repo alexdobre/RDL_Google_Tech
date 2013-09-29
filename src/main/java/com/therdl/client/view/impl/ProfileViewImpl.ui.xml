@@ -30,7 +30,7 @@
     <g:HTMLPanel addStyleNames="{style.outer}">
         <rdl:AppMenu ui:field="appMenu" />
 
-        <span  class="{style.headerText}">User Profile Data</span>
+        <span  class="{style.headerText}">User Profile Data (if you see an image here before you upload, clear your browser cache)</span>
 
 
         <g:FlowPanel ui:field = "profileImagePanel"></g:FlowPanel>

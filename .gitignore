@@ -9,6 +9,7 @@ logs
 .project
 .idea
 .idea/*
+RemoteSystemsTempFiles
 *.iml
 *.zip
 *.launch

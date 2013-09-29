@@ -64,7 +64,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler()  {
             @Override
             public void onLogOutEvent(LogOutEvent onLogOutEvent) {
-                currentUserBean.as().setAuth(false);
+                currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
                 History.newItem(RDLConstants.Tokens.LOG_OUT);
                 History.fireCurrentHistoryState();
             }
@@ -189,10 +189,10 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
             //*************************************** SIGN_UP ****************************
             else if (token.equals(RDLConstants.Tokens.SIGN_UP)) {
-
+                currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
                 if (registerView == null) {
                     registerView = new RegisterViewImpl();
-                    currentUserBean.as().setAuth(false);
+
                 }
 
                 final RegisterPresenter registerPresenter =  new RegisterPresenter(registerView, this);
