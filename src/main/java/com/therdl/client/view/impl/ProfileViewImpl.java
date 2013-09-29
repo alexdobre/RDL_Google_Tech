@@ -66,7 +66,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
             // can set the parameters for the avatar place holder here
 
             pic = new Image(currentUserBean.as().getAvatarUrl());
-
+            profileImagePanel.clear();
             profileImagePanel.add(pic);
             profileImagePanel.setVisible(true);
             pic .setStyleName("profileImage");

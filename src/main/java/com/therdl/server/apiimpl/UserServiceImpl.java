@@ -116,7 +116,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // poor code design, this should return a UserObject
+    // poor code design, this should return a UserObject, programmer was told to do this
+    // quickest to deal with this is session servlet for now
     @Override
     public void createUser(UserBean user) {
         sLogger.info("UserServiceImpl createUser  email : " + user.getEmail());

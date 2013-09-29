@@ -100,7 +100,7 @@ public class AppMenu extends Composite  {
             @Override
             public void execute() {
                 log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
-                History.newItem(RDLConstants.Tokens.PROFILE);
+                History.newItem(RDLConstants.Tokens.PROFILE+":"+user.getText());
             }
         });
 

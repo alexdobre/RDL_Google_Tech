@@ -85,6 +85,8 @@ public class SessionServlet  extends HttpServlet {
             authBean.as().setAuth(true);
             authBean.as().setAction("newUserOk");
             authBean.as().setName(authBean.as().getName());
+            String avatarUrl = "userAvatar"+ File.separator+ authBean.as().getName()+"small.jpg";
+            authBean.as().setAvatarUrl (avatarUrl);
             session.get().setAttribute("userid",newUserBean.as().getEmail() );
             System.out.println("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
             PrintWriter out = resp.getWriter();

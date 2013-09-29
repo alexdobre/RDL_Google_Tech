@@ -278,6 +278,40 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             }
 
 
+            //*************************************** PROFILE-Caching url ****************************
+            else   {
+
+                String[] temp =  token.split(":");
+
+                log.info("AppController else parsing profile caching hash "+temp.length);
+
+                if(temp[0].equals(RDLConstants.Tokens.PROFILE)) {
+
+                    if (profileView == null) {
+                        log.info("AppController profileView == null ");
+                        profileView = new ProfileViewImpl(currentUserBean);
+
+                    } else {
+                        log.info("AppController profileView == null else ");
+                        profileView.setAvatarWhenViewIsNotNull();  }
+
+                    final ProfilePresenter profilePresenter =  new ProfilePresenter(profileView);
+                    log.info("AppController Tokens.SERVICES ");
+                    GWT.runAsync(new RunAsyncCallback() {
+                        public void onFailure(Throwable caught) {
+                        }
+
+                        public void onSuccess() {
+                            profilePresenter.go(container, currentUserBean);
+
+                        }
+                    });
+
+                }
+
+
+
+            } // end else
 
 
 
