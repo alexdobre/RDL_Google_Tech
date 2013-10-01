@@ -23,13 +23,10 @@
 	<g:HTMLPanel styleName="{style.outerPanel}" >
         <rdl:AppMenu ui:field="appMenu" />
 
-		<g:DockPanel>
-
-			<g:Dock direction="CENTER">
-				<g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
-					<!--rdl:SnipEditorWorkflow ui:field="snipEditorWorkflow" width="100%" /-->
-				</g:FlowPanel>
-			</g:Dock>
-		</g:DockPanel>
+        <g:DockLayoutPanel  ui:field="snipEditDocPanel" unit='EM'>
+            <g:center>
+                <g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}"/>
+            </g:center>
+        </g:DockLayoutPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

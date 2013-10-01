@@ -107,8 +107,14 @@ public class UploadServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
 
+         // can get the user id from the session
+        String userName = (String) session.get().getAttribute("name");
+
+        String avatarUrl = "userAvatar"+ File.separator+ userName+"small.jpg";
+
         AutoBean<AuthUserBean> actionBean = beanery.authBean();
         actionBean.as().setAction("ok");
+        actionBean.as().setAvatarUrl(avatarUrl);
         PrintWriter out = resp.getWriter();
         out.write(AutoBeanCodex.encode(actionBean).getPayload());
 

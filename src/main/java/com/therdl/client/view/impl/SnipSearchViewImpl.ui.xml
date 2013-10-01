@@ -3,6 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style>
+
+
+
         .widgetlayout {
           margin:10px 0 0 30px;
           padding:10px 0 0 20px;
@@ -20,18 +23,14 @@
 	<g:HTMLPanel  >
         <rdl:AppMenu ui:field="appMenu"/>
 
-        <g:DockPanel  width="100%" height="100%"  >
-
-			<g:Dock direction="NORTH" size='100%'>
-				<g:FlowPanel ui:field="snipSearchWidgetPanel" styleName='{style.searchlayout}'>
-
-				</g:FlowPanel>
-			</g:Dock>
-			<g:Dock direction="CENTER"  >
-				<g:FlowPanel  ui:field="snipListRow" styleName='{style.widgetlayout}' width="100%" height="100%" >
-				</g:FlowPanel>
-			</g:Dock>
-		</g:DockPanel>
+        <g:DockLayoutPanel  ui:field="snipSearchDocPanel" unit='EM'>
+            <g:north size='9'>
+                <g:FlowPanel ui:field="snipSearchWidgetPanel" styleName='{style.searchlayout}'/>
+            </g:north>
+            <g:center>
+                <g:FlowPanel  ui:field="snipListRow" styleName='{style.widgetlayout}' width="100%" height="100%" />
+            </g:center>
+        </g:DockLayoutPanel>
 
 	</g:HTMLPanel>
 </ui:UiBinder> 

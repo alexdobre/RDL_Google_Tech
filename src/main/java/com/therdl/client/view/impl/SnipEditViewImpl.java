@@ -28,6 +28,10 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
     @UiField
     AppMenu appMenu;
+
+    @UiField
+    DockLayoutPanel snipEditDocPanel;
+
     @UiField
     FlowPanel mainPanel;
 
@@ -45,6 +49,8 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
         // add closure widget into the view
         mainPanel.add(editorClientWidget);
+
+        snipEditDocPanel.setSize("100%", "100%");
 	  }
 
     // save

@@ -172,8 +172,15 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
                 log.info("ProfileViewImpl addSubmitCompleteHandlerbean.as().getAction()"+ bean.as().getAction());
                 if (bean.as().getAction().equals("ok")) {
+                    pic = new Image(bean.as().getAvatarUrl());
+                    profileImagePanel.clear();
+                    profileImagePanel.add(pic);
+                    profileImagePanel.setVisible(true);
+                    pic .setStyleName("profileImage");
+                    pic.setVisible(true);
+
                     // go to the home page for now so refresh event is initiated
-                    GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
+                   // GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
                 }   else  Window.alert(bean.as().getAction());
             }
         });

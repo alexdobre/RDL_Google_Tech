@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -43,6 +44,9 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     AppMenu appMenu;
 
     @UiField
+    DockLayoutPanel snipSearchDocPanel;
+
+    @UiField
     FlowPanel snipSearchWidgetPanel;
 
     @UiField
@@ -63,6 +67,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         snipSearchWidget = new SnipSearchWidget(this);
         snipSearchWidgetPanel.add(snipSearchWidget);
         searcListWidget =  new SearchListWidget();
+        snipSearchDocPanel.setSize("75%", "100%");
 	}
 
     @Override

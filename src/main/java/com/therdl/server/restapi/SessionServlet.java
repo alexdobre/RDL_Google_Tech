@@ -88,6 +88,7 @@ public class SessionServlet  extends HttpServlet {
             String avatarUrl = "userAvatar"+ File.separator+ authBean.as().getName()+"small.jpg";
             authBean.as().setAvatarUrl (avatarUrl);
             session.get().setAttribute("userid",newUserBean.as().getEmail() );
+            session.get().setAttribute("username",newUserBean.as().getUsername() );
             System.out.println("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
             PrintWriter out = resp.getWriter();
             out.write( AutoBeanCodex.encode(authBean).getPayload());
@@ -106,7 +107,8 @@ public class SessionServlet  extends HttpServlet {
             checkedUser.as().setAvatarUrl(avatarUrl);
             checkedUser.as().setAuth(true);
             // we can use this server side to obtain userId from session
-            session.get().setAttribute("userid",checkedUser.as().getEmail() );
+            session.get().setAttribute("userid", checkedUser.as().getEmail() );
+            session.get().setAttribute("name", checkedUser.as().getName() );
 
             } else {
             checkedUser.as().setAuth(false);
