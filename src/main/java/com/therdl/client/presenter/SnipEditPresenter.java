@@ -94,7 +94,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         bean.as().setCoreCat(coreCat);
         bean.as().setSubCat(subCat);
         bean.as().setContent(contentAsText);
-        bean.as().setAuthor("demo user");
+        bean.as().setAuthor(controller.getCurrentUserBean().as().getName());
         bean.as().setAction("update");
         log.info("SnipEditPresenter submitBean bean : " +  bean.as().getTitle());
         log.info("SnipEditPresenter submit to server");
@@ -217,7 +217,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         bean.as().setCoreCat(coreCat);
         bean.as().setSubCat(subCat);
         bean.as().setContent(contentAsText);
-        bean.as().setAuthor("demo user");
+        bean.as().setAuthor(controller.getCurrentUserBean().as().getName());
         bean.as().setAction("save");
 
         log.info("SnipEditPresenter submitBean bean : title : " +  bean.as().getTitle());

@@ -117,11 +117,6 @@
                 </tr>
 
                 <tr>
-                    <td><g:Label  styleName = '{style.labelText}'>Page Size</g:Label></td>
-                    <td><g:TextBox ui:field = "paging" styleName = '{style.textField}'></g:TextBox></td>
-                </tr>
-
-                <tr>
                     <td><g:Label  styleName = '{style.labelText}'>Content</g:Label></td>
                     <td><g:TextBox ui:field = "content" styleName = '{style.textField}'></g:TextBox></td>
                 </tr>

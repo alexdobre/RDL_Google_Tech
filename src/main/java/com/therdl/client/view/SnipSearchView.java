@@ -9,7 +9,7 @@ import com.therdl.shared.beans.SnipBean;
 
 public interface SnipSearchView {
 
-    void updateListWidget(JsArray<JSOModel> snips, int pSize);
+    void updateListWidget(JsArray<JSOModel> snips);
 
     public interface Presenter {
         void searchSnips(AutoBean<SnipBean> searchOptionsBean);

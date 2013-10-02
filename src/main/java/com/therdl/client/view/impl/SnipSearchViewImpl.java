@@ -35,7 +35,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 	private Presenter presenter;
 
     // paging parameter
-    int pSize = 5;
+    int pSize = 10;
 
 
     SnipSearchWidget snipSearchWidget;
@@ -74,14 +74,14 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     public void getSnipListDemoResult(JsArray<JSOModel> snips) {
         log.info("SnipSearchViewImpl getSnipListDemoResult "+ snips.length());
         snipListRow.add(searcListWidget);
-        searcListWidget.bootStrapList(searcListWidget, snips, pSize);
+        searcListWidget.bootStrapList(searcListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
     }
 
     @Override
-    public void updateListWidget(JsArray<JSOModel> snips, int pSize){
+    public void updateListWidget(JsArray<JSOModel> snips){
         log.info("SnipSearchViewImpl updateListWidget "+ snips.length());
         snipListRow.add(searcListWidget);
-        searcListWidget.bootStrapList(searcListWidget, snips, pSize);
+        searcListWidget.bootStrapList(searcListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
     }
 
     @Override
@@ -125,7 +125,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         } else {
             currentSearchOptionsBean = beanery.snipBean();
             currentSearchOptionsBean.as().setTitle(match);
-            currentSearchOptionsBean.as().setPageSize(Constants.DEFAULT_PAGE_SIZE);
         }
 
         presenter.searchSnips(currentSearchOptionsBean);

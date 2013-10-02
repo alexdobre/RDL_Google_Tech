@@ -47,11 +47,12 @@ public class SnipSearchWidget extends Composite {
     void selectSearchOptions(ClickEvent event) {
 
         log.info("SnipSearchWidget optionsButton " );
-
-        filterOptions = new FilterOptions(this);
-        filterOptions.setGlassEnabled(true);
-        filterOptions.setModal(true);
-        filterOptions.setPopupPosition(0,10);
+        if(filterOptions == null) {
+            filterOptions = new FilterOptions(this);
+            filterOptions.setGlassEnabled(true);
+            filterOptions.setModal(true);
+            filterOptions.setPopupPosition(0,10);
+        }
         filterOptions.show();
 
 

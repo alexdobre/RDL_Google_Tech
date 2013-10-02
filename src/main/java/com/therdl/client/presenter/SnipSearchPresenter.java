@@ -147,7 +147,6 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
         log.info("title="+searchOptionsBean.as().getTitle());
         log.info("content="+searchOptionsBean.as().getContent());
-        log.info("pageSize="+searchOptionsBean.as().getPageSize());
         log.info("author="+searchOptionsBean.as().getAuthor());
         log.info("dateFrom="+searchOptionsBean.as().getCreationDate());
         log.info("dateTo="+searchOptionsBean.as().getCreationDate());
@@ -179,7 +178,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                         jSonList.add(data.get(i));
                     }
 
-                    snipSearchView.updateListWidget(data, searchOptionsBean.as().getPageSize());
+                    snipSearchView.updateListWidget(data);
                 }
 
                 @Override

@@ -80,9 +80,6 @@ public interface SnipBean {
     String getMoney();
     void setMoney(String money);
 
-    int getPageSize();
-    void setPageSize(int pageSize);
-
     /**
      * nested interfaces
      */

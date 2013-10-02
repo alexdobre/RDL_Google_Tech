@@ -37,9 +37,6 @@ public class FilterOptions extends PopupPanel  {
     private SnipSearchWidget snipSearchWidget;
 
     @UiField
-    TextBox paging;
-
-    @UiField
     Button submit;
 
     @UiField
@@ -79,7 +76,7 @@ public class FilterOptions extends PopupPanel  {
     public FilterOptions( SnipSearchWidget view) {
         super(true);
         add(uiBinder.createAndBindUi(this));
-        snipSearchWidget =view;
+        snipSearchWidget = view;
         this.setStyleName("filterOptions");
         createCategoryList();
     }
@@ -94,13 +91,6 @@ public class FilterOptions extends PopupPanel  {
     public void onSubmit(ClickEvent event) {
 
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-
-        String pageSize = paging.getText();
-        if(!pageSize.equals("")) {
-            searchOptionsBean.as().setPageSize(Integer.parseInt(pageSize));
-        } else {
-            searchOptionsBean.as().setPageSize(Constants.DEFAULT_PAGE_SIZE);
-        }
 
         boolean isOptionsSet = false;
 
