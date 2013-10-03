@@ -108,13 +108,13 @@ public class FilterOptions extends PopupPanel  {
 
         String dateFromText = dateFrom.getText();
         if(!dateFromText.equals("")) {
-            searchOptionsBean.as().setCreationDate(dateFromText);
+            searchOptionsBean.as().setDateFrom(dateFromText);
             isOptionsSet = true;
         }
 
         String dateToText = dateTo.getText();
         if(!dateToText.equals("")) {
-            searchOptionsBean.as().setCreationDate(dateToText);
+            searchOptionsBean.as().setDateTo(dateToText);
             isOptionsSet = true;
         }
 
@@ -174,7 +174,7 @@ public class FilterOptions extends PopupPanel  {
             public void onValueChange(ValueChangeEvent<Date> event) {
                 Date date = event.getValue();
                 String dateString =
-                        DateTimeFormat.getFormat("MM/dd/yyyy").format(date);
+                        DateTimeFormat.getFormat("yyyy-MM-dd").format(date);
                 dateField.setText(dateString);
 
                 popupPanel.hide();

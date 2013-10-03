@@ -48,7 +48,7 @@ public class SnipServiceImpl implements SnipsService {
         }
         DBCollection coll = db.getCollection("rdlSnipData");
 
-        DBCursor collDocs  =  coll.find();
+        DBCursor collDocs  =  coll.find().sort(new BasicDBObject("creationDate", -1));
 
         while(collDocs.hasNext()) {
             DBObject doc = collDocs.next();
@@ -81,6 +81,12 @@ public class SnipServiceImpl implements SnipsService {
             query.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
         if(searchOptions.getRep() != null) {
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+        }
+        if(searchOptions.getDateFrom() != null) {
+            query.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
+        }
+        if(searchOptions.getDateTo() != null) {
+            query.put("creationDate", new BasicDBObject("$lt", searchOptions.getDateTo()));
         }
 
         DBCollection coll = db.getCollection("rdlSnipData");
@@ -184,13 +190,10 @@ public class SnipServiceImpl implements SnipsService {
     }
 
 
-    private String makeTimeStamp() {
-
-
+    public String makeTimeStamp() {
         Date processDateTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSS");
         String timeStampString = formatter.format(processDateTime);
-
 
         return timeStampString;
     }

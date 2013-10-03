@@ -32,6 +32,13 @@ public interface SnipBean {
     String getCreationDate();
     void setCreationDate(String creationDate);
 
+    String getDateFrom();
+    void setDateFrom(String dateFrom);
+
+    String getDateTo();
+    void setDateTo(String dateTo);
+
+
     String getEditDate();
     void setEditDate(String editDate);
 

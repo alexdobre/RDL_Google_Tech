@@ -40,8 +40,14 @@ public class SnipSearchWidget extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
         this.setStyleName("snipSearchPanel");
+
 	}
 
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        view.getInitialSnipList();
+    }
 
     @UiHandler("optionsButton")
     void selectSearchOptions(ClickEvent event) {
@@ -54,10 +60,7 @@ public class SnipSearchWidget extends Composite {
             filterOptions.setPopupPosition(0,10);
         }
         filterOptions.show();
-
-
     }
-
 
 	@UiHandler("searchButton")
 	void onSearchButtonClick(ClickEvent event) {

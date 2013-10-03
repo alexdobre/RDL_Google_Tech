@@ -62,7 +62,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
 	}
 
-    private void getInitialList() {
+    public void getInitialSnipList() {
         log.info("SnipSearchPresenter getInitialList");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
@@ -104,7 +104,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                     log.info(""+ bean.as().getTitle() );
                     log.info(""+ bean.as().getAuthor() );
 
-                    snipSearchView.getSnipListDemoResult(data);
+                    snipSearchView.showSnipList(data);
                 }
 
                 @Override
@@ -133,30 +133,10 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: "+ updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,  URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
-        currentBean = beanery.snipBean();
-        currentBean.as().setAction("search");
-        currentBean.as().setTitle(searchOptionsBean.as().getTitle());
-        currentBean.as().setAuthor(searchOptionsBean.as().getAuthor());
-        currentBean.as().setContent(searchOptionsBean.as().getContent());
-        currentBean.as().setCoreCat(searchOptionsBean.as().getCoreCat());
 
-        currentBean.as().setPosRef(searchOptionsBean.as().getPosRef());
-        currentBean.as().setNeutralRef(searchOptionsBean.as().getNeutralRef());
-        currentBean.as().setNegativeRef(searchOptionsBean.as().getNegativeRef());
-        currentBean.as().setRep(searchOptionsBean.as().getRep());
+        searchOptionsBean.as().setAction("search");
 
-        log.info("title="+searchOptionsBean.as().getTitle());
-        log.info("content="+searchOptionsBean.as().getContent());
-        log.info("author="+searchOptionsBean.as().getAuthor());
-        log.info("dateFrom="+searchOptionsBean.as().getCreationDate());
-        log.info("dateTo="+searchOptionsBean.as().getCreationDate());
-        log.info("coreCat="+searchOptionsBean.as().getCoreCat());
-        log.info("posRef="+searchOptionsBean.as().getPosRef());
-        log.info("neutralRef="+searchOptionsBean.as().getNeutralRef());
-        log.info("negativeRef="+searchOptionsBean.as().getNegativeRef());
-        log.info("rep="+searchOptionsBean.as().getRep());
-
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
         try {
 
             requestBuilder.sendRequest(json, new RequestCallback() {
@@ -178,7 +158,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                         jSonList.add(data.get(i));
                     }
 
-                    snipSearchView.updateListWidget(data);
+                    snipSearchView.showSnipList(data);
                 }
 
                 @Override

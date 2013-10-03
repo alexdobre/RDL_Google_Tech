@@ -7,7 +7,9 @@ import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.cssbundles.Resources;
+import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.beans.JSOModel;
 
 public class SearchListWidget extends Composite {
@@ -23,7 +25,6 @@ public class SearchListWidget extends Composite {
 
         initWidget(uiBinder.createAndBindUi(this));
         setStyleName("listDisplay");
-
     }
 
 

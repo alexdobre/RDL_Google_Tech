@@ -55,7 +55,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     private  AutoBean<CurrentUserBean> currentUserBean;
     private  AutoBean<SnipBean> currentSearchOptionsBean;
 
-    private SearchListWidget searcListWidget;
+    private SearchListWidget searchListWidget;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -66,22 +66,15 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         this.currentUserBean  =  currentUserBean;
         snipSearchWidget = new SnipSearchWidget(this);
         snipSearchWidgetPanel.add(snipSearchWidget);
-        searcListWidget =  new SearchListWidget();
+        searchListWidget =  new SearchListWidget();
         snipSearchDocPanel.setSize("75%", "100%");
 	}
 
     @Override
-    public void getSnipListDemoResult(JsArray<JSOModel> snips) {
+    public void showSnipList(JsArray<JSOModel> snips) {
         log.info("SnipSearchViewImpl getSnipListDemoResult "+ snips.length());
-        snipListRow.add(searcListWidget);
-        searcListWidget.bootStrapList(searcListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
-    }
-
-    @Override
-    public void updateListWidget(JsArray<JSOModel> snips){
-        log.info("SnipSearchViewImpl updateListWidget "+ snips.length());
-        snipListRow.add(searcListWidget);
-        searcListWidget.bootStrapList(searcListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
+        snipListRow.add(searchListWidget);
+        searchListWidget.bootStrapList(searchListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
     }
 
     @Override
@@ -134,6 +127,12 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     @Override
     public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean) {
         currentSearchOptionsBean = searchOptionsBean;
+    }
+
+    @Override
+    public void getInitialSnipList() {
+        log.info("getInitialSnipList");
+        presenter.getInitialSnipList();
     }
 
 }

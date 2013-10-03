@@ -9,10 +9,9 @@ import com.therdl.shared.beans.SnipBean;
 
 public interface SnipSearchView {
 
-    void updateListWidget(JsArray<JSOModel> snips);
-
     public interface Presenter {
         void searchSnips(AutoBean<SnipBean> searchOptionsBean);
+        void getInitialSnipList();
 	}
 
 	void setPresenter(Presenter presenter);
@@ -21,7 +20,7 @@ public interface SnipSearchView {
 
 
 
-    void getSnipListDemoResult(JsArray<JSOModel> snips);
+    void showSnipList(JsArray<JSOModel> snips);
 
     void  setloginresult(String name, String email, boolean auth);
 
@@ -34,5 +33,7 @@ public interface SnipSearchView {
     void searchSnips(String match);
 
     void doFilterSearch(AutoBean<SnipBean> searchOptionsBean);
+
+    void getInitialSnipList();
 
 }

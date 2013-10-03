@@ -54,4 +54,6 @@ public interface SnipsService {
     void updateSnip(SnipBean snip);
 
     List<SnipBean> searchSnipsWith(SnipBean snip);
+
+    public String makeTimeStamp();
 }
