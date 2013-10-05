@@ -5,10 +5,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
+import com.therdl.server.api.DbFileService;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
+import com.therdl.server.apiimpl.DbFileServiceImpl;
 import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
+import com.therdl.server.data.FileStorage;
+import com.therdl.server.data.MongoFileStorage;
 import com.therdl.server.restapi.SessionServlet;
 import com.therdl.server.restapi.SnipDispatcherServlet;
 import com.therdl.server.restapi.UploadServlet;
@@ -29,6 +33,8 @@ public class ServletInjector extends GuiceServletContextListener {
 
                 bind(SnipsService.class).to(SnipServiceImpl.class);
                 bind(UserService.class).to(UserServiceImpl.class);
+                bind(DbFileService.class).to(DbFileServiceImpl.class);
+                bind(FileStorage.class).to(MongoFileStorage.class);
 
                 serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
                 serve("/rdl/getUsers").with(UserDispatcherServlet.class);

@@ -39,10 +39,12 @@ public class UploadServlet extends HttpServlet {
 
     private String avatarText;
     private  FileStorage pictureStorage;
+    private FileStorage mongoFileStorage;
 
     @Inject
-    public UploadServlet(Provider<HttpSession> session , UserService userService) {
+    public UploadServlet(Provider<HttpSession> session , UserService userService, FileStorage mongoFileStorage ) {
         this.session = session;
+        this.mongoFileStorage = mongoFileStorage;
         beanery = AutoBeanFactorySource.create(Beanery.class);
 
 
@@ -51,7 +53,6 @@ public class UploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
 
-        System.out.println( "UploadServlet is go ");
         String userId = (String) session.get().getAttribute("userid" );
 
         ServletFileUpload upload = new ServletFileUpload();
@@ -62,7 +63,6 @@ public class UploadServlet extends HttpServlet {
                 FileItemStream item = iter.next();
 
                 String name = item.getFieldName();
-                System.out.println( "item.getName(); "+ item.getName());
 
                if (name.equals("fileElement")) {
                 InputStream stream = item.openStream();
@@ -81,23 +81,19 @@ public class UploadServlet extends HttpServlet {
                     throw new RuntimeException("File is > than " + maxFileSize);
                 }
 
-                System.out.println( "UploadServlet file size "+ out.size());
-                System.out.println( "UploadServlet user id "+ userId);
-                System.out.println( "UploadServlet getContentType "+ item.getContentType());
-                System.out.println("UploadServlet   getServletContext().getRealPath() " + getServletContext().getRealPath("/"));
+                // need this here as we have to write to the fle system and firn the teraget/war and the userAvatar directory
                 String contextRoot = getServletContext().getRealPath("/");
-
                 String  contentType =  item.getContentType();
+                // will be used later when we support diferent filetypes
                 String fileExtension =  contentType.substring(contentType.indexOf("/")+1);
-                System.out.println( "UploadServlet fileExtension "+ fileExtension);
                 FileData  fileData = new FileData(userId, out.toByteArray(), "binary");
                 // url to find correct directory for file upload on server
                 String avatarDirUrl = contextRoot+ File.separator+"userAvatar";
-                System.out.println( "UploadServlet avatar DirUrl "+ avatarDirUrl);
-                pictureStorage = new LocalFileStorage(avatarDirUrl);
-                pictureStorage.storeFile(fileData, fileExtension);
-
-
+                System.out.println( "UploadServlet avatarDirUrl "+avatarDirUrl+ " : filename "+userId);
+                // can save a file in mongo as a byte array
+                mongoFileStorage.storeFileDb(fileData, userId);
+                // writes to the filesystem on first upload
+                mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl,  userId);
                 }  // end if file
 
               else continue;

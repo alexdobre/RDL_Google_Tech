@@ -107,8 +107,6 @@ public class AvatarUploadPopUp extends PopupPanel {
                 if (bean.as().getAction().equals("ok")) {
 
                     mainView.setAvatar(bean.as().getAvatarUrl());
-
-
                     // go to the home page for now so refresh event is initiated
                     // GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
                 }   else  Window.alert(bean.as().getAction());

@@ -80,4 +80,15 @@ public class LocalFileStorage  implements FileStorage  {
 
         return resutlt;
     }
+
+    @Override
+    public String storeFileDb(FileData file, String fileName) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean setAvatarForUserFromDb(String avatarDirUrl, String fileName) {
+        //To change body of implemented methods use File | Settings | File Templates.
+        return false;
+    }
 }

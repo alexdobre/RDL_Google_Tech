@@ -11,6 +11,8 @@ public interface FileStorage {
      */
     String absoluteUrl(String fileName);
 
+
+
     /**
      * Put a file into storage.
      *
@@ -19,4 +21,9 @@ public interface FileStorage {
      * @return a URL that can be used to obtain the file
      */
     String storeFile(FileData file, String fileExtension);
+
+    String storeFileDb(FileData file, String fileName);
+
+    boolean  setAvatarForUserFromDb(String avatarDirUrl, String fileName);
+
 }

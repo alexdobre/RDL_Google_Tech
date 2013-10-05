@@ -1,5 +1,2 @@
-to do
-
-debug/check avatar fileurl local storage, in jboss
-UploadServlet line 87
+git pull -s recursive -X theirs origin master
 

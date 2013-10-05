@@ -7,6 +7,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
+import com.therdl.server.data.FileStorage;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -38,11 +39,13 @@ public class SessionServlet  extends HttpServlet {
 
     private final Provider<HttpSession> session;
     private Beanery beanery;
-    UserService userService;
+    private UserService userService;
+    private FileStorage mongoFileStorage;
 
     @Inject
-    public SessionServlet(Provider<HttpSession> sessions , UserService userService) {
+    public SessionServlet(Provider<HttpSession> sessions , UserService userService, FileStorage mongoFileStorage) {
         this.session = sessions;
+        this.mongoFileStorage = mongoFileStorage;
         this.userService = userService;
         beanery = AutoBeanFactorySource.create(Beanery.class);
 
@@ -53,6 +56,10 @@ public class SessionServlet  extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
 
         resp.setContentType("application/json");
+        // we need the path to the avatar file wherever it is deployed by jboss or wherever the application is running
+        String contextRoot = getServletContext().getRealPath("/");
+        String avatarDirUrl = contextRoot+ File.separator+"userAvatar";
+
         // get the json
         StringBuilder sb = new StringBuilder();
         BufferedReader br = req.getReader();
@@ -85,7 +92,7 @@ public class SessionServlet  extends HttpServlet {
             authBean.as().setAuth(true);
             authBean.as().setAction("newUserOk");
             authBean.as().setName(authBean.as().getName());
-            String avatarUrl = "userAvatar"+ File.separator+ authBean.as().getName()+"small.jpg";
+            String avatarUrl = avatarDirUrl+ File.separator+"avatar-empty.jpg";
             authBean.as().setAvatarUrl (avatarUrl);
             session.get().setAttribute("userid",newUserBean.as().getEmail() );
             session.get().setAttribute("username",newUserBean.as().getUsername() );
@@ -103,15 +110,29 @@ public class SessionServlet  extends HttpServlet {
             AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
 
             if(checkedUser.as().getAction().equals("OkUser")) {
-            String avatarUrl = "userAvatar"+ File.separator+ checkedUser.as().getName()+"small.jpg";
-            checkedUser.as().setAvatarUrl(avatarUrl);
+
             checkedUser.as().setAuth(true);
             // we can use this server side to obtain userId from session
             session.get().setAttribute("userid", checkedUser.as().getEmail() );
             session.get().setAttribute("name", checkedUser.as().getName() );
+            // need to check if file exists and write to filesystem
+            boolean avatarExists =   mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
 
+            if(avatarExists) {
+                // javascript from modulle base in target/war
+                String avatarUrl = "userAvatar"+ File.separator+ checkedUser.as().getName()+"small.jpg";
+                checkedUser.as().setAvatarUrl(avatarUrl);
+            }
+                else  {
+                // javascript from modulle base in target/war
+                String avatarUrl = "userAvatar"+ File.separator+"avatar-empty.jpg";
+                checkedUser.as().setAvatarUrl(avatarUrl);
+                     }
             } else {
             checkedUser.as().setAuth(false);
+            // javascript from modulle base in target/war
+            String avatarUrl = "userAvatar"+ File.separator+"avatar-empty.jpg";
+            checkedUser.as().setAvatarUrl(avatarUrl);
             }
 
             System.out.println(AutoBeanCodex.encode(checkedUser).getPayload());

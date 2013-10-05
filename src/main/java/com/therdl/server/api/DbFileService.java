@@ -8,8 +8,13 @@ import java.io.File;
 public interface DbFileService {
 
     // crud for now
-    void saveIamage(File imageFile);
+    void saveIamage(File imageFile, String fileName);
+
+    void saveImageBytes(byte[] imageBtyeArray, String fileName);
 
     File getImage(String fileName);
+
+    boolean setUserAvatar(String avatarDirUrl, String fileName);
+
 
 }
