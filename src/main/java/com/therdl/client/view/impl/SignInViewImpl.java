@@ -26,6 +26,14 @@ import com.therdl.shared.events.LogInOkEventEventHandler;
 
 import java.util.logging.Logger;
 
+
+
+ /**
+  * this is a pop up embedded in the Welcome view,  hence no preseneter
+  * embedded widgets do not necessarily require presenters in the MVP
+  * design pattern
+  */
+
 public class SignInViewImpl extends PopupPanel implements SignInView {
 
     private static Logger log = Logger.getLogger("");
