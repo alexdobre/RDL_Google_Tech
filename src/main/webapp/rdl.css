@@ -81,20 +81,6 @@ td {
     padding:10px;
 }
 
-.snipSearchPanel {
-
-    position:absolute;
-    color:#FFF;
-    font-weight:700;
-    top:1%;
-    left:5%;
-    font:12px;
-    width:600px;;
-    height:70px;
-
-}
-
-
 .listDisplay {
     position:absolute;
     width:120%;

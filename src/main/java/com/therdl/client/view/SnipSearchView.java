@@ -26,12 +26,6 @@ public interface SnipSearchView {
 
     AppMenu getAppMenu();
 
-    /**
-     * searches for snips based on 'match'
-     * @param match : title of the snip currently
-     */
-    void searchSnips(String match);
-
     void doFilterSearch(AutoBean<SnipBean> searchOptionsBean);
 
     void getInitialSnipList();

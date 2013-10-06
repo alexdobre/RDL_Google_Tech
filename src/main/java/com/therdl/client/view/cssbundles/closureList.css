@@ -12,7 +12,7 @@
 
       textarea { padding: 0.5em; margin: 0.2em; width: 40%; height: 6em; border: solid 1px; }
 
-      .listRow {   border: solid 1px #333;  width:60%; height:150px; font-size: 12px; padding-top: 5px;
+      .listRow {   border: solid 1px #333;  height:150px; font-size: 12px; padding-top: 5px;
              margin-top:5px;border-top: 5px solid #657acc;
             }
       .listRow  .summary, .listRow .description { padding: 0.5em;  }

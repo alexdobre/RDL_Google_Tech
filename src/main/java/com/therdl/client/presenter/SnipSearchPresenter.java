@@ -136,6 +136,8 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
         searchOptionsBean.as().setAction("search");
 
+        log.info("dateFrom="+searchOptionsBean.as().getDateFrom()+";dateTo="+searchOptionsBean.as().getDateTo());
+
         String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
         try {
 

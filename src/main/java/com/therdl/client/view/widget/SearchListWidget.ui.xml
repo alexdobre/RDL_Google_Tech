@@ -9,7 +9,7 @@
     </ui:style>
     <!-- weird google syntax no method parenthesis in ui binder also list css embedded in editor css -->
 
-    <g:HTMLPanel styleName="{res.listCss.getText}">
+    <g:HTMLPanel>
 
         <div id="menu" class="goog-tab-bar goog-tab-bar-top">
             <!--<div class="goog-tab goog-tab-selected">List</div>

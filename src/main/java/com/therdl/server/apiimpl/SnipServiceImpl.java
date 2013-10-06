@@ -73,6 +73,8 @@ public class SnipServiceImpl implements SnipsService {
             query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent()));
         if(searchOptions.getCoreCat() != null)
             query.put("coreCat", searchOptions.getCoreCat());
+        if(searchOptions.getSubCat() != null)
+            query.put("subCat", searchOptions.getSubCat());
         if(searchOptions.getPosRef() != null)
             query.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
         if(searchOptions.getNeutralRef() != null)
@@ -83,10 +85,15 @@ public class SnipServiceImpl implements SnipsService {
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         }
         if(searchOptions.getDateFrom() != null) {
+            sLogger.info("searchOptions.getDateFrom() != null");
             query.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
+        } else {
+            sLogger.info("searchOptions.getDateFrom() = null");
         }
+
         if(searchOptions.getDateTo() != null) {
-            query.put("creationDate", new BasicDBObject("$lt", searchOptions.getDateTo()));
+            sLogger.info("searchOptions.getDateTo() != null");
+            query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo()));
         }
 
         DBCollection coll = db.getCollection("rdlSnipData");

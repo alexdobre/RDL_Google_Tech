@@ -4,32 +4,24 @@
 	xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style>
 
-
-
-        .widgetlayout {
-          margin:10px 0 0 30px;
-          padding:10px 0 0 20px;
-
-        }
-        .searchlayout {
-        position:absolute;
-        margin:20px;
-        padding:20px;
-        width:600px;
-        height:140px;
-        }
+    .widgetlayout {
+        margin-top:30px;
+    }
+    .searchlayout {
+        margin:30px 0 0 20px;
+    }
 	</ui:style>
 
 	<g:HTMLPanel  >
         <rdl:AppMenu ui:field="appMenu"/>
 
-        <g:DockLayoutPanel  ui:field="snipSearchDocPanel" unit='EM'>
-            <g:north size='9'>
-                <g:FlowPanel ui:field="snipSearchWidgetPanel" styleName='{style.searchlayout}'/>
-            </g:north>
-            <g:center>
-                <g:FlowPanel  ui:field="snipListRow" styleName='{style.widgetlayout}' width="100%" height="100%" />
-            </g:center>
+        <g:DockLayoutPanel  ui:field="snipSearchDocPanel" unit='EM' >
+            <g:west size='25'>
+                <g:FlowPanel ui:field="snipSearchWidgetPanel" styleName = '{style.searchlayout}'/>
+            </g:west>
+            <g:east size='75'>
+                <g:FlowPanel  ui:field="snipListRow" width="100%" height="100%" styleName = '{style.widgetlayout}'/>
+            </g:east>
         </g:DockLayoutPanel>
 
 	</g:HTMLPanel>

@@ -12,8 +12,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.widget.SnipSearchWidget;
-import com.therdl.shared.Constants;
+import com.therdl.client.view.widget.SearchFilterWidget;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -34,7 +33,7 @@ public class FilterOptions extends PopupPanel  {
     interface FilterOptionslUiBinder extends UiBinder<Widget, FilterOptions> {
     }
 
-    private SnipSearchWidget snipSearchWidget;
+    private SearchFilterWidget snipSearchWidget;
 
     @UiField
     Button submit;
@@ -73,7 +72,7 @@ public class FilterOptions extends PopupPanel  {
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-    public FilterOptions( SnipSearchWidget view) {
+    public FilterOptions( SearchFilterWidget view) {
         super(true);
         add(uiBinder.createAndBindUi(this));
         snipSearchWidget = view;

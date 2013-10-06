@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.SearchFilterWidget;
 import com.therdl.client.view.widget.SearchListWidget;
-import com.therdl.client.view.widget.SnipSearchWidget;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.*;
 
@@ -34,11 +34,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 	
 	private Presenter presenter;
 
-    // paging parameter
-    int pSize = 10;
-
-
-    SnipSearchWidget snipSearchWidget;
+    SearchFilterWidget searchFilterWidget;
 
     @UiField
     AppMenu appMenu;
@@ -64,11 +60,17 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         initWidget(uiBinder.createAndBindUi(this));
         log.info("SnipSearchViewImpl constructor");
         this.currentUserBean  =  currentUserBean;
-        snipSearchWidget = new SnipSearchWidget(this);
-        snipSearchWidgetPanel.add(snipSearchWidget);
+        searchFilterWidget = new SearchFilterWidget(this);
+        snipSearchWidgetPanel.add(searchFilterWidget);
         searchListWidget =  new SearchListWidget();
-        snipSearchDocPanel.setSize("75%", "100%");
+        snipSearchDocPanel.setSize("95%", "95%");
 	}
+
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        getInitialSnipList();
+    }
 
     @Override
     public void showSnipList(JsArray<JSOModel> snips) {
@@ -105,28 +107,8 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     }
 
     @Override
-    public void searchSnips(String match) {
-        log.info("SnipSearchViewImpl searchSnips " + match+" : "+ pSize);
-
-        if(currentSearchOptionsBean == null && match.equals("")) {
-            Window.alert("there is no any search option");
-            return;
-        }
-
-        if(currentSearchOptionsBean != null) {
-            currentSearchOptionsBean.as().setTitle(match);
-        } else {
-            currentSearchOptionsBean = beanery.snipBean();
-            currentSearchOptionsBean.as().setTitle(match);
-        }
-
-        presenter.searchSnips(currentSearchOptionsBean);
-        currentSearchOptionsBean = null;
-    }
-
-    @Override
     public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean) {
-        currentSearchOptionsBean = searchOptionsBean;
+        presenter.searchSnips(searchOptionsBean);
     }
 
     @Override

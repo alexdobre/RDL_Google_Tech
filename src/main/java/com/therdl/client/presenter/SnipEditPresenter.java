@@ -271,7 +271,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY){
+        if(!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
