@@ -13,7 +13,7 @@
       textarea { padding: 0.5em; margin: 0.2em; width: 40%; height: 6em; border: solid 1px; }
 
       .listRow {   border: solid 1px #333;  height:150px; font-size: 12px; padding-top: 5px;
-             margin-top:5px;border-top: 5px solid #657acc;
+             margin-top:5px;border-top: 5px solid #657acc;  width:82%;
             }
       .listRow  .summary, .listRow .description { padding: 0.5em;  }
       .listRow  .summary { font-weight: normal; }
@@ -25,7 +25,7 @@
       .listRow .leftPanel {margin-left:5px;float:left;}
       .listRow .userTitleDiv {margin-top:2px;display:inline-block;width:120px; bottom:2%;}
       .listRow .leftPanelTop {display: block;}
-      .listRow .listContentDiv {margin:2px;}
+      .listRow .listContentDiv {position:relative; margin:2px;width:100%;}
       .listRow .secondColDiv {margin:0px 10px 2px 20px; float: left;}
       .listRow .contentDiv {display: inline-block;}
       .listRow .thirdColDiv {float:left;margin-left: 3px;}
@@ -40,7 +40,7 @@
       .listRow .catDiv{margin-top:20px;}
       .listRow .catDiv, .subCatDiv {color: #657acc;}
       .listRow .imgBadge {width:27px; height:30px;}
-
+      .listRow .viewButtonDiv {position:absolute; display:inline-block;right:20px; top:20px;}
 
 
 /*

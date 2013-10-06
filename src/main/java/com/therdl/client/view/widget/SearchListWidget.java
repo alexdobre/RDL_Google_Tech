@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.SnipSearchView;
@@ -32,7 +33,7 @@ public class SearchListWidget extends Composite {
     protected void onLoad() {
         super.onLoad();
         injectScript();
-
+        setSviewButtonCallbackGWT(this);
         this.setVisible(true);
     }
 
@@ -92,5 +93,26 @@ public class SearchListWidget extends Composite {
           $wnd.widjdev.tabdev.setTabs(menu, dataJs, pSize, tabCount);
 
 	}-*/;
+
+
+
+
+    public void viewButtonCallbackGWT() {
+
+        Window.alert("GWT callback");
+
+    }
+
+
+
+    public native void setSviewButtonCallbackGWT(SearchListWidget x)/*-{
+
+            $wnd.viewButtonCallbackGWT = function () {
+
+            x.@com.therdl.client.view.widget.SearchListWidget::viewButtonCallbackGWT()();
+
+            };
+
+        }-*/;
 
 }
