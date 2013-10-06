@@ -9,6 +9,7 @@ public interface RDLConstants {
         String LOG_OUT = "logOut";
         String SIGN_UP = "signUp";
         String PROFILE = "profile";
+        String SNIP_VIEW = "snipView";
 
 	}
 	

@@ -12,6 +12,9 @@ import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.beans.JSOModel;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInOkEvent;
+import com.therdl.shared.events.SnipViewEvent;
 
 public class SearchListWidget extends Composite {
 
@@ -97,9 +100,14 @@ public class SearchListWidget extends Composite {
 
 
 
-    public static void viewButtonCallbackGWT(String title) {
+    public static void viewButtonCallbackGWT(String dataString) {
 
-        Window.alert("GWT callback"+title);
+        String[] temp = dataString.split(":");
+        String title = temp[0];
+        String author = temp[1];
+         // open a new snip view
+        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(title, author));
+
 
     }
 

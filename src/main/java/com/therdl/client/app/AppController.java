@@ -12,12 +12,15 @@ import com.therdl.client.presenter.*;
 
 import com.therdl.client.view.*;
 import com.therdl.client.view.impl.*;
+import com.therdl.client.view.widget.SnipView;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class AppController implements Presenter, ValueChangeHandler<String>{
@@ -27,6 +30,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	private HasWidgets container;
 
     private Beanery beanery = GWT.create(Beanery.class);
+
+    private Map<String, String> currentSnipView ;
 
 	/**
 	 * Current authentication rules are anyone can view but only registered user can edit
@@ -45,6 +50,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     private SnipSearchView  snipSearchView;
     private RegisterView registerView;
     private ProfileView profileView;
+    private SnipView  snipView;
 	
 	public AppController() {
 
@@ -70,13 +76,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             }
         });
 
-        // RefreshEvent event handler
-        GuiEventBus.EVENT_BUS.addHandler(RefreshEvent.TYPE, new RefreshEventHandler()  {
+        // SnipView event handler
+        GuiEventBus.EVENT_BUS.addHandler(SnipViewEvent.TYPE, new SnipViewEventHandler()  {
 
             @Override
-            public void onRefreshEvent(RefreshEvent e) {
-
-                History.newItem(RDLConstants.Tokens.WELCOME );
+            public void onSnipSelectEvent(SnipViewEvent event){
+                currentSnipView = new HashMap<String, String>();
+                currentSnipView.put("title",event.getTitle() );
+                currentSnipView.put("author",event.getAuthor() );
+                History.newItem(RDLConstants.Tokens.SNIP_VIEW );
                 History.fireCurrentHistoryState();
             }
         });
@@ -140,6 +148,31 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
                 });
             }
+
+
+            //***************************************SNIP_View****************************
+            else if (token.equals(RDLConstants.Tokens.SNIP_VIEW)) {
+                log.info("AppController Tokens.SNIP_VIEW");
+                if (snipView == null) {
+                    snipView = new SnipViewImpl(currentUserBean);
+                }
+
+                final SnipPresenter snipPresenter =  new SnipPresenter(snipView, currentSnipView,  currentUserBean);
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                        log.info("AppController GWT.runAsync onFailure "+RDLConstants.Tokens.SNIPS);
+                    }
+
+                    public void onSuccess() {
+
+                        snipPresenter.go(container, currentUserBean);
+
+                    }
+                });
+
+            }// end else
+
             //***************************************SNIPS****************************
             else if (token.equals(RDLConstants.Tokens.SNIPS)) {
                 log.info("AppController Tokens.SNIPS");
