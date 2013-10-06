@@ -97,21 +97,20 @@ public class SearchListWidget extends Composite {
 
 
 
-    public void viewButtonCallbackGWT() {
+    public static void viewButtonCallbackGWT(String title) {
 
-        Window.alert("GWT callback");
+        Window.alert("GWT callback"+title);
 
     }
 
 
 
+
     public native void setSviewButtonCallbackGWT(SearchListWidget x)/*-{
 
-            $wnd.viewButtonCallbackGWT = function () {
+            $wnd.viewButtonCallbackGWT = @com.therdl.client.view.widget.SearchListWidget::viewButtonCallbackGWT(*);
 
-            x.@com.therdl.client.view.widget.SearchListWidget::viewButtonCallbackGWT()();
 
-            };
 
         }-*/;
 
