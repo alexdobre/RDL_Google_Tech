@@ -51,8 +51,8 @@ public interface SnipBean {
     String getSubCat();
     void setSubCat(String subCat);
 
-    String getViews();
-    void setViews(String views);
+    Integer getViews();
+    void setViews(Integer views);
 
     Integer getRep();
     void setRep(Integer rep);

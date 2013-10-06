@@ -10,38 +10,40 @@
       overflow: auto;
     }
 
-      textarea { padding: 0.5em; margin: 0.2em; width: 40%; height: 6em; border: solid 1px; }
+      .goog-tooltip {
+          background: infobackground;
+          color: infotext;
+          border: 1px solid infotext;
+          padding: 1px;
+          font: menu;
+      }
 
-      .listRow {   border: solid 1px #333;  height:150px; font-size: 12px; padding-top: 5px;
-             margin-top:5px;border-top: 5px solid #657acc;  width:82%;
-            }
-      .listRow  .summary, .listRow .description { padding: 0.5em;  }
+
+      .listRow { border: solid 1px #333;  font-size: 12px; margin-top:5px;border-top: none}
+      .listRow  .summary, .row .description { padding: 0.5em;  }
       .listRow  .summary { font-weight: normal; }
-      .listRow  .userImg { width:40px; } /* back to front */
-      .listRow .snipImg { width: 80px; }
-      .listRow .firstColDiv { margin-right:5px; display:inline-block;width:80px;}
-      .listRow .snipImgParent { position:absolute; display:inline-block;left:50px;}
-      .listRow .userImgParent { position:absolute; display:inline-block;}
+      .listRow  .userImg { width:50px; }
+      .listRow .snipImg { width: 94px; }
+      .listRow .firstColDiv { margin-right:5px; float:left}
+      .listRow .snipImgParent { float:left}
       .listRow .leftPanel {margin-left:5px;float:left;}
-      .listRow .userTitleDiv {margin-top:2px;display:inline-block;width:120px; bottom:2%;}
+      .listRow .userTitleDiv {margin-top:2px;float:left}
       .listRow .leftPanelTop {display: block;}
-      .listRow .listContentDiv {position:relative; margin:2px;width:100%;}
+      .listRow .listContentDiv {padding:5px;}
       .listRow .secondColDiv {margin:0px 10px 2px 20px; float: left;}
       .listRow .contentDiv {display: inline-block;}
       .listRow .thirdColDiv {float:left;margin-left: 3px;}
       .listRow .forthColDiv {float:left;margin-left: 10px;}
       .listRow .titleLabel {font-weight: bold; font-weight: 17px; margin-right:5px; display: inline-block}
-      .listRow .snipContentDiv {border: solid 1px; width:300px; height:50px;display: inline-block; padding:10px;}
-      .listRow .userNameDiv, .postCountDiv, .viewCountDiv {display: inline-block; }
+      .listRow .snipContentDiv {border: solid 1px; width:300px; height:50px;display: inline-block}
+      .listRow .userNameDiv, .postCountDiv, .viewCountDiv {display: inline-table; }
       .listRow .thirdColDivChild2 {margin-top: 20px;}
       .listRow .userNameDiv {margin-left:20px;}
       .listRow .postCountDiv, .viewCountDiv {margin-left:50px;}
       .listRow .creationDateDiv {margin-top:23px;}
-      .listRow .catDiv{margin-top:20px;}
-      .listRow .catDiv, .subCatDiv {color: #657acc;}
       .listRow .imgBadge {width:27px; height:30px;}
-      .listRow .viewButtonDiv {position:absolute; display:inline-block;right:20px; top:20px;}
-
+      .listRow .viewButtonDiv {margin-bottom:5px;}
+      .listRow .colorStripeDiv{height:5px;background-color:red;}
 
 /*
  * Additional styling for toolbar select controls, which always have borders.
@@ -459,8 +461,7 @@
   font: normal small arial, sans-serif;
   margin: 0;
   padding: 0 0 0 2px;
-  vertical-align: bottom; /* override demo.css */
-  width: 200px;
+  width: 125px;
 }
 
 .goog-combobox input.label-input-label {

@@ -282,7 +282,7 @@ public class SnipServiceImpl implements SnipsService {
         snip.setNeutralRef((Integer) doc.get("neutralRef"));
         snip.setParentStream((String) doc.get("parentStream"));
         snip.setSnipType((String) doc.get("snipType"));
-        snip.setViews((String) doc.get("views"));
+        snip.setViews((Integer) doc.get("views"));
         snip.setTitle((String) doc.get("title"));
         snip.setReferenceType((String) doc.get("referenceType"));
         snip.setPosRef((Integer) doc.get("posRef"));
