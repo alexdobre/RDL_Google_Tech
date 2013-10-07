@@ -90,8 +90,9 @@ public class SearchFilterWidget extends Composite {
 
     void createCategoryList() {
         categoryList.addItem("Select a category");
-        for(CoreCategory item : CoreCategory.values())
+        for(CoreCategory item : CoreCategory.values()) {
             categoryList.addItem(item.getShortName());
+        }
 
         categoryList.addChangeHandler(new ChangeHandler() {
             @Override

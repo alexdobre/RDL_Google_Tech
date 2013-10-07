@@ -44,4 +44,8 @@ public enum CoreCategory {
     public EnumSet getSubCategories() {
         return subCategories;
     }
+
+    public String getColCode() {
+        return colCode;
+    }
 }
