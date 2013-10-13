@@ -11,9 +11,9 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.EditorClientWidget;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class SnipEditViewImpl  extends Composite implements SnipEditView  {
@@ -39,7 +39,7 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
 	private EditorClientWidget editorClientWidget;
 
-	public SnipEditViewImpl( AutoBean<CurrentUserBean> currentUserBean) {
+	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
         log.info("SnipEditViewImpl constructor");
 	    initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean  =  currentUserBean;
@@ -47,11 +47,17 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         // init closure editor widget
         editorClientWidget = new EditorClientWidget(this);
 
+        snipEditDocPanel.setSize("100%", "100%");
+	}
+
+    public void addEditorClientWidget(JSOModel snipData) {
         // add closure widget into the view
         mainPanel.add(editorClientWidget);
-
-        snipEditDocPanel.setSize("100%", "100%");
-	  }
+        if(snipData != null)
+            editorClientWidget.bootStrapEditor(editorClientWidget, snipData);
+        else
+            editorClientWidget.bootStrapEditor(editorClientWidget);
+    }
 
     // save
     @Override

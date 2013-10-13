@@ -178,6 +178,21 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     @Override
+    public SnipBean incrementViewCounter(String id) {
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        // build the search query
+        BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(id));
+        DBObject modifier = new BasicDBObject("views", 1);
+        DBObject incQuery = new BasicDBObject("$inc", modifier);
+        // make update
+        DBObject dbObj = coll.findAndModify(searchQuery, incQuery);
+        SnipBean snip = buildBeanObject(dbObj);
+        return snip;
+    }
+
+    @Override
     public void deleteSnip(String id) {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");

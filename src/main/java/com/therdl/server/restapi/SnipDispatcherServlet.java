@@ -135,7 +135,22 @@ public class SnipDispatcherServlet extends HttpServlet {
             beanList.clear();
             actionBean.as().setAction("dump");
         }
-
+        else if(actionBean.as().getAction().equals("getSnip")) {
+            SnipBean bean = snipsService.getSnip(actionBean.as().getId());
+            sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
+            sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
+            AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+            PrintWriter out = resp.getWriter();
+            out.write(AutoBeanCodex.encode(autoBean).getPayload());
+        }
+        else if(actionBean.as().getAction().equals("viewSnip")) {
+            SnipBean bean = snipsService.incrementViewCounter(actionBean.as().getId());
+            sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
+            sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
+            AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+            PrintWriter out = resp.getWriter();
+            out.write(AutoBeanCodex.encode(autoBean).getPayload());
+        }
         else if(actionBean.as().getAction().equals("save") ) {
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving

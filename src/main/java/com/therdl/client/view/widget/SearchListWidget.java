@@ -5,15 +5,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.cssbundles.Resources;
-import com.therdl.client.view.impl.SnipSearchViewImpl;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.SnipViewEvent;
 
 public class SearchListWidget extends Composite {
@@ -36,7 +35,8 @@ public class SearchListWidget extends Composite {
     protected void onLoad() {
         super.onLoad();
         injectScript();
-        setSviewButtonCallbackGWT(this);
+        setViewButtonCallbackGWT(this);
+        setEditButtonCallbackGWT(this);
         this.setVisible(true);
     }
 
@@ -73,13 +73,12 @@ public class SearchListWidget extends Composite {
 
          }
 
-      console.log($wnd.widjdev.tabdev);
        $wnd.widjdev.tabdev = null;
     }-*/;
 
 
     // JSNI set up code. This will call js function, data is converted like this [{},{}]
-    public native void  bootStrapList(SearchListWidget w, JsArray<JSOModel> data, int pSize) /*-{
+    public native void bootStrapList(SearchListWidget w, JsArray<JSOModel> data, int pSize) /*-{
         var menu = $doc.getElementById('menu');
         // data now have the following format: [{"0":"{}"},{"1":"{}"}]: Change that like this [{},{}]
         var dataJs = [];
@@ -100,26 +99,21 @@ public class SearchListWidget extends Composite {
 
 
 
-    public static void viewButtonCallbackGWT(String dataString) {
-
-        String[] temp = dataString.split(":");
-        String title = temp[0];
-        String author = temp[1];
+    public static void viewButtonCallbackGWT(String snipId) {
          // open a new snip view
-        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(title, author));
-
+        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipId));
 
     }
 
+    public static void editButtonCallbackGWT(String snipId) {
+        History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipId);
+    }
 
+    public native void setViewButtonCallbackGWT(SearchListWidget x)/*-{
+        $wnd.viewButtonCallbackGWT = @com.therdl.client.view.widget.SearchListWidget::viewButtonCallbackGWT(*);
+    }-*/;
 
-
-    public native void setSviewButtonCallbackGWT(SearchListWidget x)/*-{
-
-            $wnd.viewButtonCallbackGWT = @com.therdl.client.view.widget.SearchListWidget::viewButtonCallbackGWT(*);
-
-
-
-        }-*/;
-
+    public native void setEditButtonCallbackGWT(SearchListWidget x) /*-{
+        $wnd.editButtonCallbackGWT = @com.therdl.client.view.widget.SearchListWidget::editButtonCallbackGWT(*);
+    }-*/;
 }

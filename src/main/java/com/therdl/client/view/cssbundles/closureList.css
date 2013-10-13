@@ -22,10 +22,11 @@
       .listRow { border: solid 1px #333;  font-size: 12px; margin-top:5px;border-top: none}
       .listRow  .summary, .row .description { padding: 0.5em;  }
       .listRow  .summary { font-weight: normal; }
-      .listRow  .userImg { width:50px; }
-      .listRow .snipImg { width: 94px; }
+      .listRow  .userImg { width:94px; }
+      .listRow .userImgParent { float:left;}
+      .listRow .snipImg { width: 40px; }
       .listRow .firstColDiv { margin-right:5px; float:left}
-      .listRow .snipImgParent { float:left}
+      .listRow .snipImgParent { float:left; width:40px;}
       .listRow .leftPanel {margin-left:5px;float:left;}
       .listRow .userTitleDiv {margin-top:2px;float:left}
       .listRow .leftPanelTop {display: block;}
