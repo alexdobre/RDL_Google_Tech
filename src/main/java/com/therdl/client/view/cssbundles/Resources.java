@@ -29,15 +29,15 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource landingImage();
 
-    @Source("imagebund/FastCap.jpg")
+    @Source("imagebund/FastCap.gif")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource FastCapImage();
 
-    @Source("imagebund/Habit.jpg")
+    @Source("imagebund/Habit.gif")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource HabitImage();
 
-    @Source("imagebund/Material.jpg")
+    @Source("imagebund/Material.gif")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource MaterialImage();
 
@@ -57,7 +57,7 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource ProposalImage();
 
-    @Source("imagebund/Snip.jpg")
+    @Source("imagebund/Snip.gif")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource SnipImage();
 
@@ -65,6 +65,23 @@ public interface Resources extends ClientBundle {
     @Source("imagebund/Stream.jpg")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource StreamImage();
+
+    @Source("imagebund/facebook.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource facebookImage();
+
+    @Source("imagebund/twitter.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource twitterImage();
+
+    @Source("imagebund/reddit.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource redditImage();
+
+    @Source("imagebund/youtube.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource youtubeImage();
+
     /*
     @Source("imagebund/Thread.jpg")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)

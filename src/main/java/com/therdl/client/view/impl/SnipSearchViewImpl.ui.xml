@@ -10,14 +10,23 @@
     .searchlayout {
         margin:30px 0 0 20px;
     }
+
+    .socialPanel {
+        margin-top:50px;
+        margin-left: 10px;
+
+    }
 	</ui:style>
 
 	<g:HTMLPanel  >
         <rdl:AppMenu ui:field="appMenu"/>
-
+        <rdl:IdeasMenu></rdl:IdeasMenu>
         <g:DockLayoutPanel  ui:field="snipSearchDocPanel" unit='EM' >
             <g:west size='25'>
-                <g:FlowPanel ui:field="snipSearchWidgetPanel" styleName = '{style.searchlayout}'/>
+                <g:VerticalPanel>
+                    <g:FlowPanel ui:field="snipSearchWidgetPanel" styleName = '{style.searchlayout}'/>
+                    <rdl:SocialPanel ui:field="socialPanel" styleName="{style.socialPanel}"/>
+                </g:VerticalPanel>
             </g:west>
             <g:east size='75'>
                 <g:FlowPanel  ui:field="snipListRow" width="100%" height="100%" styleName = '{style.widgetlayout}'/>
