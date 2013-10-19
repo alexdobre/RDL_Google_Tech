@@ -7,8 +7,8 @@ import com.google.gwt.event.shared.SimpleEventBus;
 /**
  * the simplest possible client event bus
  *
- * while its is confusing to a new develpor to follow code flow when there are many events
- * it is still a good idea to have events as it allow loose couplinmg of the objects at run time
+ * while its is confusing to a new developer to follow code flow when there are many events
+ * it is still a good idea to have events as it allow loose coupling of the objects at run time
  *
  */
 public class GuiEventBus {
