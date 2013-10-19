@@ -53,6 +53,8 @@ public interface SnipsService {
      */
     void updateSnip(SnipBean snip);
 
+    SnipBean incrementViewCounter(String id);
+
     List<SnipBean> searchSnipsWith(SnipBean snip);
 
     public String makeTimeStamp();

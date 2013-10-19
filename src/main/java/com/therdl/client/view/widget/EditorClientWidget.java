@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipEditViewImpl;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
@@ -54,7 +56,7 @@ public class EditorClientWidget extends Composite  {
     protected void onLoad() {
         super.onLoad();
         injectScript();
-        bootStrapEditor(this);
+      //  bootStrapEditor(this);
         this.setVisible(true);
     }
 
@@ -80,23 +82,18 @@ public class EditorClientWidget extends Composite  {
         // test data
         JSOModel snipData = getSnipData();
 
-        log.info("snipContent="+snipData.get("contentAsHtml"));
-        log.info("snipTitle="+snipData.get("title"));
-        log.info("coreCat="+snipData.get("coreCat"));
-        log.info("subCat="+snipData.get("subCat"));
-        log.info("currentSnipId="+snipData.get("currentSnipId"));
-
         AutoBean<SnipBean> newBean = beanery.snipBean();
         if(snipData.get("currentSnipId").equals("")) {
             snipEditView.submitBean(newBean);
-            Window.alert("saved");
         } else {
             newBean.as().setId(snipData.get("currentSnipId"));
             snipEditView.submitEditBean(newBean);
-            Window.alert("edited");
         }
 
-        clearEditor();
+        History.newItem(RDLConstants.Tokens.SNIPS);
+
+
+        // clearEditor();
     }
 
     @UiHandler("deleteSnip")
@@ -109,16 +106,20 @@ public class EditorClientWidget extends Composite  {
             snipEditView.onDeleteSnip(snipData.get("currentSnipId"));
             Window.alert("deleted");
         }
-
-        clearEditor();
+        History.newItem(RDLConstants.Tokens.SNIPS);
+        //clearEditor();
     }
 
     /*
      * JS native function which calls SnipEditor constructor function from the snipeditor.js
      */
 
-    private native void bootStrapEditor(EditorClientWidget w) /*-{
-	    var snipEditor = new $wnd.widjdev.SnipEditor();
+    public native void bootStrapEditor(EditorClientWidget w, JSOModel snipData) /*-{
+	    var snipEditor = new $wnd.widjdev.SnipEditor(snipData);
+    }-*/;
+
+    public native void bootStrapEditor(EditorClientWidget w) /*-{
+        var snipEditor = new $wnd.widjdev.SnipEditor();
     }-*/;
 
     public native void setSnipComboBox(JsArray<JSOModel> data) /*-{

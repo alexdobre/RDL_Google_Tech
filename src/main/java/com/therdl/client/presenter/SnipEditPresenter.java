@@ -33,16 +33,18 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 //    private List<JSOModel> jSon1List;
     private List<JSOModel> jSonList;
     private final AppController controller;
+    private String currentSnipId;
 
 
-
-    public SnipEditPresenter(SnipEditView view, AppController appController) {
+    public SnipEditPresenter(SnipEditView view, String currentSnipId, AppController appController) {
         super();
         this.view = view;
         this.view.setPresenter(this);
-        this.controller =appController;
+        this.controller = appController;
+        this.currentSnipId = currentSnipId;
+
         // user must be authorised to edit
-        if(!controller.getCurrentUserBean().as().isAuth() ) {
+        if(!controller.getCurrentUserBean().as().isAuth()) {
             History.newItem(RDLConstants.Tokens.WELCOME);
             History.fireCurrentHistoryState();
 
@@ -54,7 +56,9 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
     public void go(HasWidgets container) {
         container.clear();
         container.add(view.asWidget());
-        fetchSnips();
+
+        loadEditor();
+      //  fetchSnips();
     }
 
     @Override
@@ -70,8 +74,18 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
             view.setloginresult(controller.getCurrentUserBean().as().getName(),
                     controller.getCurrentUserBean().as().getEmail(), true  );
         }
-        fetchSnips();
 
+        loadEditor();
+     //   fetchSnips();
+
+    }
+
+    private void loadEditor() {
+        if(!currentSnipId.equals("")) {
+            findSnipById(currentSnipId);
+        } else {
+             view.addEditorClientWidget(null);
+        }
     }
 
     @Override
@@ -120,7 +134,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
-                        fetchSnips();
+                        //fetchSnips();
 
                     } else {
                         log.info("SnipEditPresenter submit post fail");
@@ -172,7 +186,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter onDeleteSnip  ok now validating");
 
-                        fetchSnips();
+                        //fetchSnips();
 
                     } else {
                         log.info("SnipEditPresenter onDeleteSnip fail");
@@ -251,7 +265,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
-                        fetchSnips();
+                        //fetchSnips();
                     } else {
                         log.info("SnipEditPresenter submit post fail");
                     }
@@ -311,14 +325,12 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                         // used to index the incoming json array
                         String counter = ""+k;
                         AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
-
-                        log.info("" + bean.as().toString());
                         beans.add(bean);
                     }
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
                     beans.clear();
                     // set snip combo in EditorClientWidget
-                    view.getEditorClientWidget().setSnipComboBox(data);
+                 //   view.getEditorClientWidget().setSnipComboBox(data);
 
                 }
 
@@ -333,6 +345,47 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
             log.info(e.getLocalizedMessage());
         }
 
+    }
+
+    private void findSnipById(String snipId) {
+        log.info("SnipEditPresenter findSnipById");
+
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+
+        if(!Constants.DEPLOY) {
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
+
+        log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        AutoBean<SnipBean>  currentBean = beanery.snipBean();
+        currentBean.as().setAction("getSnip");
+        currentBean.as().setId(snipId);
+
+        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        try {
+
+            requestBuilder.sendRequest(json, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    log.info("getSnipResponse="+response.getText());
+                    JSOModel data = JSOModel.fromJson(response.getText());
+
+                    view.addEditorClientWidget(data);
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
     }
 
     @Override

@@ -31,7 +31,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-    private Map<String, String> currentSnipView ;
+    private String currentSnipId ;
 
 	/**
 	 * Current authentication rules are anyone can view but only registered user can edit
@@ -81,11 +81,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
             @Override
             public void onSnipSelectEvent(SnipViewEvent event){
-                currentSnipView = new HashMap<String, String>();
-                currentSnipView.put("title",event.getTitle() );
-                currentSnipView.put("author",event.getAuthor() );
-                History.newItem(RDLConstants.Tokens.SNIP_VIEW );
-                History.fireCurrentHistoryState();
+                currentSnipId = event.getSnipId();
+                History.newItem(RDLConstants.Tokens.SNIP_VIEW);
+              //  History.fireCurrentHistoryState();
             }
         });
 
@@ -122,6 +120,10 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
+        String[] tokenSplit =  token.split(":");
+        if(tokenSplit.length != 0) {
+            token = tokenSplit[0];
+        }
 
         log.info("AppController onValueChange token is  "+token);
 
@@ -157,7 +159,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     snipView = new SnipViewImpl(currentUserBean);
                 }
 
-                final SnipPresenter snipPresenter =  new SnipPresenter(snipView, currentSnipView,  currentUserBean);
+                final SnipPresenter snipPresenter =  new SnipPresenter(snipView, currentSnipId,  this);
 
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
@@ -199,11 +201,19 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             //***************************************SNIP_EDIT****************************
             // only authorised users
             else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
-                log.info("AppController Tokens.SNIP_EDIT");
+
+                String currentSnipId = "";
+                if(tokenSplit.length == 2) {
+                    currentSnipId = tokenSplit[1];
+                }
+
+                log.info("AppController Tokens.SNIP_EDIT token="+token+";currentSnipId="+currentSnipId);
+
+
                 if (snipEditView == null) {
                     snipEditView = new SnipEditViewImpl(currentUserBean);
                 }
-                final SnipEditPresenter snipEditPresenter =  new SnipEditPresenter(snipEditView, this);
+                final SnipEditPresenter snipEditPresenter =  new SnipEditPresenter(snipEditView, currentSnipId, this);
 
 
                 GWT.runAsync(new RunAsyncCallback() {

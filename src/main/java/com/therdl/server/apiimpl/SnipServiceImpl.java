@@ -84,17 +84,16 @@ public class SnipServiceImpl implements SnipsService {
         if(searchOptions.getRep() != null) {
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         }
-        if(searchOptions.getDateFrom() != null) {
-            sLogger.info("searchOptions.getDateFrom() != null");
+
+        if(searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
+            query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
+                    .add("$lte", searchOptions.getDateTo()+" 23:59:59").get());
+        } else if(searchOptions.getDateFrom() != null) {
             query.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
-        } else {
-            sLogger.info("searchOptions.getDateFrom() = null");
+        } else if(searchOptions.getDateTo() != null) {
+            query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo()+" 23:59:59"));
         }
 
-        if(searchOptions.getDateTo() != null) {
-            sLogger.info("searchOptions.getDateTo() != null");
-            query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo()));
-        }
 
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
@@ -176,6 +175,21 @@ public class SnipServiceImpl implements SnipsService {
 
         // make update
         coll.findAndModify(searchQuery, updateDocument);
+    }
+
+    @Override
+    public SnipBean incrementViewCounter(String id) {
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        // build the search query
+        BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(id));
+        DBObject modifier = new BasicDBObject("views", 1);
+        DBObject incQuery = new BasicDBObject("$inc", modifier);
+        // make update
+        DBObject dbObj = coll.findAndModify(searchQuery, incQuery);
+        SnipBean snip = buildBeanObject(dbObj);
+        return snip;
     }
 
     @Override
