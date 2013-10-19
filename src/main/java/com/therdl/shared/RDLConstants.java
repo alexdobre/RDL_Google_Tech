@@ -1,5 +1,9 @@
 package com.therdl.shared;
 
+
+/**
+ * Standard Model View Presenter History tokens
+ */
 public interface RDLConstants {
 	
 	public interface Tokens {

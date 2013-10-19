@@ -2,6 +2,7 @@ package com.therdl.shared;
 
 /**
  * All shared constants could be placed here
+ *  @DEPLOY   boolean determine url for deployment mode
  */
 public class Constants {
 
