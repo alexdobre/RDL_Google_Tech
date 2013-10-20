@@ -120,7 +120,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
+        log.info("AppController onValueChange token before split is  "+token);
         String[] tokenSplit =  token.split(":");
+
         if(tokenSplit.length != 0) {
             token = tokenSplit[0];
         }
@@ -178,8 +180,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             //***************************************SNIPS****************************
             else if (token.equals(RDLConstants.Tokens.SNIPS)) {
                 log.info("AppController Tokens.SNIPS");
+
                 if (snipSearchView == null) {
-                     snipSearchView = new SnipSearchViewImpl(currentUserBean);
+                     snipSearchView = new SnipSearchViewImpl(currentUserBean, event.getValue());
                 }
 
                 final SnipSearchPresenter snipSearchPresenter =  new SnipSearchPresenter(snipSearchView, this);

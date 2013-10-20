@@ -15,6 +15,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SearchFilterWidget;
 import com.therdl.client.view.widget.SearchListWidget;
 import com.therdl.shared.Constants;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.*;
 
 import java.util.logging.Logger;
@@ -55,11 +56,14 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+    private String token;
+
+	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
 
         initWidget(uiBinder.createAndBindUi(this));
-        log.info("SnipSearchViewImpl constructor");
+        log.info("SnipSearchViewImpl constructor token" + token);
         this.currentUserBean  =  currentUserBean;
+        this.token = token;
         searchFilterWidget = new SearchFilterWidget(this);
         snipSearchWidgetPanel.add(searchFilterWidget);
         searchListWidget =  new SearchListWidget();
@@ -69,7 +73,12 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     @Override
     protected void onLoad() {
         super.onLoad();
-        getInitialSnipList();
+        if(token.equals(RDLConstants.Tokens.SNIPS))
+            getInitialSnipList();
+        else {
+            doFilterSearch(parseToken());
+        }
+
     }
 
     @Override
@@ -115,6 +124,55 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     public void getInitialSnipList() {
         log.info("getInitialSnipList");
         presenter.getInitialSnipList();
+    }
+
+    private AutoBean<SnipBean> parseToken() {
+        AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+        String[] tokenSplit = token.split(":");
+        for (int i=1; i<tokenSplit.length; i++) {
+            String[] keyVal = tokenSplit[i].split("=");
+            if(keyVal[0].equals("title")) {
+                searchOptionsBean.as().setTitle(keyVal[1].replace("+"," "));
+            }
+
+            if(keyVal[0].equals("coreCat")) {
+                searchOptionsBean.as().setCoreCat(keyVal[1].replace("+"," "));
+            }
+
+            if(keyVal[0].equals("subCat")) {
+                searchOptionsBean.as().setSubCat(keyVal[1].replace("+"," "));
+            }
+
+            if(keyVal[0].equals("posRef")) {
+                searchOptionsBean.as().setPosRef(Integer.parseInt(keyVal[1]));
+            }
+
+            if(keyVal[0].equals("neutralRef")) {
+                searchOptionsBean.as().setNeutralRef(Integer.parseInt(keyVal[1]));
+            }
+
+            if(keyVal[0].equals("rep")) {
+                searchOptionsBean.as().setRep(Integer.parseInt(keyVal[1]));
+            }
+
+            if(keyVal[0].equals("content")) {
+                searchOptionsBean.as().setContent(keyVal[1].replace("+"," "));
+            }
+
+            if(keyVal[0].equals("author")) {
+                searchOptionsBean.as().setAuthor(keyVal[1].replace("+"," "));
+            }
+
+            if(keyVal[0].equals("dateFrom")) {
+                searchOptionsBean.as().setDateFrom(keyVal[1]);
+            }
+
+            if(keyVal[0].equals("dateTo")) {
+                searchOptionsBean.as().setDateTo(keyVal[1]);
+            }
+        }
+
+        return searchOptionsBean;
     }
 
 }

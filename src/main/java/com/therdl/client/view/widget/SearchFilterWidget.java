@@ -38,6 +38,9 @@ public class SearchFilterWidget extends Composite {
     Button submit;
 
     @UiField
+    Button getLinkBtn;
+
+    @UiField
     TextBox title;
 
     @UiField
@@ -76,6 +79,8 @@ public class SearchFilterWidget extends Composite {
     DatePicker datePicker;
 
     SnipSearchView view;
+
+    BookmarkSearchPopup bookmarkSearchPopup;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -117,6 +122,15 @@ public class SearchFilterWidget extends Composite {
 
         subCategoryList.addItem("Select a subcategory");
         subCategoryList.setEnabled(false);
+    }
+
+    @UiHandler("getLinkBtn")
+    public void onLinkBtnClicked(ClickEvent event) {
+        BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this);
+        int x = getLinkBtn.getAbsoluteLeft();
+        int y = getLinkBtn.getAbsoluteTop();
+        bookmarkSearchPopup.setPopupPosition(x+getLinkBtn.getOffsetWidth(), y);
+        bookmarkSearchPopup.show();
     }
 
     @UiHandler("submit")
