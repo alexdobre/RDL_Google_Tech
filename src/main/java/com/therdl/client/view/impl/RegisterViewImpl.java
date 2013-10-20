@@ -18,7 +18,20 @@ import com.therdl.shared.beans.Beanery;
 import java.util.logging.Logger;
 
 /**
-user signs up here
+ * RegisterViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class provides GUI so user can Registers/signs-up
+ *
+ *  @ RegisterView.Presenter presenter the  presenter for this view
+ *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  @ AppMenu appMenu the upper menu view
+ *  fields below are standard GWT form fields for user sign-up
+ *  @ TextBox userName, email
+ *  @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
+ *  @ Button submitbBtn
+ *
+ *
  */
 public class RegisterViewImpl  extends Composite implements RegisterView {
 
@@ -59,11 +72,15 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
         appMenu.setSignUpView();
     }
 
-    /**
-     *
-     * set up new user bean and send to server for registration
-     */
 
+    /**
+     * Handler for form submit
+     * @param event Standard GWT ClickEvent
+     * FieldVerifier static class for validation
+     * AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
+     * presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
+     *
+     */
     @UiHandler("submitbBtn")
     public void onSubmit(ClickEvent event) {
         log.info("RegisterViewImpl onSubmit verifying fields");
@@ -120,7 +137,13 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
     }
 
 
-
+    /**
+     *  Sets the upper header Menu to the correct state for supplied credentials
+     *  post sign up called from presenter
+     * @param name supplied credential
+     * @param email supplied credential
+     * @param auth boolean auth state from server via presenter
+     */
     @Override
     public void setloginresult(String name, String email, boolean auth) {
         if (auth) {
