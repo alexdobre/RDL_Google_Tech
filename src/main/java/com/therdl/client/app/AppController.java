@@ -28,7 +28,8 @@ import java.util.logging.Logger;
  * and the particular schema for MVP here known as Activities and Places
  * see http://www.gwtproject.org/doc/latest/DevGuideMvpActivitiesAndPlaces.html
  * this can be simply expressed as
- * place --> view and activity --> user state/interaction
+ * 1. place --> view and
+ * 2. activity --> user state/interaction
  * this class manages both Places and Activities and acts as a Controller class in the
  * client/view layer
  *
@@ -51,11 +52,7 @@ import java.util.logging.Logger;
  * for any  ValueChangeEvent think (History event) the type of view is found, the presenter and view are
  * created and by examining the authorisation status of the user put in focus for the user if user is authorised
  * with the correct paramaters (eg menu options) for that users given  authorisation status (eg logged in)
- *
- *
  */
-
-
 public class AppController implements Presenter, ValueChangeHandler<String>{
 
     private static Logger log = Logger.getLogger("");
@@ -91,6 +88,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	  
 	/**
 	 * Binds the event handler instances to their specific events
+     * @ LogOutEvent  for user log out flow
+     * @ SnipViewEvent this event creates a new SnipView, is noteworthy as it is fired after
+     * a JSNI callback from the Closure SnipListWidget code
 	 */
 	private void bind() {
 
@@ -417,9 +417,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     /**
      *  sets the currentUserBean for the  view in the WelcomePresenter dologin method
      *  the values below are all strings extracted from a simple form input
-     * @param name  String
-     * @param email String
-     * @param avatarUrl String
+     * @param name  String  for user name
+     * @param email String  for user email
+     * @param avatarUrl String for user image location acts as a url for mongo/filesystem
      * @param state booleam for state information
      */
     public void setCurrentUserBean(String name, String email,String avatarUrl,  boolean state) {
@@ -433,8 +433,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     /**
      *  set in the RegisterPresenter onResponseReceived for  the server callback 'submitNewUser'
      *  the values below are all strings extracted from a simple form input
-     * @param name
-     * @param email
+     * @param name  String for user name
+     * @param email String for user email
      * @param state booleam for state information
      */
     public void setCurrentUserBean(String name, String email,  boolean state) {
