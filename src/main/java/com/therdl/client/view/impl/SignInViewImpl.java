@@ -29,9 +29,12 @@ import java.util.logging.Logger;
 
 
  /**
-  * this is a pop up embedded in the Welcome view,  hence no preseneter
-  * embedded widgets do not necessarily require presenters in the MVP
-  * design pattern
+  * SignInViewImpl extends PopupPanel is a pop up embedded in the Welcome view
+  *
+  * fields below are standard GWT form fields for user sign-up
+  *  @ TextBox  email  String used as the unique identifier in the database
+  *  @ PasswordTextBox psswd  String the user password
+  *  @ Label loginFail  GWT Label widget validation callback for login fails
   */
 
 public class SignInViewImpl extends PopupPanel implements SignInView {
@@ -83,18 +86,30 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
     }
 
-
+     /**
+      * get the password string
+      * @param event  Standard GWT ClickEvent
+      */
     @UiHandler("password")
     public void onUserFocused(FocusEvent event) {
         password.setText("");
     }
-
+     /**
+      * get the email string
+      * @param event  Standard GWT ClickEvent
+      */
     @UiHandler("email")
     public void onEmailFocused(FocusEvent event) {
         email.setText("");
     }
 
-
+     /**
+      * Handler for form submit
+      * @param event Standard GWT ClickEvent
+      *
+      * welcomeViewImpl.onSubmit(eMail, psswd ) submits bean for sign-in in
+      * com.therdl.server.restapi.SessionServlet class
+      */
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
         log.info("SignInViewImpl onSubmit");
