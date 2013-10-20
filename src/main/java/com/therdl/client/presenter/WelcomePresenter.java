@@ -18,6 +18,20 @@ import com.therdl.shared.events.LogInOkEvent;
 import java.util.logging.Logger;
 
 
+/**
+ * WelcomePresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *
+ *  @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ *  @ WelcomeView  welcomeView this presenter GUI component
+ *  @ String avatarUrl a URI to locate the user image on the filesystem or in the database
+ *
+ *  @ void doLogIn( String emailtxt, String passwordText ) user login to <URI base path>/getSession
+ *  calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
+ *  authorisation in server callback onResponseReceived(Request request, Response response)
+ *
+ */
+
 public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
     private static Logger log = Logger.getLogger("");
@@ -54,7 +68,18 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         }
     }
 
-
+    /**
+     * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
+     * a AutoBean<AuthUserBean> authBean from the users credentials and submits it as a json serialised object
+     * calls AppController controller and  WelcomeView  welcomeView objects
+     * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state based on
+     * authorise user from database result
+     * welcomeView.setloginresult(name, email, auth):: updatses the view with credentials mainly for the
+     * upper menu
+     *
+     * @param emailtxt String unique identifier for login and subsequent granted state information
+     * @param passwordText String password identifier for login
+     */
     public void doLogIn( String emailtxt, String passwordText ) {
 
         Beanery beanery = GWT.create(Beanery.class);
