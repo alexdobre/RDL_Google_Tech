@@ -10,8 +10,14 @@ import com.therdl.shared.beans.CurrentUserBean;
 import java.util.logging.Logger;
 
 /**
- * For now will be profile related stuff
- * User Avatar upload
+ * ProfilePresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * this class will be extended to encapsulate all the profile related data in and out of the client
+ * for example the User's Avatar upload and subsequent image presentation
+ *
+ *  @ ProfileView  profileView this presenter GUI component
+ *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *
  */
 public class ProfilePresenter implements Presenter, ProfileView.Presenter {
 

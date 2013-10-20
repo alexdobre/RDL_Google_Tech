@@ -15,8 +15,16 @@ import com.therdl.shared.beans.*;
 import java.util.logging.Logger;
 
 /**
- * user signs up for application here
- * simple but good looking formv view
+ * RegisterPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *
+ *  @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ *  @ RegisterView  registerView this presenter GUI component
+ *
+ *  @ void submitNewUser(AutoBean<AuthUserBean> bean) user signup to <URI base path>/getSession
+ *  calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
+ *  authorisation in server callback onResponseReceived(Request request, Response response)
+ *
  */
 public class RegisterPresenter implements Presenter, RegisterView.Presenter {
 
@@ -44,6 +52,18 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
         container.add(registerView.asWidget());
 
     }
+
+    /**
+     * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
+     * a AutoBean<AuthUserBean> authBean from the users supplied credentials and submits it as a json serialised object
+     * calls AppController controller and  WelcomeView  welcomeView objects
+     * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state for a newly signed up
+     *  user for the upper menu in the WelcomeView
+     *
+     * @param AutoBean<AuthUserBean> bean) constructed from the submitted email String (unique identifier) and
+     * password String password these credentilas will be used as identifiers for subsequent login
+     */
+
 
     @Override
     public void submitNewUser(AutoBean<AuthUserBean> bean) {

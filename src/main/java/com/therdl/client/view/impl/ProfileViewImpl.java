@@ -21,8 +21,23 @@ import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
 
+
 /**
+ * ProfileViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class will be extended to encapsulate all the profile related data for the
+ * client for example the User Avatar and Avatar upload
  *
+ *  @ ProfileView.Presenter presenter the  presenter for this view
+ *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *  @ AutoBean<CurrentUserBean> currentUserBean contains user parameters like auth state
+ *  @ AvatarUploadPopUp uploadForm the upload form widget
+ *  @ AppMenu appMenu the upper menu view
+ *  @ FocusPanel profileImagePanel   GWT FocusPanel allows events for a image container
+ *   see http://www.gwtproject.org/javadoc/latest/com/google/gwt/user/client/ui/FocusPanel.html
+ *  @ Image pic  the users avatar image
+ *  @ String tempUrl displays a empty avatar image to indicate where a user Avatar would appear if it was uploded,
+ *  also to prompt the uses to click to initiate the upload
  */
 public class ProfileViewImpl extends Composite implements ProfileView {
 
@@ -47,9 +62,9 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     @UiField
     FocusPanel profileImagePanel;
 
-    Image pic;
+    private Image pic;
 
-    String tempUrl =  "userAvatar/avatar-empty.jpg";
+    private String tempUrl =  "userAvatar/avatar-empty.jpg";
 
     public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -94,6 +109,9 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     }
 
 
+    /**
+     * sets the Avatar for a User when a valid  avatar url exists in the currentUserBean
+     */
     @Override
     public void setAvatarWhenViewIsNotNull() {
         log.info("ProfileViewImpl setAvatarWhenViewIsNotNull"+ currentUserBean.as().getAvatarUrl());
@@ -123,15 +141,19 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     }
 
 
-
-
+    /**
+     * shows the avatar upload widget
+     * @param e  Standard GWT ClickEvent
+     */
     @UiHandler("profileImagePanel")
     void handleClick(ClickEvent e) {
         showUploadPopUp();
     }
 
 
-
+    /**
+     * as above public as may need to be called as a refresh at some point
+     */
     public void showUploadPopUp() {
 
         uploadForm = new AvatarUploadPopUp(this);
@@ -143,6 +165,11 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         uploadForm.setStyleName("uploadPopUp");
 
     }
+
+    /**
+     * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
+     * @param currentUserBean
+     */
 
     @Override
     public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
@@ -173,7 +200,10 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         this.presenter = presenter;
     }
 
-
+    /**
+     * sets the User Avatar Image if one exists
+     * @param url  URI for the user image in the browser resources
+     */
     public void setAvatar(String url) {
         log.info("ProfileViewImpl setAvatarWhenViewIsNotNull"+ currentUserBean.as().getAvatarUrl());
         pic = new Image(url);

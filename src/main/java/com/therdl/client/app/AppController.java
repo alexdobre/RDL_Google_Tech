@@ -23,6 +23,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * While the overall application follows the Model View Presenter(MVP) design pattern
+ * and the particular schema for MVP here known as Activities and Places
+ * see http://www.gwtproject.org/doc/latest/DevGuideMvpActivitiesAndPlaces.html
+ * this can be simply expressed as
+ * 1. place --> view and
+ * 2. activity --> user state/interaction
+ * this class manages both Places and Activities and acts as a Controller class in the
+ * client/view layer
+ *
+ * This class controls what view is presented and when it is presented. A particular
+ * view is presented during user interaction principally based on  the state of 2 principal actors
+ *
+ * @ RDLConstants.Tokens.<history Token Type> identifies the view to be presented
+ * @ AutoBean<Auth Type>   determines the authorisation state of the view presented
+ *
+ * it has utility methods and objects
+ * @ Beanery beanery, the bean factory
+ * @ <XX>View client side views generally UiBinder GUI classes
+ *
+ * important methods
+ *
+ * @ bind() manages the client side event handlers for History and authorisation state client
+ * side events
+ * @ onValueChange(ValueChangeEvent<String> event) ValueChangeEvents are fired when the view is changed by a user
+ * see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+ * for any  ValueChangeEvent think (History event) the type of view is found, the presenter and view are
+ * created and by examining the authorisation status of the user put in focus for the user if user is authorised
+ * with the correct paramaters (eg menu options) for that users given  authorisation status (eg logged in)
+ */
 public class AppController implements Presenter, ValueChangeHandler<String>{
 
     private static Logger log = Logger.getLogger("");
@@ -35,14 +65,13 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 	/**
 	 * Current authentication rules are anyone can view but only registered user can edit
-	 */
-    private AutoBean<AuthUserBean> authnBean = beanery.authBean();
-
-    /**
-     * seperate authorisation from user state with 2 user beans, current user and authorised user
-     * for example auth user will have initial password for sign up
-     * current user as a persistant client side bean will not contain password info and any time
+     * separate authorisation from user state with 2 user beans, current user and authorised user
+     * for example auth user bean will have initial password for sign up.
+     * The current user bean as a persistent client side bean will/must not contain password info
+     * and any time for client side security
      */
+
+    private AutoBean<AuthUserBean> authnBean = beanery.authBean();
     private  AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
 	private WelcomeView welcomeView;
@@ -59,6 +88,9 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 	  
 	/**
 	 * Binds the event handler instances to their specific events
+     * @ LogOutEvent  for user log out flow
+     * @ SnipViewEvent this event creates a new SnipView, is noteworthy as it is fired after
+     * a JSNI callback from the Closure SnipListWidget code
 	 */
 	private void bind() {
 
@@ -89,6 +121,11 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
     }
+
+    /**
+     * present the Welcome landing page for a unAuthorised user
+     * @param container  the Presenter View
+     */
 	
 	@Override
 	public void go(final HasWidgets container) {
@@ -102,6 +139,11 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 		}
 	}
 
+    /**
+     *  present the Welcome landing page for a user with a  authorised state
+     * @param container      the Presenter View
+     * @param currentUserBean  a bean with  authorised state information(eg logged in or out)
+     */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         this.container = container;
@@ -115,8 +157,13 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     }
 
     /**
-	 * This binds the history tokens with the different application states
-	 */
+     * This binds the history tokens with the different application states
+     * @param event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+     * for ValueChangeEvent think HistoryEvent
+     * String tokens are extracted from the HistoryEvents, this allows the correct view to be constructed and presented
+     * this method provides the machinery
+     *
+     */
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
@@ -370,7 +417,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     }
 
 
-    // set in WelcomePresenter dologin
+    /**
+     *  sets the currentUserBean for the  view in the WelcomePresenter dologin method
+     *  the values below are all strings extracted from a simple form input
+     * @param name  String  for user name
+     * @param email String  for user email
+     * @param avatarUrl String for user image location acts as a url for mongo/filesystem
+     * @param state booleam for state information
+     */
     public void setCurrentUserBean(String name, String email,String avatarUrl,  boolean state) {
         this.currentUserBean.as().setAuth(state);
         this.currentUserBean.as().setName(name);
@@ -379,8 +433,13 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
     }
 
 
-
-    // set in RegisterPresenter submitNewUser onResponseReceived
+    /**
+     *  set in the RegisterPresenter onResponseReceived for  the server callback 'submitNewUser'
+     *  the values below are all strings extracted from a simple form input
+     * @param name  String for user name
+     * @param email String for user email
+     * @param state booleam for state information
+     */
     public void setCurrentUserBean(String name, String email,  boolean state) {
         this.currentUserBean.as().setAuth(state);
         this.currentUserBean.as().setName(name);

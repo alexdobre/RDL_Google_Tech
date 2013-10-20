@@ -5,10 +5,16 @@ import com.therdl.shared.beans.CurrentUserBean;
 
 /**
  * Static class for validating objects
+ * @ resetCurrentUserBeanFields  (AutoBean<CurrentUserBean> currentUserBean)
+ * cleans the User state information, usefull after a log out event for example
  */
 public class Validation {
 
-
+    /**
+     *
+     * @param currentUserBean  AutoBean see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+     * @return
+     */
     static AutoBean<CurrentUserBean> resetCurrentUserBeanFields(AutoBean<CurrentUserBean> currentUserBean) {
 
         currentUserBean.as().setAvatarUrl("");
