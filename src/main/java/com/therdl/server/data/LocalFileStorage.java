@@ -7,13 +7,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- *
+ *  Filesystem  storage implementation of the  FileStorage type
+ *  @ String storageUrl, uri base for eventual file uri
+ *  @ File storageDirectory , directory object for stored files
+ *  @ boolean deleteOnExit, clean up for temp files
  */
 public class LocalFileStorage  implements FileStorage  {
 
     private final String storageUrl;
 
-    // this file is used only to create the local storage directory if it does not exist
+    // this file object is used only to create the local storage directory if it does not exist
     private final File storageDirectory;
 
     private boolean deleteOnExit;
@@ -32,6 +35,13 @@ public class LocalFileStorage  implements FileStorage  {
         return storageUrl + fileName;
     }
 
+    /**
+     *  crud save === jpa persist
+     * @param FileData fileData, the file bytes store
+     * @param String fileExtension, currently only jpeg supported but this will
+     * be extended
+     * @return
+     */
     public String storeFile(FileData fileData, String fileExtension) {
 
         String resutlt = "initialising file save opperation for  "+fileData.getName()+" : "+fileExtension;
@@ -81,11 +91,25 @@ public class LocalFileStorage  implements FileStorage  {
         return resutlt;
     }
 
+
+    /**
+     * not supported in filesystem storage
+     * @param file
+     * @param fileName
+     * @return
+     */
     @Override
     public String storeFileDb(FileData file, String fileName) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * sets the uri for the image
+     * not supported in filesystem storage, as uri is included in file object
+     * @param avatarDirUrl
+     * @param fileName
+     * @return
+     */
     @Override
     public boolean setAvatarForUserFromDb(String avatarDirUrl, String fileName) {
         //To change body of implemented methods use File | Settings | File Templates.

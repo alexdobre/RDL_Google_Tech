@@ -73,7 +73,7 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
 
     /**
      * Handler for form submit
-     * @param event Standard GWT ClickEvent
+     * @param ClickEvent event Standard GWT ClickEvent
      * FieldVerifier static class for validation
      * AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
      * presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
@@ -138,9 +138,9 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
     /**
      *  Sets the upper header Menu to the correct state for supplied credentials
      *  post sign up called from presenter
-     * @param name supplied credential
-     * @param email supplied credential
-     * @param auth boolean auth state from server via presenter
+     * @param String name supplied credential
+     * @param String email supplied credential
+     * @param boolean auth  auth state from server via presenter
      */
     @Override
     public void setloginresult(String name, String email, boolean auth) {

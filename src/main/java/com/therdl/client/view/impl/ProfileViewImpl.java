@@ -168,7 +168,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     /**
      * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
-     * @param currentUserBean
+     * @param AutoBean currentUserBean
      */
 
     @Override
@@ -202,7 +202,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     /**
      * sets the User Avatar Image if one exists
-     * @param url  URI for the user image in the browser resources
+     * @param String url  URI for the user image in the browser resources
      */
     public void setAvatar(String url) {
         log.info("ProfileViewImpl setAvatarWhenViewIsNotNull"+ currentUserBean.as().getAvatarUrl());
