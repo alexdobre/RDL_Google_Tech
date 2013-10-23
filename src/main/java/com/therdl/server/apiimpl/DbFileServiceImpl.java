@@ -17,6 +17,8 @@ import java.net.UnknownHostException;
  *  A file service implementation for images
  *  uses Mongo libary GridFS can be extended to
  *  video and audio
+ *  @ String defaultDatabaseName, mongo database, in this case is 'rdl'
+ *  @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
 public class DbFileServiceImpl implements DbFileService {
 
@@ -25,7 +27,11 @@ public class DbFileServiceImpl implements DbFileService {
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(DbFileServiceImpl.class);
 
-
+    /**
+     * persist an image as a file
+     * @param File imageFile the file to be saved
+     * @param String fileName the file name
+     */
     @Override
     public void saveIamage(File imageFile, String fileName) {
         DB db = getMongo();
@@ -45,6 +51,11 @@ public class DbFileServiceImpl implements DbFileService {
 
     }
 
+    /**
+     * persist an image as a ByteArray
+     * @param byte[] imageBtyeArray  a byte array of image data
+     * @param String fileName
+     */
     @Override
     public void saveImageBytes(byte[] imageBtyeArray, String fileName) {
 
@@ -59,7 +70,11 @@ public class DbFileServiceImpl implements DbFileService {
         gfsFile.save();
     }
 
-
+    /**
+     * crud get
+     * @param fileName  name of file to retrieve
+     * @return
+     */
     @Override
     public File getImage(String fileName) {
         DB db = getMongo();
@@ -70,6 +85,13 @@ public class DbFileServiceImpl implements DbFileService {
         return null;
     }
 
+    /**
+     *  crud update
+     * @param String avatarDirUrl his uri is used for the javascript layer
+     * to retrieve the image
+     * @param String fileName name of the image
+     * @return
+     */
     @Override
     public boolean setUserAvatar(String avatarDirUrl, String fileName) {
 
@@ -95,8 +117,12 @@ public class DbFileServiceImpl implements DbFileService {
     }
 
 
-
-    // later the url will be a cloud based schema hence exception
+    /**
+     *  MongoClient("localhost", 27017)
+     *  later the above  url will be changed to a cloud based schema hence
+     *  UnknownHostException  exception
+     * @return
+     */
     private DB getMongo() {
 
         defaultDatabaseName = "rdl";

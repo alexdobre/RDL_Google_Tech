@@ -5,6 +5,10 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
 
+
+/**
+ * this is a service for Snip crud operations
+ */
 public interface SnipsService {
 
     /**

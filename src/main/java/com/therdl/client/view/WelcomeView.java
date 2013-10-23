@@ -3,6 +3,10 @@ package com.therdl.client.view;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.widget.AppMenu;
 
+
+/**
+ *  see  WelcomeViewImpl javadoc for these methods
+ */
 public interface WelcomeView {
 
 	public interface Presenter {

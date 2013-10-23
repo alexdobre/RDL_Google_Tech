@@ -6,7 +6,7 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.CurrentUserBean;
 
 /**
- *
+ *  see  ProfileViewImpl javadoc for these methods
  */
 public interface ProfileView extends IsWidget {
 

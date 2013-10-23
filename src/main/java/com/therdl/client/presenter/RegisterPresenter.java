@@ -46,6 +46,12 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
         container.add(registerView.asWidget());
     }
 
+    /**
+     *  standard runtime method for MVP architecture
+     * @param container  the view container
+     * @param currentUserBean the user state bean, mainly used for authorisation
+     * and to update the menu
+     */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();

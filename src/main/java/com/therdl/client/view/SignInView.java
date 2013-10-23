@@ -7,6 +7,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.therdl.client.view.widget.AppMenu;
 
+/**
+ *  see  SignInViewImpl javadoc for these methods
+ */
 public interface SignInView extends IsWidget {
 
     interface Presenter {

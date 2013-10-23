@@ -6,6 +6,10 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.UserBean;
 import java.util.List;
 
+
+/**
+ * this is a service for User crud operations
+ */
 public interface UserService {
 
     /**

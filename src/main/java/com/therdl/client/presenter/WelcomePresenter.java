@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  *
  *  @ void doLogIn( String emailtxt, String passwordText ) user login to <URI base path>/getSession
  *  calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
- *  authorisation in server callback onResponseReceived(Request request, Response response)
+ *  authorisation in the server callback method  onResponseReceived(Request request, Response response)
  *
  */
 
@@ -55,6 +55,13 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         container.clear();
         container.add(welcomeView.asWidget());
     }
+
+    /**
+     *  standard runtime method for MVP architecture
+     * @param container  the view container
+     * @param currentUserBean the user state bean, mainly used for authorisation
+     * and to update the menu
+     */
 
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {

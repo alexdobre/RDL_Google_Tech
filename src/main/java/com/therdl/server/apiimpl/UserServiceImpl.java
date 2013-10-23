@@ -22,6 +22,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+/**
+ * A User Service implementation with basic crud methods for managing
+ * user authorisation
+ * @ String defaultDatabaseName, mongo database, in this case is 'rdl'
+ * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ */
 @Singleton
 public class UserServiceImpl implements UserService {
 
@@ -40,6 +46,12 @@ public class UserServiceImpl implements UserService {
         db.getCollection("rdlUserData").drop();
     }
 
+
+    /**
+     * crud get
+     * returns all Users ===  jpa findAll
+     * @return
+     */
     @Override
     public List<UserBean> getAllUsers() {
         DB db = getMongo();
@@ -61,6 +73,13 @@ public class UserServiceImpl implements UserService {
         return beans;
     }
 
+    /**
+     * crud get
+     * returns a User ===  jpa find
+     * @param AutoBean bean  User Details Bean  to find
+     * @param String hash  User password Hash
+     * @return
+     */
     @Override
     public  AutoBean<AuthUserBean>  findUser(AuthUserBean bean, String hash) {
         beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -87,8 +106,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
+    /**
+     * crud get
+     * returns all Last User
+     * @param String match  match string
+     *
+     * @return
+     */
     @Override
     public UserBean getLastUser(String  match) {
         List<UserBean> beans = getAllUsers();
@@ -98,6 +122,12 @@ public class UserServiceImpl implements UserService {
         return lastBean;
     }
 
+
+    /**
+     *  crud get === jpa find
+     * @param String id User primary key
+     * @return
+     */
     @Override
     public UserBean getUser(String id) {
         sLogger.info("UserServiceImpl getUser  id: "+id);
@@ -117,7 +147,13 @@ public class UserServiceImpl implements UserService {
 
 
     // poor code design, this should return a UserObject, programmer was told to do this
-    // quickest to deal with this is session servlet for now
+    // quickest to deal with this is session servlet for now, however this solution should
+    // be upgraded asap
+
+    /**
+     *  crud save === jpa persist
+     * @param UserBean user, server side java  bean
+     */
     @Override
     public void createUser(UserBean user) {
         sLogger.info("UserServiceImpl createUser  email : " + user.getEmail());
@@ -161,7 +197,10 @@ public class UserServiceImpl implements UserService {
         coll.findAndModify(searchQuery, updateDocument);
     }
 
-
+    /**
+     * crud delete === jpa remove
+     * @param String id User primary key
+     */
     @Override
     public void deleteUser(String id) {
         DB db = getMongo();
@@ -175,6 +214,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * testing method to check bean wire up
+     * @return
+     */
     @Override
     public String getDebugString() {
         return "User Service wired up for guice injection ok";
@@ -344,8 +387,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-    // later the url will be a cloud based schema hence exception
+    /**
+     *  MongoClient("localhost", 27017)
+     *  later the above  url will be changed to a cloud based schema hence
+     *  UnknownHostException  exception
+     * @return
+     */
     private DB getMongo() {
 
         defaultDatabaseName = "rdl";

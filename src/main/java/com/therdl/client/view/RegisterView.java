@@ -5,8 +5,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.AuthUserBean;
 
 /**
- * MVP requires these view interfaces
- *
+ *  see  RegisterViewImpl javadoc for these methods
  */
 public interface RegisterView  extends IsWidget {
 

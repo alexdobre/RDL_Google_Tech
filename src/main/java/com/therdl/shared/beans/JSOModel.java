@@ -8,8 +8,19 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 
 
+/**
+ * this class allows flexibility in parsing javascript arrays and object when they contain json data
+ * allows map like get and set operations in GWT on the JSNI layer
+ * encapsulates the boilerplate JSNI to keep the java layer
+ * cleaner and more readable
+ *
+ */
+
 public class JSOModel extends JavaScriptObject {
-	  // Overlay types always have protected, zero-arg constructors
+    /**
+     * Overlay types always have protected, zero-arg constructors
+     */
+
     protected JSOModel() {
     }
 

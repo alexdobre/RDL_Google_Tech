@@ -1,7 +1,8 @@
 package com.therdl.server.data;
 
 /**
- *
+ * FileData Bean
+ * Runtime store for file bytes
  */
 public class FileData {
 

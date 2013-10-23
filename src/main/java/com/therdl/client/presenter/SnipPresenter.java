@@ -18,7 +18,15 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- *  see snip view
+ * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * this class will be extended to encapsulate all the snip related data in and out of the client
+ * to be used for client to view a snip from the snip search view
+ *
+ *  @ SnipView  snipView this presenter GUI component
+ *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ *  @ String currentSnipId  used to retrieve the users correct snip
  */
 public class SnipPresenter implements Presenter, SnipView.Presenter {
 
@@ -41,6 +49,12 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         container.add(snipView.asWidget());
     }
 
+    /**
+     *  standard runtime method for MVP architecture
+     * @param container  the view container
+     * @param currentUserBean the user state bean, mainly used for authorisation
+     * and to update the menu
+     */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
@@ -52,7 +66,15 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         }
     }
 
-    // find snip for the currentSnipId and increments view counter for that snip
+
+    /**
+     *  find snip for the currentSnipId, while not a parameter the following variable
+     *  requires some explanation to help new developers
+     *  JSOModel data is a utility class for mapping javascript data objects and arrays
+     *  and storing them as a container to be used in a GWT java context
+     *  this is a home grown utility class written to encapsulate standard javascript to java
+     *  boiler plate code to keep main java code cleaner and more maintainable
+     */
     private void viewSnipById() {
         log.info("SnipPresenter viewSnipById currentSnipId="+currentSnipId);
 

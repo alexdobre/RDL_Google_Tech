@@ -30,8 +30,6 @@ import java.util.logging.Logger;
  *  @ TextBox userName, email
  *  @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
  *  @ Button submitbBtn
- *
- *
  */
 public class RegisterViewImpl  extends Composite implements RegisterView {
 

@@ -1,7 +1,10 @@
 package com.therdl.shared.beans;
 
 /**
- * temp soulution untill Internet Explorer is discontinued or improved
+ * See AuthUserBean javadoc for use
+ * use this bean only to maintain client side state
+ * temp solution until Internet Explorer is discontinued or improved
+ * once IE7 is no longer used move to HTML5 session for success
  */
 public interface CurrentUserBean {
 

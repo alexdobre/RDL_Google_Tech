@@ -19,6 +19,16 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
+/**
+ * Snip crud operations
+ *  @ String defaultDatabaseName, mongo database, in this case is 'rdl'
+ *  @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  for new developers important to understand GWT Autonean cliet/server architecture
+ *  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
+ *  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
+ *
+ */
+
 @Singleton
 public class SnipServiceImpl implements SnipsService {
 
@@ -37,6 +47,12 @@ public class SnipServiceImpl implements SnipsService {
         db.getCollection("rdlSnipData").drop();
     }
 
+
+    /**
+     * crud get
+     * returns all snips ===  jpa findAll
+     * @return
+     */
     @Override
     public List<SnipBean> getAllSnips() {
         DB db = getMongo();
@@ -59,6 +75,12 @@ public class SnipServiceImpl implements SnipsService {
         return beans;
     }
 
+    /**
+     *  this is Serine/alex/artur code
+     *  nigel suggested not to mix snip crud code with search code and create a search service class
+     * @param searchOptions  search data
+     * @return
+     */
     @Override
     public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
         DB db = getMongo();
@@ -116,6 +138,11 @@ public class SnipServiceImpl implements SnipsService {
         return lastBean;
     }
 
+    /**
+     * crud get
+     * returns a snip ===  jpa find
+     * @return
+     */
     @Override
     public SnipBean getSnip(String id) {
         sLogger.info("SnipServiceImpl getSnip  id: "+id);
@@ -133,6 +160,13 @@ public class SnipServiceImpl implements SnipsService {
         return snip;
     }
 
+    /**
+     * crud save
+     * saves a snip ===  jpa persist
+     * @param snip : Bean  to create
+     * @return
+     */
+
     @Override
     public void createSnip(SnipBean snip) {
         sLogger.info("SnipServiceImpl createSnip  title: "+snip.getTitle());
@@ -146,8 +180,9 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     /**
-     * updates the object in the db
-     * @param snip : Bean object to update with
+     * crud update
+     * updates the snip
+     * @param snip : Bean  to update
      * @return
      */
     @Override
@@ -192,6 +227,13 @@ public class SnipServiceImpl implements SnipsService {
         return snip;
     }
 
+
+    /**
+     * crud delete
+     * updates deletes a snip
+     * @param String id   snip to delete key
+     * @return
+     */
     @Override
     public void deleteSnip(String id) {
         DB db = getMongo();
@@ -322,7 +364,12 @@ public class SnipServiceImpl implements SnipsService {
         return snip;
     }
 
-    // later the url will be a cloud based schema hence exception
+    /**
+     *  MongoClient("localhost", 27017)
+     *  later the above  url will be changed to a cloud based schema hence
+     *  UnknownHostException  exception
+     * @return
+     */
     private DB getMongo() {
 
         defaultDatabaseName = "rdl";

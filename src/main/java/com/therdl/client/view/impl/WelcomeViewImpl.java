@@ -23,6 +23,24 @@ import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
 
+/**
+ * WelcomeViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class provides GUI for the landing page
+ *
+ *  @ Presenter presenter the  presenter for this view
+ *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *  @ SignInViewImpl signInView, login pop up widget
+ *  @ AppMenu appMenu the upper menu view
+ *  fields below are standard GWT UIBinder display elements
+ *  @ FocusPanel  IdeasButton, StoriesButton, VoteButton, ServicesButton,
+ *   FocusPanel widgets allow complex events such as 'hover'
+ *  @ SpanElement hoverDiv this is the feedback for the hover text from the  FocusPanel widgets
+ *  @ Image logo, logo image, note java does not support transparency layers
+ *  @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  maintains client side state
+ *
+ */
 public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
     private static Logger log = Logger.getLogger("");
@@ -38,6 +56,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 	private Presenter presenter;
 
     private SignInViewImpl signInView;
+
     private AutoBean<CurrentUserBean> currentUser;
 
     @UiField
@@ -61,6 +80,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
     @UiField
     SpanElement hoverDiv;
+
 
     public WelcomeViewImpl( AutoBean<CurrentUserBean> currentUser) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -95,6 +115,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
     }
 
+    /**
+     *  show the signInView, login pop up widget  and set its parameters
+     */
     public void showLoginPopUp() {
 
         signInView = new SignInViewImpl(this);
@@ -108,6 +131,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
     }
 
+    /**
+     *  show the error validation message in the signInView
+     */
     @Override
     public void showLoginFail() {
 
@@ -127,6 +153,14 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 	}
 
 
+
+    /**
+     *  Sets the upper header Menu to the correct state for supplied credentials
+     *  post sign up called from presenter
+     * @param name supplied credential
+     * @param email supplied credential
+     * @param auth boolean auth state from server via presenter
+     */
     @Override
     public void setloginresult(String name, String email, boolean auth) {
         if (auth) {
@@ -150,7 +184,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
     }
 
 
-    // reset app menu on log out
+    /**
+     * reset app menu on log out
+     */
       public void logout() {
 
           appMenu.setLogOutVisible(false);
@@ -160,8 +196,11 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
 
       }
 
-
-    // called form signin view pop up to initiate log in flow
+    /**
+     * called form signin view pop up to initiate log in flow
+     * @param emailtxt  supplied credential
+     * @param passwordText   supplied credential
+     */
     public void onSubmit(String emailtxt, String passwordText) {
 
         presenter.doLogIn(emailtxt, passwordText);
@@ -173,34 +212,46 @@ public class WelcomeViewImpl extends Composite implements WelcomeView  {
     }
 
 
+    /**
+     *  displays the hover tooltip for this widget
+     * @param event Standard GWT hover event
+     */
     @UiHandler("IdeasButton")
     public void onMouseOver(MouseOverEvent event)
     {
         hoverDiv.setInnerHTML(Constants.IDEAS_TEXT);
     }
 
-
+    /**
+     *  displays the hover tooltip for this widget
+     * @param event Standard GWT hover event
+     */
     @UiHandler("StoriesButton")
     public void onMouseOver1(MouseOverEvent event)
     {
         hoverDiv.setInnerHTML(Constants.STORIES_TEXT);
     }
 
-
+    /**
+     *  displays the hover tooltip for this widget
+     * @param event Standard GWT hover event
+     */
     @UiHandler("VoteButton")
     public void onMouseOver2(MouseOverEvent event)
     {
         hoverDiv.setInnerHTML(Constants.VOTES_TEXT);
     }
 
-
+    /**
+     *  displays the hover tooltip for this widget
+     * @param event Standard GWT hover event
+     */
     @UiHandler("ServicesButton")
     public void onMouseOver3(MouseOverEvent event)
     {
         hoverDiv.setInnerHTML(Constants.SERVICES_TEXT);
     }
 
-    // hover data
 
 }
 
