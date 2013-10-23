@@ -74,13 +74,25 @@
             margin:5px;
         }
 
+        .getLinkButton {
+            margin-left: 5px;
+        }
+
+        @external .getLinkPopup;
+        .getLinkPopup {
+            margin:0;
+        }
+
 	</ui:style>
 
     <g:VerticalPanel>
-        <g:Label text = "Filter" styleName = '{style.labelText}' />
 
         <g:HTMLPanel styleName = '{style.submitPanel}' ui:field="container">
             <table>
+                <tr>
+                    <td><g:Label text = "Filter" styleName = '{style.labelText}' /></td>
+                    <td><g:Button ui:field="getLinkBtn" text="Link" styleName="{style.getLinkButton}"/></td>
+                </tr>
                 <tr>
                     <td><g:Label  styleName = '{style.labelText}'>Title</g:Label></td>
                     <td>
