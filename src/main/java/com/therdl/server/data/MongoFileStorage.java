@@ -8,8 +8,12 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 
 /**
- *  as LocalFileStorge only uses Mongo for cross build
- *  persistance
+ *  Mongo Db File Storage  implementation of the  FileStorage type
+ *  see http://docs.mongodb.org/manual/core/gridfs/
+ *
+ *  @ HttpSession sessions, Servlet 3 api session object, use this for the current user id
+ *  when constructing a unique avatar uri for this user
+ *  @ DbFileService dbFileService , the file service that handles file crud
  */
 public class MongoFileStorage  implements FileStorage {
 
@@ -28,12 +32,27 @@ public class MongoFileStorage  implements FileStorage {
         return "userAvatar"+ File.separator+fileName;
     }
 
+    /**
+     *  crud save === jpa persist
+     * @param FileData fileData, the file bytes store
+     * @param String fileExtension, currently only jpeg supported but this will
+     * be extended
+     * @return
+     */
+
     @Override
     public String storeFile(FileData file, String fileExtension) {
      // not implemented
 
         return null;
     }
+
+    /**
+     * crud save === jpa persist
+     * @param FileData file , the file bytes store
+     * @param String fileExtension, currently only jpeg supported but this will
+     * @return
+     */
 
     @Override
     public String storeFileDb(FileData file, String fileName) {
@@ -42,6 +61,15 @@ public class MongoFileStorage  implements FileStorage {
         return "0k";
     }
 
+
+
+    /**
+     * sets the uri for the image
+     * this uri is used by the javascript layer to retrive the user avatar image
+     * @param String avatarDirUrl relative uri to the image
+     * @param String fileName file name of image
+     * @return
+     */
     @Override
     public boolean setAvatarForUserFromDb(String avatarDirUrl, String fileName) {
 

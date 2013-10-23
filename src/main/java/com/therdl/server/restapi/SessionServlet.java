@@ -28,7 +28,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Session controller for simple user authentication
+ * Session controller for simple user authentication. This project uses the Guice injection
+ * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
+ * if you are from the Spring framework space
+ *
+ * This class handles user authentication and session runtime data
+ *
+ * @ HttpSession sessions, Servlet 3 api session object, use this for the current user id
+ * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ UserService userService see com.therdl.server.apiimpl.UserServiceImpl java doc
+ * @ FileStorage mongoFileStorage  see com.therdl.server.data.MongoFileStorage java doc
+ *
+ * @ doPost the post method for this Servlet
  *
  */
 
@@ -51,6 +62,19 @@ public class SessionServlet  extends HttpServlet {
 
 
     }
+
+    /**
+     *  This is the equivalent main method for this class
+     * @param HttpServletRequest req  Standard Http ServletRequest
+     * @param HttpServletResponse resp  Standard Http ServletResponse
+     * @throws ServletException
+     * @throws IOException
+     *
+     *  String contextRoot, obtains the top level directory to find resource in server runtime directory
+     *  String avatarDirUrl uri for avatar image constructed from contextRoot
+     *  AutoBean<AuthUserBean> authBean user credentials from client
+     *
+     */
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {

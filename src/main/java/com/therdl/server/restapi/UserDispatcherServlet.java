@@ -28,6 +28,24 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * UserDispatcherServlet controller. This project uses the Guice injection
+ * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
+ * if you are from the Spring framework space
+ *
+ * UserDispatcherServlet uses Guice to implement  the command pattern re Gang of 4 design patterns
+ * see http://java.dzone.com/articles/design-patterns-command
+ *
+ * @ HttpSession sessions, Servlet 3 api session object, use this for the current user id
+ * @ UserService userServicee  see com.therdl.server.apiimpl.UserServiceImpl java doc
+ * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * for new developers important to understand GWT Autonean cliet/server architecture
+ * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
+ * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
+ *
+ *
+ */
+
 @Singleton
 public class UserDispatcherServlet extends HttpServlet {
 
@@ -57,12 +75,23 @@ public class UserDispatcherServlet extends HttpServlet {
     }
 
     /**
-     * Maven : will be executed on POST request with 'http://localhost:8080/rdl/getUsers' URL
-     * Jboss : will be executed on POST request with 'http://localhost:8080/therdl/rdl/getUsers' URL
-     * @param req
-     * @param resp
+     * When code is running in the Maven Jetty plugin (development) the uri for this method will be
+     * 'http://localhost:8080/rdl/getUsers' URL
+     *
+     * When code is running in the JBoss Application server (deployment) the uri for this method will be
+     * 'http://localhost:8080/therdl/rdl/getUsers' URL
+     * @param HttpServletRequest req  Standard Http ServletRequest
+     * @param HttpServletResponse resp  Standard Http ServletResponse
      * @throws ServletException
      * @throws IOException
+     *
+     * AutoBean<UserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
+     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+     * here the actionBean relates the users requested action
+     * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex for serverside
+     * autobean serialisation
+     *
+     * Gson gson see http://code.google.com/p/google-gson/ for Gson serialaisation
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

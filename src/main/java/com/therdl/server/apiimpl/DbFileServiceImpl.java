@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
 /**
  *  A file service implementation for images
  *  uses Mongo libary GridFS can be extended to
- *  video and audio
+ *  video and audio  see http://docs.mongodb.org/manual/core/gridfs/
  *  @ String defaultDatabaseName, mongo database, in this case is 'rdl'
  *  @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */

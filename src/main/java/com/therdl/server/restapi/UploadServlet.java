@@ -27,6 +27,23 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 
 /**
+ * UploadServlet file upload  controller. This project uses the Guice injection
+ * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
+ * if you are from the Spring framework space
+ *
+ * @ HttpSession sessions, Servlet 3 api session object, use this for the current user id
+ * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *
+ * String avatarText, alt text for users avatar image
+ *
+ * FileStorage pictureStorage, file system storage for uploaded files see
+ * com.therdl.server.data.LocalFileStorage java doc
+ *
+ * FileStorage mongoFileStorage  database storage for uploaded files
+ * see com.therdl.server.data.MongoFileStorage java doc
+ *
+ * AutoBean<SnipBean> actionBean see this video for a great explanation of 'actions' in the command pattern
+ *
  */
 
 @Singleton
@@ -50,6 +67,27 @@ public class UploadServlet extends HttpServlet {
 
     }
 
+
+    /**
+     * When code is running in the Maven Jetty plugin (development) the uri for this method will be
+     * 'http://localhost:8080/rdl/avatarUpload' URL
+     *
+     * When code is running in the JBoss Application server (deployment) the uri for this method will be
+     * 'http://localhost:8080/therdl/rdl/avatarUpload' URL
+     * @param HttpServletRequest req  Standard Http ServletRequest
+     * @param HttpServletResponse resp  Standard Http ServletResponse
+     * @throws ServletException
+     * @throws IOException
+     *
+     * String userId users user id unique identifier
+     * ServletFileUpload upload  apache commons file upload
+     * String userName users user name
+     * String avatarUrl relative uri to the image
+     * AutoBean<AuthUserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
+     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+     * here the actionBean relates the users requested action
+     *
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)   throws ServletException, IOException {
 
