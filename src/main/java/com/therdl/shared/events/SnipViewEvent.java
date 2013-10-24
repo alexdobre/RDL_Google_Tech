@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.GwtEvent;
 /**
  * opens a snip in the snip view
  * passes in the author and title for look up
+ * @ String snipId  unique identifier for a snip
  */
 public class SnipViewEvent extends GwtEvent<SnipViewEventHandler>  {
 

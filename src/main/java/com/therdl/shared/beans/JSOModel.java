@@ -14,6 +14,18 @@ import com.google.gwt.core.client.JsArrayString;
  * encapsulates the boilerplate JSNI to keep the java layer
  * cleaner and more readable
  *
+ * this class extends the GWT JavaScriptObject, the basic rational for this class is the
+ * limitation of the JavaScriptObject class, that is that the GWT JavaScriptObject cannot be created
+ * directly and should be declared as the return type of a JSNI method. This  JSOModel class
+ * allows you to map between json formatted strings returned from a server to a
+ * 1. JavaScriptObject
+ * 2. JsonObject
+ * 3. JsonArray
+
+ * so it is a better fit for a
+ * model view design pattern, for example anywhere where you need a grid display
+ * backed up by json data
+
  */
 
 public class JSOModel extends JavaScriptObject {
@@ -55,15 +67,34 @@ public class JSOModel extends JavaScriptObject {
         return eval('(' + jsonString + ')');
     }-*/;
 
+
+    /**
+     * javascript objects are key value maps, this method tests that a key exits
+     * used before calling get("<key>")
+     * @param key
+     * @return
+     */
     public final native boolean hasKey(String key) /*-{
         return this[key] != undefined;
     }-*/;
 
+    /**
+     * javascript objects are key value maps, this method retruns all the
+     * key values as a JSNI array
+     * often used to match ona key value
+     * @param key
+     * @return
+     */
     public final native JsArrayString keys() /*-{
         var a = new Array();
         for (var p in this) { a.push(p); }
         return a;
     }-*/;
+
+    /**
+     * returns the keys for this object as a java.util.Set
+     * @return
+     */
 
     @Deprecated
     public final Set<String> keySet() {
@@ -74,6 +105,8 @@ public class JSOModel extends JavaScriptObject {
         }
         return set;
     }
+
+    // only standard getters and setters below
 
     public final native String get(String key) /*-{
         return "" + this[key];

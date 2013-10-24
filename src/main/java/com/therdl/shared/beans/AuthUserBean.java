@@ -12,11 +12,23 @@ package com.therdl.shared.beans;
  */
 public interface  AuthUserBean {
 
-    // AuthUserBean needs the avatar url to pass to currentuserbean
+    /**
+     * AuthUserBean needs the avatar url to pass to currentuserbean
+     */
     String getAvatarUrl();
-
+    /**
+     * AuthUserBean needs the avatar url to pass to currentuserbean
+     * @ String avatarUrl  the uri to locate the users image,
+     * used in the browser/javascript layer
+     */
     void setAvatarUrl(String avatarUrl);
 
+
+    /**
+     * methods below are for standard form based credentials submitted on the clien
+     * for user login and sign up
+     * @return
+     */
     String getName() ;
 
     void setName(String name);
@@ -27,12 +39,30 @@ public interface  AuthUserBean {
 
     String getPassword();
 
-    void setPassword(String password);       ;
+    void setPassword(String password);
 
+    /**
+     * this method is used to encapsulate the users authorisation status
+     * goal is to minimise password transport
+     * @return
+     */
     boolean isAuth();
 
+    /**
+     * this method is used to encapsulate the users authorisation status
+     * goal is to minimise password transport
+     * boolean auth set after login and sign up, true is logged in
+     * @return
+     */
     void setAuth(boolean auth);
 
+    /**
+     * used for implementing the command pattern in this application
+     * for actions see
+     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+     *
+     * @return
+     */
     String getAction();
 
     void setAction(String action);

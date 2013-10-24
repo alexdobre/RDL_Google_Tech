@@ -5,8 +5,10 @@ import java.util.List;
 public interface SnipBean {
 
     /**
-     * this field is not being saved in the db
-     * it is mainly the action for the server to handle the request
+     /**
+     * used for implementing the command pattern in this application
+     * for actions see
+     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
      * @return
      */
     String getAction();
@@ -17,7 +19,16 @@ public interface SnipBean {
     String getId();
     void setId(String id);
 
+    /**
+     * AuthUserBean needs the avatar url to pass to currentuserbean
+     */
     String getAvatarUrl();
+
+    /**
+     * AuthUserBean needs the avatar url to pass to currentuserbean
+     * @ String avatarUrl  the uri to locate the users image,
+     * used in the browser/javascript layer
+     */
     void setAvatarUrl(String avatarUrl);
 
     String getTitle();

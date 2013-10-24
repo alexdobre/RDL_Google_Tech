@@ -20,6 +20,8 @@ import java.util.logging.Logger;
  * this class will handle the file upload as a pop up
  * triggered by clicking on the avatar image place holder
  *
+ * this class extends PopupPanel to implement a custom GWT widget
+ *
  */
 public class AvatarUploadPopUp extends PopupPanel {
 

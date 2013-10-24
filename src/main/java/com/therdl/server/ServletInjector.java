@@ -19,6 +19,25 @@ import com.therdl.server.restapi.UploadServlet;
 import com.therdl.server.restapi.UserDispatcherServlet;
 import org.slf4j.LoggerFactory;
 
+/**
+ * ServletInjector controller Guice injection. This project uses the Guice injection
+ * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
+ * if you are from the Spring framework space
+ *
+ *  2 layers Service and Servlet
+ *
+ *  1. Service layer Schema  <type> is bound to <object>  explicitly
+ *  SnipsService SnipServiceImpl
+ *  UserService UserServiceImpl
+ *  DbFileServiceDbFileServiceImpl
+ *  FileStorage MongoFileStorage
+ *
+ *  2. Servlet layer
+ *  SnipDispatcherServlet controller for Snip operations
+ *  UserDispatcherServlet controller for User operations
+ *  SessionServlet controller for Session operations
+ *  UploadServlet controller for Upload operations
+ */
 
 public class ServletInjector extends GuiceServletContextListener {
 

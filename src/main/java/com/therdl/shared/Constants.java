@@ -8,10 +8,10 @@ public class Constants {
 
     /**
      * Please change the DEPLOY constant to configure the paths of the
-     * projects deployment for jetty or jboss
+     * projects for jetty and jboss
      *
-     * true  : will optimize the paths for jboss
-     * false : will optimize the paths for maven
+     * true  : will optimize the paths for jboss this is the deployed mode
+     * false : will optimize the paths for jetty this is the development mode
      */
       public static final boolean DEPLOY = false;
   //  public static final boolean DEPLOY =  true;
