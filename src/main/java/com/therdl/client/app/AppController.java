@@ -141,8 +141,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
     /**
      *  present the Welcome landing page for a user with a  authorised state
-     * @param container      the Presenter View
-     * @param currentUserBean  a bean with  authorised state information(eg logged in or out)
+     * @param HasWidgets container      the Presenter View
+     * @param AutoBean currentUserBean  a bean with  authorised state information(eg logged in or out)
      */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
@@ -158,7 +158,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
     /**
      * This binds the history tokens with the different application states
-     * @param event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+     * @param ValueChangeEvent event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
      * for ValueChangeEvent think HistoryEvent
      * String tokens are extracted from the HistoryEvents, this allows the correct view to be constructed and presented
      * this method provides the machinery

@@ -22,6 +22,13 @@ import java.util.logging.Logger;
  *
  * this class extends PopupPanel to implement a custom GWT widget
  *
+ * @ HTMLPanel profileUpLoadFormPanel, the container for the upload form upload
+ * @ FormPanel uploadForm, GWT form upload panel
+ * see http://www.gwtapps.com/doc/html/com.google.gwt.user.client.ui.FormPanel.html
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ ProfileViewImpl mainView, the parent container,
+ * as this class is a pop up it needs a reference to its parent container to call back to
+ *
  */
 public class AvatarUploadPopUp extends PopupPanel {
 
@@ -53,7 +60,12 @@ public class AvatarUploadPopUp extends PopupPanel {
         sLogger .info("AvatarUploadPopUp");
     }
 
-    // pleae note as we are using the gwt form upload widget we break the mvp here in a small way only
+
+    /**
+     *  note as we are using the gwt form upload widget we break the mvp here in a small way only
+     *  FileUpload upload see http://www.gwtproject.org/javadoc/latest/com/google/gwt/user/client/ui/FileUpload.html
+     *  FileUpload wraps the HTML <input type='file'> element.
+     */
     private void setUploadForm() {
         String uploadUrl =GWT.getModuleBaseURL()+"avatarUpload";
         if(!Constants.DEPLOY){
@@ -73,6 +85,7 @@ public class AvatarUploadPopUp extends PopupPanel {
 
 
         // Create a FileUpload widget.
+        //
         FileUpload upload = new FileUpload();
         upload.setName("fileElement");
         upload.setStylePrimaryName("uploadFormElement");

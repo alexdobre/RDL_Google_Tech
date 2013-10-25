@@ -20,6 +20,19 @@ import com.therdl.shared.beans.*;
 
 import java.util.logging.Logger;
 
+/**
+ * SnipSearchViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class provides GUI so user can search and view a list of snips
+ *
+ *  @ SearchFilterWidget searchFilterWidget, a filter widget for the search
+ *  @ SearchListWidget searchListWidget, this is the row widget in the list of rows
+ *  @ AppMenu appMenu the upper menu view
+ *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  @ String token, a GWT History token see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+ *  @ AutoBean<CurrentUserBean> currentUserBean manages user state
+ *  @ AutoBean<SnipBean> currentSearchOptionsBean for autobeans see see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ */
 public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private static Logger log = Logger.getLogger("");

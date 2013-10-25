@@ -22,6 +22,22 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
 
+/**
+ * This class manages the Closure Editor Widget
+ * see http://closuretools.blogspot.com/2010/07/introducing-closure-library-editor.html
+ * the closure code is found at com.therdl.client.view.cssbundles/snipeditor.js
+ * the closure code is managed by JSNI methods
+ * see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsJSNI.html
+ * the JSOModel class is used extensively, JSOModel extends the GWT JavaScriptObject class,
+ * A JavaScriptObject cannot be created directly. JavaScriptObject should
+ * be declared as the return type of a JSNI method that returns native (non-Java) objects
+ * JSOModel is designed to smooth out this at times abrupt delimination between javascript and java
+ * ie Java String <-->JSOModel<--->JavaScriptObject<-->JSNI
+ *
+ * @SnipEditViewImpl snipEditView, the parent container for thi widget, allows callback thru the
+ * SnipEditViewImpl's presenter class
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ */
 
 public class EditorClientWidget extends Composite  {
     private static Logger log = Logger.getLogger("");
@@ -68,6 +84,11 @@ public class EditorClientWidget extends Composite  {
 
     }
 
+
+    /**
+     * ensures com.therdl.client.view.cssbundles/snipeditor.js is attached to the window js object when this
+     * widget comes into focus
+     */
     private void injectScript() {
         // uncomment condition because when switching list and editor views second time the js scripts does not included into the html
         //if(!isInjected) {
