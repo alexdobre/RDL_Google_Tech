@@ -10,7 +10,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class LogInOkEvent extends GwtEvent<LogInOkEventEventHandler> {
 
 
-    public static Type<LogInOkEventEventHandler>  TYPE = new Type<LogInOkEventEventHandler>();
+    public static Type<LogInOkEventEventHandler> TYPE = new Type<LogInOkEventEventHandler>();
 
     @Override
     public Type<LogInOkEventEventHandler> getAssociatedType() {

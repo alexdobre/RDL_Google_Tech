@@ -6,9 +6,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * Simple  log-in event no payload required
  * handlers use this event to update the status of the menu
  */
-public class LogInEvent  extends GwtEvent<LogInEventEventHandler> {
+public class LogInEvent extends GwtEvent<LogInEventEventHandler> {
 
-    public static Type<LogInEventEventHandler>  TYPE = new Type<LogInEventEventHandler>();
+    public static Type<LogInEventEventHandler> TYPE = new Type<LogInEventEventHandler>();
 
     @Override
     public Type<LogInEventEventHandler> getAssociatedType() {

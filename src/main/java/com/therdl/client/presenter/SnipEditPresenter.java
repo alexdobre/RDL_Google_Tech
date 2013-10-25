@@ -23,14 +23,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , ValueChangeHandler<String> {
+/**
+ * SnipEditPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * this class will be extended to encapsulate all the snip related data in and out of the client
+ * to be used for client to view a snip from the snip search view
+ *
+ * @ SnipEditView  view this presenter GUI component
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ * @ List<JSOModel> jSonList  as a JSON Array of search results used to obtain a snip for editing
+ * JSOModel objects, see com.therdl.shared.beans.JSOModel javadoc for this class
+ * @ String currentSnipId  used to retrieve the users correct snip
+ */
+
+public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, ValueChangeHandler<String> {
 
     private static Logger log = Logger.getLogger("");
 
     private final SnipEditView view;
 
     private Beanery beanery = GWT.create(Beanery.class);
-//    private List<JSOModel> jSon1List;
+    //    private List<JSOModel> jSon1List;
     private List<JSOModel> jSonList;
     private final AppController controller;
     private String currentSnipId;
@@ -44,7 +58,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         this.currentSnipId = currentSnipId;
 
         // user must be authorised to edit
-        if(!controller.getCurrentUserBean().as().isAuth()) {
+        if (!controller.getCurrentUserBean().as().isAuth()) {
             History.newItem(RDLConstants.Tokens.WELCOME);
             History.fireCurrentHistoryState();
 
@@ -58,7 +72,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         container.add(view.asWidget());
 
         loadEditor();
-      //  fetchSnips();
+        //  fetchSnips();
     }
 
     @Override
@@ -66,25 +80,25 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         container.clear();
         container.add(view.asWidget());
         // user must be authorised to edit
-        if(controller.getCurrentUserBean().as().isAuth() ) {
+        if (controller.getCurrentUserBean().as().isAuth()) {
             log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
             view.getAppMenu().setLogOutVisible(true);
             view.getAppMenu().setSignUpVisible(false);
             view.getAppMenu().setUserInfoVisible(true);
             view.setloginresult(controller.getCurrentUserBean().as().getName(),
-                    controller.getCurrentUserBean().as().getEmail(), true  );
+                    controller.getCurrentUserBean().as().getEmail(), true);
         }
 
         loadEditor();
-     //   fetchSnips();
+        //   fetchSnips();
 
     }
 
     private void loadEditor() {
-        if(!currentSnipId.equals("")) {
+        if (!currentSnipId.equals("")) {
             findSnipById(currentSnipId);
         } else {
-             view.addEditorClientWidget(null);
+            view.addEditorClientWidget(null);
         }
     }
 
@@ -99,7 +113,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         String subCat = view.getEditorClientWidget().getSnipData().get("subCat");
 
         if (bean.as().getId() == null) {
-            Window.alert("this is a new snip please use submit not submit-edit" );
+            Window.alert("this is a new snip please use submit not submit-edit");
             return;
         }
 
@@ -110,11 +124,11 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         bean.as().setContent(contentAsText);
         bean.as().setAuthor(controller.getCurrentUserBean().as().getName());
         bean.as().setAction("update");
-        log.info("SnipEditPresenter submitBean bean : " +  bean.as().getTitle());
+        log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle());
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY){
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -124,9 +138,9 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         // now submit to server
         try {
 
-            String json = AutoBeanCodex.encode( bean).getPayload();
+            String json = AutoBeanCodex.encode(bean).getPayload();
             log.info("SnipEditPresenter submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
+            requestBuilder.sendRequest(json, new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
@@ -141,6 +155,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
                     }
                 }
+
                 @Override
                 public void onError(Request request, Throwable exception) {
                     log.info("SnipEditPresenter submit onError)" + exception.getLocalizedMessage());
@@ -154,16 +169,16 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     }
 
-   // delete
+    // delete
 
     @Override
     public void onDeleteSnip(String id) {
 
 
-        log.info("SnipEditPresenter onDelete: snip id "+id);
+        log.info("SnipEditPresenter onDelete: snip id " + id);
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY){
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -174,10 +189,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
             AutoBean<SnipBean> actionBean = beanery.snipBean();
             actionBean.as().setAction("delete");
             actionBean.as().setId(id);
-            String json = AutoBeanCodex.encode( actionBean).getPayload();
+            String json = AutoBeanCodex.encode(actionBean).getPayload();
 
             log.info("SnipEditPresenter submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
+            requestBuilder.sendRequest(json, new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
@@ -193,6 +208,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
                     }
                 }
+
                 @Override
                 public void onError(Request request, Throwable exception) {
                     log.info("SnipEditPresenter onDeleteSnip onError)" + exception.getLocalizedMessage());
@@ -203,7 +219,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         } catch (RequestException e) {
             log.info(e.getLocalizedMessage());
         }
-
 
 
     }
@@ -219,7 +234,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         String coreCat = view.getEditorClientWidget().getSnipData().get("coreCat");
         String subCat = view.getEditorClientWidget().getSnipData().get("subCat");
 
-        log.info("SnipEditPresenter submitBean bean: "+title);
+        log.info("SnipEditPresenter submitBean bean: " + title);
 
         if (title.isEmpty()) {
             Window.alert("A snip needs at least a title");
@@ -239,13 +254,13 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         bean.as().setRep(0);
         bean.as().setAction("save");
 
-        log.info("SnipEditPresenter submitBean bean : title : " +  bean.as().getTitle());
+        log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
 
         // now submit to server
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY){
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -257,7 +272,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
             String json = AutoBeanCodex.encode(bean).getPayload();
             log.info("SnipEditPresenter submit json: " + json);
-            requestBuilder.sendRequest(json , new RequestCallback() {
+            requestBuilder.sendRequest(json, new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
@@ -270,6 +285,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
                         log.info("SnipEditPresenter submit post fail");
                     }
                 }
+
                 @Override
                 public void onError(Request request, Throwable exception) {
                     log.info("SnipEditPresenter submit onError)" + exception.getLocalizedMessage());
@@ -282,7 +298,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
     }
 
 
-
     // this methoud used to validate snip drop down in edit view
     private void fetchSnips() {
 
@@ -290,14 +305,14 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY) {
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
         log.info("SnipEditPresenter getSnipDemoResult  updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean>  currentBean = beanery.snipBean();
+        AutoBean<SnipBean> currentBean = beanery.snipBean();
         currentBean.as().setAction("getall");
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
@@ -309,7 +324,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
-                    if(data.length() == 0 )  return;
+                    if (data.length() == 0) return;
 
                     jSonList = new ArrayList<JSOModel>();
 
@@ -323,14 +338,14 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
                     for (int k = 0; k < jSonList.size(); k++) {
                         // used to index the incoming json array
-                        String counter = ""+k;
+                        String counter = "" + k;
                         AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
                         beans.add(bean);
                     }
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
                     beans.clear();
                     // set snip combo in EditorClientWidget
-                 //   view.getEditorClientWidget().setSnipComboBox(data);
+                    //   view.getEditorClientWidget().setSnipComboBox(data);
 
                 }
 
@@ -352,14 +367,14 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY) {
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
         log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean>  currentBean = beanery.snipBean();
+        AutoBean<SnipBean> currentBean = beanery.snipBean();
         currentBean.as().setAction("getSnip");
         currentBean.as().setId(snipId);
 
@@ -370,7 +385,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
-                    log.info("getSnipResponse="+response.getText());
+                    log.info("getSnipResponse=" + response.getText());
                     JSOModel data = JSOModel.fromJson(response.getText());
 
                     view.addEditorClientWidget(data);
@@ -409,10 +424,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     @Override
     public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
-        log.info("SnipEditPresenter  onValueChange" +stringValueChangeEvent.getValue());
-        if(stringValueChangeEvent.getValue().equals("snips")) {
+        log.info("SnipEditPresenter  onValueChange" + stringValueChangeEvent.getValue());
+        if (stringValueChangeEvent.getValue().equals("snips")) {
 
-            if(!controller.getCurrentUserBean().as().isAuth() ) {
+            if (!controller.getCurrentUserBean().as().isAuth()) {
                 History.newItem(RDLConstants.Tokens.WELCOME);
                 History.fireCurrentHistoryState();
 

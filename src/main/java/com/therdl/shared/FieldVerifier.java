@@ -11,7 +11,6 @@ public class FieldVerifier {
     private static Logger log = Logger.getLogger("");
 
     /**
-     *
      * @param name String to be checked for vaildation
      * @return boolean true for a valid field
      */
@@ -22,19 +21,18 @@ public class FieldVerifier {
             return false;
         }
 
-        log.info("FieldVerifier isValidName name " +name);
+        log.info("FieldVerifier isValidName name " + name);
         return true;
     }
 
     /**
-     *
-     * @param psswd1  passwords to be checked for equality
+     * @param psswd1 passwords to be checked for equality
      * @param psswd2
-     * @return   true when passwords match
+     * @return true when passwords match
      */
-    public static boolean confirmPassword(String psswd1 , String psswd2) {
+    public static boolean confirmPassword(String psswd1, String psswd2) {
 
-        if(psswd1.equals(psswd2))return true;
+        if (psswd1.equals(psswd2)) return true;
         else return false;
 
     }

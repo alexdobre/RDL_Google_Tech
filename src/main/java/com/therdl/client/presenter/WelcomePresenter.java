@@ -22,14 +22,12 @@ import java.util.logging.Logger;
  * WelcomePresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  *
- *  @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
- *  @ WelcomeView  welcomeView this presenter GUI component
- *  @ String avatarUrl a URI to locate the user image on the filesystem or in the database
- *
- *  @ void doLogIn( String emailtxt, String passwordText ) user login to <URI base path>/getSession
- *  calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
- *  authorisation in the server callback method  onResponseReceived(Request request, Response response)
- *
+ * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ * @ WelcomeView  welcomeView this presenter GUI component
+ * @ String avatarUrl a URI to locate the user image on the filesystem or in the database
+ * @ void doLogIn( String emailtxt, String passwordText ) user login to <URI base path>/getSession
+ * calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
+ * authorisation in the server callback method  onResponseReceived(Request request, Response response)
  */
 
 public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
@@ -44,7 +42,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
 
     public WelcomePresenter(WelcomeView welcomeView, AppController controller) {
-        this.controller =controller;
+        this.controller = controller;
         this.welcomeView = welcomeView;
         this.welcomeView.setPresenter(this);
 
@@ -57,17 +55,18 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
     }
 
     /**
-     *  standard runtime method for MVP architecture
-     * @param container  the view container
+     * standard runtime method for MVP architecture
+     *
+     * @param container       the view container
      * @param currentUserBean the user state bean, mainly used for authorisation
-     * and to update the menu
+     *                        and to update the menu
      */
 
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(welcomeView.asWidget());
-        if(!controller.getCurrentUserBean().as().isAuth() ) {
+        if (!controller.getCurrentUserBean().as().isAuth()) {
             log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
             welcomeView.getAppMenu().setLogOutVisible(false);
             welcomeView.getAppMenu().setSignUpVisible(true);
@@ -84,17 +83,17 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
      * welcomeView.setloginresult(name, email, auth):: updatses the view with credentials mainly for the
      * upper menu
      *
-     * @param emailtxt String unique identifier for login and subsequent granted state information
+     * @param emailtxt     String unique identifier for login and subsequent granted state information
      * @param passwordText String password identifier for login
      */
-    public void doLogIn( String emailtxt, String passwordText ) {
+    public void doLogIn(String emailtxt, String passwordText) {
 
         Beanery beanery = GWT.create(Beanery.class);
         log.info("v onSubmit password " + passwordText + " emailtxt  " + emailtxt);
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
 
-        if(!Constants.DEPLOY){
+        if (!Constants.DEPLOY) {
             authUrl = authUrl.replaceAll("/therdl", "");
         }
 
@@ -128,15 +127,15 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                             log.info("WelcomePresenter onResponseReceived  !auth  ");
                             // use app menu
                             welcomeView.showLoginFail();
-                            controller.setCurrentUserBean("", "", avatarUrl,  auth);
-                        }   else {
+                            controller.setCurrentUserBean("", "", avatarUrl, auth);
+                        } else {
 
                             if (data.get("name") != null) {
                                 log.info("WelcomePresenter  avatarurl exists" + data.get("avatarUrl"));
                                 avatarUrl = data.get("avatarUrl");
                             }
-                        controller.setCurrentUserBean(name, email, avatarUrl,  auth);
-                        welcomeView.setloginresult(name, email, auth);
+                            controller.setCurrentUserBean(name, email, avatarUrl, auth);
+                            welcomeView.setloginresult(name, email, auth);
                             // use app menu
                             // try and update any open view
                             GuiEventBus.EVENT_BUS.fireEvent(new LogInOkEvent());

@@ -27,15 +27,15 @@ import com.therdl.shared.events.LogInOkEventEventHandler;
 import java.util.logging.Logger;
 
 
-
- /**
-  * SignInViewImpl extends PopupPanel is a pop up embedded in the Welcome view
-  *
-  * fields below are standard GWT form fields for user sign-up
-  *  @ TextBox  email  String used as the unique identifier in the database
-  *  @ PasswordTextBox psswd  String the user password
-  *  @ Label loginFail  GWT Label widget validation callback for login fails
-  */
+/**
+ * SignInViewImpl extends PopupPanel is a pop up embedded in the Welcome view
+ * <p/>
+ * fields below are standard GWT form fields for user sign-up
+ *
+ * @ TextBox  email  String used as the unique identifier in the database
+ * @ PasswordTextBox psswd  String the user password
+ * @ Label loginFail  GWT Label widget validation callback for login fails
+ */
 
 public class SignInViewImpl extends PopupPanel implements SignInView {
 
@@ -74,7 +74,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         this.setStyleName("signInView");
 
         // user has just sucessfully logged in update app menu
-        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler()  {
+        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
             @Override
             public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
@@ -86,30 +86,34 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
     }
 
-     /**
-      * get the password string
-      * @param event  Standard GWT ClickEvent
-      */
+    /**
+     * get the password string
+     *
+     * @param event Standard GWT ClickEvent
+     */
     @UiHandler("password")
     public void onUserFocused(FocusEvent event) {
         password.setText("");
     }
-     /**
-      * get the email string
-      * @param event  Standard GWT ClickEvent
-      */
+
+    /**
+     * get the email string
+     *
+     * @param event Standard GWT ClickEvent
+     */
     @UiHandler("email")
     public void onEmailFocused(FocusEvent event) {
         email.setText("");
     }
 
-     /**
-      * Handler for form submit
-      * @param event Standard GWT ClickEvent
-      *
-      * welcomeViewImpl.onSubmit(eMail, psswd ) submits bean for sign-in in
-      * com.therdl.server.restapi.SessionServlet class
-      */
+    /**
+     * Handler for form submit
+     *
+     * @param event Standard GWT ClickEvent
+     *              <p/>
+     *              welcomeViewImpl.onSubmit(eMail, psswd ) submits bean for sign-in in
+     *              com.therdl.server.restapi.SessionServlet class
+     */
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
         log.info("SignInViewImpl onSubmit");
@@ -117,20 +121,19 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         String eMail = email.getText();
         String psswd = password.getText();
 
-        log.info("SignInViewImpl onSubmit eMail psswd "+eMail+" : "+psswd);
+        log.info("SignInViewImpl onSubmit eMail psswd " + eMail + " : " + psswd);
 
 
+        if (eMail != null && !eMail.equals("Email") && psswd != null && !password.equals("password")) {
+            log.info("SignInViewImpl onSubmit to server flow ");
+            welcomeViewImpl.onSubmit(eMail, psswd);
 
-         if(eMail != null && !eMail.equals("Email") && psswd != null && !password.equals(  "password" )) {
-             log.info("SignInViewImpl onSubmit to server flow ");
-        welcomeViewImpl.onSubmit(eMail, psswd );
-
-         } else {
+        } else {
 
             loginFail.setVisible(true);
             loginFail.setText("please enter a valid username and password");
 
-         }
+        }
     }
 
 
@@ -159,8 +162,6 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         this.setVisible(state);
 
     }
-
-
 
 
 }

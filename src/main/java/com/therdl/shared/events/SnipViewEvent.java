@@ -5,11 +5,12 @@ import com.google.gwt.event.shared.GwtEvent;
 /**
  * opens a snip in the snip view
  * passes in the author and title for look up
+ *
  * @ String snipId  unique identifier for a snip
  */
-public class SnipViewEvent extends GwtEvent<SnipViewEventHandler>  {
+public class SnipViewEvent extends GwtEvent<SnipViewEventHandler> {
 
-    public static Type<SnipViewEventHandler>  TYPE = new Type<SnipViewEventHandler>();
+    public static Type<SnipViewEventHandler> TYPE = new Type<SnipViewEventHandler>();
 
     private final String snipId;
 

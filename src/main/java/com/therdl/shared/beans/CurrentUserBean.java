@@ -9,13 +9,14 @@ package com.therdl.shared.beans;
 public interface CurrentUserBean {
 
 
-
     /**
      * AuthUserBean needs the avatar url to pass to currentuserbean
      */
     String getAvatarUrl();
+
     /**
      * AuthUserBean needs the avatar url to pass to currentuserbean
+     *
      * @ String avatarUrl  the uri to locate the users image,
      * used in the browser/javascript layer
      */
@@ -24,19 +25,23 @@ public interface CurrentUserBean {
     /**
      * methods below are for standard form based credentials submitted on the clien
      * for user login and sign up
+     *
      * @return
      */
-    String getName() ;
+    String getName();
 
     void setName(String name);
 
     String getEmail();
 
-    void setEmail(String email);     ;
+    void setEmail(String email);
+
+    ;
 
     /**
      * this method is used to encapsulate the users authorisation status
      * goal is to minimise password transport
+     *
      * @return
      */
     boolean isAuth();
@@ -45,6 +50,7 @@ public interface CurrentUserBean {
      * this method is used to encapsulate the users authorisation status
      * goal is to minimise password transport
      * boolean auth set after login and sign up, true is logged in
+     *
      * @return
      */
     void setAuth(boolean auth);
@@ -53,6 +59,7 @@ public interface CurrentUserBean {
      * this method is used to encapsulate the users authorisation status
      * after a registration event
      * goal is to minimise password transport
+     *
      * @return
      */
     boolean isRegistered();
@@ -61,6 +68,7 @@ public interface CurrentUserBean {
      * this method is used to encapsulate the users authorisation status
      * goal is to minimise password transport
      * boolean b set after sign up, true is signn up success
+     *
      * @return
      */
     void setRegistered(boolean b);

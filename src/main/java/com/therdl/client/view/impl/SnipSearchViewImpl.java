@@ -25,28 +25,29 @@ import java.util.logging.Logger;
  * see http://www.gwtproject.org/articles/mvp-architecture.html#view
  * this class provides GUI so user can search and view a list of snips
  *
- *  @ SearchFilterWidget searchFilterWidget, a filter widget for the search
- *  @ SearchListWidget searchListWidget, this is the row widget in the list of rows
- *  @ AppMenu appMenu the upper menu view
- *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- *  @ String token, a GWT History token see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
- *  @ AutoBean<CurrentUserBean> currentUserBean manages user state
- *  @ AutoBean<SnipBean> currentSearchOptionsBean for autobeans see see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ SearchFilterWidget searchFilterWidget, a filter widget for the search
+ * @ SearchListWidget searchListWidget, this is the row widget in the list of rows
+ * @ AppMenu appMenu the upper menu view
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ String token, a GWT History token see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+ * @ AutoBean<CurrentUserBean> currentUserBean manages user state
+ * @ AutoBean<SnipBean> currentSearchOptionsBean for autobeans see see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
-public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
+public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 
     private static Logger log = Logger.getLogger("");
 
-	private static SnipSearchViewImplUiBinder uiBinder = GWT.create(SnipSearchViewImplUiBinder.class);
+    private static SnipSearchViewImplUiBinder uiBinder = GWT.create(SnipSearchViewImplUiBinder.class);
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
-    interface SnipSearchViewImplUiBinder extends UiBinder<Widget, SnipSearchViewImpl> { }
-	
-	private Presenter presenter;
+    interface SnipSearchViewImplUiBinder extends UiBinder<Widget, SnipSearchViewImpl> {
+    }
+
+    private Presenter presenter;
 
     SearchFilterWidget searchFilterWidget;
 
@@ -62,8 +63,8 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     @UiField
     FlowPanel snipListRow;
 
-    private  AutoBean<CurrentUserBean> currentUserBean;
-    private  AutoBean<SnipBean> currentSearchOptionsBean;
+    private AutoBean<CurrentUserBean> currentUserBean;
+    private AutoBean<SnipBean> currentSearchOptionsBean;
 
     private SearchListWidget searchListWidget;
 
@@ -71,22 +72,22 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private String token;
 
-	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
+    public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
 
         initWidget(uiBinder.createAndBindUi(this));
         log.info("SnipSearchViewImpl constructor token" + token);
-        this.currentUserBean  =  currentUserBean;
+        this.currentUserBean = currentUserBean;
         this.token = token;
         searchFilterWidget = new SearchFilterWidget(this);
         snipSearchWidgetPanel.add(searchFilterWidget);
-        searchListWidget =  new SearchListWidget();
+        searchListWidget = new SearchListWidget();
         snipSearchDocPanel.setSize("95%", "95%");
-	}
+    }
 
     @Override
     protected void onLoad() {
         super.onLoad();
-        if(token.equals(RDLConstants.Tokens.SNIPS))
+        if (token.equals(RDLConstants.Tokens.SNIPS))
             getInitialSnipList();
         else {
             doFilterSearch(parseToken());
@@ -96,7 +97,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     @Override
     public void showSnipList(JsArray<JSOModel> snips) {
-        log.info("SnipSearchViewImpl getSnipListDemoResult "+ snips.length());
+        log.info("SnipSearchViewImpl getSnipListDemoResult " + snips.length());
         snipListRow.add(searchListWidget);
         searchListWidget.bootStrapList(searchListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
     }
@@ -104,7 +105,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     @Override
     public void setloginresult(String name, String email, boolean auth) {
         if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true "+name );
+            log.info("SnipSearchViewImpl setloginresult auth true " + name);
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
@@ -112,9 +113,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
             this.appMenu.setUser(name);
             this.appMenu.setEmail(email);
             this.appMenu.setLogInVisible(false);
-        }
-
-        else {
+        } else {
             this.appMenu.setLogOutVisible(false);
             this.appMenu.setSignUpVisible(true);
             this.appMenu.setUserInfoVisible(false);
@@ -142,45 +141,45 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
     private AutoBean<SnipBean> parseToken() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
         String[] tokenSplit = token.split(":");
-        for (int i=1; i<tokenSplit.length; i++) {
+        for (int i = 1; i < tokenSplit.length; i++) {
             String[] keyVal = tokenSplit[i].split("=");
-            if(keyVal[0].equals("title")) {
-                searchOptionsBean.as().setTitle(keyVal[1].replace("+"," "));
+            if (keyVal[0].equals("title")) {
+                searchOptionsBean.as().setTitle(keyVal[1].replace("+", " "));
             }
 
-            if(keyVal[0].equals("coreCat")) {
-                searchOptionsBean.as().setCoreCat(keyVal[1].replace("+"," "));
+            if (keyVal[0].equals("coreCat")) {
+                searchOptionsBean.as().setCoreCat(keyVal[1].replace("+", " "));
             }
 
-            if(keyVal[0].equals("subCat")) {
-                searchOptionsBean.as().setSubCat(keyVal[1].replace("+"," "));
+            if (keyVal[0].equals("subCat")) {
+                searchOptionsBean.as().setSubCat(keyVal[1].replace("+", " "));
             }
 
-            if(keyVal[0].equals("posRef")) {
+            if (keyVal[0].equals("posRef")) {
                 searchOptionsBean.as().setPosRef(Integer.parseInt(keyVal[1]));
             }
 
-            if(keyVal[0].equals("neutralRef")) {
+            if (keyVal[0].equals("neutralRef")) {
                 searchOptionsBean.as().setNeutralRef(Integer.parseInt(keyVal[1]));
             }
 
-            if(keyVal[0].equals("rep")) {
+            if (keyVal[0].equals("rep")) {
                 searchOptionsBean.as().setRep(Integer.parseInt(keyVal[1]));
             }
 
-            if(keyVal[0].equals("content")) {
-                searchOptionsBean.as().setContent(keyVal[1].replace("+"," "));
+            if (keyVal[0].equals("content")) {
+                searchOptionsBean.as().setContent(keyVal[1].replace("+", " "));
             }
 
-            if(keyVal[0].equals("author")) {
-                searchOptionsBean.as().setAuthor(keyVal[1].replace("+"," "));
+            if (keyVal[0].equals("author")) {
+                searchOptionsBean.as().setAuthor(keyVal[1].replace("+", " "));
             }
 
-            if(keyVal[0].equals("dateFrom")) {
+            if (keyVal[0].equals("dateFrom")) {
                 searchOptionsBean.as().setDateFrom(keyVal[1]);
             }
 
-            if(keyVal[0].equals("dateTo")) {
+            if (keyVal[0].equals("dateTo")) {
                 searchOptionsBean.as().setDateTo(keyVal[1]);
             }
         }

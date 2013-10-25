@@ -32,19 +32,18 @@ import java.util.logging.Logger;
  * 2. activity --> user state/interaction
  * this class manages both Places and Activities and acts as a Controller class in the
  * client/view layer
- *
+ * <p/>
  * This class controls what view is presented and when it is presented. A particular
  * view is presented during user interaction principally based on  the state of 2 principal actors
  *
  * @ RDLConstants.Tokens.<history Token Type> identifies the view to be presented
  * @ AutoBean<Auth Type>   determines the authorisation state of the view presented
- *
+ * <p/>
  * it has utility methods and objects
  * @ Beanery beanery, the bean factory
  * @ <XX>View client side views generally UiBinder GUI classes
- *
+ * <p/>
  * important methods
- *
  * @ bind() manages the client side event handlers for History and authorisation state client
  * side events
  * @ onValueChange(ValueChangeEvent<String> event) ValueChangeEvents are fired when the view is changed by a user
@@ -53,18 +52,18 @@ import java.util.logging.Logger;
  * created and by examining the authorisation status of the user put in focus for the user if user is authorised
  * with the correct paramaters (eg menu options) for that users given  authorisation status (eg logged in)
  */
-public class AppController implements Presenter, ValueChangeHandler<String>{
+public class AppController implements Presenter, ValueChangeHandler<String> {
 
     private static Logger log = Logger.getLogger("");
 
-	private HasWidgets container;
+    private HasWidgets container;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-    private String currentSnipId ;
+    private String currentSnipId;
 
-	/**
-	 * Current authentication rules are anyone can view but only registered user can edit
+    /**
+     * Current authentication rules are anyone can view but only registered user can edit
      * separate authorisation from user state with 2 user beans, current user and authorised user
      * for example auth user bean will have initial password for sign up.
      * The current user bean as a persistent client side bean will/must not contain password info
@@ -72,34 +71,35 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
      */
 
     private AutoBean<AuthUserBean> authnBean = beanery.authBean();
-    private  AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
+    private AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
-	private WelcomeView welcomeView;
-    private SnipEditView  snipEditView;
-    private SnipSearchView  snipSearchView;
+    private WelcomeView welcomeView;
+    private SnipEditView snipEditView;
+    private SnipSearchView snipSearchView;
     private RegisterView registerView;
     private ProfileView profileView;
-    private SnipView  snipView;
-	
-	public AppController() {
+    private SnipView snipView;
 
-		bind();
-	}
-	  
-	/**
-	 * Binds the event handler instances to their specific events
+    public AppController() {
+
+        bind();
+    }
+
+    /**
+     * Binds the event handler instances to their specific events
+     *
      * @ LogOutEvent  for user log out flow
      * @ SnipViewEvent this event creates a new SnipView, is noteworthy as it is fired after
      * a JSNI callback from the Closure SnipListWidget code
-	 */
-	private void bind() {
+     */
+    private void bind() {
 
-		History.addValueChangeHandler(this);
+        History.addValueChangeHandler(this);
 
         log.info("AppController bind() addValueChangeHandler");
 
         // logout event handler
-        GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler()  {
+        GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler() {
             @Override
             public void onLogOutEvent(LogOutEvent onLogOutEvent) {
                 currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
@@ -109,13 +109,13 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
         });
 
         // SnipView event handler
-        GuiEventBus.EVENT_BUS.addHandler(SnipViewEvent.TYPE, new SnipViewEventHandler()  {
+        GuiEventBus.EVENT_BUS.addHandler(SnipViewEvent.TYPE, new SnipViewEventHandler() {
 
             @Override
-            public void onSnipSelectEvent(SnipViewEvent event){
+            public void onSnipSelectEvent(SnipViewEvent event) {
                 currentSnipId = event.getSnipId();
                 History.newItem(RDLConstants.Tokens.SNIP_VIEW);
-              //  History.fireCurrentHistoryState();
+                //  History.fireCurrentHistoryState();
             }
         });
 
@@ -124,25 +124,27 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
     /**
      * present the Welcome landing page for a unAuthorised user
-     * @param container  the Presenter View
+     *
+     * @param container the Presenter View
      */
-	
-	@Override
-	public void go(final HasWidgets container) {
-		this.container = container;
+
+    @Override
+    public void go(final HasWidgets container) {
+        this.container = container;
         this.currentUserBean.as().setAuth(false);
         this.currentUserBean.as().setRegistered(false);
-		if ("".equals(History.getToken())) {
-			History.newItem(RDLConstants.Tokens.WELCOME);
-		} else {
-			History.fireCurrentHistoryState();
-		}
-	}
+        if ("".equals(History.getToken())) {
+            History.newItem(RDLConstants.Tokens.WELCOME);
+        } else {
+            History.fireCurrentHistoryState();
+        }
+    }
 
     /**
-     *  present the Welcome landing page for a user with a  authorised state
+     * present the Welcome landing page for a user with a  authorised state
+     *
      * @param HasWidgets container      the Presenter View
-     * @param AutoBean currentUserBean  a bean with  authorised state information(eg logged in or out)
+     * @param AutoBean   currentUserBean  a bean with  authorised state information(eg logged in or out)
      */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
@@ -158,33 +160,33 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
     /**
      * This binds the history tokens with the different application states
-     * @param ValueChangeEvent event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
-     * for ValueChangeEvent think HistoryEvent
-     * String tokens are extracted from the HistoryEvents, this allows the correct view to be constructed and presented
-     * this method provides the machinery
      *
+     * @param ValueChangeEvent event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+     *                         for ValueChangeEvent think HistoryEvent
+     *                         String tokens are extracted from the HistoryEvents, this allows the correct view to be constructed and presented
+     *                         this method provides the machinery
      */
-	@Override
-	public void onValueChange(ValueChangeEvent<String> event) {
-		String token = event.getValue();
-        log.info("AppController onValueChange token before split is  "+token);
-        String[] tokenSplit =  token.split(":");
+    @Override
+    public void onValueChange(ValueChangeEvent<String> event) {
+        String token = event.getValue();
+        log.info("AppController onValueChange token before split is  " + token);
+        String[] tokenSplit = token.split(":");
 
-        if(tokenSplit.length != 0) {
+        if (tokenSplit.length != 0) {
             token = tokenSplit[0];
         }
 
-        log.info("AppController onValueChange token is  "+token);
+        log.info("AppController onValueChange token is  " + token);
 
-		if (token != null) {
+        if (token != null) {
 
             //***************************************WELCOME****************************
             if (token.equals(RDLConstants.Tokens.WELCOME)) {
                 log.info("AppController Tokens.WELCOME");
                 if (welcomeView == null) {
-                    welcomeView = new WelcomeViewImpl( currentUserBean);
+                    welcomeView = new WelcomeViewImpl(currentUserBean);
                 }
-                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+                final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
                     }
@@ -193,7 +195,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                         welcomePresenter.go(container, currentUserBean);
 
-                        if(currentUserBean.as().isAuth()) {
+                        if (currentUserBean.as().isAuth()) {
                             welcomeView.setloginresult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
                         }
                     }
@@ -208,11 +210,11 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     snipView = new SnipViewImpl(currentUserBean);
                 }
 
-                final SnipPresenter snipPresenter =  new SnipPresenter(snipView, currentSnipId,  this);
+                final SnipPresenter snipPresenter = new SnipPresenter(snipView, currentSnipId, this);
 
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
-                        log.info("AppController GWT.runAsync onFailure "+RDLConstants.Tokens.SNIPS);
+                        log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
                     }
 
                     public void onSuccess() {
@@ -229,19 +231,19 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 log.info("AppController Tokens.SNIPS");
 
                 if (snipSearchView == null) {
-                     snipSearchView = new SnipSearchViewImpl(currentUserBean, event.getValue());
+                    snipSearchView = new SnipSearchViewImpl(currentUserBean, event.getValue());
                 }
 
-                final SnipSearchPresenter snipSearchPresenter =  new SnipSearchPresenter(snipSearchView, this);
+                final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(snipSearchView, this);
 
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
-                        log.info("AppController GWT.runAsync onFailure "+RDLConstants.Tokens.SNIPS);
+                        log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
                     }
 
                     public void onSuccess() {
 
-                            snipSearchPresenter.go(container, currentUserBean);
+                        snipSearchPresenter.go(container, currentUserBean);
 
                     }
                 });
@@ -253,17 +255,17 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
             else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
 
                 String currentSnipId = "";
-                if(tokenSplit.length == 2) {
+                if (tokenSplit.length == 2) {
                     currentSnipId = tokenSplit[1];
                 }
 
-                log.info("AppController Tokens.SNIP_EDIT token="+token+";currentSnipId="+currentSnipId);
+                log.info("AppController Tokens.SNIP_EDIT token=" + token + ";currentSnipId=" + currentSnipId);
 
 
                 if (snipEditView == null) {
                     snipEditView = new SnipEditViewImpl(currentUserBean);
                 }
-                final SnipEditPresenter snipEditPresenter =  new SnipEditPresenter(snipEditView, currentSnipId, this);
+                final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 
 
                 GWT.runAsync(new RunAsyncCallback() {
@@ -271,7 +273,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     }
 
                     public void onSuccess() {
-                        if(currentUserBean.as().isAuth())  {
+                        if (currentUserBean.as().isAuth()) {
                             snipEditPresenter.go(container, currentUserBean);
                         } else {
                             History.newItem(RDLConstants.Tokens.WELCOME);
@@ -288,7 +290,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                 }
 
-                final RegisterPresenter registerPresenter =  new RegisterPresenter(registerView, this);
+                final RegisterPresenter registerPresenter = new RegisterPresenter(registerView, this);
                 log.info("AppController Tokens.SIGN_UP ");
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
@@ -301,37 +303,38 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 });
             }
 
-        //*************************************** PROFILE ****************************
-        else if (token.equals(RDLConstants.Tokens.PROFILE)) {
+            //*************************************** PROFILE ****************************
+            else if (token.equals(RDLConstants.Tokens.PROFILE)) {
 
-            if (profileView == null) {
-                log.info("AppController profileView == null ");
-                profileView = new ProfileViewImpl(currentUserBean);
+                if (profileView == null) {
+                    log.info("AppController profileView == null ");
+                    profileView = new ProfileViewImpl(currentUserBean);
 
-            } else {
-                log.info("AppController profileView == null else ");
-                profileView.setAvatarWhenViewIsNotNull();  }
-
-            final ProfilePresenter profilePresenter =  new ProfilePresenter(profileView);
-            log.info("AppController Tokens.SERVICES ");
-            GWT.runAsync(new RunAsyncCallback() {
-                public void onFailure(Throwable caught) {
+                } else {
+                    log.info("AppController profileView == null else ");
+                    profileView.setAvatarWhenViewIsNotNull();
                 }
 
-                public void onSuccess() {
-                    profilePresenter.go(container, currentUserBean);
+                final ProfilePresenter profilePresenter = new ProfilePresenter(profileView);
+                log.info("AppController Tokens.SERVICES ");
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
 
-                }
-            });
-        }
+                    public void onSuccess() {
+                        profilePresenter.go(container, currentUserBean);
+
+                    }
+                });
+            }
 
 
             //*************************************** LOG_OUT ****************************
             else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
 
-                final WelcomePresenter welcomePresenter =  new WelcomePresenter(welcomeView, this);
+                final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
                 log.info("AppController Tokens.LOG_OUT ");
-                if (welcomeView != null ) {
+                if (welcomeView != null) {
 
                     welcomeView.logout();
                 }
@@ -360,7 +363,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                     public void onSuccess() {
                         currentUserBean.as().setAuth(false);
                         if (welcomeView == null) {
-                            welcomeView = new WelcomeViewImpl( currentUserBean);
+                            welcomeView = new WelcomeViewImpl(currentUserBean);
 
                         }
                         currentUserBean.as().setAuth(false);
@@ -372,13 +375,13 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
             //*************************************** PROFILE-Caching url ****************************
-            else   {
+            else {
 
-                String[] temp =  token.split(":");
+                String[] temp = token.split(":");
 
-                log.info("AppController else parsing profile caching hash "+temp.length);
+                log.info("AppController else parsing profile caching hash " + temp.length);
 
-                if(temp[0].equals(RDLConstants.Tokens.PROFILE)) {
+                if (temp[0].equals(RDLConstants.Tokens.PROFILE)) {
 
                     if (profileView == null) {
                         log.info("AppController profileView == null ");
@@ -386,9 +389,10 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
                     } else {
                         log.info("AppController profileView == null else ");
-                        profileView.setAvatarWhenViewIsNotNull();  }
+                        profileView.setAvatarWhenViewIsNotNull();
+                    }
 
-                    final ProfilePresenter profilePresenter =  new ProfilePresenter(profileView);
+                    final ProfilePresenter profilePresenter = new ProfilePresenter(profileView);
                     log.info("AppController Tokens.SERVICES ");
                     GWT.runAsync(new RunAsyncCallback() {
                         public void onFailure(Throwable caught) {
@@ -403,9 +407,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
                 }
 
 
-
             } // end else
-
 
 
         } // end  if token != null
@@ -418,14 +420,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
     /**
-     *  sets the currentUserBean for the  view in the WelcomePresenter dologin method
-     *  the values below are all strings extracted from a simple form input
-     * @param name  String  for user name
-     * @param email String  for user email
+     * sets the currentUserBean for the  view in the WelcomePresenter dologin method
+     * the values below are all strings extracted from a simple form input
+     *
+     * @param name      String  for user name
+     * @param email     String  for user email
      * @param avatarUrl String for user image location acts as a url for mongo/filesystem
-     * @param state booleam for state information
+     * @param state     booleam for state information
      */
-    public void setCurrentUserBean(String name, String email,String avatarUrl,  boolean state) {
+    public void setCurrentUserBean(String name, String email, String avatarUrl, boolean state) {
         this.currentUserBean.as().setAuth(state);
         this.currentUserBean.as().setName(name);
         this.currentUserBean.as().setEmail(email);
@@ -434,13 +437,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>{
 
 
     /**
-     *  set in the RegisterPresenter onResponseReceived for  the server callback 'submitNewUser'
-     *  the values below are all strings extracted from a simple form input
+     * set in the RegisterPresenter onResponseReceived for  the server callback 'submitNewUser'
+     * the values below are all strings extracted from a simple form input
+     *
      * @param name  String for user name
      * @param email String for user email
      * @param state booleam for state information
      */
-    public void setCurrentUserBean(String name, String email,  boolean state) {
+    public void setCurrentUserBean(String name, String email, boolean state) {
         this.currentUserBean.as().setAuth(state);
         this.currentUserBean.as().setName(name);
         this.currentUserBean.as().setEmail(email);

@@ -23,10 +23,10 @@ import java.util.logging.Logger;
  * this class will be extended to encapsulate all the snip related data in and out of the client
  * to be used for client to view a snip from the snip search view
  *
- *  @ SnipView  snipView this presenter GUI component
- *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- *  @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
- *  @ String currentSnipId  used to retrieve the users correct snip
+ * @ SnipView  snipView this presenter GUI component
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ * @ String currentSnipId  used to retrieve the users correct snip
  */
 public class SnipPresenter implements Presenter, SnipView.Presenter {
 
@@ -50,16 +50,17 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
     }
 
     /**
-     *  standard runtime method for MVP architecture
-     * @param container  the view container
+     * standard runtime method for MVP architecture
+     *
+     * @param container       the view container
      * @param currentUserBean the user state bean, mainly used for authorisation
-     * and to update the menu
+     *                        and to update the menu
      */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(snipView.asWidget());
-        if(controller.getCurrentUserBean().as().isAuth() ) {
+        if (controller.getCurrentUserBean().as().isAuth()) {
             snipView.setAppMenu(currentUserBean);
             log.info("go function");
             viewSnipById();
@@ -68,26 +69,26 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
 
     /**
-     *  find snip for the currentSnipId, while not a parameter the following variable
-     *  requires some explanation to help new developers
-     *  JSOModel data is a utility class for mapping javascript data objects and arrays
-     *  and storing them as a container to be used in a GWT java context
-     *  this is a home grown utility class written to encapsulate standard javascript to java
-     *  boiler plate code to keep main java code cleaner and more maintainable
+     * find snip for the currentSnipId, while not a parameter the following variable
+     * requires some explanation to help new developers
+     * JSOModel data is a utility class for mapping javascript data objects and arrays
+     * and storing them as a container to be used in a GWT java context
+     * this is a home grown utility class written to encapsulate standard javascript to java
+     * boiler plate code to keep main java code cleaner and more maintainable
      */
     private void viewSnipById() {
-        log.info("SnipPresenter viewSnipById currentSnipId="+currentSnipId);
+        log.info("SnipPresenter viewSnipById currentSnipId=" + currentSnipId);
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if(!Constants.DEPLOY) {
+        if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
         log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean>  currentBean = beanery.snipBean();
+        AutoBean<SnipBean> currentBean = beanery.snipBean();
         currentBean.as().setAction("viewSnip");
         currentBean.as().setId(currentSnipId);
 
@@ -98,7 +99,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
-                    log.info("getSnipResponse="+response.getText());
+                    log.info("getSnipResponse=" + response.getText());
                     JSOModel data = JSOModel.fromJson(response.getText());
 
                 }

@@ -10,22 +10,35 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
 
-public interface SnipEditView  {
+/**
+ * see com.therdl.client.view.impl.ProfileViewImpl javadoc for the
+ * implementation of these methods.
+ *
+ * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
+ * as the presenter handles all the strictly non view related code (server calls for instance) a view
+ * can use a instance of its presenter
+ * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
+ * this method sets the options in the header/nav bar AppMenu widget
+ * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav-bar
+ * using the user's authorisation status
+ */
+public interface SnipEditView {
 
-	public interface Presenter {
+    public interface Presenter {
 
-		void onSaveButtonClicked();
+        void onSaveButtonClicked();
 
-		void onCloseButtonClicked();
+        void onCloseButtonClicked();
 
         void onDeleteSnip(String id);
 
-        void submitBean(AutoBean<SnipBean> bean );
+        void submitBean(AutoBean<SnipBean> bean);
 
         void submitEditedBean(AutoBean<SnipBean> bean);
-	}
+    }
 
-	void setPresenter(Presenter presenter);
+    void setPresenter(Presenter presenter);
 
     void onSaveButtonClicked(ClickEvent event);
 
@@ -33,7 +46,7 @@ public interface SnipEditView  {
 
     void onDeleteSnip(String id);
 
-    void submitBean(AutoBean<SnipBean> bean );
+    void submitBean(AutoBean<SnipBean> bean);
 
     void submitEditBean(AutoBean<SnipBean> bean);
 
