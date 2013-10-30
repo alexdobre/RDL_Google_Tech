@@ -7,10 +7,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * handlers use this event to update the status of the menu
  * for a logged out authorisation flow
  */
-public class LogOutEvent  extends GwtEvent<LogOutEventEventHandler> {
+public class LogOutEvent extends GwtEvent<LogOutEventEventHandler> {
 
 
-    public static Type<LogOutEventEventHandler>  TYPE = new Type<LogOutEventEventHandler>();
+    public static Type<LogOutEventEventHandler> TYPE = new Type<LogOutEventEventHandler>();
 
 
     @Override
@@ -19,14 +19,10 @@ public class LogOutEvent  extends GwtEvent<LogOutEventEventHandler> {
     }
 
 
-
     @Override
     protected void dispatch(LogOutEventEventHandler handler) {
         handler.onLogOutEvent(this);
     }
-
-
-
 
 
 }

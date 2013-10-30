@@ -21,12 +21,12 @@ import java.util.*;
 
 /**
  * Snip crud operations
- *  @ String defaultDatabaseName, mongo database, in this case is 'rdl'
- *  @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- *  for new developers important to understand GWT Autonean cliet/server architecture
- *  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
- *  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
  *
+ * @ String defaultDatabaseName, mongo database, in this case is 'rdl'
+ * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * for new developers important to understand GWT Autonean cliet/server architecture
+ * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
+ * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
  */
 
 @Singleton
@@ -42,7 +42,7 @@ public class SnipServiceImpl implements SnipsService {
      * drops the collection
      */
     @Override
-    public void dropSnipCollection () {
+    public void dropSnipCollection() {
         DB db = getMongo();
         db.getCollection("rdlSnipData").drop();
     }
@@ -51,6 +51,7 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud get
      * returns all snips ===  jpa findAll
+     *
      * @return
      */
     @Override
@@ -64,9 +65,9 @@ public class SnipServiceImpl implements SnipsService {
         }
         DBCollection coll = db.getCollection("rdlSnipData");
 
-        DBCursor collDocs  =  coll.find().sort(new BasicDBObject("creationDate", -1));
+        DBCursor collDocs = coll.find().sort(new BasicDBObject("creationDate", -1));
 
-        while(collDocs.hasNext()) {
+        while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
             SnipBean snip = buildBeanObject(doc);
             beans.add(snip);
@@ -76,9 +77,10 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     /**
-     *  this is Serine/alex/artur code
-     *  nigel suggested not to mix snip crud code with search code and create a search service class
-     * @param searchOptions  search data
+     * this is Serine/alex/artur code
+     * nigel suggested not to mix snip crud code with search code and create a search service class
+     *
+     * @param searchOptions search data
      * @return
      */
     @Override
@@ -87,40 +89,40 @@ public class SnipServiceImpl implements SnipsService {
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
 
-        if(searchOptions.getTitle() != null)
-            query.put("title",  java.util.regex.Pattern.compile(searchOptions.getTitle()));
-        if(searchOptions.getAuthor() != null)
+        if (searchOptions.getTitle() != null)
+            query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle()));
+        if (searchOptions.getAuthor() != null)
             query.put("author", searchOptions.getAuthor());
-        if(searchOptions.getContent() != null)
+        if (searchOptions.getContent() != null)
             query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent()));
-        if(searchOptions.getCoreCat() != null)
+        if (searchOptions.getCoreCat() != null)
             query.put("coreCat", searchOptions.getCoreCat());
-        if(searchOptions.getSubCat() != null)
+        if (searchOptions.getSubCat() != null)
             query.put("subCat", searchOptions.getSubCat());
-        if(searchOptions.getPosRef() != null)
+        if (searchOptions.getPosRef() != null)
             query.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
-        if(searchOptions.getNeutralRef() != null)
+        if (searchOptions.getNeutralRef() != null)
             query.put("neutralRef", new BasicDBObject("$gte", searchOptions.getNeutralRef()));
-        if(searchOptions.getNegativeRef() != null)
+        if (searchOptions.getNegativeRef() != null)
             query.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
-        if(searchOptions.getRep() != null) {
+        if (searchOptions.getRep() != null) {
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         }
 
-        if(searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
+        if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
             query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
-                    .add("$lte", searchOptions.getDateTo()+" 23:59:59").get());
-        } else if(searchOptions.getDateFrom() != null) {
+                    .add("$lte", searchOptions.getDateTo() + " 23:59:59").get());
+        } else if (searchOptions.getDateFrom() != null) {
             query.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
-        } else if(searchOptions.getDateTo() != null) {
-            query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo()+" 23:59:59"));
+        } else if (searchOptions.getDateTo() != null) {
+            query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
         }
 
 
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
 
-        while(cursor.hasNext()) {
+        while (cursor.hasNext()) {
             DBObject doc = cursor.next();
             SnipBean snip = buildBeanObject(doc);
             beans.add(snip);
@@ -129,7 +131,7 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     @Override
-    public SnipBean getLastSnip(String  match) {
+    public SnipBean getLastSnip(String match) {
 
         List<SnipBean> beans = getAllSnips();
 
@@ -141,11 +143,12 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud get
      * returns a snip ===  jpa find
+     *
      * @return
      */
     @Override
     public SnipBean getSnip(String id) {
-        sLogger.info("SnipServiceImpl getSnip  id: "+id);
+        sLogger.info("SnipServiceImpl getSnip  id: " + id);
 
         beanery = AutoBeanFactorySource.create(Beanery.class);
         DB db = getMongo();
@@ -153,7 +156,7 @@ public class SnipServiceImpl implements SnipsService {
         query.put("_id", new ObjectId(id));
         DBCollection coll = db.getCollection("rdlSnipData");
         DBCursor cursor = coll.find(query);
-        DBObject  doc =  cursor.next();
+        DBObject doc = cursor.next();
 
         SnipBean snip = buildBeanObject(doc);
 
@@ -163,17 +166,18 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud save
      * saves a snip ===  jpa persist
+     *
      * @param snip : Bean  to create
      * @return
      */
 
     @Override
     public void createSnip(SnipBean snip) {
-        sLogger.info("SnipServiceImpl createSnip  title: "+snip.getTitle());
+        sLogger.info("SnipServiceImpl createSnip  title: " + snip.getTitle());
         DB db = getMongo();
 
         DBCollection coll = db.getCollection("rdlSnipData");
-        if(snip.getId()==null)  {
+        if (snip.getId() == null) {
             BasicDBObject doc = buildDbObject(snip);
             coll.insert(doc);
         }
@@ -182,15 +186,16 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud update
      * updates the snip
+     *
      * @param snip : Bean  to update
      * @return
      */
     @Override
     public void updateSnip(SnipBean snip) {
 
-        sLogger.info("SnipServiceImpl updateSnip  updateSnip id: "+snip.getId());
-        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getId());
-        System.out.println("SnipServiceImpl updateSnip  updateSnip content " +snip.getTitle());
+        sLogger.info("SnipServiceImpl updateSnip  updateSnip id: " + snip.getId());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " + snip.getId());
+        System.out.println("SnipServiceImpl updateSnip  updateSnip content " + snip.getTitle());
 
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
@@ -231,6 +236,7 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud delete
      * updates deletes a snip
+     *
      * @param String id   snip to delete key
      * @return
      */
@@ -239,7 +245,7 @@ public class SnipServiceImpl implements SnipsService {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
         BasicDBObject deleteDocument = new BasicDBObject();
-        deleteDocument.append("_id" ,new ObjectId(id));
+        deleteDocument.append("_id", new ObjectId(id));
         DBCursor cursor = coll.find(deleteDocument);
         while (cursor.hasNext()) {
             DBObject item = cursor.next();
@@ -263,6 +269,7 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * builds the db object from Bean
+     *
      * @param : SnipBean snip
      * @return : BasicDBObject
      */
@@ -271,7 +278,7 @@ public class SnipServiceImpl implements SnipsService {
         BasicDBObject doc = new BasicDBObject();
 
         // if there is id in user instance , append it
-        if(snip.getId() != null){
+        if (snip.getId() != null) {
             doc.append("_id", snip.getId());
         }
         //new appended field  avatarUrl
@@ -298,7 +305,7 @@ public class SnipServiceImpl implements SnipsService {
 
         BasicDBList links = new BasicDBList();
 
-        if(snip.getLinks() == null){
+        if (snip.getLinks() == null) {
             snip.setLinks(new ArrayList<SnipBean.Links>());
         }
 
@@ -315,15 +322,16 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * builds the Bean from he db object
+     *
      * @param : DBObject doc
      * @return : SnipBean
      */
     private SnipBean buildBeanObject(DBObject doc) {
 
-        if(beanery == null)   beanery = AutoBeanFactorySource.create(Beanery.class);
+        if (beanery == null) beanery = AutoBeanFactorySource.create(Beanery.class);
         SnipBean snip = beanery.snipBean().as();
         //new appended field  avatarUrl
-        snip.setAvatarUrl((String)doc.get("avatarUrl"));
+        snip.setAvatarUrl((String) doc.get("avatarUrl"));
         // set the fields
         snip.setId(doc.get("_id").toString());
 
@@ -350,12 +358,12 @@ public class SnipServiceImpl implements SnipsService {
         List<SnipBean.Links> linksList = new ArrayList<SnipBean.Links>();
 
         // set the List<SnipBean.Links>
-        BasicDBList links = (BasicDBList)doc.get("links");
+        BasicDBList links = (BasicDBList) doc.get("links");
 
-        for(Object obj : links){
+        for (Object obj : links) {
             SnipBean.Links titlesBean = beanery.snipLindsBean().as();
-            titlesBean.setTargetId((String)((BasicDBObject)obj).get("targetId"));
-            titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
+            titlesBean.setTargetId((String) ((BasicDBObject) obj).get("targetId"));
+            titlesBean.setRank((String) ((BasicDBObject) obj).get("rank"));
             linksList.add(titlesBean);
         }
 
@@ -365,9 +373,10 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     /**
-     *  MongoClient("localhost", 27017)
-     *  later the above  url will be changed to a cloud based schema hence
-     *  UnknownHostException  exception
+     * MongoClient("localhost", 27017)
+     * later the above  url will be changed to a cloud based schema hence
+     * UnknownHostException  exception
+     *
      * @return
      */
     private DB getMongo() {

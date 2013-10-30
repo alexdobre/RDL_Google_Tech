@@ -5,14 +5,22 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.AuthUserBean;
 
 /**
- *  see  RegisterViewImpl javadoc for these methods
+ * see com.therdl.client.view.impl.RegisterViewImpl javadoc for the
+ * implementation of these methods.
+ *
+ * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
+ * as the presenter handles all the strictly non view related code (server calls for instance) a view
+ * can use a instance of its presenter
+ * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav bar
+ * using the user sign up result status
  */
-public interface RegisterView  extends IsWidget {
+public interface RegisterView extends IsWidget {
 
 
     public interface Presenter {
 
-       void  submitNewUser(AutoBean<AuthUserBean> bean);
+        void submitNewUser(AutoBean<AuthUserBean> bean);
 
 
     }

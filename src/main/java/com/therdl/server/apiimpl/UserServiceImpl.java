@@ -25,6 +25,7 @@ import java.util.Set;
 /**
  * A User Service implementation with basic crud methods for managing
  * user authorisation
+ *
  * @ String defaultDatabaseName, mongo database, in this case is 'rdl'
  * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
     /**
      * crud get
      * returns all Users ===  jpa findAll
+     *
      * @return
      */
     @Override
@@ -63,9 +65,9 @@ public class UserServiceImpl implements UserService {
         }
         DBCollection coll = db.getCollection("rdlUserData");
 
-        DBCursor collDocs  =  coll.find();
+        DBCursor collDocs = coll.find();
 
-        while(collDocs.hasNext()) {
+        while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
             UserBean user = buildBeanObject(doc);
             beans.add(user);
@@ -76,32 +78,33 @@ public class UserServiceImpl implements UserService {
     /**
      * crud get
      * returns a User ===  jpa find
+     *
      * @param AutoBean bean  User Details Bean  to find
-     * @param String hash  User password Hash
+     * @param String   hash  User password Hash
      * @return
      */
     @Override
-    public  AutoBean<AuthUserBean>  findUser(AuthUserBean bean, String hash) {
+    public AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash) {
         beanery = AutoBeanFactorySource.create(Beanery.class);
         AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
-        List<UserBean> users =getAllUsers();
+        List<UserBean> users = getAllUsers();
 
-         for(UserBean ub : users)   {
+        for (UserBean ub : users) {
 
-             if  (ub.getEmail().equals(bean.getEmail())) {
-                 if (BCrypt.checkpw(hash, ub.getPassHash())) {
-                     checkedUserBean.as().setName(ub.getUsername());
-                     checkedUserBean.as().setEmail(ub.getEmail());
-                     checkedUserBean.as().setAction("OkUser");
-                     // always check for null
-                     if(ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
-                     return checkedUserBean;
-                 }  // end hash if
-                 }  // end email if
+            if (ub.getEmail().equals(bean.getEmail())) {
+                if (BCrypt.checkpw(hash, ub.getPassHash())) {
+                    checkedUserBean.as().setName(ub.getUsername());
+                    checkedUserBean.as().setEmail(ub.getEmail());
+                    checkedUserBean.as().setAction("OkUser");
+                    // always check for null
+                    if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
+                    return checkedUserBean;
+                }  // end hash if
+            }  // end email if
 
-         } // end loop
+        } // end loop
         checkedUserBean.as().setAction("NotOkUser");
-        return  checkedUserBean;
+        return checkedUserBean;
 
     }
 
@@ -109,12 +112,12 @@ public class UserServiceImpl implements UserService {
     /**
      * crud get
      * returns all Last User
-     * @param String match  match string
      *
+     * @param String match  match string
      * @return
      */
     @Override
-    public UserBean getLastUser(String  match) {
+    public UserBean getLastUser(String match) {
         List<UserBean> beans = getAllUsers();
 
         UserBean lastBean = Iterables.getLast(beans);
@@ -124,13 +127,14 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     *  crud get === jpa find
+     * crud get === jpa find
+     *
      * @param String id User primary key
      * @return
      */
     @Override
     public UserBean getUser(String id) {
-        sLogger.info("UserServiceImpl getUser  id: "+id);
+        sLogger.info("UserServiceImpl getUser  id: " + id);
 
         beanery = AutoBeanFactorySource.create(Beanery.class);
         DB db = getMongo();
@@ -138,7 +142,7 @@ public class UserServiceImpl implements UserService {
         query.put("_id", new ObjectId(id));
         DBCollection coll = db.getCollection("rdlUserData");
         DBCursor cursor = coll.find(query);
-        DBObject  doc=  cursor.next();
+        DBObject doc = cursor.next();
 
         UserBean user = buildBeanObject(doc);
 
@@ -151,7 +155,8 @@ public class UserServiceImpl implements UserService {
     // be upgraded asap
 
     /**
-     *  crud save === jpa persist
+     * crud save === jpa persist
+     *
      * @param UserBean user, server side java  bean
      */
     @Override
@@ -160,7 +165,7 @@ public class UserServiceImpl implements UserService {
         DB db = getMongo();
 
         DBCollection coll = db.getCollection("rdlUserData");
-        if(user.getId()==null)  {
+        if (user.getId() == null) {
             BasicDBObject doc = buildDbObject(user);
             coll.insert(doc);
         }
@@ -168,6 +173,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * updates the object in the db
+     *
      * @param user : Bean object to update with
      * @return
      */
@@ -175,7 +181,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserBean user) {
 
         sLogger.info("UserServiceImpl updateUser  updateUser id: " + user.getId());
-        System.out.println("UserServiceImpl updateUser id :  " +user.getId());
+        System.out.println("UserServiceImpl updateUser id :  " + user.getId());
 
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlUserData");
@@ -199,6 +205,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * crud delete === jpa remove
+     *
      * @param String id User primary key
      */
     @Override
@@ -206,7 +213,7 @@ public class UserServiceImpl implements UserService {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlUserData");
         BasicDBObject deleteDocument = new BasicDBObject();
-        deleteDocument.append("_id" ,new ObjectId(id));
+        deleteDocument.append("_id", new ObjectId(id));
         DBCursor cursor = coll.find(deleteDocument);
         while (cursor.hasNext()) {
             DBObject item = cursor.next();
@@ -216,6 +223,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * testing method to check bean wire up
+     *
      * @return
      */
     @Override
@@ -225,6 +233,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * builds the UserBean from he db object
+     *
      * @param : DBObject doc
      * @return : UserBean
      */
@@ -238,16 +247,16 @@ public class UserServiceImpl implements UserService {
         user.setPassHash((String) doc.get("passHash"));
         user.setEmail((String) doc.get("email"));
         user.setRep((String) doc.get("rep"));
-        BasicDBList titles = (BasicDBList)doc.get("titles");
-        BasicDBList friends = (BasicDBList)doc.get("friends");
-        BasicDBList repGiven = (BasicDBList)doc.get("repGiven");
-        BasicDBList votesGiven = (BasicDBList)doc.get("votesGiven");
+        BasicDBList titles = (BasicDBList) doc.get("titles");
+        BasicDBList friends = (BasicDBList) doc.get("friends");
+        BasicDBList repGiven = (BasicDBList) doc.get("repGiven");
+        BasicDBList votesGiven = (BasicDBList) doc.get("votesGiven");
 
         List<UserBean.TitleBean> titleList = new ArrayList<UserBean.TitleBean>();
-        for(Object obj : titles){
+        for (Object obj : titles) {
             UserBean.TitleBean titlesBean = beanery.userTitleBean().as();
-            titlesBean.setTitleName((String)((BasicDBObject)obj).get("titleName"));
-            titlesBean.setDateGained((String)((BasicDBObject)obj).get("dateGained"));
+            titlesBean.setTitleName((String) ((BasicDBObject) obj).get("titleName"));
+            titlesBean.setDateGained((String) ((BasicDBObject) obj).get("dateGained"));
             titleList.add(titlesBean);
         }
         user.setTitles(titleList);
@@ -255,7 +264,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserBean.FriendBean> friendList = new ArrayList<UserBean.FriendBean>();
 
-        for(Object obj : friends){
+        for (Object obj : friends) {
             UserBean.FriendBean friendsBean = beanery.userFriendBean().as();
 
             // set the messages
@@ -263,15 +272,15 @@ public class UserServiceImpl implements UserService {
 
             List<UserBean.MessageBean> messageList = new ArrayList<UserBean.MessageBean>();
 
-            for(Object _obj : messages){
+            for (Object _obj : messages) {
                 UserBean.MessageBean messageBean = beanery.userMessageBean().as();
-                messageBean.setMessageId((String)((BasicDBObject)_obj).get("messageId"));
-                messageBean.setDate((String)((BasicDBObject)_obj).get("date"));
+                messageBean.setMessageId((String) ((BasicDBObject) _obj).get("messageId"));
+                messageBean.setDate((String) ((BasicDBObject) _obj).get("date"));
                 messageList.add(messageBean);
             }
 
             friendsBean.setMessages(messageList);
-            friendsBean.setUsername((String)((BasicDBObject)obj).get("username"));
+            friendsBean.setUsername((String) ((BasicDBObject) obj).get("username"));
             friendList.add(friendsBean);
         }
         user.setFriends(friendList);
@@ -279,10 +288,10 @@ public class UserServiceImpl implements UserService {
 
         List<UserBean.RepGivenBean> repGivenList = new ArrayList<UserBean.RepGivenBean>();
 
-        for(Object obj : repGiven){
+        for (Object obj : repGiven) {
             UserBean.RepGivenBean repGivenBean = beanery.userRepGivenBean().as();
-            repGivenBean.setSnipId((String)((BasicDBObject)obj).get("snipId"));
-            repGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
+            repGivenBean.setSnipId((String) ((BasicDBObject) obj).get("snipId"));
+            repGivenBean.setDate((String) ((BasicDBObject) obj).get("date"));
             repGivenList.add(repGivenBean);
         }
         user.setRepGiven(repGivenList);
@@ -290,10 +299,10 @@ public class UserServiceImpl implements UserService {
 
         List<UserBean.VotesGivenBean> votesGivenList = new ArrayList<UserBean.VotesGivenBean>();
 
-        for(Object obj : votesGiven){
+        for (Object obj : votesGiven) {
             UserBean.VotesGivenBean votesGivenBean = beanery.userVotesGivenBean().as();
-            votesGivenBean.setProposalId((String)((BasicDBObject)obj).get("proposalId"));
-            votesGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
+            votesGivenBean.setProposalId((String) ((BasicDBObject) obj).get("proposalId"));
+            votesGivenBean.setDate((String) ((BasicDBObject) obj).get("date"));
             votesGivenList.add(votesGivenBean);
         }
         user.setVotesGiven(votesGivenList);
@@ -303,6 +312,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * builds the db object from Bean
+     *
      * @param : UserBean user
      * @return : BasicDBObject
      */
@@ -310,13 +320,13 @@ public class UserServiceImpl implements UserService {
         BasicDBObject doc = new BasicDBObject();
 
         // if there is id in user instance , append it
-        if(user.getId() != null){
+        if (user.getId() != null) {
             doc.append("_id", user.getId());
         }
 
         // avatar code
-        String avatarUrl = "userAvatar"+File.separator+ user.getUsername()+"small.jpg";
-        doc.append("avatarUrl",avatarUrl);
+        String avatarUrl = "userAvatar" + File.separator + user.getUsername() + "small.jpg";
+        doc.append("avatarUrl", avatarUrl);
         doc.append("username", user.getUsername());
         doc.append("passHash", user.getPassHash());
         doc.append("email", user.getEmail());
@@ -324,59 +334,59 @@ public class UserServiceImpl implements UserService {
 
         BasicDBList titlesList = new BasicDBList();
 
-        if(user.getTitles() != null) {
+        if (user.getTitles() != null) {
 
-        for (UserBean.TitleBean title : user.getTitles()) {
-            BasicDBObject obj = new BasicDBObject("titleName", title.getTitleName()).
-                    append("dateGained", title.getDateGained());
-            titlesList.add(obj);
-        }
+            for (UserBean.TitleBean title : user.getTitles()) {
+                BasicDBObject obj = new BasicDBObject("titleName", title.getTitleName()).
+                        append("dateGained", title.getDateGained());
+                titlesList.add(obj);
+            }
 
         }
 
 
         BasicDBList friendsList = new BasicDBList();
 
-        if(user.getFriends() != null) {
+        if (user.getFriends() != null) {
 
-        for (UserBean.FriendBean friends : user.getFriends()) {
+            for (UserBean.FriendBean friends : user.getFriends()) {
 
-            // get the messages
-            BasicDBList messageList = new BasicDBList();
-            for (UserBean.MessageBean message : friends.getMessages()) {
-                BasicDBObject obj = new BasicDBObject("messageId", message.getMessageId()).
-                        append("date", message.getDate());
-                messageList.add(obj);
+                // get the messages
+                BasicDBList messageList = new BasicDBList();
+                for (UserBean.MessageBean message : friends.getMessages()) {
+                    BasicDBObject obj = new BasicDBObject("messageId", message.getMessageId()).
+                            append("date", message.getDate());
+                    messageList.add(obj);
+                }
+
+                BasicDBObject obj = new BasicDBObject("username", friends.getUsername()).
+                        append("messages", messageList);
+                friendsList.add(obj);
             }
-
-            BasicDBObject obj = new BasicDBObject("username", friends.getUsername()).
-                    append("messages", messageList);
-            friendsList.add(obj);
-        }
 
         }
 
         BasicDBList repGivenList = new BasicDBList();
 
-        if(user.getRepGiven() != null) {
+        if (user.getRepGiven() != null) {
 
             for (UserBean.RepGivenBean repGiven : user.getRepGiven()) {
-            BasicDBObject obj = new BasicDBObject("snipId", repGiven.getSnipId()).
-                    append("date", repGiven.getDate());
-            repGivenList.add(obj);
-        }
+                BasicDBObject obj = new BasicDBObject("snipId", repGiven.getSnipId()).
+                        append("date", repGiven.getDate());
+                repGivenList.add(obj);
+            }
 
         }
 
         BasicDBList votesGivenList = new BasicDBList();
 
-        if(user.getVotesGiven() != null) {
+        if (user.getVotesGiven() != null) {
 
-        for (UserBean.VotesGivenBean votesGiven : user.getVotesGiven()) {
-            BasicDBObject obj = new BasicDBObject("proposalId", votesGiven.getProposalId()).
-                    append("date", votesGiven.getDate());
-            votesGivenList.add(obj);
-        }
+            for (UserBean.VotesGivenBean votesGiven : user.getVotesGiven()) {
+                BasicDBObject obj = new BasicDBObject("proposalId", votesGiven.getProposalId()).
+                        append("date", votesGiven.getDate());
+                votesGivenList.add(obj);
+            }
         }
 
         doc.append("titles", titlesList);
@@ -388,9 +398,10 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     *  MongoClient("localhost", 27017)
-     *  later the above  url will be changed to a cloud based schema hence
-     *  UnknownHostException  exception
+     * MongoClient("localhost", 27017)
+     * later the above  url will be changed to a cloud based schema hence
+     * UnknownHostException  exception
+     *
      * @return
      */
     private DB getMongo() {

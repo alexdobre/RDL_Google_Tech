@@ -6,13 +6,23 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.TextResource;
 
+
+/**
+ * ClientBundle type with deferred binding allows tools for compression and efficient injection of
+ * resources like css, images and javascript tools/widgets
+ * see http://www.gwtproject.org/doc/latest/DevGuideClientBundle.html
+ *
+ * @CssResource.NotStrict this annotation is necessary when a css file breaks Googles restrictive css
+ * compilers heuristics, code that breaks compilers heuristics will cause the GWT compiler to fail
+ */
 public interface Resources extends ClientBundle {
-	//Is necessary instantiates the Resources using GWT.create(Class) technique is used under the hood to instruct the compiler to use deferred binding.
-	public static final Resources INSTANCE =  GWT.create(Resources.class);
+    //Is necessary instantiates the Resources using GWT.create(Class) technique is used
+    // under the hood to instruct the compiler to use deferred binding.
+    public static final Resources INSTANCE = GWT.create(Resources.class);
 
 
     @CssResource.NotStrict
-	@Source("closure.css")
+    @Source("closure.css")
     public CssResource editorCss();
 
     @CssResource.NotStrict

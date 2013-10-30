@@ -3,6 +3,10 @@ package com.therdl.server.data;
 /**
  * FileData Bean
  * Runtime store for file bytes
+ *
+ * @ String name the file name
+ * @ byte[] bytes the file as a byte array
+ * @ String contentType  mime type for the file
  */
 public class FileData {
 
@@ -38,7 +42,6 @@ public class FileData {
     public String getContentType() {
         return contentType;
     }
-
 
 
 }

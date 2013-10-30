@@ -18,6 +18,27 @@ import com.therdl.shared.events.LogOutEvent;
 
 import java.util.logging.Logger;
 
+
+/**
+ *   Application menu often referred  to as a 'NavBar' in a TwitterBootstrap scheme for example
+ *
+ *   @MenuItem menuBar, ideas, home, improvements, profile, userdetails, user, email, out, signUp, login.
+ *
+ *   all these menu items can trigger events, when clicked in the widget the following  inner class
+ *   ScheduledCommand  is created <menu item>.setScheduledCommand(<Scheduler.ScheduledCommand> class)
+ *   this can then fire a event, in this application these events break down into two types
+ *   1. current history event with a History token
+ *   2. GuiEventBus.EVENT_BUS event, these events can be found in com.therdl.shared.events
+ *
+ *   @ void setUser(String id) sets the user name in the menu display
+ *   @ void setEmail(String id) sets the user email in the menu display
+ *   @ void setSignUpVisible (boolean state) sets the SignUp in the menu display
+ *   @ void setUserInfoVisible (boolean state) sets the UserInfo in the menu display
+ *   @ void setLogOutVisible(boolean state) sets the LogOut in the menu display
+ *   @ void setLogInVisible(boolean state) sets the LogIn in the menu display
+ *   @ void setMainGroupVisible(boolean state) sets the MainGroup (login, signup) in the menu display
+ *   @ void setSignUpView() sets the SignUpView widget into focus for user login
+ */
 public class AppMenu extends Composite  {
 
     private static Logger log = Logger.getLogger("");
@@ -107,44 +128,69 @@ public class AppMenu extends Composite  {
 
     }
 
+    /**
+     * displays the username
+     * @param String id
+     */
     public void setUser(String id) {
         log.info("AppMenu:setUser "+id);
         user.setHTML(id);
-
-
     }
 
+    /**
+     * displays the email string
+     * @param String id
+     */
     public void setEmail(String id) {
         log.info("AppMenu:setEmail "+id);
         email.setHTML(id);
 
     }
 
-
+    /**
+     * displays the SignUp option
+     * @param boolean state
+     */
     public void  setSignUpVisible (boolean state){
         log.info("AppMenu: setSignUpVisible "+state);
         signUp.setVisible(state);
     }
 
-    public void  setUserInfoVisible (boolean state){
+    /**
+     * displays the UserInfo details in a drop down
+     * @param boolean state
+     */
+    public void  setUserInfoVisible (boolean state) {
         log.info("AppMenu: setUserInfoVisible "+state);
         userdetails.setVisible(state);
         user.setVisible(state);
         email.setVisible(state);
     }
 
+    /**
+     * displays the LogOut option
+     * @param boolean state
+     */
     public void setLogOutVisible(boolean state) {
         log.info("AppMenu: setLogOutVisible "+state);
         this.out.setVisible(state);
 
     }
 
+    /**
+     * displays the LogIn option
+     * @param boolean state
+     */
     public void setLogInVisible(boolean state) {
         log.info("AppMenu: setLogInVisible "+state);
         this.login.setVisible(state);
 
     }
 
+    /**
+     * displays the MainGroup of items currently only Improvements
+     * @param state
+     */
     public void setMainGroupVisible(boolean state) {
         log.info("AppMenu: setMainGroupVisible "+state);
         this .improvements.setVisible(state);
@@ -153,7 +199,9 @@ public class AppMenu extends Composite  {
     }
 
 
-
+    /**
+     * sets the sign up display options
+     */
     public void setSignUpView() {
         log.info("AppMenu: setSignUpView ");
         this.login.setVisible(false);

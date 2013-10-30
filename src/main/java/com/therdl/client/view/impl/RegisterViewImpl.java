@@ -22,16 +22,16 @@ import java.util.logging.Logger;
  * see http://www.gwtproject.org/articles/mvp-architecture.html#view
  * this class provides GUI so user can Registers/signs-up
  *
- *  @ RegisterView.Presenter presenter the  presenter for this view
- *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- *  @ AppMenu appMenu the upper menu view
- *  fields below are standard GWT form fields for user sign-up
- *  @ TextBox userName, email
- *  @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
- *  @ Button submitbBtn
+ * @ RegisterView.Presenter presenter the  presenter for this view
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * @ AppMenu appMenu the upper menu view
+ * fields below are standard GWT form fields for user sign-up
+ * @ TextBox userName, email
+ * @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
+ * @ Button submitbBtn
  */
-public class RegisterViewImpl  extends Composite implements RegisterView {
+public class RegisterViewImpl extends Composite implements RegisterView {
 
     private static Logger log = Logger.getLogger("");
 
@@ -52,7 +52,7 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
     TextBox userName;
 
     @UiField
-    TextBox  email;
+    TextBox email;
 
     @UiField
     PasswordTextBox psswd;
@@ -63,7 +63,9 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
     @UiField
     Button submitbBtn;
 
-    private String username;  private String  password;  private String eMail;
+    private String username;
+    private String password;
+    private String eMail;
 
     public RegisterViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -73,37 +75,37 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
 
     /**
      * Handler for form submit
-     * @param ClickEvent event Standard GWT ClickEvent
-     * FieldVerifier static class for validation
-     * AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
-     * presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
      *
+     * @param ClickEvent event Standard GWT ClickEvent
+     *                   FieldVerifier static class for validation
+     *                   AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
+     *                   presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
      */
     @UiHandler("submitbBtn")
     public void onSubmit(ClickEvent event) {
         log.info("RegisterViewImpl onSubmit verifying fields");
 
-        username =  userName.getText();
+        username = userName.getText();
         password = psswd.getText();
         eMail = email.getText();
 
-        log.info("RegisterViewImpl onSubmit verifying fields email.getText() "+email.getText());
-        log.info("RegisterViewImpl onSubmit verifying fields eMail "+eMail);
-        log.info("RegisterViewImpl onSubmit verifying fields password "+password);
-        log.info("RegisterViewImpl onSubmit verifying fields username "+username);
+        log.info("RegisterViewImpl onSubmit verifying fields email.getText() " + email.getText());
+        log.info("RegisterViewImpl onSubmit verifying fields eMail " + eMail);
+        log.info("RegisterViewImpl onSubmit verifying fields password " + password);
+        log.info("RegisterViewImpl onSubmit verifying fields username " + username);
 
 
         // can extend validation code here
 
-        if(! FieldVerifier.isValidName(username) ) {
+        if (!FieldVerifier.isValidName(username)) {
 
-         Window.alert("please enter valid username");
+            Window.alert("please enter valid username");
 
 
         }
 
 
-        if(! FieldVerifier.isValidName(eMail) ) {
+        if (!FieldVerifier.isValidName(eMail)) {
 
             Window.alert("please enter valid email");
 
@@ -111,7 +113,7 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
         }
 
 
-        if(!FieldVerifier.isValidName(password) ) {
+        if (!FieldVerifier.isValidName(password)) {
 
             Window.alert("please enter valid password");
 
@@ -119,42 +121,39 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
         }
 
 
-        if(FieldVerifier.confirmPassword(psswd.getText(), cpsswd.getText()))  {
+        if (FieldVerifier.confirmPassword(psswd.getText(), cpsswd.getText())) {
 
-        AutoBean<AuthUserBean> newUserBean = beanery.authBean();
-        newUserBean.as().setAuth(false);
-        newUserBean.as().setName(username);
-        newUserBean.as().setEmail(eMail);
-        newUserBean.as().setPassword(password);
-        presenter.submitNewUser(newUserBean);
+            AutoBean<AuthUserBean> newUserBean = beanery.authBean();
+            newUserBean.as().setAuth(false);
+            newUserBean.as().setName(username);
+            newUserBean.as().setEmail(eMail);
+            newUserBean.as().setPassword(password);
+            presenter.submitNewUser(newUserBean);
 
-        }
-
-        else Window.alert("Passwords do not match try again");
+        } else Window.alert("Passwords do not match try again");
 
     }
 
 
     /**
-     *  Sets the upper header Menu to the correct state for supplied credentials
-     *  post sign up called from presenter
-     * @param String name supplied credential
-     * @param String email supplied credential
+     * Sets the upper header Menu to the correct state for supplied credentials
+     * post sign up called from presenter
+     *
+     * @param String  name supplied credential
+     * @param String  email supplied credential
      * @param boolean auth  auth state from server via presenter
      */
     @Override
     public void setloginresult(String name, String email, boolean auth) {
         if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true "+name );
+            log.info("SnipSearchViewImpl setloginresult auth true " + name);
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
             this.appMenu.setUserInfoVisible(true);
             this.appMenu.setUser(name);
             this.appMenu.setLogInVisible(false);
-        }
-
-        else {
+        } else {
             this.appMenu.setLogOutVisible(false);
             this.appMenu.setSignUpVisible(true);
             this.appMenu.setUserInfoVisible(false);
@@ -162,7 +161,6 @@ public class RegisterViewImpl  extends Composite implements RegisterView {
         }
 
     }
-
 
 
     @Override

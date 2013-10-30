@@ -18,13 +18,11 @@ import java.util.logging.Logger;
  * RegisterPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  *
- *  @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
- *  @ RegisterView  registerView this presenter GUI component
- *
- *  @ void submitNewUser(AutoBean<AuthUserBean> bean) user signup to <URI base path>/getSession
- *  calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
- *  authorisation in server callback onResponseReceived(Request request, Response response)
- *
+ * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
+ * @ RegisterView  registerView this presenter GUI component
+ * @ void submitNewUser(AutoBean<AuthUserBean> bean) user signup to <URI base path>/getSession
+ * calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
+ * authorisation in server callback onResponseReceived(Request request, Response response)
  */
 public class RegisterPresenter implements Presenter, RegisterView.Presenter {
 
@@ -47,10 +45,11 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
     }
 
     /**
-     *  standard runtime method for MVP architecture
-     * @param container  the view container
-     * @param currentUserBean the user state bean, mainly used for authorisation
-     * and to update the menu
+     * standard runtime method for MVP architecture
+     *
+     * @param HasWidgets container       the view container
+     * @param AutoBean   currentUserBean the user state bean, mainly used for authorisation
+     *                   and to update the menu
      */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
@@ -64,10 +63,10 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
      * a AutoBean<AuthUserBean> authBean from the users supplied credentials and submits it as a json serialised object
      * calls AppController controller and  WelcomeView  welcomeView objects
      * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state for a newly signed up
-     *  user for the upper menu in the WelcomeView
+     * user for the upper menu in the WelcomeView
      *
      * @param AutoBean<AuthUserBean> bean) constructed from the submitted email String (unique identifier) and
-     * password String password these credentilas will be used as identifiers for subsequent login
+     *                               password String password these credentilas will be used as identifiers for subsequent login
      */
 
 
@@ -75,7 +74,7 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
     public void submitNewUser(AutoBean<AuthUserBean> bean) {
         log.info(AutoBeanCodex.encode(bean).getPayload());
         String updateUrl = GWT.getModuleBaseURL() + "getSession";
-         // handle jboss urls for deploy
+        // handle jboss urls for deploy
         if (!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
@@ -97,9 +96,9 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
                     log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
                     // deserialise the bean
                     AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
-                   // on success user is authorised on sign up
+                    // on success user is authorised on sign up
                     controller.setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
-                     // return to welcome page
+                    // return to welcome page
                     History.newItem(RDLConstants.Tokens.WELCOME);
 
                 }

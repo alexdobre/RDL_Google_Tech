@@ -11,6 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
+ *
+ * @ Logger sLogger see http://www.gwtproject.org/doc/latest/DevGuideLogging.html
+ * see  resources/com/therdl/rdl.gwt.xml for configuratiom
+ * @ Messages messages see http://www.gwtproject.org/doc/latest/DevGuideI18nMessages.html
+ * for internationalisation
+ * @ AppController appController see com.therdl.client.app.AppController java doc
+ *
  */
 public class RDL implements EntryPoint {
 

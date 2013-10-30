@@ -28,22 +28,22 @@ import java.util.logging.Logger;
  * this class will be extended to encapsulate all the profile related data for the
  * client for example the User Avatar and Avatar upload
  *
- *  @ ProfileView.Presenter presenter the  presenter for this view
- *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- *  @ AutoBean<CurrentUserBean> currentUserBean contains user parameters like auth state
- *  @ AvatarUploadPopUp uploadForm the upload form widget
- *  @ AppMenu appMenu the upper menu view
- *  @ FocusPanel profileImagePanel   GWT FocusPanel allows events for a image container
- *   see http://www.gwtproject.org/javadoc/latest/com/google/gwt/user/client/ui/FocusPanel.html
- *  @ Image pic  the users avatar image
- *  @ String tempUrl displays a empty avatar image to indicate where a user Avatar would appear if it was uploded,
- *  also to prompt the uses to click to initiate the upload
+ * @ ProfileView.Presenter presenter the  presenter for this view
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * @ AutoBean<CurrentUserBean> currentUserBean contains user parameters like auth state
+ * @ AvatarUploadPopUp uploadForm the upload form widget
+ * @ AppMenu appMenu the upper menu view
+ * @ FocusPanel profileImagePanel   GWT FocusPanel allows events for a image container
+ * see http://www.gwtproject.org/javadoc/latest/com/google/gwt/user/client/ui/FocusPanel.html
+ * @ Image pic  the users avatar image
+ * @ String tempUrl displays a empty avatar image to indicate where a user Avatar would appear if it was uploded,
+ * also to prompt the uses to click to initiate the upload
  */
 public class ProfileViewImpl extends Composite implements ProfileView {
 
     private static Logger log = Logger.getLogger("");
 
-    private final  AutoBean<CurrentUserBean> currentUserBean;
+    private final AutoBean<CurrentUserBean> currentUserBean;
 
     interface ProfileViewImplUiBinder extends UiBinder<Widget, ProfileViewImpl> {
     }
@@ -51,7 +51,6 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     private static ProfileViewImplUiBinder uiBinder = GWT.create(ProfileViewImplUiBinder.class);
 
     private ProfileView.Presenter presenter;
-
 
 
     private AvatarUploadPopUp uploadForm;
@@ -64,18 +63,21 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     private Image pic;
 
-    private String tempUrl =  "userAvatar/avatar-empty.jpg";
+    /**
+     * URI for the empty pace holder image, used when user has not yet uploaded a avatar image
+     */
+    private String tempUrl = "userAvatar/avatar-empty.jpg";
 
     public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
-        this.currentUserBean  =  cUserBean;
+        this.currentUserBean = cUserBean;
         setAppMenu(currentUserBean);
 
         profileImagePanel.setStyleName("profileImagePanel");
 
         // check if user has an avatar set to default
         log.info("ProfileViewImpl check if user has an avatar ");
-        if(currentUserBean.as().getAvatarUrl() == null ) {
+        if (currentUserBean.as().getAvatarUrl() == null) {
             log.info("ProfileViewImpl getAvatarUrl()== null: ");
             // can set the parameters for the avatar place holder here
 
@@ -83,21 +85,21 @@ public class ProfileViewImpl extends Composite implements ProfileView {
             profileImagePanel.clear();
             profileImagePanel.add(pic);
             profileImagePanel.setVisible(true);
-            pic .setStyleName("profileImage");
+            pic.setStyleName("profileImage");
             pic.setVisible(true);
-            if(uploadForm!=null) {
+            if (uploadForm != null) {
                 uploadForm.clear();
                 uploadForm.hide();
             }
 
-        }  else {
+        } else {
 
             setAvatar(currentUserBean.as().getAvatarUrl());
         }
 
 
         // user has just sucessfully logged in update app menu
-        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler()  {
+        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
             @Override
             public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
@@ -114,10 +116,10 @@ public class ProfileViewImpl extends Composite implements ProfileView {
      */
     @Override
     public void setAvatarWhenViewIsNotNull() {
-        log.info("ProfileViewImpl setAvatarWhenViewIsNotNull"+ currentUserBean.as().getAvatarUrl());
+        log.info("ProfileViewImpl setAvatarWhenViewIsNotNull" + currentUserBean.as().getAvatarUrl());
 
 
-        if(currentUserBean.as().getAvatarUrl() == null ) {
+        if (currentUserBean.as().getAvatarUrl() == null) {
             log.info("ProfileViewImpl getAvatarUrl()== null: ");
             // can set the parameters for the avatar place holder here
 
@@ -125,14 +127,14 @@ public class ProfileViewImpl extends Composite implements ProfileView {
             profileImagePanel.clear();
             profileImagePanel.add(pic);
             profileImagePanel.setVisible(true);
-            pic .setStyleName("profileImage");
+            pic.setStyleName("profileImage");
             pic.setVisible(true);
-            if(uploadForm!=null) {
+            if (uploadForm != null) {
                 uploadForm.clear();
                 uploadForm.hide();
             }
 
-        }  else {
+        } else {
 
             setAvatar(currentUserBean.as().getAvatarUrl());
         }
@@ -143,7 +145,8 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     /**
      * shows the avatar upload widget
-     * @param e  Standard GWT ClickEvent
+     *
+     * @param e Standard GWT ClickEvent
      */
     @UiHandler("profileImagePanel")
     void handleClick(ClickEvent e) {
@@ -159,7 +162,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         uploadForm = new AvatarUploadPopUp(this);
         uploadForm.setGlassEnabled(false);
         uploadForm.setModal(true);
-        uploadForm.setPopupPosition(20,30);
+        uploadForm.setPopupPosition(20, 30);
         uploadForm.show();
         profileImagePanel.setVisible(false);
         uploadForm.setStyleName("uploadPopUp");
@@ -168,13 +171,14 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     /**
      * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
+     *
      * @param AutoBean currentUserBean
      */
 
     @Override
     public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
         if (currentUserBean.as().isAuth()) {
-            log.info("ProfileViewImpl setAppMenu auth true "+currentUserBean.as().getName() );
+            log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
@@ -182,9 +186,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
             this.appMenu.setUser(currentUserBean.as().getName());
             this.appMenu.setEmail(currentUserBean.as().getEmail());
             this.appMenu.setLogInVisible(false);
-        }
-
-        else {
+        } else {
 
             this.appMenu.setLogOutVisible(false);
             this.appMenu.setSignUpVisible(true);
@@ -202,19 +204,20 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     /**
      * sets the User Avatar Image if one exists
+     *
      * @param String url  URI for the user image in the browser resources
      */
     public void setAvatar(String url) {
-        log.info("ProfileViewImpl setAvatarWhenViewIsNotNull"+ currentUserBean.as().getAvatarUrl());
+        log.info("ProfileViewImpl setAvatarWhenViewIsNotNull" + currentUserBean.as().getAvatarUrl());
         pic = new Image(url);
         profileImagePanel.clear();
         profileImagePanel.add(pic);
         profileImagePanel.setVisible(true);
-        pic .setStyleName("profileImage");
+        pic.setStyleName("profileImage");
         pic.setVisible(true);
-        if(uploadForm!=null) {
-        uploadForm.clear();
-        uploadForm.hide();
+        if (uploadForm != null) {
+            uploadForm.clear();
+            uploadForm.hide();
         }
     }
 

@@ -37,7 +37,7 @@ import java.util.List;
  * @ HttpSession sessions, Servlet 3 api session object, use this for the current user id
  * @ SnipsService snipsService  see com.therdl.server.apiimpl.SnipServiceImpl java doc
  * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- * for new developers important to understand GWT Autonean cliet/server architecture
+ * for new developers important to understand GWT AutoBean client/server architecture
  * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
  * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
  *

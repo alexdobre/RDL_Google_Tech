@@ -15,9 +15,8 @@ import java.util.logging.Logger;
  * this class will be extended to encapsulate all the profile related data in and out of the client
  * for example the User's Avatar upload and subsequent image presentation
  *
- *  @ ProfileView  profileView this presenter GUI component
- *  @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- *
+ * @ ProfileView  profileView this presenter GUI component
+ * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
 public class ProfilePresenter implements Presenter, ProfileView.Presenter {
 
@@ -39,10 +38,11 @@ public class ProfilePresenter implements Presenter, ProfileView.Presenter {
 
 
     /**
-     *  standard runtime method for MVP architecture
-     * @param container  the view container
+     * standard runtime method for MVP architecture
+     *
+     * @param container       the view container
      * @param currentUserBean the user state bean, mainly used for authorisation
-     * and to update the menu
+     *                        and to update the menu
      */
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {

@@ -16,24 +16,23 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- *  SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
- *  see http://www.gwtproject.org/articles/mvp-architecture.html#view
- *  this class provides GUI so user can view a Snip edit, is brought into focus
- *  fired from a Closure  new Religion
+ * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class provides GUI so user can view a Snip edit, is brought into focus
+ * fired from a Closure  new Religion
  *
- *  @ SnipViewPresenter.Presenter presenter the  presenter for this view
- *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- *  @ Map<String, String> currentSnipView, this is a store for the parameters
- *  to be extracted from the client side snip data, these parameters should be
- *  used to call the backend to retrieve the full snip for this view, under construction
- *  @ AppMenu appMenu the upper menu view
-
+ * @ SnipViewPresenter.Presenter presenter the  presenter for this view
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * @ Map<String, String> currentSnipView, this is a store for the parameters
+ * to be extracted from the client side snip data, these parameters should be
+ * used to call the backend to retrieve the full snip for this view, under construction
+ * @ AppMenu appMenu the upper menu view
  */
 public class SnipViewImpl extends Composite implements SnipView {
 
     private static Logger log = Logger.getLogger("");
 
-    private final  AutoBean<CurrentUserBean> currentUserBean;
+    private final AutoBean<CurrentUserBean> currentUserBean;
 
     interface SnipViewImpllUiBinder extends UiBinder<Widget, SnipViewImpl> {
     }
@@ -62,16 +61,16 @@ public class SnipViewImpl extends Composite implements SnipView {
     }
 
     /**
-     *  Sets the upper header Menu to the correct state for supplied credentials
-     *  called from presenter
-     * @param AutoBean<CurrentUserBean> currentUserBean)
+     * Sets the upper header Menu to the correct state for supplied credentials
+     * called from presenter
      *
+     * @param AutoBean<CurrentUserBean> currentUserBean)
      */
     @Override
     public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
 
         if (currentUserBean.as().isAuth()) {
-            log.info("ProfileViewImpl setAppMenu auth true "+currentUserBean.as().getName() );
+            log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
@@ -79,17 +78,13 @@ public class SnipViewImpl extends Composite implements SnipView {
             this.appMenu.setUser(currentUserBean.as().getName());
             this.appMenu.setEmail(currentUserBean.as().getEmail());
             this.appMenu.setLogInVisible(false);
-        }
-
-        else {
+        } else {
 
             this.appMenu.setLogOutVisible(false);
             this.appMenu.setSignUpVisible(true);
             this.appMenu.setUserInfoVisible(false);
             this.appMenu.setLogInVisible(true);
         }
-
-
 
 
     }
