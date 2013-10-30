@@ -20,6 +20,25 @@ import com.therdl.shared.beans.*;
 
 import java.util.logging.Logger;
 
+
+/**
+ * SnipSearchViewImpl class is a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class provides GUI where user can search snips
+ *
+ *  @ SnipSearchView.Presenter presenter the presenter for this view
+ *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *  @ Beanery beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  @ AppMenu appMenu the upper menu view
+ *  @ SearchListWidget searchListWidget the list widget
+ *  @ SearchFilterWidget searchFilterWidget widget for the search filter
+ *
+ *  fields below are standard GWT form fields for this view
+ *  @ DockLayoutPanel snipEditDocPanel
+ *  @ FlowPanel snipListRow
+ *  @ FlowPanel snipSearchWidgetPanel
+ */
+
 public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private static Logger log = Logger.getLogger("");
@@ -58,6 +77,13 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     private String token;
 
+    /**
+     * SnipSearchViewImpl constructor
+     * @param currentUserBean current logged user bean
+     * @param token url token, in the bookmark search token contains search parameters with the following format
+     * example http://localhost:8080/#snips:title=aaa:coreCat=Compatibility:author=serine
+     */
+
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
 
         initWidget(uiBinder.createAndBindUi(this));
@@ -83,7 +109,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
 
     @Override
     public void showSnipList(JsArray<JSOModel> snips) {
-        log.info("SnipSearchViewImpl getSnipListDemoResult "+ snips.length());
         snipListRow.add(searchListWidget);
         searchListWidget.bootStrapList(searchListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
     }
@@ -115,59 +140,74 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView  {
         return this.appMenu;
     }
 
+    /**
+     * call presenter function to search snips for the given search options
+     * @param searchOptionsBean bean for the search options
+     */
+
     @Override
     public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean) {
         presenter.searchSnips(searchOptionsBean);
     }
 
+    /**
+     * call presenter function to retrieve initial list for snips
+     */
     @Override
     public void getInitialSnipList() {
-        log.info("getInitialSnipList");
         presenter.getInitialSnipList();
     }
 
+    /**
+     * parses the token and creates searchOptionsBean bean object for search options
+     * @return searchOptionsBean
+     */
     private AutoBean<SnipBean> parseToken() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
         String[] tokenSplit = token.split(":");
         for (int i=1; i<tokenSplit.length; i++) {
             String[] keyVal = tokenSplit[i].split("=");
-            if(keyVal[0].equals("title")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.TITLE)) {
                 searchOptionsBean.as().setTitle(keyVal[1].replace("+"," "));
             }
 
-            if(keyVal[0].equals("coreCat")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.CORE_CAT)) {
                 searchOptionsBean.as().setCoreCat(keyVal[1].replace("+"," "));
             }
 
-            if(keyVal[0].equals("subCat")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.SUB_CAT)) {
                 searchOptionsBean.as().setSubCat(keyVal[1].replace("+"," "));
             }
 
-            if(keyVal[0].equals("posRef")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.POS_REF)) {
                 searchOptionsBean.as().setPosRef(Integer.parseInt(keyVal[1]));
             }
 
-            if(keyVal[0].equals("neutralRef")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.NEUTRAL_REF)) {
                 searchOptionsBean.as().setNeutralRef(Integer.parseInt(keyVal[1]));
             }
 
-            if(keyVal[0].equals("rep")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.NEGATIVE_REF)) {
+                searchOptionsBean.as().setNegativeRef(Integer.parseInt(keyVal[1]));
+            }
+
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.REP)) {
                 searchOptionsBean.as().setRep(Integer.parseInt(keyVal[1]));
             }
 
-            if(keyVal[0].equals("content")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.CONTENT)) {
                 searchOptionsBean.as().setContent(keyVal[1].replace("+"," "));
             }
 
-            if(keyVal[0].equals("author")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.AUTHOR)) {
                 searchOptionsBean.as().setAuthor(keyVal[1].replace("+"," "));
             }
 
-            if(keyVal[0].equals("dateFrom")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.DATE_FROM)) {
                 searchOptionsBean.as().setDateFrom(keyVal[1]);
             }
 
-            if(keyVal[0].equals("dateTo")) {
+            if(keyVal[0].equals(RDLConstants.BookmarkSearch.DATE_TO)) {
                 searchOptionsBean.as().setDateTo(keyVal[1]);
             }
         }

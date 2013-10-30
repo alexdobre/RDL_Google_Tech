@@ -14,10 +14,6 @@ public interface SnipEditView  {
 
 	public interface Presenter {
 
-		void onSaveButtonClicked();
-
-		void onCloseButtonClicked();
-
         void onDeleteSnip(String id);
 
         void submitBean(AutoBean<SnipBean> bean );
@@ -26,10 +22,6 @@ public interface SnipEditView  {
 	}
 
 	void setPresenter(Presenter presenter);
-
-    void onSaveButtonClicked(ClickEvent event);
-
-    void onCloseButtonClicked(ClickEvent event);
 
     void onDeleteSnip(String id);
 

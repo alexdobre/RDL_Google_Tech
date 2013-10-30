@@ -9,7 +9,10 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.therdl.shared.RDLConstants;
 
-
+/**
+ * Bookmark search popup, extends gwt PopupPanel panel
+ * contains TextBox getLinkTextBox GUI element to show constructed url
+ */
 public class BookmarkSearchPopup extends PopupPanel {
     interface BookmarkSearchPopupUiBinder extends UiBinder<HTMLPanel, BookmarkSearchPopup> {
     }
@@ -20,6 +23,12 @@ public class BookmarkSearchPopup extends PopupPanel {
     TextBox getLinkTextBox;
     SearchFilterWidget searchFilterWidget;
 
+    /**
+     * constructor BookmarkSearchPopup
+     * forms url and sets to the text box
+     * url has the following format example: http://localhost:8080/#snips:title=aaa:coreCat=Compatibility:author=serine
+     * @param searchFilterWidget
+     */
     public BookmarkSearchPopup(SearchFilterWidget searchFilterWidget) {
         super(true);
         add(ourUiBinder.createAndBindUi(this));
@@ -37,51 +46,55 @@ public class BookmarkSearchPopup extends PopupPanel {
         getLinkTextBox.setText(GWT.getHostPageBaseURL()+"#snips"+ url);
     }
 
+    /**
+     * forms bookmark url from the values of the search widget's gui elements
+     * @return constructed url as a StringBuilder object
+     */
     public StringBuilder formURl() {
         StringBuilder stringBuilder = new StringBuilder();
 
         if(!searchFilterWidget.title.getText().equals("")) {
-            stringBuilder.append("title="+searchFilterWidget.title.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.TITLE+"="+searchFilterWidget.title.getText()+":");
         }
 
         if(searchFilterWidget.categoryList.getSelectedIndex() != 0) {
-            stringBuilder.append("coreCat="+searchFilterWidget.categoryList.getItemText(searchFilterWidget.categoryList.getSelectedIndex())+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT+"="+searchFilterWidget.categoryList.getItemText(searchFilterWidget.categoryList.getSelectedIndex())+":");
         }
 
         if(searchFilterWidget.subCategoryList.getSelectedIndex() != 0) {
-            stringBuilder.append("subCat="+searchFilterWidget.subCategoryList.getItemText(searchFilterWidget.subCategoryList.getSelectedIndex())+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.SUB_CAT+"="+searchFilterWidget.subCategoryList.getItemText(searchFilterWidget.subCategoryList.getSelectedIndex())+":");
         }
 
         if(!searchFilterWidget.posRef.getText().equals("")) {
-            stringBuilder.append("posRef="+searchFilterWidget.posRef.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.POS_REF+"="+searchFilterWidget.posRef.getText()+":");
         }
 
         if(!searchFilterWidget.neutralRef.getText().equals("")) {
-            stringBuilder.append("neutralRef="+searchFilterWidget.neutralRef.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.NEUTRAL_REF+"="+searchFilterWidget.neutralRef.getText()+":");
         }
 
         if(!searchFilterWidget.negativeRef.getText().equals("")) {
-            stringBuilder.append("negativeRef="+searchFilterWidget.negativeRef.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.NEGATIVE_REF+"="+searchFilterWidget.negativeRef.getText()+":");
         }
 
         if(!searchFilterWidget.snipRep.getText().equals("")) {
-            stringBuilder.append("rep="+searchFilterWidget.snipRep.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.REP+"="+searchFilterWidget.snipRep.getText()+":");
         }
 
         if(!searchFilterWidget.content.getText().equals("")) {
-            stringBuilder.append("content="+searchFilterWidget.content.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.CONTENT+"="+searchFilterWidget.content.getText()+":");
         }
 
         if(!searchFilterWidget.author.getText().equals("")) {
-            stringBuilder.append("author="+searchFilterWidget.author.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.AUTHOR+"="+searchFilterWidget.author.getText()+":");
         }
 
         if(!searchFilterWidget.dateFrom.getText().equals("")) {
-            stringBuilder.append("dateFrom="+searchFilterWidget.dateFrom.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_FROM+"="+searchFilterWidget.dateFrom.getText()+":");
         }
 
         if(!searchFilterWidget.dateTo.getText().equals("")) {
-            stringBuilder.append("dateTo="+searchFilterWidget.dateTo.getText()+":");
+            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO+"="+searchFilterWidget.dateTo.getText()+":");
         }
 
 

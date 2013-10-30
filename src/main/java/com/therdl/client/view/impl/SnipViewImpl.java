@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.SnipView;
@@ -43,7 +44,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 
     Map<String, String> currentSnipView;
 
-    // uibinder varaibles
+    // uibinder variables
 
     @UiField
     AppMenu appMenu;
@@ -52,7 +53,6 @@ public class SnipViewImpl extends Composite implements SnipView {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = currentUserBean;
         setAppMenu(currentUserBean);
-
     }
 
     @Override

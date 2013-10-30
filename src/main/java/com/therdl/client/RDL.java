@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.therdl.client.app.AppController;
 import com.therdl.shared.Messages;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -37,7 +38,6 @@ public class RDL implements EntryPoint {
       rp.setSize("100%","1200px");
       //we let the appController take over
       appController.go(rp);
-
 
 
   }

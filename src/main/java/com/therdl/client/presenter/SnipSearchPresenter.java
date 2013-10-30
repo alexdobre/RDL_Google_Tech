@@ -14,6 +14,19 @@ import com.therdl.shared.beans.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+
+/**
+ *  SnipSearchPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter.
+ *  This class is responsible for handling snip search requests and response and for connecting server part and client part
+ *
+ *  @ AppController controller see com.therdl.client.app.AppController javadoc header comments
+ *  @ SnipSearchView snipSearchView presenter GUI component
+ *  @ Beanery beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *
+ */
+
+
 public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter  {
     private static Logger log = Logger.getLogger("");
 	private final SnipSearchView snipSearchView;
@@ -61,6 +74,12 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         }
 
 	}
+
+    /*
+     * Retrieves an initial snip list for search view
+     * This functions is called when there is no any search option in the search filter
+     * or when search view is loaded first time
+     */
 
     public void getInitialSnipList() {
         log.info("SnipSearchPresenter getInitialList");
@@ -126,7 +145,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         log.info("SnipSearchPresenter getSnipSearchResult");
         String updateUrl =GWT.getModuleBaseURL()+"getSnips";
 
-        if(!Constants.DEPLOY){
+        if(!Constants.DEPLOY) {
             updateUrl = updateUrl.replaceAll("/therdl", "");
         }
 
@@ -136,7 +155,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
         searchOptionsBean.as().setAction("search");
 
-        log.info("dateFrom="+searchOptionsBean.as().getDateFrom()+";dateTo="+searchOptionsBean.as().getDateTo());
+        log.info("title="+searchOptionsBean.as().getTitle()+";cat="+searchOptionsBean.as().getCoreCat()+";dateFrom="+searchOptionsBean.as().getDateFrom()+";dateTo="+searchOptionsBean.as().getDateTo());
 
         String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
         try {

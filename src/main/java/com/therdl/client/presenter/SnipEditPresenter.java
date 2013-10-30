@@ -23,6 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * SnipEditPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ * This class is responsible for handling request and response for creating new snip and for editing an existing one
+ *
+ *  @ AppController controller see com.therdl.client.app.AppController javadoc header comments
+ *  @ SnipEditView view presenter GUI component
+ *  @ Beanery beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  @ String currentSnipId current snip id to edit
+ */
+
 public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , ValueChangeHandler<String> {
 
     private static Logger log = Logger.getLogger("");
@@ -80,6 +91,11 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     }
 
+    /*
+     * loads snip editor for creating new snip when there is no selected snip
+     * or send request to find snip with the current snip id
+     */
+
     private void loadEditor() {
         if(!currentSnipId.equals("")) {
             findSnipById(currentSnipId);
@@ -87,6 +103,11 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
              view.addEditorClientWidget(null);
         }
     }
+
+    /*
+     * send request to edit selected snip
+     * @param bean snip bean to edit
+     */
 
     @Override
     public void submitEditedBean(AutoBean<SnipBean> bean) {
@@ -154,8 +175,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     }
 
-   // delete
-
+    /*
+      * send request to delete snip with the given id
+      * @param id snip id to delete
+      */
     @Override
     public void onDeleteSnip(String id) {
 
@@ -208,7 +231,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
 
     }
 
-    // submit <=> save
+    /*
+     * send request to save new snip
+     * @param bean new snip bean
+     */
     @Override
     public void submitBean(AutoBean<SnipBean> bean) {
 
@@ -281,71 +307,10 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
         }
     }
 
-
-
-    // this methoud used to validate snip drop down in edit view
-    private void fetchSnips() {
-
-        log.info("SnipEditPresenter getSnipDemoResult");
-
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-        if(!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
-
-        log.info("SnipEditPresenter getSnipDemoResult  updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean>  currentBean = beanery.snipBean();
-        currentBean.as().setAction("getall");
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
-        try {
-
-            requestBuilder.sendRequest(json, new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    JsArray<JSOModel> data =
-                            JSOModel.arrayFromJson(response.getText());
-                    if(data.length() == 0 )  return;
-
-                    jSonList = new ArrayList<JSOModel>();
-
-                    for (int i = 0; i < data.length(); i++) {
-                        jSonList.add(data.get(i));
-
-                    }
-
-                    List<AutoBean<SnipBean>> beans = new ArrayList<AutoBean<SnipBean>>();
-
-
-                    for (int k = 0; k < jSonList.size(); k++) {
-                        // used to index the incoming json array
-                        String counter = ""+k;
-                        AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
-                        beans.add(bean);
-                    }
-                    log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
-                    beans.clear();
-                    // set snip combo in EditorClientWidget
-                 //   view.getEditorClientWidget().setSnipComboBox(data);
-
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
-    }
+    /*
+     *  finds snip for the given id
+     *  @param snipId snip id to find
+     */
 
     private void findSnipById(String snipId) {
         log.info("SnipEditPresenter findSnipById");
@@ -387,20 +352,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter , Va
             log.info(e.getLocalizedMessage());
         }
     }
-
-    @Override
-    public void onSaveButtonClicked() {
-
-        log.info("SnipEditPresenter  onSaveButtonClicked BEGIN ");
-
-    }
-
-    @Override
-    public void onCloseButtonClicked() {
-        log.info("SnipEditPresenter  onCloseButtonClicked  ");
-
-    }
-
 
     public SnipEditView getView() {
         return view;

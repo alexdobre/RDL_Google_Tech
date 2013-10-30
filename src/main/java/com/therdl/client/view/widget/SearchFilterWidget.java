@@ -28,6 +28,11 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+/**
+ * GWT widget class for search filter
+ * creates GUI elements and handlers for them
+ */
+
 public class SearchFilterWidget extends Composite {
 
     private static Logger log = Logger.getLogger("");
@@ -93,6 +98,9 @@ public class SearchFilterWidget extends Composite {
 
 	}
 
+    /**
+     * creates category and subcategory list for snips, when user choose a category subcategory list is refreshed
+     */
     void createCategoryList() {
         categoryList.addItem("Select a category");
         for(CoreCategory item : CoreCategory.values()) {
@@ -124,6 +132,12 @@ public class SearchFilterWidget extends Composite {
         subCategoryList.setEnabled(false);
     }
 
+    /**
+     * click handle for link button for bookmark search
+     * bookmark search popup is opened in the button side
+     * @param event
+     */
+
     @UiHandler("getLinkBtn")
     public void onLinkBtnClicked(ClickEvent event) {
         BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this);
@@ -132,6 +146,12 @@ public class SearchFilterWidget extends Composite {
         bookmarkSearchPopup.setPopupPosition(x+getLinkBtn.getOffsetWidth(), y);
         bookmarkSearchPopup.show();
     }
+
+    /**
+     * construct snip bean object from the popup fields
+     * at the end when there is no any search option gets initial list, else do the filtered search
+     * @param event
+     */
 
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
@@ -142,7 +162,7 @@ public class SearchFilterWidget extends Composite {
 
         String titleText = title.getText();
         if(!titleText.equals("")) {
-            searchOptionsBean.as().setContent(titleText);
+            searchOptionsBean.as().setTitle(titleText);
             isOptionsSet = true;
         }
 
@@ -214,15 +234,31 @@ public class SearchFilterWidget extends Composite {
         }
     }
 
+    /**
+     * handler for the dateFrom TextBox
+     * opens date picker in a popup
+     * @param event
+     */
     @UiHandler("dateFrom")
     public void onDateFromClicked(ClickEvent event) {
         createDatePicker(dateFrom);
     }
 
+    /**
+     * handler for the dateTo TextBox
+     * opens date picker in a popup
+     * @param event
+     */
     @UiHandler("dateTo")
     public void onDateToClicked(ClickEvent event) {
         createDatePicker(dateTo);
     }
+
+    /**
+     * creates gwt date picker in a popup
+     * sets selected date to the text box
+     * @param dateField date TextBox for dateTo or dateFrom
+     */
 
     public void createDatePicker(final TextBox dateField) {
         final PopupPanel popupPanel=new PopupPanel(true);
@@ -250,14 +286,14 @@ public class SearchFilterWidget extends Composite {
         popupPanel.show();
     }
 
+    /**
+     * handler for the create new button
+     * opens create/edit snip view
+     * @param event
+     */
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
 		History.newItem(RDLConstants.Tokens.SNIP_EDIT);
 	}
-
-
-    public void triggerSearch(AutoBean<SnipBean> searchOptionsBean) {
-        view.doFilterSearch(searchOptionsBean);
-    }
 
 }

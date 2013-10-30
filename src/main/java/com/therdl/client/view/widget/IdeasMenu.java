@@ -11,6 +11,11 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.therdl.shared.Constants;
 
+/**
+ * gwt widget class for top bar menu in the snip list view
+ * contains icons for snip, fastcap, material, habit
+ * when hover the text is shown for each module
+ */
 public class IdeasMenu extends Composite{
     interface IdeasMenuUiBinder extends UiBinder<HTMLPanel, IdeasMenu> {
     }

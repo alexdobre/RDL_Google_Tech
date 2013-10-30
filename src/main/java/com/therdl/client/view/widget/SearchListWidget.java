@@ -97,12 +97,9 @@ public class SearchListWidget extends Composite {
 	}-*/;
 
 
-
-
     public static void viewButtonCallbackGWT(String snipId) {
          // open a new snip view
         GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipId));
-
     }
 
     public static void editButtonCallbackGWT(String snipId) {

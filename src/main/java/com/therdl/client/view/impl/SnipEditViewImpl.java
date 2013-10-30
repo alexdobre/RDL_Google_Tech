@@ -16,6 +16,22 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
 
+/**
+ * SnipEditViewImpl class is a view in the Model View Presenter Design Pattern (MVP)
+ * see http://www.gwtproject.org/articles/mvp-architecture.html#view
+ * this class provides GUI where user can create snips, edit and delete
+ *
+ *  @ SnipEditView.Presenter presenter the presenter for this view
+ *  see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
+ *  @ Beanery beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ *  @ AppMenu appMenu the upper menu view
+ *  @ EditorClientWidget editorClientWidget the editor widget
+ *
+ *  fields below are standard GWT form fields for this view
+ *  @ DockLayoutPanel snipEditDocPanel
+ *  @ FlowPanel mainPanel
+ */
+
 public class SnipEditViewImpl  extends Composite implements SnipEditView  {
 
     private static Logger log = Logger.getLogger("");
@@ -50,6 +66,11 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
         snipEditDocPanel.setSize("100%", "100%");
 	}
 
+    /**
+     * adds editor widget to the view
+     * @param snipData snip data to edit, when snipData is null editor fields are empty
+     */
+
     public void addEditorClientWidget(JSOModel snipData) {
         // add closure widget into the view
         mainPanel.add(editorClientWidget);
@@ -59,22 +80,30 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
             editorClientWidget.bootStrapEditor(editorClientWidget);
     }
 
-    // save
+    /**
+     * submit new snip bean, call presenter function to save snip
+     * @param bean new snip
+     */
+
     @Override
     public void submitBean(AutoBean<SnipBean> bean) {
-
         presenter.submitBean(bean);
-
     }
 
-    //update
+    /**
+     * submit edited snip bean, call presenter function to update snip
+     * @param bean edited snip
+     */
+
     @Override
     public void submitEditBean(AutoBean<SnipBean> bean) {
         presenter.submitEditedBean(bean);
     }
 
-
-    // delete
+    /**
+     * delete snip with the given id, call presenter function to delete snip
+     * @param id id for the snip
+     */
     @Override
     public void onDeleteSnip(String id) {
         presenter.onDeleteSnip(id);
@@ -84,23 +113,6 @@ public class SnipEditViewImpl  extends Composite implements SnipEditView  {
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
-
-
-
-    @Override
-    public void onSaveButtonClicked(ClickEvent event) {
-		if (presenter != null) {
-			presenter.onSaveButtonClicked();
-		}
-	}
-
-    @Override
-    public void onCloseButtonClicked(ClickEvent event) {
-		if (presenter != null) {
-			presenter.onCloseButtonClicked();
-		}
-	}
-
 
     public EditorClientWidget getEditorClientWidget() {
         return editorClientWidget;

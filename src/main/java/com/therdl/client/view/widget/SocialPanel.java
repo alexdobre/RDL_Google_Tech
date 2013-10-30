@@ -9,6 +9,10 @@ import com.google.gwt.user.client.ui.*;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.Constants;
 
+/**
+ * gwt widget class for the social media icons (facebook, twitter, youtube and reddit)
+ * used in the welcome page and snip list view
+ */
 public class SocialPanel extends Composite{
     interface SocialPanelUiBinder extends UiBinder<HTMLPanel, SocialPanel> {
     }
@@ -18,6 +22,9 @@ public class SocialPanel extends Composite{
     @UiField
     FlowPanel socialPanel;
 
+    /**
+     * adds anchor elements for 4 social media icons to the socialPanel
+     */
     public SocialPanel() {
         initWidget(ourUiBinder.createAndBindUi(this));
         socialPanel.add(createAnchor(Resources.INSTANCE.facebookImage(), Constants.FACEBOOK_URL));
@@ -25,6 +32,13 @@ public class SocialPanel extends Composite{
         socialPanel.add(createAnchor(Resources.INSTANCE.youtubeImage(), Constants.YOUTUBE_URL));
         socialPanel.add(createAnchor(Resources.INSTANCE.redditImage(), Constants.REDDIT_URL));
     }
+
+    /**
+     * creates gwt Anchor element for the given image resource and url
+     * @param imgRes image resource
+     * @param url url to link
+     * @return
+     */
 
     public Anchor createAnchor(ImageResource imgRes, final String url) {
         Anchor anchor = new Anchor();
