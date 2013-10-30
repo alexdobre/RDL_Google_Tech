@@ -26,11 +26,6 @@ import java.util.List;
 public interface SnipEditView {
 
     public interface Presenter {
-
-        void onSaveButtonClicked();
-
-        void onCloseButtonClicked();
-
         void onDeleteSnip(String id);
 
         void submitBean(AutoBean<SnipBean> bean);

@@ -115,21 +115,6 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     }
 
 
-    @Override
-    public void onSaveButtonClicked(ClickEvent event) {
-        if (presenter != null) {
-            presenter.onSaveButtonClicked();
-        }
-    }
-
-    @Override
-    public void onCloseButtonClicked(ClickEvent event) {
-        if (presenter != null) {
-            presenter.onCloseButtonClicked();
-        }
-    }
-
-
     public EditorClientWidget getEditorClientWidget() {
         return editorClientWidget;
     }

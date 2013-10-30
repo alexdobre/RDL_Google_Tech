@@ -25,5 +25,17 @@ public interface RDLConstants {
 
     }
 
-
+    public interface BookmarkSearch {
+        String TITLE = "title";
+        String CORE_CAT = "coreCat";
+        String SUB_CAT = "subCat";
+        String POS_REF = "posRef";
+        String NEUTRAL_REF = "neutralRef";
+        String NEGATIVE_REF = "negativeRef";
+        String REP = "rep";
+        String CONTENT = "content";
+        String AUTHOR = "author";
+        String DATE_FROM = "date_from";
+        String DATE_TO = "date_to";
+    }
 }
