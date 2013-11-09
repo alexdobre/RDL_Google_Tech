@@ -1,0 +1,74 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+
+    <ui:style>
+        .colorStripe {
+            height: 5px;
+        }
+
+        .listRow .snipImgParent {
+            float: left;
+            width: 40px;
+        }
+
+        .label {
+            padding-left:0px;
+        }
+
+        .secondColDiv {
+            margin: 0 10px 2px 20px;
+            float: left;
+        }
+
+    </ui:style>
+    <g:HTMLPanel ui:field="rootPanel">
+        <div style="border: solid 1px #333;font-size: 12px;margin-top: 5px;border-top: none;">
+            <g:FlowPanel ui:field="colorStripe" styleName="{style.colorStripe}"></g:FlowPanel>
+            <div style="padding: 5px;height:130px;">
+                <div style="margin-left: 5px;float: left;">
+                    <div>
+                        <div style="margin-right: 5px;float: left;">
+                            <g:FlowPanel ui:field="snipImgParent" styleName="{style.snipImgParent}" width="40px">
+                                <g:Image url='{res.SnipImage.getSafeUri.asString}' width="40px"/>
+                            </g:FlowPanel>
+                            <g:Label ui:field="rep" styleName="{style.label}"></g:Label>
+                            <div>Rep level</div>
+                        </div>
+                        <div style="float: left;">
+                            <g:Image url='{res.avatarImage.getSafeUri.asString}' width="94px"></g:Image>
+                        </div>
+                    </div>
+                    <g:Label ui:field="titleLabel" styleName="{style.label}"></g:Label>
+                </div>
+                <g:FlowPanel ui:field="secondColDiv" styleName="{style.secondColDiv}">
+
+                </g:FlowPanel>
+
+                <div style="float: left;margin-left: 3px;">
+                    <div>
+                        <div style="font-weight: bold;font-weight: 17px;margin-right: 5px;display: inline-block;">Title:</div>
+                        <div style="border: solid 1px;width: 300px;height: 50px;display: inline-block;">
+                            <g:Label ui:field="snipTitle" styleName="{style.label}"></g:Label>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <div style="float:left;margin-left: 20px;">
+                            <g:Label ui:field="userName" styleName="{style.label}"></g:Label>
+                        </div>
+                        <div style="float:left;margin-left: 50px;">
+                            <div><g:Label ui:field="posRef" styleName="{style.label}"></g:Label></div>
+                            <div><g:Label ui:field="neutRef" styleName="{style.label}"></g:Label></div>
+                            <div><g:Label ui:field="negRef" styleName="{style.label}"></g:Label></div>
+                        </div>
+                        <div style="float:left;margin-left: 50px;">
+                            <g:Label ui:field="viewCount" styleName="{style.label}"></g:Label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

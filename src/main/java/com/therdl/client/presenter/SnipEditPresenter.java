@@ -116,7 +116,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
     public void submitEditedBean(AutoBean<SnipBean> bean) {
 
         // get snip data from EditorClient widget
-        String title = view.getEditorClientWidget().getSnipData().get("title");
+      /*  String title = view.getEditorClientWidget().getSnipData().get("title");
         String contentAsText = view.getEditorClientWidget().getSnipData().get("contentAsString");
         String contentAsHtml = view.getEditorClientWidget().getSnipData().get("contentAsHtml");
         String coreCat = view.getEditorClientWidget().getSnipData().get("coreCat");
@@ -125,14 +125,15 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         if (bean.as().getId() == null) {
             Window.alert("this is a new snip please use submit not submit-edit");
             return;
-        }
+        }    */
 
-        log.info("SnipEditPresenter submitEditBean bean");
+       /* log.info("SnipEditPresenter submitEditBean bean");
         bean.as().setTitle(title);
         bean.as().setCoreCat(coreCat);
         bean.as().setSubCat(subCat);
         bean.as().setContent(contentAsText);
-        bean.as().setAuthor(controller.getCurrentUserBean().as().getName());
+        bean.as().setAuthor(controller.getCurrentUserBean().as().getName());       */
+
         bean.as().setAction("update");
         log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle());
         log.info("SnipEditPresenter submit to server");
@@ -241,21 +242,21 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
     public void submitBean(AutoBean<SnipBean> bean) {
 
         // get snip data from EditorClient widget
-        String title = view.getEditorClientWidget().getSnipData().get("title");
+      /*  String title = view.getEditorClientWidget().getSnipData().get("title");
         String contentAsText = view.getEditorClientWidget().getSnipData().get("contentAsString");
         String contentAsHtml = view.getEditorClientWidget().getSnipData().get("contentAsHtml");
         String coreCat = view.getEditorClientWidget().getSnipData().get("coreCat");
-        String subCat = view.getEditorClientWidget().getSnipData().get("subCat");
+        String subCat = view.getEditorClientWidget().getSnipData().get("subCat");    */
 
-        log.info("SnipEditPresenter submitBean bean: " + title);
+     //   log.info("SnipEditPresenter submitBean bean: " + title);
 
-        if (title.isEmpty()) {
+      /*  if (title.isEmpty()) {
             Window.alert("A snip needs at least a title");
             return;
-        }
+        }     */
 
         // put snip data into the bean
-        bean.as().setTitle(title);
+      /*  bean.as().setTitle(title);
         bean.as().setCoreCat(coreCat);
         bean.as().setSubCat(subCat);
         bean.as().setContent(contentAsText);
@@ -264,7 +265,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         bean.as().setPosRef(0);
         bean.as().setNeutralRef(0);
         bean.as().setNegativeRef(0);
-        bean.as().setRep(0);
+        bean.as().setRep(0);   */
         bean.as().setAction("save");
 
         log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());

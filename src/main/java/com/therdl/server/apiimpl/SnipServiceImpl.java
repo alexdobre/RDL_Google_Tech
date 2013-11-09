@@ -2,9 +2,11 @@ package com.therdl.server.apiimpl;
 
 
 import com.google.common.collect.Iterables;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.SnipsService;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import org.bson.types.ObjectId;
@@ -12,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 
 import javax.inject.Singleton;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -58,14 +58,13 @@ public class SnipServiceImpl implements SnipsService {
     public List<SnipBean> getAllSnips() {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
-        beanery = AutoBeanFactorySource.create(Beanery.class);
-        Set<String> colls = db.getCollectionNames();
-        for (String s : colls) {
-            sLogger.info(s);
-        }
+
         DBCollection coll = db.getCollection("rdlSnipData");
 
-        DBCursor collDocs = coll.find().sort(new BasicDBObject("creationDate", -1));
+        BasicDBObject query = new BasicDBObject();
+        query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
+
+        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1));
 
         while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
@@ -77,17 +76,17 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     /**
-     * this is Serine/alex/artur code
-     * nigel suggested not to mix snip crud code with search code and create a search service class
-     *
-     * @param searchOptions search data
-     * @return
+     * search snips for the given search options
+     * @param searchOptions search option data
+     * @return list of SnipBean
      */
     @Override
     public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
+
+        query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
 
         if (searchOptions.getTitle() != null)
             query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle()));
@@ -150,7 +149,6 @@ public class SnipServiceImpl implements SnipsService {
     public SnipBean getSnip(String id) {
         sLogger.info("SnipServiceImpl getSnip  id: " + id);
 
-        beanery = AutoBeanFactorySource.create(Beanery.class);
         DB db = getMongo();
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(id));
@@ -168,11 +166,11 @@ public class SnipServiceImpl implements SnipsService {
      * saves a snip ===  jpa persist
      *
      * @param snip : Bean  to create
-     * @return
+     * @return returns id of the inserted record
      */
 
     @Override
-    public void createSnip(SnipBean snip) {
+    public String createSnip(SnipBean snip) {
         sLogger.info("SnipServiceImpl createSnip  title: " + snip.getTitle());
         DB db = getMongo();
 
@@ -180,7 +178,11 @@ public class SnipServiceImpl implements SnipsService {
         if (snip.getId() == null) {
             BasicDBObject doc = buildDbObject(snip);
             coll.insert(doc);
+            return doc.get("_id").toString();
         }
+
+        return null;
+
     }
 
     /**
@@ -217,14 +219,20 @@ public class SnipServiceImpl implements SnipsService {
         coll.findAndModify(searchQuery, updateDocument);
     }
 
+    /**
+     * increments counter for the given snip id
+     * @param id
+     * @param field to increment. This can be viewCount, positive/neutral/negative reference count
+     * @return
+     */
     @Override
-    public SnipBean incrementViewCounter(String id) {
+    public SnipBean incrementCounter(String id, String field) {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
 
         // build the search query
         BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(id));
-        DBObject modifier = new BasicDBObject("views", 1);
+        DBObject modifier = new BasicDBObject(field, 1);
         DBObject incQuery = new BasicDBObject("$inc", modifier);
         // make update
         DBObject dbObj = coll.findAndModify(searchQuery, incQuery);
@@ -232,12 +240,66 @@ public class SnipServiceImpl implements SnipsService {
         return snip;
     }
 
+    /**
+     * snip json contains an array of link objects representing references for the current snip
+     * adds a reference to that array for the snip with the given snip id
+     * @param linkAutoBean Link bean object
+     * @param parentSnipId parent snip id
+     * @return parent modified SnipBean
+     */
+    public SnipBean addReference(AutoBean<SnipBean.Link> linkAutoBean, String parentSnipId) {
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(parentSnipId));
+        DBObject listItem = new BasicDBObject("links", new BasicDBObject("targetId",linkAutoBean.as().getTargetId()).append("rank",linkAutoBean.as().getRank()));
+        DBObject updateQuery = new BasicDBObject("$push", listItem);
+        DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
+        SnipBean snip = buildBeanObject(dbObj);
+        return snip;
+    }
+
+    /**
+     * finds references of the snip with the given id
+     * @param id snip id
+     * @return references as a list of SnipBean object
+     */
+    public List<SnipBean> getReferences(String id) {
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        List<SnipBean> beans = new ArrayList<SnipBean>();
+
+        // first find a snip with the given id
+        SnipBean snipBean = getSnip(id);
+
+        // retrieve reference ids from the links nested array of the snip json
+        List<ObjectId> referenceIds = new ArrayList<ObjectId>();
+        for (int i=0; i<snipBean.getLinks().size(); i++) {
+            referenceIds.add(new ObjectId(snipBean.getLinks().get(i).getTargetId()));
+        }
+
+        // query to get references from snip collection for the retrieved ids
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new BasicDBObject("$in", referenceIds));
+
+        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1));
+
+        while (collDocs.hasNext()) {
+            DBObject doc = collDocs.next();
+            SnipBean snip = buildBeanObject(doc);
+            beans.add(snip);
+        }
+
+        return beans;
+    }
+
 
     /**
      * crud delete
      * updates deletes a snip
      *
-     * @param String id   snip to delete key
+     * @param id snip to delete key
      * @return
      */
     @Override
@@ -258,7 +320,10 @@ public class SnipServiceImpl implements SnipsService {
         return "Snip Service wired up for guice injection ok";
     }
 
-
+    /**
+     * makes current timestamp
+     * @return current timestamp as String
+     */
     public String makeTimeStamp() {
         Date processDateTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSS");
@@ -306,10 +371,10 @@ public class SnipServiceImpl implements SnipsService {
         BasicDBList links = new BasicDBList();
 
         if (snip.getLinks() == null) {
-            snip.setLinks(new ArrayList<SnipBean.Links>());
+            snip.setLinks(new ArrayList<SnipBean.Link>());
         }
 
-        for (SnipBean.Links link : snip.getLinks()) {
+        for (SnipBean.Link link : snip.getLinks()) {
             BasicDBObject obj = new BasicDBObject("targetId", link.getTargetId()).
                     append("rank", link.getRank());
             links.add(obj);
@@ -355,19 +420,19 @@ public class SnipServiceImpl implements SnipsService {
         snip.setVotes((String) doc.get("votes"));
         snip.setParentThread((String) doc.get("parentThread"));
 
-        List<SnipBean.Links> linksList = new ArrayList<SnipBean.Links>();
+        List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
 
         // set the List<SnipBean.Links>
         BasicDBList links = (BasicDBList) doc.get("links");
 
         for (Object obj : links) {
-            SnipBean.Links titlesBean = beanery.snipLindsBean().as();
+            SnipBean.Link titlesBean = beanery.snipLinksBean().as();
             titlesBean.setTargetId((String) ((BasicDBObject) obj).get("targetId"));
             titlesBean.setRank((String) ((BasicDBObject) obj).get("rank"));
-            linksList.add(titlesBean);
+            linkList.add(titlesBean);
         }
 
-        snip.setLinks(linksList);
+        snip.setLinks(linkList);
 
         return snip;
     }

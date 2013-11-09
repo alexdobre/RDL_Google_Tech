@@ -27,7 +27,7 @@ public interface Beanery extends AutoBeanFactory {
      *
      * @return
      */
-    AutoBean<SnipBean.Links> snipLindsBean();
+    AutoBean<SnipBean.Link> snipLinksBean();
 
     AutoBean<UserBean.VotesGivenBean> userVotesGivenBean();
 

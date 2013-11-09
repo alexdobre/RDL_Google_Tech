@@ -5,14 +5,71 @@
         >
 
     <ui:style>
+        .snipViewCont {
+            width:60%;
+            margin:20px;
+        }
 
+        .richTextArea {
+            width: 100%;
+            height: 300px;
+            margin-top: 3px;
+        }
+
+        .refButtonsCont {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #000;
+            padding-top: 5px;
+            padding-left: 10px;
+        }
+
+        .referenceCont {
+            display: none;
+        }
+
+        .radioBtnParent {
+            margin-top: 3px;
+        }
+
+        .radioBtn {
+            margin-left: 13px;
+        }
+
+        .radioBtn label {
+            margin-left: 3px;
+        }
 
     </ui:style>
 
 
-    <g:HTMLPanel  >
-
+    <g:HTMLPanel ui:field="rootPanel">
         <rdl:AppMenu ui:field="appMenu"/>
+        <g:FlowPanel styleName="{style.snipViewCont}">
+            <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
+            <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
+            <g:FlowPanel styleName="{style.refButtonsCont}">
+                <g:Button ui:field="showRef">Show references</g:Button>
+                <g:Button ui:field="leaveRef">Leave reference</g:Button>
+            </g:FlowPanel>
+
+            <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
+                <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
+                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1">Positive</g:RadioButton>
+                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2">Neutral</g:RadioButton>
+                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3">Negative</g:RadioButton>
+                </g:FlowPanel>
+                <g:RichTextArea ui:field="richTextAreaRef" styleName="{style.richTextArea}"></g:RichTextArea>
+                <g:FlowPanel styleName="{style.refButtonsCont}">
+                    <g:Button ui:field="saveRef">Save reference</g:Button>
+                    <g:Button ui:field="closeRef">Close</g:Button>
+                </g:FlowPanel>
+            </g:FlowPanel>
+
+            <g:FlowPanel ui:field="referenceListCont">
+
+            </g:FlowPanel>
+        </g:FlowPanel>
 
     </g:HTMLPanel>
 

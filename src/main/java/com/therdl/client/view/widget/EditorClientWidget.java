@@ -17,6 +17,7 @@ import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
@@ -61,9 +62,11 @@ public class EditorClientWidget extends Composite  {
     Button deleteSnip;
 
     SnipEditViewImpl snipEditView;
+    AutoBean<CurrentUserBean> currentUserBean;
 
-	public EditorClientWidget(SnipEditViewImpl snipEditView) {
+	public EditorClientWidget(SnipEditViewImpl snipEditView, AutoBean<CurrentUserBean> currentUserBean) {
         this.snipEditView = snipEditView;
+        this.currentUserBean = currentUserBean;
         Resources.INSTANCE.editorCss().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -103,8 +106,28 @@ public class EditorClientWidget extends Composite  {
         // test data
         JSOModel snipData = getSnipData();
 
+        if (snipData.get("title").isEmpty()) {
+            Window.alert("A snip needs at least a title");
+            return;
+        }
+
         AutoBean<SnipBean> newBean = beanery.snipBean();
+        // put snip data into the bean
+        newBean.as().setTitle(snipData.get("title"));
+        newBean.as().setContent(snipData.get("contentAsString"));
+        newBean.as().setCoreCat(snipData.get("coreCat"));
+        newBean.as().setSubCat(snipData.get("subCat"));
+
+
         if(snipData.get("currentSnipId").equals("")) {
+            newBean.as().setAuthor(currentUserBean.as().getName());
+            newBean.as().setViews(0);
+            newBean.as().setPosRef(0);
+            newBean.as().setNeutralRef(0);
+            newBean.as().setNegativeRef(0);
+            newBean.as().setRep(0);
+            newBean.as().setSnipType(RDLConstants.SnipType.SNIP);
+
             snipEditView.submitBean(newBean);
         } else {
             newBean.as().setId(snipData.get("currentSnipId"));

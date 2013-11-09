@@ -35,7 +35,32 @@ public interface RDLConstants {
         String REP = "rep";
         String CONTENT = "content";
         String AUTHOR = "author";
-        String DATE_FROM = "date_from";
-        String DATE_TO = "date_to";
+        String DATE_FROM = "dateFrom";
+        String DATE_TO = "dateTo";
+    }
+
+    public interface ReferenceType {
+        String POSITIVE = "positive";
+        String NEUTRAL = "neutral";
+        String NEGATIVE = "negative";
+    }
+
+    public interface SnipType {
+        String SNIP = "snip";
+        String HABIT = "habit";
+        String FAST_CAP = "fastCap";
+        String MATERIAL = "material";
+        String REFERENCE = "reference";
+
+    }
+
+    public interface SnipFields {
+        String TITLE = "title";
+        String CORE_CAT = "coreCat";
+        String SUB_CAT = "subCat";
+        String VIEWS = "views";
+        String POS_REF = "posRef";
+        String NEUTRAL_REF = "neutralRef";
+        String NEGATIVE_REF = "negativeRef";
     }
 }

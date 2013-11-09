@@ -106,9 +106,9 @@ public interface SnipBean {
 
     void setReferenceType(String referenceType);
 
-    List<Links> getLinks();
+    List<Link> getLinks();
 
-    void setLinks(List<Links> links);
+    void setLinks(List<Link> links);
 
     String getParentStream();
 
@@ -133,7 +133,7 @@ public interface SnipBean {
     /**
      * nested interfaces
      */
-    interface Links {
+    interface Link {
         String getTargetId();
 
         void setTargetId(String targetId);

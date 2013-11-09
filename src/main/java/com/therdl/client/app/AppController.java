@@ -12,7 +12,7 @@ import com.therdl.client.presenter.*;
 
 import com.therdl.client.view.*;
 import com.therdl.client.view.impl.*;
-import com.therdl.client.view.widget.SnipView;
+import com.therdl.client.view.SnipView;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -59,8 +59,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     private HasWidgets container;
 
     private Beanery beanery = GWT.create(Beanery.class);
-
-    private String currentSnipId;
 
     /**
      * Current authentication rules are anyone can view but only registered user can edit
@@ -113,8 +111,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
             @Override
             public void onSnipSelectEvent(SnipViewEvent event) {
-                currentSnipId = event.getSnipId();
-                History.newItem(RDLConstants.Tokens.SNIP_VIEW);
+                History.newItem(RDLConstants.Tokens.SNIP_VIEW+":"+event.getSnipId());
                 //  History.fireCurrentHistoryState();
             }
         });
@@ -206,6 +203,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             //***************************************SNIP_View****************************
             else if (token.equals(RDLConstants.Tokens.SNIP_VIEW)) {
                 log.info("AppController Tokens.SNIP_VIEW");
+
+                String currentSnipId = "";
+                if (tokenSplit.length == 2) {
+                    currentSnipId = tokenSplit[1];
+                }
+
                 if (snipView == null) {
                     snipView = new SnipViewImpl(currentUserBean);
                 }

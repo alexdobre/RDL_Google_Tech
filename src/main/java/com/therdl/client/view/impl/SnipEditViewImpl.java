@@ -61,7 +61,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         this.currentUserBean = currentUserBean;
 
         // init closure editor widget
-        editorClientWidget = new EditorClientWidget(this);
+        editorClientWidget = new EditorClientWidget(this, currentUserBean);
 
         snipEditDocPanel.setSize("100%", "100%");
     }

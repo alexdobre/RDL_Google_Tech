@@ -8,6 +8,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.SnipsService;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import org.slf4j.LoggerFactory;
@@ -78,8 +79,8 @@ public class SnipDispatcherServlet extends HttpServlet {
      *
      * When code is running in the JBoss Application server (deployment) the uri for this method will be
      * 'http://localhost:8080/therdl/rdl/getSnips' URL
-     * @param HttpServletRequest req  Standard Http ServletRequest
-     * @param HttpServletResponse resp  Standard Http ServletResponse
+     * @param req HttpServletRequest Standard Http ServletRequest
+     * @param resp HttpServletResponse Standard Http ServletResponse
      * @throws ServletException
      * @throws IOException
      *
@@ -120,16 +121,8 @@ public class SnipDispatcherServlet extends HttpServlet {
             List < SnipBean > beans = snipsService.getAllSnips();
             sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
-            ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
-            int k = 0;
-            for (SnipBean bean : beans )   {
-                HashMap<String,String> 	beanBag = new HashMap<String, String>();
-                AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-                String asJson = AutoBeanCodex.encode(autoBean).getPayload();
-                beanBag.put(Integer.toString(k),asJson);
-                beanList.add(beanBag);
-                k++;
-            }
+
+            ArrayList<HashMap<String,String>> beanList = getBeanList(beans);
 
             sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
 
@@ -142,19 +135,11 @@ public class SnipDispatcherServlet extends HttpServlet {
         }
 
         else if(actionBean.as().getAction().equals("search")) {
-            List < SnipBean > beans = snipsService.searchSnipsWith(actionBean.as());
+            List <SnipBean> beans = snipsService.searchSnipsWith(actionBean.as());
             sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
-            ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
-            int k = 0;
-            for (SnipBean bean : beans )   {
-                HashMap<String,String> 	beanBag = new HashMap<String, String>();
-                AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-                String asJson = AutoBeanCodex.encode(autoBean).getPayload();
-                beanBag.put(Integer.toString(k),asJson);
-                beanList.add(beanBag);
-                k++;
-            }
+
+            ArrayList<HashMap<String,String>> beanList = getBeanList(beans);
 
             sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
 
@@ -174,7 +159,7 @@ public class SnipDispatcherServlet extends HttpServlet {
             out.write(AutoBeanCodex.encode(autoBean).getPayload());
         }
         else if(actionBean.as().getAction().equals("viewSnip")) {
-            SnipBean bean = snipsService.incrementViewCounter(actionBean.as().getId());
+            SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.VIEWS);
             sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
             sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
             AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
@@ -203,8 +188,68 @@ public class SnipDispatcherServlet extends HttpServlet {
             sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
             snipsService.deleteSnip(actionBean.as().getId());
         }
+        else if(actionBean.as().getAction().equals("saveReference")) {
+            sLogger.info("SnipDispatcherServlet: saveReference");
+
+            // increments reference counter of parent snip for reference type (positive/neutral/negative)
+            String parentSnipId = actionBean.as().getId();
+            String refField = RDLConstants.SnipFields.POS_REF;
+            if(actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
+                refField = RDLConstants.SnipFields.NEUTRAL_REF;
+            else if(actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
+                refField = RDLConstants.SnipFields.NEGATIVE_REF;
+
+            snipsService.incrementCounter(parentSnipId, refField);
+
+            // reset snip id and call create snip to save reference object as separate entity in the snip collection
+            actionBean.as().setId(null);
+            actionBean.as().setCreationDate(snipsService.makeTimeStamp());
+            String referenceId = snipsService.createSnip(actionBean.as());
+
+            // add reference as Link object into the parent snip
+            AutoBean<SnipBean.Link> linkAutoBean = beanery.snipLinksBean();
+            linkAutoBean.as().setRank("0");
+            linkAutoBean.as().setTargetId(referenceId);
+            SnipBean bean = snipsService.addReference(linkAutoBean, parentSnipId);
+
+            // send modified parent snip as json
+            AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+            PrintWriter out = resp.getWriter();
+            out.write(AutoBeanCodex.encode(autoBean).getPayload());
+        }
+        else if(actionBean.as().getAction().equals("getReferences")) {
+            List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as().getId());
+
+            ArrayList<HashMap<String,String>> beanList = getBeanList(beanReferences);
+
+            Gson gson = new Gson();
+            sLogger.info(gson.toJson(beanList));
+            PrintWriter out = resp.getWriter();
+            out.write(gson.toJson(beanList));
+            beanList.clear();
+            actionBean.as().setAction("dump");
+        }
     }
 
+    /**
+     * creates list of beans for response
+     * @param beans
+     * @return
+     */
+    private  ArrayList<HashMap<String,String>> getBeanList(List<SnipBean> beans) {
+        ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
+        int k = 0;
+        for (SnipBean bean : beans) {
+            HashMap<String,String> 	beanBag = new HashMap<String, String>();
+            AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+            String asJson = AutoBeanCodex.encode(autoBean).getPayload();
+            beanBag.put(Integer.toString(k),asJson);
+            beanList.add(beanBag);
+            k++;
+        }
+
+        return beanList;
+    }
 
 }
 

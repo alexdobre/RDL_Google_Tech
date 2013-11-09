@@ -15,8 +15,8 @@ public class Constants {
      * false : will optimize the paths for jetty this is the development mode
      */
     public static final boolean DEPLOY = false;
-    //  public static final boolean DEPLOY =  true;
     public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_REFERENCE_PAGE_SIZE = 2;
 
     public static final String FACEBOOK_URL = "https://www.facebook.com/therdl";
     public static final String TWITTER_URL = "https://twitter.com/RDLSocial";

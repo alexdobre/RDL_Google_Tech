@@ -1,19 +1,21 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.ProfileView;
-import com.therdl.client.view.widget.SnipView;
+import com.therdl.client.view.SnipView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -41,6 +43,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         this.snipView = snipView;
         this.currentSnipId = currentSnipId;
         this.controller = appController;
+        this.snipView.setPresenter(this);
     }
 
     @Override
@@ -62,9 +65,9 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         container.add(snipView.asWidget());
         if (controller.getCurrentUserBean().as().isAuth()) {
             snipView.setAppMenu(currentUserBean);
-            log.info("go function");
-            viewSnipById();
         }
+        viewSnipById();
+
     }
 
 
@@ -100,8 +103,112 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
                     log.info("getSnipResponse=" + response.getText());
-                    JSOModel data = JSOModel.fromJson(response.getText());
 
+                    AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
+                    snipView.viewSnip(bean);
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * send a request to the server to saves reference for current snip
+     * @param bean representing reference object
+     */
+    public void saveReference(AutoBean<SnipBean> bean) {
+        log.info("SnipPresenter submit reference to server");
+        bean.as().setAction("saveReference");
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+
+        if (!Constants.DEPLOY) {
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
+
+        log.info("SnipPresenter submit updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+
+        try {
+
+            String json = AutoBeanCodex.encode(bean).getPayload();
+            log.info("SnipPresenter submit json: " + json);
+            requestBuilder.sendRequest(json, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+
+                    if (response.getStatusCode() == 200) {
+                        // ok now vaildate for dropdown
+                        log.info("SnipPresenter submit post ok now validating");
+                        getSnipReferences();
+                    } else {
+                        log.info("SnipPresenter submit post fail");
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipPresenter submit onError)" + exception.getLocalizedMessage());
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * get references for the current snip, creates bean objects from response json
+     */
+    public void getSnipReferences() {
+        log.info("SnipPresenter getSnipReferences currentSnipId=" + currentSnipId);
+
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+
+        if (!Constants.DEPLOY) {
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
+
+        log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        AutoBean<SnipBean> currentBean = beanery.snipBean();
+        currentBean.as().setAction("getReferences");
+        currentBean.as().setId(currentSnipId);
+
+        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        try {
+
+            requestBuilder.sendRequest(json, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    log.info("getSnipReferences=" + response.getText());
+
+                    JsArray<JSOModel> data =
+                            JSOModel.arrayFromJson(response.getText());
+
+                    if (data.length() == 0) return;
+
+                    ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
+                    ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
+
+                    for (int i = 0; i < data.length(); i++) {
+                        jSonList.add(data.get(i));
+                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i+"")));
+
+                    }
+
+                    snipView.showReferences(beanList);
                 }
 
                 @Override

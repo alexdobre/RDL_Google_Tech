@@ -92,6 +92,14 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource youtubeImage();
 
+    @Source("imagebund/xxsmall.jpg")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource avatarImage();
+
+    @Source("imagebund/badge.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource badgeImage();
+
     /*
     @Source("imagebund/Thread.jpg")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
