@@ -2,6 +2,7 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -61,7 +62,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     AppMenu appMenu;
 
     @UiField
-    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont;
+    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, checkboxBtnParent;
     @UiField
     RichTextArea richTextArea, richTextAreaRef;
     @UiField
@@ -118,13 +119,13 @@ public class SnipViewImpl extends Composite implements SnipView {
         this.currentSnipBean = snipBean;
         referenceListCont.clear();
         snipViewCont.clear();
+        checkboxBtnParent.clear();
 
         // this is the top widget, like in the list widget
         SnipListRow snipListRow = new SnipListRow(snipBean, currentUserBean);
         snipViewCont.add(snipListRow);
         richTextArea.setHTML(snipBean.as().getContent());
         leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
-
     }
 
     /**
@@ -136,6 +137,8 @@ public class SnipViewImpl extends Composite implements SnipView {
         referenceCont.getElement().getStyle().setProperty("display", "block");
         closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
         referenceListCont.getElement().getStyle().setProperty("display", "none");
+        checkboxBtnParent.clear();
+
     }
 
     /**
@@ -155,7 +158,7 @@ public class SnipViewImpl extends Composite implements SnipView {
      */
     @UiHandler("showRef")
     public void onShowRefClicked(ClickEvent event) {
-        presenter.getSnipReferences();
+        presenter.getSnipReferences("");
     }
 
     /**
@@ -196,8 +199,9 @@ public class SnipViewImpl extends Composite implements SnipView {
      * shows references in a tab panel with paging
      * @param beanList list of references as bean objects
      */
-    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList) {
+    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, String pReferenceTypes) {
         referenceListCont.clear();
+        checkboxBtnParent.clear();
         referenceListCont.getElement().getStyle().setProperty("display", "block");
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
@@ -233,5 +237,49 @@ public class SnipViewImpl extends Composite implements SnipView {
         tabPanel.selectTab(0);
         referenceListCont.add(tabPanel);
 
+
+        // creates checkboxes for reference type
+
+        final String[] referenceTypes = new String[] {
+            RDLConstants.ReferenceType.POSITIVE,
+            RDLConstants.ReferenceType.NEGATIVE,
+            RDLConstants.ReferenceType.NEUTRAL
+        };
+
+        final CheckBox[] checkBoxArray = new CheckBox[3];
+
+        String[] checkedReferences = pReferenceTypes.split(",");
+
+        for (int i=0; i<referenceTypes.length; i++) {
+            checkBoxArray[i] = new CheckBox(referenceTypes[i]);
+            checkBoxArray[i].setStyleName("checkBoxBtn");
+
+            for (int k=0; k<checkedReferences.length; k++) {
+                if(checkedReferences[k].equals(referenceTypes[i])) {
+                    checkBoxArray[i].setValue(true);
+                }
+            }
+
+            // checkbox click handle, gets list of references by selected reference type, refresh a list
+            checkBoxArray[i].addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // get check box values that are checked (not only the current clicked checkbox)
+                    String checkedFlags = "";
+                    for (int j=0; j<checkBoxArray.length; j++) {
+                        if(checkBoxArray[j].getValue()) {
+                            checkedFlags += referenceTypes[j]+",";
+                        }
+                    }
+                    checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+
+                    presenter.getSnipReferences(checkedFlags);
+                }
+            });
+
+            checkboxBtnParent.add(checkBoxArray[i]);
+
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.cssbundles.Resources;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -27,7 +28,7 @@ public class ReferenceListRow extends Composite{
     RichTextArea richTextAreaRef;
 
     @UiField
-    Label rep, titleLabel, userName, creationDate;
+    Label rep, titleLabel, userName, creationDate, refFlag;
 
     public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean) {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -39,6 +40,8 @@ public class ReferenceListRow extends Composite{
         userName.setText(referenceBean.as().getAuthor());
         rep.setText(referenceBean.as().getRep()+" Rep Level");
         creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));
+        refFlag.setText(referenceBean.as().getReferenceType());
+        refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
 
         // create badge table
         Grid badgeGrid = new Grid(3,3);

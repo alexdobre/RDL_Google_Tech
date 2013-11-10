@@ -1,6 +1,8 @@
 package com.therdl.shared;
 
 
+import java.util.HashMap;
+
 /**
  * Standard Model View Presenter History tokens
  * see http://www.gwtproject.org/articles/mvp-architecture.html#history
@@ -43,6 +45,12 @@ public interface RDLConstants {
         String POSITIVE = "positive";
         String NEUTRAL = "neutral";
         String NEGATIVE = "negative";
+
+        HashMap<String, String> colorCodes = new HashMap<String, String>() {{
+            put(POSITIVE, "green");
+            put(NEUTRAL, "gray");
+            put(NEGATIVE, "red");
+        }};
     }
 
     public interface SnipType {

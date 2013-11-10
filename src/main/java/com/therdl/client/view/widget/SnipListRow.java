@@ -50,8 +50,8 @@ public class SnipListRow extends Composite{
             }
         }
 
-        titleLabel.setText("User Title ("+currentUserBean.as().getName()+")");
-        userName.setText(currentUserBean.as().getName());
+        titleLabel.setText("User Title ("+snipBean.as().getAuthor()+")");
+        userName.setText(snipBean.as().getAuthor());
 
         // set tooltip on the snip img and top color stripe
 

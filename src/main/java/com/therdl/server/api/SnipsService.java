@@ -92,7 +92,8 @@ public interface SnipsService {
     /**
      * finds references of the snip with the given id
      * @param id snip id
+     * @param referenceType filter by reference type, could be more than 1 reference type
      * @return references as a list of SnipBean object
      */
-    public List<SnipBean> getReferences(String id);
+    public List<SnipBean> getReferences(String id, String referenceType);
 }

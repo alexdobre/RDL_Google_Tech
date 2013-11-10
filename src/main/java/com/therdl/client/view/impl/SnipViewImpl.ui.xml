@@ -36,8 +36,26 @@
             margin-left: 13px;
         }
 
-        .radioBtn label {
+        .radioBtn label, .checkBoxBtn label {
             margin-left: 3px;
+        }
+
+        @external .checkBoxBtn;
+        .checkBoxBtn {
+            margin-left: 13px;
+        }
+
+        .checkboxBtnParent {
+            position: absolute;
+            right: 0;
+        }
+
+        .referenceListCont {
+            margin-top: 8px;
+        }
+
+        .bottomCont {
+            position: relative;
         }
 
     </ui:style>
@@ -66,8 +84,14 @@
                 </g:FlowPanel>
             </g:FlowPanel>
 
-            <g:FlowPanel ui:field="referenceListCont">
+            <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
+                <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">
 
+                </g:FlowPanel>
+
+                <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}">
+
+                </g:FlowPanel>
             </g:FlowPanel>
         </g:FlowPanel>
 

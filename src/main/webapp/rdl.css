@@ -4,7 +4,7 @@ body {
     font-size:12px;
     font-family:"Open Sans",serif;
     overflow:scroll;
-    height:1200px;
+    height:1500px;
 }
 
 .splashLogo {
@@ -45,7 +45,7 @@ div.text {
 }
 
 
-
+      /*
 table {
     margin-left:2px!important;
     margin-right:6px!important;
@@ -63,7 +63,7 @@ td {
     margin-left:10px!important;
     margin-right:10px!important;
     padding:2px;
-}
+}     */
 
 .gwt-FlowPanel {
     height:100%;
@@ -112,10 +112,10 @@ td {
 .gwt-MenuBar {
     background-color:#000!important;
 }
-
+  /*
 .gwt-Label {
     padding:0 0 10px 20px;
-}
+}     */
 
 .gwt-MenuBar-horizontal {
     width:100%;

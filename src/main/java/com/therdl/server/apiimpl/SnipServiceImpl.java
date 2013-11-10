@@ -262,9 +262,10 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * finds references of the snip with the given id
      * @param id snip id
+     * @param referenceType filter by reference type, could be more than 1 reference type
      * @return references as a list of SnipBean object
      */
-    public List<SnipBean> getReferences(String id) {
+    public List<SnipBean> getReferences(String id, String referenceType) {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
 
@@ -282,6 +283,11 @@ public class SnipServiceImpl implements SnipsService {
         // query to get references from snip collection for the retrieved ids
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new BasicDBObject("$in", referenceIds));
+
+        // referenceType is a list of reference types (pos/neg/neut) separated by comma, when referenceType is not empty filter also by reference type
+        if(!referenceType.equals("")) {
+           query.put("referenceType", new BasicDBObject("$in", referenceType.split(",")));
+        }
 
         DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1));
 
