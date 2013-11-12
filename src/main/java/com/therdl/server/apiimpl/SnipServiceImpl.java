@@ -7,6 +7,7 @@ import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.SnipsService;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import org.bson.types.ObjectId;
@@ -406,21 +407,21 @@ public class SnipServiceImpl implements SnipsService {
         // set the fields
         snip.setId(doc.get("_id").toString());
 
-        snip.setRep((Integer) doc.get("rep"));
+        snip.setRep(RDLUtils.parseInt(doc.get("rep").toString()));
         snip.setAuthor((String) doc.get("author"));
         snip.setContent((String) doc.get("content"));
         snip.setCoreCat((String) doc.get("coreCat"));
         snip.setCreationDate((String) doc.get("creationDate"));
         snip.setEditDate((String) doc.get("editDate"));
         snip.setMoney((String) doc.get("money"));
-        snip.setNegativeRef((Integer) doc.get("negativeRef"));
-        snip.setNeutralRef((Integer) doc.get("neutralRef"));
+        snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef").toString()));
+        snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef").toString()));
         snip.setParentStream((String) doc.get("parentStream"));
         snip.setSnipType((String) doc.get("snipType"));
-        snip.setViews((Integer) doc.get("views"));
+        snip.setViews(RDLUtils.parseInt(doc.get("views").toString()));
         snip.setTitle((String) doc.get("title"));
         snip.setReferenceType((String) doc.get("referenceType"));
-        snip.setPosRef((Integer) doc.get("posRef"));
+        snip.setPosRef(RDLUtils.parseInt( doc.get("posRef").toString()));
         snip.setSubCat((String) doc.get("subCat"));
         snip.setParentTag((String) doc.get("parentTag"));
         snip.setVotes((String) doc.get("votes"));
