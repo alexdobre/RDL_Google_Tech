@@ -85,7 +85,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         this.currentUser = currentUser;
         //  appMenu.setUserInfoVisible(false);
         appMenu.setLogOutVisible(false);
-        appMenu.setLogOutVisible(false);
         appMenu.setMainGroupVisible(true);
         logo.setStyleName("splashLogo");
         IdeasButton.setSize("100px", "40px");
@@ -144,8 +143,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
         log.info("WelcomeViewImpl setPresenter");
-
-
     }
 
 

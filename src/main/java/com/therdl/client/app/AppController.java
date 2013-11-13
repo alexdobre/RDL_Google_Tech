@@ -74,6 +74,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     private WelcomeView welcomeView;
     private SnipEditView snipEditView;
     private SnipSearchView snipSearchView;
+    private StoriesView storiesView;
     private RegisterView registerView;
     private ProfileView profileView;
     private SnipView snipView;
@@ -247,6 +248,29 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     public void onSuccess() {
 
                         snipSearchPresenter.go(container, currentUserBean);
+
+                    }
+                });
+
+            }// end else
+
+            //***************************************STORIES****************************
+            else if (token.equals(RDLConstants.Tokens.STORIES)) {
+                log.info("AppController Tokens.STORIES");
+
+                if (storiesView == null) {
+                    storiesView = new StoriesViewImpl(currentUserBean);
+                }
+                final StoriesPresenter storiesPresenter = new StoriesPresenter(storiesView, this);
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                        log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+                    }
+
+                    public void onSuccess() {
+
+                        storiesPresenter.go(container, currentUserBean);
 
                     }
                 });

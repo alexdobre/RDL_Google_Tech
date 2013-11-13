@@ -46,8 +46,9 @@ public class AppMenu extends Composite  {
     private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
     @UiField MenuBar menuBar;
 
-    @UiField MenuItem ideas;
     @UiField MenuItem home;
+    @UiField MenuItem ideas;
+    @UiField MenuItem stories;
     @UiField MenuItem improvements;
     @UiField MenuItem profile;
 
@@ -70,7 +71,8 @@ public class AppMenu extends Composite  {
         this .signUp.setStyleName("signUpAccount");
         this .home.setStyleName("homeMenuItem");
         this .ideas.setStyleName("ideasMenuItem");
-        this .improvements.setStyleName("improvements");
+        this .stories.setStyleName("storiesMenuItem");
+        this .improvements.setStyleName("improvementsMenuItem");
         this .login.setStyleName("login");
 
 
@@ -79,6 +81,14 @@ public class AppMenu extends Composite  {
             public void execute() {
                 log.info("AppMenu: History.newItem RDLConstants.Tokens.search");
                 History.newItem(RDLConstants.Tokens.SNIPS);
+            }
+        });
+
+        stories.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.stories");
+                History.newItem(RDLConstants.Tokens.STORIES);
             }
         });
 

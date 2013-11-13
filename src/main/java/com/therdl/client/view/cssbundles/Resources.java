@@ -72,6 +72,23 @@ public interface Resources extends ClientBundle {
     ImageResource SnipImage();
 
 
+    @Source("imagebund/Stream.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource StreamImageGif();
+
+    @Source("imagebund/Tag.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource TagImageGif();
+
+    @Source("imagebund/Thread.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource ThreadImageGif();
+
+    @Source("imagebund/Post.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource PostImageGif();
+
+
     @Source("imagebund/Stream.jpg")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource StreamImage();
@@ -100,8 +117,4 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource badgeImage();
 
-    /*
-    @Source("imagebund/Thread.jpg")
-    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
-    ImageResource ThreadImage();   */
 }
