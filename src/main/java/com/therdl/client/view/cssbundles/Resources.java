@@ -88,6 +88,13 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource PostImageGif();
 
+    @Source("imagebund/Proposal.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource ProposalImageGif();
+
+    @Source("imagebund/Pledge.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource PledgeImageGif();
 
     @Source("imagebund/Stream.jpg")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)

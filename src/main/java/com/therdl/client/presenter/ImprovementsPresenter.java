@@ -3,7 +3,9 @@ package com.therdl.client.presenter;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
+import com.therdl.client.view.ImprovementsView;
 import com.therdl.client.view.StoriesView;
+import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.beans.CurrentUserBean;
 
 import java.util.logging.Logger;
@@ -11,26 +13,26 @@ import java.util.logging.Logger;
 /**
  * storiesPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- * this class will encapsulate the RDL forum presentation
+ * this class will encapsulate the RDL user issues submission and voting
  */
-public class StoriesPresenter implements Presenter, StoriesView.Presenter{
+public class ImprovementsPresenter implements Presenter, ImprovementsView.Presenter{
     private static Logger log = Logger.getLogger("");
 
-    private final StoriesView storiesView;
+    private final ImprovementsView improvementsView;
 
     private final AppController controller;
 
 
-    public StoriesPresenter(StoriesView storiesView, AppController controller) {
+    public ImprovementsPresenter(ImprovementsView improvementsView, AppController controller) {
         this.controller = controller;
-        this.storiesView = storiesView;
-        this.storiesView.setPresenter(this);
+        this.improvementsView = improvementsView;
+        this.improvementsView.setPresenter(this);
     }
 
     @Override
     public void go(HasWidgets container) {
         container.clear();
-        container.add(storiesView.asWidget());
+        container.add(improvementsView.asWidget());
     }
 
     /**
@@ -44,12 +46,12 @@ public class StoriesPresenter implements Presenter, StoriesView.Presenter{
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
-        container.add(storiesView.asWidget());
+        container.add(improvementsView.asWidget());
         if (!controller.getCurrentUserBean().as().isAuth()) {
             log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
-            storiesView.getAppMenu().setLogOutVisible(false);
-            storiesView.getAppMenu().setSignUpVisible(true);
-            storiesView.getAppMenu().setUserInfoVisible(false);
+            improvementsView.getAppMenu().setLogOutVisible(false);
+            improvementsView.getAppMenu().setSignUpVisible(true);
+            improvementsView.getAppMenu().setUserInfoVisible(false);
         }
     }
 

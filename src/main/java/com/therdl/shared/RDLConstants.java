@@ -26,6 +26,7 @@ public interface RDLConstants {
         String SNIP_VIEW = "snipView";
 
         String STORIES = "stories";
+        String IMPROVEMENTS = "improvements";
 
     }
 

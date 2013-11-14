@@ -92,6 +92,13 @@ public class AppMenu extends Composite  {
             }
         });
 
+        improvements.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
+                History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
+            }
+        });
 
         signUp.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override

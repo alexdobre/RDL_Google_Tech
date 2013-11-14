@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.widget.AppMenu;
 
 /**
- * see com.therdl.client.view.impl.StoriesViewImpl javadoc for the
+ * see com.therdl.client.view.impl.ImprovementsViewImpl javadoc for the
  * implementation of these methods.
  *
  * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
@@ -13,7 +13,7 @@ import com.therdl.client.view.widget.AppMenu;
  * can use a instance of its presenter
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  */
-public interface StoriesView {
+public interface ImprovementsView {
 
     public interface Presenter {
 

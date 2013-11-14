@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.therdl.shared.Constants;
 
 /**
- * gwt widget class for top bar menu in the ideas view
+ * gwt widget class for top bar menu in the stories view
  * contains icons for stream, tag, thread, post
  * when hover the text is shown for each module
  */
