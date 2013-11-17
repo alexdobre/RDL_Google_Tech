@@ -62,7 +62,7 @@ public interface SnipsService {
     /**
      * increments counter for the given snip id
      * @param id
-     * @param field to increment. This can be viewCount, positive/neutral/negative reference count
+     * @param field to increment. This can be viewCount, rep or positive/neutral/negative reference count
      * @return
      */
     SnipBean incrementCounter(String id, String field);

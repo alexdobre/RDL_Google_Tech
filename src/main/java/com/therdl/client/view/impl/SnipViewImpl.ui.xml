@@ -3,6 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:rdl="urn:import:com.therdl.client.view.widget"
         >
+    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 
     <ui:style>
         .snipViewCont {
@@ -58,6 +59,12 @@
             position: relative;
         }
 
+        .repBtn {
+            float:right;
+            margin-right: 3px;
+            margin-top: -3px;
+        }
+
     </ui:style>
 
 
@@ -69,6 +76,8 @@
             <g:FlowPanel styleName="{style.refButtonsCont}">
                 <g:Button ui:field="showRef">Show references</g:Button>
                 <g:Button ui:field="leaveRef">Leave reference</g:Button>
+
+                <g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
             </g:FlowPanel>
 
             <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">

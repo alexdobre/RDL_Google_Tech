@@ -130,6 +130,14 @@ public interface SnipBean {
 
     void setMoney(String money);
 
+    Integer getIsRepGivenByUser();
+
+    void setIsRepGivenByUser(Integer repGiven);
+
+    Integer getIsRefGivenByUser();
+
+    void setIsRefGivenByUser(Integer refGiven);
+
     /**
      * nested interfaces
      */

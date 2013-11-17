@@ -88,6 +88,10 @@ public interface UserBean {
 
     void setRepGiven(List<RepGivenBean> repGiven);
 
+    List<RefGivenBean> getRefGiven();
+
+    void setRefGiven(List<RefGivenBean> refGiven);
+
     List<VotesGivenBean> getVotesGiven();
 
     void setVotesGiven(List<VotesGivenBean> votesGiven);
@@ -116,6 +120,16 @@ public interface UserBean {
     }
 
     interface RepGivenBean {
+        public String getSnipId();
+
+        public void setSnipId(String snipId);
+
+        public String getDate();
+
+        public void setDate(String date);
+    }
+
+    interface RefGivenBean {
         public String getSnipId();
 
         public void setSnipId(String snipId);

@@ -15,6 +15,8 @@ public interface SnipView extends IsWidget {
     public interface Presenter {
         public void saveReference(AutoBean<SnipBean> bean);
         public void getSnipReferences(String referenceTypes);
+        public void giveSnipReputation();
+
     }
 
     void setPresenter(Presenter presenter);
@@ -24,5 +26,9 @@ public interface SnipView extends IsWidget {
     public void viewSnip(AutoBean<SnipBean> snipBean);
 
     public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, String referenceTypes);
+
+    public void giveRepResponseHandler();
+
+    public void saveReferenceResponseHandler(String refType);
 
 }

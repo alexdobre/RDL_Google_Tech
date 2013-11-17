@@ -70,5 +70,6 @@ public interface RDLConstants {
         String POS_REF = "posRef";
         String NEUTRAL_REF = "neutralRef";
         String NEGATIVE_REF = "negativeRef";
+        String REP = "rep";
     }
 }

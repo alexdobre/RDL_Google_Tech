@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
-import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.SnipView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
@@ -16,7 +15,6 @@ import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -127,6 +125,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
     public void saveReference(AutoBean<SnipBean> bean) {
         log.info("SnipPresenter submit reference to server");
         bean.as().setAction("saveReference");
+        final String refType = bean.as().getReferenceType();
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
         if (!Constants.DEPLOY) {
@@ -149,6 +148,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipPresenter submit post ok now validating");
+                        snipView.saveReferenceResponseHandler(refType);
                         getSnipReferences("");
                     } else {
                         log.info("SnipPresenter submit post fail");
@@ -214,7 +214,51 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
                 @Override
                 public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+                    log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+
+                }
+
+            });
+        } catch (RequestException e) {
+            log.info(e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * gives reputation to the current snip, increments reputation counter and saves user id to ensure giving reputation per user/snip only once
+     */
+
+    public void giveSnipReputation() {
+        log.info("SnipPresenter giveSnipReputation currentSnipId=" + currentSnipId);
+
+        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+
+        if (!Constants.DEPLOY) {
+            updateUrl = updateUrl.replaceAll("/therdl", "");
+        }
+
+        log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+        requestBuilder.setHeader("Content-Type", "application/json");
+        AutoBean<SnipBean> currentBean = beanery.snipBean();
+        currentBean.as().setAction("giveRep");
+        currentBean.as().setId(currentSnipId);
+
+        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        try {
+
+            requestBuilder.sendRequest(json, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    log.info("giveSnipReputation=" + response.getText());
+
+                    snipView.giveRepResponseHandler();
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
 
                 }
 

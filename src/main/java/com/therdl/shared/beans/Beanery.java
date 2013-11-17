@@ -33,6 +33,8 @@ public interface Beanery extends AutoBeanFactory {
 
     AutoBean<UserBean.RepGivenBean> userRepGivenBean();
 
+    AutoBean<UserBean.RefGivenBean> userRefGivenBean();
+
     AutoBean<UserBean.FriendBean> userFriendBean();
 
     AutoBean<UserBean.TitleBean> userTitleBean();

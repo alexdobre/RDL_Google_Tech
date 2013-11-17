@@ -8,9 +8,11 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.SnipsService;
+import com.therdl.server.api.UserService;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
@@ -54,6 +56,8 @@ public class SnipDispatcherServlet extends HttpServlet {
      */
     SnipsService snipsService;
 
+    UserService userService;
+
     /**
      * for message beans
      */
@@ -66,9 +70,10 @@ public class SnipDispatcherServlet extends HttpServlet {
      * @param snipsService
      */
     @Inject
-    public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService) {
+    public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService, UserService userService) {
         this.sessions = sessions;
         this.snipsService = snipsService;
+        this.userService = userService;
         beanery = AutoBeanFactorySource.create(Beanery.class);
 
     }
@@ -162,6 +167,11 @@ public class SnipDispatcherServlet extends HttpServlet {
             SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.VIEWS);
             sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
             sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
+
+            String email = (String) sessions.get().getAttribute("userid");
+            bean.setIsRepGivenByUser(userService.isRepGivenForSnip(email, actionBean.as().getId()));
+            bean.setIsRefGivenByUser(userService.isRefGivenForSnip(email, actionBean.as().getId()));
+
             AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
             PrintWriter out = resp.getWriter();
             out.write(AutoBeanCodex.encode(autoBean).getPayload());
@@ -212,6 +222,13 @@ public class SnipDispatcherServlet extends HttpServlet {
             linkAutoBean.as().setTargetId(referenceId);
             SnipBean bean = snipsService.addReference(linkAutoBean, parentSnipId);
 
+            String email = (String) sessions.get().getAttribute("userid");
+
+            AutoBean<UserBean.RefGivenBean> refGivenBean = beanery.userRefGivenBean();
+            refGivenBean.as().setSnipId(parentSnipId);
+            refGivenBean.as().setDate(snipsService.makeTimeStamp());
+            UserBean userBean = userService.addRefGiven(refGivenBean, email);
+
             // send modified parent snip as json
             AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
             PrintWriter out = resp.getWriter();
@@ -228,6 +245,21 @@ public class SnipDispatcherServlet extends HttpServlet {
             out.write(gson.toJson(beanList));
             beanList.clear();
             actionBean.as().setAction("dump");
+        }
+
+        else if(actionBean.as().getAction().equals("giveRep")) {
+            String email = (String) sessions.get().getAttribute("userid");
+
+            AutoBean<UserBean.RepGivenBean> repGivenBean = beanery.userRepGivenBean();
+            repGivenBean.as().setSnipId(actionBean.as().getId());
+            repGivenBean.as().setDate(snipsService.makeTimeStamp());
+            UserBean userBean = userService.addRepGiven(repGivenBean, email);
+
+            SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.REP);
+
+            AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+            PrintWriter out = resp.getWriter();
+            out.write(AutoBeanCodex.encode(autoBean).getPayload());
         }
     }
 

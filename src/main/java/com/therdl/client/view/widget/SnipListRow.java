@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -82,6 +83,19 @@ public class SnipListRow extends Composite{
         }
 
         secondColDiv.add(badgeGrid);
+    }
+
+    public void incrementRepCounter() {
+        rep.setText(snipBean.as().getRep()+1+"");
+    }
+
+    public void incrementRefCounterByRefType(String refType) {
+        if(refType.equals(RDLConstants.ReferenceType.POSITIVE))
+            posRef.setText(snipBean.as().getPosRef()+1+" Positive Ref");
+        else if(refType.equals(RDLConstants.ReferenceType.NEUTRAL))
+            neutRef.setText(snipBean.as().getNeutralRef()+1+" Neutral Ref");
+        else if(refType.equals(RDLConstants.ReferenceType.NEGATIVE))
+            negRef.setText(snipBean.as().getNegativeRef()+1+" Negative Ref");
     }
 
     @Override

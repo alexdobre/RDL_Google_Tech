@@ -17,11 +17,12 @@ public class RDLUtils {
     /**
      * This method is an enhanced parseInt checking for null and empty strings
      * Please note this still throws an exception if the string is malformed
-     * @param s  the string to parse
+     * @param s the string to parse
      * @return the parsed INT, 0 if string is null or empty
      */
-    public static Integer parseInt (String s){
-        if ( s == null || s.isEmpty() )  return 0;
-        return Integer.parseInt(s);
+    public static Integer parseInt (Object s){
+        if ( s == null)  return 0;
+        if (s!= null && s.toString().isEmpty());
+        return Integer.parseInt(s.toString());
     }
 }

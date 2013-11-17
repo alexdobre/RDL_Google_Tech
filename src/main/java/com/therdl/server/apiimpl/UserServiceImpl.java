@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
      * crud get
      * returns a User ===  jpa find
      *
-     * @param AutoBean bean  User Details Bean  to find
-     * @param String   hash  User password Hash
+     * @param bean AutoBean User Details Bean  to find
+     * @param hash String User password Hash
      * @return
      */
     @Override
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
      * crud get
      * returns all Last User
      *
-     * @param String match  match string
+     * @param match String match string
      * @return
      */
     @Override
@@ -125,11 +125,10 @@ public class UserServiceImpl implements UserService {
         return lastBean;
     }
 
-
     /**
      * crud get === jpa find
      *
-     * @param String id User primary key
+     * @param id User primary key
      * @return
      */
     @Override
@@ -149,6 +148,28 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * gets user by email
+     * @param email
+     * @return
+     */
+    @Override
+    public UserBean getUserByEmail(String email) {
+        sLogger.info("UserServiceImpl getUserByEmail  email: " + email);
+
+        beanery = AutoBeanFactorySource.create(Beanery.class);
+        DB db = getMongo();
+        BasicDBObject query = new BasicDBObject();
+        query.put("email", email);
+        DBCollection coll = db.getCollection("rdlUserData");
+        DBCursor cursor = coll.find(query);
+        DBObject doc = cursor.next();
+
+        UserBean user = buildBeanObject(doc);
+
+        return user;
+    }
+
 
     // poor code design, this should return a UserObject, programmer was told to do this
     // quickest to deal with this is session servlet for now, however this solution should
@@ -157,7 +178,7 @@ public class UserServiceImpl implements UserService {
     /**
      * crud save === jpa persist
      *
-     * @param UserBean user, server side java  bean
+     * @param user UserBean, server side java  bean
      */
     @Override
     public void createUser(UserBean user) {
@@ -206,7 +227,7 @@ public class UserServiceImpl implements UserService {
     /**
      * crud delete === jpa remove
      *
-     * @param String id User primary key
+     * @param id String User primary key
      */
     @Override
     public void deleteUser(String id) {
@@ -220,6 +241,83 @@ public class UserServiceImpl implements UserService {
             coll.remove(item);
         }
     }
+
+    /**
+     * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
+     * the function adds a reputation given object to the list. Finds user by email.
+     * @param repGivenBean repGivenBean
+     * @param userEmail email
+     * @return modified UserBean
+     */
+    public UserBean addRepGiven(AutoBean<UserBean.RepGivenBean> repGivenBean, String userEmail) {
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlUserData");
+
+        BasicDBObject searchQuery = new BasicDBObject().append("email", userEmail);
+        DBObject listItem = new BasicDBObject("repGiven", new BasicDBObject("snipId",repGivenBean.as().getSnipId()).append("date",repGivenBean.as().getDate()));
+        DBObject updateQuery = new BasicDBObject("$push", listItem);
+        DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
+        UserBean user = buildBeanObject(dbObj);
+        return user;
+    }
+
+    /**
+     * checks if user gave a reputation to the snip with the given snipId
+     * @param email user email
+     * @param snipId snipId
+     * @return Integer 1 or 0
+     */
+    public Integer isRepGivenForSnip(String email, String snipId) {
+        UserBean userBean = getUserByEmail(email);
+
+        if(userBean.getRepGiven() != null) {
+            for (UserBean.RepGivenBean repGiven : userBean.getRepGiven()) {
+                if(repGiven.getSnipId().equals(snipId))
+                    return 1;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
+     * the function adds a reference given object to the list. Finds user by email.
+     * @param refGivenBean refGivenBean
+     * @param userEmail email
+     * @return modified UserBean
+     */
+    public UserBean addRefGiven(AutoBean<UserBean.RefGivenBean> refGivenBean, String userEmail) {
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlUserData");
+
+        BasicDBObject searchQuery = new BasicDBObject().append("email", userEmail);
+        DBObject listItem = new BasicDBObject("refGiven", new BasicDBObject("snipId",refGivenBean.as().getSnipId()).append("date",refGivenBean.as().getDate()));
+        DBObject updateQuery = new BasicDBObject("$push", listItem);
+        DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
+        UserBean user = buildBeanObject(dbObj);
+        return user;
+    }
+
+    /**
+     * checks if user wrote a reference to the snip with the given snipId
+     * @param email user email
+     * @param snipId snipId
+     * @return Integer 1 or 0
+     */
+    public Integer isRefGivenForSnip(String email, String snipId) {
+        UserBean userBean = getUserByEmail(email);
+
+        if(userBean.getRefGiven() != null) {
+            for (UserBean.RefGivenBean refGiven : userBean.getRefGiven()) {
+                if(refGiven.getSnipId().equals(snipId))
+                    return 1;
+            }
+        }
+
+        return 0;
+    }
+
 
     /**
      * testing method to check bean wire up
@@ -250,6 +348,7 @@ public class UserServiceImpl implements UserService {
         BasicDBList titles = (BasicDBList) doc.get("titles");
         BasicDBList friends = (BasicDBList) doc.get("friends");
         BasicDBList repGiven = (BasicDBList) doc.get("repGiven");
+        BasicDBList refGiven = (BasicDBList) doc.get("refGiven");
         BasicDBList votesGiven = (BasicDBList) doc.get("votesGiven");
 
         List<UserBean.TitleBean> titleList = new ArrayList<UserBean.TitleBean>();
@@ -296,6 +395,17 @@ public class UserServiceImpl implements UserService {
         }
         user.setRepGiven(repGivenList);
 
+        List<UserBean.RefGivenBean> refGivenList = new ArrayList<UserBean.RefGivenBean>();
+
+        if(refGiven != null) {
+            for (Object obj : refGiven) {
+                UserBean.RefGivenBean refGivenBean = beanery.userRefGivenBean().as();
+                refGivenBean.setSnipId((String) ((BasicDBObject) obj).get("snipId"));
+                refGivenBean.setDate((String) ((BasicDBObject) obj).get("date"));
+                refGivenList.add(refGivenBean);
+            }
+        }
+        user.setRefGiven(refGivenList);
 
         List<UserBean.VotesGivenBean> votesGivenList = new ArrayList<UserBean.VotesGivenBean>();
 
@@ -378,6 +488,18 @@ public class UserServiceImpl implements UserService {
 
         }
 
+        BasicDBList refGivenList = new BasicDBList();
+
+        if (user.getRefGiven() != null) {
+
+            for (UserBean.RefGivenBean refGiven : user.getRefGiven()) {
+                BasicDBObject obj = new BasicDBObject("snipId", refGiven.getSnipId()).
+                        append("date", refGiven.getDate());
+                refGivenList.add(obj);
+            }
+
+        }
+
         BasicDBList votesGivenList = new BasicDBList();
 
         if (user.getVotesGiven() != null) {
@@ -392,6 +514,7 @@ public class UserServiceImpl implements UserService {
         doc.append("titles", titlesList);
         doc.append("friends", friendsList);
         doc.append("repGiven", repGivenList);
+        doc.append("refGiven", refGivenList);
         doc.append("votesGiven", votesGivenList);
         return doc;
     }

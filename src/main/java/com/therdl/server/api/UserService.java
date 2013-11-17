@@ -33,6 +33,13 @@ public interface UserService {
     UserBean getUser(String id);
 
     /**
+     * gets the user Bean
+     * @param email
+     * @return UserBean
+     */
+    UserBean getUserByEmail(String email);
+
+    /**
      * creates the new user
      * @param user
      */
@@ -50,6 +57,40 @@ public interface UserService {
      * @param id
      */
     void deleteUser(String id);
+
+    /**
+     * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
+     * the function adds a reputation given object to the list. Finds user by email.
+     * @param repGivenBean repGivenBean
+     * @param userEmail email
+     * @return modified UserBean
+     */
+    public UserBean addRepGiven(AutoBean<UserBean.RepGivenBean> repGivenBean, String userEmail);
+
+    /**
+     * checks if user gave a reputation to the snip with the given snipId
+     * @param email user email
+     * @param snipId snipId
+     * @return Integer 1 or 0
+     */
+    public Integer isRepGivenForSnip(String email, String snipId);
+
+    /**
+     * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
+     * the function adds a reference given object to the list. Finds user by email.
+     * @param refGivenBean refGivenBean
+     * @param userEmail email
+     * @return modified UserBean
+     */
+    public UserBean addRefGiven(AutoBean<UserBean.RefGivenBean> refGivenBean, String userEmail);
+
+    /**
+     * checks if user wrote a reference to the snip with the given snipId
+     * @param email user email
+     * @param snipId snipId
+     * @return Integer 1 or 0
+     */
+    public Integer isRefGivenForSnip(String email, String snipId);
 
     /**
      * updates the user

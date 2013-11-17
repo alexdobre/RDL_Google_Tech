@@ -70,7 +70,11 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiField
     RadioButton rb1, rb2, rb3;
     @UiField
+    Image repBtn;
+    @UiField
     HTMLPanel rootPanel;
+
+    SnipListRow snipListRow;
 
     public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -122,10 +126,14 @@ public class SnipViewImpl extends Composite implements SnipView {
         checkboxBtnParent.clear();
 
         // this is the top widget, like in the list widget
-        SnipListRow snipListRow = new SnipListRow(snipBean, currentUserBean);
+        snipListRow = new SnipListRow(snipBean, currentUserBean);
         snipViewCont.add(snipListRow);
         richTextArea.setHTML(snipBean.as().getContent());
         leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
+
+        // hide give reputation/leave reference buttons when user already gave a reputation/wrote a reference
+        repBtn.getElement().getStyle().setProperty("display", snipBean.as().getIsRepGivenByUser() == 1 ? "none" : "");
+        leaveRef.getElement().getStyle().setProperty("display", snipBean.as().getIsRefGivenByUser() == 1 ? "none" : "");
     }
 
     /**
@@ -159,6 +167,31 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiHandler("showRef")
     public void onShowRefClicked(ClickEvent event) {
         presenter.getSnipReferences("");
+    }
+
+    @UiHandler("repBtn")
+    public void onRepBtnClicked(ClickEvent event) {
+        presenter.giveSnipReputation();
+    }
+
+    /**
+     * when user clicks give reputation button, request is sent to increment reputation counter for the snip
+     * in response handler call this function to hide button and also increment rep counter in the view
+     */
+    public void giveRepResponseHandler() {
+        repBtn.getElement().getStyle().setProperty("display", "none");
+        snipListRow.incrementRepCounter();
+    }
+
+    /**
+     * when user clicks save reference button, request is sent to save reference and also the counter by refType is incremented
+     * in response handler call this function to hide leave reference button and
+     * also increment ref counter in the view for the saved reference type
+     * @param refType saved reference type
+     */
+    public void saveReferenceResponseHandler(String refType) {
+        leaveRef.getElement().getStyle().setProperty("display", "none");
+        snipListRow.incrementRefCounterByRefType(refType);
     }
 
     /**
