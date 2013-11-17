@@ -146,7 +146,6 @@ public class SnipViewImpl extends Composite implements SnipView {
         closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
         referenceListCont.getElement().getStyle().setProperty("display", "none");
         checkboxBtnParent.clear();
-
     }
 
     /**
