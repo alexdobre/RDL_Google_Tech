@@ -25,6 +25,9 @@ public interface RDLConstants {
         String PROFILE = "profile";
         String SNIP_VIEW = "snipView";
 
+        String STORIES = "stories";
+        String IMPROVEMENTS = "improvements";
+
     }
 
     public interface BookmarkSearch {

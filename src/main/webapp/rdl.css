@@ -159,8 +159,7 @@ td {
     padding:4px 10px;
 }
 
-
-.improvements {
+.storiesMenuItem {
     position:absolute;
     font:14px;
     color:#FFF;
@@ -169,6 +168,18 @@ td {
     top:.2%;
     padding:4px 10px;
     left:200px!important;
+    width:100px;
+}
+
+.improvementsMenuItem {
+    position:absolute;
+    font:14px;
+    color:#FFF;
+    font-weight:700;
+    vertical-align:bottom;
+    top:.2%;
+    padding:4px 10px;
+    left:300px!important;
     width:100px;
 }
 

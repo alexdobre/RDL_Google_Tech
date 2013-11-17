@@ -1,6 +1,10 @@
 package com.therdl.client.view.impl;
 
 
+import com.bramosystems.oss.player.core.client.AbstractMediaPlayer;
+import com.bramosystems.oss.player.core.client.PluginNotFoundException;
+import com.bramosystems.oss.player.core.client.PluginVersionException;
+import com.bramosystems.oss.player.youtube.client.YouTubePlayer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style;
@@ -75,16 +79,17 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     @UiField
     FocusPanel ServicesButton;
 
-
     @UiField
     SpanElement hoverDiv;
+
+    @UiField
+    SimplePanel welcomeVideo;
 
 
     public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUser = currentUser;
         //  appMenu.setUserInfoVisible(false);
-        appMenu.setLogOutVisible(false);
         appMenu.setLogOutVisible(false);
         appMenu.setMainGroupVisible(true);
         logo.setStyleName("splashLogo");
@@ -100,6 +105,19 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         ServicesButton.setSize("100px", "40px");
         ServicesButton.getElement().getStyle().setProperty("margin", "10px");
         ServicesButton.getElement().getStyle().setProperty("padding", "10px");
+
+        //we initialize the welcome video player
+        AbstractMediaPlayer player = null;
+        try {
+            // create the player, specifying URL of media
+            player = new YouTubePlayer("0SARbwvhupQ","100%", "350px");
+            welcomeVideo.setWidget(player); // add player to panel.
+        } catch(PluginVersionException e) {
+            welcomeVideo.setWidget(new HTML(".. please download the necessary plugin.."));
+        } catch(PluginNotFoundException e) {
+            // catch PluginNotFoundException and display a friendly notice.
+            welcomeVideo.setWidget(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."));
+        }
 
         appMenu.setSignUpVisible(true);
 
@@ -144,8 +162,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
         log.info("WelcomeViewImpl setPresenter");
-
-
     }
 
 
