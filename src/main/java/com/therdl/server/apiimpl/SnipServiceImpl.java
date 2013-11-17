@@ -407,21 +407,21 @@ public class SnipServiceImpl implements SnipsService {
         // set the fields
         snip.setId(doc.get("_id").toString());
 
-        snip.setRep(RDLUtils.parseInt(doc.get("rep").toString()));
+        snip.setRep(RDLUtils.parseInt(doc.get("rep")));
         snip.setAuthor((String) doc.get("author"));
         snip.setContent((String) doc.get("content"));
         snip.setCoreCat((String) doc.get("coreCat"));
         snip.setCreationDate((String) doc.get("creationDate"));
         snip.setEditDate((String) doc.get("editDate"));
         snip.setMoney((String) doc.get("money"));
-        snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef").toString()));
-        snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef").toString()));
+        snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef")));
+        snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef")));
         snip.setParentStream((String) doc.get("parentStream"));
         snip.setSnipType((String) doc.get("snipType"));
-        snip.setViews(RDLUtils.parseInt(doc.get("views").toString()));
+        snip.setViews(RDLUtils.parseInt(doc.get("views")));
         snip.setTitle((String) doc.get("title"));
         snip.setReferenceType((String) doc.get("referenceType"));
-        snip.setPosRef(RDLUtils.parseInt( doc.get("posRef").toString()));
+        snip.setPosRef(RDLUtils.parseInt( doc.get("posRef")));
         snip.setSubCat((String) doc.get("subCat"));
         snip.setParentTag((String) doc.get("parentTag"));
         snip.setVotes((String) doc.get("votes"));
