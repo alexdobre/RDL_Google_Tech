@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.cssbundles.Resources;
+import com.therdl.client.view.widget.editor.RichTextToolbar;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;

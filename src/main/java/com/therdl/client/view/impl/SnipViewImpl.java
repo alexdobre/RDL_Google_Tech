@@ -16,6 +16,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.widget.ReferenceListRow;
 import com.therdl.client.view.widget.SnipListRow;
+import com.therdl.client.view.widget.editor.RichTextToolbar;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.Beanery;
@@ -62,7 +63,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     AppMenu appMenu;
 
     @UiField
-    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, checkboxBtnParent;
+    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, checkboxBtnParent, toolbarParent;
     @UiField
     RichTextArea richTextArea, richTextAreaRef;
     @UiField
@@ -146,6 +147,12 @@ public class SnipViewImpl extends Composite implements SnipView {
         closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
         referenceListCont.getElement().getStyle().setProperty("display", "none");
         checkboxBtnParent.clear();
+        toolbarParent.clear();
+        richTextAreaRef.setText("");
+
+        RichTextToolbar toolbar = new RichTextToolbar(richTextAreaRef);
+        toolbar.setWidth("100%");
+        toolbarParent.add(toolbar);
     }
 
     /**
@@ -215,7 +222,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         // set data for reference object
         AutoBean<SnipBean> newBean = beanery.snipBean();
-        newBean.as().setContent(richTextAreaRef.getText());
+        newBean.as().setContent(richTextAreaRef.getHTML());
         newBean.as().setReferenceType(referenceType);
         newBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
         newBean.as().setAuthor(currentUserBean.as().getName());
