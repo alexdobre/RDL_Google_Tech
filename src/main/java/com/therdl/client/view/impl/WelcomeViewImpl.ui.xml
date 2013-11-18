@@ -102,6 +102,34 @@
             padding-left: 150px;
         }
 
+        .btn-cat-compat{
+            display:inline-block;
+            background-color: #9ce148;
+            border-color: #5e1111 #5e1111 hsl(0, 69%, 17%);
+            color: #000000;
+            width:100px;
+            height:20px;
+        }
+
+        .logoPanel{
+            height:300px;
+            width:400px;
+        }
+
+        .mainContainer{
+            width:100%;
+        }
+
+        .titlePanel{
+            width:600px;
+            font-size: 14px;
+        }
+        .welcomeContent{
+            padding-top: 200px;
+        }
+
+        .btn-cat{
+        }
     </ui:style>
 
 
@@ -110,40 +138,66 @@
         <rdl:AppMenu ui:field="appMenu"/>
 
         <div class="container">
-            <g:Image ui:field="logo" resource='{res.landingImage}' />
-            <div class="row">
-                <div class="col-lg-6 col-offset-3">
+            <g:AbsolutePanel styleName="{style.mainContainer}">
+                <g:at left='0' top='0'>
+                    <g:AbsolutePanel styleName = "{style.logoPanel}" >
+                        <g:at left='50' top='0'>
+                            <g:Image ui:field="logo" resource='{res.landingImage}' />
+                        </g:at>
+                        <g:at left='290' top='84'>
+                         <g:FocusPanel ui:field = "compatibilityCat"  styleName = "{style.btn-cat-compat}" ><g:Label text ="Compatibility"/></g:FocusPanel>
+                        </g:at>
 
-                    <h3 class="margin-base-vertical text-center">The Relationship Driving License</h3>
+                        <g:FocusPanel ui:field = "connectionCat"  styleName = "{style.btn-cat}"><g:Label text ="Connection"/></g:FocusPanel>
+                        <g:FocusPanel ui:field = "exteriorCat"  styleName = "{style.btn-cat}"><g:Label text ="Exterior"/></g:FocusPanel>
+                        <g:FocusPanel ui:field = "eroticismCat"  styleName = "{style.btn-cat}"><g:Label text ="Eroticism"/></g:FocusPanel>
+                        <g:FocusPanel ui:field = "seductionCat"  styleName = "{style.btn-cat}"><g:Label text ="Seduction"/></g:FocusPanel>
+                        <g:FocusPanel ui:field = "psyTendCat"  styleName = "{style.btn-cat}"><g:Label text ="Psy Tend"/></g:FocusPanel>
+                        <g:FocusPanel ui:field = "affairsCat"  styleName = "{style.btn-cat}"><g:Label text ="Affairs"/></g:FocusPanel>
+                        <g:FocusPanel ui:field = "abuseCat"  styleName = "{style.btn-cat}"><g:Label text ="Abuse"/></g:FocusPanel>
+                    </g:AbsolutePanel>
+                </g:at>
+                <g:at left='400' top='0'>
+                    <g:HTMLPanel styleName="{style.titlePanel}">
+                        <h3 class="margin-base-vertical text-center">The Relationship Driving License</h3>
 
-                    <p class="text-left">The community dedicated to (re)building great romantic-erotic-relationships.We believe that being part
-                        of a great romantic-erotic-relationship is an ongoing attainable goal
-                        and we help people achieve it. </p>
-                    <p class="text-leftr">If you believe what we believe and seek as we seek then please
-                        share it with us.    </p>
-                    <div style="padding:20px;">
-                        <form class="form-search form-inline">
-                            <div class="input-append">
-                                <input type="text" class="search-query" placeholder="Search..." />
-                                <button type="submit" class="btn-search">Google Custom Search</button>
-                            </div>
-                        </form>
+                        <p class="text-left">The community dedicated to (re)building great romantic-erotic-relationships.We believe that being part
+                            of a great romantic-erotic-relationship is an ongoing attainable goal
+                            and we help people achieve it. </p>
+                        <p class="text-left">If you believe what we believe and seek as we seek then please
+                            share it with us.    </p>
+                    </g:HTMLPanel>
+                </g:at>
+
+
+                <g:HTMLPanel  styleName="{style.welcomeContent}">
+                    <div class="col-lg-6 col-offset-3">
+                        <div style="padding:20px;">
+                            <form class="form-search form-inline">
+                                <div class="input-append">
+                                    <input type="text" class="search-query" placeholder="Search..." />
+                                    <button type="submit" class="btn-search">Google Custom Search</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <rdl:SocialPanel ui:field="socialPanel" styleName="{style.socialPanel}"/>
+
+                        <g:SimplePanel ui:field="welcomeVideo"/>
+
+                        <span ui:field="hoverDiv" class="displayDiv">this is the hover display div</span>
+
+                        <div class="buttonRow">
+                            <g:FocusPanel ui:field = "IdeasButton"  styleName = "{style.btn-first}"><g:Label text ="Ideas"/></g:FocusPanel>
+                            <g:FocusPanel ui:field = "StoriesButton"  styleName = "{style.btn-second}"><g:Label text ="Stories"/></g:FocusPanel>
+                            <g:FocusPanel ui:field = "VoteButton"  styleName = "{style.btn-third}"><g:Label text ="Vote"/></g:FocusPanel>
+                            <g:FocusPanel ui:field = "ServicesButton"  styleName = "{style.btn-fourth}"><g:Label text ="Services"/></g:FocusPanel>
+                        </div>
                     </div>
+                </g:HTMLPanel>
 
-                    <rdl:SocialPanel ui:field="socialPanel" styleName="{style.socialPanel}"/>
+            </g:AbsolutePanel>
 
-                    <g:SimplePanel ui:field="welcomeVideo"/>
-
-                    <span ui:field="hoverDiv" class="displayDiv">this is the hover display div</span>
-
-                    <div class="buttonRow">
-                        <g:FocusPanel ui:field = "IdeasButton"  styleName = "{style.btn-first}"><g:Label text ="Ideas"/></g:FocusPanel>
-                        <g:FocusPanel ui:field = "StoriesButton"  styleName = "{style.btn-second}"><g:Label text ="Stories"/></g:FocusPanel>
-                        <g:FocusPanel ui:field = "VoteButton"  styleName = "{style.btn-third}"><g:Label text ="Vote"/></g:FocusPanel>
-                        <g:FocusPanel ui:field = "ServicesButton"  styleName = "{style.btn-fourth}"><g:Label text ="Services"/></g:FocusPanel>
-                    </div>
-                </div>
-            </div>
         </div>
     </g:HTMLPanel>
 

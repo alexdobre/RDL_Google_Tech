@@ -205,7 +205,7 @@
                     <runTarget>/</runTarget>
                     <port>8080</port>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
-                    <i18nMessagesBundle>com.therdl.client.Messages</i18nMessagesBundle>
+                    <i18nMessagesBundle>com.therdl.client.view.i18n.I18NConstants</i18nMessagesBundle>
                 </configuration>
             </plugin>
 

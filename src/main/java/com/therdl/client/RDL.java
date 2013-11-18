@@ -4,7 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.therdl.client.app.AppController;
-import com.therdl.shared.Messages;
+import com.therdl.client.view.i18n.I18NConstants;
 
 
 import java.util.logging.Level;
@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  *
  * @ Logger sLogger see http://www.gwtproject.org/doc/latest/DevGuideLogging.html
  * see  resources/com/therdl/rdl.gwt.xml for configuratiom
- * @ Messages messages see http://www.gwtproject.org/doc/latest/DevGuideI18nMessages.html
  * for internationalisation
  * @ AppController appController see com.therdl.client.app.AppController java doc
  *
@@ -23,7 +22,7 @@ public class RDL implements EntryPoint {
 
 
   private static Logger sLogger = Logger.getLogger("");
-  private final Messages messages = GWT.create(Messages.class);
+  public static final I18NConstants i18n = GWT.create(I18NConstants.class);
 
   public void onModuleLoad() {
 
@@ -48,4 +47,5 @@ public class RDL implements EntryPoint {
 
 
   }
+
 }

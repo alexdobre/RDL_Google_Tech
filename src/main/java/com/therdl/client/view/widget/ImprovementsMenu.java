@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.therdl.client.RDL;
 import com.therdl.shared.Constants;
 
 /**
@@ -38,14 +39,14 @@ public class ImprovementsMenu extends Composite{
     @UiHandler("proposalBtn")
     public void onMouseOver(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML("Proposal description placeholder");
+        hoverDiv.setInnerHTML(RDL.i18n.proposalDescription());
     }
 
 
     @UiHandler("pledgeBtn")
     public void onMouseOver1(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML("Pledge description placeholder");
+        hoverDiv.setInnerHTML(RDL.i18n.pledgeDescription());
     }
 
 }

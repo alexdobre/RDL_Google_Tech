@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.therdl.client.RDL;
 import com.therdl.shared.Constants;
 
 /**
@@ -44,27 +45,27 @@ public class StoriesMenu extends Composite{
     @UiHandler("streamBtn")
     public void onMouseOver(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML("Stream description placeholder");
+        hoverDiv.setInnerHTML(RDL.i18n.streamDescription());
     }
 
 
     @UiHandler("tagBtn")
     public void onMouseOver1(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML("TAG description placeholder");
+        hoverDiv.setInnerHTML(RDL.i18n.tagDescription());
     }
 
 
     @UiHandler("threadBtn")
     public void onMouseOver2(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML("THREAD description placeholder");
+        hoverDiv.setInnerHTML(RDL.i18n.threadDescription());
     }
 
 
     @UiHandler("postBtn")
     public void onMouseOver3(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML("POST description placeholder");
+        hoverDiv.setInnerHTML(RDL.i18n.postDescription());
     }
 }

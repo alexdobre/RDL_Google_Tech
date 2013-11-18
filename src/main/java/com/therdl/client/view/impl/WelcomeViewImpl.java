@@ -7,19 +7,14 @@ import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.youtube.client.YouTubePlayer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.WelcomeView;
-import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -64,8 +59,29 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     @UiField
     AppMenu appMenu;
 
+
+
     @UiField
     Image logo;
+
+
+    @UiField
+    FocusPanel compatibilityCat;
+    @UiField
+    FocusPanel connectionCat;
+    @UiField
+    FocusPanel exteriorCat;
+    @UiField
+    FocusPanel eroticismCat;
+    @UiField
+    FocusPanel seductionCat;
+    @UiField
+    FocusPanel psyTendCat;
+    @UiField
+    FocusPanel affairsCat;
+    @UiField
+    FocusPanel abuseCat;
+
 
     @UiField
     FocusPanel IdeasButton;
@@ -107,17 +123,17 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         ServicesButton.getElement().getStyle().setProperty("padding", "10px");
 
         //we initialize the welcome video player
-        AbstractMediaPlayer player = null;
-        try {
-            // create the player, specifying URL of media
-            player = new YouTubePlayer("0SARbwvhupQ","100%", "350px");
-            welcomeVideo.setWidget(player); // add player to panel.
-        } catch(PluginVersionException e) {
-            welcomeVideo.setWidget(new HTML(".. please download the necessary plugin.."));
-        } catch(PluginNotFoundException e) {
-            // catch PluginNotFoundException and display a friendly notice.
-            welcomeVideo.setWidget(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."));
-        }
+//        AbstractMediaPlayer player = null;
+//        try {
+//            // create the player, specifying URL of media
+//            player = new YouTubePlayer("0SARbwvhupQ","100%", "350px");
+//            welcomeVideo.setWidget(player); // add player to panel.
+//        } catch(PluginVersionException e) {
+//            welcomeVideo.setWidget(new HTML(".. please download the necessary plugin.."));
+//        } catch(PluginNotFoundException e) {
+//            // catch PluginNotFoundException and display a friendly notice.
+//            welcomeVideo.setWidget(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."));
+//        }
 
         appMenu.setSignUpVisible(true);
 
@@ -222,6 +238,30 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         return appMenu;
     }
 
+
+    /**
+     * displays the on click popup description
+     *
+     * @param event Standard GWT hover event
+     */
+    @UiHandler("compatibilityCat")
+    public void onClick(ClickEvent event) {
+
+        final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
+        simplePopup.ensureDebugId("cwBasicPopup-simplePopup");
+        simplePopup.setAnimationEnabled(false);
+        simplePopup.setWidth("150px");
+        simplePopup.setWidget(new Label("Click outside of this popup to close it"));
+
+        // Reposition the popup relative to the button
+        Widget source = (Widget) event.getSource();
+        int left = source.getAbsoluteLeft() + 10;
+        int top = source.getAbsoluteTop() + 10;
+        simplePopup.setPopupPosition(left, top);
+
+        // Show the popup
+        simplePopup.show();
+    }
 
     /**
      * displays the hover tooltip for this widget

@@ -1,14 +1,6 @@
 package com.therdl.shared;
 
 /**
- * Created with IntelliJ IDEA.
- * User: alx
- * Date: 11/12/13
- * Time: 10:51 AM
- * To change this template use File | Settings | File Templates.
- */
-
-/**
  * This class contains java utility methods to be used throughout the project
  */
 

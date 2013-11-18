@@ -1,7 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
-
+    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
     <ui:style>
         .btn{
         color: #000 !important;
@@ -26,22 +26,22 @@
             <g:FocusPanel ui:field = "streamBtn"  styleName = "{style.btn}">
                 <g:Image ui:field="streamImg" url='{res.StreamImageGif.getSafeUri.asString}' width="40px" height="40px"/>
             </g:FocusPanel>
-            <g:Label text = "Stream" styleName="{style.storiesLabel}"/>
+            <g:Label text = "{i18n.stream}" styleName="{style.storiesLabel}"/>
 
             <g:FocusPanel ui:field = "tagBtn"  styleName = "{style.btn}">
                 <g:Image ui:field="tagImg" url='{res.TagImageGif.getSafeUri.asString}' styleName="{style.storiesImg}"/>
             </g:FocusPanel>
-            <g:Label text = "Tag" styleName="{style.storiesLabel}"/>
+            <g:Label text = "{i18n.tag}" styleName="{style.storiesLabel}"/>
 
             <g:FocusPanel ui:field = "threadBtn"  styleName = "{style.btn}">
                 <g:Image ui:field="materialImg" url='{res.ThreadImageGif.getSafeUri.asString}' styleName="{style.storiesImg}"/>
             </g:FocusPanel>
-            <g:Label text = "Thread" styleName="{style.storiesLabel}"/>
+            <g:Label text = "{i18n.thread}" styleName="{style.storiesLabel}"/>
 
             <g:FocusPanel ui:field = "postBtn"  styleName = "{style.btn}">
                 <g:Image ui:field="postImg" url='{res.PostImageGif.getSafeUri.asString}' styleName="{style.storiesImg}"/>
             </g:FocusPanel>
-            <g:Label text = "Post" styleName="{style.storiesLabel}"/>
+            <g:Label text = "{i18n.post}" styleName="{style.storiesLabel}"/>
 
             <span ui:field="hoverDiv" style="display: block;font-size: 14px;margin-top: 5px;height:20px;"></span>
 

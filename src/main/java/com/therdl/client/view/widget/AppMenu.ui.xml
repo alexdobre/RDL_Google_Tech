@@ -1,26 +1,26 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
     <ui:style>
 
     </ui:style>
     <g:HTMLPanel>
         <g:MenuBar ui:field="menuBar" >
 
-            <g:MenuItem text="Home" ui:field = "home"/>
-            <g:MenuItem text="Ideas" ui:field = "ideas"/>
-            <g:MenuItem text="Stories" ui:field = "stories"/>
-            <g:MenuItem text="Improvements" ui:field = "improvements"/>
-            <g:MenuItem text="log in" ui:field = "login"/>
-            <g:MenuItem text="Sign Up for an Account" ui:field = "signUp"/>
+            <g:MenuItem text="{i18n.home}" ui:field = "home"/>
+            <g:MenuItem text="{i18n.ideas}" ui:field = "ideas"/>
+            <g:MenuItem text="{i18n.stories}" ui:field = "stories"/>
+            <g:MenuItem text="{i18n.improvements}" ui:field = "improvements"/>
+            <g:MenuItem text="{i18n.logIn}" ui:field = "login"/>
+            <g:MenuItem text="{i18n.appMenuSignUp}" ui:field = "signUp"/>
 
-            <g:MenuItem text="User Details" ui:field = "userdetails">
+            <g:MenuItem text="{i18n.userDetails}" ui:field = "userdetails">
                 <g:MenuBar vertical="true">
-                    <g:MenuItem text="User Name" ui:field = "user"/>
-                    <g:MenuItem text="email" ui:field = "email"/>
-                    <g:MenuItem text="User Profile" ui:field = "profile"/>
-                    <g:MenuItem text="log out" ui:field = "out"/>
-
+                    <g:MenuItem text="{i18n.userName}" ui:field = "user"/>
+                    <g:MenuItem text="{i18n.email}" ui:field = "email"/>
+                    <g:MenuItem text="{i18n.userProfile}" ui:field = "profile"/>
+                    <g:MenuItem text="{i18n.logOut}" ui:field = "out"/>
                 </g:MenuBar>
             </g:MenuItem>
 
