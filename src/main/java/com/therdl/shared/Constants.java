@@ -27,7 +27,6 @@ public class Constants {
     public static final String IDEAS_TEXT = "The RDL Snips (Information snippets) is a concept of a small piece of golden concise thought provoking and useful information. Text snips, video snips and audio.";
     public static final String STORIES_TEXT = "You need advice specific for your problem. You need the experience of people who went through what you are going through. You need the support of people who truly understand your situation. Discussion tags and streams are for you. ";
     public static final String VOTES_TEXT = "With this we hope to achieve an unparalleled amount of transparency and feedback. A site that truly is for the users and we work for them and report to them. ";
-    public static final String SERVICES_TEXT = "The intent of this section is to promote high quality counselling services. Registered members can vote on the service or counsellor along with references. \n";
 
     public static final String SNIP_TEXT = "The RDL Snips (Information snippets) is a concept of a small piece of golden concise thought provoking and useful information.";
     public static final String FAST_CAP_TEXT = "Fast caps (fast capsules) are intended to be fast relief quick concise pieces of information based on your specific problem.";

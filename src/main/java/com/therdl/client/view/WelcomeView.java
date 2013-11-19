@@ -36,4 +36,6 @@ public interface WelcomeView {
 
     AppMenu getAppMenu();
 
+    void init();
+
 }

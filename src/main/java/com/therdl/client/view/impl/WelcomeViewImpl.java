@@ -93,13 +93,13 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     FocusPanel VoteButton;
 
     @UiField
-    FocusPanel ServicesButton;
-
-    @UiField
     SpanElement hoverDiv;
 
     @UiField
     SimplePanel welcomeVideo;
+
+    @UiField
+    Button welcomeVideoButton;
 
 
     public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
@@ -118,22 +118,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         VoteButton.setSize("100px", "40px");
         VoteButton.getElement().getStyle().setProperty("margin", "10px");
         VoteButton.getElement().getStyle().setProperty("padding", "10px");
-        ServicesButton.setSize("100px", "40px");
-        ServicesButton.getElement().getStyle().setProperty("margin", "10px");
-        ServicesButton.getElement().getStyle().setProperty("padding", "10px");
-
-        //we initialize the welcome video player
-//        AbstractMediaPlayer player = null;
-//        try {
-//            // create the player, specifying URL of media
-//            player = new YouTubePlayer("0SARbwvhupQ","100%", "350px");
-//            welcomeVideo.setWidget(player); // add player to panel.
-//        } catch(PluginVersionException e) {
-//            welcomeVideo.setWidget(new HTML(".. please download the necessary plugin.."));
-//        } catch(PluginNotFoundException e) {
-//            // catch PluginNotFoundException and display a friendly notice.
-//            welcomeVideo.setWidget(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."));
-//        }
 
         appMenu.setSignUpVisible(true);
 
@@ -238,6 +222,29 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         return appMenu;
     }
 
+    public void init(){
+        welcomeVideo.setWidget(welcomeVideoButton);
+    }
+
+    /**
+     * Loads the introduction video
+     */
+    @UiHandler("welcomeVideoButton")
+    public void onClickVideoIntro(ClickEvent event) {
+        //we initialize the welcome video player
+        AbstractMediaPlayer player = null;
+        try {
+            // create the player, specifying URL of media
+            player = new YouTubePlayer("0SARbwvhupQ","100%", "350px");
+            welcomeVideo.setWidget(player); // add player to panel.
+        } catch(PluginVersionException e) {
+            welcomeVideo.setWidget(new HTML(".. please download the necessary plugin.."));
+        } catch(PluginNotFoundException e) {
+            // catch PluginNotFoundException and display a friendly notice.
+            welcomeVideo.setWidget(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."));
+        }
+    }
+
 
     /**
      * displays the on click popup description
@@ -292,17 +299,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     public void onMouseOver2(MouseOverEvent event) {
         hoverDiv.setInnerHTML(Constants.VOTES_TEXT);
     }
-
-    /**
-     * displays the hover tooltip for this widget
-     *
-     * @param event Standard GWT hover event
-     */
-    @UiHandler("ServicesButton")
-    public void onMouseOver3(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(Constants.SERVICES_TEXT);
-    }
-
 
 }
 

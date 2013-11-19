@@ -51,6 +51,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
     @Override
     public void go(HasWidgets container) {
         container.clear();
+        welcomeView.init();
         container.add(welcomeView.asWidget());
     }
 
@@ -65,6 +66,7 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
+        welcomeView.init();
         container.add(welcomeView.asWidget());
         if (!controller.getCurrentUserBean().as().isAuth()) {
             log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
