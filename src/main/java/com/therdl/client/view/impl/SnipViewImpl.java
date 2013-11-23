@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 
+import com.therdl.client.RDL;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.SnipView;
@@ -24,6 +25,7 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -131,6 +133,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         snipViewCont.add(snipListRow);
         richTextArea.setHTML(snipBean.as().getContent());
         leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
+        referenceCont.getElement().getStyle().setProperty("display", "none");
 
         // hide give reputation/leave reference buttons when user already gave a reputation/wrote a reference
         repBtn.getElement().getStyle().setProperty("display", snipBean.as().getIsRepGivenByUser() == 1 ? "none" : "");
@@ -285,12 +288,18 @@ public class SnipViewImpl extends Composite implements SnipView {
             RDLConstants.ReferenceType.NEUTRAL
         };
 
+        final String[] referenceTypesText = new String[] {
+                RDL.i18n.positive(),
+                RDL.i18n.negative(),
+                RDL.i18n.neutral()
+        };
+
         final CheckBox[] checkBoxArray = new CheckBox[3];
 
         String[] checkedReferences = pReferenceTypes.split(",");
 
         for (int i=0; i<referenceTypes.length; i++) {
-            checkBoxArray[i] = new CheckBox(referenceTypes[i]);
+            checkBoxArray[i] = new CheckBox(referenceTypesText[i]);
             checkBoxArray[i].setStyleName("checkBoxBtn");
 
             for (int k=0; k<checkedReferences.length; k++) {

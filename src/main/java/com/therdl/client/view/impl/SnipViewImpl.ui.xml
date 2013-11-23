@@ -4,6 +4,7 @@
              xmlns:rdl="urn:import:com.therdl.client.view.widget"
         >
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
     <ui:style>
         .snipViewCont {
@@ -90,23 +91,23 @@
             <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
             <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
             <g:FlowPanel styleName="{style.refButtonsContTop}">
-                <g:Button ui:field="showRef">Show references</g:Button>
-                <g:Button ui:field="leaveRef">Leave reference</g:Button>
+                <g:Button ui:field="showRef" text="{i18n.showReferences}"/>
+                <g:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 
                 <g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
             </g:FlowPanel>
 
             <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
                 <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1">Positive</g:RadioButton>
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2">Neutral</g:RadioButton>
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3">Negative</g:RadioButton>
+                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1" text="{i18n.positive}"></g:RadioButton>
+                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2" text="{i18n.neutral}"></g:RadioButton>
+                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3" text="{i18n.negative}"></g:RadioButton>
                 </g:FlowPanel>
                 <g:FlowPanel ui:field="toolbarParent" styleName="{style.toolbarParent}"></g:FlowPanel>
                 <g:RichTextArea ui:field="richTextAreaRef" styleName="{style.richTextArea}"></g:RichTextArea>
                 <g:FlowPanel styleName="{style.refButtonsCont}">
-                    <g:Button ui:field="saveRef">Save reference</g:Button>
-                    <g:Button ui:field="closeRef">Close</g:Button>
+                    <g:Button ui:field="saveRef" text="{i18n.saveReference}"/>
+                    <g:Button ui:field="closeRef" text="{i18n.close}"/>
                 </g:FlowPanel>
             </g:FlowPanel>
 

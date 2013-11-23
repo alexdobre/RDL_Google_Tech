@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -51,7 +52,7 @@ public class SnipListRow extends Composite{
             }
         }
 
-        titleLabel.setText("User Title ("+snipBean.as().getAuthor()+")");
+        titleLabel.setText(RDL.i18n.userTitle()+" "+snipBean.as().getAuthor());
         userName.setText(snipBean.as().getAuthor());
 
         // set tooltip on the snip img and top color stripe
@@ -66,10 +67,10 @@ public class SnipListRow extends Composite{
 
         rep.setText(snipBean.as().getRep()+"");
         snipTitle.setText(snipBean.as().getTitle());
-        posRef.setText(snipBean.as().getPosRef()+" Positive Ref");
-        neutRef.setText(snipBean.as().getNeutralRef()+" Neutral Ref");
-        negRef.setText(snipBean.as().getNegativeRef()+" Negative Ref");
-        viewCount.setText(snipBean.as().getViews()+" Views");
+        posRef.setText(snipBean.as().getPosRef()+" "+RDL.i18n.positiveRef());
+        neutRef.setText(snipBean.as().getNeutralRef()+" "+RDL.i18n.neutralRef());
+        negRef.setText(snipBean.as().getNegativeRef()+" "+RDL.i18n.negativeRef());
+        viewCount.setText(snipBean.as().getViews()+" "+RDL.i18n.views());
 
         // create badge table
         Grid badgeGrid = new Grid(3,3);
@@ -91,11 +92,11 @@ public class SnipListRow extends Composite{
 
     public void incrementRefCounterByRefType(String refType) {
         if(refType.equals(RDLConstants.ReferenceType.POSITIVE))
-            posRef.setText(snipBean.as().getPosRef()+1+" Positive Ref");
+            posRef.setText(snipBean.as().getPosRef()+1+" "+RDL.i18n.positiveRef());
         else if(refType.equals(RDLConstants.ReferenceType.NEUTRAL))
-            neutRef.setText(snipBean.as().getNeutralRef()+1+" Neutral Ref");
+            neutRef.setText(snipBean.as().getNeutralRef()+1+" "+RDL.i18n.neutralRef());
         else if(refType.equals(RDLConstants.ReferenceType.NEGATIVE))
-            negRef.setText(snipBean.as().getNegativeRef()+1+" Negative Ref");
+            negRef.setText(snipBean.as().getNegativeRef()+1+" "+RDL.i18n.negativeRef());
     }
 
     @Override

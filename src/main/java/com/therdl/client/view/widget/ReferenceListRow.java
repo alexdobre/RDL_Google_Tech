@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.editor.RichTextToolbar;
 import com.therdl.shared.RDLConstants;
@@ -37,11 +38,18 @@ public class ReferenceListRow extends Composite{
 
         // sets values from referenceBean for UI elements from ui binder
         richTextAreaRef.setHTML(referenceBean.as().getContent());
-        titleLabel.setText("User Title ("+referenceBean.as().getAuthor()+")");
+        titleLabel.setText(RDL.i18n.userTitle()+" "+referenceBean.as().getAuthor());
         userName.setText(referenceBean.as().getAuthor());
-        rep.setText(referenceBean.as().getRep()+" Rep Level");
+        rep.setText(referenceBean.as().getRep()+" "+RDL.i18n.repLevel());
         creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));
-        refFlag.setText(referenceBean.as().getReferenceType());
+
+        if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.POSITIVE))
+            refFlag.setText(RDL.i18n.positive());
+        else if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
+            refFlag.setText(RDL.i18n.neutral());
+        else if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
+            refFlag.setText(RDL.i18n.negative());
+
         refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
 
         // create badge table

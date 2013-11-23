@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.therdl.client.RDL;
 import com.therdl.shared.Constants;
 
 /**
@@ -44,27 +45,27 @@ public class IdeasMenu extends Composite{
     @UiHandler("snipBtn")
     public void onMouseOver(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML(Constants.SNIP_TEXT);
+        hoverDiv.setInnerHTML(RDL.i18n.snipDescription());
     }
 
 
     @UiHandler("fastCapBtn")
     public void onMouseOver1(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML(Constants.FAST_CAP_TEXT);
+        hoverDiv.setInnerHTML(RDL.i18n.fastCapDescription());
     }
 
 
     @UiHandler("materialBtn")
     public void onMouseOver2(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML(Constants.MATERIAL_TEXT);
+        hoverDiv.setInnerHTML(RDL.i18n.materialDescription());
     }
 
 
     @UiHandler("habitBtn")
     public void onMouseOver3(MouseOverEvent event)
     {
-        hoverDiv.setInnerHTML(Constants.HABIT_TEXT);
+        hoverDiv.setInnerHTML(RDL.i18n.habitDescription());
     }
 }
