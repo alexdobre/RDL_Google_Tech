@@ -128,10 +128,10 @@ public class EditorClientWidget extends Composite  {
             newBean.as().setRep(0);
             newBean.as().setSnipType(RDLConstants.SnipType.SNIP);
 
-            snipEditView.submitBean(newBean);
+         //   snipEditView.submitBean(newBean);
         } else {
             newBean.as().setId(snipData.get("currentSnipId"));
-            snipEditView.submitEditBean(newBean);
+        //    snipEditView.submitEditBean(newBean);
         }
 
         History.newItem(RDLConstants.Tokens.SNIPS);
@@ -147,7 +147,7 @@ public class EditorClientWidget extends Composite  {
         if(snipData.get("currentSnipId").equals("")) {
             Window.alert("there is no selected snip to delete");
         } else {
-            snipEditView.onDeleteSnip(snipData.get("currentSnipId"));
+           // snipEditView.onDeleteSnip(snipData.get("currentSnipId"));
             Window.alert("deleted");
         }
         History.newItem(RDLConstants.Tokens.SNIPS);

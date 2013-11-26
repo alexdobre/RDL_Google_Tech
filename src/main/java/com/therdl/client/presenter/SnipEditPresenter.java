@@ -103,7 +103,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         if (!currentSnipId.equals("")) {
             findSnipById(currentSnipId);
         } else {
-            view.addEditorClientWidget(null);
+        //    view.addEditorClientWidget(null);
         }
     }
 
@@ -115,7 +115,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
     @Override
     public void submitEditedBean(AutoBean<SnipBean> bean) {
         bean.as().setAction("update");
-        log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle());
+        log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle()+";snipType="+bean.as().getSnipType());
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -139,6 +139,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
+                        History.newItem(RDLConstants.Tokens.SNIPS);
+
                         //fetchSnips();
 
                     } else {
@@ -191,6 +193,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter onDeleteSnip  ok now validating");
+                        History.newItem(RDLConstants.Tokens.SNIPS);
+
 
                         //fetchSnips();
 
@@ -248,6 +252,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
+                        History.newItem(RDLConstants.Tokens.SNIPS);
+
                         //fetchSnips();
                     } else {
                         log.info("SnipEditPresenter submit post fail");
@@ -354,9 +360,8 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                 @Override
                 public void onResponseReceived(Request request, Response response) {
                     log.info("getSnipResponse=" + response.getText());
-                    JSOModel data = JSOModel.fromJson(response.getText());
-
-                    view.addEditorClientWidget(data);
+                    AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
+                    view.viewEditedSnip(bean);
                 }
 
                 @Override

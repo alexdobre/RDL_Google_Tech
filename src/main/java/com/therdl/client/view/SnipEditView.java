@@ -35,15 +35,7 @@ public interface SnipEditView {
 
     void setPresenter(Presenter presenter);
 
-    void onDeleteSnip(String id);
-
-    void submitBean(AutoBean<SnipBean> bean);
-
-    void submitEditBean(AutoBean<SnipBean> bean);
-
-    public void addEditorClientWidget(JSOModel snipData);
-
-    EditorClientWidget getEditorClientWidget();
+    void viewEditedSnip(AutoBean<SnipBean> snipBean);
 
     void setloginresult(String name, String email, boolean auth);
 

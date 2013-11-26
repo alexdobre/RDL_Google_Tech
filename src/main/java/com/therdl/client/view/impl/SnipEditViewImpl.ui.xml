@@ -3,30 +3,119 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:rdl='urn:import:com.therdl.client.view.widget'>
+
+    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:style>
 
         .mainPanel {
-        position:relative;
-        width:100%;
-        height:60%;
-        overflow:inherit;
+            width:900px;
+            margin-top: 20px;
+        }
+        .snipTypeBar {
+            width: 100%;
+            border: 1px solid #000;
         }
 
-        .outerPanel {
-        position:relative;
-        width:100%;
-        height:90%;
-       }
+        .categoryBar, .titleBar {
+            width: 100%;
+            border: 1px solid #000;
+            margin-top: 2px;
+            height: 40px;
+            text-align: left;
+        }
+
+        .titleBar {
+            padding-top: 5px;
+        }
+
+        .editorContainer {
+            margin-top: 2px;
+            border: 1px solid #000;
+            padding: 2px;
+        }
+
+        .editorBtnContainer {
+            margin-top: 2px;
+            border: 1px solid #000;
+            height: 40px;
+            padding-top: 5px;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        @external .radioBtn;
+        .radioBtn{
+            margin-left: 10px;
+        }
+
+        .radioBtn label{
+            margin-left: 3px;
+            margin-bottom: 0px;
+        }
+
+        @external .snipTypeImg;
+        .snipTypeImg {
+            margin-left: 70px;
+        }
+
+        .labelText  {
+            font-family: Arial, Sans-serif;
+            display:inline-block;
+            font-size: 13px;
+            text-align: left;
+            font-weight: bold;
+            margin-left: 20px;
+            margin-right: 20px;
+            /*  margin:10px;    */
+        }
+
+        .categoryField {
+            width: 160px;
+            margin:5px;
+        }
+
+        .tagTextBox {
+            width: 250px;
+        }
+
+        .titleTextBox {
+            width: 400px;
+        }
 
 
 	</ui:style>
-	<g:HTMLPanel styleName="{style.outerPanel}" >
+	<g:HTMLPanel>
         <rdl:AppMenu ui:field="appMenu" />
 
-        <g:DockLayoutPanel  ui:field="snipEditDocPanel" unit='EM'>
-            <g:center>
-                <g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}"/>
-            </g:center>
-        </g:DockLayoutPanel>
+        <center>
+            <g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
+                <g:FlowPanel ui:field="snipTypeBar" styleName="{style.snipTypeBar}"/>
+                <g:FlowPanel ui:field="categoryBar" styleName="{style.categoryBar}">
+                    <g:Label text="{i18n.category}:" styleName = '{style.labelText}'/>
+                    <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'/>
+
+                    <g:Label text="{i18n.subcategory}:" styleName = '{style.labelText}'/>
+                    <g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'/>
+
+                    <g:Label text="{i18n.tag}:" styleName = '{style.labelText}'/>
+                    <g:TextBox ui:field = "tag" styleName="{style.tagTextBox}"/>
+                </g:FlowPanel>
+
+                <g:FlowPanel ui:field="titleBar" styleName="{style.titleBar}">
+                    <g:Label text="{i18n.title}:" styleName = '{style.labelText}'/>
+                    <g:TextBox ui:field = "title" styleName="{style.titleTextBox}"/>
+                </g:FlowPanel>
+
+                <g:FlowPanel ui:field="editorContainer" styleName="{style.editorContainer}">
+                    <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+                </g:FlowPanel>
+
+                <g:FlowPanel ui:field="editorBtnContainer" styleName="{style.editorBtnContainer}">
+                    <g:Button ui:field="saveSnip" text="{i18n.saveSnip}"/>
+                    <g:Button ui:field="deleteSnip" text="{i18n.deleteSnip}"/>
+                </g:FlowPanel>
+            </g:FlowPanel>
+        </center>
 	</g:HTMLPanel>
 </ui:UiBinder> 

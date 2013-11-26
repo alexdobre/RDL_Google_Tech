@@ -78,10 +78,6 @@
             margin-top: -3px;
         }
 
-        .toolbarParent {
-            width: 100%;
-        }
-
     </ui:style>
 
 
@@ -103,8 +99,8 @@
                     <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2" text="{i18n.neutral}"></g:RadioButton>
                     <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3" text="{i18n.negative}"></g:RadioButton>
                 </g:FlowPanel>
-                <g:FlowPanel ui:field="toolbarParent" styleName="{style.toolbarParent}"></g:FlowPanel>
-                <g:RichTextArea ui:field="richTextAreaRef" styleName="{style.richTextArea}"></g:RichTextArea>
+
+                <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
                 <g:FlowPanel styleName="{style.refButtonsCont}">
                     <g:Button ui:field="saveRef" text="{i18n.saveReference}"/>
                     <g:Button ui:field="closeRef" text="{i18n.close}"/>

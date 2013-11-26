@@ -15,6 +15,7 @@ import com.therdl.client.RDL;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.widget.EditorWidget;
 import com.therdl.client.view.widget.ReferenceListRow;
 import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.client.view.widget.editor.RichTextToolbar;
@@ -65,9 +66,11 @@ public class SnipViewImpl extends Composite implements SnipView {
     AppMenu appMenu;
 
     @UiField
-    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, checkboxBtnParent, toolbarParent;
+    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, checkboxBtnParent;
     @UiField
-    RichTextArea richTextArea, richTextAreaRef;
+    RichTextArea richTextArea;
+    @UiField
+    EditorWidget editorWidget;
     @UiField
     Button showRef, leaveRef, saveRef, closeRef;
     @UiField
@@ -150,12 +153,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
         referenceListCont.getElement().getStyle().setProperty("display", "none");
         checkboxBtnParent.clear();
-        toolbarParent.clear();
-        richTextAreaRef.setText("");
-
-        RichTextToolbar toolbar = new RichTextToolbar(richTextAreaRef);
-        toolbar.setWidth("100%");
-        toolbarParent.add(toolbar);
+        editorWidget.setHTML("");
     }
 
     /**
@@ -210,7 +208,7 @@ public class SnipViewImpl extends Composite implements SnipView {
      */
     @UiHandler("saveRef")
     public void onSaveRefClicked(ClickEvent event) {
-        if(richTextAreaRef.getText().equals("")) {
+        if(editorWidget.getHTML().equals("")) {
             Window.alert("Reference content cannot be empty.");
             return;
         }
@@ -225,7 +223,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         // set data for reference object
         AutoBean<SnipBean> newBean = beanery.snipBean();
-        newBean.as().setContent(richTextAreaRef.getHTML());
+        newBean.as().setContent(editorWidget.getHTML());
         newBean.as().setReferenceType(referenceType);
         newBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
         newBean.as().setAuthor(currentUserBean.as().getName());

@@ -95,28 +95,28 @@
                     <td><g:Button ui:field="getLinkBtn" text="{i18n.link}" styleName="{style.getLinkButton}"/></td>
                 </tr>
                 <tr>
-                    <td><g:Label text="{i18n.title}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.title}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:TextBox ui:field = "title" styleName = '{style.textField}'></g:TextBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.category}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.category}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'></g:ListBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.subcategory}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.subcategory}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'></g:ListBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.ref}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.ref}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:TextBox ui:field = "posRef" styleName = '{style.posRef}'></g:TextBox>
                         <g:TextBox ui:field = "neutralRef" styleName = '{style.neutralRef}'></g:TextBox>
@@ -125,22 +125,22 @@
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.reputation}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.reputation}" styleName = '{style.labelText}'/></td>
                     <td><g:TextBox ui:field = "snipRep" styleName = '{style.textField}'></g:TextBox></td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.content}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.content}" styleName = '{style.labelText}'/></td>
                     <td><g:TextBox ui:field = "content" styleName = '{style.textField}'></g:TextBox></td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.author}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.author}" styleName = '{style.labelText}'/></td>
                     <td><g:TextBox ui:field = "author" styleName = '{style.textField}'></g:TextBox></td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.date}" styleName = '{style.labelText}'></g:Label></td>
+                    <td><g:Label text="{i18n.date}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}'></g:TextBox>
                         <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}'></g:TextBox>

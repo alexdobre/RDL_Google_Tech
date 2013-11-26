@@ -54,8 +54,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     @UiField
     AppMenu appMenu;
 
-    @UiField
-    DockLayoutPanel snipSearchDocPanel;
 
     @UiField
     FlowPanel snipSearchWidgetPanel;
@@ -81,7 +79,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         searchFilterWidget = new SearchFilterWidget(this);
         snipSearchWidgetPanel.add(searchFilterWidget);
         searchListWidget = new SearchListWidget();
-        snipSearchDocPanel.setSize("95%", "95%");
     }
 
     @Override

@@ -293,7 +293,7 @@ public class SearchFilterWidget extends Composite {
      */
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
-		History.newItem(RDLConstants.Tokens.SNIP_EDIT);
+        History.newItem(RDLConstants.Tokens.SNIP_EDIT);
 	}
 
 }
