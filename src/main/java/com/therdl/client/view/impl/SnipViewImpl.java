@@ -121,26 +121,31 @@ public class SnipViewImpl extends Composite implements SnipView {
         }
     }
 
+    @Override
+    protected void onUnload() {
+        referenceListCont.clear();
+        snipViewCont.clear();
+        checkboxBtnParent.clear();
+    }
+
     /**
      * creates main gwt widgets of snip view page
      * @param snipBean snip as SnipBean object
      */
     public void viewSnip(AutoBean<SnipBean> snipBean) {
         this.currentSnipBean = snipBean;
-        referenceListCont.clear();
-        snipViewCont.clear();
-        checkboxBtnParent.clear();
 
         // this is the top widget, like in the list widget
-        snipListRow = new SnipListRow(snipBean, currentUserBean);
+        snipListRow = new SnipListRow(snipBean,false);
         snipViewCont.add(snipListRow);
         richTextArea.setHTML(snipBean.as().getContent());
+        richTextArea.setEnabled(false);
         leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
         // hide give reputation/leave reference buttons when user already gave a reputation/wrote a reference
-        repBtn.getElement().getStyle().setProperty("display", snipBean.as().getIsRepGivenByUser() == 1 ? "none" : "");
-        leaveRef.getElement().getStyle().setProperty("display", snipBean.as().getIsRefGivenByUser() == 1 ? "none" : "");
+        repBtn.getElement().getStyle().setProperty("display", snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1 ? "none" : "");
+        leaveRef.getElement().getStyle().setProperty("display", snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRefGivenByUser() == 1 ? "none" : "");
     }
 
     /**
@@ -248,7 +253,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         // default size of rows in one tab
         int listRowSize = Constants.DEFAULT_REFERENCE_PAGE_SIZE;
         int tabCount = (int) Math.ceil((double)beanList.size()/listRowSize);
-
+        tabCount = tabCount == 0 ? 1 : tabCount;
         TabPanel tabPanel = new TabPanel();
 
         // creates tabs of count tabCount
@@ -268,6 +273,9 @@ public class SnipViewImpl extends Composite implements SnipView {
                 currentIndex++;
             }
 
+            if(beanList.size() == 0) {
+                tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
+            }
             tabPanel.add(tabContent, i+"");
 
         }

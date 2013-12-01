@@ -23,7 +23,7 @@
     </ui:style>
 
     <g:HTMLPanel>
-        <div align="center" style="padding-top:5px;">
+        <div style="padding-top:5px;">
             <g:FocusPanel ui:field = "snipBtn"  styleName = "{style.btn}">
                 <g:Image ui:field="snipImg" url='{res.SnipImage.getSafeUri.asString}' width="40px" height="40px"/>
             </g:FocusPanel>

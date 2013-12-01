@@ -38,6 +38,7 @@ public class ReferenceListRow extends Composite{
 
         // sets values from referenceBean for UI elements from ui binder
         richTextAreaRef.setHTML(referenceBean.as().getContent());
+        richTextAreaRef.setEnabled(false);
         titleLabel.setText(RDL.i18n.userTitle()+" "+referenceBean.as().getAuthor());
         userName.setText(referenceBean.as().getAuthor());
         rep.setText(referenceBean.as().getRep()+" "+RDL.i18n.repLevel());

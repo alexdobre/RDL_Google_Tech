@@ -198,7 +198,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
 
-                    if (data.length() == 0) return;
+              //      if (data.length() == 0) return;
 
                     ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
                     ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();

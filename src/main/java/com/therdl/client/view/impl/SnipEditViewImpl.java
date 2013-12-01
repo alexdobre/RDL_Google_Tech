@@ -96,6 +96,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         super.onLoad();
         initSnipTypeMenu();
         initSubCatMenu();
+        deleteSnip.getElement().getStyle().setProperty("display", "none");
     }
 
     @Override
@@ -193,6 +194,14 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     }
 
     /**
+     * sets currentSnipBean
+     * @param snipBean
+     */
+    public void setCurrentSnipBean(AutoBean<SnipBean> snipBean) {
+        this.currentSnipBean = snipBean;
+    }
+
+    /**
      * view edited snip, set title, content, snip type, category and subcategory values
      * @param snipBean
      */
@@ -214,25 +223,21 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         EnumSet subCategories = CoreCategory.values()[catSelectedIndex-1].getSubCategories();
 
 
-      //  if(!snipBean.as().getSubCat().equals("")) {
+        if(subCategories != null) {
 
-            if(subCategories != null) {
-
-                for(Iterator it = subCategories.iterator();it.hasNext();){
-                    subCategoryList.addItem(((SubCategory)it.next()).getName());
-                }
-                subCategoryList.setEnabled(true);
+            for(Iterator it = subCategories.iterator();it.hasNext();){
+                subCategoryList.addItem(((SubCategory)it.next()).getName());
             }
+            subCategoryList.setEnabled(true);
+        }
 
-            for(int i=0; i<subCategoryList.getItemCount(); i++) {
-                if(subCategoryList.getItemText(i).equals(snipBean.as().getSubCat())) {
-                    subCategoryList.setSelectedIndex(i);
-                    break;
-                }
+        for(int i=0; i<subCategoryList.getItemCount(); i++) {
+            if(subCategoryList.getItemText(i).equals(snipBean.as().getSubCat())) {
+                subCategoryList.setSelectedIndex(i);
+                break;
             }
-      //  } else {
+        }
 
-       // }
 
         for(RadioButton radioBtn : snipTypeRadioBtnList) {
             radioBtn.setEnabled(false);

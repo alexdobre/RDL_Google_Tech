@@ -1,8 +1,12 @@
 package com.therdl.client.view.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
@@ -14,29 +18,38 @@ import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.SnipViewEvent;
+
+import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * gwt widget for snip list row
  * constructor gets snipBean and logged userBean
  */
 public class SnipListRow extends Composite{
+    private static Logger log = Logger.getLogger("");
+
     interface SnipListRowUiBinder extends UiBinder<HTMLPanel, SnipListRow> {
     }
 
     private static SnipListRowUiBinder ourUiBinder = GWT.create(SnipListRowUiBinder.class);
 
     AutoBean<SnipBean> snipBean;
-    AutoBean<CurrentUserBean> currentUserBean;
+    boolean viewButtons = false;
 
     @UiField
-    FlowPanel colorStripe, snipImgParent, secondColDiv;
+    FlowPanel colorStripe, snipImgParent, secondColDiv, buttonPanel;
     @UiField
-    Label rep, titleLabel, snipTitle, userName, posRef, neutRef, negRef, viewCount;
+    Label rep, titleLabel, snipTitle, userName, posRef, neutRef, negRef, viewCount, creationDate;
+    @UiField
+    Button editBtn, viewBtn;
 
-    public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean) {
+    public SnipListRow(AutoBean<SnipBean> snipBean, boolean viewButtons) {
         initWidget(ourUiBinder.createAndBindUi(this));
         this.snipBean = snipBean;
-        this.currentUserBean = currentUserBean;
+        this.viewButtons = viewButtons;
     }
 
     @Override
@@ -72,6 +85,11 @@ public class SnipListRow extends Composite{
         negRef.setText(snipBean.as().getNegativeRef()+" "+RDL.i18n.negativeRef());
         viewCount.setText(snipBean.as().getViews()+" "+RDL.i18n.views());
 
+        Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
+        String dateString = DateTimeFormat.getFormat("MMM d, y").format(date);
+
+        creationDate.setText(dateString);
+
         // create badge table
         Grid badgeGrid = new Grid(3,3);
         for (int row = 0; row < 3; ++row) {
@@ -84,6 +102,22 @@ public class SnipListRow extends Composite{
         }
 
         secondColDiv.add(badgeGrid);
+
+        if(viewButtons) {
+            buttonPanel.getElement().getStyle().setProperty("display","block");
+            editBtn.setWidth("45px");
+            viewBtn.setWidth("45px");
+        }
+    }
+
+    @UiHandler("editBtn")
+    public void onEditBtnClicked(ClickEvent event) {
+        History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipBean.as().getId());
+    }
+
+    @UiHandler("viewBtn")
+    public void onViewBtnClicked(ClickEvent event) {
+        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipBean.as().getId()));
     }
 
     public void incrementRepCounter() {

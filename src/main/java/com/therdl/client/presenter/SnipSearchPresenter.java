@@ -108,23 +108,20 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
 
-                    if (data.length() == 0) return;
+                //    if (data.length() == 0) return;
 
-                    jSonList = new ArrayList<JSOModel>();
+                    ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
+                    ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
                     for (int i = 0; i < data.length(); i++) {
                         jSonList.add(data.get(i));
+                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i+"")));
+
                     }
 
-                    log.info("SnipSearchPresenter  initialUpdate onResponseReceived json" + jSonList.get(0).get("0"));
+                    snipSearchView.displaySnipList(beanList);
 
-                    AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(0).get("0"));
-
-                    log.info("" + bean.as().getTitle());
-                    log.info("" + bean.as().getAuthor());
-
-                    snipSearchView.showSnipList(data);
-                }
+                 }
 
                 @Override
                 public void onError(Request request, Throwable exception) {
@@ -173,15 +170,18 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
 
-                    //    if(data.length() == 0 )  return;
+                  //  if (data.length() == 0) return;
 
-                    jSonList = new ArrayList<JSOModel>();
+                    ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
+                    ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
                     for (int i = 0; i < data.length(); i++) {
                         jSonList.add(data.get(i));
+                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i+"")));
+
                     }
 
-                    snipSearchView.showSnipList(data);
+                    snipSearchView.displaySnipList(beanList);
                 }
 
                 @Override

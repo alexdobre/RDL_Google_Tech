@@ -103,7 +103,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         if (!currentSnipId.equals("")) {
             findSnipById(currentSnipId);
         } else {
-        //    view.addEditorClientWidget(null);
+            view.setCurrentSnipBean(null);
         }
     }
 
@@ -318,8 +318,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     }
                     log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
                     beans.clear();
-                    // set snip combo in EditorClientWidget
-                    //   view.getEditorClientWidget().setSnipComboBox(data);
 
                 }
 

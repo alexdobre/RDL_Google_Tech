@@ -7,6 +7,8 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
+
 
 /**
  * see com.therdl.client.view.impl.ProfileViewImpl javadoc for the
@@ -36,7 +38,9 @@ public interface SnipSearchView {
 
     Widget asWidget();
 
-    void showSnipList(JsArray<JSOModel> snips);
+   // void showSnipList(JsArray<JSOModel> snips);
+
+    void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList);
 
     void setloginresult(String name, String email, boolean auth);
 

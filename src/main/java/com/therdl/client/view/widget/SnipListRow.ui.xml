@@ -21,6 +21,16 @@
             margin: 0 10px 2px 20px;
             float: left;
         }
+        .buttonPanel {
+            float:left;
+            margin-top:30px;
+            margin-left:20px;
+            display: none;
+        }
+
+        .editBtnParent {
+            margin-top: 5px;
+        }
 
     </ui:style>
     <g:HTMLPanel ui:field="rootPanel">
@@ -61,17 +71,21 @@
                             <g:Label ui:field="userName" styleName="{style.label}"/>
                         </div>
                         <div style="float:left;margin-left: 50px;">
-                            <div>
-                                <g:Label ui:field="posRef" styleName="{style.label}"/>
-                            </div>
+                            <div><g:Label ui:field="posRef" styleName="{style.label}"/></div>
                             <div><g:Label ui:field="neutRef" styleName="{style.label}"/></div>
                             <div><g:Label ui:field="negRef" styleName="{style.label}"/></div>
                         </div>
                         <div style="float:left;margin-left: 50px;">
-                            <g:Label ui:field="viewCount" styleName="{style.label}"/>
+                            <div><g:Label ui:field="viewCount" styleName="{style.label}"/></div>
+                            <div><g:Label ui:field="creationDate" styleName="{style.label}"/></div>
                         </div>
                     </div>
                 </div>
+
+                <g:FlowPanel ui:field="buttonPanel" styleName="{style.buttonPanel}">
+                    <g:FlowPanel><g:Button ui:field="viewBtn" text="{i18n.view}"/></g:FlowPanel>
+                    <g:FlowPanel styleName="{style.editBtnParent}"><g:Button ui:field="editBtn" text="{i18n.edit}"/></g:FlowPanel>
+                </g:FlowPanel>
 
             </div>
         </div>

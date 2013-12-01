@@ -67,7 +67,6 @@
             font-weight: bold;
             margin-left: 20px;
             margin-right: 20px;
-            /*  margin:10px;    */
         }
 
         .categoryField {
@@ -82,7 +81,6 @@
         .titleTextBox {
             width: 400px;
         }
-
 
 	</ui:style>
 	<g:HTMLPanel>

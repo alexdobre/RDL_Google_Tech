@@ -10,6 +10,7 @@
         .snipViewCont {
             width:60%;
             margin:20px;
+            text-align: left;
         }
 
         .richTextArea {
@@ -83,43 +84,41 @@
 
     <g:HTMLPanel ui:field="rootPanel">
         <rdl:AppMenu ui:field="appMenu"/>
-        <g:FlowPanel styleName="{style.snipViewCont}">
-            <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
-            <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
-            <g:FlowPanel styleName="{style.refButtonsContTop}">
-                <g:Button ui:field="showRef" text="{i18n.showReferences}"/>
-                <g:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+        <center>
+            <g:FlowPanel styleName="{style.snipViewCont}">
+                <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
+                <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
+                <g:FlowPanel styleName="{style.refButtonsContTop}">
+                    <g:Button ui:field="showRef" text="{i18n.showReferences}"/>
+                    <g:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 
-                <g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
+                    <g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
+                </g:FlowPanel>
+
+                <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
+                    <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
+                        <g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1" text="{i18n.positive}"></g:RadioButton>
+                        <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2" text="{i18n.neutral}"></g:RadioButton>
+                        <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3" text="{i18n.negative}"></g:RadioButton>
+                    </g:FlowPanel>
+
+                    <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+                    <g:FlowPanel styleName="{style.refButtonsCont}">
+                        <g:Button ui:field="saveRef" text="{i18n.saveReference}"/>
+                        <g:Button ui:field="closeRef" text="{i18n.close}"/>
+                    </g:FlowPanel>
+                </g:FlowPanel>
+
+                <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
+                    <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">
+
+                    </g:FlowPanel>
+
+                    <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}">
+
+                    </g:FlowPanel>
+                </g:FlowPanel>
             </g:FlowPanel>
-
-            <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
-                <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1" text="{i18n.positive}"></g:RadioButton>
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2" text="{i18n.neutral}"></g:RadioButton>
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3" text="{i18n.negative}"></g:RadioButton>
-                </g:FlowPanel>
-
-                <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
-                <g:FlowPanel styleName="{style.refButtonsCont}">
-                    <g:Button ui:field="saveRef" text="{i18n.saveReference}"/>
-                    <g:Button ui:field="closeRef" text="{i18n.close}"/>
-                </g:FlowPanel>
-            </g:FlowPanel>
-
-            <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
-                <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">
-
-                </g:FlowPanel>
-
-                <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}">
-
-                </g:FlowPanel>
-            </g:FlowPanel>
-        </g:FlowPanel>
-
+        </center>
     </g:HTMLPanel>
-
-
-
 </ui:UiBinder>

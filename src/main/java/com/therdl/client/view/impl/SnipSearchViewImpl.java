@@ -5,19 +5,16 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.SnipSearchView;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.SearchFilterWidget;
-import com.therdl.client.view.widget.SearchListWidget;
+import com.therdl.client.view.widget.*;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.*;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -59,7 +56,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     FlowPanel snipSearchWidgetPanel;
 
     @UiField
-    FlowPanel snipListRow;
+    FlowPanel snipListRowContainer;
 
     private AutoBean<CurrentUserBean> currentUserBean;
     private AutoBean<SnipBean> currentSearchOptionsBean;
@@ -93,10 +90,53 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     }
 
     @Override
-    public void showSnipList(JsArray<JSOModel> snips) {
-        log.info("SnipSearchViewImpl getSnipListDemoResult " + snips.length());
-        snipListRow.add(searchListWidget);
-        searchListWidget.bootStrapList(searchListWidget, snips, Constants.DEFAULT_PAGE_SIZE);
+    protected void onUnload() {
+        super.onUnload();
+
+        snipListRowContainer.clear();
+    }
+
+    @Override
+    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList) {
+        snipListRowContainer.clear();
+        // default size of rows in one tab
+        int listRowSize = Constants.DEFAULT_PAGE_SIZE;
+        int tabCount = (int) Math.ceil((double)beanList.size()/listRowSize);
+        tabCount = tabCount == 0 ? 1 : tabCount;
+
+        TabPanel tabPanel = new TabPanel();
+
+        // creates tabs of count tabCount
+        for (int i=1; i<=tabCount; i++) {
+            // creates content of current tab
+            FlowPanel tabContent = new FlowPanel();
+            int startIndex = (i-1)*listRowSize;
+
+            int currentIndex = startIndex;
+            for (int j=0; j<listRowSize; j++) {
+                if(currentIndex >= beanList.size())
+                    break;
+
+                SnipListRow snipListRow = new SnipListRow(beanList.get(currentIndex),true);
+
+                tabContent.add(snipListRow);
+                currentIndex++;
+            }
+
+            if(beanList.size() == 0) {
+                tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
+            }
+            tabPanel.add(tabContent, i+"");
+
+        }
+
+
+        tabPanel.setHeight("100%");
+        tabPanel.setWidth("100%");
+        //select first tab
+        tabPanel.selectTab(0);
+        snipListRowContainer.add(tabPanel);
+
     }
 
     @Override

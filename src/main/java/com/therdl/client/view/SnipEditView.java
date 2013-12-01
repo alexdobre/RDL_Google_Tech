@@ -35,6 +35,8 @@ public interface SnipEditView {
 
     void setPresenter(Presenter presenter);
 
+    public void setCurrentSnipBean(AutoBean<SnipBean> snipBean);
+
     void viewEditedSnip(AutoBean<SnipBean> snipBean);
 
     void setloginresult(String name, String email, boolean auth);
