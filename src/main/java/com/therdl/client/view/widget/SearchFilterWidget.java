@@ -40,10 +40,10 @@ public class SearchFilterWidget extends Composite {
     private static SnipSearchWidgetUiBinder uiBinder = GWT.create(SnipSearchWidgetUiBinder.class);
 
     @UiField
-    Button submit;
+    com.github.gwtbootstrap.client.ui.Button submit;
 
     @UiField
-    Button getLinkBtn;
+    com.github.gwtbootstrap.client.ui.Button getLinkBtn;
 
     @UiField
     TextBox title;
@@ -228,9 +228,9 @@ public class SearchFilterWidget extends Composite {
 
         if(isOptionsSet) {
             log.info("doFilterSearch");
-            view.doFilterSearch(searchOptionsBean);
+            view.doFilterSearch(searchOptionsBean, 0);
         } else {
-            view.getInitialSnipList();
+            view.getInitialSnipList(0);
         }
     }
 

@@ -47,16 +47,19 @@
         @external .radioBtn;
         .radioBtn{
             margin-left: 10px;
+            display: inline-block;
         }
 
         .radioBtn label{
             margin-left: 3px;
             margin-bottom: 0px;
+            display: inline-block;
         }
 
         @external .snipTypeImg;
         .snipTypeImg {
             margin-left: 70px;
+            display: inline-block;
         }
 
         .labelText  {

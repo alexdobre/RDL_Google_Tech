@@ -81,7 +81,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
     /**
      * Polls the server for the list of snips, uses a getAll/findAll type crud on the backend
      */
-    public void getInitialSnipList() {
+    public void getInitialSnipList(final int pageIndex) {
         log.info("SnipSearchPresenter getInitialList");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -94,6 +94,8 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         requestBuilder.setHeader("Content-Type", "application/json");
         currentBean = beanery.snipBean();
         currentBean.as().setAction("getall");
+        currentBean.as().setPageIndex(pageIndex);
+
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
 
@@ -119,7 +121,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
                     }
 
-                    snipSearchView.displaySnipList(beanList);
+                    snipSearchView.displaySnipList(beanList, pageIndex);
 
                  }
 
@@ -140,7 +142,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
      * @param searchOptionsBean : bean of the snip search options
      */
     @Override
-    public void searchSnips(final AutoBean<SnipBean> searchOptionsBean) {
+    public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
         log.info("SnipSearchPresenter getSnipSearchResult");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -152,6 +154,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
 
+        searchOptionsBean.as().setPageIndex(pageIndex);
         searchOptionsBean.as().setAction("search");
 
         log.info("dateFrom=" + searchOptionsBean.as().getDateFrom() + ";dateTo=" + searchOptionsBean.as().getDateTo());
@@ -181,7 +184,7 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
                     }
 
-                    snipSearchView.displaySnipList(beanList);
+                    snipSearchView.displaySnipList(beanList,pageIndex);
                 }
 
                 @Override

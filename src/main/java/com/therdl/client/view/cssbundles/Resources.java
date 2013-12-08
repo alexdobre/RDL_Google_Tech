@@ -128,4 +128,8 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource plusBtn();
 
+    @Source("imagebund/loader.gif")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource loaderImage();
+
 }

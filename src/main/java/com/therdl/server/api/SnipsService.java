@@ -23,7 +23,6 @@ public interface SnipsService {
      * @return
      */
     String getDebugString();
-    SnipBean getLastSnip(String id);
 
     /**
      * gets the snip
@@ -41,9 +40,10 @@ public interface SnipsService {
 
     /**
      * get all snips for a user
+     * @param pageIndex
      * @return
      */
-    List<SnipBean> getAllSnips();
+    List<SnipBean> getAllSnips(int pageIndex);
 
 
     /**
@@ -70,9 +70,10 @@ public interface SnipsService {
     /**
      * search snips for the given search options
      * @param snip search option data
+     * @param pageIndex index of page
      * @return list of SnipBean
      */
-    List<SnipBean> searchSnipsWith(SnipBean snip);
+    List<SnipBean> searchSnipsWith(SnipBean snip, int pageIndex);
 
     /**
      * makes current timestamp

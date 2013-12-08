@@ -13,11 +13,8 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 
 import com.therdl.client.RDL;
 import com.therdl.client.view.ProfileView;
-import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.*;
 import com.therdl.client.view.SnipView;
-import com.therdl.client.view.widget.EditorWidget;
-import com.therdl.client.view.widget.ReferenceListRow;
-import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.client.view.widget.editor.RichTextToolbar;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.Constants;
@@ -79,6 +76,8 @@ public class SnipViewImpl extends Composite implements SnipView {
     Image repBtn;
     @UiField
     HTMLPanel rootPanel;
+    @UiField
+    LoadingWidget loadingWidget;
 
     SnipListRow snipListRow;
 
@@ -141,6 +140,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         richTextArea.setHTML(snipBean.as().getContent());
         richTextArea.setEnabled(false);
         leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
+        showRef.setText(RDL.i18n.showReferences());
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
         // hide give reputation/leave reference buttons when user already gave a reputation/wrote a reference
@@ -159,6 +159,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         referenceListCont.getElement().getStyle().setProperty("display", "none");
         checkboxBtnParent.clear();
         editorWidget.setHTML("");
+        showRef.setText(RDL.i18n.showReferences());
     }
 
     /**
@@ -178,7 +179,13 @@ public class SnipViewImpl extends Composite implements SnipView {
      */
     @UiHandler("showRef")
     public void onShowRefClicked(ClickEvent event) {
-        presenter.getSnipReferences("");
+        if(showRef.getText().equals(RDL.i18n.showReferences())) {
+            loadingWidget.getElement().getStyle().setProperty("display","block");
+            presenter.getSnipReferences("positive,negative,neutral");
+        } else {
+            bottomCont.getElement().getStyle().setProperty("display", "none");
+            showRef.setText(RDL.i18n.showReferences());
+        }
     }
 
     @UiHandler("repBtn")
@@ -245,8 +252,11 @@ public class SnipViewImpl extends Composite implements SnipView {
      * @param beanList list of references as bean objects
      */
     public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, String pReferenceTypes) {
+        loadingWidget.getElement().getStyle().setProperty("display","none");
+        showRef.setText(RDL.i18n.hideReferences());
         referenceListCont.clear();
         checkboxBtnParent.clear();
+        bottomCont.getElement().getStyle().setProperty("display", "block");
         referenceListCont.getElement().getStyle().setProperty("display", "block");
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
@@ -326,9 +336,15 @@ public class SnipViewImpl extends Composite implements SnipView {
                             checkedFlags += referenceTypes[j]+",";
                         }
                     }
-                    checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+                    if(!checkedFlags.equals(""))
+                        checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
 
-                    presenter.getSnipReferences(checkedFlags);
+                    if(!checkedFlags.equals("")) {
+                        loadingWidget.getElement().getStyle().setProperty("display","block");
+                        presenter.getSnipReferences(checkedFlags);
+                    } else {
+                        showReferences(new ArrayList<AutoBean<SnipBean>>(), "");
+                    }
                 }
             });
 

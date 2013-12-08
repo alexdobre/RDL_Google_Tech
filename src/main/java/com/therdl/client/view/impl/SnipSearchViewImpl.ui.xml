@@ -9,22 +9,22 @@
     }
 
     .snipListRowContainer {
-        width: 73%;
+        width: 70%;
         float: left;
         margin-left: 10px;
     }
 
     .leftPanel {
         float:left;
-        width: 25%;
+        width: 28%;
     }
     .searchlayout {
 
     }
 
     .socialPanel {
-        margin-top:70px;
-        margin-left: 10px;
+        margin-top:10px;
+        margin-left: 50px;
 
     }
 	</ui:style>
@@ -32,13 +32,14 @@
 	<g:HTMLPanel>
         <rdl:AppMenu ui:field="appMenu"/>
         <center>
-            <div style="width:1024px;">
+            <div style="width:1124px;">
                 <rdl:IdeasMenu></rdl:IdeasMenu>
                 <g:FlowPanel styleName="{style.mainContainer}">
                     <g:FlowPanel styleName="{style.leftPanel}">
                         <g:FlowPanel ui:field="snipSearchWidgetPanel" styleName = '{style.searchlayout}'/>
                         <rdl:SocialPanel ui:field="socialPanel" styleName="{style.socialPanel}"/>
                     </g:FlowPanel>
+                    <rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.snipListRowContainer}"></rdl:LoadingWidget>
                     <g:FlowPanel ui:field="snipListRowContainer" styleName = '{style.snipListRowContainer}'/>
                 </g:FlowPanel>
             </div>

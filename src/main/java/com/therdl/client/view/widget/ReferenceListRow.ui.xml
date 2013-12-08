@@ -38,6 +38,7 @@
 
         .badgePanel {
             margin: 3px 0px 3px 0px;
+            width: 90px;
         }
 
         .refFlag {

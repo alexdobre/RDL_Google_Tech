@@ -93,6 +93,10 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         currentBean.as().setAction("viewSnip");
         currentBean.as().setId(currentSnipId);
 
+        if(controller.getCurrentUserBean().as().isAuth()) {
+            currentBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
+        }
+
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
 

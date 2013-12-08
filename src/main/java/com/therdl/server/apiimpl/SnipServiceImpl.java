@@ -6,6 +6,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.SnipsService;
+import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
@@ -52,11 +53,11 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud get
      * returns all snips ===  jpa findAll
-     *
+     * @param pageIndex
      * @return
      */
     @Override
-    public List<SnipBean> getAllSnips() {
+    public List<SnipBean> getAllSnips(int pageIndex) {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
 
@@ -64,12 +65,13 @@ public class SnipServiceImpl implements SnipsService {
 
         BasicDBObject query = new BasicDBObject();
         query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
-
-        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1));
+        int collCount = coll.find(query).count();
+        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1)).skip((pageIndex)*Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);
 
         while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
             SnipBean snip = buildBeanObject(doc);
+            snip.setCount(collCount);
             beans.add(snip);
         }
 
@@ -79,10 +81,11 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * search snips for the given search options
      * @param searchOptions search option data
+     * @param pageIndex
      * @return list of SnipBean
      */
     @Override
-    public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
+    public List<SnipBean> searchSnipsWith(SnipBean searchOptions, int pageIndex) {
         DB db = getMongo();
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
@@ -120,24 +123,16 @@ public class SnipServiceImpl implements SnipsService {
 
 
         DBCollection coll = db.getCollection("rdlSnipData");
-        DBCursor cursor = coll.find(query);
+        int collCount = coll.find(query).count();
+        DBCursor cursor = coll.find(query).skip((pageIndex)*Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);;
 
         while (cursor.hasNext()) {
             DBObject doc = cursor.next();
             SnipBean snip = buildBeanObject(doc);
+            snip.setCount(collCount);
             beans.add(snip);
         }
         return beans;
-    }
-
-    @Override
-    public SnipBean getLastSnip(String match) {
-
-        List<SnipBean> beans = getAllSnips();
-
-        SnipBean lastBean = Iterables.getLast(beans);
-
-        return lastBean;
     }
 
     /**

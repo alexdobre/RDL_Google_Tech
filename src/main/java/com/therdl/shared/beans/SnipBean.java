@@ -138,6 +138,18 @@ public interface SnipBean {
 
     void setIsRefGivenByUser(Integer refGiven);
 
+    String getViewerId();
+
+    void setViewerId(String id);
+
+    int getCount();
+
+    void setCount(int count);
+
+    int getPageIndex();
+
+    void setPageIndex(int pageIndex);
+
     /**
      * nested interfaces
      */

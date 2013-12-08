@@ -366,6 +366,7 @@ public class RichTextToolbar extends Composite {
 
   private ListBox createColorList(String caption) {
     ListBox lb = new ListBox();
+    lb.setWidth("150px");
     lb.addChangeHandler(handler);
     lb.setVisibleItemCount(1);
 
@@ -381,6 +382,7 @@ public class RichTextToolbar extends Composite {
 
   private ListBox createFontList() {
     ListBox lb = new ListBox();
+    lb.setWidth("150px");
     lb.addChangeHandler(handler);
     lb.setVisibleItemCount(1);
 
@@ -397,6 +399,7 @@ public class RichTextToolbar extends Composite {
 
   private ListBox createFontSizes() {
     ListBox lb = new ListBox();
+    lb.setWidth("150px");
     lb.addChangeHandler(handler);
     lb.setVisibleItemCount(1);
 

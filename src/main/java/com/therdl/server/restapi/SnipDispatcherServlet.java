@@ -122,8 +122,8 @@ public class SnipDispatcherServlet extends HttpServlet {
         AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
         sb.setLength(0);
 
-        if(actionBean.as().getAction().equals("getall") ) {
-            List < SnipBean > beans = snipsService.getAllSnips();
+        if(actionBean.as().getAction().equals("getall")) {
+            List<SnipBean> beans = snipsService.getAllSnips(actionBean.as().getPageIndex());
             sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
 
@@ -140,7 +140,7 @@ public class SnipDispatcherServlet extends HttpServlet {
         }
 
         else if(actionBean.as().getAction().equals("search")) {
-            List <SnipBean> beans = snipsService.searchSnipsWith(actionBean.as());
+            List <SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(), actionBean.as().getPageIndex());
             sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
             sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
 
@@ -168,9 +168,15 @@ public class SnipDispatcherServlet extends HttpServlet {
             sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
             sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
 
-            String email = (String) sessions.get().getAttribute("userid");
-            bean.setIsRepGivenByUser(userService.isRepGivenForSnip(email, actionBean.as().getId()));
-            bean.setIsRefGivenByUser(userService.isRefGivenForSnip(email, actionBean.as().getId()));
+            String viewerId = actionBean.as().getViewerId();
+            if(viewerId != null) {
+                bean.setIsRepGivenByUser(userService.isRepGivenForSnip(viewerId, actionBean.as().getId()));
+                bean.setIsRefGivenByUser(userService.isRefGivenForSnip(viewerId, actionBean.as().getId()));
+            } else {
+                // none logged users can't give a reputation and leave a reference
+                bean.setIsRepGivenByUser(1);
+                bean.setIsRefGivenByUser(1);
+            }
 
             AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
             PrintWriter out = resp.getWriter();

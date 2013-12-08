@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -44,7 +45,9 @@ public class SnipListRow extends Composite{
     @UiField
     Label rep, titleLabel, snipTitle, userName, posRef, neutRef, negRef, viewCount, creationDate;
     @UiField
-    Button editBtn, viewBtn;
+    Image snipImg;
+    @UiField
+    Button viewBtn, editBtn;
 
     public SnipListRow(AutoBean<SnipBean> snipBean, boolean viewButtons) {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -85,6 +88,16 @@ public class SnipListRow extends Composite{
         negRef.setText(snipBean.as().getNegativeRef()+" "+RDL.i18n.negativeRef());
         viewCount.setText(snipBean.as().getViews()+" "+RDL.i18n.views());
 
+        if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.SNIP))
+            snipImg.setUrl(Resources.INSTANCE.SnipImage().getSafeUri().asString());
+        if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.FAST_CAP))
+            snipImg.setUrl(Resources.INSTANCE.FastCapImage().getSafeUri().asString());
+        if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.HABIT))
+            snipImg.setUrl(Resources.INSTANCE.HabitImage().getSafeUri().asString());
+        if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.MATERIAL))
+            snipImg.setUrl(Resources.INSTANCE.MaterialImage().getSafeUri().asString());
+
+
         Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
         String dateString = DateTimeFormat.getFormat("MMM d, y").format(date);
 
@@ -105,8 +118,8 @@ public class SnipListRow extends Composite{
 
         if(viewButtons) {
             buttonPanel.getElement().getStyle().setProperty("display","block");
-            editBtn.setWidth("45px");
-            viewBtn.setWidth("45px");
+            editBtn.setWidth("55px");
+            viewBtn.setWidth("55px");
         }
     }
 

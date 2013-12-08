@@ -29,9 +29,9 @@ import java.util.ArrayList;
 public interface SnipSearchView {
 
     public interface Presenter {
-        void searchSnips(AutoBean<SnipBean> searchOptionsBean);
+        void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
-        void getInitialSnipList();
+        void getInitialSnipList(int pageIndex);
     }
 
     void setPresenter(Presenter presenter);
@@ -40,14 +40,14 @@ public interface SnipSearchView {
 
    // void showSnipList(JsArray<JSOModel> snips);
 
-    void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList);
+    void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 
     void setloginresult(String name, String email, boolean auth);
 
     AppMenu getAppMenu();
 
-    void doFilterSearch(AutoBean<SnipBean> searchOptionsBean);
+    void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
-    void getInitialSnipList();
+    void getInitialSnipList(int pageIndex);
 
 }

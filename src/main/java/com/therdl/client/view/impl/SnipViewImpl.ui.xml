@@ -28,7 +28,6 @@
         }
 
         .refButtonsContTop {
-            width: 100%;
             height: 40px;
             border: 1px solid #000;
             padding-top: 5px;
@@ -53,11 +52,13 @@
         .radioBtn label, .checkBoxBtn label {
             margin-left: 3px;
             margin-bottom: 0px;
+            display: inline-block;
         }
 
         @external .checkBoxBtn;
         .checkBoxBtn {
             margin-left: 13px;
+            display: inline-block;
         }
 
         .checkboxBtnParent {
@@ -77,6 +78,11 @@
             float:right;
             margin-right: 3px;
             margin-top: -3px;
+        }
+
+        .loadingWidget {
+            text-align: center;
+            display: none;
         }
 
     </ui:style>
@@ -108,6 +114,8 @@
                         <g:Button ui:field="closeRef" text="{i18n.close}"/>
                     </g:FlowPanel>
                 </g:FlowPanel>
+
+                <rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
 
                 <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
                     <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">

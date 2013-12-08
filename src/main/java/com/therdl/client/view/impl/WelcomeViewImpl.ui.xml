@@ -117,6 +117,7 @@
         }
         .welcomeContent{
             padding-top: 200px;
+            text-align: center;
         }
 
         .welcomeVideo{
@@ -128,7 +129,7 @@
         .welcomeVideoButton{
             position: relative;
             top: 165px;
-            left: 210px;
+           /* left: 210px;*/
         }
 
         .btn-cat{
@@ -227,20 +228,21 @@
 
                 <g:HTMLPanel  styleName="{style.welcomeContent}">
                     <div class="col-lg-6 col-offset-3">
+                        <center>
+                            <rdl:SocialPanel ui:field="socialPanel"/>
 
-                        <rdl:SocialPanel ui:field="socialPanel" styleName="{style.socialPanel}"/>
+                            <g:SimplePanel ui:field="welcomeVideo" styleName="{style.welcomeVideo}">
+                                <g:Button ui:field="welcomeVideoButton" styleName="{style.welcomeVideoButton}">Load introduction video</g:Button>
+                            </g:SimplePanel>
 
-                        <g:SimplePanel ui:field="welcomeVideo" styleName="{style.welcomeVideo}">
-                            <g:Button ui:field="welcomeVideoButton" styleName="{style.welcomeVideoButton}">Load introduction video</g:Button>
-                        </g:SimplePanel>
+                            <span ui:field="hoverDiv" class="displayDiv">Hover over the modules below to see their description.</span>
 
-                        <span ui:field="hoverDiv" class="displayDiv">Hover over the modules below to see their description.</span>
-
-                        <div class="buttonRow">
-                            <g:FocusPanel ui:field = "IdeasButton"  styleName = "{style.btn-first}"><g:Label text ="Ideas"/></g:FocusPanel>
-                            <g:FocusPanel ui:field = "StoriesButton"  styleName = "{style.btn-second}"><g:Label text ="Stories"/></g:FocusPanel>
-                            <g:FocusPanel ui:field = "VoteButton"  styleName = "{style.btn-third}"><g:Label text ="Improvements"/></g:FocusPanel>
-                        </div>
+                            <div class="buttonRow">
+                                <g:FocusPanel ui:field = "IdeasButton"  styleName = "{style.btn-first}"><g:Label text ="Ideas"/></g:FocusPanel>
+                                <g:FocusPanel ui:field = "StoriesButton"  styleName = "{style.btn-second}"><g:Label text ="Stories"/></g:FocusPanel>
+                                <g:FocusPanel ui:field = "VoteButton"  styleName = "{style.btn-third}"><g:Label text ="Improvements"/></g:FocusPanel>
+                            </div>
+                        </center>
                     </div>
                 </g:HTMLPanel>
 

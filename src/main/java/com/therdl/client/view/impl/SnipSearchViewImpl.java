@@ -2,6 +2,10 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -58,10 +62,14 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     @UiField
     FlowPanel snipListRowContainer;
 
+    @UiField
+    LoadingWidget loadingWidget;
+
     private AutoBean<CurrentUserBean> currentUserBean;
     private AutoBean<SnipBean> currentSearchOptionsBean;
 
     private SearchListWidget searchListWidget;
+    private TabPanel tabPanel;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -76,15 +84,17 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         searchFilterWidget = new SearchFilterWidget(this);
         snipSearchWidgetPanel.add(searchFilterWidget);
         searchListWidget = new SearchListWidget();
+
     }
 
     @Override
     protected void onLoad() {
         super.onLoad();
+
         if (token.equals(RDLConstants.Tokens.SNIPS))
-            getInitialSnipList();
+            getInitialSnipList(0);
         else {
-            doFilterSearch(parseToken());
+            doFilterSearch(parseToken(), 0);
         }
 
     }
@@ -92,37 +102,27 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     @Override
     protected void onUnload() {
         super.onUnload();
-
+        currentSearchOptionsBean = null;
         snipListRowContainer.clear();
     }
 
     @Override
-    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList) {
+    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
         snipListRowContainer.clear();
+
         // default size of rows in one tab
         int listRowSize = Constants.DEFAULT_PAGE_SIZE;
-        int tabCount = (int) Math.ceil((double)beanList.size()/listRowSize);
-        tabCount = tabCount == 0 ? 1 : tabCount;
+        int tabCount = 1;
+        if(beanList.size() != 0) {
+            tabCount = (int) Math.ceil((double)beanList.get(0).as().getCount()/listRowSize);
+        }
 
-        TabPanel tabPanel = new TabPanel();
+        tabPanel = new TabPanel();
 
         // creates tabs of count tabCount
         for (int i=1; i<=tabCount; i++) {
             // creates content of current tab
             FlowPanel tabContent = new FlowPanel();
-            int startIndex = (i-1)*listRowSize;
-
-            int currentIndex = startIndex;
-            for (int j=0; j<listRowSize; j++) {
-                if(currentIndex >= beanList.size())
-                    break;
-
-                SnipListRow snipListRow = new SnipListRow(beanList.get(currentIndex),true);
-
-                tabContent.add(snipListRow);
-                currentIndex++;
-            }
-
             if(beanList.size() == 0) {
                 tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
             }
@@ -134,9 +134,26 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         tabPanel.setHeight("100%");
         tabPanel.setWidth("100%");
         //select first tab
-        tabPanel.selectTab(0);
-        snipListRowContainer.add(tabPanel);
 
+        for (int j=0; j<beanList.size(); j++) {
+            SnipListRow snipListRow = new SnipListRow(beanList.get(j),true);
+            ((FlowPanel) tabPanel.getWidget(pageIndex)).add(snipListRow);
+        }
+        log.info("pageIndex="+pageIndex);
+        tabPanel.selectTab(pageIndex);
+
+        tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+            @Override
+            public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
+                if(currentSearchOptionsBean != null) {
+                    doFilterSearch(currentSearchOptionsBean, integerBeforeSelectionEvent.getItem());
+                } else {
+                    getInitialSnipList(integerBeforeSelectionEvent.getItem());
+                }
+            }
+        });
+        snipListRowContainer.add(tabPanel);
+        loadingWidget.getElement().getStyle().setProperty("display","none");
     }
 
     @Override
@@ -167,19 +184,24 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     /**
      * call presenter function to search snips for the given search options
      * @param searchOptionsBean bean for the search options
+     * @param pageIndex
      */
 
     @Override
-    public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean) {
-        presenter.searchSnips(searchOptionsBean);
+    public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
+        loadingWidget.getElement().getStyle().setProperty("display","block");
+        currentSearchOptionsBean = searchOptionsBean;
+        presenter.searchSnips(searchOptionsBean, pageIndex);
     }
 
     /**
      * call presenter function to retrieve initial list for snips
      */
     @Override
-    public void getInitialSnipList() {
-        presenter.getInitialSnipList();
+    public void getInitialSnipList(int pageIndex) {
+        currentSearchOptionsBean = null;
+        loadingWidget.getElement().getStyle().setProperty("display","block");
+        presenter.getInitialSnipList(pageIndex);
     }
 
     /**
