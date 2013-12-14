@@ -153,7 +153,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                         // ok now vaildate for dropdown
                         log.info("SnipPresenter submit post ok now validating");
                         snipView.saveReferenceResponseHandler(refType);
-                        getSnipReferences("");
+                        getSnipReferences("positive,negative,neutral", 0);
                     } else {
                         log.info("SnipPresenter submit post fail");
                     }
@@ -173,7 +173,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
     /**
      * get references for the current snip, creates bean objects from response json
      */
-    public void getSnipReferences(final String referenceTypes) {
+    public void getSnipReferences(final String referenceTypes, final int pageIndex) {
         log.info("SnipPresenter getSnipReferences currentSnipId=" + currentSnipId);
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
@@ -187,6 +187,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         requestBuilder.setHeader("Content-Type", "application/json");
         AutoBean<SnipBean> currentBean = beanery.snipBean();
         currentBean.as().setAction("getReferences");
+        currentBean.as().setPageIndex(pageIndex);
         currentBean.as().setId(currentSnipId);
         currentBean.as().setReferenceType(referenceTypes);
 
@@ -213,7 +214,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
                     }
 
-                    snipView.showReferences(beanList, referenceTypes);
+                    snipView.showReferences(beanList, referenceTypes, pageIndex);
                 }
 
                 @Override

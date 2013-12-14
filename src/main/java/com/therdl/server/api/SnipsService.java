@@ -96,5 +96,5 @@ public interface SnipsService {
      * @param referenceType filter by reference type, could be more than 1 reference type
      * @return references as a list of SnipBean object
      */
-    public List<SnipBean> getReferences(String id, String referenceType);
+    public List<SnipBean> getReferences(String id, String referenceType, int pageIndex);
 }

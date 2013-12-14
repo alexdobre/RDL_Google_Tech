@@ -70,6 +70,9 @@ public class SearchFilterWidget extends Composite {
     TextBox negativeRef;
 
     @UiField
+    TextBox viewCount;
+
+    @UiField
     TextBox snipRep;
 
     @UiField
@@ -217,6 +220,12 @@ public class SearchFilterWidget extends Composite {
         String negativeRefText = negativeRef.getText();
         if(!negativeRefText.equals("")) {
             searchOptionsBean.as().setNegativeRef(Integer.parseInt(negativeRefText));
+            isOptionsSet = true;
+        }
+
+        String viewsText = viewCount.getText();
+        if(!viewsText.equals("")) {
+            searchOptionsBean.as().setViews(Integer.parseInt(viewsText));
             isOptionsSet = true;
         }
 

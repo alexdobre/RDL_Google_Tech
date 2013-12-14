@@ -108,9 +108,10 @@ public class SnipServiceImpl implements SnipsService {
             query.put("neutralRef", new BasicDBObject("$gte", searchOptions.getNeutralRef()));
         if (searchOptions.getNegativeRef() != null)
             query.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
-        if (searchOptions.getRep() != null) {
+        if (searchOptions.getRep() != null)
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
-        }
+        if (searchOptions.getViews() != null)
+            query.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
 
         if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
             query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
@@ -259,9 +260,10 @@ public class SnipServiceImpl implements SnipsService {
      * finds references of the snip with the given id
      * @param id snip id
      * @param referenceType filter by reference type, could be more than 1 reference type
+     * @param pageIndex page index to retrieve
      * @return references as a list of SnipBean object
      */
-    public List<SnipBean> getReferences(String id, String referenceType) {
+    public List<SnipBean> getReferences(String id, String referenceType, int pageIndex) {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
 
@@ -285,11 +287,13 @@ public class SnipServiceImpl implements SnipsService {
            query.put("referenceType", new BasicDBObject("$in", referenceType.split(",")));
         }
 
-        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1));
+        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1)).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+        int collCount = coll.find(query).count();
 
         while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
             SnipBean snip = buildBeanObject(doc);
+            snip.setCount(collCount);
             beans.add(snip);
         }
 

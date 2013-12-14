@@ -241,7 +241,7 @@ public class SnipDispatcherServlet extends HttpServlet {
             out.write(AutoBeanCodex.encode(autoBean).getPayload());
         }
         else if(actionBean.as().getAction().equals("getReferences")) {
-            List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as().getId(), actionBean.as().getReferenceType());
+            List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as().getId(), actionBean.as().getReferenceType(), actionBean.as().getPageIndex());
 
             ArrayList<HashMap<String,String>> beanList = getBeanList(beanReferences);
 

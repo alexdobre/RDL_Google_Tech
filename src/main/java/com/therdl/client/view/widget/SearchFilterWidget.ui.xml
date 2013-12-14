@@ -127,6 +127,11 @@
                 </tr>
 
                 <tr>
+                    <td><g:Label text="{i18n.views}" styleName = '{style.labelText}'/></td>
+                    <td><g:TextBox ui:field = "viewCount" styleName = '{style.textField}'></g:TextBox></td>
+                </tr>
+
+                <tr>
                     <td><g:Label text="{i18n.reputation}" styleName = '{style.labelText}'/></td>
                     <td><g:TextBox ui:field = "snipRep" styleName = '{style.textField}'></g:TextBox></td>
                 </tr>

@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
@@ -135,7 +137,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         this.currentSnipBean = snipBean;
 
         // this is the top widget, like in the list widget
-        snipListRow = new SnipListRow(snipBean,false);
+        snipListRow = new SnipListRow(snipBean, currentUserBean, false);
         snipViewCont.add(snipListRow);
         richTextArea.setHTML(snipBean.as().getContent());
         richTextArea.setEnabled(false);
@@ -181,7 +183,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     public void onShowRefClicked(ClickEvent event) {
         if(showRef.getText().equals(RDL.i18n.showReferences())) {
             loadingWidget.getElement().getStyle().setProperty("display","block");
-            presenter.getSnipReferences("positive,negative,neutral");
+            presenter.getSnipReferences("positive,negative,neutral", 0);
         } else {
             bottomCont.getElement().getStyle().setProperty("display", "none");
             showRef.setText(RDL.i18n.showReferences());
@@ -251,7 +253,7 @@ public class SnipViewImpl extends Composite implements SnipView {
      * shows references in a tab panel with paging
      * @param beanList list of references as bean objects
      */
-    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, String pReferenceTypes) {
+    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, String pReferenceTypes, int pageIndex) {
         loadingWidget.getElement().getStyle().setProperty("display","none");
         showRef.setText(RDL.i18n.hideReferences());
         referenceListCont.clear();
@@ -262,26 +264,17 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         // default size of rows in one tab
         int listRowSize = Constants.DEFAULT_REFERENCE_PAGE_SIZE;
-        int tabCount = (int) Math.ceil((double)beanList.size()/listRowSize);
-        tabCount = tabCount == 0 ? 1 : tabCount;
+        int tabCount = 1;
+        if(beanList.size() != 0) {
+            tabCount = (int) Math.ceil((double)beanList.get(0).as().getCount()/listRowSize);
+        }
+
         TabPanel tabPanel = new TabPanel();
 
         // creates tabs of count tabCount
         for (int i=1; i<=tabCount; i++) {
             // creates content of current tab
             FlowPanel tabContent = new FlowPanel();
-            int startIndex = (i-1)*listRowSize;
-
-            int currentIndex = startIndex;
-            for (int j=0; j<listRowSize; j++) {
-                if(currentIndex >= beanList.size())
-                    break;
-
-                ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(currentIndex), currentUserBean);
-
-                tabContent.add(referenceListRow);
-                currentIndex++;
-            }
 
             if(beanList.size() == 0) {
                 tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
@@ -292,16 +285,13 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         tabPanel.setWidth("100%");
         //select first tab
-        tabPanel.selectTab(0);
-        referenceListCont.add(tabPanel);
-
 
         // creates checkboxes for reference type
 
         final String[] referenceTypes = new String[] {
-            RDLConstants.ReferenceType.POSITIVE,
-            RDLConstants.ReferenceType.NEGATIVE,
-            RDLConstants.ReferenceType.NEUTRAL
+                RDLConstants.ReferenceType.POSITIVE,
+                RDLConstants.ReferenceType.NEGATIVE,
+                RDLConstants.ReferenceType.NEUTRAL
         };
 
         final String[] referenceTypesText = new String[] {
@@ -330,20 +320,13 @@ public class SnipViewImpl extends Composite implements SnipView {
                 @Override
                 public void onClick(ClickEvent event) {
                     // get check box values that are checked (not only the current clicked checkbox)
-                    String checkedFlags = "";
-                    for (int j=0; j<checkBoxArray.length; j++) {
-                        if(checkBoxArray[j].getValue()) {
-                            checkedFlags += referenceTypes[j]+",";
-                        }
-                    }
-                    if(!checkedFlags.equals(""))
-                        checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+                    String checkedFlags = getCheckedFlags(checkBoxArray, referenceTypes);
 
                     if(!checkedFlags.equals("")) {
                         loadingWidget.getElement().getStyle().setProperty("display","block");
-                        presenter.getSnipReferences(checkedFlags);
+                        presenter.getSnipReferences(checkedFlags, 0);
                     } else {
-                        showReferences(new ArrayList<AutoBean<SnipBean>>(), "");
+                        showReferences(new ArrayList<AutoBean<SnipBean>>(), "", 0);
                     }
                 }
             });
@@ -351,5 +334,38 @@ public class SnipViewImpl extends Composite implements SnipView {
             checkboxBtnParent.add(checkBoxArray[i]);
 
         }
+
+        for (int j=0; j<beanList.size(); j++) {
+            ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean);
+            ((FlowPanel) tabPanel.getWidget(pageIndex)).add(referenceListRow);
+        }
+        tabPanel.selectTab(pageIndex);
+
+        tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+            @Override
+            public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
+                loadingWidget.getElement().getStyle().setProperty("display","block");
+                String checkedFlags = getCheckedFlags(checkBoxArray, referenceTypes);
+                presenter.getSnipReferences(checkedFlags, integerBeforeSelectionEvent.getItem());
+            }
+        });
+
+        referenceListCont.add(tabPanel);
+
+
+
+    }
+
+    private String getCheckedFlags(CheckBox[] checkBoxArray, String[] referenceTypes) {
+        String checkedFlags = "";
+        for (int j=0; j<checkBoxArray.length; j++) {
+            if(checkBoxArray[j].getValue()) {
+                checkedFlags += referenceTypes[j]+",";
+            }
+        }
+        if(!checkedFlags.equals(""))
+            checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+
+        return checkedFlags;
     }
 }

@@ -32,6 +32,7 @@
 
         .editBtnParent {
             margin-top: 5px;
+            display: none;
         }
 
     </ui:style>
@@ -88,7 +89,7 @@
                     <g:FlowPanel>
                         <b:Button ui:field="viewBtn" text="{i18n.view}" />
                     </g:FlowPanel>
-                    <g:FlowPanel styleName="{style.editBtnParent}">
+                    <g:FlowPanel styleName="{style.editBtnParent}" ui:field="editBtnParent">
                         <b:Button ui:field="editBtn" text="{i18n.edit}"/>
                     </g:FlowPanel>
                 </g:FlowPanel>

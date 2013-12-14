@@ -38,6 +38,7 @@ public class SnipListRow extends Composite{
     private static SnipListRowUiBinder ourUiBinder = GWT.create(SnipListRowUiBinder.class);
 
     AutoBean<SnipBean> snipBean;
+    AutoBean<CurrentUserBean> currentUserBean;
     boolean viewButtons = false;
 
     @UiField
@@ -48,10 +49,13 @@ public class SnipListRow extends Composite{
     Image snipImg;
     @UiField
     Button viewBtn, editBtn;
+    @UiField
+    FlowPanel editBtnParent;
 
-    public SnipListRow(AutoBean<SnipBean> snipBean, boolean viewButtons) {
+    public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, boolean viewButtons) {
         initWidget(ourUiBinder.createAndBindUi(this));
         this.snipBean = snipBean;
+        this.currentUserBean = currentUserBean;
         this.viewButtons = viewButtons;
     }
 
@@ -102,6 +106,10 @@ public class SnipListRow extends Composite{
         String dateString = DateTimeFormat.getFormat("MMM d, y").format(date);
 
         creationDate.setText(dateString);
+
+        if(currentUserBean.as().isAuth() && currentUserBean.as().getName().equals(snipBean.as().getAuthor())) {
+            editBtnParent.getElement().getStyle().setProperty("display","block");
+        }
 
         // create badge table
         Grid badgeGrid = new Grid(3,3);
