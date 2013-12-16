@@ -42,6 +42,9 @@ public interface RDLConstants {
         String AUTHOR = "author";
         String DATE_FROM = "dateFrom";
         String DATE_TO = "dateTo";
+
+        String SORT_ORDER = "sortOrder";
+        String SORT_FIELD = "sortField";
     }
 
     public interface ReferenceType {
@@ -69,10 +72,12 @@ public interface RDLConstants {
         String TITLE = "title";
         String CORE_CAT = "coreCat";
         String SUB_CAT = "subCat";
+        String AUTHOR = "author";
         String VIEWS = "views";
         String POS_REF = "posRef";
         String NEUTRAL_REF = "neutralRef";
         String NEGATIVE_REF = "negativeRef";
         String REP = "rep";
+        String CREATION_DATE = "creationDate";
     }
 }

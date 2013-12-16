@@ -31,8 +31,7 @@
 
 	<g:HTMLPanel>
         <rdl:AppMenu ui:field="appMenu"/>
-        <center>
-            <div style="width:1124px;">
+            <div style="width:1124px;margin:auto;">
                 <rdl:IdeasMenu></rdl:IdeasMenu>
                 <g:FlowPanel styleName="{style.mainContainer}">
                     <g:FlowPanel styleName="{style.leftPanel}">
@@ -43,6 +42,5 @@
                     <g:FlowPanel ui:field="snipListRowContainer" styleName = '{style.snipListRowContainer}'/>
                 </g:FlowPanel>
             </div>
-        </center>
 	</g:HTMLPanel>
 </ui:UiBinder> 

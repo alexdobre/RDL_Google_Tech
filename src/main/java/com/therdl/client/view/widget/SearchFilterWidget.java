@@ -3,6 +3,7 @@ package com.therdl.client.view.widget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -15,7 +16,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.SnipSearchView;
+import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -84,7 +87,24 @@ public class SearchFilterWidget extends Composite {
     @UiField
     ListBox subCategoryList;
 
+    @UiField
+    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel;
+
     DatePicker datePicker;
+
+    Image selectedArrow;
+
+    // default sort order is descending by creation date
+    private int sortOrder = -1;
+    private String sortField = RDLConstants.SnipFields.CREATION_DATE;
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public int getSortOrder() {
+        return sortOrder;
+    }
 
     SnipSearchView view;
 
@@ -92,14 +112,90 @@ public class SearchFilterWidget extends Composite {
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-	interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
+    interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
 
     public SearchFilterWidget(SnipSearchViewImpl snipSearchView) {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
         createCategoryList();
 
+        createSortArrows();
+
+        posRef.getElement().getStyle().setProperty("border","1px solid green");
+        neutralRef.getElement().getStyle().setProperty("border","1px solid grey");
+        negativeRef.getElement().getStyle().setProperty("border","1px solid red");
 	}
+
+    /**
+     * sets sort arrows for some search fields (views, rep, pos/neut/neg ref, author, date), down for descending order, up for ascending order
+     * default order is descending order by creation date
+     */
+    private void createSortArrows() {
+        FlowPanel[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel};
+        String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP, RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE, RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF, RDLConstants.SnipFields.NEGATIVE_REF};
+
+        for (int i=0; i<flowPanels.length; i++) {
+            final String keyName = keyNames[i];
+            FlowPanel arrowPanel = new FlowPanel();
+            Image imgUp = new Image(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
+            imgUp.setWidth("15px");
+            imgUp.setStyleName("arrowImg");
+            imgUp.setTitle(RDL.i18n.sortAsc());
+            arrowPanel.add(imgUp);
+
+            imgUp.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent clickEvent) {
+                    if(sortOrder == 1)
+                        selectedArrow.setUrl(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
+                    else
+                        selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
+
+                    selectedArrow = (Image) clickEvent.getSource();
+                    sortOrder = 1;
+                    sortField = keyName;
+                    selectedArrow.setUrl(Resources.INSTANCE.arrowUpGreen().getSafeUri().asString());
+
+                    view.doFilterSearch(formSearchOptionBean(), 0);
+                }
+            });
+
+            Image imgDown = new Image(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
+            imgDown.setWidth("15px");
+            imgDown.setTitle(RDL.i18n.sortDesc());
+            imgDown.setStyleName("arrowImg");
+            arrowPanel.add(imgDown);
+
+            imgDown.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent clickEvent) {
+                    if(sortOrder == 1)
+                        selectedArrow.setUrl(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
+                    else
+                        selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
+
+                    selectedArrow = (Image) clickEvent.getSource();
+                    sortOrder = -1;
+                    sortField = keyName;
+                    selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
+
+                    view.doFilterSearch(formSearchOptionBean(), 0);
+                }
+            });
+
+            arrowPanel.getElement().getStyle().setProperty("float","right");
+            arrowPanel.getElement().getStyle().setProperty("marginTop","2px");
+            flowPanels[i].add(arrowPanel);
+
+            if(flowPanels[i].equals(datePanel)) {
+                selectedArrow = imgDown;
+                selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
+
+            }
+        }
+
+
+    }
 
     /**
      * creates category and subcategory list for snips, when user choose a category subcategory list is refreshed
@@ -118,12 +214,12 @@ public class SearchFilterWidget extends Composite {
                 subCategoryList.addItem("Select a subcategory");
                 subCategoryList.setEnabled(false);
 
-                if(selectedIndex != 0) {
-                    EnumSet subCategories = CoreCategory.values()[selectedIndex-1].getSubCategories();
+                if (selectedIndex != 0) {
+                    EnumSet subCategories = CoreCategory.values()[selectedIndex - 1].getSubCategories();
 
-                    if(subCategories != null) {
-                        for(Iterator it = subCategories.iterator();it.hasNext();){
-                            subCategoryList.addItem(((SubCategory)it.next()).getName());
+                    if (subCategories != null) {
+                        for (Iterator it = subCategories.iterator(); it.hasNext(); ) {
+                            subCategoryList.addItem(((SubCategory) it.next()).getName());
                         }
                         subCategoryList.setEnabled(true);
                     }
@@ -158,89 +254,79 @@ public class SearchFilterWidget extends Composite {
 
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
+        view.doFilterSearch(formSearchOptionBean(), 0);
+    }
 
+    /**
+     * forms search option bean from filter form elements
+     * @return search option bean as SnipBean object
+     */
+    private AutoBean<SnipBean> formSearchOptionBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-
-        boolean isOptionsSet = false;
-
         String titleText = title.getText();
         if(!titleText.equals("")) {
             searchOptionsBean.as().setTitle(titleText);
-            isOptionsSet = true;
         }
 
         String contentText = content.getText();
         if(!contentText.equals("")) {
             searchOptionsBean.as().setContent(contentText);
-            isOptionsSet = true;
         }
 
         String authorText = author.getText();
         if(!authorText.equals("")) {
             searchOptionsBean.as().setAuthor(authorText);
-            isOptionsSet = true;
         }
 
         String dateFromText = dateFrom.getText();
         if(!dateFromText.equals("")) {
             searchOptionsBean.as().setDateFrom(dateFromText);
-            isOptionsSet = true;
         }
 
         String dateToText = dateTo.getText();
         if(!dateToText.equals("")) {
             searchOptionsBean.as().setDateTo(dateToText);
-            isOptionsSet = true;
         }
 
         int catIndex = categoryList.getSelectedIndex();
         if(catIndex != 0) {
             searchOptionsBean.as().setCoreCat(categoryList.getItemText(catIndex));
-            isOptionsSet = true;
         }
 
         int subCatIndex = subCategoryList.getSelectedIndex();
         if(subCatIndex != 0) {
             searchOptionsBean.as().setSubCat(subCategoryList.getItemText(subCatIndex));
-            isOptionsSet = true;
         }
 
         String posRefText = posRef.getText();
         if(!posRefText.equals("")) {
             searchOptionsBean.as().setPosRef(Integer.parseInt(posRefText));
-            isOptionsSet = true;
         }
 
         String neutralRefText = neutralRef.getText();
         if(!neutralRefText.equals("")) {
             searchOptionsBean.as().setNeutralRef(Integer.parseInt(neutralRefText));
-            isOptionsSet = true;
         }
 
         String negativeRefText = negativeRef.getText();
         if(!negativeRefText.equals("")) {
             searchOptionsBean.as().setNegativeRef(Integer.parseInt(negativeRefText));
-            isOptionsSet = true;
         }
 
         String viewsText = viewCount.getText();
         if(!viewsText.equals("")) {
             searchOptionsBean.as().setViews(Integer.parseInt(viewsText));
-            isOptionsSet = true;
         }
 
         String snipRepText = snipRep.getText();
         if(!snipRepText.equals("")) {
             searchOptionsBean.as().setRep(Integer.parseInt(snipRepText));
-            isOptionsSet = true;
         }
 
-        if(isOptionsSet) {
-            log.info("doFilterSearch");
-            view.doFilterSearch(searchOptionsBean, 0);
-        } else {
-            view.getInitialSnipList(0);
-        }
+        searchOptionsBean.as().setSortOrder(sortOrder);
+        searchOptionsBean.as().setSortField(sortField);
+
+        return searchOptionsBean;
     }
 
     /**

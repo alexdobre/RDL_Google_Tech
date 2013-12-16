@@ -9,8 +9,8 @@
     <ui:style>
         .snipViewCont {
             width:60%;
-            margin:20px;
-            text-align: left;
+            margin:auto;
+
         }
 
         .richTextArea {
@@ -90,7 +90,6 @@
 
     <g:HTMLPanel ui:field="rootPanel">
         <rdl:AppMenu ui:field="appMenu"/>
-        <center>
             <g:FlowPanel styleName="{style.snipViewCont}">
                 <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
                 <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
@@ -127,6 +126,5 @@
                     </g:FlowPanel>
                 </g:FlowPanel>
             </g:FlowPanel>
-        </center>
     </g:HTMLPanel>
 </ui:UiBinder>

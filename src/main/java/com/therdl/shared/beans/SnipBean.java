@@ -150,6 +150,14 @@ public interface SnipBean {
 
     void setPageIndex(int pageIndex);
 
+    String getSortField();
+
+    void setSortField(String sortField);
+
+    int getSortOrder();
+
+    void setSortOrder(int sortOrder);
+
     /**
      * nested interfaces
      */

@@ -97,6 +97,8 @@ public class BookmarkSearchPopup extends PopupPanel {
             stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO+"="+searchFilterWidget.dateTo.getText()+":");
         }
 
+        stringBuilder.append(RDLConstants.BookmarkSearch.SORT_FIELD+"="+searchFilterWidget.getSortField()+":");
+        stringBuilder.append(RDLConstants.BookmarkSearch.SORT_ORDER+"="+searchFilterWidget.getSortOrder()+":");
 
         if(stringBuilder.length() != 0) {
             stringBuilder.deleteCharAt(stringBuilder.length()-1);

@@ -132,4 +132,20 @@ public interface Resources extends ClientBundle {
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource loaderImage();
 
+    @Source("imagebund/arrow-down-green1.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource arrowDownGreen();
+
+    @Source("imagebund/arrow-up-green1.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource arrowUpGreen();
+
+    @Source("imagebund/arrow-down-grey.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource arrowDownGrey();
+
+    @Source("imagebund/arrow-up-grey.png")
+    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+    ImageResource arrowUpGrey();
+
 }

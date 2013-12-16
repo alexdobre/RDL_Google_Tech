@@ -125,7 +125,7 @@ public class SnipServiceImpl implements SnipsService {
 
         DBCollection coll = db.getCollection("rdlSnipData");
         int collCount = coll.find(query).count();
-        DBCursor cursor = coll.find(query).skip((pageIndex)*Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);;
+        DBCursor cursor = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);;
 
         while (cursor.hasNext()) {
             DBObject doc = cursor.next();
