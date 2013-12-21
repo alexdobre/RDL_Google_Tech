@@ -108,15 +108,18 @@ public class SearchFilterWidget extends Composite {
 
     SnipSearchView view;
 
-    BookmarkSearchPopup bookmarkSearchPopup;
+    private BookmarkSearchPopup bookmarkSearchPopup;
+    private String authorName;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
     interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
 
-    public SearchFilterWidget(SnipSearchViewImpl snipSearchView) {
+    public SearchFilterWidget(SnipSearchViewImpl snipSearchView, String authorName) {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
+        this.authorName = authorName;
+
         createCategoryList();
 
         createSortArrows();
@@ -124,6 +127,9 @@ public class SearchFilterWidget extends Composite {
         posRef.getElement().getStyle().setProperty("border","1px solid green");
         neutralRef.getElement().getStyle().setProperty("border","1px solid grey");
         negativeRef.getElement().getStyle().setProperty("border","1px solid red");
+
+        if(this.authorName != null)
+            author.setText(authorName);
 	}
 
     /**

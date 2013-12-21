@@ -105,7 +105,7 @@
 
                 <g:FlowPanel ui:field="titleBar" styleName="{style.titleBar}">
                     <g:Label text="{i18n.title}:" styleName = '{style.labelText}'/>
-                    <g:TextBox ui:field = "title" styleName="{style.titleTextBox}"/>
+                    <g:TextBox ui:field = "title" styleName="{style.titleTextBox}" tabIndex="1"/>
                 </g:FlowPanel>
 
                 <g:FlowPanel ui:field="editorContainer" styleName="{style.editorContainer}">
@@ -113,8 +113,8 @@
                 </g:FlowPanel>
 
                 <g:FlowPanel ui:field="editorBtnContainer" styleName="{style.editorBtnContainer}">
-                    <g:Button ui:field="saveSnip" text="{i18n.saveSnip}"/>
-                    <g:Button ui:field="deleteSnip" text="{i18n.deleteSnip}"/>
+                    <g:Button ui:field="saveSnip" text="{i18n.saveSnip}" tabIndex="3"/>
+                    <g:Button ui:field="deleteSnip" text="{i18n.deleteSnip}" tabIndex="4"/>
                 </g:FlowPanel>
             </g:FlowPanel>
         </center>

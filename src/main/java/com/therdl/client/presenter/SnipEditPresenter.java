@@ -252,9 +252,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(RDLConstants.Tokens.SNIPS);
-
-                        //fetchSnips();
+                        History.newItem(RDLConstants.Tokens.SNIPS+":"+controller.getCurrentUserBean().as().getName());
                     } else {
                         log.info("SnipEditPresenter submit post fail");
                     }

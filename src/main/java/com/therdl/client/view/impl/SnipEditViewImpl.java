@@ -97,6 +97,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         initSnipTypeMenu();
         initSubCatMenu();
         deleteSnip.getElement().getStyle().setProperty("display", "none");
+        title.setFocus(true);
     }
 
     @Override
@@ -332,8 +333,23 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     @UiHandler("deleteSnip")
     void onDeleteSnip(ClickEvent event) {
         if(currentSnipBean != null) {
-            presenter.onDeleteSnip(currentSnipBean.as().getId());
+            /**
+             * if snip has some reference o not allow to delete it. Show popup message instead
+             */
+            if(snipHasReferences()) {
+                Window.alert(RDL.i18n.deleteSnipMsg());
+            } else {
+                presenter.onDeleteSnip(currentSnipBean.as().getId());
+            }
         }
+    }
+
+    /**
+     * checks if current snip has any reference
+     * @return true if has reference
+     */
+    boolean snipHasReferences() {
+        return currentSnipBean.as().getPosRef() > 0 || currentSnipBean.as().getNeutralRef() > 0 || currentSnipBean.as().getNegativeRef() > 0;
     }
 
     @Override

@@ -50,4 +50,5 @@ public interface SnipSearchView {
 
     void getInitialSnipList(int pageIndex);
 
+    public void setAuthorName(String authorName);
 }

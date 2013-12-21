@@ -68,32 +68,47 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     private AutoBean<CurrentUserBean> currentUserBean;
     private AutoBean<SnipBean> currentSearchOptionsBean;
 
-    private SearchListWidget searchListWidget;
     private TabPanel tabPanel;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
     private String token;
 
+    private String authorName;
+
     public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
 
         initWidget(uiBinder.createAndBindUi(this));
         log.info("SnipSearchViewImpl constructor token" + token);
         this.currentUserBean = currentUserBean;
-        this.token = token;
-        searchFilterWidget = new SearchFilterWidget(this);
-        snipSearchWidgetPanel.add(searchFilterWidget);
-        searchListWidget = new SearchListWidget();
+        String[] tokenSplit = token.split(":");
+        if(tokenSplit.length == 2) {
+            this.token = tokenSplit[0];
+            this.authorName = tokenSplit[1];
+        } else {
+            this.token = tokenSplit[0];
+        }
+
 
     }
 
     @Override
     protected void onLoad() {
         super.onLoad();
+        searchFilterWidget = new SearchFilterWidget(this, authorName);
+        snipSearchWidgetPanel.add(searchFilterWidget);
 
-        if (token.equals(RDLConstants.Tokens.SNIPS))
-            getInitialSnipList(0);
-        else {
+        if (token.equals(RDLConstants.Tokens.SNIPS)) {
+            if(authorName != null) {
+                AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+                searchOptionsBean.as().setAuthor(authorName);
+                searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+                searchOptionsBean.as().setSortOrder(-1);
+                doFilterSearch(searchOptionsBean, 0);
+            } else {
+                getInitialSnipList(0);
+            }
+        } else {
             doFilterSearch(parseToken(), 0);
         }
 
@@ -104,6 +119,11 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         super.onUnload();
         currentSearchOptionsBean = null;
         snipListRowContainer.clear();
+        searchFilterWidget.removeFromParent();
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     @Override

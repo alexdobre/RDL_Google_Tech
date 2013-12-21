@@ -243,6 +243,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 if (snipSearchView == null) {
                     snipSearchView = new SnipSearchViewImpl(currentUserBean, event.getValue());
                 }
+                if(tokenSplit.length == 2)
+                    snipSearchView.setAuthorName(tokenSplit[1]);
 
                 final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(snipSearchView, this);
 
