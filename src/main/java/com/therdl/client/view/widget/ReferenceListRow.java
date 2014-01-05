@@ -41,7 +41,7 @@ public class ReferenceListRow extends Composite{
         richTextAreaRef.setEnabled(false);
         titleLabel.setText(RDL.i18n.userTitle()+" "+referenceBean.as().getAuthor());
         userName.setText(referenceBean.as().getAuthor());
-        rep.setText(referenceBean.as().getRep()+" "+RDL.i18n.repLevel());
+        rep.setText(RDL.i18n.repLevel()+" "+referenceBean.as().getRep());
         creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));
 
         if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.POSITIVE))
@@ -54,9 +54,10 @@ public class ReferenceListRow extends Composite{
         refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
 
         // create badge table
-        Grid badgeGrid = new Grid(3,3);
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 3; ++col) {
+        Grid badgeGrid = new Grid(4,2);
+        badgeGrid.setCellPadding(2);
+        for (int row = 0; row < 4; ++row) {
+            for (int col = 0; col < 2; ++col) {
                 Image img = new Image(Resources.INSTANCE.badgeImage().getSafeUri().asString());
                 img.setWidth("27px");
                 img.setHeight("30px");

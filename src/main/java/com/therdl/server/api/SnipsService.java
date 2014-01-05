@@ -91,10 +91,9 @@ public interface SnipsService {
     SnipBean addReference(AutoBean<SnipBean.Link> linkAutoBean, String parentSnipId);
 
     /**
-     * finds references of the snip with the given id
-     * @param id snip id
-     * @param referenceType filter by reference type, could be more than 1 reference type
+     * finds references of the snip with the given id (id is in searchOptions bean) and filter
+     * @param searchOptions to filter references
      * @return references as a list of SnipBean object
      */
-    public List<SnipBean> getReferences(String id, String referenceType, int pageIndex);
+    public List<SnipBean> getReferences(SnipBean searchOptions, int pageIndex);
 }

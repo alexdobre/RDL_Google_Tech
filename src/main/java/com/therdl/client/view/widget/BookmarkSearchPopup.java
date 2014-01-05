@@ -89,12 +89,12 @@ public class BookmarkSearchPopup extends PopupPanel {
             stringBuilder.append(RDLConstants.BookmarkSearch.AUTHOR+"="+searchFilterWidget.author.getText()+":");
         }
 
-        if(!searchFilterWidget.dateFrom.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_FROM+"="+searchFilterWidget.dateFrom.getText()+":");
+        if(!searchFilterWidget.dateFilterWidget.getDateFrom().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_FROM+"="+searchFilterWidget.dateFilterWidget.getDateFrom()+":");
         }
 
-        if(!searchFilterWidget.dateTo.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO+"="+searchFilterWidget.dateTo.getText()+":");
+        if(!searchFilterWidget.dateFilterWidget.getDateTo().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO+"="+searchFilterWidget.dateFilterWidget.getDateTo()+":");
         }
 
         stringBuilder.append(RDLConstants.BookmarkSearch.SORT_FIELD+"="+searchFilterWidget.getSortField()+":");

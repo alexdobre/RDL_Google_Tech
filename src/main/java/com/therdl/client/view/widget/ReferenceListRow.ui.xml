@@ -5,6 +5,8 @@
     <ui:style>
         .leftPanel {
             width: 60px;
+            margin-left:10px;
+
         }
 
         .rightPanel {
@@ -57,6 +59,8 @@
         <g:HorizontalPanel styleName="{style.horizontalPanel}">
             <g:FlowPanel ui:field="leftPanel" styleName="{style.leftPanel}">
                 <g:Image url='{res.avatarImage.getSafeUri.asString}' styleName="{style.userImg}"></g:Image>
+                <g:Label ui:field="rep" styleName="{style.label}"></g:Label>
+
                 <g:Label ui:field="titleLabel" styleName="{style.label}"></g:Label>
                 <g:Label ui:field="userName" styleName="{style.label}"></g:Label>
 
@@ -64,7 +68,6 @@
 
                 </g:FlowPanel>
 
-                <g:Label ui:field="rep" styleName="{style.label}"></g:Label>
                 <g:Label ui:field="creationDate" styleName="{style.label}"></g:Label>
             </g:FlowPanel>
             <g:FlowPanel ui:field="rightPanel" styleName="{style.rightPanel}">

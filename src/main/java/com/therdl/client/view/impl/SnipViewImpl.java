@@ -65,7 +65,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     AppMenu appMenu;
 
     @UiField
-    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, checkboxBtnParent;
+    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, refFilterParent, bottomPanel;
     @UiField
     RichTextArea richTextArea;
     @UiField
@@ -82,11 +82,16 @@ public class SnipViewImpl extends Composite implements SnipView {
     LoadingWidget loadingWidget;
 
     SnipListRow snipListRow;
+    ReferenceSearchFilterWidget referenceSearchFilterWidget;
+
+    AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 
     public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = currentUserBean;
         setAppMenu(currentUserBean);
+
+
     }
 
     @Override
@@ -123,10 +128,18 @@ public class SnipViewImpl extends Composite implements SnipView {
     }
 
     @Override
+    protected void onLoad() {
+        referenceSearchFilterWidget = new ReferenceSearchFilterWidget(this);
+        refFilterParent.add(referenceSearchFilterWidget);
+        refFilterParent.getElement().getStyle().setProperty("display","none");
+    }
+
+    @Override
     protected void onUnload() {
         referenceListCont.clear();
         snipViewCont.clear();
-        checkboxBtnParent.clear();
+        refFilterParent.clear();
+      //  checkboxBtnParent.clear();
     }
 
     /**
@@ -157,9 +170,10 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiHandler("leaveRef")
     public void onLeaveRefClicked(ClickEvent event) {
         referenceCont.getElement().getStyle().setProperty("display", "block");
+        refFilterParent.getElement().getStyle().setProperty("display", "none");
         closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
         referenceListCont.getElement().getStyle().setProperty("display", "none");
-        checkboxBtnParent.clear();
+    //    checkboxBtnParent.clear();
         editorWidget.setHTML("");
         showRef.setText(RDL.i18n.showReferences());
     }
@@ -182,12 +196,20 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiHandler("showRef")
     public void onShowRefClicked(ClickEvent event) {
         if(showRef.getText().equals(RDL.i18n.showReferences())) {
-            loadingWidget.getElement().getStyle().setProperty("display","block");
-            presenter.getSnipReferences("positive,negative,neutral", 0);
+            searchOptionsBean.as().setSortOrder(-1);
+            searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+            getSnipReferences(searchOptionsBean);
         } else {
             bottomCont.getElement().getStyle().setProperty("display", "none");
+            refFilterParent.getElement().getStyle().setProperty("display", "none");
             showRef.setText(RDL.i18n.showReferences());
         }
+    }
+
+    public void getSnipReferences(AutoBean<SnipBean> searchOptions) {
+        this.searchOptionsBean = searchOptions;
+        loadingWidget.getElement().getStyle().setProperty("display","block");
+        presenter.getSnipReferences(searchOptions, 0);
     }
 
     @UiHandler("repBtn")
@@ -253,13 +275,15 @@ public class SnipViewImpl extends Composite implements SnipView {
      * shows references in a tab panel with paging
      * @param beanList list of references as bean objects
      */
-    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, String pReferenceTypes, int pageIndex) {
+    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
         loadingWidget.getElement().getStyle().setProperty("display","none");
         showRef.setText(RDL.i18n.hideReferences());
         referenceListCont.clear();
-        checkboxBtnParent.clear();
+    //    checkboxBtnParent.clear();
         bottomCont.getElement().getStyle().setProperty("display", "block");
         referenceListCont.getElement().getStyle().setProperty("display", "block");
+        refFilterParent.getElement().getStyle().setProperty("display", "block");
+
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
         // default size of rows in one tab
@@ -284,56 +308,6 @@ public class SnipViewImpl extends Composite implements SnipView {
         }
 
         tabPanel.setWidth("100%");
-        //select first tab
-
-        // creates checkboxes for reference type
-
-        final String[] referenceTypes = new String[] {
-                RDLConstants.ReferenceType.POSITIVE,
-                RDLConstants.ReferenceType.NEGATIVE,
-                RDLConstants.ReferenceType.NEUTRAL
-        };
-
-        final String[] referenceTypesText = new String[] {
-                RDL.i18n.positive(),
-                RDL.i18n.negative(),
-                RDL.i18n.neutral()
-        };
-
-        final CheckBox[] checkBoxArray = new CheckBox[3];
-
-        String[] checkedReferences = pReferenceTypes.split(",");
-
-        for (int i=0; i<referenceTypes.length; i++) {
-            checkBoxArray[i] = new CheckBox(referenceTypesText[i]);
-            checkBoxArray[i].setStyleName("checkBoxBtn");
-
-            for (int k=0; k<checkedReferences.length; k++) {
-                if(checkedReferences[k].equals(referenceTypes[i])) {
-                    checkBoxArray[i].setValue(true);
-                }
-            }
-
-            // checkbox click handle, gets list of references by selected reference type, refresh a list
-            checkBoxArray[i].addClickHandler(new ClickHandler() {
-
-                @Override
-                public void onClick(ClickEvent event) {
-                    // get check box values that are checked (not only the current clicked checkbox)
-                    String checkedFlags = getCheckedFlags(checkBoxArray, referenceTypes);
-
-                    if(!checkedFlags.equals("")) {
-                        loadingWidget.getElement().getStyle().setProperty("display","block");
-                        presenter.getSnipReferences(checkedFlags, 0);
-                    } else {
-                        showReferences(new ArrayList<AutoBean<SnipBean>>(), "", 0);
-                    }
-                }
-            });
-
-            checkboxBtnParent.add(checkBoxArray[i]);
-
-        }
 
         for (int j=0; j<beanList.size(); j++) {
             ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean);
@@ -345,8 +319,7 @@ public class SnipViewImpl extends Composite implements SnipView {
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
                 loadingWidget.getElement().getStyle().setProperty("display","block");
-                String checkedFlags = getCheckedFlags(checkBoxArray, referenceTypes);
-                presenter.getSnipReferences(checkedFlags, integerBeforeSelectionEvent.getItem());
+                presenter.getSnipReferences(searchOptionsBean, integerBeforeSelectionEvent.getItem());
             }
         });
 
@@ -354,18 +327,5 @@ public class SnipViewImpl extends Composite implements SnipView {
 
 
 
-    }
-
-    private String getCheckedFlags(CheckBox[] checkBoxArray, String[] referenceTypes) {
-        String checkedFlags = "";
-        for (int j=0; j<checkBoxArray.length; j++) {
-            if(checkBoxArray[j].getValue()) {
-                checkedFlags += referenceTypes[j]+",";
-            }
-        }
-        if(!checkedFlags.equals(""))
-            checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
-
-        return checkedFlags;
     }
 }

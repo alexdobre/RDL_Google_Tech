@@ -26,9 +26,7 @@ import com.therdl.shared.SubCategory;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -58,12 +56,6 @@ public class SearchFilterWidget extends Composite {
     TextBox author;
 
     @UiField
-    TextBox dateFrom;
-
-    @UiField
-    TextBox dateTo;
-
-    @UiField
     TextBox posRef;
 
     @UiField
@@ -88,15 +80,22 @@ public class SearchFilterWidget extends Composite {
     ListBox subCategoryList;
 
     @UiField
-    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel;
+    DateFilterWidget dateFilterWidget;
 
-    DatePicker datePicker;
+
+    @UiField
+    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, typePanel;
+
+   // DatePicker datePicker;
 
     Image selectedArrow;
 
     // default sort order is descending by creation date
     private int sortOrder = -1;
     private String sortField = RDLConstants.SnipFields.CREATION_DATE;
+
+    private CheckBox[] checkBoxArray = new CheckBox[4];
+    private LinkedHashMap<String, String> snipTypeHm = new LinkedHashMap();
 
     public String getSortField() {
         return sortField;
@@ -120,8 +119,8 @@ public class SearchFilterWidget extends Composite {
         this.view = snipSearchView;
         this.authorName = authorName;
 
+        createTypeFilter();
         createCategoryList();
-
         createSortArrows();
 
         posRef.getElement().getStyle().setProperty("border","1px solid green");
@@ -131,6 +130,41 @@ public class SearchFilterWidget extends Composite {
         if(this.authorName != null)
             author.setText(authorName);
 	}
+
+    /**
+     * create checkbox group for snip type (snip, fastcap, material, habit)
+     */
+    private void createTypeFilter() {
+        snipTypeHm.put(RDLConstants.SnipType.SNIP, RDL.i18n.snip());
+        snipTypeHm.put(RDLConstants.SnipType.FAST_CAP, RDL.i18n.fastCap());
+        snipTypeHm.put(RDLConstants.SnipType.MATERIAL, RDL.i18n.material());
+        snipTypeHm.put(RDLConstants.SnipType.HABIT, RDL.i18n.habit());
+
+        Iterator itHm = snipTypeHm.entrySet().iterator();
+        int i=0;
+        while(itHm.hasNext()) {
+            Map.Entry pairs = (Map.Entry) itHm.next();
+
+            checkBoxArray[i] = new CheckBox((String) pairs.getValue());
+            checkBoxArray[i].setValue(true);
+            checkBoxArray[i].setStyleName("checkBoxBtn");
+            if(pairs.getKey().equals(RDLConstants.SnipType.FAST_CAP)) {
+                checkBoxArray[i].getElement().getStyle().setProperty("marginLeft","36px");
+            }
+
+
+            checkBoxArray[i].addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    view.doFilterSearch(formSearchOptionBean(), 0);
+                }
+            });
+            typePanel.add(checkBoxArray[i]);
+            i++;
+        }
+
+    }
 
     /**
      * sets sort arrows for some search fields (views, rep, pos/neut/neg ref, author, date), down for descending order, up for ascending order
@@ -284,12 +318,12 @@ public class SearchFilterWidget extends Composite {
             searchOptionsBean.as().setAuthor(authorText);
         }
 
-        String dateFromText = dateFrom.getText();
+        String dateFromText = dateFilterWidget.getDateFrom();
         if(!dateFromText.equals("")) {
             searchOptionsBean.as().setDateFrom(dateFromText);
         }
 
-        String dateToText = dateTo.getText();
+        String dateToText = dateFilterWidget.getDateTo();
         if(!dateToText.equals("")) {
             searchOptionsBean.as().setDateTo(dateToText);
         }
@@ -331,60 +365,26 @@ public class SearchFilterWidget extends Composite {
 
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
-
+        searchOptionsBean.as().setSnipType(getCheckedSnipTypes());
         return searchOptionsBean;
     }
 
     /**
-     * handler for the dateFrom TextBox
-     * opens date picker in a popup
-     * @param event
+     * checks which snip type checkboxes are checked
+     * @return returns snip type values separated by comma
      */
-    @UiHandler("dateFrom")
-    public void onDateFromClicked(ClickEvent event) {
-        createDatePicker(dateFrom);
-    }
-
-    /**
-     * handler for the dateTo TextBox
-     * opens date picker in a popup
-     * @param event
-     */
-    @UiHandler("dateTo")
-    public void onDateToClicked(ClickEvent event) {
-        createDatePicker(dateTo);
-    }
-
-    /**
-     * creates gwt date picker in a popup
-     * sets selected date to the text box
-     * @param dateField date TextBox for dateTo or dateFrom
-     */
-
-    public void createDatePicker(final TextBox dateField) {
-        final PopupPanel popupPanel=new PopupPanel(true);
-        datePicker = new DatePicker();
-
-        datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<Date> event) {
-                Date date = event.getValue();
-                String dateString =
-                        DateTimeFormat.getFormat("yyyy-MM-dd").format(date);
-                dateField.setText(dateString);
-
-                popupPanel.hide();
+    private String getCheckedSnipTypes() {
+        List keys = new ArrayList(snipTypeHm.keySet());
+        String checkedFlags = "";
+        for (int j=0; j<checkBoxArray.length; j++) {
+            if(checkBoxArray[j].getValue()) {
+                checkedFlags += keys.get(j)+",";
             }
-        });
+        }
+        if(!checkedFlags.equals(""))
+            checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
 
-        int x = dateField.getAbsoluteLeft();
-        int y = dateField.getAbsoluteTop();
-        popupPanel.setPopupPosition(x, y+20);
-        popupPanel.setStyleName("datePicker");
-        // Set the default value
-        datePicker.setValue(new Date(), true);
-        popupPanel.setWidget(datePicker);
-        popupPanel.show();
+        return checkedFlags;
     }
 
     /**

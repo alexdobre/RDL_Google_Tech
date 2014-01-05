@@ -25,16 +25,6 @@
             margin:5px;
             float: left;
         }
-
-        .dateField {
-            width: 67px;
-            border: 1px solid #AACCEE;
-            display:inline-block;
-            font-size:10px;
-            padding: 3px;
-            margin:2px;
-        }
-
         .posRef {
             width: 30px;
             border: 2px solid #758211;
@@ -103,6 +93,22 @@
             float: left;
         }
 
+        @external .checkBoxBtn;
+        .checkBoxBtn {
+            margin-left: 13px;
+            display: inline-block;
+        }
+
+        .checkBoxBtn label {
+            margin-left: 3px;
+            margin-bottom: 0px;
+            display: inline-block;
+        }
+
+        .dateFilterWidget {
+            float: left;
+        }
+
 	</ui:style>
 
     <g:VerticalPanel>
@@ -117,6 +123,13 @@
                     <td><g:Label text="{i18n.title}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:TextBox ui:field = "title" styleName = '{style.textField}'></g:TextBox>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><g:Label text="{i18n.type}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:FlowPanel ui:field="typePanel"></g:FlowPanel>
                     </td>
                 </tr>
 
@@ -187,8 +200,9 @@
                     <td><g:Label text="{i18n.date}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:FlowPanel ui:field="datePanel">
-                            <g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}' />
-                            <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}' />
+                            <!--<g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}' />
+                            <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}' />-->
+                            <rdl:DateFilterWidget ui:field="dateFilterWidget" styleName="{style.dateFilterWidget}" />
                         </g:FlowPanel>
                     </td>
                 </tr>

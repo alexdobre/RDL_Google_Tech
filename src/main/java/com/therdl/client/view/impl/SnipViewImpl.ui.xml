@@ -8,8 +8,17 @@
 
     <ui:style>
         .snipViewCont {
+           /* width:60%;
+            margin:auto; */
+
+        }
+
+        .topPanel {
             width:60%;
-            margin:auto;
+            margin-left:20%;
+        }
+
+        .bottomPanel {
 
         }
 
@@ -39,6 +48,8 @@
             border: 1px solid #000;
             margin-top: 4px;
             padding: 1px;
+            width: 60%;
+            margin-left: 20%;
         }
 
         .radioBtnParent {
@@ -85,19 +96,32 @@
             display: none;
         }
 
+        .refFilterParent {
+            float: left;
+            margin: 10px;
+            display: none;
+        }
+
+        .bottomLeftPanel {
+            float: left;
+            width: 60%;
+        }
+
     </ui:style>
 
 
     <g:HTMLPanel ui:field="rootPanel">
         <rdl:AppMenu ui:field="appMenu"/>
             <g:FlowPanel styleName="{style.snipViewCont}">
-                <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
-                <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
-                <g:FlowPanel styleName="{style.refButtonsContTop}">
-                    <g:Button ui:field="showRef" text="{i18n.showReferences}"/>
-                    <g:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+                <g:FlowPanel styleName="{style.topPanel}">
+                    <g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
+                    <g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"></g:RichTextArea>
+                    <g:FlowPanel styleName="{style.refButtonsContTop}">
+                        <g:Button ui:field="showRef" text="{i18n.showReferences}"/>
+                        <g:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 
-                    <g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
+                        <g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
+                    </g:FlowPanel>
                 </g:FlowPanel>
 
                 <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
@@ -114,16 +138,22 @@
                     </g:FlowPanel>
                 </g:FlowPanel>
 
-                <rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
+                <g:FlowPanel styleName="{style.bottomPanel}" ui:field="bottomPanel">
+                    <g:FlowPanel ui:field="refFilterParent" styleName="{style.refFilterParent}"></g:FlowPanel>
 
-                <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
-                    <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">
+                    <g:FlowPanel styleName="{style.bottomLeftPanel}">
+                        <rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
 
+                        <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
+                            <!--   <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">
+
+                               </g:FlowPanel>   -->
+
+                            <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}">
+                            </g:FlowPanel>
+                        </g:FlowPanel>
                     </g:FlowPanel>
 
-                    <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}">
-
-                    </g:FlowPanel>
                 </g:FlowPanel>
             </g:FlowPanel>
     </g:HTMLPanel>

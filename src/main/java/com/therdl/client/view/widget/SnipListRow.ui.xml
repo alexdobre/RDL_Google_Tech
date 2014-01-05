@@ -40,7 +40,7 @@
     <g:HTMLPanel ui:field="rootPanel">
         <div style="border: solid 1px #333;font-size: 12px;margin-top: 5px;border-top: none;">
             <g:FlowPanel ui:field="colorStripe" styleName="{style.colorStripe}"></g:FlowPanel>
-            <div style="padding: 5px;height:130px;">
+            <div style="padding: 5px;height:110px;">
                 <div style="margin-left: 5px;float: left;">
                     <div>
                         <div style="margin-right: 5px;float: left;">
@@ -65,8 +65,8 @@
                         <div style="font-weight: bold;font-weight: 17px;margin-right: 5px;display: inline-block;">
                             <g:Label text="{i18n.title}"/>
                         </div>
-                        <div style="border: solid 1px;width: 300px;height: 50px;display: inline-block;">
-                            <g:Label ui:field="snipTitle" styleName="{style.label}"/>
+                        <div style="display: inline-block;">
+                            <g:Anchor ui:field="snipTitle" styleName="{style.label}"/>
                         </div>
                     </div>
 

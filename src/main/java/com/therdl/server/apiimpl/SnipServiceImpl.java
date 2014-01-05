@@ -90,7 +90,7 @@ public class SnipServiceImpl implements SnipsService {
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
 
-        query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
+       // query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
 
         if (searchOptions.getTitle() != null)
             query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle()));
@@ -112,6 +112,9 @@ public class SnipServiceImpl implements SnipsService {
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         if (searchOptions.getViews() != null)
             query.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
+        if(searchOptions.getSnipType() != null) {
+            query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
+        }
 
         if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
             query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
@@ -257,20 +260,18 @@ public class SnipServiceImpl implements SnipsService {
     }
 
     /**
-     * finds references of the snip with the given id
-     * @param id snip id
-     * @param referenceType filter by reference type, could be more than 1 reference type
-     * @param pageIndex page index to retrieve
+     * finds references of the snip with the given id (id is in searchOptions bean) and filter
+     * @param searchOptions to filter references
      * @return references as a list of SnipBean object
      */
-    public List<SnipBean> getReferences(String id, String referenceType, int pageIndex) {
+    public List<SnipBean> getReferences(SnipBean searchOptions, int pageIndex) {
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlSnipData");
 
         List<SnipBean> beans = new ArrayList<SnipBean>();
 
         // first find a snip with the given id
-        SnipBean snipBean = getSnip(id);
+        SnipBean snipBean = getSnip(searchOptions.getId());
 
         // retrieve reference ids from the links nested array of the snip json
         List<ObjectId> referenceIds = new ArrayList<ObjectId>();
@@ -282,12 +283,15 @@ public class SnipServiceImpl implements SnipsService {
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new BasicDBObject("$in", referenceIds));
 
-        // referenceType is a list of reference types (pos/neg/neut) separated by comma, when referenceType is not empty filter also by reference type
-        if(!referenceType.equals("")) {
-           query.put("referenceType", new BasicDBObject("$in", referenceType.split(",")));
-        }
+        // filter references
+        if(searchOptions.getReferenceType() != null)
+           query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
+        if(searchOptions.getRep() != null)
+            query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+        if (searchOptions.getAuthor() != null)
+            query.put("author", searchOptions.getAuthor());
 
-        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1)).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+        DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
         int collCount = coll.find(query).count();
 
         while (collDocs.hasNext()) {

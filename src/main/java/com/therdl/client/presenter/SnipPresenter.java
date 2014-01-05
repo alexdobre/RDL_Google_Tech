@@ -153,7 +153,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                         // ok now vaildate for dropdown
                         log.info("SnipPresenter submit post ok now validating");
                         snipView.saveReferenceResponseHandler(refType);
-                        getSnipReferences("positive,negative,neutral", 0);
+                   //     getSnipReferences("positive,negative,neutral", 0);
                     } else {
                         log.info("SnipPresenter submit post fail");
                     }
@@ -173,7 +173,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
     /**
      * get references for the current snip, creates bean objects from response json
      */
-    public void getSnipReferences(final String referenceTypes, final int pageIndex) {
+    public void getSnipReferences(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
         log.info("SnipPresenter getSnipReferences currentSnipId=" + currentSnipId);
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
@@ -185,13 +185,14 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
         requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean> currentBean = beanery.snipBean();
-        currentBean.as().setAction("getReferences");
-        currentBean.as().setPageIndex(pageIndex);
-        currentBean.as().setId(currentSnipId);
-        currentBean.as().setReferenceType(referenceTypes);
 
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
+        searchOptionsBean.as().setAction("getReferences");
+        searchOptionsBean.as().setPageIndex(pageIndex);
+        searchOptionsBean.as().setId(currentSnipId);
+      //  currentBean.as().setReferenceType(referenceTypes);
+
+
+        String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
         try {
 
             requestBuilder.sendRequest(json, new RequestCallback() {
@@ -214,7 +215,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
                     }
 
-                    snipView.showReferences(beanList, referenceTypes, pageIndex);
+                    snipView.showReferences(beanList, pageIndex);
                 }
 
                 @Override

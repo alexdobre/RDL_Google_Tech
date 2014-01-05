@@ -44,13 +44,15 @@ public class SnipListRow extends Composite{
     @UiField
     FlowPanel colorStripe, snipImgParent, secondColDiv, buttonPanel;
     @UiField
-    Label rep, titleLabel, snipTitle, userName, posRef, neutRef, negRef, viewCount, creationDate;
+    Label rep, titleLabel, userName, posRef, neutRef, negRef, viewCount, creationDate;
     @UiField
     Image snipImg;
     @UiField
     Button viewBtn, editBtn;
     @UiField
     FlowPanel editBtnParent;
+    @UiField
+    Anchor snipTitle;
 
     public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, boolean viewButtons) {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -112,9 +114,9 @@ public class SnipListRow extends Composite{
         }
 
         // create badge table
-        Grid badgeGrid = new Grid(3,3);
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 3; ++col) {
+        Grid badgeGrid = new Grid(2,4);
+        for (int row = 0; row < 2; ++row) {
+            for (int col = 0; col < 4; ++col) {
                 Image img = new Image(Resources.INSTANCE.badgeImage().getSafeUri().asString());
                 img.setWidth("27px");
                 img.setHeight("30px");
