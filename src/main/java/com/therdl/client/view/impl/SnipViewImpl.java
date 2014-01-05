@@ -56,7 +56,6 @@ public class SnipViewImpl extends Composite implements SnipView {
     private SnipView.Presenter presenter;
     private Beanery beanery = GWT.create(Beanery.class);
 
-    Map<String, String> currentSnipView;
     private AutoBean<SnipBean> currentSnipBean;
 
     // uibinder variables
@@ -150,7 +149,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         this.currentSnipBean = snipBean;
 
         // this is the top widget, like in the list widget
-        snipListRow = new SnipListRow(snipBean, currentUserBean, false);
+        snipListRow = new SnipListRow(snipBean, currentUserBean, true);
         snipViewCont.add(snipListRow);
         richTextArea.setHTML(snipBean.as().getContent());
         richTextArea.setEnabled(false);
@@ -196,6 +195,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiHandler("showRef")
     public void onShowRefClicked(ClickEvent event) {
         if(showRef.getText().equals(RDL.i18n.showReferences())) {
+            searchOptionsBean = beanery.snipBean();
             searchOptionsBean.as().setSortOrder(-1);
             searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
             getSnipReferences(searchOptionsBean);

@@ -156,7 +156,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         //select first tab
 
         for (int j=0; j<beanList.size(); j++) {
-            SnipListRow snipListRow = new SnipListRow(beanList.get(j), currentUserBean, true);
+            SnipListRow snipListRow = new SnipListRow(beanList.get(j), currentUserBean, false);
             ((FlowPanel) tabPanel.getWidget(pageIndex)).add(snipListRow);
         }
         log.info("pageIndex="+pageIndex);

@@ -42,13 +42,13 @@ public class SnipListRow extends Composite{
     boolean viewButtons = false;
 
     @UiField
-    FlowPanel colorStripe, snipImgParent, secondColDiv, buttonPanel;
+    FlowPanel colorStripe, snipImgParent, secondColDiv;
     @UiField
     Label rep, titleLabel, userName, posRef, neutRef, negRef, viewCount, creationDate;
     @UiField
     Image snipImg;
     @UiField
-    Button viewBtn, editBtn;
+    Button editBtn;
     @UiField
     FlowPanel editBtnParent;
     @UiField
@@ -109,9 +109,7 @@ public class SnipListRow extends Composite{
 
         creationDate.setText(dateString);
 
-        if(currentUserBean.as().isAuth() && currentUserBean.as().getName().equals(snipBean.as().getAuthor())) {
-            editBtnParent.getElement().getStyle().setProperty("display","block");
-        }
+
 
         // create badge table
         Grid badgeGrid = new Grid(2,4);
@@ -127,9 +125,10 @@ public class SnipListRow extends Composite{
         secondColDiv.add(badgeGrid);
 
         if(viewButtons) {
-            buttonPanel.getElement().getStyle().setProperty("display","block");
+            if(currentUserBean.as().isAuth() && currentUserBean.as().getName().equals(snipBean.as().getAuthor())) {
+                editBtnParent.getElement().getStyle().setProperty("display","block");
+            }
             editBtn.setWidth("55px");
-            viewBtn.setWidth("55px");
         }
     }
 
@@ -138,7 +137,7 @@ public class SnipListRow extends Composite{
         History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipBean.as().getId());
     }
 
-    @UiHandler("viewBtn")
+    @UiHandler("snipTitle")
     public void onViewBtnClicked(ClickEvent event) {
         GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipBean.as().getId()));
     }
