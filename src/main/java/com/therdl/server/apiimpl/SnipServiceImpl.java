@@ -90,7 +90,7 @@ public class SnipServiceImpl implements SnipsService {
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
 
-       // query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
+
 
         if (searchOptions.getTitle() != null)
             query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle()));
@@ -114,6 +114,8 @@ public class SnipServiceImpl implements SnipsService {
             query.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
         if(searchOptions.getSnipType() != null) {
             query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
+        }else {
+            query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
         }
 
         if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
