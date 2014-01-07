@@ -169,7 +169,6 @@
 
         .btn-cat-label{
         position: relative;
-        top: 3px;
         font-weight: bold;
         color: black;
         }
