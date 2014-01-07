@@ -152,14 +152,6 @@ public class SearchFilterWidget extends Composite {
                 checkBoxArray[i].getElement().getStyle().setProperty("marginLeft","36px");
             }
 
-
-            checkBoxArray[i].addClickHandler(new ClickHandler() {
-
-                @Override
-                public void onClick(ClickEvent event) {
-                    view.doFilterSearch(formSearchOptionBean(), 0);
-                }
-            });
             typePanel.add(checkBoxArray[i]);
             i++;
         }

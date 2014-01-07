@@ -235,6 +235,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     public void saveReferenceResponseHandler(String refType) {
         leaveRef.getElement().getStyle().setProperty("display", "none");
         snipListRow.incrementRefCounterByRefType(refType);
+        referenceCont.getElement().getStyle().setProperty("display", "none");
     }
 
     /**

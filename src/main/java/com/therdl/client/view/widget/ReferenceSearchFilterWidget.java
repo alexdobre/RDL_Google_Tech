@@ -73,15 +73,6 @@ public class ReferenceSearchFilterWidget extends Composite{
                 checkBoxArray[i].getElement().getStyle().setProperty("marginLeft","0px");
             }
 
-            // checkbox click handle, gets list of references by selected reference type, refresh a list
-            checkBoxArray[i].addClickHandler(new ClickHandler() {
-
-                @Override
-                public void onClick(ClickEvent event) {
-                    view.getSnipReferences(formSearchOptionsBean());
-                }
-            });
-
             refTypePanel.add(checkBoxArray[i]);
 
         }

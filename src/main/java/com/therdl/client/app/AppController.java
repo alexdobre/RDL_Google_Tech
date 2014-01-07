@@ -408,7 +408,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     registerView.setloginresult(" ", " ", false);
                 }
 
-                if (profileView == null) {
+                if (profileView != null) {
                     profileView.setAppMenu(currentUserBean);
 
                 }

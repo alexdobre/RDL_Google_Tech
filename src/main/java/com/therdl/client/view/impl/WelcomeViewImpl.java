@@ -14,8 +14,10 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.LogoutPopupWidget;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
@@ -100,6 +102,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
     @UiField
     Button welcomeVideoButton;
+    LogoutPopupWidget logoutPopup;
 
 
     public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
@@ -144,6 +147,21 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         signInView.getLoginFail().setVisible(false);
 
 
+    }
+
+    /**
+     * shows log out popup with message
+     */
+    public void showLogoutPopUp() {
+        if(logoutPopup == null) {
+            logoutPopup = new LogoutPopupWidget();
+            logoutPopup.setGlassEnabled(true);
+            logoutPopup.setModal(true);
+
+            logoutPopup.setWidth("200px");
+            logoutPopup.setHeight("100px");
+        }
+        logoutPopup.center();
     }
 
     /**
@@ -203,6 +221,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         appMenu.setSignUpVisible(true);
         appMenu.setUserInfoVisible(false);
         appMenu.setLogInVisible(true);
+        showLogoutPopUp();
 
     }
 
