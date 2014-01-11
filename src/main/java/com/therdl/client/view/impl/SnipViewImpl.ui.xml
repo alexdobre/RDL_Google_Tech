@@ -145,12 +145,7 @@
                         <rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
 
                         <g:FlowPanel ui:field="bottomCont" styleName="{style.bottomCont}">
-                            <!--   <g:FlowPanel styleName="{style.checkboxBtnParent}" ui:field="checkboxBtnParent">
-
-                               </g:FlowPanel>   -->
-
-                            <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}">
-                            </g:FlowPanel>
+                            <g:FlowPanel ui:field="referenceListCont" styleName="{style.referenceListCont}" />
                         </g:FlowPanel>
                     </g:FlowPanel>
 

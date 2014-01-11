@@ -56,6 +56,12 @@
             margin:10px;
             }
 
+            .signUpLink {
+                margin: 50px 0px 0px 10px;
+                position: absolute;
+                cursor: pointer;
+            }
+
             .validate {
 
             position:absolute;
@@ -82,6 +88,7 @@
             <g:HTMLPanel   styleName = '{style.submitPanel}' >
             <g:Button ui:field = "submit" text = "{i18n.submit}" styleName ='{style.submit}' />
             <g:Label ui:field = "loginFail" text = "{i18n.loginFailMsg}" styleName ='{style.validate}'  />
+            <g:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
             </g:HTMLPanel>
         </g:VerticalPanel>
 </ui:UiBinder> 

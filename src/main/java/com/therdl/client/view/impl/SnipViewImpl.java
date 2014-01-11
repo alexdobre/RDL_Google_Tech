@@ -159,7 +159,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         // hide give reputation/leave reference buttons when user already gave a reputation/wrote a reference
         repBtn.getElement().getStyle().setProperty("display", snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1 ? "none" : "");
-        leaveRef.getElement().getStyle().setProperty("display", snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRefGivenByUser() == 1 ? "none" : "");
+        leaveRef.getElement().getStyle().setProperty("display", (currentUserBean.as().isAuth() && snipBean.as().getAuthor().equals(currentUserBean.as().getName())) || (currentUserBean.as().isAuth() && snipBean.as().getIsRefGivenByUser() == 1) ? "none" : "");
     }
 
     /**
@@ -168,13 +168,17 @@ public class SnipViewImpl extends Composite implements SnipView {
      */
     @UiHandler("leaveRef")
     public void onLeaveRefClicked(ClickEvent event) {
-        referenceCont.getElement().getStyle().setProperty("display", "block");
-        refFilterParent.getElement().getStyle().setProperty("display", "none");
-        closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
-        referenceListCont.getElement().getStyle().setProperty("display", "none");
-    //    checkboxBtnParent.clear();
-        editorWidget.setHTML("");
-        showRef.setText(RDL.i18n.showReferences());
+        if(currentUserBean.as().isAuth()) {
+            referenceCont.getElement().getStyle().setProperty("display", "block");
+            refFilterParent.getElement().getStyle().setProperty("display", "none");
+            closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
+            referenceListCont.getElement().getStyle().setProperty("display", "none");
+        //    checkboxBtnParent.clear();
+            editorWidget.setHTML("");
+            showRef.setText(RDL.i18n.showReferences());
+        } else {
+            presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft()+120, leaveRef.getAbsoluteTop()-120, "");
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.widget.*;
 import com.therdl.shared.Constants;
@@ -43,6 +44,11 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public Presenter getPresenter() {
+        return presenter;
     }
 
     interface SnipSearchViewImplUiBinder extends UiBinder<Widget, SnipSearchViewImpl> {
@@ -77,7 +83,6 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     private String authorName;
 
     public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
-
         initWidget(uiBinder.createAndBindUi(this));
         log.info("SnipSearchViewImpl constructor token" + token);
         this.currentUserBean = currentUserBean;

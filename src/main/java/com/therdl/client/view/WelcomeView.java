@@ -23,6 +23,7 @@ public interface WelcomeView {
         void doLogIn(String emailtxt, String passwordText);
 
     }
+    public void showLoginPopUp(int posLeft, int posTop, String pageToRedirect);
 
     void logout();
 

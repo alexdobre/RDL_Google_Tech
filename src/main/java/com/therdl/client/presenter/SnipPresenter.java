@@ -37,6 +37,10 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
     private String currentSnipId;
     private AppController controller;
 
+    public AppController getController() {
+        return controller;
+    }
+
     public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
         this.snipView = snipView;
         this.currentSnipId = currentSnipId;

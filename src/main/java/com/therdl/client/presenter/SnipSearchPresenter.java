@@ -78,6 +78,10 @@ public class SnipSearchPresenter implements Presenter, SnipSearchView.Presenter 
 
     }
 
+    public AppController getController() {
+        return controller;
+    }
+
     /**
      * Polls the server for the list of snips, uses a getAll/findAll type crud on the backend
      */

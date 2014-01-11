@@ -158,6 +158,18 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     }
 
     /**
+     * returns WelcomeView, if is null, initialize
+     * @return WelcomeView
+     */
+    public WelcomeView getWelcomeView() {
+        if (welcomeView == null) {
+            welcomeView = new WelcomeViewImpl(currentUserBean);
+            WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+        }
+        return welcomeView;
+    }
+
+    /**
      * This binds the history tokens with the different application states
      *
      * @param ValueChangeEvent event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
@@ -390,10 +402,17 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             //*************************************** LOG_OUT ****************************
             else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
 
-                final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
-                log.info("AppController Tokens.LOG_OUT ");
-                if (welcomeView != null) {
 
+                log.info("AppController Tokens.LOG_OUT ");
+
+                if (welcomeView == null) {
+                    welcomeView = new WelcomeViewImpl(currentUserBean);
+
+                }
+
+                final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+
+                if (welcomeView != null) {
                     welcomeView.logout();
                 }
                 if (snipSearchView != null) {
@@ -419,11 +438,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     }
 
                     public void onSuccess() {
-                        currentUserBean.as().setAuth(false);
-                        if (welcomeView == null) {
-                            welcomeView = new WelcomeViewImpl(currentUserBean);
 
-                        }
                         currentUserBean.as().setAuth(false);
                         welcomePresenter.go(container, currentUserBean);
                         welcomeView.logout();
