@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+
+    </ui:style>
+    <g:HTMLPanel>
+
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;" align="left"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>The Axes of Compatibility</b></span></p>
+        <hr/>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;" align="right"><br/><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;" align="left"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;" align="right"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>Relative desirability</b>. While not very politically correct, it is clear that the sum of physical attractiveness, level of confidence or skill and resources or the capacity to generate them along with how they relate to our partner are very important to the balance of a relationship. Generally speaking partnerships with people of similar desirability tend to be more stable while the wider the gap of desirability the wider the challenge. This also reveals the very important point that both partners must make efforts to keep their desirability in balance throughout the relationship.</span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>Living location and type</b>. Be it the country or a big city, an apartment or a house, static or changing over time it all needs to be discussed and agreed upon.</span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>Lifestyle and finances</b>. How far do you plan to go with your career or business in life and how is money to be spent, saved and invested. </span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>Career and hobbies. </b> It would be beneficial for a couple's career ambitions to match or complement each other</span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>The desire for children and parenting</b>. Even before starting a relationship intended to be long term the desire for children is important information for both partners and after that, the way they would like to raise them</span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>Spirituality</b>. Ideally both partners would share the same outlook on spirituality as even if you tolerate differences it becomes even more challenging once children’s guidance needs to be decided.</span></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><br/></p>
+        <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">- <b>Values</b>. This is a collection of behaviors, opinions and items a person feels strongly about. Your own personal philosophy or outlook on life. Harder to define but very important to be mutually understood and discussed.</span></p>
+        <div><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></div>
+        <div><span style="vertical-align: baseline;"><font face="Arial"><span style="font-size: 15px; white-space: pre-wrap;">- </span></font><font face="Arial"><span style="font-size: 15px; white-space: pre-wrap;"><b>Family and Friends. </b>When two people come together, their social circles interact as well</span></font></span></div>
+        <div><span style="vertical-align: baseline;"><font face="Arial"><span style="font-size: 15px; white-space: pre-wrap;"><br/></span></font></span></div>
+        <div><span style="vertical-align: baseline;"><font color="#0000ff" face="Arial"><span style="font-size: 15px; white-space: pre-wrap;">* We need good materials that deal primarily with compatibility issues</span></font></span></div>
+        <div><span style="vertical-align: baseline;"><font face="Arial"><span style="font-size: 15px; white-space: pre-wrap;"><br/></span></font></span></div>
+        
+    </g:HTMLPanel>
+</ui:UiBinder>

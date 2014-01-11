@@ -20,6 +20,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LogoutPopupWidget;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.client.view.widget.text.*;
 import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
@@ -36,7 +37,6 @@ import java.util.logging.Logger;
  * fields below are standard GWT UIBinder display elements
  * @ FocusPanel  IdeasButton, StoriesButton, VoteButton, ServicesButton,
  * FocusPanel widgets allow complex events such as 'hover'
- * @ SpanElement hoverDiv this is the feedback for the hover text from the  FocusPanel widgets
  * @ Image logo, logo image, note java does not support transparency layers
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
@@ -84,24 +84,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     @UiField
     FocusPanel abuseCat;
 
-
     @UiField
-    FocusPanel IdeasButton;
+    com.github.gwtbootstrap.client.ui.Button welcomeVideoButton;
 
-    @UiField
-    FocusPanel StoriesButton;
-
-    @UiField
-    FocusPanel VoteButton;
-
-    @UiField
-    SpanElement hoverDiv;
-
-    @UiField
-    SimplePanel welcomeVideo;
-
-    @UiField
-    Button welcomeVideoButton;
     LogoutPopupWidget logoutPopup;
 
 
@@ -112,15 +97,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         appMenu.setLogOutVisible(false);
         appMenu.setMainGroupVisible(true);
         logo.setStyleName("splashLogo");
-        IdeasButton.setSize("100px", "40px");
-        IdeasButton.getElement().getStyle().setProperty("margin", "10px");
-        IdeasButton.getElement().getStyle().setProperty("padding", "10px");
-        StoriesButton.setSize("100px", "40px");
-        StoriesButton.getElement().getStyle().setProperty("margin", "10px");
-        StoriesButton.getElement().getStyle().setProperty("padding", "10px");
-        VoteButton.setSize("100px", "40px");
-        VoteButton.getElement().getStyle().setProperty("margin", "10px");
-        VoteButton.getElement().getStyle().setProperty("padding", "10px");
 
         appMenu.setSignUpVisible(true);
 
@@ -242,7 +218,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     }
 
     public void init(){
-        welcomeVideo.setWidget(welcomeVideoButton);
     }
 
     /**
@@ -254,15 +229,31 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         AbstractMediaPlayer player = null;
         try {
             // create the player, specifying URL of media
-            player = new YouTubePlayer("0SARbwvhupQ","100%", "350px");
-            welcomeVideo.setWidget(player); // add player to panel.
+            player = new YouTubePlayer("wEJ40eqFBeo","100%", "350px");
+
+            DialogBox dialog = new DialogBox(true,false);
+
+            dialog.ensureDebugId("cwBasicPopup-simplePopup");
+            dialog.setAnimationEnabled(true);
+            dialog.setWidth("450px");
+            dialog.setWidget(player);
+
+            // Reposition the popup relative to the button
+            Widget source = (Widget) event.getSource();
+            int left = source.getAbsoluteLeft() + 10;
+            int top = source.getAbsoluteTop() + 10;
+            dialog.setPopupPosition(left, top);
+
+
+            dialog.show();
         } catch(PluginVersionException e) {
-            welcomeVideo.setWidget(new HTML(".. please download the necessary plugin.."));
+            constructPopup(new HTML(".. please download the necessary plugin.."),event).show();
         } catch(PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
-            welcomeVideo.setWidget(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."));
+            constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event).show();
         }
     }
+
 
 
     /**
@@ -271,13 +262,52 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * @param event Standard GWT hover event
      */
     @UiHandler("compatibilityCat")
-    public void onClick(ClickEvent event) {
+    public void onCompatibilityCattClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new CompatibilityDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("connectionCat")
+    public void onConnectionCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new ConnectionDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("exteriorCat")
+    public void onExteriorCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new ExteriorDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("eroticismCat")
+    public void onEroticismCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new EroticismDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("seductionCat")
+    public void onSeductionCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new SeductionDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("psyTendCat")
+    public void onPsyTendCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new PsyTendDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("affairsCat")
+    public void onAffairsCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new AffairsDescription(),event);
+        simplePopup.show();
+    }
+    @UiHandler("abuseCat")
+    public void onAbuseCatClick(ClickEvent event) {
+        DecoratedPopupPanel simplePopup = constructPopup(new AbuseDescription(),event);
+        simplePopup.show();
+    }
 
+    private DecoratedPopupPanel constructPopup(Widget widget,ClickEvent event){
         final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
         simplePopup.ensureDebugId("cwBasicPopup-simplePopup");
         simplePopup.setAnimationEnabled(false);
-        simplePopup.setWidth("150px");
-        simplePopup.setWidget(new Label("Click outside of this popup to close it"));
+        simplePopup.setWidth("800px");
+        simplePopup.setWidget(widget);
 
         // Reposition the popup relative to the button
         Widget source = (Widget) event.getSource();
@@ -285,39 +315,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         int top = source.getAbsoluteTop() + 10;
         simplePopup.setPopupPosition(left, top);
 
-        // Show the popup
-        simplePopup.show();
+        return simplePopup;
     }
-
-    /**
-     * displays the hover tooltip for this widget
-     *
-     * @param event Standard GWT hover event
-     */
-    @UiHandler("IdeasButton")
-    public void onMouseOver(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(Constants.IDEAS_TEXT);
-    }
-
-    /**
-     * displays the hover tooltip for this widget
-     *
-     * @param event Standard GWT hover event
-     */
-    @UiHandler("StoriesButton")
-    public void onMouseOver1(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(Constants.STORIES_TEXT);
-    }
-
-    /**
-     * displays the hover tooltip for this widget
-     *
-     * @param event Standard GWT hover event
-     */
-    @UiHandler("VoteButton")
-    public void onMouseOver2(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(Constants.VOTES_TEXT);
-    }
-
 }
 

@@ -1,102 +1,13 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:rdl="urn:import:com.therdl.client.view.widget"
         >
 
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 
     <ui:style>
-
-
-        .btn-first {
-        display:inline-block;
-        background-color: hsl(0, 69%, 22%) !important;
-        background-repeat: repeat-x;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b42121", endColorstr="#5e1111");
-        background-image: -khtml-gradient(linear, left top, left bottom, from(#b42121), to(#5e1111));
-        background-image: -moz-linear-gradient(top, #b42121, #5e1111);
-        background-image: -ms-linear-gradient(top, #b42121, #5e1111);
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b42121), color-stop(100%, #5e1111));
-        background-image: -webkit-linear-gradient(top, #b42121, #5e1111);
-        background-image: -o-linear-gradient(top, #b42121, #5e1111);
-        background-image: linear-gradient(#b42121, #5e1111);
-        border-color: #5e1111 #5e1111 hsl(0, 69%, 17%);
-        color: #fff !important;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
-        -webkit-font-smoothing: antialiased;
-        width:200px;
-        height:40px;
-        margin:10px 20px 10px 0;
-        padding:10px 0 10px 20px;
-        }
-
-
-        .btn-second {
-        display:inline-block;
-        background-color: hsl(110, 56%, 16%) !important;
-        background-repeat: repeat-x;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#398f28", endColorstr="#193f11");
-        background-image: -khtml-gradient(linear, left top, left bottom, from(#398f28), to(#193f11));
-        background-image: -moz-linear-gradient(top, #398f28, #193f11);
-        background-image: -ms-linear-gradient(top, #398f28, #193f11);
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #398f28), color-stop(100%, #193f11));
-        background-image: -webkit-linear-gradient(top, #398f28, #193f11);
-        background-image: -o-linear-gradient(top, #398f28, #193f11);
-        background-image: linear-gradient(#398f28, #193f11);
-        border-color: #193f11 #193f11 hsl(110, 56%, 11%);
-        color: #fff !important;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
-        -webkit-font-smoothing: antialiased;
-        width:200px;
-        height:40px;
-        margin:10px 20px 10px 20px;
-        padding:10px 0 10px 20px;
-        }
-
-        .btn-third {
-        display:inline-block;
-        background-color: hsl(145, 62%, 68%) !important;
-        background-repeat: repeat-x;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#cdf3dd", endColorstr="#7adfa4");
-        background-image: -khtml-gradient(linear, left top, left bottom, from(#cdf3dd), to(#7adfa4));
-        background-image: -moz-linear-gradient(top, #cdf3dd, #7adfa4);
-        background-image: -ms-linear-gradient(top, #cdf3dd, #7adfa4);
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cdf3dd), color-stop(100%, #7adfa4));
-        background-image: -webkit-linear-gradient(top, #cdf3dd, #7adfa4);
-        background-image: -o-linear-gradient(top, #cdf3dd, #7adfa4);
-        background-image: linear-gradient(#cdf3dd, #7adfa4);
-        border-color: #7adfa4 #7adfa4 hsl(145, 62%, 63%);
-        color: #333 !important;
-        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.33);
-        -webkit-font-smoothing: antialiased;
-        width:200px;
-        height:40px;
-        margin:10px 20px 10px 20px;
-        padding:10px 0 10px 20px;
-        }
-
-        .btn-fourth {
-        display:inline-block;
-        background-color: hsl(312, 80%, 43%) !important;
-        background-repeat: repeat-x;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e727c0", endColorstr="#c515a2");
-        background-image: -khtml-gradient(linear, left top, left bottom, from(#e727c0), to(#c515a2));
-        background-image: -moz-linear-gradient(top, #e727c0, #c515a2);
-        background-image: -ms-linear-gradient(top, #e727c0, #c515a2);
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e727c0), color-stop(100%, #c515a2));
-        background-image: -webkit-linear-gradient(top, #e727c0, #c515a2);
-        background-image: -o-linear-gradient(top, #e727c0, #c515a2);
-        background-image: linear-gradient(#e727c0, #c515a2);
-        border-color: #c515a2 #c515a2 hsl(312, 80%, 40.5%);
-        color: #fff !important;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.16);
-        -webkit-font-smoothing: antialiased;
-        width:200px;
-        height:40px;
-        margin:10px 20px 10px 20px;
-        padding:10px 0 10px 20px;
-        }
 
         .socialPanel{
             padding-left: 150px;
@@ -109,15 +20,13 @@
 
         .mainContainer{
             width:100%;
+            height: 1124px;
         }
 
         .titlePanel{
-            width:600px;
+            width:640px;
             font-size: 14px;
-        }
-        .welcomeContent{
-            padding-top: 200px;
-            text-align: center;
+            padding-top: 30px;
         }
 
         .welcomeVideo{
@@ -178,7 +87,6 @@
     <g:HTMLPanel  >
 
         <rdl:AppMenu ui:field="appMenu"/>
-
         <div class="container">
             <g:AbsolutePanel styleName="{style.mainContainer}">
                 <g:at left='0' top='0'>
@@ -212,38 +120,52 @@
                         </g:at>
                     </g:AbsolutePanel>
                 </g:at>
-                <g:at left='400' top='0'>
+                <g:at left='360' top='0'>
                     <g:HTMLPanel styleName="{style.titlePanel}">
-                        <h3 class="margin-base-vertical text-center">The Relationship Driving License</h3>
 
-                        <p class="text-left">The community dedicated to (re)building great romantic-erotic-relationships.We believe that being part
-                            of a great romantic-erotic-relationship is an ongoing attainable goal
-                            and we help people achieve it. </p>
-                        <p class="text-left">If you believe what we believe and seek as we seek then please
-                            share it with us.    </p>
+                        <h1>The Relationship Driving License</h1>
+
+                        <h3 class="margin-base-vertical text-center">Things have changed.</h3>
+
+
+
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You don’t need an expert to tell you that in the past couple of generations in most cultures around the world, the context in which long term romantic erotic relationships evolve has changed. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">It seems to me that a relationship has to stand much more on it’s own two feet now else it fails. I think these changes are overall for the better because they have given rise to the need for people to think seriously about and develop solid relationship skills and habits. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">The stigma associated with break ups and divorce is much lower. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Women are now more financially independent as they should be given equal rights to men and they choose just as men do to be career focused as well as family focused and the balance between the two is a challenge. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Both partners expect high levels of attraction and eroticism as well as connection throughout their relationship as a given, while this is obvious to most readers it’s a fairly new idea in most cultures. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Couples are now more atomic. Where in previous generations a couple would live with an extended community that would help with emotional, perhaps financial and child raising support partners now have to rely on each other for all these things. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">It seems to me that if we choose to build a solid healthy long term relationship we need to have a range of skills and habits and I look around and I see that generally speaking we do not have them. We therefore need to learn what they are and practice them. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">They way we should learn in my opinion is from each other. Indeed how else can we learn? Current relationship experts are just those who had access to the intimacy of many people. Each person has a story to tell, valuable information to share. Each one of you is an expert in your own relationship because it’s yours and you’ve learned precious lessons going through it. The problem is that buy and large we don’t share these lessons. They are locked away behind cultural taboos, especially the ones around eroticism. </span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">This is why The Relationship Driving license is being developed. Through the anonymity of the internet we set aside a lot of the barriers to free and deep discussion. &nbsp;Here you can come in completely anonymous, share your story and find advice and support as you will discover that whatever you are going through, you are not alone. Many others share in your joy or sorrow. Here you can take the lessons you learned and contribute them and rate and reference others contributions as we build a repository of solid relationship information and habits.</span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">And what if we had a mechanism to filter and rate snips of information, to refine our understanding when necessary? After all relationships are very complex and there are many questions that I myself would like to get answers for.</span></p>
+                        <br/><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: center;"><span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Well then I think we would have the foundation to the crazy ambitious goal to make romantic erotic relationships education part of the main stream. As we need history we need the skills and habits to build relationships.</span></p>
+                        <h3 class="margin-base-vertical text-center">Welcome to the Relationship Driving License!</h3>
+
                     </g:HTMLPanel>
                 </g:at>
 
+                <g:at left='50' top='250'>
+                    <g:VerticalPanel>
+                        <rdl:SocialPanel ui:field="socialPanel"/>
+                    </g:VerticalPanel>
 
-                <g:HTMLPanel  styleName="{style.welcomeContent}">
-                    <div class="col-lg-6 col-offset-3">
-                        <center>
-                            <rdl:SocialPanel ui:field="socialPanel"/>
+                </g:at>
 
-                            <g:SimplePanel ui:field="welcomeVideo" styleName="{style.welcomeVideo}">
-                                <g:Button ui:field="welcomeVideoButton" styleName="{style.welcomeVideoButton}">Load introduction video</g:Button>
-                            </g:SimplePanel>
+                <g:at left='60' top='300'>
+                    <b:Button ui:field="welcomeVideoButton">Load introduction video</b:Button>
+                </g:at>
 
-                            <span ui:field="hoverDiv" class="displayDiv">Hover over the modules below to see their description.</span>
-
-                            <div class="buttonRow">
-                                <g:FocusPanel ui:field = "IdeasButton"  styleName = "{style.btn-first}"><g:Label text ="Ideas"/></g:FocusPanel>
-                                <g:FocusPanel ui:field = "StoriesButton"  styleName = "{style.btn-second}"><g:Label text ="Stories"/></g:FocusPanel>
-                                <g:FocusPanel ui:field = "VoteButton"  styleName = "{style.btn-third}"><g:Label text ="Improvements"/></g:FocusPanel>
-                            </div>
-                        </center>
-                    </div>
-                </g:HTMLPanel>
 
             </g:AbsolutePanel>
 
