@@ -10,12 +10,14 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.SignInView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -62,10 +64,11 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
     @UiField
     Label loginFail;
 
+
     interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
     }
 
-    public SignInViewImpl(WelcomeViewImpl welcomeView) {
+    public SignInViewImpl(WelcomeViewImpl welcomeView, final String pageToRedirect) {
         super(true);
         add(uiBinder.createAndBindUi(this));
         this.welcomeViewImpl = welcomeView;
@@ -78,8 +81,10 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
             @Override
             public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
-
                 hide();
+                if(!pageToRedirect.equals(""))
+                    History.newItem(pageToRedirect);
+
             }
         });
 
@@ -134,6 +139,15 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
             loginFail.setText("please enter a valid username and password");
 
         }
+    }
+
+    /**
+     * click handler for sign up link, redirects to sign up view
+     * @param event
+     */
+    @UiHandler("signUpLink")
+    public void onSignUpLinkClicked(ClickEvent event) {
+        History.newItem(RDLConstants.Tokens.SIGN_UP);
     }
 
 

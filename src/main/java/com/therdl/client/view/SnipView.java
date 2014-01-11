@@ -2,6 +2,7 @@ package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.app.AppController;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -16,6 +17,7 @@ public interface SnipView extends IsWidget {
         public void saveReference(AutoBean<SnipBean> bean);
         public void getSnipReferences(AutoBean<SnipBean> searchOptionsBean, final int pageIndex);
         public void giveSnipReputation();
+        public AppController getController();
 
     }
 

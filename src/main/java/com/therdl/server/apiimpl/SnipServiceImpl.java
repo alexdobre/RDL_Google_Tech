@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 
 /**
@@ -90,14 +91,12 @@ public class SnipServiceImpl implements SnipsService {
         List<SnipBean> beans = new ArrayList<SnipBean>();
         BasicDBObject query = new BasicDBObject();
 
-
-
         if (searchOptions.getTitle() != null)
-            query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle()));
+            query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle(), java.util.regex.Pattern.CASE_INSENSITIVE));
         if (searchOptions.getAuthor() != null)
             query.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
         if (searchOptions.getContent() != null)
-            query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent()));
+            query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent(), java.util.regex.Pattern.CASE_INSENSITIVE));
         if (searchOptions.getCoreCat() != null)
             query.put("coreCat", searchOptions.getCoreCat());
         if (searchOptions.getSubCat() != null)

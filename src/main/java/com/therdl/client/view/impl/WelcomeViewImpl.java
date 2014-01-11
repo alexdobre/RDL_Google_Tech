@@ -104,24 +104,26 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
             @Override
             public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp();
+                showLoginPopUp(20,30, "");
             }
         });
 
     }
 
     /**
-     * show the signInView, login pop up widget  and set its parameters
+     * creates and shows login popup and sets its parameters
+     * @param posLeft left position
+     * @param posTop top position
+     * @param pageToRedirect page to redirect if after login is completed successfully
      */
-    public void showLoginPopUp() {
+    public void showLoginPopUp(int posLeft, int posTop, String pageToRedirect) {
 
-        signInView = new SignInViewImpl(this);
+        signInView = new SignInViewImpl(this, pageToRedirect);
         signInView.setGlassEnabled(true);
         signInView.setModal(true);
-        signInView.setPopupPosition(20, 30);
+        signInView.setPopupPosition(posLeft, posTop);
         signInView.show();
         signInView.getLoginFail().setVisible(false);
-
 
     }
 

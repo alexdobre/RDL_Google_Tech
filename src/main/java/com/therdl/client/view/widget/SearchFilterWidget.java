@@ -19,6 +19,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipSearchView;
 import com.therdl.client.view.cssbundles.Resources;
+import com.therdl.client.view.impl.SignInViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -45,6 +46,9 @@ public class SearchFilterWidget extends Composite {
 
     @UiField
     com.github.gwtbootstrap.client.ui.Button getLinkBtn;
+
+    @UiField
+    com.github.gwtbootstrap.client.ui.Button createNewButton;
 
     @UiField
     TextBox title;
@@ -386,7 +390,11 @@ public class SearchFilterWidget extends Composite {
      */
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
-        History.newItem(RDLConstants.Tokens.SNIP_EDIT);
+        if(view.getPresenter().getController().getCurrentUserBean().as().isAuth()) {
+            History.newItem(RDLConstants.Tokens.SNIP_EDIT);
+        } else {
+            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120,RDLConstants.Tokens.SNIP_EDIT);
+        }
 	}
 
 }

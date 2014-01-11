@@ -3,7 +3,9 @@ package com.therdl.client.view;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.app.AppController;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
@@ -32,9 +34,13 @@ public interface SnipSearchView {
         void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
         void getInitialSnipList(int pageIndex);
+
+        AppController getController();
     }
 
     void setPresenter(Presenter presenter);
+
+    Presenter getPresenter();
 
     Widget asWidget();
 
