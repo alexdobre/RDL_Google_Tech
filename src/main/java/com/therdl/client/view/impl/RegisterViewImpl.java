@@ -144,7 +144,7 @@ public class RegisterViewImpl extends Composite implements RegisterView {
      * @param boolean auth  auth state from server via presenter
      */
     @Override
-    public void setloginresult(String name, String email, boolean auth) {
+    public void setLoginResult(String name, String email, boolean auth) {
         if (auth) {
             log.info("SnipSearchViewImpl setloginresult auth true " + name);
 

@@ -39,7 +39,7 @@ public interface SnipEditView {
 
     void viewEditedSnip(AutoBean<SnipBean> snipBean);
 
-    void setloginresult(String name, String email, boolean auth);
+    void setLoginResult(String name, String email, boolean auth);
 
     AppMenu getAppMenu();
 

@@ -1,0 +1,20 @@
+.mainContainer {
+    margin-top: 10px;
+}
+
+.snipListRowContainer {
+    width: 70%;
+    float: left;
+    margin-left: 10px;
+}
+
+.leftPanel {
+    float:left;
+    width: 28%;
+}
+
+.socialPanel {
+    margin-top:10px;
+    margin-left: 50px;
+
+}

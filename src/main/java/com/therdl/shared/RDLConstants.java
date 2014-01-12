@@ -65,7 +65,8 @@ public interface RDLConstants {
         String FAST_CAP = "fastCap";
         String MATERIAL = "material";
         String REFERENCE = "reference";
-
+        String THREAD = "thread";
+        String POST = "post";
     }
 
     public interface SnipFields {
@@ -77,7 +78,13 @@ public interface RDLConstants {
         String POS_REF = "posRef";
         String NEUTRAL_REF = "neutralRef";
         String NEGATIVE_REF = "negativeRef";
+        String POSTS = "posts";
         String REP = "rep";
         String CREATION_DATE = "creationDate";
+    }
+
+    public interface Modules {
+        String IDEAS = "ideas";
+        String STORIES = "stories";
     }
 }

@@ -19,8 +19,6 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -73,8 +71,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
     private WelcomeView welcomeView;
     private SnipEditView snipEditView;
-    private SnipSearchView snipSearchView;
-    private StoriesView storiesView;
+    private SearchView searchView;
+    private SearchView storiesView;
     private ImprovementsView improvementsView;
     private RegisterView registerView;
     private ProfileView profileView;
@@ -252,13 +250,15 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             else if (token.equals(RDLConstants.Tokens.SNIPS)) {
                 log.info("AppController Tokens.SNIPS");
 
-                if (snipSearchView == null) {
-                    snipSearchView = new SnipSearchViewImpl(currentUserBean, event.getValue());
+                if (searchView == null) {
+                    searchView = new SnipSearchViewImpl(currentUserBean);
                 }
-                if(tokenSplit.length == 2)
-                    snipSearchView.setAuthorName(tokenSplit[1]);
 
-                final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(snipSearchView, this);
+                searchView.setToken(event.getValue());
+                if(tokenSplit.length == 2)
+                    searchView.setAuthorName(tokenSplit[1]);
+
+                final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(searchView, this);
 
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
@@ -281,7 +281,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 if (storiesView == null) {
                     storiesView = new StoriesViewImpl(currentUserBean);
                 }
-                final StoriesPresenter storiesPresenter = new StoriesPresenter(storiesView, this);
+                storiesView.setToken(event.getValue());
+                if(tokenSplit.length == 2)
+                    storiesView.setAuthorName(tokenSplit[1]);
+
+                final SnipSearchPresenter storiesPresenter = new SnipSearchPresenter(storiesView, this);
 
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
@@ -289,9 +293,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     }
 
                     public void onSuccess() {
-
                         storiesPresenter.go(container, currentUserBean);
-
                     }
                 });
 
@@ -415,16 +417,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 if (welcomeView != null) {
                     welcomeView.logout();
                 }
-                if (snipSearchView != null) {
-                    snipSearchView.setloginresult(" ", " ", false);
+                if (searchView != null) {
+                    searchView.setLoginResult(" ", " ", false);
                 }
 
                 if (snipEditView != null) {
-                    snipEditView.setloginresult(" ", " ", false);
+                    snipEditView.setLoginResult(" ", " ", false);
                 }
 
                 if (registerView != null) {
-                    registerView.setloginresult(" ", " ", false);
+                    registerView.setLoginResult(" ", " ", false);
                 }
 
                 if (profileView != null) {

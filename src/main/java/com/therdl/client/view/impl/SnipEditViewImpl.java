@@ -367,9 +367,9 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
      */
 
     @Override
-    public void setloginresult(String name, String email, boolean auth) {
+    public void setLoginResult(String name, String email, boolean auth) {
         if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true " + name);
+            log.info("SnipSearchViewImpl setLoginResult auth true " + name);
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
