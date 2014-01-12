@@ -115,10 +115,9 @@ public class StoriesViewImpl extends Composite implements SearchView {
             doFilterSearch(ViewUtils.parseToken(beanery, token), 0);
         }
 
-    }
-
         appMenu.setSignUpVisible(true);
         appMenu.setStoriesActive();
+
     }
 
     public AutoBean<SnipBean> initSearchOptionsBean() {
