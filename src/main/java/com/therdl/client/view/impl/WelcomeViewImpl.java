@@ -100,7 +100,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
             @Override
             public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp(400,30, "");
+                showLoginPopUp(500,30, "");
             }
         });
 
@@ -135,6 +135,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         signInView.setGlassEnabled(true);
         signInView.setModal(true);
         signInView.setPopupPosition(posLeft, posTop);
+        signInView.getElement().getStyle().setZIndex(3);
         signInView.show();
         signInView.getLoginFail().setVisible(false);
 

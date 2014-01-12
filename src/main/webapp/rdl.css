@@ -1,10 +1,10 @@
 
 body {
     padding-top:1px;
-    font-size:12px;
+    font-size:16px;
     font-family:"Open Sans",serif;
     overflow:scroll;
-    height:1500px;
+    height:1200px;
 }
 
 .splashLogo {
@@ -231,6 +231,12 @@ form.form-search:before {
 }
 /*********************** CORE CATEGORIES BUTTONS *************************************/
 .gwt-DecoratedPopupPanel{
+    z-index: 2;
+}
+.gwt-DialogBox{
+    z-index: 2;
+}
+.gwt-PopupPanelGlass {
     z-index: 2;
 }
  .btn-cat{
