@@ -29,46 +29,6 @@
             padding-top: 30px;
         }
 
-        .btn-cat{
-        display:inline-block;
-        border-color: #5e1111 #5e1111 hsl(0, 69%, 17%);
-        color: #000000;
-        width:90px;
-        height:20px;
-        text-align:center;
-        cursor:pointer;
-        }
-
-        .btn-cat-compat{
-        background-color: #9ce148;
-        }
-        .btn-cat-conn{
-        background-color: #ffff00;
-        }
-        .btn-cat-ext{
-        background-color: #004cc0;
-        }
-        .btn-cat-ero{
-        background-color: #f11515;
-        }
-        .btn-cat-sed{
-        background-color: #ed427d;
-        }
-        .btn-cat-psy{
-        background-color: #a32ad4;
-        }
-        .btn-cat-aff{
-        background-color: #ff8f00;
-        }
-        .btn-cat-abu{
-        background-color: #d69051;
-        }
-
-        .btn-cat-label{
-        position: relative;
-        font-weight: bold;
-        color: black;
-        }
     </ui:style>
 
 
@@ -77,42 +37,28 @@
         <rdl:AppMenu ui:field="appMenu"/>
 
         <div class="container">
+
             <g:AbsolutePanel styleName="{style.mainContainer}">
+                <b:Button size="SMALL" ui:field="compatibilityCat" text ="Compatibility" />
+                <b:Button size="SMALL" ui:field="connectionCat" text ="Connection" />
+                <b:Button size="SMALL" ui:field="exteriorCat" text ="Exterior" />
+                <b:Button size="SMALL" ui:field="eroticismCat" text ="Eroticism" />
+                <b:Button size="SMALL" ui:field="seductionCat" text ="Seduction" />
+                <b:Button size="SMALL" ui:field="psyTendCat" text ="Psy Tend" />
+                <b:Button size="SMALL" ui:field="affairsCat" text ="Affairs" />
+                <b:Button size="SMALL" ui:field="abuseCat" text ="Abuse" />
+
                 <g:at left='0' top='0'>
                     <g:AbsolutePanel styleName = "{style.logoPanel}" >
                         <g:at left='90' top='10'>
                             <g:Image ui:field="logo" resource='{res.landingImage}' />
-                        </g:at>
-                        <g:at left='260' top='90'>
-                            <g:FocusPanel ui:field = "compatibilityCat"  styleName="{style.btn-cat} {style.btn-cat-compat}" ><g:Label styleName="{style.btn-cat-label}" text ="Compatibility"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='240' top='130'>
-                            <g:FocusPanel ui:field = "connectionCat"  styleName = "{style.btn-cat} {style.btn-cat-conn}"><g:Label styleName="{style.btn-cat-label}" text ="Connection"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='130' top='150'>
-                            <g:FocusPanel ui:field = "exteriorCat"  styleName = "{style.btn-cat} {style.btn-cat-ext}"><g:Label styleName="{style.btn-cat-label}" text ="Exterior"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='10' top='110'>
-                            <g:FocusPanel ui:field = "eroticismCat"  styleName = "{style.btn-cat} {style.btn-cat-ero}"><g:Label styleName="{style.btn-cat-label}" text ="Eroticism"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='0' top='70'>
-                            <g:FocusPanel ui:field = "seductionCat"  styleName = "{style.btn-cat} {style.btn-cat-sed}"><g:Label styleName="{style.btn-cat-label}" text ="Seduction"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='5' top='30'>
-                            <g:FocusPanel ui:field = "psyTendCat"  styleName = "{style.btn-cat} {style.btn-cat-psy}"><g:Label styleName="{style.btn-cat-label}" text ="Psy Tend"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='60' top='5'>
-                            <g:FocusPanel ui:field = "affairsCat"  styleName = "{style.btn-cat} {style.btn-cat-aff}"><g:Label styleName="{style.btn-cat-label}" text ="Affairs"/></g:FocusPanel>
-                        </g:at>
-                        <g:at left='170' top='5'>
-                            <g:FocusPanel ui:field = "abuseCat"  styleName = "{style.btn-cat} {style.btn-cat-abu}"><g:Label styleName="{style.btn-cat-label}" text ="Abuse"/></g:FocusPanel>
                         </g:at>
                     </g:AbsolutePanel>
                 </g:at>
                 <g:at left='360' top='0'>
                     <g:HTMLPanel styleName="{style.titlePanel}">
 
-                        <h1>The Relationship Driving License</h1>
+                        <h1>The Relationship Driving License <sup>PRE-ALPHA</sup></h1>
 
                         <h3 class="margin-base-vertical text-center">Things have changed.</h3>
 

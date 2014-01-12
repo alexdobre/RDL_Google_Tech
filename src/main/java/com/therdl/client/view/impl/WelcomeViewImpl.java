@@ -23,6 +23,7 @@ import com.therdl.shared.Constants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.client.view.widget.text.*;
 import com.therdl.shared.events.*;
+import com.github.gwtbootstrap.client.ui.Button;
 
 import java.util.logging.Logger;
 
@@ -61,32 +62,27 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
     @UiField
     AppMenu appMenu;
-
-
-
     @UiField
     Image logo;
-
-
     @UiField
-    FocusPanel compatibilityCat;
+    Button compatibilityCat;
     @UiField
-    FocusPanel connectionCat;
+    Button connectionCat;
     @UiField
-    FocusPanel exteriorCat;
+    Button exteriorCat;
     @UiField
-    FocusPanel eroticismCat;
+    Button eroticismCat;
     @UiField
-    FocusPanel seductionCat;
+    Button seductionCat;
     @UiField
-    FocusPanel psyTendCat;
+    Button psyTendCat;
     @UiField
-    FocusPanel affairsCat;
+    Button affairsCat;
     @UiField
-    FocusPanel abuseCat;
+    Button abuseCat;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button welcomeVideoButton;
+    Button welcomeVideoButton;
 
     LogoutPopupWidget logoutPopup;
 
@@ -98,17 +94,33 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         appMenu.setLogOutVisible(false);
         appMenu.setMainGroupVisible(true);
         logo.setStyleName("splashLogo");
-
         appMenu.setSignUpVisible(true);
+        appMenu.setHomeActive();
 
         GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
-
             @Override
             public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp(20,30, "");
+                showLoginPopUp(400,30, "");
             }
         });
 
+        //core category buttons
+        compatibilityCat.addStyleName("btn-cat");
+        compatibilityCat.addStyleName("btn-cat-compat");
+        connectionCat.addStyleName("btn-cat");
+        connectionCat.addStyleName("btn-cat-conn");
+        exteriorCat.addStyleName("btn-cat");
+        exteriorCat.addStyleName("btn-cat-ext");
+        eroticismCat.addStyleName("btn-cat");
+        eroticismCat.addStyleName("btn-cat-ero");
+        seductionCat.addStyleName("btn-cat");
+        seductionCat.addStyleName("btn-cat-sed");
+        psyTendCat.addStyleName("btn-cat");
+        psyTendCat.addStyleName("btn-cat-psy");
+        affairsCat.addStyleName("btn-cat");
+        affairsCat.addStyleName("btn-cat-aff");
+        abuseCat.addStyleName("btn-cat");
+        abuseCat.addStyleName("btn-cat-abu");
     }
 
     /**
@@ -236,10 +248,10 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
             DialogBox dialog = ViewUtils.constructDialogBox(player,event,450);
             dialog.show();
         } catch(PluginVersionException e) {
-            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."),event,450).show();
+            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
         } catch(PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
-            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event,450).show();
+            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
         }
     }
 

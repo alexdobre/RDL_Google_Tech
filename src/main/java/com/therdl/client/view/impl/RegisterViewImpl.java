@@ -70,6 +70,7 @@ public class RegisterViewImpl extends Composite implements RegisterView {
     public RegisterViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
         appMenu.setSignUpView();
+        appMenu.setSignUpActive();
     }
 
 

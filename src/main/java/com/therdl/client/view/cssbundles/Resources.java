@@ -147,5 +147,4 @@ public interface Resources extends ClientBundle {
     @Source("imagebund/arrow-up-grey.png")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource arrowUpGrey();
-
 }

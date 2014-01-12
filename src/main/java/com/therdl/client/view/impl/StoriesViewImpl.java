@@ -117,12 +117,8 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
     }
 
-    @Override
-    protected void onUnload() {
-        super.onUnload();
-        currentSearchOptionsBean = null;
-        threadListRowContainer.clear();
-        searchFilterWidget.removeFromParent();
+        appMenu.setSignUpVisible(true);
+        appMenu.setStoriesActive();
     }
 
     public AutoBean<SnipBean> initSearchOptionsBean() {

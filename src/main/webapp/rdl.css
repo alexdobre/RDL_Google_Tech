@@ -20,23 +20,16 @@ body {
 
 }
 
-
-
-iframe {
-    padding-top:10px;
-    z-index: -1;
-}
-
 h1 {
   clear:both;
   color:#232323;
-  font-size:48px;
+  font-size:38px;
   font-style:normal;
   font-weight:500;
   letter-spacing:-2px;
   line-height:1em;
   margin-bottom:20px;
-  margin-left: 30px;
+  margin-left: 10px;
 }
 
 h3 {
@@ -116,118 +109,6 @@ td {
 
 .datePicker {
     margin: 0px;
-}
-
-.gwt-MenuBar {
-    background-color:#000!important;
-}
-  /*
-.gwt-Label {
-    padding:0 0 10px 20px;
-}     */
-
-.gwt-MenuBar-horizontal {
-    width:100%;
-    height:28px;
-    color:#FFF;
-    background-color:#000!important;
-    background:transparent url(img/hborder2.png) repeat-x!important;
-}
-
-.gwt-MenuBarPopup {
-    color:#FFF!important;
-    background:transparent!important;
-}
-
-.gwt-MenuBar .gwt-MenuItem-selected {
-    color:red!important;
-}
-
-/** menu items **/
-
-.homeMenuItem {
-   position:absolute;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    left:1%;
-    top:.2%;
-    font:14px;
-    padding:4px 10px;
-}
-
-.ideasMenuItem {
-    position:absolute;
-    font:14px;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    width:62px;
-    left:100px;
-    top:.2%;
-    padding:4px 10px;
-}
-
-.storiesMenuItem {
-    position:absolute;
-    font:14px;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    top:.2%;
-    padding:4px 10px;
-    left:200px!important;
-    width:100px;
-}
-
-.improvementsMenuItem {
-    position:absolute;
-    font:14px;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    top:.2%;
-    padding:4px 10px;
-    left:300px!important;
-    width:100px;
-}
-
-
-.login  {
-    position:absolute;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    font:14px;
-    width:100px;
-    right:20%!important;
-    padding:4px 10px;
-}
-
-.userDropDown {
-    position:absolute;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    top:.2%;
-    right:15%;
-    font:14px;
-    background:url(img/dropdown_arrow.png)  right no-repeat;
-    background-position: 90% 22%;
-    width:60px;
-    padding:4px 10px;
-}
-
-
-.signUpAccount {
-    position:absolute;
-    color:#FFF;
-    font-weight:700;
-    vertical-align:bottom;
-    right:5%;
-    top:.2%;
-    font:14px;
-    padding:4px 10px;
 }
 
 /** profile **/
@@ -348,30 +229,139 @@ form.form-search:before {
     opacity: .5;
     z-index: 1000;
 }
+/*********************** CORE CATEGORIES BUTTONS *************************************/
+.gwt-DecoratedPopupPanel{
+    z-index: 2;
+}
+ .btn-cat{
+        color: #000000;
+        width:90px;
+        height:20px;
+        text-align:center;
+        cursor:pointer;
+        position: absolute;
+        z-index: 1;
+        font-size: 14px;
+        font-weight: bold;
+        padding-left: 0px;
+        padding-right: 0px;
+ }
 
-
-.btn-search  {
-    display:inline-block;
-    background-color: hsl(0, 69%, 22%) !important;
-    background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b42121", endColorstr="#5e1111");
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#b42121), to(#5e1111));
-    background-image: -moz-linear-gradient(top, #b42121, #5e1111);
-    background-image: -ms-linear-gradient(top, #b42121, #5e1111);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b42121), color-stop(100%, #5e1111));
-    background-image: -webkit-linear-gradient(top, #b42121, #5e1111);
-    background-image: -o-linear-gradient(top, #b42121, #5e1111);
-    background-image: linear-gradient(#b42121, #5e1111);
-    border-color: #5e1111 #5e1111 hsl(0, 69%, 17%);
-    color: #fff !important;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
-    -webkit-font-smoothing: antialiased;
-    position: absolute;
-    top:4px;
-    width:180px;
-    height:24px;
-    margin:0 0 0 20px;
-    padding:0 0 0 12px;
+.btn-cat-compat{
+        left: 250px;
+        top: 85px;
+        background-color: #9ce148;
+        border-color: #9ce148;
+        background-image: linear-gradient(to bottom, #FFFFFF, #9ce148);
+}
+.btn-cat-compat:hover{
+        background-color: #9ce148;
+        background-image: linear-gradient(to bottom, #9ce148, #9ce148);
 }
 
+.btn-cat-conn{
+        left: 240px;
+        top: 124px;
+        background-color: #ffff00;
+        border-color: #ffff00;
+        background-image: linear-gradient(to bottom, #FFFFFF, #ffff00);
+}
+
+.btn-cat-conn:hover{
+        background-color: #ffff00;
+        background-image: linear-gradient(to bottom, #ffff00, #ffff00);
+}
+
+.btn-cat-ext{
+        left: 120px;
+        top: 150px;
+        background-color: #004cc0;
+        border-color: #004cc0;
+        background-image: linear-gradient(to bottom, #FFFFFF, #004cc0);
+}
+.btn-cat-ext:hover{
+        background-color: #004cc0;
+        background-image: linear-gradient(to bottom, #004cc0, #004cc0);
+}
+
+.btn-cat-ero{
+        left: 10px;
+        top: 110px;
+        background-color: #f11515;
+        border-color: #f11515;
+        background-image: linear-gradient(to bottom, #FFFFFF, #f11515);
+}
+.btn-cat-ero:hover{
+        background-color: #f11515;
+        background-image: linear-gradient(to bottom, #f11515, #f11515);
+}
+
+.btn-cat-sed{
+        left: 0px;
+        top: 69px;
+        background-color: #ed427d;
+        border-color: #ed427d;
+        background-image: linear-gradient(to bottom, #FFFFFF, #ed427d);
+}
+.btn-cat-sed:hover{
+        background-color: #ed427d;
+        background-image: linear-gradient(to bottom, #ed427d, #ed427d);
+}
+
+.btn-cat-psy{
+        left: 5px;
+        top: 30px;
+        background-color: #a32ad4;
+        border-color: #a32ad4;
+        background-image: linear-gradient(to bottom, #FFFFFF, #a32ad4);
+}
+.btn-cat-psy:hover{
+        background-color: #a32ad4;
+        background-image: linear-gradient(to bottom, #a32ad4, #a32ad4);
+}
+
+.btn-cat-aff{
+        left: 55px;
+        top: 0px;
+        background-color: #ff8f00;
+        border-color: #ff8f00;
+        background-image: linear-gradient(to bottom, #FFFFFF, #ff8f00);
+}
+.btn-cat-aff:hover{
+        background-color: #ff8f00;
+        background-image: linear-gradient(to bottom, #ff8f00, #ff8f00);
+}
+
+.btn-cat-abu{
+        background-color: #d69051;
+        left: 170px;
+        top: 0px;
+        background-color: #d69051;
+        border-color: #d69051;
+        background-image: linear-gradient(to bottom, #FFFFFF, #d69051);
+}
+.btn-cat-abu:hover{
+        background-color: #d69051;
+        background-image: linear-gradient(to bottom, #d69051, #d69051);
+}
+
+
+/*********************** BOOTSTRAP OVERWRITES*************************************/
  
+.navbar .brand {
+    cursor:pointer;
+}
+
+.navbar {
+    margin-bottom: 5px;
+}
+
+.navbar .nav > li > a:hover {
+     background-color: #F0F0F0;
+     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
+}
+
+.brandActive{
+    background-color: #E5E5E5;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
+}

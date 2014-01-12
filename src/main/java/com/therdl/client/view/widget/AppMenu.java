@@ -1,20 +1,22 @@
 package com.therdl.client.view.widget;
 
+import com.github.gwtbootstrap.client.ui.Brand;
+import com.github.gwtbootstrap.client.ui.Dropdown;
+import com.github.gwtbootstrap.client.ui.NavHeader;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInEvent;
 import com.therdl.shared.events.LogOutEvent;
-
 
 import java.util.logging.Logger;
 
@@ -44,129 +46,136 @@ public class AppMenu extends Composite  {
     private static Logger log = Logger.getLogger("");
 
     private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
-    @UiField MenuBar menuBar;
 
-    @UiField MenuItem home;
-    @UiField MenuItem ideas;
-    @UiField MenuItem stories;
-    @UiField MenuItem improvements;
-    @UiField MenuItem profile;
+    @UiField Brand home;
+    @UiField NavLink ideas;
+    @UiField NavLink stories;
+    @UiField NavLink improvements;
+    @UiField NavLink signUp;
+    @UiField NavLink login;
+
 
     // auth flow
-    @UiField MenuItem userdetails;
-    @UiField MenuItem user;
-    @UiField MenuItem email;
-    @UiField MenuItem out;
-    @UiField MenuItem signUp;
-    @UiField MenuItem login;
+    @UiField Dropdown userdetails;
+    @UiField NavHeader user;
+    @UiField NavLink email;
+    @UiField NavLink profile;
+    @UiField NavLink out;
+
 
     interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
     }
 
     public AppMenu() {
         initWidget(uiBinder.createAndBindUi(this));
+    }
 
-        // set the style name to position the user dropdown far right
-        this .userdetails.setStyleName("userDropDown");
-        this .signUp.setStyleName("signUpAccount");
-        this .home.setStyleName("homeMenuItem");
-        this .ideas.setStyleName("ideasMenuItem");
-        this .stories.setStyleName("storiesMenuItem");
-        this .improvements.setStyleName("improvementsMenuItem");
-        this .login.setStyleName("login");
+    @UiHandler("profile")
+    public void onProfileClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
+        History.newItem(RDLConstants.Tokens.PROFILE + ":" + user.getText());
+    }
+      
+    @UiHandler("out")
+    public void onLogoutClick(ClickEvent event) {
+        log.info("AppMenu: logout");
+        GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
+    }
 
+    @UiHandler("login")
+    public void onLoginClick(ClickEvent event) {
+        log.info("AppMenu: login");
+        GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
+    }
 
-        ideas.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.search");
-                History.newItem(RDLConstants.Tokens.SNIPS);
-            }
-        });
+    @UiHandler("signUp")
+    public void onSignUpClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
+        History.newItem(RDLConstants.Tokens.SIGN_UP);
+    }
 
-        stories.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.stories");
-                History.newItem(RDLConstants.Tokens.STORIES);
-            }
-        });
+    /**
+     * Sets the signUp element as active in the menu
+     */
+    public void setSignUpActive(){
+        signUp.setActive(true);
+    }
 
-        improvements.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
-                History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
-            }
-        });
+    @UiHandler("home")
+    public void onHomeClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens home");
+        History.newItem(RDLConstants.Tokens.WELCOME);
+    }
 
-        signUp.setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
-                History.newItem(RDLConstants.Tokens.SIGN_UP);
-            }
-        });
+    /**
+     * Sets the home element as active in the menu
+     */
+    public void setHomeActive(){
+        home.setEnabled(false);
+        home.addStyleName("brandActive");
+    }
 
+    @UiHandler("ideas")
+    public void onIdeasClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens.ideas");
+        History.newItem(RDLConstants.Tokens.SNIPS);
+    }
 
+    /**
+     * Sets the ideas element as active in the menu
+     */
+    public void setIdeasActive(){
+        ideas.setActive(true);
+    }
 
-        out.setScheduledCommand (new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: logout");
-                GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
-            }
-        });
+    @UiHandler("stories")
+    public void onStoriesClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens.stories");
+        History.newItem(RDLConstants.Tokens.STORIES);
+    }
 
-        login.setScheduledCommand (new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: login");
-                GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
-            }
-        });
+    /**
+     * Sets the stories element as active in the menu
+     */
+    public void setStoriesActive(){
+        stories.setActive(true);
+    }
 
-        home.setScheduledCommand (new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens home");
-                History.newItem(RDLConstants.Tokens.WELCOME);
-            }
-        });
+    @UiHandler("improvements")
+    public void onImprovementsClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
+        History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
+    }
 
-        profile.setScheduledCommand (new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
-                History.newItem(RDLConstants.Tokens.PROFILE+":"+user.getText());
-            }
-        });
-
-
+    /**
+     * Sets the improvements element as active in the menu
+     */
+    public void setImprovementsActive(){
+        improvements.setActive(true);
     }
 
     /**
      * displays the username
-     * @param String id
+     *
      */
     public void setUser(String id) {
         log.info("AppMenu:setUser "+id);
-        user.setHTML(id);
+        user.setText(id);
     }
 
     /**
      * displays the email string
-     * @param String id
+     *
      */
     public void setEmail(String id) {
         log.info("AppMenu:setEmail "+id);
-        email.setHTML(id);
+        email.setText(id);
 
     }
 
     /**
      * displays the SignUp option
-     * @param boolean state
+     *
      */
     public void  setSignUpVisible (boolean state){
         log.info("AppMenu: setSignUpVisible "+state);
@@ -175,7 +184,7 @@ public class AppMenu extends Composite  {
 
     /**
      * displays the UserInfo details in a drop down
-     * @param boolean state
+     *
      */
     public void  setUserInfoVisible (boolean state) {
         log.info("AppMenu: setUserInfoVisible "+state);
@@ -186,7 +195,7 @@ public class AppMenu extends Composite  {
 
     /**
      * displays the LogOut option
-     * @param boolean state
+     *
      */
     public void setLogOutVisible(boolean state) {
         log.info("AppMenu: setLogOutVisible "+state);
@@ -196,7 +205,7 @@ public class AppMenu extends Composite  {
 
     /**
      * displays the LogIn option
-     * @param boolean state
+     *
      */
     public void setLogInVisible(boolean state) {
         log.info("AppMenu: setLogInVisible "+state);
@@ -222,10 +231,7 @@ public class AppMenu extends Composite  {
     public void setSignUpView() {
         log.info("AppMenu: setSignUpView ");
         this.login.setVisible(false);
-        setMainGroupVisible(false);
-        setSignUpVisible(false);
         setUserInfoVisible (false);
-
     }
 
 }
