@@ -22,7 +22,7 @@
                         <b:VerticalDivider />
                     </b:Nav>
 
-                    <b:NavForm size="4" placeholder="Search Site Content" />
+                    <b:NavForm size="4" ui:field = "searchSiteContent" placeholder="Search Site Content" />
 
                     <b:Nav alignment="RIGHT">
                         <b:VerticalDivider />

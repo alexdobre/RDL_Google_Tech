@@ -1,9 +1,6 @@
 package com.therdl.client.view.widget;
 
-import com.github.gwtbootstrap.client.ui.Brand;
-import com.github.gwtbootstrap.client.ui.Dropdown;
-import com.github.gwtbootstrap.client.ui.NavHeader;
-import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -53,6 +50,8 @@ public class AppMenu extends Composite  {
     @UiField NavLink improvements;
     @UiField NavLink signUp;
     @UiField NavLink login;
+
+    @UiField NavForm searchSiteContent;
 
 
     // auth flow

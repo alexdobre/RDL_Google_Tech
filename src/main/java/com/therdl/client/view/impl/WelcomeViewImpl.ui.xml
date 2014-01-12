@@ -90,16 +90,18 @@
                     </g:HTMLPanel>
                 </g:at>
 
-                <g:at left='50' top='250'>
+                <g:at left='85' top='205'>
+                    <b:Button ui:field="welcomeVideoButton">Load introduction video</b:Button>
+                </g:at>
+
+                <g:at left='70' top='280'>
                     <g:VerticalPanel>
                         <rdl:SocialPanel ui:field="socialPanel"/>
                     </g:VerticalPanel>
 
                 </g:at>
 
-                <g:at left='60' top='300'>
-                    <b:Button ui:field="welcomeVideoButton">Load introduction video</b:Button>
-                </g:at>
+
 
 
             </g:AbsolutePanel>
