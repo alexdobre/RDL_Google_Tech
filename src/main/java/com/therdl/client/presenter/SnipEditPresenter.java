@@ -85,7 +85,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
             view.getAppMenu().setLogOutVisible(true);
             view.getAppMenu().setSignUpVisible(false);
             view.getAppMenu().setUserInfoVisible(true);
-            view.setloginresult(controller.getCurrentUserBean().as().getName(),
+            view.setLoginResult(controller.getCurrentUserBean().as().getName(),
                     controller.getCurrentUserBean().as().getEmail(), true);
         }
 
@@ -267,69 +267,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         } catch (RequestException e) {
             log.info(e.getLocalizedMessage());
         }
-    }
-
-
-    // this methoud used to validate snip drop down in edit view
-    private void fetchSnips() {
-
-        log.info("SnipEditPresenter getSnipDemoResult");
-
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
-
-        log.info("SnipEditPresenter getSnipDemoResult  updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean> currentBean = beanery.snipBean();
-        currentBean.as().setAction("getall");
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
-        try {
-
-            requestBuilder.sendRequest(json, new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    JsArray<JSOModel> data =
-                            JSOModel.arrayFromJson(response.getText());
-                    if (data.length() == 0) return;
-
-                    jSonList = new ArrayList<JSOModel>();
-
-                    for (int i = 0; i < data.length(); i++) {
-                        jSonList.add(data.get(i));
-
-                    }
-
-                    List<AutoBean<SnipBean>> beans = new ArrayList<AutoBean<SnipBean>>();
-
-
-                    for (int k = 0; k < jSonList.size(); k++) {
-                        // used to index the incoming json array
-                        String counter = "" + k;
-                        AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(k).get(counter));
-                        beans.add(bean);
-                    }
-                    log.info("SnipEditPresenter onResponseReceived passing thru this many beans " + beans.size());
-                    beans.clear();
-
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-
     }
 
     private void findSnipById(String snipId) {

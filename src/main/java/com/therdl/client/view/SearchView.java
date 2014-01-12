@@ -28,27 +28,33 @@ import java.util.ArrayList;
  * JSOModel objects, see com.therdl.shared.beans.JSOModel javadoc for this class
  * @ getInitialSnipList() display's the initial search result list
  */
-public interface SnipSearchView {
+public interface SearchView {
 
     public interface Presenter {
         void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
-        void getInitialSnipList(int pageIndex);
+     //   void getInitialSnipList(int pageIndex);
 
         AppController getController();
     }
+
+    void setToken(String token);
 
     void setPresenter(Presenter presenter);
 
     Presenter getPresenter();
 
-    Widget asWidget();
+    AutoBean<CurrentUserBean> getCurrentUserBean();
 
-   // void showSnipList(JsArray<JSOModel> snips);
+    AutoBean<SnipBean> getCurrentSearchOptionsBean();
+
+    AutoBean<SnipBean> initSearchOptionsBean();
+
+    Widget asWidget();
 
     void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 
-    void setloginresult(String name, String email, boolean auth);
+    void setLoginResult(String name, String email, boolean auth);
 
     AppMenu getAppMenu();
 
@@ -56,5 +62,5 @@ public interface SnipSearchView {
 
     void getInitialSnipList(int pageIndex);
 
-    public void setAuthorName(String authorName);
+    void setAuthorName(String authorName);
 }

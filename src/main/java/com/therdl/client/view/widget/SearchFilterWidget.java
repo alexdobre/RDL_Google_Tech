@@ -4,22 +4,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.view.SnipSearchView;
+import com.therdl.client.view.SearchView;
 import com.therdl.client.view.cssbundles.Resources;
-import com.therdl.client.view.impl.SignInViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -51,28 +45,7 @@ public class SearchFilterWidget extends Composite {
     com.github.gwtbootstrap.client.ui.Button createNewButton;
 
     @UiField
-    TextBox title;
-
-    @UiField
-    TextBox content;
-
-    @UiField
-    TextBox author;
-
-    @UiField
-    TextBox posRef;
-
-    @UiField
-    TextBox neutralRef;
-
-    @UiField
-    TextBox negativeRef;
-
-    @UiField
-    TextBox viewCount;
-
-    @UiField
-    TextBox snipRep;
+    TextBox title, content, author, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep;
 
     @UiField
     HTMLPanel container;
@@ -86,9 +59,15 @@ public class SearchFilterWidget extends Composite {
     @UiField
     DateFilterWidget dateFilterWidget;
 
+    @UiField
+    FlowPanel refPanel;
 
     @UiField
-    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, typePanel;
+    Label typeLabel, refLabel, postLabel, filterLabel;
+
+
+    @UiField
+    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, typePanel;
 
    // DatePicker datePicker;
 
@@ -109,30 +88,48 @@ public class SearchFilterWidget extends Composite {
         return sortOrder;
     }
 
-    SnipSearchView view;
+    SearchView view;
 
     private BookmarkSearchPopup bookmarkSearchPopup;
     private String authorName;
+    private String moduleName;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
     interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
 
-    public SearchFilterWidget(SnipSearchViewImpl snipSearchView, String authorName) {
+    public SearchFilterWidget(SearchView snipSearchView, String authorName, String moduleName) {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
         this.authorName = authorName;
+        this.moduleName = moduleName;
 
-        createTypeFilter();
+        if(moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            createTypeFilter();
+
+            posRef.getElement().getStyle().setProperty("border","1px solid green");
+            neutralRef.getElement().getStyle().setProperty("border","1px solid grey");
+            negativeRef.getElement().getStyle().setProperty("border","1px solid red");
+
+            postLabel.getElement().getStyle().setProperty("display","none");
+            postPanel.getElement().getStyle().setProperty("display","none");
+
+            filterLabel.setText(RDL.i18n.filterSnips());
+
+        } else if (moduleName.equals(RDLConstants.Modules.STORIES)) {
+            typeLabel.getElement().getStyle().setProperty("display","none");
+            refPanel.getElement().getStyle().setProperty("display","none");
+            refLabel.getElement().getStyle().setProperty("display","none");
+
+            filterLabel.setText(RDL.i18n.filterThreads());
+        }
+
         createCategoryList();
         createSortArrows();
 
-        posRef.getElement().getStyle().setProperty("border","1px solid green");
-        neutralRef.getElement().getStyle().setProperty("border","1px solid grey");
-        negativeRef.getElement().getStyle().setProperty("border","1px solid red");
-
         if(this.authorName != null)
             author.setText(authorName);
+
 	}
 
     /**
@@ -167,8 +164,11 @@ public class SearchFilterWidget extends Composite {
      * default order is descending order by creation date
      */
     private void createSortArrows() {
-        FlowPanel[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel};
-        String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP, RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE, RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF, RDLConstants.SnipFields.NEGATIVE_REF};
+        FlowPanel[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel};
+        String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP,
+                            RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE,
+                            RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF,
+                            RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS};
 
         for (int i=0; i<flowPanels.length; i++) {
             final String keyName = keyNames[i];
@@ -369,7 +369,7 @@ public class SearchFilterWidget extends Composite {
      * checks which snip type checkboxes are checked
      * @return returns snip type values separated by comma
      */
-    private String getCheckedSnipTypes() {
+    public String getCheckedSnipTypes() {
         List keys = new ArrayList(snipTypeHm.keySet());
         String checkedFlags = "";
         for (int j=0; j<checkBoxArray.length; j++) {

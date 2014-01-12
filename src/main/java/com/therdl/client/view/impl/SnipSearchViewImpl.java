@@ -1,19 +1,15 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.app.AppController;
-import com.therdl.client.view.SnipSearchView;
+import com.therdl.client.view.SearchView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.*;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
@@ -35,7 +31,9 @@ import java.util.logging.Logger;
  * @ AutoBean<CurrentUserBean> currentUserBean manages user state
  * @ AutoBean<SnipBean> currentSearchOptionsBean for autobeans see see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
-public class SnipSearchViewImpl extends Composite implements SnipSearchView {
+public class SnipSearchViewImpl extends Composite implements SearchView {
+
+    private final static String MODULE_NAME = RDLConstants.Modules.IDEAS;
 
     private static Logger log = Logger.getLogger("");
 
@@ -72,9 +70,8 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     LoadingWidget loadingWidget;
 
     private AutoBean<CurrentUserBean> currentUserBean;
-    private AutoBean<SnipBean> currentSearchOptionsBean;
 
-    private TabPanel tabPanel;
+    private AutoBean<SnipBean> currentSearchOptionsBean;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
@@ -82,16 +79,19 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
 
     private String authorName;
 
-    public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, String token) {
+    public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
-        log.info("SnipSearchViewImpl constructor token" + token);
         this.currentUserBean = currentUserBean;
+    }
+
+    public void setToken(String token) {
+
         String[] tokenSplit = token.split(":");
         if(tokenSplit.length == 2) {
             this.token = tokenSplit[0];
             this.authorName = tokenSplit[1];
         } else {
-            this.token = tokenSplit[0];
+            this.token = token;
         }
         appMenu.setIdeasActive();
     }
@@ -99,21 +99,20 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     @Override
     protected void onLoad() {
         super.onLoad();
-        searchFilterWidget = new SearchFilterWidget(this, authorName);
+        searchFilterWidget = new SearchFilterWidget(this, authorName, MODULE_NAME);
         snipSearchWidgetPanel.add(searchFilterWidget);
 
         if (token.equals(RDLConstants.Tokens.SNIPS)) {
             if(authorName != null) {
-                AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+                AutoBean<SnipBean> searchOptionsBean = initSearchOptionsBean();
                 searchOptionsBean.as().setAuthor(authorName);
-                searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
-                searchOptionsBean.as().setSortOrder(-1);
+
                 doFilterSearch(searchOptionsBean, 0);
             } else {
                 getInitialSnipList(0);
             }
         } else {
-            doFilterSearch(parseToken(), 0);
+            doFilterSearch(ViewUtils.parseToken(beanery, token), 0);
         }
 
     }
@@ -126,62 +125,37 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         searchFilterWidget.removeFromParent();
     }
 
+    public AutoBean<SnipBean> initSearchOptionsBean() {
+        AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+        searchOptionsBean.as().setAuthor(authorName);
+        searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+        searchOptionsBean.as().setSortOrder(-1);
+        searchOptionsBean.as().setSnipType(searchFilterWidget.getCheckedSnipTypes());
+
+        return searchOptionsBean;
+    }
+
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public AutoBean<CurrentUserBean> getCurrentUserBean() {
+        return currentUserBean;
+    }
+
+    public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
+        return currentSearchOptionsBean;
     }
 
     @Override
     public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
         snipListRowContainer.clear();
-
-        // default size of rows in one tab
-        int listRowSize = Constants.DEFAULT_PAGE_SIZE;
-        int tabCount = 1;
-        if(beanList.size() != 0) {
-            tabCount = (int) Math.ceil((double)beanList.get(0).as().getCount()/listRowSize);
-        }
-
-        tabPanel = new TabPanel();
-
-        // creates tabs of count tabCount
-        for (int i=1; i<=tabCount; i++) {
-            // creates content of current tab
-            FlowPanel tabContent = new FlowPanel();
-            if(beanList.size() == 0) {
-                tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
-            }
-            tabPanel.add(tabContent, i+"");
-
-        }
-
-
-        tabPanel.setHeight("100%");
-        tabPanel.setWidth("100%");
-        //select first tab
-
-        for (int j=0; j<beanList.size(); j++) {
-            SnipListRow snipListRow = new SnipListRow(beanList.get(j), currentUserBean, false);
-            ((FlowPanel) tabPanel.getWidget(pageIndex)).add(snipListRow);
-        }
-        log.info("pageIndex="+pageIndex);
-        tabPanel.selectTab(pageIndex);
-
-        tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-            @Override
-            public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
-                if(currentSearchOptionsBean != null) {
-                    doFilterSearch(currentSearchOptionsBean, integerBeforeSelectionEvent.getItem());
-                } else {
-                    getInitialSnipList(integerBeforeSelectionEvent.getItem());
-                }
-            }
-        });
-        snipListRowContainer.add(tabPanel);
+        snipListRowContainer.add(new ListWidget(this, beanList, pageIndex));
         loadingWidget.getElement().getStyle().setProperty("display","none");
     }
 
     @Override
-    public void setloginresult(String name, String email, boolean auth) {
+    public void setLoginResult(String name, String email, boolean auth) {
         if (auth) {
             log.info("SnipSearchViewImpl setloginresult auth true " + name);
 
@@ -225,68 +199,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
     public void getInitialSnipList(int pageIndex) {
         currentSearchOptionsBean = null;
         loadingWidget.getElement().getStyle().setProperty("display","block");
-        presenter.getInitialSnipList(pageIndex);
+
+        presenter.searchSnips(initSearchOptionsBean(), pageIndex);
     }
-
-    /**
-     * parses the token and creates searchOptionsBean bean object for search options
-     * @return searchOptionsBean
-     */
-    private AutoBean<SnipBean> parseToken() {
-        AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-        String[] tokenSplit = token.split(":");
-        for (int i = 1; i < tokenSplit.length; i++) {
-            String[] keyVal = tokenSplit[i].split("=");
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.TITLE)) {
-                searchOptionsBean.as().setTitle(keyVal[1].replace("+", " "));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.CORE_CAT)) {
-                searchOptionsBean.as().setCoreCat(keyVal[1].replace("+", " "));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SUB_CAT)) {
-                searchOptionsBean.as().setSubCat(keyVal[1].replace("+", " "));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.POS_REF)) {
-                searchOptionsBean.as().setPosRef(Integer.parseInt(keyVal[1]));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.NEUTRAL_REF)) {
-                searchOptionsBean.as().setNeutralRef(Integer.parseInt(keyVal[1]));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.REP)) {
-                searchOptionsBean.as().setRep(Integer.parseInt(keyVal[1]));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.CONTENT)) {
-                searchOptionsBean.as().setContent(keyVal[1].replace("+", " "));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.AUTHOR)) {
-                searchOptionsBean.as().setAuthor(keyVal[1].replace("+", " "));
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.DATE_FROM)) {
-                searchOptionsBean.as().setDateFrom(keyVal[1]);
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.DATE_TO)) {
-                searchOptionsBean.as().setDateTo(keyVal[1]);
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SORT_FIELD)) {
-                searchOptionsBean.as().setSortField(keyVal[1]);
-            }
-
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SORT_ORDER)) {
-                searchOptionsBean.as().setSortOrder(Integer.parseInt(keyVal[1]));
-            }
-        }
-
-        return searchOptionsBean;
-    }
-
 }

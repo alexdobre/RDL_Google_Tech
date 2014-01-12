@@ -18,8 +18,6 @@ public class LoadingWidget extends Composite{
 
     public LoadingWidget() {
         initWidget(ourUiBinder.createAndBindUi(this));
-        HTMLPanel rootElement = ourUiBinder.createAndBindUi(this);
-
     }
 
     public void setSizes(String width, String height) {
