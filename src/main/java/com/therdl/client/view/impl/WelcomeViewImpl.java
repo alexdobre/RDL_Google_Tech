@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LogoutPopupWidget;
 import com.therdl.shared.Constants;
@@ -232,30 +233,15 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         try {
             // create the player, specifying URL of media
             player = new YouTubePlayer("wEJ40eqFBeo","100%", "350px");
-
-            DialogBox dialog = new DialogBox(true,false);
-
-            dialog.ensureDebugId("cwBasicPopup-simplePopup");
-            dialog.setAnimationEnabled(true);
-            dialog.setWidth("450px");
-            dialog.setWidget(player);
-
-            // Reposition the popup relative to the button
-            Widget source = (Widget) event.getSource();
-            int left = source.getAbsoluteLeft() + 10;
-            int top = source.getAbsoluteTop() + 10;
-            dialog.setPopupPosition(left, top);
-
-
+            DialogBox dialog = ViewUtils.constructDialogBox(player,event,450);
             dialog.show();
         } catch(PluginVersionException e) {
-            constructPopup(new HTML(".. please download the necessary plugin.."),event).show();
+            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."),event,450).show();
         } catch(PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
-            constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event).show();
+            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event,450).show();
         }
     }
-
 
 
     /**
@@ -265,59 +251,44 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      */
     @UiHandler("compatibilityCat")
     public void onCompatibilityCattClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new CompatibilityDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new CompatibilityDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("connectionCat")
     public void onConnectionCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new ConnectionDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ConnectionDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("exteriorCat")
     public void onExteriorCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new ExteriorDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ExteriorDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("eroticismCat")
     public void onEroticismCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new EroticismDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new EroticismDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("seductionCat")
     public void onSeductionCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new SeductionDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new SeductionDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("psyTendCat")
     public void onPsyTendCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new PsyTendDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new PsyTendDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("affairsCat")
     public void onAffairsCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new AffairsDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AffairsDescription(), event, 800);
         simplePopup.show();
     }
     @UiHandler("abuseCat")
     public void onAbuseCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = constructPopup(new AbuseDescription(),event);
+        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AbuseDescription(), event, 800);
         simplePopup.show();
     }
-
-    private DecoratedPopupPanel constructPopup(Widget widget,ClickEvent event){
-        final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
-        simplePopup.ensureDebugId("cwBasicPopup-simplePopup");
-        simplePopup.setAnimationEnabled(false);
-        simplePopup.setWidth("800px");
-        simplePopup.setWidget(widget);
-
-        // Reposition the popup relative to the button
-        Widget source = (Widget) event.getSource();
-        int left = source.getAbsoluteLeft() + 10;
-        int top = source.getAbsoluteTop() + 10;
-        simplePopup.setPopupPosition(left, top);
-
-        return simplePopup;
-    }
+   
 }
 

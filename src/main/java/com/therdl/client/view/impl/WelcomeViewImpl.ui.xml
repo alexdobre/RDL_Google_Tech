@@ -29,18 +29,6 @@
             padding-top: 30px;
         }
 
-        .welcomeVideo{
-            margin-top:5px;
-            height: 350px;
-            width: 555px;
-            border: 1px solid black;
-        }
-        .welcomeVideoButton{
-            position: relative;
-            top: 165px;
-           /* left: 210px;*/
-        }
-
         .btn-cat{
         display:inline-block;
         border-color: #5e1111 #5e1111 hsl(0, 69%, 17%);
@@ -87,6 +75,7 @@
     <g:HTMLPanel  >
 
         <rdl:AppMenu ui:field="appMenu"/>
+
         <div class="container">
             <g:AbsolutePanel styleName="{style.mainContainer}">
                 <g:at left='0' top='0'>

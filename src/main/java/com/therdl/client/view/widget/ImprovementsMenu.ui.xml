@@ -1,4 +1,5 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
@@ -22,7 +23,10 @@
     </ui:style>
 
     <g:HTMLPanel>
-        <div align="center" style="padding-top:5px;">
+        <div align="center" style="padding-top:5px; width: 1024px; margin:auto;">
+            <div style="float:left; margin-left: 85px; margin-top:6px; max-width:20%;">
+                <b:Button ui:field="improvementsVideoButton" >Load improvements video</b:Button>
+            </div>
             <g:FocusPanel ui:field = "proposalBtn"  styleName = "{style.btn}">
                 <g:Image ui:field="proposalImg" url='{res.ProposalImageGif.getSafeUri.asString}' width="40px" height="40px"/>
             </g:FocusPanel>
