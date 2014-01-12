@@ -50,6 +50,7 @@ public class StoriesViewImpl extends Composite implements StoriesView {
         appMenu.setMainGroupVisible(true);
 
         appMenu.setSignUpVisible(true);
+        appMenu.setStoriesActive();
     }
 
 

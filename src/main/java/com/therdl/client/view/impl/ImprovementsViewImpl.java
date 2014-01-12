@@ -50,6 +50,7 @@ public class ImprovementsViewImpl extends Composite implements ImprovementsView 
         appMenu.setMainGroupVisible(true);
 
         appMenu.setSignUpVisible(true);
+        appMenu.setImprovementsActive();
     }
 
 

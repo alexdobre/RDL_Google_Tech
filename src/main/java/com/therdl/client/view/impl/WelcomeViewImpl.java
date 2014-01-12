@@ -61,13 +61,8 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
     @UiField
     AppMenu appMenu;
-
-
-
     @UiField
     Image logo;
-
-
     @UiField
     FocusPanel compatibilityCat;
     @UiField
@@ -98,14 +93,14 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         appMenu.setLogOutVisible(false);
         appMenu.setMainGroupVisible(true);
         logo.setStyleName("splashLogo");
-
         appMenu.setSignUpVisible(true);
+        appMenu.setHomeActive();
 
         GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
 
             @Override
             public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp(20,30, "");
+                showLoginPopUp(400,30, "");
             }
         });
 

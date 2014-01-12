@@ -93,8 +93,7 @@ public class SnipSearchViewImpl extends Composite implements SnipSearchView {
         } else {
             this.token = tokenSplit[0];
         }
-
-
+        appMenu.setIdeasActive();
     }
 
     @Override

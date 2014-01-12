@@ -1,29 +1,46 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
     <ui:style>
 
     </ui:style>
+
+
     <g:HTMLPanel>
-        <g:MenuBar ui:field="menuBar" >
+        <g:FlowPanel>
+            <b:ResponsiveNavbar>
+                <b:Brand ui:field="home">TheRDL</b:Brand>
 
-            <g:MenuItem text="{i18n.home}" ui:field = "home"/>
-            <g:MenuItem text="{i18n.ideas}" ui:field = "ideas"/>
-            <g:MenuItem text="{i18n.stories}" ui:field = "stories"/>
-            <g:MenuItem text="{i18n.improvements}" ui:field = "improvements"/>
-            <g:MenuItem text="{i18n.logIn}" ui:field = "login"/>
-            <g:MenuItem text="{i18n.appMenuSignUp}" ui:field = "signUp"/>
+                <b:NavCollapse>
+                    <b:Nav>
+                        <b:VerticalDivider />
+                        <b:NavLink ui:field = "ideas" text="{i18n.ideas}"></b:NavLink>
+                        <b:NavLink ui:field = "stories" text="{i18n.stories}"></b:NavLink>
+                        <b:NavLink ui:field = "improvements" text="{i18n.improvements}"></b:NavLink>
+                        <b:VerticalDivider />
+                    </b:Nav>
 
-            <g:MenuItem text="{i18n.userDetails}" ui:field = "userdetails">
-                <g:MenuBar vertical="true">
-                    <g:MenuItem text="{i18n.userName}" ui:field = "user"/>
-                    <g:MenuItem text="{i18n.email}" ui:field = "email"/>
-                    <g:MenuItem text="{i18n.userProfile}" ui:field = "profile"/>
-                    <g:MenuItem text="{i18n.logOut}" ui:field = "out"/>
-                </g:MenuBar>
-            </g:MenuItem>
+                    <b:NavForm size="4" placeholder="Search Site Content" />
 
-        </g:MenuBar>
+                    <b:Nav alignment="RIGHT">
+                        <b:VerticalDivider />
+                        <b:Dropdown ui:field = "userdetails" text="{i18n.userDetails}">
+                            <b:NavHeader text="{i18n.userName}" ui:field = "user"/>
+                            <b:NavLink text="{i18n.email}" ui:field = "email"/>
+                            <b:NavLink text="{i18n.userProfile}" ui:field = "profile"/>
+                            <b:NavLink text="{i18n.logOut}" ui:field = "out"/>
+                        </b:Dropdown>
+                        <b:NavLink  ui:field = "login" text="{i18n.logIn}"></b:NavLink>
+                        <b:NavLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavLink>
+                    </b:Nav>
+
+                </b:NavCollapse>
+            </b:ResponsiveNavbar>
+        </g:FlowPanel>
     </g:HTMLPanel>
+
+
+
 </ui:UiBinder> 
