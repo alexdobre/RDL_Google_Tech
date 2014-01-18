@@ -120,6 +120,14 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
     }
 
+    @Override
+    protected void onUnload() {
+        super.onUnload();
+        currentSearchOptionsBean = null;
+        threadListRowContainer.clear();
+        searchFilterWidget.removeFromParent();
+    }
+
     public AutoBean<SnipBean> initSearchOptionsBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
         searchOptionsBean.as().setAuthor(authorName);
