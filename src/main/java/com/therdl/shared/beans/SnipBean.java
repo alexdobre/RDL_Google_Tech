@@ -158,6 +158,10 @@ public interface SnipBean {
 
     void setSortOrder(int sortOrder);
 
+    Integer getPosts();
+
+    void setPosts(Integer posts);
+
 
     /**
      * nested interfaces

@@ -16,6 +16,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -44,13 +45,13 @@ public class SnipListRow extends Composite{
     @UiField
     FlowPanel colorStripe, snipImgParent, secondColDiv;
     @UiField
-    Label rep, titleLabel, userName, posRef, neutRef, negRef, viewCount, creationDate;
+    Label rep, titleLabel, userName, posRef, neutRef, negRef, viewCount, creationDate, postsCount;
     @UiField
     Image snipImg;
     @UiField
     Button editBtn;
     @UiField
-    FlowPanel editBtnParent;
+    FlowPanel editBtnParent, postsPanel, refPanel;
     @UiField
     Anchor snipTitle;
 
@@ -93,6 +94,7 @@ public class SnipListRow extends Composite{
         neutRef.setText(snipBean.as().getNeutralRef()+" "+RDL.i18n.neutralRef());
         negRef.setText(snipBean.as().getNegativeRef()+" "+RDL.i18n.negativeRef());
         viewCount.setText(snipBean.as().getViews()+" "+RDL.i18n.views());
+        postsCount.setText(snipBean.as().getPosts()+" "+RDL.i18n.posts());
 
         if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.SNIP))
             snipImg.setUrl(Resources.INSTANCE.SnipImage().getSafeUri().asString());
@@ -102,14 +104,14 @@ public class SnipListRow extends Composite{
             snipImg.setUrl(Resources.INSTANCE.HabitImage().getSafeUri().asString());
         if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.MATERIAL))
             snipImg.setUrl(Resources.INSTANCE.MaterialImage().getSafeUri().asString());
+        if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.THREAD))
+            snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
 
 
         Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
         String dateString = DateTimeFormat.getFormat("MMM d, y").format(date);
 
         creationDate.setText(dateString);
-
-
 
         // create badge table
         Grid badgeGrid = new Grid(2,4);
@@ -130,11 +132,19 @@ public class SnipListRow extends Composite{
             }
             editBtn.setWidth("55px");
         }
+
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            postsPanel.getElement().getStyle().setProperty("display","none");
+        else
+            refPanel.getElement().getStyle().setProperty("display","none");
     }
 
     @UiHandler("editBtn")
     public void onEditBtnClicked(ClickEvent event) {
-        History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipBean.as().getId());
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipBean.as().getId());
+        else
+            History.newItem(RDLConstants.Tokens.THREAD_EDIT+":"+snipBean.as().getId());
     }
 
     @UiHandler("snipTitle")
@@ -147,12 +157,16 @@ public class SnipListRow extends Composite{
     }
 
     public void incrementRefCounterByRefType(String refType) {
-        if(refType.equals(RDLConstants.ReferenceType.POSITIVE))
-            posRef.setText(snipBean.as().getPosRef()+1+" "+RDL.i18n.positiveRef());
-        else if(refType.equals(RDLConstants.ReferenceType.NEUTRAL))
-            neutRef.setText(snipBean.as().getNeutralRef()+1+" "+RDL.i18n.neutralRef());
-        else if(refType.equals(RDLConstants.ReferenceType.NEGATIVE))
-            negRef.setText(snipBean.as().getNegativeRef()+1+" "+RDL.i18n.negativeRef());
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            if(refType.equals(RDLConstants.ReferenceType.POSITIVE))
+                posRef.setText(snipBean.as().getPosRef()+1+" "+RDL.i18n.positiveRef());
+            else if(refType.equals(RDLConstants.ReferenceType.NEUTRAL))
+                neutRef.setText(snipBean.as().getNeutralRef()+1+" "+RDL.i18n.neutralRef());
+            else if(refType.equals(RDLConstants.ReferenceType.NEGATIVE))
+                negRef.setText(snipBean.as().getNegativeRef()+1+" "+RDL.i18n.negativeRef());
+        } else {
+            postsCount.setText(snipBean.as().getPosts()+1+" "+RDL.i18n.posts());
+        }
     }
 
     @Override

@@ -113,7 +113,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
      */
 
     @Override
-    public void submitEditedBean(AutoBean<SnipBean> bean) {
+    public void submitEditedBean(AutoBean<SnipBean> bean, final String pageToRedirect) {
         bean.as().setAction("update");
         log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle()+";snipType="+bean.as().getSnipType());
         log.info("SnipEditPresenter submit to server");
@@ -139,7 +139,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(RDLConstants.Tokens.SNIPS);
+                        History.newItem(pageToRedirect);
 
                         //fetchSnips();
 
@@ -223,7 +223,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
      * @param bean new snip bean
      */
     @Override
-    public void submitBean(AutoBean<SnipBean> bean) {
+    public void submitBean(AutoBean<SnipBean> bean, final String pageToRedirect) {
         bean.as().setAction("save");
 
         log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
@@ -252,7 +252,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(RDLConstants.Tokens.SNIPS+":"+controller.getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
                     } else {
                         log.info("SnipEditPresenter submit post fail");
                     }

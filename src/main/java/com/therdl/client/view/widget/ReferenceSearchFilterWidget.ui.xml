@@ -24,10 +24,10 @@
     <g:HTMLPanel>
         <table>
             <tr>
-                <td colspan="2"><g:Label text = "{i18n.filterReferences}" styleName = '{style.labelText}' /></td>
+                <td colspan="2"><g:Label text = "{i18n.filterReferences}" styleName = '{style.labelText}' ui:field="filterLabel"/></td>
             </tr>
             <tr>
-                <td><g:Label text = "{i18n.type}" styleName = '{style.labelText}' /></td>
+                <td><g:Label text = "{i18n.type}" styleName = '{style.labelText}' ui:field="typeLabel"/></td>
                 <td><g:FlowPanel ui:field="refTypePanel"></g:FlowPanel></td>
             </tr>
             <tr>

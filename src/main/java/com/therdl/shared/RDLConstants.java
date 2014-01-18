@@ -27,6 +27,8 @@ public interface RDLConstants {
 
         String STORIES = "stories";
         String IMPROVEMENTS = "improvements";
+        String THREAD_EDIT = "threadEdit";
+        String THREAD_VIEW = "threadView";
 
     }
 
