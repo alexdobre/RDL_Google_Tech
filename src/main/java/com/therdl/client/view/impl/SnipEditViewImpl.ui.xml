@@ -79,6 +79,7 @@
 
         .tagTextBox {
             width: 250px;
+            margin-top: 5px;
         }
 
         .titleTextBox {
@@ -113,8 +114,8 @@
                 </g:FlowPanel>
 
                 <g:FlowPanel ui:field="editorBtnContainer" styleName="{style.editorBtnContainer}">
-                    <g:Button ui:field="saveSnip" text="{i18n.saveSnip}" tabIndex="3"/>
-                    <g:Button ui:field="deleteSnip" text="{i18n.deleteSnip}" tabIndex="4"/>
+                    <g:Button ui:field="saveSnip" text="{i18n.save}" tabIndex="3"/>
+                    <g:Button ui:field="deleteSnip" text="{i18n.delete}" tabIndex="4"/>
                 </g:FlowPanel>
             </g:FlowPanel>
         </center>

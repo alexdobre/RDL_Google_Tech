@@ -35,8 +35,6 @@ import java.util.logging.Logger;
  */
 public class StoriesViewImpl extends Composite implements SearchView {
 
-    private final static String MODULE_NAME = RDLConstants.Modules.STORIES;
-
     private static Logger log = Logger.getLogger("");
 
     private static StoriesViewImplUiBinder uiBinder = GWT.create(StoriesViewImplUiBinder.class);
@@ -99,7 +97,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
     @Override
     protected void onLoad() {
         super.onLoad();
-        searchFilterWidget = new SearchFilterWidget(this, authorName, MODULE_NAME);
+        searchFilterWidget = new SearchFilterWidget(this, authorName);
         threadSearchWidgetPanel.add(searchFilterWidget);
 
         if (token.equals(RDLConstants.Tokens.STORIES)) {

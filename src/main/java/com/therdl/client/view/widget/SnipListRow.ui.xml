@@ -80,9 +80,14 @@
                             <div><g:Label ui:field="titleLabel" styleName="{style.label}"/></div>
                         </div>
                         <div style="float:left;margin-left: 40px;">
-                            <div><g:Label ui:field="posRef" styleName="{style.label}"/></div>
-                            <div><g:Label ui:field="neutRef" styleName="{style.label}"/></div>
-                            <div><g:Label ui:field="negRef" styleName="{style.label}"/></div>
+                            <g:FlowPanel ui:field="refPanel">
+                                <g:FlowPanel><g:Label ui:field="posRef" styleName="{style.label}"/></g:FlowPanel>
+                                <g:FlowPanel><g:Label ui:field="neutRef" styleName="{style.label}"/></g:FlowPanel>
+                                <g:FlowPanel><g:Label ui:field="negRef" styleName="{style.label}"/></g:FlowPanel>
+                            </g:FlowPanel>
+                            <g:FlowPanel ui:field="postsPanel">
+                                <g:FlowPanel><g:Label ui:field="postsCount" styleName="{style.label}"/></g:FlowPanel>
+                            </g:FlowPanel>
                         </div>
                         <div style="float:left;margin-left: 40px;">
                             <div><g:Label ui:field="viewCount" styleName="{style.label}"/></div>

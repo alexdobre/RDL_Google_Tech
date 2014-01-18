@@ -8,6 +8,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.editor.RichTextToolbar;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -44,15 +45,18 @@ public class ReferenceListRow extends Composite{
         rep.setText(RDL.i18n.repLevel()+" "+referenceBean.as().getRep());
         creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));
 
-        if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.POSITIVE))
-            refFlag.setText(RDL.i18n.positive());
-        else if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
-            refFlag.setText(RDL.i18n.neutral());
-        else if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
-            refFlag.setText(RDL.i18n.negative());
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.POSITIVE))
+                refFlag.setText(RDL.i18n.positive());
+            else if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
+                refFlag.setText(RDL.i18n.neutral());
+            else if(referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
+                refFlag.setText(RDL.i18n.negative());
 
-        refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
-
+            refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
+        } else {
+            refFlag.getElement().getStyle().setProperty("display","none");
+        }
         // create badge table
         Grid badgeGrid = new Grid(4,2);
         badgeGrid.setCellPadding(2);

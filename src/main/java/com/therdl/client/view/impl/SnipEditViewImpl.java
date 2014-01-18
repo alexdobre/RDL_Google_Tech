@@ -80,21 +80,32 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
     private AutoBean<CurrentUserBean> currentUserBean;
     private AutoBean<SnipBean> currentSnipBean;
+    private String moduleName;
+    private String pageToRedirect;
 
-
-    public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+    public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, String moduleName) {
         log.info("SnipEditViewImpl constructor");
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = currentUserBean;
+        this.moduleName = moduleName;
 
-        createSnipTypeBar();
+        if(moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            createSnipTypeBar();
+
+            pageToRedirect = RDLConstants.Tokens.SNIPS;
+        } else {
+            pageToRedirect = RDLConstants.Tokens.STORIES;
+        }
         createCategoryList();
     }
 
     @Override
     protected void onLoad() {
         super.onLoad();
-        initSnipTypeMenu();
+        if(moduleName.equals(RDLConstants.Modules.IDEAS))
+            initSnipTypeMenu();
+        else
+            snipTypeBar.getElement().getStyle().setProperty("display", "none");
         initSubCatMenu();
         deleteSnip.getElement().getStyle().setProperty("display", "none");
         title.setFocus(true);
@@ -239,12 +250,13 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
             }
         }
 
+        if(moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            for(RadioButton radioBtn : snipTypeRadioBtnList) {
+                radioBtn.setEnabled(false);
+                if(snipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
+                    radioBtn.setValue(true);
 
-        for(RadioButton radioBtn : snipTypeRadioBtnList) {
-            radioBtn.setEnabled(false);
-            if(snipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
-                radioBtn.setValue(true);
-
+            }
         }
     }
 
@@ -311,17 +323,22 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
             newBean.as().setNeutralRef(0);
             newBean.as().setNegativeRef(0);
             newBean.as().setRep(0);
+            newBean.as().setPosts(0);
 
-            // check which snip type is sets
-            for(RadioButton radioBtn : snipTypeRadioBtnList){
-                if(radioBtn.getValue())
-                    newBean.as().setSnipType(radioBtn.getElement().getAttribute("name"));
+            if(moduleName.equals(RDLConstants.Modules.IDEAS)) {
+                // check which snip type is sets
+                for(RadioButton radioBtn : snipTypeRadioBtnList){
+                    if(radioBtn.getValue())
+                        newBean.as().setSnipType(radioBtn.getElement().getAttribute("name"));
+                }
+            } else {
+                newBean.as().setSnipType(RDLConstants.SnipType.THREAD);
             }
 
-            presenter.submitBean(newBean);
+            presenter.submitBean(newBean, pageToRedirect);
         } else {
             newBean.as().setId(currentSnipBean.as().getId());
-            presenter.submitEditedBean(newBean);
+            presenter.submitEditedBean(newBean, pageToRedirect);
         }
 
     }
@@ -337,7 +354,10 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
              * if snip has some reference o not allow to delete it. Show popup message instead
              */
             if(snipHasReferences()) {
-                Window.alert(RDL.i18n.deleteSnipMsg());
+                if(currentSnipBean.as().getSnipType().equals(RDLConstants.SnipType.SNIP))
+                    Window.alert(RDL.i18n.deleteSnipMsg());
+                else
+                    Window.alert(RDL.i18n.deleteThreadMsg());
             } else {
                 presenter.onDeleteSnip(currentSnipBean.as().getId());
             }
@@ -345,11 +365,14 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     }
 
     /**
-     * checks if current snip has any reference
+     * checks if current snip has any reference or thread has posts
      * @return true if has reference
      */
     boolean snipHasReferences() {
-        return currentSnipBean.as().getPosRef() > 0 || currentSnipBean.as().getNeutralRef() > 0 || currentSnipBean.as().getNegativeRef() > 0;
+        if(currentSnipBean.as().getSnipType().equals(RDLConstants.SnipType.SNIP))
+            return currentSnipBean.as().getPosRef() > 0 || currentSnipBean.as().getNeutralRef() > 0 || currentSnipBean.as().getNegativeRef() > 0;
+        else
+            return currentSnipBean.as().getPosts() > 0;
     }
 
     @Override

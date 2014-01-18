@@ -33,8 +33,6 @@ import java.util.logging.Logger;
  */
 public class SnipSearchViewImpl extends Composite implements SearchView {
 
-    private final static String MODULE_NAME = RDLConstants.Modules.IDEAS;
-
     private static Logger log = Logger.getLogger("");
 
     private static SnipSearchViewImplUiBinder uiBinder = GWT.create(SnipSearchViewImplUiBinder.class);
@@ -99,7 +97,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
     @Override
     protected void onLoad() {
         super.onLoad();
-        searchFilterWidget = new SearchFilterWidget(this, authorName, MODULE_NAME);
+        searchFilterWidget = new SearchFilterWidget(this, authorName);
         snipSearchWidgetPanel.add(searchFilterWidget);
 
         if (token.equals(RDLConstants.Tokens.SNIPS)) {

@@ -16,6 +16,7 @@ import com.therdl.client.view.SearchView;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.CoreCategory;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.SubCategory;
 import com.therdl.shared.beans.Beanery;
@@ -92,19 +93,20 @@ public class SearchFilterWidget extends Composite {
 
     private BookmarkSearchPopup bookmarkSearchPopup;
     private String authorName;
-    private String moduleName;
+    private String editPageToken;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
     interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
 
-    public SearchFilterWidget(SearchView snipSearchView, String authorName, String moduleName) {
+    public SearchFilterWidget(SearchView snipSearchView, String authorName) {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
         this.authorName = authorName;
-        this.moduleName = moduleName;
 
-        if(moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            editPageToken = RDLConstants.Tokens.SNIP_EDIT;
+
             createTypeFilter();
 
             posRef.getElement().getStyle().setProperty("border","1px solid green");
@@ -116,7 +118,9 @@ public class SearchFilterWidget extends Composite {
 
             filterLabel.setText(RDL.i18n.filterSnips());
 
-        } else if (moduleName.equals(RDLConstants.Modules.STORIES)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+            editPageToken = RDLConstants.Tokens.THREAD_EDIT;
+
             typeLabel.getElement().getStyle().setProperty("display","none");
             refPanel.getElement().getStyle().setProperty("display","none");
             refLabel.getElement().getStyle().setProperty("display","none");
@@ -354,6 +358,11 @@ public class SearchFilterWidget extends Composite {
             searchOptionsBean.as().setViews(Integer.parseInt(viewsText));
         }
 
+        String postsText = postCount.getText();
+        if(!postsText.equals("")) {
+            searchOptionsBean.as().setPosts(Integer.parseInt(postsText));
+        }
+
         String snipRepText = snipRep.getText();
         if(!snipRepText.equals("")) {
             searchOptionsBean.as().setRep(Integer.parseInt(snipRepText));
@@ -361,7 +370,10 @@ public class SearchFilterWidget extends Composite {
 
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
-        searchOptionsBean.as().setSnipType(getCheckedSnipTypes());
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            searchOptionsBean.as().setSnipType(getCheckedSnipTypes());
+        else
+            searchOptionsBean.as().setSnipType(RDLConstants.SnipType.THREAD);
         return searchOptionsBean;
     }
 
@@ -391,9 +403,9 @@ public class SearchFilterWidget extends Composite {
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
         if(view.getPresenter().getController().getCurrentUserBean().as().isAuth()) {
-            History.newItem(RDLConstants.Tokens.SNIP_EDIT);
+            History.newItem(editPageToken);
         } else {
-            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120,RDLConstants.Tokens.SNIP_EDIT);
+            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120,editPageToken);
         }
 	}
 

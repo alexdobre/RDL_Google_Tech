@@ -11,6 +11,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipViewImpl;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -30,6 +31,9 @@ public class ReferenceSearchFilterWidget extends Composite{
     @UiField
     DateFilterWidget dateFilterWidget;
 
+    @UiField
+    Label typeLabel, filterLabel;
+
     Image selectedArrow;
 
     // default sort order is descending by creation date
@@ -46,7 +50,12 @@ public class ReferenceSearchFilterWidget extends Composite{
         initWidget(ourUiBinder.createAndBindUi(this));
         this.view = view;
 
-        initRefTypeCheckboxes();
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            initRefTypeCheckboxes();
+        } else {
+            typeLabel.getElement().getStyle().setProperty("display","none");
+            filterLabel.setText(RDL.i18n.filterPosts());
+        }
         createSortArrows();
     }
 
@@ -183,7 +192,8 @@ public class ReferenceSearchFilterWidget extends Composite{
         if(!dateFilterWidget.getDateTo().equals(""))
             searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateTo());
 
-        searchOptionsBean.as().setReferenceType(getCheckedFlags());
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            searchOptionsBean.as().setReferenceType(getCheckedFlags());
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
 

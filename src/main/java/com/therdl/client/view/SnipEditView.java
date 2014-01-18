@@ -28,9 +28,9 @@ public interface SnipEditView {
     public interface Presenter {
         void onDeleteSnip(String id);
 
-        void submitBean(AutoBean<SnipBean> bean);
+        void submitBean(AutoBean<SnipBean> bean, String pageToRedirect);
 
-        void submitEditedBean(AutoBean<SnipBean> bean);
+        void submitEditedBean(AutoBean<SnipBean> bean, String pageToRedirect);
     }
 
     void setPresenter(Presenter presenter);

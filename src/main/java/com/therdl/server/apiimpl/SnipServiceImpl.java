@@ -111,6 +111,8 @@ public class SnipServiceImpl implements SnipsService {
             query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         if (searchOptions.getViews() != null)
             query.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
+        if (searchOptions.getPosts() != null)
+            query.put("posts", new BasicDBObject("$gte", searchOptions.getPosts()));
         if(searchOptions.getSnipType() != null) {
             query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
         }else {
@@ -378,6 +380,7 @@ public class SnipServiceImpl implements SnipsService {
         doc.append("parentThread", snip.getParentThread());
         doc.append("votes", snip.getVotes());
         doc.append("money", snip.getMoney());
+        doc.append("posts", snip.getPosts());
 
         BasicDBList links = new BasicDBList();
 
@@ -430,6 +433,7 @@ public class SnipServiceImpl implements SnipsService {
         snip.setParentTag((String) doc.get("parentTag"));
         snip.setVotes((String) doc.get("votes"));
         snip.setParentThread((String) doc.get("parentThread"));
+        snip.setPosts(RDLUtils.parseInt(doc.get("posts")));
 
         List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
 
