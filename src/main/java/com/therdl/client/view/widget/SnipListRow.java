@@ -81,8 +81,8 @@ public class SnipListRow extends Composite{
         // set tooltip on the snip img and top color stripe
 
         String toolTip = snipBean.as().getTitle()+" / "+snipBean.as().getCoreCat();
-        if(!snipBean.as().getSubCat().equals(""))
-            toolTip += " / "+snipBean.as().getSubCat();
+//        if(!snipBean.as().getSubCat().equals(""))
+//            toolTip += " / "+snipBean.as().getSubCat();
 
         // sets snip data
         snipImgParent.setTitle(toolTip);
@@ -90,6 +90,11 @@ public class SnipListRow extends Composite{
 
         rep.setText(snipBean.as().getRep()+"");
         snipTitle.setText(snipBean.as().getTitle());
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            snipTitle.setHref(GWT.getHostPageBaseURL()+"#"+RDLConstants.Tokens.SNIP_VIEW+":"+snipBean.as().getId());
+        else
+            snipTitle.setHref(GWT.getHostPageBaseURL()+"#"+RDLConstants.Tokens.THREAD_VIEW+":"+snipBean.as().getId());
+
         posRef.setText(snipBean.as().getPosRef()+" "+RDL.i18n.positiveRef());
         neutRef.setText(snipBean.as().getNeutralRef()+" "+RDL.i18n.neutralRef());
         negRef.setText(snipBean.as().getNegativeRef()+" "+RDL.i18n.negativeRef());
@@ -114,6 +119,7 @@ public class SnipListRow extends Composite{
         creationDate.setText(dateString);
 
         // create badge table
+
         Grid badgeGrid = new Grid(2,4);
         for (int row = 0; row < 2; ++row) {
             for (int col = 0; col < 4; ++col) {
@@ -124,7 +130,8 @@ public class SnipListRow extends Composite{
             }
         }
 
-        secondColDiv.add(badgeGrid);
+        if(secondColDiv.getWidgetCount() == 0)
+            secondColDiv.add(badgeGrid);
 
         if(viewButtons) {
             if(currentUserBean.as().isAuth() && currentUserBean.as().getName().equals(snipBean.as().getAuthor())) {
@@ -147,10 +154,10 @@ public class SnipListRow extends Composite{
             History.newItem(RDLConstants.Tokens.THREAD_EDIT+":"+snipBean.as().getId());
     }
 
-    @UiHandler("snipTitle")
-    public void onViewBtnClicked(ClickEvent event) {
-        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipBean.as().getId()));
-    }
+//    @UiHandler("snipTitle")
+//    public void onViewBtnClicked(ClickEvent event) {
+//        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipBean.as().getId()));
+//    }
 
     public void incrementRepCounter() {
         rep.setText(snipBean.as().getRep()+1+"");

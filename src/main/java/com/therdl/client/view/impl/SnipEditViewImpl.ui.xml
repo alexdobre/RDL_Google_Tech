@@ -97,8 +97,8 @@
                     <g:Label text="{i18n.category}:" styleName = '{style.labelText}'/>
                     <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'/>
 
-                    <g:Label text="{i18n.subcategory}:" styleName = '{style.labelText}'/>
-                    <g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'/>
+                    <!--<g:Label text="{i18n.subcategory}:" styleName = '{style.labelText}'/>-->
+                    <!--<g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'/>-->
 
                     <g:Label text="{i18n.tag}:" styleName = '{style.labelText}'/>
                     <g:TextBox ui:field = "tag" styleName="{style.tagTextBox}"/>

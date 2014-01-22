@@ -17,6 +17,7 @@ import com.therdl.client.view.SnipView;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.Constants;
+import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -104,6 +105,11 @@ public class SnipViewImpl extends Composite implements SnipView {
 
     }
 
+    @Override
+    public Presenter getPresenter() {
+        return presenter;
+    }
+
     /**
      * Sets the upper header Menu to the correct state for supplied credentials
      * called from presenter
@@ -168,10 +174,6 @@ public class SnipViewImpl extends Composite implements SnipView {
             saveRef.setText(RDL.i18n.savePost());
         }
 
-        // hide give reputation/leave reference buttons when user already gave a reputation/wrote a reference
-        //snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1 ? "none" : ""
-
-       //(currentUserBean.as().isAuth() && snipBean.as().getAuthor().equals(currentUserBean.as().getName())) || (currentUserBean.as().isAuth() && snipBean.as().getIsRefGivenByUser() == 1) ? "none" : ""
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             if(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1) {
                 repBtn.getElement().getStyle().setProperty("display", "none");
@@ -185,7 +187,7 @@ public class SnipViewImpl extends Composite implements SnipView {
                 leaveRef.getElement().getStyle().setProperty("display", "");
             }
         } else {
-            if(snipBean.as().getIsRepGivenByUser() == 1)
+            if(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1)
                 repBtn.getElement().getStyle().setProperty("display", "none");
             else
                 repBtn.getElement().getStyle().setProperty("display", "");
@@ -253,7 +255,12 @@ public class SnipViewImpl extends Composite implements SnipView {
 
     @UiHandler("repBtn")
     public void onRepBtnClicked(ClickEvent event) {
-        presenter.giveSnipReputation();
+        presenter.giveSnipReputation(currentSnipBean.as().getId(), new RequestObserver() {
+            @Override
+            public void onSuccess(String response) {
+                giveRepResponseHandler();
+            }
+        });
     }
 
     /**
@@ -353,7 +360,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         tabPanel.setWidth("100%");
 
         for (int j=0; j<beanList.size(); j++) {
-            ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean);
+            ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this);
             ((FlowPanel) tabPanel.getWidget(pageIndex)).add(referenceListRow);
         }
         tabPanel.selectTab(pageIndex);

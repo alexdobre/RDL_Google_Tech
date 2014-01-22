@@ -7,6 +7,7 @@ import com.mongodb.*;
 import com.therdl.server.api.UserService;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
@@ -278,6 +279,27 @@ public class UserServiceImpl implements UserService {
         }
 
         return 0;
+    }
+
+    /**
+     * sets isRepGivenByUser flag for input snip beans
+     * @param email current user
+     * @param snipBeans snip beans as list
+     */
+    public void setRepGivenForSnips(String email, List<SnipBean> snipBeans) {
+        UserBean userBean = getUserByEmail(email);
+        if(userBean.getRepGiven() != null) {
+            for (SnipBean snipBean : snipBeans) {
+                snipBean.setIsRepGivenByUser(0);
+                for (UserBean.RepGivenBean repGiven : userBean.getRepGiven()) {
+                    if(repGiven.getSnipId().equals(snipBean.getId())) {
+                        snipBean.setIsRepGivenByUser(1);
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     /**

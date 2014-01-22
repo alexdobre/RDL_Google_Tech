@@ -74,9 +74,9 @@ public class ViewUtils {
                 searchOptionsBean.as().setCoreCat(keyVal[1].replace("+", " "));
             }
 
-            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SUB_CAT)) {
-                searchOptionsBean.as().setSubCat(keyVal[1].replace("+", " "));
-            }
+//            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SUB_CAT)) {
+//                searchOptionsBean.as().setSubCat(keyVal[1].replace("+", " "));
+//            }
 
             if (keyVal[0].equals(RDLConstants.BookmarkSearch.POS_REF)) {
                 searchOptionsBean.as().setPosRef(Integer.parseInt(keyVal[1]));
@@ -84,6 +84,10 @@ public class ViewUtils {
 
             if (keyVal[0].equals(RDLConstants.BookmarkSearch.NEUTRAL_REF)) {
                 searchOptionsBean.as().setNeutralRef(Integer.parseInt(keyVal[1]));
+            }
+
+            if (keyVal[0].equals(RDLConstants.BookmarkSearch.POSTS)) {
+                searchOptionsBean.as().setPosts(Integer.parseInt(keyVal[1]));
             }
 
             if (keyVal[0].equals(RDLConstants.BookmarkSearch.REP)) {
@@ -112,6 +116,10 @@ public class ViewUtils {
 
             if (keyVal[0].equals(RDLConstants.BookmarkSearch.SORT_ORDER)) {
                 searchOptionsBean.as().setSortOrder(Integer.parseInt(keyVal[1]));
+            }
+
+            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SNIP_TYPE)) {
+                searchOptionsBean.as().setSnipType(keyVal[1]);
             }
         }
 

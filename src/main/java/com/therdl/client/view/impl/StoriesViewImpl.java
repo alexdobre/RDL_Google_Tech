@@ -78,10 +78,15 @@ public class StoriesViewImpl extends Composite implements SearchView {
     private String token;
 
     private String authorName;
+    private boolean firstTimeLoaded = false;
 
     public StoriesViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = currentUserBean;
+
+        searchFilterWidget = new SearchFilterWidget(this);
+        threadSearchWidgetPanel.add(searchFilterWidget);
+
     }
 
     public void setToken(String token) {
@@ -97,8 +102,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
     @Override
     protected void onLoad() {
         super.onLoad();
-        searchFilterWidget = new SearchFilterWidget(this, authorName);
-        threadSearchWidgetPanel.add(searchFilterWidget);
 
         if (token.equals(RDLConstants.Tokens.STORIES)) {
             if(authorName != null) {
@@ -107,23 +110,18 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
                 doFilterSearch(searchOptionsBean, 0);
             } else {
-                getInitialSnipList(0);
+               if(!firstTimeLoaded)
+                    getInitialSnipList(0);
             }
         } else {
-            doFilterSearch(ViewUtils.parseToken(beanery, token), 0);
+            AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
+            snipBean.as().setSnipType(RDLConstants.SnipType.THREAD);
+            doFilterSearch(snipBean, 0);
         }
 
         appMenu.setSignUpVisible(true);
         appMenu.setStoriesActive();
 
-    }
-
-    @Override
-    protected void onUnload() {
-        super.onUnload();
-        currentSearchOptionsBean = null;
-        threadListRowContainer.clear();
-        searchFilterWidget.removeFromParent();
     }
 
     public AutoBean<SnipBean> initSearchOptionsBean() {
@@ -190,6 +188,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
     public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
         threadLoadingWidget.getElement().getStyle().setProperty("display","block");
         currentSearchOptionsBean = searchOptionsBean;
+        searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
         presenter.searchSnips(searchOptionsBean, pageIndex);
     }
 
@@ -198,6 +197,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
      */
     @Override
     public void getInitialSnipList(int pageIndex) {
+        firstTimeLoaded = true;
         currentSearchOptionsBean = null;
         threadLoadingWidget.getElement().getStyle().setProperty("display","block");
 

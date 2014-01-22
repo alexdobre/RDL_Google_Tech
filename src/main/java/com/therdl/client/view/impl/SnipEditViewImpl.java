@@ -65,7 +65,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     FlowPanel mainPanel, snipTypeBar, categoryBar, titleBar;
 
     @UiField
-    ListBox categoryList, subCategoryList;
+    ListBox categoryList;
 
     @UiField
     TextBox title;
@@ -106,7 +106,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
             initSnipTypeMenu();
         else
             snipTypeBar.getElement().getStyle().setProperty("display", "none");
-        initSubCatMenu();
+    //    initSubCatMenu();
         deleteSnip.getElement().getStyle().setProperty("display", "none");
         title.setFocus(true);
     }
@@ -118,9 +118,9 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         title.setText("");
         editorWidget.setHTML("");
         deleteSnip.getElement().getStyle().setProperty("display", "none");
-        subCategoryList.setSelectedIndex(0);
-        subCategoryList.setEnabled(false);
-        subCategoryList.clear();
+//        subCategoryList.setSelectedIndex(0);
+//        subCategoryList.setEnabled(false);
+//        subCategoryList.clear();
         categoryList.setSelectedIndex(0);
     }
 
@@ -180,29 +180,29 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
             categoryList.addItem(item.getShortName());
         }
 
-        categoryList.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent changeEvent) {
-                int selectedIndex = categoryList.getSelectedIndex();
-                subCategoryList.clear();
-                subCategoryList.addItem("Select a subcategory");
-                subCategoryList.setEnabled(false);
-
-                if (selectedIndex != 0) {
-                    EnumSet subCategories = CoreCategory.values()[selectedIndex - 1].getSubCategories();
-
-                    if (subCategories != null) {
-                        for (Iterator it = subCategories.iterator(); it.hasNext(); ) {
-                            subCategoryList.addItem(((SubCategory) it.next()).getName());
-                        }
-                        subCategoryList.setEnabled(true);
-                    }
-                }
-            }
-        });
-
-        subCategoryList.addItem("Select a subcategory");
-        subCategoryList.setEnabled(false);
+//        categoryList.addChangeHandler(new ChangeHandler() {
+//            @Override
+//            public void onChange(ChangeEvent changeEvent) {
+//                int selectedIndex = categoryList.getSelectedIndex();
+//                subCategoryList.clear();
+//                subCategoryList.addItem("Select a subcategory");
+//                subCategoryList.setEnabled(false);
+//
+//                if (selectedIndex != 0) {
+//                    EnumSet subCategories = CoreCategory.values()[selectedIndex - 1].getSubCategories();
+//
+//                    if (subCategories != null) {
+//                        for (Iterator it = subCategories.iterator(); it.hasNext(); ) {
+//                            subCategoryList.addItem(((SubCategory) it.next()).getName());
+//                        }
+//                        subCategoryList.setEnabled(true);
+//                    }
+//                }
+//            }
+//        });
+//
+//        subCategoryList.addItem("Select a subcategory");
+//        subCategoryList.setEnabled(false);
     }
 
     /**
@@ -232,23 +232,23 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
                 break;
             }
         }
-        EnumSet subCategories = CoreCategory.values()[catSelectedIndex-1].getSubCategories();
+   //     EnumSet subCategories = CoreCategory.values()[catSelectedIndex-1].getSubCategories();
 
 
-        if(subCategories != null) {
+//        if(subCategories != null) {
+//
+//            for(Iterator it = subCategories.iterator();it.hasNext();){
+//                subCategoryList.addItem(((SubCategory)it.next()).getName());
+//            }
+//            subCategoryList.setEnabled(true);
+//        }
 
-            for(Iterator it = subCategories.iterator();it.hasNext();){
-                subCategoryList.addItem(((SubCategory)it.next()).getName());
-            }
-            subCategoryList.setEnabled(true);
-        }
-
-        for(int i=0; i<subCategoryList.getItemCount(); i++) {
-            if(subCategoryList.getItemText(i).equals(snipBean.as().getSubCat())) {
-                subCategoryList.setSelectedIndex(i);
-                break;
-            }
-        }
+//        for(int i=0; i<subCategoryList.getItemCount(); i++) {
+//            if(subCategoryList.getItemText(i).equals(snipBean.as().getSubCat())) {
+//                subCategoryList.setSelectedIndex(i);
+//                break;
+//            }
+//        }
 
         if(moduleName.equals(RDLConstants.Modules.IDEAS)) {
             for(RadioButton radioBtn : snipTypeRadioBtnList) {
@@ -276,11 +276,11 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     /**
      * snip sub category list initial state
      */
-    private void initSubCatMenu() {
-        subCategoryList.addItem("Select a subcategory");
-        subCategoryList.setSelectedIndex(0);
-        subCategoryList.setEnabled(false);
-    }
+//    private void initSubCatMenu() {
+//        subCategoryList.addItem("Select a subcategory");
+//        subCategoryList.setSelectedIndex(0);
+//        subCategoryList.setEnabled(false);
+//    }
 
     /**
      * save button click handler, init snip bean and sets values from UI widgets
@@ -309,10 +309,10 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         newBean.as().setTitle(title.getText());
         newBean.as().setContent(editorWidget.getHTML());
         newBean.as().setCoreCat(categoryList.getItemText(categoryList.getSelectedIndex()));
-        if(subCategoryList.getSelectedIndex() != 0)
-            newBean.as().setSubCat(subCategoryList.getItemText(subCategoryList.getSelectedIndex()));
-        else
-            newBean.as().setSubCat("");
+//        if(subCategoryList.getSelectedIndex() != 0)
+//            newBean.as().setSubCat(subCategoryList.getItemText(subCategoryList.getSelectedIndex()));
+//        else
+//            newBean.as().setSubCat("");
 
 
         if(currentSnipBean == null) {

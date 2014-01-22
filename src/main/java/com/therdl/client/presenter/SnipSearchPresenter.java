@@ -69,76 +69,15 @@ public class SnipSearchPresenter implements Presenter, SearchView.Presenter {
             searchView.getAppMenu().setUserInfoVisible(true);
             searchView.setLoginResult(controller.getCurrentUserBean().as().getName(),
                     controller.getCurrentUserBean().as().getEmail(), true);
-            //  getInitialList();
         } else {
             searchView.getAppMenu().setUserInfoVisible(false);
             searchView.getAppMenu().setUserInfoVisible(false);
-            //     getInitialList();
         }
-
     }
 
     public AppController getController() {
         return controller;
     }
-
-    /**
-     * Polls the server for the list of snips, uses a getAll/findAll type crud on the backend
-     */
-//    public void getInitialSnipList(final int pageIndex) {
-//        log.info("SnipSearchPresenter getInitialList");
-//        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-//
-//        if (!Constants.DEPLOY) {
-//            updateUrl = updateUrl.replaceAll("/therdl", "");
-//        }
-//
-//        log.info("SnipSearchPresenter getInitialList  updateUrl: " + updateUrl);
-//        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-//        requestBuilder.setHeader("Content-Type", "application/json");
-//        currentBean = beanery.snipBean();
-//        currentBean.as().setAction("getall");
-//        currentBean.as().setPageIndex(pageIndex);
-//
-//        String json = AutoBeanCodex.encode(currentBean).getPayload();
-//        try {
-//
-//            requestBuilder.sendRequest(json, new RequestCallback() {
-//
-//                @Override
-//                public void onResponseReceived(Request request, Response response) {
-//
-//                    log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-//                    log.info("SnipSearchPresenter onResponseReceived json" + response.getText());
-//
-//                    JsArray<JSOModel> data =
-//                            JSOModel.arrayFromJson(response.getText());
-//
-//                //    if (data.length() == 0) return;
-//
-//                    ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
-//                    ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
-//
-//                    for (int i = 0; i < data.length(); i++) {
-//                        jSonList.add(data.get(i));
-//                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i+"")));
-//
-//                    }
-//
-//                    searchView.displaySnipList(beanList, pageIndex);
-//
-//                 }
-//
-//                @Override
-//                public void onError(Request request, Throwable exception) {
-//                    log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-//                }
-//
-//            });
-//        } catch (RequestException e) {
-//            log.info(e.getLocalizedMessage());
-//        }
-//    }    // end initialUpdate method
 
     /**
      * Handles snips searching request | response

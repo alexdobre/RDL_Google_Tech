@@ -54,6 +54,13 @@
             color: #fff;
         }
 
+        .refRepBtn {
+            position: absolute;
+            right: 0;
+            bottom:0;
+            margin-bottom:3px;
+        }
+
     </ui:style>
     <g:HTMLPanel styleName="{style.rootPanel}">
         <g:HorizontalPanel styleName="{style.horizontalPanel}">
@@ -72,6 +79,7 @@
             </g:FlowPanel>
             <g:FlowPanel ui:field="rightPanel" styleName="{style.rightPanel}">
                 <g:Label ui:field="refFlag" styleName="{style.refFlag}"></g:Label>
+                <g:Image ui:field="refRepBtn" styleName="{style.refRepBtn}" url='{res.plusBtn.getSafeUri.asString}' width="35px" height="35px"/>
                 <g:RichTextArea ui:field="richTextAreaRef" styleName="{style.richTextArea}"></g:RichTextArea>
             </g:FlowPanel>
         </g:HorizontalPanel>

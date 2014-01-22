@@ -6,6 +6,7 @@ import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.util.tools.shared.StringUtils;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SearchView;
@@ -77,9 +78,14 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
     private String authorName;
 
+    private boolean firstTimeLoaded = false;
+
     public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = currentUserBean;
+
+        searchFilterWidget = new SearchFilterWidget(this);
+        snipSearchWidgetPanel.add(searchFilterWidget);
     }
 
     public void setToken(String token) {
@@ -97,8 +103,6 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
     @Override
     protected void onLoad() {
         super.onLoad();
-        searchFilterWidget = new SearchFilterWidget(this, authorName);
-        snipSearchWidgetPanel.add(searchFilterWidget);
 
         if (token.equals(RDLConstants.Tokens.SNIPS)) {
             if(authorName != null) {
@@ -107,20 +111,14 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
                 doFilterSearch(searchOptionsBean, 0);
             } else {
-                getInitialSnipList(0);
+                if(!firstTimeLoaded)
+                    getInitialSnipList(0);
             }
         } else {
-            doFilterSearch(ViewUtils.parseToken(beanery, token), 0);
+            AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
+            doFilterSearch(snipBean, 0);
         }
 
-    }
-
-    @Override
-    protected void onUnload() {
-        super.onUnload();
-        currentSearchOptionsBean = null;
-        snipListRowContainer.clear();
-        searchFilterWidget.removeFromParent();
     }
 
     public AutoBean<SnipBean> initSearchOptionsBean() {
@@ -128,7 +126,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
         searchOptionsBean.as().setAuthor(authorName);
         searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
         searchOptionsBean.as().setSortOrder(-1);
-        searchOptionsBean.as().setSnipType(searchFilterWidget.getCheckedSnipTypes());
+        searchOptionsBean.as().setSnipType(RDLConstants.SnipType.SNIP +","+RDLConstants.SnipType.HABIT +","+RDLConstants.SnipType.FAST_CAP+","+RDLConstants.SnipType.MATERIAL);
 
         return searchOptionsBean;
     }
@@ -187,6 +185,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
     public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
         loadingWidget.getElement().getStyle().setProperty("display","block");
         currentSearchOptionsBean = searchOptionsBean;
+        searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
         presenter.searchSnips(searchOptionsBean, pageIndex);
     }
 
@@ -195,6 +194,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
      */
     @Override
     public void getInitialSnipList(int pageIndex) {
+        firstTimeLoaded = true;
         currentSearchOptionsBean = null;
         loadingWidget.getElement().getStyle().setProperty("display","block");
 

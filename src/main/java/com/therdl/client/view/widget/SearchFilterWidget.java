@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -54,8 +55,8 @@ public class SearchFilterWidget extends Composite {
     @UiField
     ListBox categoryList;
 
-    @UiField
-    ListBox subCategoryList;
+ //   @UiField
+ //   ListBox subCategoryList;
 
     @UiField
     DateFilterWidget dateFilterWidget;
@@ -92,17 +93,15 @@ public class SearchFilterWidget extends Composite {
     SearchView view;
 
     private BookmarkSearchPopup bookmarkSearchPopup;
-    private String authorName;
     private String editPageToken;
 
     private Beanery beanery = GWT.create(Beanery.class);
 
     interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
 
-    public SearchFilterWidget(SearchView snipSearchView, String authorName) {
+    public SearchFilterWidget(SearchView snipSearchView) {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
-        this.authorName = authorName;
 
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             editPageToken = RDLConstants.Tokens.SNIP_EDIT;
@@ -130,9 +129,6 @@ public class SearchFilterWidget extends Composite {
 
         createCategoryList();
         createSortArrows();
-
-        if(this.authorName != null)
-            author.setText(authorName);
 
 	}
 
@@ -241,34 +237,34 @@ public class SearchFilterWidget extends Composite {
      * creates category and subcategory list for snips, when user choose a category subcategory list is refreshed
      */
     void createCategoryList() {
-        categoryList.addItem("Select a category");
+     //   categoryList.addItem("Select a category");
         for(CoreCategory item : CoreCategory.values()) {
             categoryList.addItem(item.getShortName());
         }
 
-        categoryList.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent changeEvent) {
-                int selectedIndex = categoryList.getSelectedIndex();
-                subCategoryList.clear();
-                subCategoryList.addItem("Select a subcategory");
-                subCategoryList.setEnabled(false);
-
-                if (selectedIndex != 0) {
-                    EnumSet subCategories = CoreCategory.values()[selectedIndex - 1].getSubCategories();
-
-                    if (subCategories != null) {
-                        for (Iterator it = subCategories.iterator(); it.hasNext(); ) {
-                            subCategoryList.addItem(((SubCategory) it.next()).getName());
-                        }
-                        subCategoryList.setEnabled(true);
-                    }
-                }
-            }
-        });
-
-        subCategoryList.addItem("Select a subcategory");
-        subCategoryList.setEnabled(false);
+//        categoryList.addChangeHandler(new ChangeHandler() {
+//            @Override
+//            public void onChange(ChangeEvent changeEvent) {
+//                int selectedIndex = categoryList.getSelectedIndex();
+//                subCategoryList.clear();
+//                subCategoryList.addItem("Select a subcategory");
+//                subCategoryList.setEnabled(false);
+//
+//                if (selectedIndex != 0) {
+//                    EnumSet subCategories = CoreCategory.values()[selectedIndex - 1].getSubCategories();
+//
+//                    if (subCategories != null) {
+//                        for (Iterator it = subCategories.iterator(); it.hasNext(); ) {
+//                            subCategoryList.addItem(((SubCategory) it.next()).getName());
+//                        }
+//                        subCategoryList.setEnabled(true);
+//                    }
+//                }
+//            }
+//        });
+//
+//        subCategoryList.addItem("Select a subcategory");
+//        subCategoryList.setEnabled(false);
     }
 
     /**
@@ -328,15 +324,20 @@ public class SearchFilterWidget extends Composite {
             searchOptionsBean.as().setDateTo(dateToText);
         }
 
-        int catIndex = categoryList.getSelectedIndex();
-        if(catIndex != 0) {
-            searchOptionsBean.as().setCoreCat(categoryList.getItemText(catIndex));
+//        int catIndex = categoryList.getSelectedIndex();
+//        if(catIndex != 0) {
+//            searchOptionsBean.as().setCoreCat(categoryList.getItemText(catIndex));
+//        }
+
+        String categories = getSelectedCategories();
+        if(!categories.equals("")) {
+            searchOptionsBean.as().setCoreCat(categories);
         }
 
-        int subCatIndex = subCategoryList.getSelectedIndex();
-        if(subCatIndex != 0) {
-            searchOptionsBean.as().setSubCat(subCategoryList.getItemText(subCatIndex));
-        }
+//        int subCatIndex = subCategoryList.getSelectedIndex();
+//        if(subCatIndex != 0) {
+//            searchOptionsBean.as().setSubCat(subCategoryList.getItemText(subCatIndex));
+//        }
 
         String posRefText = posRef.getText();
         if(!posRefText.equals("")) {
@@ -396,6 +397,25 @@ public class SearchFilterWidget extends Composite {
     }
 
     /**
+     * checks which categories are selected in multi select list box
+     * @return returns category names separated by comma
+     */
+    public String getSelectedCategories() {
+        String categories = "";
+        for (int i=0; i<categoryList.getItemCount(); i++) {
+            if(categoryList.isItemSelected(i)) {
+                categories += categoryList.getItemText(i)+",";
+            }
+        }
+
+        if(!categories.equals("")) {
+            categories = categories.substring(0,categories.length()-1);
+        }
+
+        return categories;
+    }
+
+    /**
      * handler for the create new button
      * opens create/edit snip view
      * @param event
@@ -408,5 +428,56 @@ public class SearchFilterWidget extends Composite {
             view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120,editPageToken);
         }
 	}
+
+    /**
+     * sets filter's fields by given bean
+     * @param searchOptionsBean
+     */
+
+    public void setSearchFilterFields(AutoBean<SnipBean> searchOptionsBean) {
+        title.setText(searchOptionsBean.as().getTitle() != null ? searchOptionsBean.as().getTitle() : "");
+        content.setText(searchOptionsBean.as().getContent() != null ? searchOptionsBean.as().getContent() : "");
+        author.setText(searchOptionsBean.as().getAuthor() != null ? searchOptionsBean.as().getAuthor() : "");
+        posRef.setText(searchOptionsBean.as().getPosRef() != null ? searchOptionsBean.as().getPosRef()+"" : "");
+        neutralRef.setText(searchOptionsBean.as().getNeutralRef() != null ? searchOptionsBean.as().getNeutralRef()+"" : "");
+        negativeRef.setText(searchOptionsBean.as().getNegativeRef() != null ? searchOptionsBean.as().getNegativeRef()+"" : "");
+        postCount.setText(searchOptionsBean.as().getPosts() != null ? searchOptionsBean.as().getPosts()+"" : "");
+        viewCount.setText(searchOptionsBean.as().getViews() != null ? searchOptionsBean.as().getViews()+"" : "");
+        snipRep.setText(searchOptionsBean.as().getRep() != null ? searchOptionsBean.as().getRep()+"" : "");
+
+        dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom() != null ? searchOptionsBean.as().getDateFrom()+"" : "");
+        dateFilterWidget.setDateTo(searchOptionsBean.as().getDateTo() != null ? searchOptionsBean.as().getDateTo()+"" : "");
+
+
+        if(searchOptionsBean.as().getCoreCat() != null) {
+            for(int i=0; i<categoryList.getItemCount(); i++) {
+                if(categoryList.getItemText(i).equals(searchOptionsBean.as().getCoreCat())) {
+                    categoryList.setSelectedIndex(i);
+                    break;
+                }
+            }
+        } //else {
+//            categoryList.setSelectedIndex(0);
+//        }
+
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            if(searchOptionsBean.as().getSnipType() != null && searchOptionsBean.as().getSnipType() != "") {
+                log.info("snipTypes="+searchOptionsBean.as().getSnipType());
+                String[] snipTypes = searchOptionsBean.as().getSnipType().split(",");
+                for (int j=0; j<checkBoxArray.length; j++) {
+                    checkBoxArray[j].setValue(false);
+                    for(int i=0; i<snipTypes.length; i++) {
+                        if(checkBoxArray[j].getText().equals(snipTypeHm.get(snipTypes[i])))
+                            checkBoxArray[j].setValue(true);
+
+                    }
+                }
+            } else {
+                for (int j=0; j<checkBoxArray.length; j++) {
+                    checkBoxArray[j].setValue(true);
+                }
+            }
+        }
+    }
 
 }

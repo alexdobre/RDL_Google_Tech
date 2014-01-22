@@ -3,6 +3,7 @@ package com.therdl.server.api;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.mongodb.DB;
 import com.therdl.shared.beans.AuthUserBean;
+import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 import java.util.List;
 
@@ -75,6 +76,12 @@ public interface UserService {
      */
     public Integer isRepGivenForSnip(String email, String snipId);
 
+    /**
+     * sets isRepGivenByUser flag for input snip beans
+     * @param email current user
+     * @param snipBeans snip beans as list
+     */
+    public void setRepGivenForSnips(String email, List<SnipBean> snipBeans);
     /**
      * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
      * the function adds a reference given object to the list. Finds user by email.

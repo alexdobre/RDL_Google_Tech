@@ -1,15 +1,19 @@
 package com.therdl.client.view.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.view.SnipView;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.editor.RichTextToolbar;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -33,9 +37,14 @@ public class ReferenceListRow extends Composite{
     @UiField
     Label rep, titleLabel, userName, creationDate, refFlag;
 
-    public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean) {
+    @UiField
+    Image refRepBtn;
+    SnipView view;
+
+    public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view) {
         initWidget(ourUiBinder.createAndBindUi(this));
         this.referenceBean = referenceBean;
+        this.view = view;
 
         // sets values from referenceBean for UI elements from ui binder
         richTextAreaRef.setHTML(referenceBean.as().getContent());
@@ -54,8 +63,16 @@ public class ReferenceListRow extends Composite{
                 refFlag.setText(RDL.i18n.negative());
 
             refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
+
+            refRepBtn.getElement().getStyle().setProperty("display","none");
         } else {
             refFlag.getElement().getStyle().setProperty("display","none");
+
+            if(referenceBean.as().getAuthor().equals(currentUserBean.as().getName()) ||  referenceBean.as().getIsRepGivenByUser() == 1) {
+                refRepBtn.getElement().getStyle().setProperty("display", "none");
+            } else {
+                refRepBtn.getElement().getStyle().setProperty("display", "");
+            }
         }
         // create badge table
         Grid badgeGrid = new Grid(4,2);
@@ -70,5 +87,16 @@ public class ReferenceListRow extends Composite{
         }
 
         badgePanel.add(badgeGrid);
+    }
+
+    @UiHandler("refRepBtn")
+    public void onRepBtnClicked(ClickEvent event) {
+        view.getPresenter().giveSnipReputation(referenceBean.as().getId(), new RequestObserver() {
+            @Override
+            public void onSuccess(String response) {
+                refRepBtn.getElement().getStyle().setProperty("display", "none");
+                rep.setText(RDL.i18n.repLevel()+" "+(referenceBean.as().getRep()+1));
+            }
+        });
     }
 }

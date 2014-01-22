@@ -98,7 +98,7 @@ public class SnipServiceImpl implements SnipsService {
         if (searchOptions.getContent() != null)
             query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent(), java.util.regex.Pattern.CASE_INSENSITIVE));
         if (searchOptions.getCoreCat() != null)
-            query.put("coreCat", searchOptions.getCoreCat());
+            query.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
         if (searchOptions.getSubCat() != null)
             query.put("subCat", searchOptions.getSubCat());
         if (searchOptions.getPosRef() != null)

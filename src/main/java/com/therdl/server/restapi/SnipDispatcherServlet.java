@@ -248,6 +248,10 @@ public class SnipDispatcherServlet extends HttpServlet {
         }
         else if(actionBean.as().getAction().equals("getReferences")) {
             List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as(), actionBean.as().getPageIndex());
+            String viewerId = actionBean.as().getViewerId();
+            if(viewerId != null) {
+                userService.setRepGivenForSnips(viewerId, beanReferences);
+            }
 
             ArrayList<HashMap<String,String>> beanList = getBeanList(beanReferences);
 

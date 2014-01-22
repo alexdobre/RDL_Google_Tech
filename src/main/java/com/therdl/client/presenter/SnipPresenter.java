@@ -9,6 +9,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipView;
 import com.therdl.shared.Constants;
+import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
@@ -193,6 +194,10 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         searchOptionsBean.as().setAction("getReferences");
         searchOptionsBean.as().setPageIndex(pageIndex);
         searchOptionsBean.as().setId(currentSnipId);
+
+        if(controller.getCurrentUserBean().as().isAuth()) {
+            searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
+        }
       //  currentBean.as().setReferenceType(referenceTypes);
 
 
@@ -238,8 +243,8 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
      * gives reputation to the current snip, increments reputation counter and saves user id to ensure giving reputation per user/snip only once
      */
 
-    public void giveSnipReputation() {
-        log.info("SnipPresenter giveSnipReputation currentSnipId=" + currentSnipId);
+    public void giveSnipReputation(String id, final RequestObserver observer) {
+        log.info("SnipPresenter giveSnipReputation id=" + id);
 
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -252,7 +257,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         requestBuilder.setHeader("Content-Type", "application/json");
         AutoBean<SnipBean> currentBean = beanery.snipBean();
         currentBean.as().setAction("giveRep");
-        currentBean.as().setId(currentSnipId);
+        currentBean.as().setId(id);
 
         String json = AutoBeanCodex.encode(currentBean).getPayload();
         try {
@@ -263,7 +268,8 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                 public void onResponseReceived(Request request, Response response) {
                     log.info("giveSnipReputation=" + response.getText());
 
-                    snipView.giveRepResponseHandler();
+                   // snipView.giveRepResponseHandler();
+                    observer.onSuccess(response.getText());
                 }
 
                 @Override

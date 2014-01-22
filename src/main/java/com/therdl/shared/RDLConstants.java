@@ -44,6 +44,8 @@ public interface RDLConstants {
         String AUTHOR = "author";
         String DATE_FROM = "dateFrom";
         String DATE_TO = "dateTo";
+        String POSTS = "posts";
+        String SNIP_TYPE = "snipType";
 
         String SORT_ORDER = "sortOrder";
         String SORT_FIELD = "sortField";

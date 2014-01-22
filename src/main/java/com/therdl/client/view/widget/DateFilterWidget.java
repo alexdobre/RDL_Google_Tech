@@ -92,4 +92,12 @@ public class DateFilterWidget extends Composite{
         return dateTo.getValue();
     }
 
+    public void setDateFrom(String date) {
+        dateFrom.setText(date);
+    }
+
+    public void setDateTo(String date) {
+        dateTo.setText(date);
+    }
+
 }

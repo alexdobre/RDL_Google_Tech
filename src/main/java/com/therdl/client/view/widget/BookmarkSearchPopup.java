@@ -7,6 +7,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 
 /**
@@ -39,11 +40,12 @@ public class BookmarkSearchPopup extends PopupPanel {
 
         String url = "";
 
-        if(formURl().length() != 0){
+        if(formURl().length() != 0) {
             url = ":"+formURl().toString().replace(" ","+");
         }
 
-        getLinkTextBox.setText(GWT.getHostPageBaseURL()+"#snips"+ url);
+        String moduleToken = Global.moduleName.equals(RDLConstants.Modules.IDEAS) ? RDLConstants.Tokens.SNIPS : RDLConstants.Tokens.STORIES;
+        getLinkTextBox.setText(GWT.getHostPageBaseURL()+"#"+moduleToken+ url);
     }
 
     /**
@@ -57,13 +59,13 @@ public class BookmarkSearchPopup extends PopupPanel {
             stringBuilder.append(RDLConstants.BookmarkSearch.TITLE+"="+searchFilterWidget.title.getText()+":");
         }
 
-        if(searchFilterWidget.categoryList.getSelectedIndex() != 0) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT+"="+searchFilterWidget.categoryList.getItemText(searchFilterWidget.categoryList.getSelectedIndex())+":");
+        if(!searchFilterWidget.getSelectedCategories().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT+"="+searchFilterWidget.getSelectedCategories()+":");
         }
 
-        if(searchFilterWidget.subCategoryList.getSelectedIndex() != 0) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.SUB_CAT+"="+searchFilterWidget.subCategoryList.getItemText(searchFilterWidget.subCategoryList.getSelectedIndex())+":");
-        }
+//        if(searchFilterWidget.subCategoryList.getSelectedIndex() != 0) {
+//            stringBuilder.append(RDLConstants.BookmarkSearch.SUB_CAT+"="+searchFilterWidget.subCategoryList.getItemText(searchFilterWidget.subCategoryList.getSelectedIndex())+":");
+//        }
 
         if(!searchFilterWidget.posRef.getText().equals("")) {
             stringBuilder.append(RDLConstants.BookmarkSearch.POS_REF+"="+searchFilterWidget.posRef.getText()+":");
@@ -75,6 +77,10 @@ public class BookmarkSearchPopup extends PopupPanel {
 
         if(!searchFilterWidget.negativeRef.getText().equals("")) {
             stringBuilder.append(RDLConstants.BookmarkSearch.NEGATIVE_REF+"="+searchFilterWidget.negativeRef.getText()+":");
+        }
+
+        if(!searchFilterWidget.postCount.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.POSTS+"="+searchFilterWidget.postCount.getText()+":");
         }
 
         if(!searchFilterWidget.snipRep.getText().equals("")) {
@@ -96,6 +102,9 @@ public class BookmarkSearchPopup extends PopupPanel {
         if(!searchFilterWidget.dateFilterWidget.getDateTo().equals("")) {
             stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO+"="+searchFilterWidget.dateFilterWidget.getDateTo()+":");
         }
+
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) && !searchFilterWidget.getCheckedSnipTypes().equals(""))
+            stringBuilder.append(RDLConstants.BookmarkSearch.SNIP_TYPE+"="+searchFilterWidget.getCheckedSnipTypes()+":");
 
         stringBuilder.append(RDLConstants.BookmarkSearch.SORT_FIELD+"="+searchFilterWidget.getSortField()+":");
         stringBuilder.append(RDLConstants.BookmarkSearch.SORT_ORDER+"="+searchFilterWidget.getSortOrder()+":");

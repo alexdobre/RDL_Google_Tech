@@ -136,16 +136,16 @@
                 <tr>
                     <td><g:Label text="{i18n.category}" styleName = '{style.labelText}'/></td>
                     <td>
-                        <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'></g:ListBox>
+                        <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}' multipleSelect="true"></g:ListBox>
                     </td>
                 </tr>
 
-                <tr>
-                    <td><g:Label text="{i18n.subcategory}" styleName = '{style.labelText}'/></td>
-                    <td>
-                        <g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'></g:ListBox>
-                    </td>
-                </tr>
+                <!--<tr>-->
+                    <!--<td><g:Label text="{i18n.subcategory}" styleName = '{style.labelText}'/></td>-->
+                    <!--<td>-->
+                        <!--<g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'></g:ListBox>-->
+                    <!--</td>-->
+                <!--</tr>-->
 
                 <tr>
                     <td><g:Label ui:field="refLabel" text="{i18n.ref}" styleName = '{style.labelText}'/></td>
