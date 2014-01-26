@@ -74,14 +74,15 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     private SnipEditView snipEditView;
     private SearchView searchView;
     private SearchView storiesView;
-    private ImprovementsView improvementsView;
+    private SearchView improvementsView;
     private RegisterView registerView;
     private ProfileView profileView;
     private SnipView snipView;
     private SnipEditView threadEditView;
     private SnipView threadView;
 
-
+    private SnipEditView proposalEditView;
+    private SnipView proposalView;
 
     public AppController() {
 
@@ -255,6 +256,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             }// end else
 
             else if (token.equals(RDLConstants.Tokens.THREAD_VIEW)) {
+                Global.moduleName = RDLConstants.Modules.STORIES;
                 log.info("AppController Tokens.THREAD_VIEW");
 
                 String currentSnipId = "";
@@ -345,7 +347,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             }// end else
 
             else if (token.equals(RDLConstants.Tokens.THREAD_EDIT)) {
-
+                Global.moduleName = RDLConstants.Modules.STORIES;
                 String currentSnipId = "";
                 if (tokenSplit.length == 2) {
                     currentSnipId = tokenSplit[1];
@@ -376,12 +378,18 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
             //***************************************IMPROVEMENTS****************************
             else if (token.equals(RDLConstants.Tokens.IMPROVEMENTS)) {
+                Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
+
                 log.info("AppController Tokens.IMPROVEMENTS");
 
                 if (improvementsView == null) {
                     improvementsView = new ImprovementsViewImpl(currentUserBean);
                 }
-                final ImprovementsPresenter improvementsPresenter = new ImprovementsPresenter(improvementsView, this);
+                improvementsView.setToken(event.getValue());
+                if(tokenSplit.length == 2)
+                    improvementsView.setAuthorName(tokenSplit[1]);
+
+                final SnipSearchPresenter improvementsPresenter = new SnipSearchPresenter(improvementsView, this);
 
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
@@ -389,8 +397,71 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     }
 
                     public void onSuccess() {
-
                         improvementsPresenter.go(container, currentUserBean);
+                    }
+                });
+
+            }// end else
+
+            else if (token.equals(RDLConstants.Tokens.PROPOSAL_EDIT)) {
+                Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
+
+                String currentSnipId = "";
+                if (tokenSplit.length == 2) {
+                    currentSnipId = tokenSplit[1];
+                }
+
+                log.info("AppController Tokens.PROPOSAL_EDIT token=" + token + ";currentSnipId=" + currentSnipId);
+
+
+                if (proposalEditView == null) {
+                    proposalEditView = new SnipEditViewImpl(currentUserBean, RDLConstants.Modules.IMPROVEMENTS);
+                }
+                final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(proposalEditView, currentSnipId, this);
+
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                    }
+
+                    public void onSuccess() {
+                        if (currentUserBean.as().isAuth()) {
+                            snipEditPresenter.go(container, currentUserBean);
+                        } else {
+                            History.newItem(RDLConstants.Tokens.WELCOME);
+                        }
+                    }
+                });
+            }
+
+            else if (token.equals(RDLConstants.Tokens.PROPOSAL_VIEW)) {
+                Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
+                log.info("AppController Tokens.PROPOSAL_VIEW");
+
+                String currentSnipId = "";
+                if (tokenSplit.length == 2) {
+                    currentSnipId = tokenSplit[1];
+                }
+
+                if (proposalView == null) {
+                    proposalView = new SnipViewImpl(currentUserBean);
+                }
+
+                final SnipPresenter snipPresenter = new SnipPresenter(proposalView, currentSnipId, this);
+
+                GWT.runAsync(new RunAsyncCallback() {
+                    public void onFailure(Throwable caught) {
+                        log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
+                    }
+
+                    public void onSuccess() {
+                        //     if (currentUserBean.as().isAuth()) {
+                        snipPresenter.go(container, currentUserBean);
+                        //    } else {
+                        //        History.newItem(RDLConstants.Tokens.WELCOME);
+                        //    }
+
+
 
                     }
                 });

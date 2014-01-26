@@ -162,6 +162,22 @@ public interface SnipBean {
 
     void setPosts(Integer posts);
 
+    Integer getPledges();
+
+    void setPledges(Integer pledges);
+
+    Integer getCounters();
+
+    void setCounters(Integer counters);
+
+    String getProposalType();
+
+    void setProposalType(String proposalType);
+
+    String getProposalState();
+
+    void setProposalState(String proposalState);
+
 
     /**
      * nested interfaces

@@ -1,14 +1,13 @@
 package com.therdl.client.view.common;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.ui.DecoratedPopupPanel;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Widget;
-import  com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.*;
 
 /**
  * Common methods used by views
@@ -74,10 +73,6 @@ public class ViewUtils {
                 searchOptionsBean.as().setCoreCat(keyVal[1].replace("+", " "));
             }
 
-//            if (keyVal[0].equals(RDLConstants.BookmarkSearch.SUB_CAT)) {
-//                searchOptionsBean.as().setSubCat(keyVal[1].replace("+", " "));
-//            }
-
             if (keyVal[0].equals(RDLConstants.BookmarkSearch.POS_REF)) {
                 searchOptionsBean.as().setPosRef(Integer.parseInt(keyVal[1]));
             }
@@ -121,8 +116,105 @@ public class ViewUtils {
             if (keyVal[0].equals(RDLConstants.BookmarkSearch.SNIP_TYPE)) {
                 searchOptionsBean.as().setSnipType(keyVal[1]);
             }
+
+            if (keyVal[0].equals(RDLConstants.BookmarkSearch.PROPOSAL_TYPE)) {
+                searchOptionsBean.as().setProposalType(keyVal[1]);
+            }
+
+            if (keyVal[0].equals(RDLConstants.BookmarkSearch.PROPOSAL_STATE)) {
+                searchOptionsBean.as().setProposalState(keyVal[1]);
+            }
         }
 
         return searchOptionsBean;
+    }
+
+    /**
+     * creates proposal type list
+     */
+    public static void createProposalTypeList(ListBox proposalTypeList) {
+        Iterator itHm = RDLConstants.ProposalType.proposalTypeHm.entrySet().iterator();
+        int i=0;
+        while(itHm.hasNext()) {
+            Map.Entry pairs = (Map.Entry) itHm.next();
+
+            proposalTypeList.addItem((String) pairs.getValue());
+            proposalTypeList.setValue(i, (String) pairs.getKey());
+            i++;
+        }
+    }
+
+    /**
+     * creates proposal state list
+     */
+    public static void createProposalStateList(ListBox proposalStateList) {
+        Iterator itHm = RDLConstants.ProposalState.proposalStateHm.entrySet().iterator();
+        int i=0;
+        while(itHm.hasNext()) {
+            Map.Entry pairs = (Map.Entry) itHm.next();
+
+            proposalStateList.addItem((String) pairs.getValue());
+            proposalStateList.setValue(i, (String) pairs.getKey());
+            i++;
+        }
+    }
+
+    /**
+     * checks which items are selected for the given multi select list box
+     * @return returns items names separated by comma
+     */
+    public static String getSelectedItems(ListBox itemList) {
+        String selectedValues = "";
+        for (int i=0; i<itemList.getItemCount(); i++) {
+            if(itemList.isItemSelected(i)) {
+                selectedValues += itemList.getValue(i)+",";
+            }
+        }
+
+        if(!selectedValues.equals("")) {
+            selectedValues = selectedValues.substring(0,selectedValues.length()-1);
+        }
+
+        return selectedValues;
+    }
+
+    /**
+     * returns checked values as concatenated string for the given checkbox array
+     * @param checkBoxList
+     * @return
+     */
+    public static String getCheckedFlags(List<CheckBox> checkBoxList) {
+        String checkedFlags = "";
+        for (int j=0; j<checkBoxList.size(); j++) {
+            if(checkBoxList.get(j).getValue()) {
+                checkedFlags += checkBoxList.get(j).getName()+",";
+            }
+        }
+        if(!checkedFlags.equals(""))
+            checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+
+        return checkedFlags;
+    }
+
+    /**
+     * init checkboxes for the given key/value sets
+     * @param hm
+     * @return checkbox list
+     */
+    public static List<CheckBox> createCheckBoxList(LinkedHashMap<String, String> hm, FlowPanel parentPanel) {
+        List<CheckBox> checkBoxList = new ArrayList<CheckBox>(hm.keySet().size());
+        Iterator itHm = hm.entrySet().iterator();
+        int i=0;
+        while(itHm.hasNext()) {
+            Map.Entry pairs = (Map.Entry) itHm.next();
+            CheckBox checkBox = new CheckBox((String) pairs.getValue());
+            checkBox.setStyleName("checkBoxBtn");
+            checkBox.setValue(true);
+            checkBox.setName((String) pairs.getKey());
+            checkBoxList.add(checkBox);
+            parentPanel.add(checkBox);
+        }
+
+        return checkBoxList;
     }
 }

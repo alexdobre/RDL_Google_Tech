@@ -89,7 +89,7 @@ public class SnipViewImpl extends Composite implements SnipView {
         this.currentUserBean = currentUserBean;
         setAppMenu(currentUserBean);
 
-        if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        if(Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             btnTextShow = RDL.i18n.showPosts();
             btnTextHide = RDL.i18n.hidePosts();
             snipType = RDLConstants.SnipType.POST;
@@ -169,7 +169,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
-        if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        if(Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             leaveRef.setText(RDL.i18n.reply());
             saveRef.setText(RDL.i18n.savePost());
         }

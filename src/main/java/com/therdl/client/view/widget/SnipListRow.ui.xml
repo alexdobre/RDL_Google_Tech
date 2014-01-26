@@ -64,7 +64,7 @@
 
                 </g:FlowPanel>
 
-                <div style="float: left;margin-left: 3px;">
+                <div style="float: left;margin-left: 3px;position:relative;width:450px;">
                     <div>
                         <div style="font-weight: bold;font-size: 17px;margin-right: 5px;display: inline-block;">
                             <g:Label text="{i18n.title}:"/>
@@ -79,7 +79,7 @@
                             <div><g:Label ui:field="userName" styleName="{style.label}"/></div>
                             <div><g:Label ui:field="titleLabel" styleName="{style.label}"/></div>
                         </div>
-                        <div style="float:left;margin-left: 40px;">
+                        <div style="float:left;margin-left: 20px;">
                             <g:FlowPanel ui:field="refPanel">
                                 <g:FlowPanel><g:Label ui:field="posRef" styleName="{style.label}"/></g:FlowPanel>
                                 <g:FlowPanel><g:Label ui:field="neutRef" styleName="{style.label}"/></g:FlowPanel>
@@ -88,18 +88,37 @@
                             <g:FlowPanel ui:field="postsPanel">
                                 <g:FlowPanel><g:Label ui:field="postsCount" styleName="{style.label}"/></g:FlowPanel>
                             </g:FlowPanel>
+
+                            <g:FlowPanel ui:field="pledgesPanel">
+                                <g:FlowPanel><g:Label ui:field="pledgesCount" styleName="{style.label}"/></g:FlowPanel>
+                            </g:FlowPanel>
+
+                        </div>
+                        <div style="float:left;margin-left: 10px;">
+                            <g:FlowPanel ui:field="countersPanel">
+                                <g:FlowPanel><g:Label ui:field="countersCount" styleName="{style.label}"/></g:FlowPanel>
+                            </g:FlowPanel>
                         </div>
                         <div style="float:left;margin-left: 40px;">
-                            <div><g:Label ui:field="viewCount" styleName="{style.label}"/></div>
+                            <g:FlowPanel ui:field="viewPanel">
+                                <g:Label ui:field="viewCount" styleName="{style.label}"/>
+                            </g:FlowPanel>
                         </div>
 
-                        <div style="float:left;margin-left: 40px;">
+                        <div style="float:left;margin-left: 15px;">
                             <div><g:Label ui:field="creationDate" styleName="{style.label}"/></div>
                             <g:FlowPanel styleName="{style.editBtnParent}" ui:field="editBtnParent">
                                 <b:Button ui:field="editBtn" text="{i18n.edit}"/>
                             </g:FlowPanel>
                         </div>
 
+                    </div>
+
+                    <div style="float:left;position:absolute;left:73%;top:0px;">
+                        <g:FlowPanel ui:field="proposalPanel">
+                            <g:Label ui:field="proposalType" styleName="{style.label}"/>
+                            <g:Label ui:field="proposalState" styleName="{style.label}"/>
+                        </g:FlowPanel>
                     </div>
                 </div>
             </div>

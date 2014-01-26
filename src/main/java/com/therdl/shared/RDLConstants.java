@@ -1,6 +1,8 @@
 package com.therdl.shared;
 
 
+import com.therdl.client.RDL;
+
 import java.util.HashMap;
 
 /**
@@ -30,6 +32,9 @@ public interface RDLConstants {
         String THREAD_EDIT = "threadEdit";
         String THREAD_VIEW = "threadView";
 
+        String PROPOSAL_EDIT = "proposalEdit";
+        String PROPOSAL_VIEW = "proposalView";
+
     }
 
     public interface BookmarkSearch {
@@ -46,6 +51,9 @@ public interface RDLConstants {
         String DATE_TO = "dateTo";
         String POSTS = "posts";
         String SNIP_TYPE = "snipType";
+
+        String PROPOSAL_TYPE = "proposalType";
+        String PROPOSAL_STATE = "proposalState";
 
         String SORT_ORDER = "sortOrder";
         String SORT_FIELD = "sortField";
@@ -71,6 +79,9 @@ public interface RDLConstants {
         String REFERENCE = "reference";
         String THREAD = "thread";
         String POST = "post";
+        String PROPOSAL = "proposal";
+        String PLEDGE = "pledge";
+        String COUNTER = "counter";
     }
 
     public interface SnipFields {
@@ -83,6 +94,8 @@ public interface RDLConstants {
         String NEUTRAL_REF = "neutralRef";
         String NEGATIVE_REF = "negativeRef";
         String POSTS = "posts";
+        String PLEDGES = "pledges";
+        String COUNTERS = "counters";
         String REP = "rep";
         String CREATION_DATE = "creationDate";
     }
@@ -90,5 +103,34 @@ public interface RDLConstants {
     public interface Modules {
         String IDEAS = "ideas";
         String STORIES = "stories";
+        String IMPROVEMENTS = "Improvements";
+    }
+
+    public interface ProposalType {
+        String NEW_FEATURE = "newFeature";
+        String IMPROVEMENT = "improvement";
+        String BUG = "bug";
+
+        HashMap<String, String> proposalTypeHm = new HashMap<String, String>() {{
+            put(NEW_FEATURE, RDL.i18n.newFeature());
+            put(IMPROVEMENT, RDL.i18n.improvement());
+            put(BUG, RDL.i18n.bug());
+        }};
+    }
+
+    public interface ProposalState {
+        String NEW = "NEW";
+        String DEV_REPLIED = "DEV_REPLIED";
+        String IN_PROGRESS = "IN_PROGRESS";
+        String DONE = "DONE";
+        String PARKED = "PARKED";
+
+        HashMap<String, String> proposalStateHm = new HashMap<String, String>() {{
+            put(NEW, RDL.i18n.propStateNew());
+            put(DEV_REPLIED, RDL.i18n.propStateDevReplied());
+            put(IN_PROGRESS, RDL.i18n.propStateInProgress());
+            put(DONE, RDL.i18n.propStateDone());
+            put(PARKED, RDL.i18n.propStateParked());
+        }};
     }
 }

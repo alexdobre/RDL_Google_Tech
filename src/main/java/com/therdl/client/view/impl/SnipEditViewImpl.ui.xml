@@ -94,11 +94,14 @@
             <g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
                 <g:FlowPanel ui:field="snipTypeBar" styleName="{style.snipTypeBar}"/>
                 <g:FlowPanel ui:field="categoryBar" styleName="{style.categoryBar}">
-                    <g:Label text="{i18n.category}:" styleName = '{style.labelText}'/>
+                    <g:Label ui:field="categoryLabel" text="{i18n.category}:" styleName = '{style.labelText}'/>
                     <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'/>
 
-                    <!--<g:Label text="{i18n.subcategory}:" styleName = '{style.labelText}'/>-->
-                    <!--<g:ListBox ui:field = "subCategoryList" styleName = '{style.categoryField}'/>-->
+                    <g:Label ui:field="proposalTypeLabel" text="{i18n.type}:" styleName = '{style.labelText}'/>
+                    <g:ListBox ui:field = "proposalTypeList" styleName = '{style.categoryField}'/>
+
+                    <g:Label ui:field="proposalStateLabel" text="{i18n.state}:" styleName = '{style.labelText}'/>
+                    <g:ListBox ui:field = "proposalStateList" styleName = '{style.categoryField}'/>
 
                     <g:Label text="{i18n.tag}:" styleName = '{style.labelText}'/>
                     <g:TextBox ui:field = "tag" styleName="{style.tagTextBox}"/>

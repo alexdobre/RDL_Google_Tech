@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipViewImpl;
 import com.therdl.shared.Global;
@@ -16,14 +17,20 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class ReferenceSearchFilterWidget extends Composite{
+    private static Logger log = Logger.getLogger("");
+
     interface ReferenceSearchFilterWidgetUiBinder extends UiBinder<HTMLPanel, ReferenceSearchFilterWidget> {
     }
 
     private static ReferenceSearchFilterWidgetUiBinder ourUiBinder = GWT.create(ReferenceSearchFilterWidgetUiBinder.class);
 
     @UiField
-    FlowPanel refTypePanel, authorRepPanel, authorNamePanel, datePanel;
+    FlowPanel refTypePanel, authorRepPanel, authorNamePanel, datePanel, proposalCheckboxPanel;
 
     @UiField
     TextBox authorRep, authorName;
@@ -40,8 +47,11 @@ public class ReferenceSearchFilterWidget extends Composite{
     private int sortOrder = -1;
     private String sortField = RDLConstants.SnipFields.CREATION_DATE;
 
-    private CheckBox[] checkBoxArray = new CheckBox[3];
-    private String[] referenceTypes = new String[3];
+    private List<CheckBox> checkBoxList;
+    private List<CheckBox> checkBoxListProp;
+
+    private LinkedHashMap<String, String> proposalHm = new LinkedHashMap();
+    private LinkedHashMap<String, String> referenceTypeHm = new LinkedHashMap();
 
     private Beanery beanery = GWT.create(Beanery.class);
     private SnipViewImpl view;
@@ -56,49 +66,32 @@ public class ReferenceSearchFilterWidget extends Composite{
             typeLabel.getElement().getStyle().setProperty("display","none");
             filterLabel.setText(RDL.i18n.filterPosts());
         }
+        log.info("Global.moduleName "+Global.moduleName);
+        if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            initProposalCheckBoxes();
+        }
         createSortArrows();
     }
 
     private void initRefTypeCheckboxes() {
-        referenceTypes = new String[] {
-                RDLConstants.ReferenceType.POSITIVE,
-                RDLConstants.ReferenceType.NEUTRAL,
-                RDLConstants.ReferenceType.NEGATIVE,
+        referenceTypeHm.put(RDLConstants.ReferenceType.POSITIVE, RDL.i18n.positiveShort());
+        referenceTypeHm.put(RDLConstants.ReferenceType.NEUTRAL, RDL.i18n.neutral());
+        referenceTypeHm.put(RDLConstants.ReferenceType.NEGATIVE, RDL.i18n.negativeShort());
 
-        };
-
-        String[] referenceTypesText = new String[] {
-                RDL.i18n.positiveShort(),
-                RDL.i18n.neutral(),
-                RDL.i18n.negativeShort(),
-
-        };
-
-        for (int i=0; i<referenceTypes.length; i++) {
-            checkBoxArray[i] = new CheckBox(referenceTypesText[i]);
-            checkBoxArray[i].setStyleName("checkBoxBtn");
-            checkBoxArray[i].setValue(true);
-            if(i==0) {
-                checkBoxArray[i].getElement().getStyle().setProperty("marginLeft","0px");
-            }
-
-            refTypePanel.add(checkBoxArray[i]);
-
-        }
+        checkBoxList = ViewUtils.createCheckBoxList(referenceTypeHm, refTypePanel);
     }
 
-    private String getCheckedFlags() {
-        String checkedFlags = "";
-        for (int j=0; j<checkBoxArray.length; j++) {
-            if(checkBoxArray[j].getValue()) {
-                checkedFlags += referenceTypes[j]+",";
-            }
-        }
-        if(!checkedFlags.equals(""))
-            checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+    private void initProposalCheckBoxes() {
+        log.info("initProposalCheckBoxes");
+        proposalHm.put("dev", RDL.i18n.dev());
+        proposalHm.put("user", RDL.i18n.user());
+        proposalHm.put("pledge", RDL.i18n.pledge());
+        proposalHm.put("counter", RDL.i18n.counter());
 
-        return checkedFlags;
+        checkBoxListProp = ViewUtils.createCheckBoxList(proposalHm, proposalCheckboxPanel);
     }
+
+
 
     /**
      * sets sort arrows for some search fields (views, rep, pos/neut/neg ref, author, date), down for descending order, up for ascending order
@@ -193,7 +186,9 @@ public class ReferenceSearchFilterWidget extends Composite{
             searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateTo());
 
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-            searchOptionsBean.as().setReferenceType(getCheckedFlags());
+            searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxList));
+        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+            searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxListProp));
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
 

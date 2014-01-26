@@ -7,6 +7,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 
@@ -44,7 +45,15 @@ public class BookmarkSearchPopup extends PopupPanel {
             url = ":"+formURl().toString().replace(" ","+");
         }
 
-        String moduleToken = Global.moduleName.equals(RDLConstants.Modules.IDEAS) ? RDLConstants.Tokens.SNIPS : RDLConstants.Tokens.STORIES;
+        String moduleToken = "";
+
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            moduleToken = RDLConstants.Tokens.SNIPS;
+        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
+            moduleToken = RDLConstants.Tokens.STORIES;
+        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+            moduleToken = RDLConstants.Tokens.IMPROVEMENTS;
+
         getLinkTextBox.setText(GWT.getHostPageBaseURL()+"#"+moduleToken+ url);
     }
 
@@ -59,13 +68,10 @@ public class BookmarkSearchPopup extends PopupPanel {
             stringBuilder.append(RDLConstants.BookmarkSearch.TITLE+"="+searchFilterWidget.title.getText()+":");
         }
 
-        if(!searchFilterWidget.getSelectedCategories().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT+"="+searchFilterWidget.getSelectedCategories()+":");
+        String selCategories = ViewUtils.getSelectedItems(searchFilterWidget.categoryList);
+        if(!selCategories.equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT+"="+selCategories+":");
         }
-
-//        if(searchFilterWidget.subCategoryList.getSelectedIndex() != 0) {
-//            stringBuilder.append(RDLConstants.BookmarkSearch.SUB_CAT+"="+searchFilterWidget.subCategoryList.getItemText(searchFilterWidget.subCategoryList.getSelectedIndex())+":");
-//        }
 
         if(!searchFilterWidget.posRef.getText().equals("")) {
             stringBuilder.append(RDLConstants.BookmarkSearch.POS_REF+"="+searchFilterWidget.posRef.getText()+":");
@@ -105,6 +111,16 @@ public class BookmarkSearchPopup extends PopupPanel {
 
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) && !searchFilterWidget.getCheckedSnipTypes().equals(""))
             stringBuilder.append(RDLConstants.BookmarkSearch.SNIP_TYPE+"="+searchFilterWidget.getCheckedSnipTypes()+":");
+
+        String selProposalTypes = ViewUtils.getSelectedItems(searchFilterWidget.proposalTypeList);
+        if(!selProposalTypes.equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.PROPOSAL_TYPE+"="+selProposalTypes+":");
+        }
+
+        String selProposalStates = ViewUtils.getSelectedItems(searchFilterWidget.proposalStateList);
+        if(!selProposalStates.equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.PROPOSAL_STATE+"="+selProposalStates+":");
+        }
 
         stringBuilder.append(RDLConstants.BookmarkSearch.SORT_FIELD+"="+searchFilterWidget.getSortField()+":");
         stringBuilder.append(RDLConstants.BookmarkSearch.SORT_ORDER+"="+searchFilterWidget.getSortOrder()+":");

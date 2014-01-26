@@ -118,6 +118,14 @@ public class SnipServiceImpl implements SnipsService {
         }else {
             query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
         }
+        if (searchOptions.getProposalType() != null)
+            query.put("proposalType", new BasicDBObject("$in", searchOptions.getProposalType().split(",")));
+        if (searchOptions.getProposalState() != null)
+            query.put("proposalState", new BasicDBObject("$in", searchOptions.getProposalState().split(",")));
+        if (searchOptions.getPledges() != null)
+            query.put("pledges", new BasicDBObject("$gte", searchOptions.getPledges()));
+        if (searchOptions.getCounters() != null)
+            query.put("counters", new BasicDBObject("$gte", searchOptions.getCounters()));
 
         if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
             query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
@@ -382,6 +390,11 @@ public class SnipServiceImpl implements SnipsService {
         doc.append("money", snip.getMoney());
         doc.append("posts", snip.getPosts());
 
+        doc.append("pledges", snip.getPledges());
+        doc.append("counters", snip.getCounters());
+        doc.append("proposalType", snip.getProposalType());
+        doc.append("proposalState", snip.getProposalState());
+
         BasicDBList links = new BasicDBList();
 
         if (snip.getLinks() == null) {
@@ -434,6 +447,11 @@ public class SnipServiceImpl implements SnipsService {
         snip.setVotes((String) doc.get("votes"));
         snip.setParentThread((String) doc.get("parentThread"));
         snip.setPosts(RDLUtils.parseInt(doc.get("posts")));
+
+        snip.setPledges(RDLUtils.parseInt(doc.get("pledges")));
+        snip.setCounters(RDLUtils.parseInt(doc.get("counters")));
+        snip.setProposalType((String) doc.get("proposalType"));
+        snip.setProposalState((String) doc.get("proposalState"));
 
         List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
 

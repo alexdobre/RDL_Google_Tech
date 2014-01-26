@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SearchView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.shared.CoreCategory;
@@ -47,13 +48,13 @@ public class SearchFilterWidget extends Composite {
     com.github.gwtbootstrap.client.ui.Button createNewButton;
 
     @UiField
-    TextBox title, content, author, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep;
+    TextBox title, content, author, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep, pledgesCount, countersCount;
 
     @UiField
     HTMLPanel container;
 
     @UiField
-    ListBox categoryList;
+    ListBox categoryList, proposalTypeList, proposalStateList;
 
  //   @UiField
  //   ListBox subCategoryList;
@@ -65,11 +66,11 @@ public class SearchFilterWidget extends Composite {
     FlowPanel refPanel;
 
     @UiField
-    Label typeLabel, refLabel, postLabel, filterLabel;
+    Label typeLabel, refLabel, postLabel, filterLabel, categoryLabel, viewsLabel, contentLabel, proposalTypeLabel, proposalStateLabel, pledgesCountLabel, countersCountLabel;
 
 
     @UiField
-    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, typePanel;
+    FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, typePanel, pledgesPanel, countersPanel;
 
    // DatePicker datePicker;
 
@@ -115,7 +116,12 @@ public class SearchFilterWidget extends Composite {
             postLabel.getElement().getStyle().setProperty("display","none");
             postPanel.getElement().getStyle().setProperty("display","none");
 
+            hideProposalItems();
+
             filterLabel.setText(RDL.i18n.filterSnips());
+
+            createCategoryList();
+
 
         } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             editPageToken = RDLConstants.Tokens.THREAD_EDIT;
@@ -123,11 +129,34 @@ public class SearchFilterWidget extends Composite {
             typeLabel.getElement().getStyle().setProperty("display","none");
             refPanel.getElement().getStyle().setProperty("display","none");
             refLabel.getElement().getStyle().setProperty("display","none");
+            hideProposalItems();
 
             filterLabel.setText(RDL.i18n.filterThreads());
+
+            createCategoryList();
+        } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            editPageToken = RDLConstants.Tokens.PROPOSAL_EDIT;
+
+            typeLabel.getElement().getStyle().setProperty("display","none");
+            refPanel.getElement().getStyle().setProperty("display","none");
+            refLabel.getElement().getStyle().setProperty("display","none");
+            postLabel.getElement().getStyle().setProperty("display","none");
+            postPanel.getElement().getStyle().setProperty("display","none");
+
+            categoryList.getElement().getStyle().setProperty("display","none");
+            categoryLabel.getElement().getStyle().setProperty("display","none");
+
+            viewsLabel.getElement().getStyle().setProperty("display","none");
+            viewPanel.getElement().getStyle().setProperty("display","none");
+
+            contentLabel.getElement().getStyle().setProperty("display","none");
+            content.getElement().getStyle().setProperty("display","none");
+
+            ViewUtils.createProposalTypeList(proposalTypeList);
+            ViewUtils.createProposalStateList(proposalStateList);
         }
 
-        createCategoryList();
+
         createSortArrows();
 
 	}
@@ -164,11 +193,13 @@ public class SearchFilterWidget extends Composite {
      * default order is descending order by creation date
      */
     private void createSortArrows() {
-        FlowPanel[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel};
+        FlowPanel[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel};
         String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP,
                             RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE,
                             RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF,
-                            RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS};
+                            RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS,
+                            RDLConstants.SnipFields.PLEDGES, RDLConstants.SnipFields.COUNTERS
+                        };
 
         for (int i=0; i<flowPanels.length; i++) {
             final String keyName = keyNames[i];
@@ -234,37 +265,30 @@ public class SearchFilterWidget extends Composite {
     }
 
     /**
-     * creates category and subcategory list for snips, when user choose a category subcategory list is refreshed
+     * creates category list for snips
      */
     void createCategoryList() {
      //   categoryList.addItem("Select a category");
+        int i=0;
         for(CoreCategory item : CoreCategory.values()) {
             categoryList.addItem(item.getShortName());
+            categoryList.setValue(i, item.getShortName());
+            i++;
         }
+    }
 
-//        categoryList.addChangeHandler(new ChangeHandler() {
-//            @Override
-//            public void onChange(ChangeEvent changeEvent) {
-//                int selectedIndex = categoryList.getSelectedIndex();
-//                subCategoryList.clear();
-//                subCategoryList.addItem("Select a subcategory");
-//                subCategoryList.setEnabled(false);
-//
-//                if (selectedIndex != 0) {
-//                    EnumSet subCategories = CoreCategory.values()[selectedIndex - 1].getSubCategories();
-//
-//                    if (subCategories != null) {
-//                        for (Iterator it = subCategories.iterator(); it.hasNext(); ) {
-//                            subCategoryList.addItem(((SubCategory) it.next()).getName());
-//                        }
-//                        subCategoryList.setEnabled(true);
-//                    }
-//                }
-//            }
-//        });
-//
-//        subCategoryList.addItem("Select a subcategory");
-//        subCategoryList.setEnabled(false);
+    private void hideProposalItems() {
+        proposalStateLabel.getElement().getStyle().setProperty("display","none");
+        proposalStateList.getElement().getStyle().setProperty("display","none");
+
+        proposalTypeLabel.getElement().getStyle().setProperty("display","none");
+        proposalTypeList.getElement().getStyle().setProperty("display","none");
+
+        pledgesCountLabel.getElement().getStyle().setProperty("display","none");
+        pledgesPanel.getElement().getStyle().setProperty("display","none");
+
+        countersCountLabel.getElement().getStyle().setProperty("display","none");
+        countersPanel.getElement().getStyle().setProperty("display","none");
     }
 
     /**
@@ -324,20 +348,22 @@ public class SearchFilterWidget extends Composite {
             searchOptionsBean.as().setDateTo(dateToText);
         }
 
-//        int catIndex = categoryList.getSelectedIndex();
-//        if(catIndex != 0) {
-//            searchOptionsBean.as().setCoreCat(categoryList.getItemText(catIndex));
-//        }
+        if(!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            String categories = ViewUtils.getSelectedItems(categoryList);
+            if(!categories.equals("")) {
+                searchOptionsBean.as().setCoreCat(categories);
+            }
+        } else {
+            String proposalTypes = ViewUtils.getSelectedItems(proposalTypeList);
+            if(!proposalTypes.equals("")) {
+                searchOptionsBean.as().setProposalType(proposalTypes);
+            }
 
-        String categories = getSelectedCategories();
-        if(!categories.equals("")) {
-            searchOptionsBean.as().setCoreCat(categories);
+            String proposalStates = ViewUtils.getSelectedItems(proposalStateList);
+            if(!proposalStates.equals("")) {
+                searchOptionsBean.as().setProposalState(proposalStates);
+            }
         }
-
-//        int subCatIndex = subCategoryList.getSelectedIndex();
-//        if(subCatIndex != 0) {
-//            searchOptionsBean.as().setSubCat(subCategoryList.getItemText(subCatIndex));
-//        }
 
         String posRefText = posRef.getText();
         if(!posRefText.equals("")) {
@@ -364,6 +390,16 @@ public class SearchFilterWidget extends Composite {
             searchOptionsBean.as().setPosts(Integer.parseInt(postsText));
         }
 
+        String pledgesText = pledgesCount.getText();
+        if(!pledgesText.equals("")) {
+            searchOptionsBean.as().setPledges(Integer.parseInt(pledgesText));
+        }
+
+        String countersText =  countersCount.getText();
+        if(!countersText.equals("")) {
+            searchOptionsBean.as().setCounters(Integer.parseInt(countersText));
+        }
+
         String snipRepText = snipRep.getText();
         if(!snipRepText.equals("")) {
             searchOptionsBean.as().setRep(Integer.parseInt(snipRepText));
@@ -371,10 +407,14 @@ public class SearchFilterWidget extends Composite {
 
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
+
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             searchOptionsBean.as().setSnipType(getCheckedSnipTypes());
-        else
+        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
             searchOptionsBean.as().setSnipType(RDLConstants.SnipType.THREAD);
+        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+            searchOptionsBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
+
         return searchOptionsBean;
     }
 
@@ -394,25 +434,6 @@ public class SearchFilterWidget extends Composite {
             checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
 
         return checkedFlags;
-    }
-
-    /**
-     * checks which categories are selected in multi select list box
-     * @return returns category names separated by comma
-     */
-    public String getSelectedCategories() {
-        String categories = "";
-        for (int i=0; i<categoryList.getItemCount(); i++) {
-            if(categoryList.isItemSelected(i)) {
-                categories += categoryList.getItemText(i)+",";
-            }
-        }
-
-        if(!categories.equals("")) {
-            categories = categories.substring(0,categories.length()-1);
-        }
-
-        return categories;
     }
 
     /**
@@ -443,6 +464,8 @@ public class SearchFilterWidget extends Composite {
         negativeRef.setText(searchOptionsBean.as().getNegativeRef() != null ? searchOptionsBean.as().getNegativeRef()+"" : "");
         postCount.setText(searchOptionsBean.as().getPosts() != null ? searchOptionsBean.as().getPosts()+"" : "");
         viewCount.setText(searchOptionsBean.as().getViews() != null ? searchOptionsBean.as().getViews()+"" : "");
+        pledgesCount.setText(searchOptionsBean.as().getPledges() != null ? searchOptionsBean.as().getPledges()+"" : "");
+        countersCount.setText(searchOptionsBean.as().getCounters() != null ? searchOptionsBean.as().getCounters()+"" : "");
         snipRep.setText(searchOptionsBean.as().getRep() != null ? searchOptionsBean.as().getRep()+"" : "");
 
         dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom() != null ? searchOptionsBean.as().getDateFrom()+"" : "");

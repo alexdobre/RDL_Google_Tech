@@ -20,6 +20,11 @@
             float: left;
         }
 
+        .proposalCheckboxPanel {
+            width: 170px;
+            margin-left: 80px;
+        }
+
     </ui:style>
     <g:HTMLPanel>
         <table>
@@ -43,6 +48,12 @@
                 <td>
                     <g:FlowPanel ui:field="authorNamePanel" styleName="{style.refPanel}">
                         <g:TextBox ui:field="authorName" styleName="{style.textField}"></g:TextBox>
+                    </g:FlowPanel>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <g:FlowPanel ui:field="proposalCheckboxPanel" styleName="{style.proposalCheckboxPanel}">
                     </g:FlowPanel>
                 </td>
             </tr>

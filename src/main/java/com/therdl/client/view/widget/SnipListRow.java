@@ -45,13 +45,13 @@ public class SnipListRow extends Composite{
     @UiField
     FlowPanel colorStripe, snipImgParent, secondColDiv;
     @UiField
-    Label rep, titleLabel, userName, posRef, neutRef, negRef, viewCount, creationDate, postsCount;
+    Label rep, titleLabel, userName, posRef, neutRef, negRef, viewCount, creationDate, postsCount, pledgesCount, countersCount, proposalType, proposalState;
     @UiField
     Image snipImg;
     @UiField
     Button editBtn;
     @UiField
-    FlowPanel editBtnParent, postsPanel, refPanel;
+    FlowPanel editBtnParent, postsPanel, refPanel, pledgesPanel, countersPanel, viewPanel;
     @UiField
     Anchor snipTitle;
 
@@ -67,13 +67,19 @@ public class SnipListRow extends Composite{
         super.onLoad();
 
         // sets background color for snip img and top color strip
-        for(CoreCategory item : CoreCategory.values()) {
-            if(item.getShortName().equals(snipBean.as().getCoreCat())) {
-                colorStripe.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
-                snipImgParent.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
+        if(!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            for(CoreCategory item : CoreCategory.values()) {
+                if(item.getShortName().equals(snipBean.as().getCoreCat())) {
+                    colorStripe.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
+                    snipImgParent.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
 
+                }
             }
+        } else {
+            colorStripe.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
+            snipImgParent.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
         }
+
 
         titleLabel.setText(RDL.i18n.userTitle()+" "+snipBean.as().getAuthor());
         userName.setText(snipBean.as().getAuthor());
@@ -81,8 +87,6 @@ public class SnipListRow extends Composite{
         // set tooltip on the snip img and top color stripe
 
         String toolTip = snipBean.as().getTitle()+" / "+snipBean.as().getCoreCat();
-//        if(!snipBean.as().getSubCat().equals(""))
-//            toolTip += " / "+snipBean.as().getSubCat();
 
         // sets snip data
         snipImgParent.setTitle(toolTip);
@@ -92,14 +96,19 @@ public class SnipListRow extends Composite{
         snipTitle.setText(snipBean.as().getTitle());
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             snipTitle.setHref(GWT.getHostPageBaseURL()+"#"+RDLConstants.Tokens.SNIP_VIEW+":"+snipBean.as().getId());
-        else
+        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
             snipTitle.setHref(GWT.getHostPageBaseURL()+"#"+RDLConstants.Tokens.THREAD_VIEW+":"+snipBean.as().getId());
+        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+            snipTitle.setHref(GWT.getHostPageBaseURL()+"#"+RDLConstants.Tokens.PROPOSAL_VIEW+":"+snipBean.as().getId());
+
 
         posRef.setText(snipBean.as().getPosRef()+" "+RDL.i18n.positiveRef());
         neutRef.setText(snipBean.as().getNeutralRef()+" "+RDL.i18n.neutralRef());
         negRef.setText(snipBean.as().getNegativeRef()+" "+RDL.i18n.negativeRef());
         viewCount.setText(snipBean.as().getViews()+" "+RDL.i18n.views());
         postsCount.setText(snipBean.as().getPosts()+" "+RDL.i18n.posts());
+        pledgesCount.setText(snipBean.as().getPledges()+" "+RDL.i18n.pledges());
+        countersCount.setText(snipBean.as().getCounters()+" "+RDL.i18n.counters());
 
         if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.SNIP))
             snipImg.setUrl(Resources.INSTANCE.SnipImage().getSafeUri().asString());
@@ -111,6 +120,8 @@ public class SnipListRow extends Composite{
             snipImg.setUrl(Resources.INSTANCE.MaterialImage().getSafeUri().asString());
         if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.THREAD))
             snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
+        if(snipBean.as().getSnipType().equals(RDLConstants.SnipType.PROPOSAL))
+            snipImg.setUrl(Resources.INSTANCE.ProposalImageGif().getSafeUri().asString());
 
 
         Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
@@ -140,18 +151,32 @@ public class SnipListRow extends Composite{
             editBtn.setWidth("55px");
         }
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             postsPanel.getElement().getStyle().setProperty("display","none");
-        else
+            pledgesPanel.getElement().getStyle().setProperty("display","none");
+            countersPanel.getElement().getStyle().setProperty("display","none");
+        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             refPanel.getElement().getStyle().setProperty("display","none");
+            pledgesPanel.getElement().getStyle().setProperty("display","none");
+            countersPanel.getElement().getStyle().setProperty("display","none");
+        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            postsPanel.getElement().getStyle().setProperty("display","none");
+            refPanel.getElement().getStyle().setProperty("display","none");
+            viewPanel.getElement().getStyle().setProperty("display","none");
+
+            proposalType.setText(RDL.i18n.type()+": "+snipBean.as().getProposalType());
+            proposalState.setText(RDL.i18n.state()+": "+snipBean.as().getProposalState());
+        }
     }
 
     @UiHandler("editBtn")
     public void onEditBtnClicked(ClickEvent event) {
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipBean.as().getId());
-        else
+        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
             History.newItem(RDLConstants.Tokens.THREAD_EDIT+":"+snipBean.as().getId());
+        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+            History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT+":"+snipBean.as().getId());
     }
 
 //    @UiHandler("snipTitle")

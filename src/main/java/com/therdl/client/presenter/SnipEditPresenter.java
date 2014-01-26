@@ -139,7 +139,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(pageToRedirect);
+                        History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
 
                         //fetchSnips();
 
