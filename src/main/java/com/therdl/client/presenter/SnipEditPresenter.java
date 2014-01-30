@@ -72,7 +72,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         container.add(view.asWidget());
 
         loadEditor();
-        //  fetchSnips();
     }
 
     @Override
@@ -90,7 +89,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         }
 
         loadEditor();
-        //   fetchSnips();
 
     }
 
@@ -140,8 +138,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
                         History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
-
-                        //fetchSnips();
 
                     } else {
                         log.info("SnipEditPresenter submit post fail");
@@ -194,10 +190,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                         // ok now vaildate for dropdown
                         log.info("SnipEditPresenter onDeleteSnip  ok now validating");
                         History.newItem(RDLConstants.Tokens.SNIPS);
-
-
-                        //fetchSnips();
-
                     } else {
                         log.info("SnipEditPresenter onDeleteSnip fail");
 

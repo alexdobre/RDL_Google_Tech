@@ -60,7 +60,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     AppMenu appMenu;
 
     @UiField
-    FlowPanel snipViewCont, referenceCont, radioBtnParent, referenceListCont, bottomCont, refFilterParent, bottomPanel;
+    FlowPanel snipViewCont, referenceCont, radioBtnParent, radioBtnParentProp, referenceListCont, bottomCont, refFilterParent, bottomPanel;
     @UiField
     RichTextArea richTextArea;
     @UiField
@@ -68,7 +68,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiField
     Button showRef, leaveRef, saveRef, closeRef;
     @UiField
-    RadioButton rb1, rb2, rb3;
+    RadioButton rb1, rb2, rb3, prb1, prb2;
     @UiField
     Image repBtn;
     @UiField
@@ -89,10 +89,19 @@ public class SnipViewImpl extends Composite implements SnipView {
         this.currentUserBean = currentUserBean;
         setAppMenu(currentUserBean);
 
-        if(Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            radioBtnParentProp.getElement().getStyle().setProperty("display","none");
+        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             btnTextShow = RDL.i18n.showPosts();
             btnTextHide = RDL.i18n.hidePosts();
             snipType = RDLConstants.SnipType.POST;
+
+            radioBtnParent.getElement().getStyle().setProperty("display","none");
+            radioBtnParentProp.getElement().getStyle().setProperty("display","none");
+        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            btnTextShow = RDL.i18n.showPosts();
+            btnTextHide = RDL.i18n.hidePosts();
+            snipType = RDLConstants.SnipType.PLEDGE+","+RDLConstants.SnipType.COUNTER;
 
             radioBtnParent.getElement().getStyle().setProperty("display","none");
         }
@@ -174,7 +183,7 @@ public class SnipViewImpl extends Composite implements SnipView {
             saveRef.setText(RDL.i18n.savePost());
         }
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             if(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1) {
                 repBtn.getElement().getStyle().setProperty("display", "none");
             } else {
@@ -204,13 +213,17 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiHandler("leaveRef")
     public void onLeaveRefClicked(ClickEvent event) {
         if(currentUserBean.as().isAuth()) {
-            referenceCont.getElement().getStyle().setProperty("display", "block");
-            refFilterParent.getElement().getStyle().setProperty("display", "none");
-            closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
-            referenceListCont.getElement().getStyle().setProperty("display", "none");
-        //    checkboxBtnParent.clear();
-            editorWidget.setHTML("");
-            showRef.setText(btnTextShow);
+            if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !currentUserBean.as().getIsRDLSupporter()) {
+                Window.alert(RDL.i18n.pledgeCreateMsg());
+            } else {
+                referenceCont.getElement().getStyle().setProperty("display", "block");
+                refFilterParent.getElement().getStyle().setProperty("display", "none");
+                closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
+                referenceListCont.getElement().getStyle().setProperty("display", "none");
+            //    checkboxBtnParent.clear();
+                editorWidget.setHTML("");
+                showRef.setText(btnTextShow);
+            }
         } else {
             presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft()+120, leaveRef.getAbsoluteTop()-120, "");
         }
@@ -237,7 +250,10 @@ public class SnipViewImpl extends Composite implements SnipView {
             searchOptionsBean = beanery.snipBean();
             searchOptionsBean.as().setSortOrder(-1);
             searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+            searchOptionsBean.as().setSnipType(snipType);
+
             getSnipReferences(searchOptionsBean);
+
         } else {
             bottomCont.getElement().getStyle().setProperty("display", "none");
             refFilterParent.getElement().getStyle().setProperty("display", "none");
@@ -246,7 +262,6 @@ public class SnipViewImpl extends Composite implements SnipView {
     }
 
     public void getSnipReferences(AutoBean<SnipBean> searchOptions) {
-        searchOptions.as().setSnipType(snipType);
         this.searchOptionsBean = searchOptions;
 
         loadingWidget.getElement().getStyle().setProperty("display","block");
@@ -277,11 +292,12 @@ public class SnipViewImpl extends Composite implements SnipView {
      * in response handler call this function to hide leave reference button and
      * also increment ref counter in the view for the saved reference type
      * @param refType saved reference type
+     * @param snipType saved snip type, can be reference/post/pledge/counter
      */
-    public void saveReferenceResponseHandler(String refType) {
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+    public void saveReferenceResponseHandler(String refType, String snipType) {
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
             leaveRef.getElement().getStyle().setProperty("display", "none");
-        snipListRow.incrementRefCounterByRefType(refType);
+        snipListRow.incrementRefCounterByRefType(refType, snipType);
         referenceCont.getElement().getStyle().setProperty("display", "none");
     }
 
@@ -307,11 +323,19 @@ public class SnipViewImpl extends Composite implements SnipView {
                 referenceType = RDLConstants.ReferenceType.NEGATIVE;
             }
             newBean.as().setReferenceType(referenceType);
+            newBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
+        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+            newBean.as().setSnipType(RDLConstants.SnipType.POST);
+        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            String proposalType = RDLConstants.SnipType.PLEDGE;
+            if(prb2.getValue()) {
+                proposalType = RDLConstants.SnipType.COUNTER;
+            }
+            newBean.as().setSnipType(proposalType);
         }
         // set data for reference object
 
         newBean.as().setContent(editorWidget.getHTML());
-        newBean.as().setSnipType(snipType);
         newBean.as().setAuthor(currentUserBean.as().getName());
         newBean.as().setRep(0);
 

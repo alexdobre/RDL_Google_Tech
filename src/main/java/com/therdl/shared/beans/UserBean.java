@@ -107,6 +107,10 @@ public interface UserBean {
         public String getDateGained();
 
         public void setDateGained(String dateGained);
+
+        public String getExpires();
+
+        public void setExpires(String expires);
     }
 
     interface FriendBean {

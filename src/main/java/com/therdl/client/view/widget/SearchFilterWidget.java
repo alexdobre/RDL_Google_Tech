@@ -23,6 +23,7 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.SubCategory;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -154,8 +155,8 @@ public class SearchFilterWidget extends Composite {
 
             ViewUtils.createProposalTypeList(proposalTypeList);
             ViewUtils.createProposalStateList(proposalStateList);
-        }
 
+        }
 
         createSortArrows();
 
@@ -444,9 +445,17 @@ public class SearchFilterWidget extends Composite {
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
         if(view.getPresenter().getController().getCurrentUserBean().as().isAuth()) {
-            History.newItem(editPageToken);
+            if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !view.getCurrentUserBean().as().getIsRDLSupporter())
+                Window.alert(RDL.i18n.proposalCreateMsg());
+            else
+                History.newItem(editPageToken);
         } else {
-            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120,editPageToken);
+            String page = editPageToken;
+            if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !view.getCurrentUserBean().as().getIsRDLSupporter())
+                page = RDLConstants.Tokens.IMPROVEMENTS;
+
+            log.info("page="+page);
+            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120, page);
         }
 	}
 

@@ -297,19 +297,92 @@ public class SnipServiceImpl implements SnipsService {
         // filter references
         if(searchOptions.getReferenceType() != null)
            query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
-        if(searchOptions.getRep() != null)
-            query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+     //   if(searchOptions.getRep() != null)
+      //      query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         if (searchOptions.getAuthor() != null)
             query.put("author", searchOptions.getAuthor());
+        if(searchOptions.getSnipType() != null)
+            query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
 
-        DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
-        int collCount = coll.find(query).count();
+        // if ti
+        if(searchOptions.getAuthorTitle() == null && searchOptions.getAuthorRep() == null) {
+            DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+            int collCount = coll.find(query).count();
 
+            while (collDocs.hasNext()) {
+                DBObject doc = collDocs.next();
+                SnipBean snip = buildBeanObject(doc);
+                snip.setCount(collCount);
+                beans.add(snip);
+            }
+        } else {
+            DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()));
+
+            beans = filterReferencesByUser(collDocs, searchOptions, query, pageIndex);
+        }
+
+
+        return beans;
+    }
+
+    /**
+     * this function is used when searching references/posts/pledges by author reputation or author title
+     * @param collDocs DBCursor for the references
+     * @param searchOptions searchOptions
+     * @param query query for snips
+     * @param pageIndex index of page
+     * @return SnipBean list
+     */
+    private List<SnipBean> filterReferencesByUser(DBCursor collDocs, SnipBean searchOptions, BasicDBObject query, int pageIndex) {
+        DB db = getMongo();
+
+        List<SnipBean> beans = new ArrayList<SnipBean>();
+
+        // retrieve author names for the given snip list
+        List<String> authors = new ArrayList<String>();
         while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
-            SnipBean snip = buildBeanObject(doc);
-            snip.setCount(collCount);
-            beans.add(snip);
+            if(!authors.contains(doc.get("author")))
+                authors.add((String) doc.get("author"));
+
+        }
+
+        DBCollection collUser = db.getCollection("rdlUserData");
+        DBCollection coll = db.getCollection("rdlSnipData");
+
+        BasicDBObject queryUser = new BasicDBObject();
+        queryUser.put("username", new BasicDBObject("$in", authors.toArray(new String[authors.size()])));
+
+        // filter users by rep/title
+        if(searchOptions.getAuthorRep() != null)
+            queryUser.put("rep", new BasicDBObject("$gte", searchOptions.getAuthorRep()));
+        if(searchOptions.getAuthorTitle() != null) {
+            if(searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_DEV))
+                queryUser.put("titles.titleName", RDLConstants.UserTitle.RDL_DEV);
+            else if(searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_USER))
+                queryUser.put("titles.titleName", new BasicDBObject("$ne", RDLConstants.UserTitle.RDL_DEV));
+        }
+        // query on user collection
+        DBCursor collUsers = collUser.find(queryUser);
+
+        // retrieve author names from result
+        List<String> filteredAuthors = new ArrayList<String>();
+        while (collUsers.hasNext()) {
+            DBObject doc = collUsers.next();
+            filteredAuthors.add((String) doc.get("username"));
+        }
+        // add filtered authors in snip query
+        query.put("author", new BasicDBObject("$in", filteredAuthors.toArray(new String[filteredAuthors.size()])));
+
+        // query to get snips for only filtered authors
+        DBCursor collDocs1 = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+        int collCount = coll.find(query).count();
+
+        while (collDocs1.hasNext()) {
+            DBObject doc = collDocs1.next();
+            SnipBean snip1 = buildBeanObject(doc);
+            snip1.setCount(collCount);
+            beans.add(snip1);
         }
 
         return beans;

@@ -154,7 +154,6 @@ public class SessionServlet extends HttpServlet {
                 checkedUser.as().setAvatarUrl(avatarUrl);
             }
 
-            System.out.println(AutoBeanCodex.encode(checkedUser).getPayload());
             PrintWriter out = resp.getWriter();
             out.write(AutoBeanCodex.encode(checkedUser).getPayload());
 

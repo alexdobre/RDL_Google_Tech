@@ -18,8 +18,10 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.events.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -223,6 +225,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
             //***************************************SNIP_View****************************
             else if (token.equals(RDLConstants.Tokens.SNIP_VIEW)) {
+                Global.moduleName = RDLConstants.Modules.IDEAS;
                 log.info("AppController Tokens.SNIP_VIEW");
 
                 String currentSnipId = "";
@@ -647,13 +650,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
      * @param name      String  for user name
      * @param email     String  for user email
      * @param avatarUrl String for user image location acts as a url for mongo/filesystem
-     * @param state     booleam for state information
+     * @param state     boolean for state information
+     * @param titleBeans user titles
      */
-    public void setCurrentUserBean(String name, String email, String avatarUrl, boolean state) {
+    public void setCurrentUserBean(String name, String email, String avatarUrl, boolean state, List<UserBean.TitleBean> titleBeans, boolean isRDLSupporter) {
         this.currentUserBean.as().setAuth(state);
         this.currentUserBean.as().setName(name);
         this.currentUserBean.as().setEmail(email);
         this.currentUserBean.as().setAvatarUrl(avatarUrl);
+        this.currentUserBean.as().setTitles(titleBeans);
+        this.currentUserBean.as().setIsRDLSupporter(isRDLSupporter);
     }
 
 

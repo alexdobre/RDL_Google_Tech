@@ -66,7 +66,6 @@ public class ReferenceSearchFilterWidget extends Composite{
             typeLabel.getElement().getStyle().setProperty("display","none");
             filterLabel.setText(RDL.i18n.filterPosts());
         }
-        log.info("Global.moduleName "+Global.moduleName);
         if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             initProposalCheckBoxes();
         }
@@ -82,7 +81,6 @@ public class ReferenceSearchFilterWidget extends Composite{
     }
 
     private void initProposalCheckBoxes() {
-        log.info("initProposalCheckBoxes");
         proposalHm.put("dev", RDL.i18n.dev());
         proposalHm.put("user", RDL.i18n.user());
         proposalHm.put("pledge", RDL.i18n.pledge());
@@ -174,7 +172,7 @@ public class ReferenceSearchFilterWidget extends Composite{
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 
         if(!authorRep.getText().equals(""))
-            searchOptionsBean.as().setRep(Integer.parseInt(authorRep.getText()));
+            searchOptionsBean.as().setAuthorRep(Integer.parseInt(authorRep.getText()));
 
         if(!authorName.getText().equals(""))
             searchOptionsBean.as().setAuthor(authorName.getText());
@@ -185,10 +183,32 @@ public class ReferenceSearchFilterWidget extends Composite{
         if(!dateFilterWidget.getDateTo().equals(""))
             searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateTo());
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxList));
-        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-            searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxListProp));
+            searchOptionsBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
+
+        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+            searchOptionsBean.as().setSnipType(RDLConstants.SnipType.POST);
+        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+
+            if(checkBoxListProp.get(0).getValue() && !checkBoxListProp.get(1).getValue()) {
+                searchOptionsBean.as().setAuthorTitle(RDLConstants.UserTitle.RDL_DEV);
+            } else if(!checkBoxListProp.get(0).getValue() && checkBoxListProp.get(1).getValue()) {
+                searchOptionsBean.as().setAuthorTitle(RDLConstants.UserTitle.RDL_USER);
+            }
+
+            String checkedTypes = "";
+            if(checkBoxListProp.get(2).getValue())
+                checkedTypes += RDLConstants.SnipType.PLEDGE + ",";
+            if(checkBoxListProp.get(3).getValue())
+                checkedTypes += RDLConstants.SnipType.COUNTER + ",";
+
+            if(!checkedTypes.equals(""))
+                checkedTypes = checkedTypes.substring(0,checkedTypes.length()-1);
+
+            searchOptionsBean.as().setSnipType(checkedTypes);
+
+        }
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
 

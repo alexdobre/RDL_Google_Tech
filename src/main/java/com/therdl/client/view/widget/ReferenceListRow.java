@@ -66,9 +66,20 @@ public class ReferenceListRow extends Composite{
 
             refRepBtn.getElement().getStyle().setProperty("display","none");
         } else {
-            refFlag.getElement().getStyle().setProperty("display","none");
 
-            if(referenceBean.as().getAuthor().equals(currentUserBean.as().getName()) ||  referenceBean.as().getIsRepGivenByUser() == 1) {
+            if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+                refFlag.getElement().getStyle().setProperty("display","none");
+            } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+                if(referenceBean.as().getSnipType().equals(RDLConstants.SnipType.PLEDGE)) {
+                    refFlag.setText(RDL.i18n.pledge());
+                    refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(RDLConstants.ReferenceType.POSITIVE));
+                } if(referenceBean.as().getSnipType().equals(RDLConstants.SnipType.COUNTER)) {
+                    refFlag.setText(RDL.i18n.counter());
+                    refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(RDLConstants.ReferenceType.NEGATIVE));
+                }
+            }
+
+            if(!currentUserBean.as().isAuth() || referenceBean.as().getAuthor().equals(currentUserBean.as().getName()) ||  (referenceBean.as().getIsRepGivenByUser() != null && referenceBean.as().getIsRepGivenByUser() == 1)) {
                 refRepBtn.getElement().getStyle().setProperty("display", "none");
             } else {
                 refRepBtn.getElement().getStyle().setProperty("display", "");

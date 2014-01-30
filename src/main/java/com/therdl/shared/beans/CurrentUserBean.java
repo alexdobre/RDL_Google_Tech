@@ -1,5 +1,7 @@
 package com.therdl.shared.beans;
 
+import java.util.List;
+
 /**
  * See AuthUserBean javadoc for use
  * use this bean only to maintain client side state
@@ -72,5 +74,13 @@ public interface CurrentUserBean {
      * @return
      */
     void setRegistered(boolean b);
+
+    List<UserBean.TitleBean> getTitles();
+
+    void setTitles(List<UserBean.TitleBean> titles);
+
+    boolean getIsRDLSupporter();
+
+    void setIsRDLSupporter(boolean isRDLSupporter);
 
 }

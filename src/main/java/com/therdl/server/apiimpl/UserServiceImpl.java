@@ -5,6 +5,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.UserService;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -97,6 +98,16 @@ public class UserServiceImpl implements UserService {
                     checkedUserBean.as().setName(ub.getUsername());
                     checkedUserBean.as().setEmail(ub.getEmail());
                     checkedUserBean.as().setAction("OkUser");
+                    checkedUserBean.as().setTitles(ub.getTitles());
+                    checkedUserBean.as().setIsRDLSupporter(false);
+
+                    for (UserBean.TitleBean titleBean: ub.getTitles()) {
+                        if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+                            checkedUserBean.as().setIsRDLSupporter(true);
+                            break;
+                        }
+                    }
+
                     // always check for null
                     if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
                     return checkedUserBean;
@@ -378,6 +389,7 @@ public class UserServiceImpl implements UserService {
             UserBean.TitleBean titlesBean = beanery.userTitleBean().as();
             titlesBean.setTitleName((String) ((BasicDBObject) obj).get("titleName"));
             titlesBean.setDateGained((String) ((BasicDBObject) obj).get("dateGained"));
+            titlesBean.setExpires((String) ((BasicDBObject) obj).get("expires"));
             titleList.add(titlesBean);
         }
         user.setTitles(titleList);
@@ -470,7 +482,8 @@ public class UserServiceImpl implements UserService {
 
             for (UserBean.TitleBean title : user.getTitles()) {
                 BasicDBObject obj = new BasicDBObject("titleName", title.getTitleName()).
-                        append("dateGained", title.getDateGained());
+                        append("dateGained", title.getDateGained()).
+                        append("expires", title.getExpires());
                 titlesList.add(obj);
             }
 

@@ -210,18 +210,23 @@ public class SnipDispatcherServlet extends HttpServlet {
             // increments reference counter of parent snip for reference type (positive/neutral/negative)
             String parentSnipId = actionBean.as().getId();
 
+            String counterField = RDLConstants.SnipFields.POS_REF;
             if(actionBean.as().getReferenceType() != null) {
-                String refField = RDLConstants.SnipFields.POS_REF;
-
                 if(actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
-                    refField = RDLConstants.SnipFields.NEUTRAL_REF;
+                    counterField = RDLConstants.SnipFields.NEUTRAL_REF;
                 else if(actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
-                    refField = RDLConstants.SnipFields.NEGATIVE_REF;
+                    counterField = RDLConstants.SnipFields.NEGATIVE_REF;
 
-                snipsService.incrementCounter(parentSnipId, refField);
-            } else {
-                snipsService.incrementCounter(parentSnipId, RDLConstants.SnipFields.POSTS);
+            } else if(actionBean.as().getSnipType().equals(RDLConstants.SnipType.PLEDGE)) {
+                counterField = RDLConstants.SnipFields.PLEDGES;
+            } else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.COUNTER)) {
+                counterField = RDLConstants.SnipFields.COUNTERS;
+            } else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
+                counterField = RDLConstants.SnipFields.POSTS;
             }
+
+            snipsService.incrementCounter(parentSnipId, counterField);
+
             // reset snip id and call create snip to save reference object as separate entity in the snip collection
             actionBean.as().setId(null);
             actionBean.as().setCreationDate(snipsService.makeTimeStamp());
@@ -234,7 +239,7 @@ public class SnipDispatcherServlet extends HttpServlet {
             SnipBean bean = snipsService.addReference(linkAutoBean, parentSnipId);
 
             // in the case of post a user can reply the save thread more than one time, so no need to save this information
-            if(actionBean.as().getSnipType().equals(RDLConstants.SnipType.REFERENCE)) {
+            if(!actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
                 String email = (String) sessions.get().getAttribute("userid");
                 AutoBean<UserBean.RefGivenBean> refGivenBean = beanery.userRefGivenBean();
                 refGivenBean.as().setSnipId(parentSnipId);

@@ -131,6 +131,11 @@
                         <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3" text="{i18n.negative}"></g:RadioButton>
                     </g:FlowPanel>
 
+                    <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
+                        <g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1" text="{i18n.pledge}"></g:RadioButton>
+                        <g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2" text="{i18n.counter}"></g:RadioButton>
+                    </g:FlowPanel>
+
                     <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
                     <g:FlowPanel styleName="{style.refButtonsCont}">
                         <g:Button ui:field="saveRef" text="{i18n.saveReference}"/>

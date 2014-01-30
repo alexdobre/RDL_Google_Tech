@@ -1,5 +1,7 @@
 package com.therdl.shared.beans;
 
+import java.util.List;
+
 /**
  * A bean to pass  the current authorised use;s credentials to the sever
  * for login and sign up
@@ -72,5 +74,12 @@ public interface AuthUserBean {
 
     void setAction(String action);
 
+    List<UserBean.TitleBean> getTitles();
+
+    void setTitles(List<UserBean.TitleBean> titles);
+
+    boolean getIsRDLSupporter();
+
+    void setIsRDLSupporter(boolean isRDLSupporter);
 
 }

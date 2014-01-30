@@ -109,8 +109,9 @@ public interface UserService {
 
     /**
      * finds a user on email
-     * @param user
-     * @return   UserBean
+     * @param bean
+     * @param hash
+     * @return UserBean
      */
     AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash);
 

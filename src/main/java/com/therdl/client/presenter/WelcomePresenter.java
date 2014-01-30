@@ -1,6 +1,7 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -8,13 +9,11 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.Constants;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.JSOModel;
+import com.therdl.shared.beans.*;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 
@@ -33,6 +32,7 @@ import java.util.logging.Logger;
 public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
 
     private static Logger log = Logger.getLogger("");
+    private Beanery beanery = GWT.create(Beanery.class);
 
     private String avatarUrl = null;
 
@@ -90,7 +90,6 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
      */
     public void doLogIn(String emailtxt, String passwordText) {
 
-        Beanery beanery = GWT.create(Beanery.class);
         log.info("v onSubmit password " + passwordText + " emailtxt  " + emailtxt);
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
@@ -121,22 +120,26 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                         log.info("WelcomePresenter onSubmit onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
                         log.info("WelcomePresenter onSubmit onResponseReceived json" + response.getText());
                         JSOModel data = JSOModel.fromJson(response.getText());
+
+                        AutoBean<AuthUserBean> authUserBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
+
                         String email = data.get("email");
                         String name = data.get("name");
+                        boolean isRDLSupporter = data.getBoolean("isRDLSupporter");
 
                         boolean auth = data.getBoolean("auth");
                         if (!auth) {
                             log.info("WelcomePresenter onResponseReceived  !auth  ");
                             // use app menu
                             welcomeView.showLoginFail();
-                            controller.setCurrentUserBean("", "", avatarUrl, auth);
+                            controller.setCurrentUserBean("", "", avatarUrl, auth, null, isRDLSupporter);
                         } else {
 
                             if (data.get("name") != null) {
                                 log.info("WelcomePresenter  avatarurl exists" + data.get("avatarUrl"));
                                 avatarUrl = data.get("avatarUrl");
                             }
-                            controller.setCurrentUserBean(name, email, avatarUrl, auth);
+                            controller.setCurrentUserBean(name, email, avatarUrl, auth, authUserBean.as().getTitles(), isRDLSupporter);
                             welcomeView.setloginresult(name, email, auth);
                             // use app menu
                             // try and update any open view

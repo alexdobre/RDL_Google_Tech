@@ -178,6 +178,13 @@ public interface SnipBean {
 
     void setProposalState(String proposalState);
 
+    Integer getAuthorRep();
+
+    void setAuthorRep(Integer authorRep);
+
+    String getAuthorTitle();
+
+    void setAuthorTitle(String authorTitle);
 
     /**
      * nested interfaces

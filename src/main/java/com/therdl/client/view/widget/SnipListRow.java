@@ -188,7 +188,7 @@ public class SnipListRow extends Composite{
         rep.setText(snipBean.as().getRep()+1+"");
     }
 
-    public void incrementRefCounterByRefType(String refType) {
+    public void incrementRefCounterByRefType(String refType, String snipType) {
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             if(refType.equals(RDLConstants.ReferenceType.POSITIVE))
                 posRef.setText(snipBean.as().getPosRef()+1+" "+RDL.i18n.positiveRef());
@@ -196,8 +196,13 @@ public class SnipListRow extends Composite{
                 neutRef.setText(snipBean.as().getNeutralRef()+1+" "+RDL.i18n.neutralRef());
             else if(refType.equals(RDLConstants.ReferenceType.NEGATIVE))
                 negRef.setText(snipBean.as().getNegativeRef()+1+" "+RDL.i18n.negativeRef());
-        } else {
+        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             postsCount.setText(snipBean.as().getPosts()+1+" "+RDL.i18n.posts());
+        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            if(snipType.equals(RDLConstants.SnipType.PLEDGE))
+                pledgesCount.setText(snipBean.as().getPledges()+1+" "+RDL.i18n.pledges());
+            else if(snipType.equals(RDLConstants.SnipType.COUNTER))
+                countersCount.setText(snipBean.as().getCounters()+1+" "+RDL.i18n.counters());
         }
     }
 

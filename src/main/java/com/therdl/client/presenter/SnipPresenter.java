@@ -135,6 +135,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         log.info("SnipPresenter submit reference to server");
         bean.as().setAction("saveReference");
         final String refType = bean.as().getReferenceType();
+        final String snipType = bean.as().getSnipType();
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
         if (!Constants.DEPLOY) {
@@ -157,8 +158,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                     if (response.getStatusCode() == 200) {
                         // ok now vaildate for dropdown
                         log.info("SnipPresenter submit post ok now validating");
-                        snipView.saveReferenceResponseHandler(refType);
-                   //     getSnipReferences("positive,negative,neutral", 0);
+                        snipView.saveReferenceResponseHandler(refType, snipType);
                     } else {
                         log.info("SnipPresenter submit post fail");
                     }
@@ -198,7 +198,6 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         if(controller.getCurrentUserBean().as().isAuth()) {
             searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
         }
-      //  currentBean.as().setReferenceType(referenceTypes);
 
 
         String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();

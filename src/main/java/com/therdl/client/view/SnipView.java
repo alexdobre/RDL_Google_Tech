@@ -36,6 +36,6 @@ public interface SnipView extends IsWidget {
 
     public void giveRepResponseHandler();
 
-    public void saveReferenceResponseHandler(String refType);
+    public void saveReferenceResponseHandler(String refType, String snipType);
 
 }

@@ -133,4 +133,10 @@ public interface RDLConstants {
             put(PARKED, RDL.i18n.propStateParked());
         }};
     }
+
+    public interface UserTitle {
+        String RDL_SUPPORTER = "RDL Supporter";
+        String RDL_DEV = "RDL Dev";
+        String RDL_USER = "RDL User";
+    }
 }
