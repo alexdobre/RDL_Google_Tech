@@ -108,6 +108,7 @@ public class SessionServlet extends HttpServlet {
             String hash = BCrypt.hashpw(password, BCrypt.gensalt());
             System.out.println("SessionServlet password hash = " + hash);
             newUserBean.as().setPassHash(hash);
+            newUserBean.as().setRep(authBean.as().getRep());
             userService.createUser(newUserBean.as());
             authBean.as().setAuth(true);
             authBean.as().setAction("newUserOk");

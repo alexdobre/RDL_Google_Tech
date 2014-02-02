@@ -94,6 +94,7 @@ public class SnipListRow extends Composite{
 
         rep.setText(snipBean.as().getRep()+"");
         snipTitle.setText(snipBean.as().getTitle());
+
         if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             snipTitle.setHref(GWT.getHostPageBaseURL()+"#"+RDLConstants.Tokens.SNIP_VIEW+":"+snipBean.as().getId());
         else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))

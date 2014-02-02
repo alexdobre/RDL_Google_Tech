@@ -25,6 +25,11 @@
             margin-left: 80px;
         }
 
+        @external .arrowImg;
+        .arrowImg {
+            display: block;
+        }
+
     </ui:style>
     <g:HTMLPanel>
         <table>

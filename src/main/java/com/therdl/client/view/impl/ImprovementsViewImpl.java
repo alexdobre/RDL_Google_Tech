@@ -96,6 +96,7 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
             this.authorName = tokenSplit[1];
         } else {
             this.token = token;
+            this.authorName = null;
         }
     }
 
@@ -126,7 +127,6 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 
     public AutoBean<SnipBean> initSearchOptionsBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-        searchOptionsBean.as().setAuthor(authorName);
         searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
         searchOptionsBean.as().setSortOrder(-1);
         searchOptionsBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
@@ -148,6 +148,7 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 
     @Override
     public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+        authorName = null;
         impListRowContainer.clear();
         impListRowContainer.add(new ListWidget(this, beanList, pageIndex));
         impLoadingWidget.getElement().getStyle().setProperty("display","none");
@@ -156,7 +157,7 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
     @Override
     public void setLoginResult(String name, String email, boolean auth) {
         if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true " + name);
+            log.info("SnipSearchViewImpl setLoginResult auth true " + name);
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);

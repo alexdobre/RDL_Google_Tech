@@ -21,6 +21,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * gwt widget class for reference search filter, used in snip view page
+ */
 public class ReferenceSearchFilterWidget extends Composite{
     private static Logger log = Logger.getLogger("");
 
@@ -72,6 +75,9 @@ public class ReferenceSearchFilterWidget extends Composite{
         createSortArrows();
     }
 
+    /**
+     * creates checkboxes for reference types
+     */
     private void initRefTypeCheckboxes() {
         referenceTypeHm.put(RDLConstants.ReferenceType.POSITIVE, RDL.i18n.positiveShort());
         referenceTypeHm.put(RDLConstants.ReferenceType.NEUTRAL, RDL.i18n.neutral());
@@ -80,6 +86,9 @@ public class ReferenceSearchFilterWidget extends Composite{
         checkBoxList = ViewUtils.createCheckBoxList(referenceTypeHm, refTypePanel);
     }
 
+    /**
+     * creates check boxes to filter pledges or counters (by author title and proposal type)
+     */
     private void initProposalCheckBoxes() {
         proposalHm.put("dev", RDL.i18n.dev());
         proposalHm.put("user", RDL.i18n.user());
@@ -88,8 +97,6 @@ public class ReferenceSearchFilterWidget extends Composite{
 
         checkBoxListProp = ViewUtils.createCheckBoxList(proposalHm, proposalCheckboxPanel);
     }
-
-
 
     /**
      * sets sort arrows for some search fields (views, rep, pos/neut/neg ref, author, date), down for descending order, up for ascending order
@@ -168,6 +175,10 @@ public class ReferenceSearchFilterWidget extends Composite{
         view.getSnipReferences(formSearchOptionsBean());
     }
 
+    /**
+     * forms search option bean from filter form elements
+     * @return search option bean as SnipBean object
+     */
     private AutoBean<SnipBean> formSearchOptionsBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 

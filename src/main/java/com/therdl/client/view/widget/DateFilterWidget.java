@@ -16,6 +16,10 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 
 import java.util.Date;
 
+/**
+ * DateFilterWidget contains 2 TextBox to select dates (from, to). When clicking to TextBox, opens datePicker, to choose dates.
+ * Used in search filter widgets (snip search filter and reference serach filter)
+ */
 public class DateFilterWidget extends Composite{
     interface DateFilterWidgetUiBinder extends UiBinder<HTMLPanel, DateFilterWidget> {
     }
@@ -84,18 +88,34 @@ public class DateFilterWidget extends Composite{
         popupPanel.show();
     }
 
+    /**
+     * returns dateFrom TextBox value
+     * @return
+     */
     public String getDateFrom() {
         return dateFrom.getValue();
     }
 
+    /**
+     * returns dateTo TextBox value
+     * @return
+     */
     public String getDateTo() {
         return dateTo.getValue();
     }
 
+    /**
+     * sets dateFrom TextBox value
+     * @param date
+     */
     public void setDateFrom(String date) {
         dateFrom.setText(date);
     }
 
+    /**
+     * sets dateTo TextBox value
+     * @param date
+     */
     public void setDateTo(String date) {
         dateTo.setText(date);
     }

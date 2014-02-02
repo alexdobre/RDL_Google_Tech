@@ -14,10 +14,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.widget.*;
 import com.therdl.client.view.SnipView;
-import com.therdl.shared.Global;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.Constants;
-import com.therdl.shared.RequestObserver;
+import com.therdl.shared.*;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -213,19 +210,27 @@ public class SnipViewImpl extends Composite implements SnipView {
     @UiHandler("leaveRef")
     public void onLeaveRefClicked(ClickEvent event) {
         if(currentUserBean.as().isAuth()) {
-            if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !currentUserBean.as().getIsRDLSupporter()) {
-                Window.alert(RDL.i18n.pledgeCreateMsg());
-            } else {
-                referenceCont.getElement().getStyle().setProperty("display", "block");
-                refFilterParent.getElement().getStyle().setProperty("display", "none");
-                closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
-                referenceListCont.getElement().getStyle().setProperty("display", "none");
-            //    checkboxBtnParent.clear();
-                editorWidget.setHTML("");
-                showRef.setText(btnTextShow);
-            }
+            leaveRefHandler(currentUserBean);
         } else {
-            presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft()+120, leaveRef.getAbsoluteTop()-120, "");
+            presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft()+120, leaveRef.getAbsoluteTop()-120, new LoginHandler() {
+                @Override
+                public void onSuccess(AutoBean<CurrentUserBean> userBean) {
+                    leaveRefHandler(userBean);
+                }
+            });
+        }
+    }
+
+    private void leaveRefHandler(AutoBean<CurrentUserBean> userBean) {
+        if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter()) {
+            Window.alert(RDL.i18n.pledgeCreateMsg());
+        } else {
+            referenceCont.getElement().getStyle().setProperty("display", "block");
+            refFilterParent.getElement().getStyle().setProperty("display", "none");
+            closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
+            referenceListCont.getElement().getStyle().setProperty("display", "none");
+            editorWidget.setHTML("");
+            showRef.setText(btnTextShow);
         }
     }
 

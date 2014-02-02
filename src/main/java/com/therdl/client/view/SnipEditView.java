@@ -26,7 +26,7 @@ import java.util.List;
 public interface SnipEditView {
 
     public interface Presenter {
-        void onDeleteSnip(String id);
+        void onDeleteSnip(String id, String pageToRedirect);
 
         void submitBean(AutoBean<SnipBean> bean, String pageToRedirect);
 

@@ -15,9 +15,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.therdl.client.RDL;
 import com.therdl.client.view.SignInView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.LoginHandler;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -68,7 +71,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
     interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
     }
 
-    public SignInViewImpl(WelcomeViewImpl welcomeView, final String pageToRedirect) {
+    public SignInViewImpl(WelcomeViewImpl welcomeView) {
         super(true);
         add(uiBinder.createAndBindUi(this));
         this.welcomeViewImpl = welcomeView;
@@ -76,15 +79,12 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         email.setText("Email");
         this.setStyleName("signInView");
 
-        // user has just sucessfully logged in update app menu
+        // user has just successfully logged in update app menu
         GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
             @Override
             public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
                 hide();
-                if(!pageToRedirect.equals(""))
-                    History.newItem(pageToRedirect);
-
             }
         });
 
@@ -124,19 +124,16 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         log.info("SignInViewImpl onSubmit");
 
         String eMail = email.getText();
-        String psswd = password.getText();
+        String password = this.password.getText();
 
-        log.info("SignInViewImpl onSubmit eMail psswd " + eMail + " : " + psswd);
+        log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
 
-
-        if (eMail != null && !eMail.equals("Email") && psswd != null && !password.equals("password")) {
-            log.info("SignInViewImpl onSubmit to server flow ");
-            welcomeViewImpl.onSubmit(eMail, psswd);
+        if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
+            welcomeViewImpl.onSubmit(eMail, password);
 
         } else {
-
             loginFail.setVisible(true);
-            loginFail.setText("please enter a valid username and password");
+            loginFail.setText(RDL.i18n.loginFailMsg1());
 
         }
     }

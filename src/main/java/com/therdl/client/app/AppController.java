@@ -121,9 +121,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             public void onSnipSelectEvent(SnipViewEvent event) {
                 if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
                     History.newItem(RDLConstants.Tokens.SNIP_VIEW+":"+event.getSnipId());
-                else
+                else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
                     History.newItem(RDLConstants.Tokens.THREAD_VIEW+":"+event.getSnipId());
-                //  History.fireCurrentHistoryState();
+                else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+                    History.newItem(RDLConstants.Tokens.PROPOSAL_VIEW+":"+event.getSnipId());
             }
         });
 
@@ -216,7 +217,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                         welcomePresenter.go(container, currentUserBean);
 
                         if (currentUserBean.as().isAuth()) {
-                            welcomeView.setloginresult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
+                            welcomeView.setLoginResult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
                         }
                     }
                 });
@@ -360,7 +361,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 
                 if (threadEditView == null) {
-                    threadEditView = new SnipEditViewImpl(currentUserBean, RDLConstants.Modules.STORIES);
+                    threadEditView = new SnipEditViewImpl(currentUserBean);
                 }
                 final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(threadEditView, currentSnipId, this);
 
@@ -418,7 +419,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 
                 if (proposalEditView == null) {
-                    proposalEditView = new SnipEditViewImpl(currentUserBean, RDLConstants.Modules.IMPROVEMENTS);
+                    proposalEditView = new SnipEditViewImpl(currentUserBean);
                 }
                 final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(proposalEditView, currentSnipId, this);
 
@@ -474,6 +475,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             //***************************************SNIP_EDIT****************************
             // only authorised users
             else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
+                Global.moduleName = RDLConstants.Modules.IDEAS;
 
                 String currentSnipId = "";
                 if (tokenSplit.length == 2) {
@@ -484,7 +486,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 
                 if (snipEditView == null) {
-                    snipEditView = new SnipEditViewImpl(currentUserBean, RDLConstants.Modules.IDEAS);
+                    snipEditView = new SnipEditViewImpl(currentUserBean);
                 }
                 final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 

@@ -114,8 +114,6 @@ public class SnipSearchPresenter implements Presenter, SearchView.Presenter {
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
 
-                  //  if (data.length() == 0) return;
-
                     ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
                     ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
@@ -137,7 +135,6 @@ public class SnipSearchPresenter implements Presenter, SearchView.Presenter {
         } catch (RequestException e) {
             log.info(e.getLocalizedMessage());
         }
-    }    // end initialUpdate method
-
+    }
 
 }

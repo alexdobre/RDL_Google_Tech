@@ -17,11 +17,9 @@ import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
-import com.therdl.shared.CoreCategory;
-import com.therdl.shared.Global;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.SubCategory;
+import com.therdl.shared.*;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 
@@ -152,6 +150,8 @@ public class SearchFilterWidget extends Composite {
 
             contentLabel.getElement().getStyle().setProperty("display","none");
             content.getElement().getStyle().setProperty("display","none");
+
+            filterLabel.setText(RDL.i18n.filterProposals());
 
             ViewUtils.createProposalTypeList(proposalTypeList);
             ViewUtils.createProposalStateList(proposalStateList);
@@ -445,19 +445,26 @@ public class SearchFilterWidget extends Composite {
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
         if(view.getPresenter().getController().getCurrentUserBean().as().isAuth()) {
-            if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !view.getCurrentUserBean().as().getIsRDLSupporter())
-                Window.alert(RDL.i18n.proposalCreateMsg());
-            else
-                History.newItem(editPageToken);
+            createNewBtnHandler(editPageToken, view.getCurrentUserBean());
         } else {
-            String page = editPageToken;
-            if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !view.getCurrentUserBean().as().getIsRDLSupporter())
-                page = RDLConstants.Tokens.IMPROVEMENTS;
+            final String pageToRedirect = editPageToken;
+            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120, new LoginHandler() {
 
-            log.info("page="+page);
-            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120, page);
+                @Override
+                public void onSuccess(AutoBean<CurrentUserBean> currentUserBean) {
+                    createNewBtnHandler(pageToRedirect, currentUserBean);
+
+                }
+            });
         }
 	}
+
+    private void createNewBtnHandler(String editPageToken, AutoBean<CurrentUserBean> userBean) {
+        if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter())
+            Window.alert(RDL.i18n.proposalCreateMsg());
+        else
+            History.newItem(editPageToken);
+    }
 
     /**
      * sets filter's fields by given bean

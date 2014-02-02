@@ -20,6 +20,7 @@ import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LogoutPopupWidget;
 import com.therdl.shared.Constants;
+import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.client.view.widget.text.*;
 import com.therdl.shared.events.*;
@@ -86,6 +87,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
     LogoutPopupWidget logoutPopup;
 
+    LoginHandler loginHandler;
 
     public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -100,7 +102,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
             @Override
             public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp(500,30, "");
+                showLoginPopUp(500,30, null);
             }
         });
 
@@ -127,11 +129,12 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * creates and shows login popup and sets its parameters
      * @param posLeft left position
      * @param posTop top position
-     * @param pageToRedirect page to redirect if after login is completed successfully
+     * @param loginHandler handler which is called when login is successful
      */
-    public void showLoginPopUp(int posLeft, int posTop, String pageToRedirect) {
+    public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler) {
+        this.loginHandler = loginHandler;
 
-        signInView = new SignInViewImpl(this, pageToRedirect);
+        signInView = new SignInViewImpl(this);
         signInView.setGlassEnabled(true);
         signInView.setModal(true);
         signInView.setPopupPosition(posLeft, posTop);
@@ -184,9 +187,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * @param auth  boolean auth state from server via presenter
      */
     @Override
-    public void setloginresult(String name, String email, boolean auth) {
+    public void setLoginResult(String name, String email, boolean auth) {
         if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true " + name);
+            log.info("SnipSearchViewImpl setLoginResult auth true " + name);
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
@@ -220,12 +223,11 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     /**
      * called form signin view pop up to initiate log in flow
      *
-     * @param emailtxt     supplied credential
+     * @param emailTxt     supplied credential
      * @param passwordText supplied credential
      */
-    public void onSubmit(String emailtxt, String passwordText) {
-
-        presenter.doLogIn(emailtxt, passwordText);
+    public void onSubmit(String emailTxt, String passwordText) {
+        presenter.doLogIn(emailTxt, passwordText, loginHandler);
     }
 
     @Override

@@ -96,6 +96,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
             this.authorName = tokenSplit[1];
         } else {
             this.token = token;
+            this.authorName = null;
         }
     }
 
@@ -126,7 +127,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
     public AutoBean<SnipBean> initSearchOptionsBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-        searchOptionsBean.as().setAuthor(authorName);
         searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
         searchOptionsBean.as().setSortOrder(-1);
         searchOptionsBean.as().setSnipType(RDLConstants.SnipType.THREAD);
@@ -148,6 +148,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
     @Override
     public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+        authorName = null;
         threadListRowContainer.clear();
         threadListRowContainer.add(new ListWidget(this, beanList, pageIndex));
         threadLoadingWidget.getElement().getStyle().setProperty("display","none");

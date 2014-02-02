@@ -82,4 +82,8 @@ public interface AuthUserBean {
 
     void setIsRDLSupporter(boolean isRDLSupporter);
 
+    Integer getRep();
+
+    void setRep(Integer rep);
+
 }

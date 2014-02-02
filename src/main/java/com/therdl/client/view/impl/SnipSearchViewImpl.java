@@ -96,6 +96,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
             this.authorName = tokenSplit[1];
         } else {
             this.token = token;
+            this.authorName = null;
         }
         appMenu.setIdeasActive();
     }
@@ -123,7 +124,6 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
     public AutoBean<SnipBean> initSearchOptionsBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-        searchOptionsBean.as().setAuthor(authorName);
         searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
         searchOptionsBean.as().setSortOrder(-1);
         searchOptionsBean.as().setSnipType(RDLConstants.SnipType.SNIP +","+RDLConstants.SnipType.HABIT +","+RDLConstants.SnipType.FAST_CAP+","+RDLConstants.SnipType.MATERIAL);
@@ -145,6 +145,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
     @Override
     public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+        authorName = null;
         snipListRowContainer.clear();
         snipListRowContainer.add(new ListWidget(this, beanList, pageIndex));
         loadingWidget.getElement().getStyle().setProperty("display","none");

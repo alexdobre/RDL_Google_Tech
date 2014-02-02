@@ -2,6 +2,7 @@ package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.LoginHandler;
 
 /**
  * see com.therdl.client.view.impl.WelcomeViewImpl javadoc for the
@@ -19,11 +20,10 @@ import com.therdl.client.view.widget.AppMenu;
 public interface WelcomeView {
 
     public interface Presenter {
-
-        void doLogIn(String emailtxt, String passwordText);
-
+        void doLogIn(String emailTxt, String passwordText, LoginHandler loginHandler);
     }
-    public void showLoginPopUp(int posLeft, int posTop, String pageToRedirect);
+
+    public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler);
 
     void logout();
 
@@ -33,7 +33,7 @@ public interface WelcomeView {
 
     void showLoginFail();
 
-    void setloginresult(String name, String email, boolean auth);
+    void setLoginResult(String name, String email, boolean auth);
 
     AppMenu getAppMenu();
 

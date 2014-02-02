@@ -13,6 +13,7 @@
             display:inline-block;
             font-size: 14px;
             text-align: left;
+            width: 84px;
             /*  margin:10px;    */
         }
 
@@ -58,20 +59,6 @@
         .submitPanel {
             display:block;
             width:280px !important;
-        }
-
-
-        .submit {
-            border: 1px solid #AACCEE;
-            display:inline-block;
-            font-size:11px;
-            padding: 3px;
-            width: 70px;
-            margin:5px;
-        }
-
-        .getLinkButton {
-            margin-left: 5px;
         }
 
         @external .getLinkPopup;
@@ -236,8 +223,6 @@
                     <td><g:Label text="{i18n.date}" styleName = '{style.labelText}'/></td>
                     <td>
                         <g:FlowPanel ui:field="datePanel">
-                            <!--<g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}' />
-                            <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}' />-->
                             <rdl:DateFilterWidget ui:field="dateFilterWidget" styleName="{style.dateFilterWidget}" />
                         </g:FlowPanel>
                     </td>

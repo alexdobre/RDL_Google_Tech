@@ -6,6 +6,7 @@ import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.UserService;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -377,7 +378,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername((String) doc.get("username"));
         user.setPassHash((String) doc.get("passHash"));
         user.setEmail((String) doc.get("email"));
-        user.setRep((String) doc.get("rep"));
+        user.setRep(RDLUtils.parseInt(doc.get("rep")));
         BasicDBList titles = (BasicDBList) doc.get("titles");
         BasicDBList friends = (BasicDBList) doc.get("friends");
         BasicDBList repGiven = (BasicDBList) doc.get("repGiven");

@@ -13,6 +13,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Constants;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -135,7 +136,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                 public void onResponseReceived(Request request, Response response) {
 
                     if (response.getStatusCode() == 200) {
-                        // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
                         History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
 
@@ -161,7 +161,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
     // delete
 
     @Override
-    public void onDeleteSnip(String id) {
+    public void onDeleteSnip(String id, final String pageToRedirect) {
 
 
         log.info("SnipEditPresenter onDelete: snip id " + id);
@@ -187,9 +187,9 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                 public void onResponseReceived(Request request, Response response) {
 
                     if (response.getStatusCode() == 200) {
-                        // ok now vaildate for dropdown
-                        log.info("SnipEditPresenter onDeleteSnip  ok now validating");
-                        History.newItem(RDLConstants.Tokens.SNIPS);
+                        log.info("SnipEditPresenter onDeleteSnip ok now validating");
+                        History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
+
                     } else {
                         log.info("SnipEditPresenter onDeleteSnip fail");
 
@@ -242,7 +242,6 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
                 public void onResponseReceived(Request request, Response response) {
 
                     if (response.getStatusCode() == 200) {
-                        // ok now vaildate for dropdown
                         log.info("SnipEditPresenter submit post ok now validating");
                         History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
                     } else {

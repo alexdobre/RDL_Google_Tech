@@ -14,6 +14,9 @@ import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
 
+/**
+ * ListWidget class creates list of SnipListRow widgets with tabs for the given list of snips
+ */
 public class ListWidget extends Composite {
     interface ListWidgetUiBinder extends UiBinder<HTMLPanel, ListWidget> {
     }

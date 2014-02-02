@@ -72,9 +72,9 @@ public interface UserBean {
      * methods below are composition for the Snip rdl schema
      */
 
-    String getRep();
+    Integer getRep();
 
-    void setRep(String rep);
+    void setRep(Integer rep);
 
     List<TitleBean> getTitles();
 

@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.FieldVerifier;
@@ -29,7 +30,7 @@ import java.util.logging.Logger;
  * fields below are standard GWT form fields for user sign-up
  * @ TextBox userName, email
  * @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
- * @ Button submitbBtn
+ * @ Button submitBtn
  */
 public class RegisterViewImpl extends Composite implements RegisterView {
 
@@ -61,7 +62,7 @@ public class RegisterViewImpl extends Composite implements RegisterView {
     PasswordTextBox cpsswd;
 
     @UiField
-    Button submitbBtn;
+    Button submitBtn;
 
     private String username;
     private String password;
@@ -77,12 +78,12 @@ public class RegisterViewImpl extends Composite implements RegisterView {
     /**
      * Handler for form submit
      *
-     * @param ClickEvent event Standard GWT ClickEvent
+     * @param event ClickEvent Standard GWT ClickEvent
      *                   FieldVerifier static class for validation
      *                   AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
      *                   presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
      */
-    @UiHandler("submitbBtn")
+    @UiHandler("submitBtn")
     public void onSubmit(ClickEvent event) {
         log.info("RegisterViewImpl onSubmit verifying fields");
 
@@ -98,27 +99,24 @@ public class RegisterViewImpl extends Composite implements RegisterView {
 
         // can extend validation code here
 
-        if (!FieldVerifier.isValidName(username)) {
-
-            Window.alert("please enter valid username");
-
-
+        if(username.equals("") || password.equals("") || cpsswd.equals("") || email.equals("")) {
+            Window.alert(RDL.i18n.enterRequiredData());
+            return;
         }
 
+        if (!FieldVerifier.isValidName(username)) {
+            Window.alert(RDL.i18n.enterValidUserName());
+            return;
+        }
 
         if (!FieldVerifier.isValidName(eMail)) {
-
-            Window.alert("please enter valid email");
-
-
+            Window.alert(RDL.i18n.enterValidEmail());
+            return;
         }
 
-
         if (!FieldVerifier.isValidName(password)) {
-
-            Window.alert("please enter valid password");
-
-
+            Window.alert(RDL.i18n.enterValidPass());
+            return;
         }
 
 
@@ -129,9 +127,11 @@ public class RegisterViewImpl extends Composite implements RegisterView {
             newUserBean.as().setName(username);
             newUserBean.as().setEmail(eMail);
             newUserBean.as().setPassword(password);
+            newUserBean.as().setIsRDLSupporter(false);
+            newUserBean.as().setRep(0);
             presenter.submitNewUser(newUserBean);
 
-        } else Window.alert("Passwords do not match try again");
+        } else Window.alert(RDL.i18n.passwordsDoNotMatch());
 
     }
 
@@ -140,14 +140,14 @@ public class RegisterViewImpl extends Composite implements RegisterView {
      * Sets the upper header Menu to the correct state for supplied credentials
      * post sign up called from presenter
      *
-     * @param String  name supplied credential
-     * @param String  email supplied credential
-     * @param boolean auth  auth state from server via presenter
+     * @param name supplied credential
+     * @param email supplied credential
+     * @param auth auth state from server via presenter
      */
     @Override
     public void setLoginResult(String name, String email, boolean auth) {
         if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true " + name);
+            log.info("SnipSearchViewImpl setLoginResult auth true " + name);
 
             this.appMenu.setLogOutVisible(true);
             this.appMenu.setSignUpVisible(false);
