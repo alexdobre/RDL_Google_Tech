@@ -1,18 +1,15 @@
 package com.therdl.server.restapi;
 
-import com.google.gson.Gson;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
-import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.FileStorage;
+import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
-import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
@@ -105,7 +102,7 @@ public class SessionServlet extends HttpServlet {
             System.out.println("SessionServlet password hash = " + authBean.as().getName());
             newUserBean.as().setUsername(authBean.as().getName());
             String password = authBean.as().getPassword();
-            String hash = BCrypt.hashpw(password, BCrypt.gensalt());
+            String hash = ServerUtils.encryptString(password);
             System.out.println("SessionServlet password hash = " + hash);
             newUserBean.as().setPassHash(hash);
             newUserBean.as().setRep(authBean.as().getRep());

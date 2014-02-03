@@ -115,4 +115,10 @@ public interface UserService {
      */
     AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash);
 
+    /**
+     * Resets a user password and sends an e-mail to the user with it
+     * @param email
+     */
+    public void recoverPassword (String email);
+
 }

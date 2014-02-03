@@ -5,6 +5,8 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
 import com.therdl.server.api.UserService;
+import com.therdl.server.util.EmailSender;
+import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
@@ -350,6 +352,23 @@ public class UserServiceImpl implements UserService {
         }
 
         return 0;
+    }
+
+
+    @Override
+    public void recoverPassword (String email){
+        String newPass = ServerUtils.generatePassword();
+        String newPassHash = ServerUtils.encryptString(newPass);
+
+        //get the user
+        UserBean userBean = getUserByEmail(email);
+        //reset the pass
+        userBean.setPassHash(newPassHash);
+        //update the user
+        updateUser(userBean);
+
+        //send the e-mail
+        EmailSender.sendNewPassEmail(newPass,email,getMongo());
     }
 
 
