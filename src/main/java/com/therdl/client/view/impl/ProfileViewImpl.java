@@ -17,6 +17,7 @@ import com.therdl.shared.Constants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
@@ -61,6 +62,9 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     @UiField
     FocusPanel profileImagePanel;
 
+    @UiField
+    HTMLPanel titlePanel;
+
     private Image pic;
 
     /**
@@ -95,6 +99,10 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         } else {
 
             setAvatar(currentUserBean.as().getAvatarUrl());
+        }
+
+        for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()){
+            titlePanel.add(new HTMLPanel("<p>Title: "+titleBean.getTitleName()+" dateGained: "+ titleBean.getDateGained()+" dateExpires: "+titleBean.getExpires()));
         }
 
 
