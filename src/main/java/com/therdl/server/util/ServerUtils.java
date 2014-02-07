@@ -4,6 +4,7 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 
 import java.net.UnknownHostException;
 
@@ -40,6 +41,10 @@ public class ServerUtils {
         }
           
         return sb.toString();
+    }
+
+    public static String generateUUID(){
+        return UUID.randomUUID().toString();
     }
 
     /**

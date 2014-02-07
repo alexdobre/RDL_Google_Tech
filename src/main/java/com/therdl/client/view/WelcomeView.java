@@ -20,7 +20,7 @@ import com.therdl.shared.LoginHandler;
 public interface WelcomeView {
 
     public interface Presenter {
-        void doLogIn(String emailTxt, String passwordText, LoginHandler loginHandler);
+        void doLogIn(String emailTxt, String passwordText, Boolean rememberMe , String sid, LoginHandler loginHandler);
     }
 
     public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler);

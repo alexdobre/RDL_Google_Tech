@@ -74,13 +74,10 @@ td {
 }
 
 .signInView {
-    position:fixed;
     top:20px;
     display:block;
     background-color:white!important;
     border:2px solid grey;
-    width:440px;
-    height:180px;
     margin:10px;
     padding:10px;
 }
@@ -121,7 +118,6 @@ td {
 
   .profileImage {
         z-index:500;
-        position:absolute;
         display:inline-block;
         height:220px;
         width:200px;

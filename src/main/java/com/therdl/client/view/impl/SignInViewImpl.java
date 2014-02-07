@@ -1,30 +1,16 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.http.client.*;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SignInView;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.shared.LoginHandler;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.RequestObserver;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.JSOModel;
-import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LogInOkEventEventHandler;
@@ -61,7 +47,10 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
     TextBox email;
 
     @UiField
-    Button submit;
+    com.github.gwtbootstrap.client.ui.Button submit;
+
+    @UiField
+    CheckBox rememberMe;
 
 
     @UiField
@@ -78,6 +67,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         password.setText("password");
         email.setText("Email");
         this.setStyleName("signInView");
+        rememberMe.setValue(true);
 
         // user has just successfully logged in update app menu
         GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
@@ -125,11 +115,12 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
         String eMail = email.getText();
         String password = this.password.getText();
+        Boolean rememberMe = this.rememberMe.getValue();
 
         log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
 
         if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
-            welcomeViewImpl.onSubmit(eMail, password);
+            welcomeViewImpl.onSubmit(eMail, password,rememberMe);
 
         } else {
             loginFail.setVisible(true);

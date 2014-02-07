@@ -42,6 +42,12 @@ public interface AuthUserBean {
 
     void setEmail(String email);
 
+    String getSid();
+    void setSid(String sid);
+
+    Boolean getRememberMe();
+    void setRememberMe(Boolean rememberMe);
+
     String getPassword();
 
     void setPassword(String password);

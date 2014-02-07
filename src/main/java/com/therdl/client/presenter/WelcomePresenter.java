@@ -3,6 +3,7 @@ package com.therdl.client.presenter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -14,7 +15,7 @@ import com.therdl.shared.beans.*;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Logger;
 
 
@@ -69,8 +70,16 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         container.clear();
         welcomeView.init();
         container.add(welcomeView.asWidget());
+
         if (!controller.getCurrentUserBean().as().isAuth()) {
             log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
+            //check the cookie
+            String sessionID = Cookies.getCookie("sid");
+            if (sessionID != null) {
+                //check if the SID is found and authenticate the user
+            }
+
+
             welcomeView.getAppMenu().setLogOutVisible(false);
             welcomeView.getAppMenu().setSignUpVisible(true);
             welcomeView.getAppMenu().setUserInfoVisible(false);
@@ -90,9 +99,11 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
      * @param passwordText String password identifier for login
      * @param loginHandler loginHandler which is called when login is successful
      */
-    public void doLogIn(String emailTxt, String passwordText, final LoginHandler loginHandler) {
+    public void doLogIn(String emailTxt, String passwordText, Boolean rememberMe, String sid, final LoginHandler loginHandler) {
 
         log.info("v onSubmit password " + passwordText + " emailTxt  " + emailTxt);
+        //used in inner class logic
+        final Boolean innerRememberMe = rememberMe;
 
         String authUrl = GWT.getModuleBaseURL() + "getSession";
 
@@ -105,9 +116,15 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
         requestBuilder.setHeader("Content-Type", "application/json");
         try {
             AutoBean<AuthUserBean> authBean = beanery.authBean();
-            authBean.as().setPassword(passwordText);
-            authBean.as().setEmail(emailTxt);
-            authBean.as().setAction("auth");
+            if (sid!=null && emailTxt == null){
+                authBean.as().setSid(sid);
+                authBean.as().setAction("sidAuth");
+            }else{
+                authBean.as().setPassword(passwordText);
+                authBean.as().setEmail(emailTxt);
+                authBean.as().setRememberMe(rememberMe);
+                authBean.as().setAction("auth");
+            }
             String json = AutoBeanCodex.encode(authBean).getPayload();
 
             log.info("WelcomePresenter submit json: " + json);
@@ -143,6 +160,16 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
                             }
                             controller.setCurrentUserBean(name, email, avatarUrl, auth, authUserBean.as().getTitles(), isRDLSupporter);
                             welcomeView.setLoginResult(name, email, auth);
+
+                            //if there is no cookie and remember me was set we create a new cookie
+                            if (innerRememberMe && Cookies.getCookie("sid") == null){
+                                //set session cookie for 14 day expiry.
+                                String sessionID = data.get("sid");
+                                final long DURATION = 1000 * 60 * 60 * 24 * 14;
+                                Date expires = new Date(System.currentTimeMillis() + DURATION);
+                                Cookies.setCookie("sid", sessionID, expires, null, "/", false);
+                            }
+
                             // use app menu
                             // try and update any open view
                             GuiEventBus.EVENT_BUS.fireEvent(new LogInOkEvent());

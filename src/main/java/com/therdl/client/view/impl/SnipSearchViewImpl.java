@@ -1,20 +1,22 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.util.tools.shared.StringUtils;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.RDL;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.widget.*;
-import com.therdl.shared.Constants;
+import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.ListWidget;
+import com.therdl.client.view.widget.LoadingWidget;
+import com.therdl.client.view.widget.SearchFilterWidget;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.*;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;

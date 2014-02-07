@@ -104,7 +104,13 @@ public interface UserService {
      * @param user
      * @return
      */
-    void updateUser(UserBean user);
+    public void updateUser(UserBean user);
+
+    /**
+     * updates the SID of the user only
+     * @param bean
+     */
+    public void updateSid(AuthUserBean bean);
 
 
     /**

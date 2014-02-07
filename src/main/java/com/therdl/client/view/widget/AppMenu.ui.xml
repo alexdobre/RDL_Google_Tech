@@ -3,44 +3,34 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
-    <ui:style>
 
-    </ui:style>
+    <b:ResponsiveNavbar>
+        <b:Brand ui:field="home">TheRDL</b:Brand>
 
+        <b:NavCollapse>
+            <b:Nav>
+                <b:VerticalDivider />
+                <b:NavLink ui:field = "ideas" text="{i18n.ideas}"></b:NavLink>
+                <b:NavLink ui:field = "stories" text="{i18n.stories}"></b:NavLink>
+                <b:NavLink ui:field = "improvements" text="{i18n.improvements}"></b:NavLink>
+                <b:VerticalDivider />
+            </b:Nav>
 
-    <g:HTMLPanel>
-        <g:FlowPanel>
-            <b:ResponsiveNavbar>
-                <b:Brand ui:field="home">TheRDL</b:Brand>
+            <b:NavForm size="4" ui:field = "searchSiteContent" placeholder="Search Site Content" />
 
-                <b:NavCollapse>
-                    <b:Nav>
-                        <b:VerticalDivider />
-                        <b:NavLink ui:field = "ideas" text="{i18n.ideas}"></b:NavLink>
-                        <b:NavLink ui:field = "stories" text="{i18n.stories}"></b:NavLink>
-                        <b:NavLink ui:field = "improvements" text="{i18n.improvements}"></b:NavLink>
-                        <b:VerticalDivider />
-                    </b:Nav>
+            <b:Nav alignment="RIGHT">
+                <b:VerticalDivider />
+                <b:Dropdown ui:field = "userdetails" text="{i18n.userDetails}">
+                    <b:NavHeader text="{i18n.userName}" ui:field = "user"/>
+                    <b:NavLink text="{i18n.email}" ui:field = "email"/>
+                    <b:NavLink text="{i18n.userProfile}" ui:field = "profile"/>
+                    <b:NavLink text="{i18n.logOut}" ui:field = "out"/>
+                </b:Dropdown>
+                <b:NavLink  ui:field = "login" text="{i18n.logIn}"></b:NavLink>
+                <b:NavLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavLink>
+            </b:Nav>
 
-                    <b:NavForm size="4" ui:field = "searchSiteContent" placeholder="Search Site Content" />
-
-                    <b:Nav alignment="RIGHT">
-                        <b:VerticalDivider />
-                        <b:Dropdown ui:field = "userdetails" text="{i18n.userDetails}">
-                            <b:NavHeader text="{i18n.userName}" ui:field = "user"/>
-                            <b:NavLink text="{i18n.email}" ui:field = "email"/>
-                            <b:NavLink text="{i18n.userProfile}" ui:field = "profile"/>
-                            <b:NavLink text="{i18n.logOut}" ui:field = "out"/>
-                        </b:Dropdown>
-                        <b:NavLink  ui:field = "login" text="{i18n.logIn}"></b:NavLink>
-                        <b:NavLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavLink>
-                    </b:Nav>
-
-                </b:NavCollapse>
-            </b:ResponsiveNavbar>
-        </g:FlowPanel>
-    </g:HTMLPanel>
-
-
+        </b:NavCollapse>
+    </b:ResponsiveNavbar>
 
 </ui:UiBinder> 

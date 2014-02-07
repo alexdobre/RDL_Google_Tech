@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * A User Service implementation with basic crud methods for managing
@@ -41,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private Beanery beanery;
 
     private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static Logger log = Logger.getLogger("");
+
 
     /**
      * for testing
@@ -90,37 +93,39 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash) {
+        log.info("Find user Begin: "+bean.getEmail());
         beanery = AutoBeanFactorySource.create(Beanery.class);
         AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
-        List<UserBean> users = getAllUsers();
+        UserBean ub = getUserByEmail(bean.getEmail());
 
-        for (UserBean ub : users) {
+        if (ub != null) {
+            if (BCrypt.checkpw(hash, ub.getPassHash())) {
+                checkedUserBean.as().setName(ub.getUsername());
+                checkedUserBean.as().setEmail(ub.getEmail());
+                log.info("SID for user: "+ub.getSid());
+                checkedUserBean.as().setSid(ub.getSid());
+                checkedUserBean.as().setAction("OkUser");
+                checkedUserBean.as().setTitles(ub.getTitles());
+                checkedUserBean.as().setIsRDLSupporter(false);
 
-            if (ub.getEmail().equals(bean.getEmail())) {
-                if (BCrypt.checkpw(hash, ub.getPassHash())) {
-                    checkedUserBean.as().setName(ub.getUsername());
-                    checkedUserBean.as().setEmail(ub.getEmail());
-                    checkedUserBean.as().setAction("OkUser");
-                    checkedUserBean.as().setTitles(ub.getTitles());
-                    checkedUserBean.as().setIsRDLSupporter(false);
-
-                    for (UserBean.TitleBean titleBean: ub.getTitles()) {
-                        if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-                            checkedUserBean.as().setIsRDLSupporter(true);
-                            break;
-                        }
+                for (UserBean.TitleBean titleBean: ub.getTitles()) {
+                    if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+                        checkedUserBean.as().setIsRDLSupporter(true);
+                        break;
                     }
+                }
 
-                    // always check for null
-                    if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
-                    return checkedUserBean;
-                }  // end hash if
-            }  // end email if
+                // always check for null
+                if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
+                log.info("Find user END OK: "+bean.getEmail());
+                return checkedUserBean;
+            }  // end hash if
+        }  // end email if
 
-        } // end loop
+
         checkedUserBean.as().setAction("NotOkUser");
+        log.info("Find user END NOK: "+bean.getEmail());
         return checkedUserBean;
-
     }
 
 
@@ -170,7 +175,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserBean getUserByEmail(String email) {
-        sLogger.info("UserServiceImpl getUserByEmail  email: " + email);
+        log.info("UserServiceImpl getUserByEmail BEGIN email: " + email);
 
         beanery = AutoBeanFactorySource.create(Beanery.class);
         DB db = getMongo();
@@ -178,11 +183,15 @@ public class UserServiceImpl implements UserService {
         query.put("email", email);
         DBCollection coll = db.getCollection("rdlUserData");
         DBCursor cursor = coll.find(query);
+        if (cursor.hasNext()){
         DBObject doc = cursor.next();
+            UserBean user = buildBeanObject(doc);
+            log.info("UserServiceImpl getUserByEmail END FOUND: " + email);
+            return user;
+        }
 
-        UserBean user = buildBeanObject(doc);
-
-        return user;
+        log.info("UserServiceImpl getUserByEmail END NOT FOUND: " + email);
+        return null;
     }
 
 
@@ -237,6 +246,20 @@ public class UserServiceImpl implements UserService {
 
         // make update
         coll.findAndModify(searchQuery, updateDocument);
+    }
+
+    @Override
+     public void updateSid(AuthUserBean bean){
+        log.info("UserServiceImpl updateSid BEGIN email: " + bean.getEmail());
+        DB db = getMongo();
+        DBCollection coll = db.getCollection("rdlUserData");
+
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.append("$set", new BasicDBObject().append("sid", bean.getSid()));
+        BasicDBObject searchQuery = new BasicDBObject().append("email", bean.getEmail());
+        coll.update(searchQuery, newDocument);
+
+        log.info("UserServiceImpl updateSid END email: " + bean.getEmail());
     }
 
     /**
@@ -494,6 +517,7 @@ public class UserServiceImpl implements UserService {
         doc.append("username", user.getUsername());
         doc.append("passHash", user.getPassHash());
         doc.append("email", user.getEmail());
+        doc.append("sid", user.getSid());
         doc.append("rep", user.getRep());
 
         BasicDBList titlesList = new BasicDBList();

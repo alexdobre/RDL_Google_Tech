@@ -5,26 +5,24 @@ import com.bramosystems.oss.player.core.client.AbstractMediaPlayer;
 import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.youtube.client.YouTubePlayer;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.RDL;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LogoutPopupWidget;
-import com.therdl.shared.Constants;
+import com.therdl.client.view.widget.text.*;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.client.view.widget.text.*;
-import com.therdl.shared.events.*;
-import com.github.gwtbootstrap.client.ui.Button;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
+import com.therdl.shared.events.LogInEventEventHandler;
 
 import java.util.logging.Logger;
 
@@ -226,8 +224,8 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * @param emailTxt     supplied credential
      * @param passwordText supplied credential
      */
-    public void onSubmit(String emailTxt, String passwordText) {
-        presenter.doLogIn(emailTxt, passwordText, loginHandler);
+    public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
+        presenter.doLogIn(emailTxt, passwordText,null, rememberMe, loginHandler);
     }
 
     @Override

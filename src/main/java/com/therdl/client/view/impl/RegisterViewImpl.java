@@ -15,7 +15,6 @@ import com.therdl.shared.FieldVerifier;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 
-
 import java.util.logging.Logger;
 
 /**

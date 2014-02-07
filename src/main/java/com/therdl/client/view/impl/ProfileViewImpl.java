@@ -2,23 +2,20 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.AvatarUploadPopUp;
-import com.therdl.shared.Constants;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
+import com.therdl.client.view.widget.TitleListRow;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.events.*;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInOkEvent;
+import com.therdl.shared.events.LogInOkEventEventHandler;
 
 import java.util.logging.Logger;
 
@@ -102,7 +99,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         }
 
         for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()){
-            titlePanel.add(new HTMLPanel("<p>Title: "+titleBean.getTitleName()+" dateGained: "+ titleBean.getDateGained()+" dateExpires: "+titleBean.getExpires()));
+            titlePanel.add(new TitleListRow(currentUserBean,titleBean).asWidget());
         }
 
 

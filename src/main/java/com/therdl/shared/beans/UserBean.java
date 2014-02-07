@@ -68,6 +68,10 @@ public interface UserBean {
 
     void setEmail(String email);
 
+    String getSid();
+
+    void setSid(String sid);
+
     /**
      * methods below are composition for the Snip rdl schema
      */

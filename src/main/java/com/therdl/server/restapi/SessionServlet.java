@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * Session controller for simple user authentication. This project uses the Guice injection
@@ -41,7 +42,7 @@ import java.io.PrintWriter;
 @Singleton
 public class SessionServlet extends HttpServlet {
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SessionServlet.class);
+    private static Logger log = Logger.getLogger("");
 
     private final Provider<HttpSession> session;
     private Beanery beanery;
@@ -86,24 +87,26 @@ public class SessionServlet extends HttpServlet {
         }
         br.close();
 
-        System.out.println("SessionServlet signUp authBean json recieved" + sb.toString());
+        log.info("SessionServlet signUp authBean json recieved" + sb.toString());
 
         AutoBean<AuthUserBean> authBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, sb.toString());
 
         String action = authBean.as().getAction();
-        System.out.println("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
+        log.info("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
 
 
         if (action.equals("signUp")) {
 
             AutoBean<UserBean> newUserBean = beanery.userBean();
-            System.out.println("SessionServlet password hash = " + authBean.as().getEmail());
+            log.info("SessionServlet password hash = " + authBean.as().getEmail());
             newUserBean.as().setEmail(authBean.as().getEmail());
-            System.out.println("SessionServlet password hash = " + authBean.as().getName());
+            log.info("SessionServlet password hash = " + authBean.as().getName());
+            //generate a unique session ID
+            newUserBean.as().setSid(ServerUtils.generateUUID());
             newUserBean.as().setUsername(authBean.as().getName());
             String password = authBean.as().getPassword();
             String hash = ServerUtils.encryptString(password);
-            System.out.println("SessionServlet password hash = " + hash);
+            log.info("SessionServlet password hash = " + hash);
             newUserBean.as().setPassHash(hash);
             newUserBean.as().setRep(authBean.as().getRep());
             userService.createUser(newUserBean.as());
@@ -113,8 +116,9 @@ public class SessionServlet extends HttpServlet {
             String avatarUrl = avatarDirUrl + File.separator + "avatar-empty.jpg";
             authBean.as().setAvatarUrl(avatarUrl);
             session.get().setAttribute("userid", newUserBean.as().getEmail());
+            session.get().setAttribute("sid", newUserBean.as().getSid());
             session.get().setAttribute("username", newUserBean.as().getUsername());
-            System.out.println("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
+            log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
             PrintWriter out = resp.getWriter();
             out.write(AutoBeanCodex.encode(authBean).getPayload());
 
@@ -133,6 +137,20 @@ public class SessionServlet extends HttpServlet {
                 // we can use this server side to obtain userId from session
                 session.get().setAttribute("userid", checkedUser.as().getEmail());
                 session.get().setAttribute("name", checkedUser.as().getName());
+
+                //SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
+                if (authBean.as().getRememberMe()){
+                    //remember me was checked - if SID is null we set it
+                    if (checkedUser.as().getSid()==null){
+                        checkedUser.as().setSid(ServerUtils.generateUUID());
+                        userService.updateSid(checkedUser.as());
+                    }
+                }else {
+                    //remember me not checked
+                    checkedUser.as().setSid(null);
+                    userService.updateSid(checkedUser.as());
+                }
+
                 // need to check if file exists and write to filesystem
                 boolean avatarExists = mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
 

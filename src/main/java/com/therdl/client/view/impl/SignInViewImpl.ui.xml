@@ -1,5 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
         xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
         <ui:style>
@@ -35,30 +36,8 @@
             margin:10px;
             }
 
-
-            .submitPanel {
-            display:block;
-            width:420px !important;
-            height:60px !important;
-
-
-
-            }
-
-
-            .submit {
-            position:absolute;
-            border: 1px solid #AACCEE;
-            display:inline-block;
-            font-size:11px;
-            padding: 3px;
-            width: 70px;
-            margin:10px;
-            }
-
             .signUpLink {
-                margin: 50px 0px 0px 10px;
-                position: absolute;
+                padding-left: 260px;
                 cursor: pointer;
             }
 
@@ -85,10 +64,14 @@
                 <g:Label  styleName = '{style.labelText}' text="{i18n.password}"/>
                 <g:PasswordTextBox ui:field = "password" styleName = '{style.pswwdBox}'></g:PasswordTextBox>
             </g:HorizontalPanel>
-            <g:HTMLPanel   styleName = '{style.submitPanel}' >
-            <g:Button ui:field = "submit" text = "{i18n.submit}" styleName ='{style.submit}' />
-            <g:Label ui:field = "loginFail" text = "{i18n.loginFailMsg}" styleName ='{style.validate}'  />
-            <g:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
-            </g:HTMLPanel>
+            <g:HorizontalPanel verticalAlignment = "middle">
+                <g:Label  styleName = '{style.labelText}' text="{i18n.rememberMe}"/>
+                <g:CheckBox ui:field="rememberMe"></g:CheckBox>
+            </g:HorizontalPanel>
+            <g:HorizontalPanel verticalAlignment = "middle">
+                <b:Button ui:field = "submit" text = "{i18n.submit}"  />
+                <g:Label ui:field = "loginFail" text = "{i18n.loginFailMsg}" styleName ='{style.validate}'  />
+                <g:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
+            </g:HorizontalPanel>
         </g:VerticalPanel>
 </ui:UiBinder> 
