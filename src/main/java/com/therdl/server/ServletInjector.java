@@ -13,10 +13,7 @@ import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.data.MongoFileStorage;
-import com.therdl.server.restapi.SessionServlet;
-import com.therdl.server.restapi.SnipDispatcherServlet;
-import com.therdl.server.restapi.UploadServlet;
-import com.therdl.server.restapi.UserDispatcherServlet;
+import com.therdl.server.restapi.*;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -59,6 +56,7 @@ public class ServletInjector extends GuiceServletContextListener {
                 serve("/rdl/getUsers").with(UserDispatcherServlet.class);
                 serve("/rdl/getSession").with(SessionServlet.class);
                 serve("/rdl/avatarUpload").with(UploadServlet.class);
+                serve("/rdl/ipn").with(IpnServlet.class);
             }
         });
     }

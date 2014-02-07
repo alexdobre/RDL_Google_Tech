@@ -225,7 +225,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * @param passwordText supplied credential
      */
     public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
-        presenter.doLogIn(emailTxt, passwordText,null, rememberMe, loginHandler);
+        presenter.doLogIn(emailTxt, passwordText, rememberMe,null, loginHandler);
     }
 
     @Override

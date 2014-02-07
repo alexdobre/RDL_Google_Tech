@@ -1,8 +1,7 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -111,6 +110,24 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
      */
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
+       onSubmit();
+    }
+
+    @UiHandler("password")
+      public void onPassEnter(KeyDownEvent event) {
+        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+            onSubmit();
+        }
+    }
+
+    @UiHandler("email")
+    public void onEmailEnter(KeyDownEvent event) {
+        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+            onSubmit();
+        }
+    }
+
+    private void onSubmit() {
         log.info("SignInViewImpl onSubmit");
 
         String eMail = email.getText();

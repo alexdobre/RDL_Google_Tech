@@ -119,7 +119,14 @@ public interface UserService {
      * @param hash
      * @return UserBean
      */
-    AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash);
+    public AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash);
+
+    /**
+     * Finds a user by SID
+     * @param sid
+     * @return
+     */
+   public AutoBean<AuthUserBean> findUserBySid (String sid);
 
     /**
      * Resets a user password and sends an e-mail to the user with it

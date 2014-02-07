@@ -100,31 +100,35 @@ public class UserServiceImpl implements UserService {
 
         if (ub != null) {
             if (BCrypt.checkpw(hash, ub.getPassHash())) {
-                checkedUserBean.as().setName(ub.getUsername());
-                checkedUserBean.as().setEmail(ub.getEmail());
-                log.info("SID for user: "+ub.getSid());
-                checkedUserBean.as().setSid(ub.getSid());
-                checkedUserBean.as().setAction("OkUser");
-                checkedUserBean.as().setTitles(ub.getTitles());
-                checkedUserBean.as().setIsRDLSupporter(false);
-
-                for (UserBean.TitleBean titleBean: ub.getTitles()) {
-                    if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-                        checkedUserBean.as().setIsRDLSupporter(true);
-                        break;
-                    }
-                }
-
-                // always check for null
-                if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
-                log.info("Find user END OK: "+bean.getEmail());
-                return checkedUserBean;
+                return transformUserBeanInAuthUserBean(checkedUserBean, ub);
             }  // end hash if
         }  // end email if
 
 
         checkedUserBean.as().setAction("NotOkUser");
         log.info("Find user END NOK: "+bean.getEmail());
+        return checkedUserBean;
+    }
+
+    private AutoBean<AuthUserBean> transformUserBeanInAuthUserBean( AutoBean<AuthUserBean> checkedUserBean, UserBean ub) {
+        checkedUserBean.as().setName(ub.getUsername());
+        checkedUserBean.as().setEmail(ub.getEmail());
+        log.info("SID for user: "+ub.getSid());
+        checkedUserBean.as().setSid(ub.getSid());
+        checkedUserBean.as().setAction("OkUser");
+        checkedUserBean.as().setTitles(ub.getTitles());
+        checkedUserBean.as().setIsRDLSupporter(false);
+
+        for (UserBean.TitleBean titleBean: ub.getTitles()) {
+            if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+                checkedUserBean.as().setIsRDLSupporter(true);
+                break;
+            }
+        }
+
+        // always check for null
+        if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
+        log.info("Find user END OK: "+checkedUserBean.as().getEmail());
         return checkedUserBean;
     }
 
@@ -192,6 +196,31 @@ public class UserServiceImpl implements UserService {
 
         log.info("UserServiceImpl getUserByEmail END NOT FOUND: " + email);
         return null;
+    }
+
+    @Override
+    public AutoBean<AuthUserBean> findUserBySid (String sid){
+        log.info("UserServiceImpl findUserBySid BEGIN sid: " + sid);
+
+        beanery = AutoBeanFactorySource.create(Beanery.class);
+        DB db = getMongo();
+        BasicDBObject query = new BasicDBObject();
+        query.put("sid", sid);
+        DBCollection coll = db.getCollection("rdlUserData");
+        DBCursor cursor = coll.find(query);
+
+        AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
+
+        if (cursor.hasNext()){
+            DBObject doc = cursor.next();
+            UserBean user = buildBeanObject(doc);
+            log.info("UserServiceImpl findUserBySid END FOUND: " + sid);
+            return transformUserBeanInAuthUserBean(checkedUserBean,user);
+        }
+
+        log.info("UserServiceImpl getUserByEmail END NOT FOUND: " + sid);
+        checkedUserBean.as().setAction("NotOkUser");
+        return checkedUserBean;
     }
 
 
@@ -420,6 +449,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername((String) doc.get("username"));
         user.setPassHash((String) doc.get("passHash"));
         user.setEmail((String) doc.get("email"));
+        user.setSid((String) doc.get("sid"));
         user.setRep(RDLUtils.parseInt(doc.get("rep")));
         BasicDBList titles = (BasicDBList) doc.get("titles");
         BasicDBList friends = (BasicDBList) doc.get("friends");

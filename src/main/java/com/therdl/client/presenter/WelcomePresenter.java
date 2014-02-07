@@ -76,7 +76,9 @@ public class WelcomePresenter implements Presenter, WelcomeView.Presenter {
             //check the cookie
             String sessionID = Cookies.getCookie("sid");
             if (sessionID != null) {
+                log.info("Found cookie with SID "+sessionID);
                 //check if the SID is found and authenticate the user
+                doLogIn(null,null,true,sessionID,null);
             }
 
 

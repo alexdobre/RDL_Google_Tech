@@ -131,51 +131,64 @@ public class SessionServlet extends HttpServlet {
             // get the user from the database if exists
             AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
 
-            if (checkedUser.as().getAction().equals("OkUser")) {
+            processCheckedUser(avatarDirUrl, authBean, checkedUser);
 
-                checkedUser.as().setAuth(true);
-                // we can use this server side to obtain userId from session
-                session.get().setAttribute("userid", checkedUser.as().getEmail());
-                session.get().setAttribute("name", checkedUser.as().getName());
+            PrintWriter out = resp.getWriter();
+            log.info("Writing output: "+AutoBeanCodex.encode(checkedUser).getPayload());
+            out.write(AutoBeanCodex.encode(checkedUser).getPayload());
 
-                //SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
-                if (authBean.as().getRememberMe()){
-                    //remember me was checked - if SID is null we set it
-                    if (checkedUser.as().getSid()==null){
-                        checkedUser.as().setSid(ServerUtils.generateUUID());
-                        userService.updateSid(checkedUser.as());
-                    }
-                }else {
-                    //remember me not checked
-                    checkedUser.as().setSid(null);
-                    userService.updateSid(checkedUser.as());
-                }
+        }else if (action.equals("sidAuth")) {
+            AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
 
-                // need to check if file exists and write to filesystem
-                boolean avatarExists = mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
+            processCheckedUser(avatarDirUrl, authBean, checkedUser);
 
-                if (avatarExists) {
-                    // javascript from modulle base in target/war
-                    String avatarUrl = "userAvatar" + File.separator + checkedUser.as().getName() + "small.jpg";
-                    checkedUser.as().setAvatarUrl(avatarUrl);
-                } else {
-                    // javascript from modulle base in target/war
-                    String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
-                    checkedUser.as().setAvatarUrl(avatarUrl);
-                }
+            PrintWriter out = resp.getWriter();
+            log.info("Writing output: "+AutoBeanCodex.encode(checkedUser).getPayload());
+            out.write(AutoBeanCodex.encode(checkedUser).getPayload());
+        }
+
+    } // end doPost
+
+    private void processCheckedUser(String avatarDirUrl, AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
+        log.info("processCheckedUser "+checkedUser.as().toString());
+        if (checkedUser.as().getAction().equals("OkUser")) {
+
+            checkedUser.as().setAuth(true);
+            // we can use this server side to obtain userId from session
+            session.get().setAttribute("userid", checkedUser.as().getEmail());
+            session.get().setAttribute("name", checkedUser.as().getName());
+            //SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
+            if (checkedUser.as().getSid()==null && authBean.as().getRememberMe()){
+                //remember me was checked - if SID is null we set it
+
+                checkedUser.as().setSid(ServerUtils.generateUUID());
+                log.info("Update new SID");
+                userService.updateSid(checkedUser.as());
+
+            }else {
+                //remember me not checked
+                checkedUser.as().setSid(null);
+                log.info("Setting SID as null");
+                userService.updateSid(checkedUser.as());
+            }
+
+            // need to check if file exists and write to filesystem
+            boolean avatarExists = mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
+            if (avatarExists) {
+                // javascript from modulle base in target/war
+                String avatarUrl = "userAvatar" + File.separator + checkedUser.as().getName() + "small.jpg";
+                checkedUser.as().setAvatarUrl(avatarUrl);
             } else {
-                checkedUser.as().setAuth(false);
                 // javascript from modulle base in target/war
                 String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
                 checkedUser.as().setAvatarUrl(avatarUrl);
             }
-
-            PrintWriter out = resp.getWriter();
-            out.write(AutoBeanCodex.encode(checkedUser).getPayload());
-
-
+        } else {
+            checkedUser.as().setAuth(false);
+            // javascript from modulle base in target/war
+            String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
+            checkedUser.as().setAvatarUrl(avatarUrl);
         }
-
-    } // end doPost
+    }
 
 }
