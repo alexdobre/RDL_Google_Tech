@@ -38,31 +38,25 @@ import java.util.logging.Logger;
  * @ String currentSnipId  used to retrieve the users correct snip
  */
 
-public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, ValueChangeHandler<String> {
-
-    private static Logger log = Logger.getLogger("");
+public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditView.Presenter, ValueChangeHandler<String> {
 
     private final SnipEditView view;
-
-    private Beanery beanery = GWT.create(Beanery.class);
     //    private List<JSOModel> jSon1List;
     private List<JSOModel> jSonList;
-    private final AppController controller;
     private String currentSnipId;
 
 
     public SnipEditPresenter(SnipEditView view, String currentSnipId, AppController appController) {
-        super();
+        super(appController);
         this.view = view;
         this.view.setPresenter(this);
-        this.controller = appController;
+
         this.currentSnipId = currentSnipId;
 
         // user must be authorised to edit
-        if (!controller.getCurrentUserBean().as().isAuth()) {
+        if (getController().getCurrentUserBean().as().isAuth()) {
             History.newItem(RDLConstants.Tokens.WELCOME);
             History.fireCurrentHistoryState();
-
         }
 
     }
@@ -73,24 +67,25 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         container.add(view.asWidget());
 
         loadEditor();
+        loginCookieCheck();
     }
 
     @Override
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(view.asWidget());
+        loginCookieCheck();
         // user must be authorised to edit
-        if (controller.getCurrentUserBean().as().isAuth()) {
+        if (getController().getCurrentUserBean().as().isAuth()) {
             log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
             view.getAppMenu().setLogOutVisible(true);
             view.getAppMenu().setSignUpVisible(false);
             view.getAppMenu().setUserInfoVisible(true);
-            view.setLoginResult(controller.getCurrentUserBean().as().getName(),
-                    controller.getCurrentUserBean().as().getEmail(), true);
+            view.setLoginResult(getController().getCurrentUserBean().as().getName(),
+                    getController().getCurrentUserBean().as().getEmail(), true);
         }
 
         loadEditor();
-
     }
 
     /*
@@ -137,7 +132,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
 
                     if (response.getStatusCode() == 200) {
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect+":"+getController().getCurrentUserBean().as().getName());
 
                     } else {
                         log.info("SnipEditPresenter submit post fail");
@@ -188,7 +183,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
 
                     if (response.getStatusCode() == 200) {
                         log.info("SnipEditPresenter onDeleteSnip ok now validating");
-                        History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect+":"+getController().getCurrentUserBean().as().getName());
 
                     } else {
                         log.info("SnipEditPresenter onDeleteSnip fail");
@@ -243,7 +238,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
 
                     if (response.getStatusCode() == 200) {
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(pageToRedirect+":"+controller.getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect+":"+getController().getCurrentUserBean().as().getName());
                     } else {
                         log.info("SnipEditPresenter submit post fail");
                     }
@@ -310,7 +305,7 @@ public class SnipEditPresenter implements Presenter, SnipEditView.Presenter, Val
         log.info("SnipEditPresenter  onValueChange" + stringValueChangeEvent.getValue());
         if (stringValueChangeEvent.getValue().equals("snips")) {
 
-            if (!controller.getCurrentUserBean().as().isAuth()) {
+            if (!getController().getCurrentUserBean().as().isAuth()) {
                 History.newItem(RDLConstants.Tokens.WELCOME);
                 History.fireCurrentHistoryState();
 

@@ -6,6 +6,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.RegisterView;
 import com.therdl.shared.Constants;
@@ -24,16 +25,14 @@ import java.util.logging.Logger;
  * calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
  * authorisation in server callback onResponseReceived(Request request, Response response)
  */
-public class RegisterPresenter implements Presenter, RegisterView.Presenter {
+public class RegisterPresenter extends RdlAbstractPresenter implements RegisterView.Presenter {
 
-    private static Logger log = Logger.getLogger("");
+
     private RegisterView registerView;
-    private final AppController controller;
-    private Beanery beanery = GWT.create(Beanery.class);
 
 
     public RegisterPresenter(RegisterView registerView, AppController appController) {
-        this.controller = appController;
+        super(appController);
         this.registerView = registerView;
         registerView.setPresenter(this);
     }
@@ -42,6 +41,7 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
     public void go(HasWidgets container) {
         container.clear();
         container.add(registerView.asWidget());
+        loginCookieCheck();
     }
 
     /**
@@ -55,7 +55,7 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(registerView.asWidget());
-
+        loginCookieCheck();
     }
 
     /**
@@ -97,7 +97,7 @@ public class RegisterPresenter implements Presenter, RegisterView.Presenter {
                     // deserialise the bean
                     AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
                     // on success user is authorised on sign up
-                    controller.setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
+                    getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
                     // return to welcome page
                     History.newItem(RDLConstants.Tokens.WELCOME);
 

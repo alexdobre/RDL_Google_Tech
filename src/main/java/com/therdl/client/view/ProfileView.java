@@ -1,9 +1,7 @@
 package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.client.view.widget.AppMenu;
 
 /**
  * see com.therdl.client.view.impl.ProfileViewImpl javadoc for the
@@ -27,7 +25,7 @@ public interface ProfileView extends IsWidget {
 
     void setPresenter(Presenter presenter);
 
-    void setAppMenu(AutoBean<CurrentUserBean> currentUserBean);
+    AppMenu getAppMenu();
 
     void setAvatarWhenViewIsNotNull();
 

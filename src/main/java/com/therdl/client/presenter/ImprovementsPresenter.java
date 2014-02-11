@@ -15,16 +15,14 @@ import java.util.logging.Logger;
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * this class will encapsulate the RDL user issues submission and voting
  */
-public class ImprovementsPresenter implements Presenter, ImprovementsView.Presenter{
-    private static Logger log = Logger.getLogger("");
+public class ImprovementsPresenter extends RdlAbstractPresenter implements ImprovementsView.Presenter{
+
 
     private final ImprovementsView improvementsView;
 
-    private final AppController controller;
-
 
     public ImprovementsPresenter(ImprovementsView improvementsView, AppController controller) {
-        this.controller = controller;
+        super(controller);
         this.improvementsView = improvementsView;
         this.improvementsView.setPresenter(this);
     }
@@ -33,6 +31,7 @@ public class ImprovementsPresenter implements Presenter, ImprovementsView.Presen
     public void go(HasWidgets container) {
         container.clear();
         container.add(improvementsView.asWidget());
+        loginCookieCheck();
     }
 
     /**
@@ -47,12 +46,11 @@ public class ImprovementsPresenter implements Presenter, ImprovementsView.Presen
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(improvementsView.asWidget());
-        if (!controller.getCurrentUserBean().as().isAuth()) {
-            log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
-            improvementsView.getAppMenu().setLogOutVisible(false);
-            improvementsView.getAppMenu().setSignUpVisible(true);
-            improvementsView.getAppMenu().setUserInfoVisible(false);
-        }
+        improvementsView.getAppMenu().setLogOutVisible(false);
+        improvementsView.getAppMenu().setSignUpVisible(true);
+        improvementsView.getAppMenu().setUserInfoVisible(false);
+
+        loginCookieCheck();
     }
 
 

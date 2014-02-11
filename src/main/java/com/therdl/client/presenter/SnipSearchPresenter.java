@@ -32,21 +32,18 @@ import java.util.logging.Logger;
  */
 
 
-public class SnipSearchPresenter implements Presenter, SearchView.Presenter {
-    private static Logger log = Logger.getLogger("");
+public class SnipSearchPresenter extends RdlAbstractPresenter implements SearchView.Presenter {
+
     private final SearchView searchView;
-    private Beanery beanery = GWT.create(Beanery.class);
     private ArrayList<JSOModel> jSonList;
     private AutoBean<SnipBean> currentBean;
-    private final AppController controller;
+
 
     public SnipSearchPresenter(SearchView searchView, AppController controller) {
-        this.controller = controller;
+        super(controller);
         this.searchView = searchView;
         this.searchView.setPresenter(this);
         log.info("SnipSearchPresenter constructor");
-        // anyone can view snips no auth code needed
-
     }
 
     @Override
@@ -54,6 +51,7 @@ public class SnipSearchPresenter implements Presenter, SearchView.Presenter {
         log.info("SnipSearchPresenter go adding view");
         container.clear();
         container.add(searchView.asWidget());
+        loginCookieCheck();
     }
 
     @Override
@@ -61,22 +59,19 @@ public class SnipSearchPresenter implements Presenter, SearchView.Presenter {
         log.info("SnipSearchPresenter go adding view");
         container.clear();
         container.add(searchView.asWidget());
+        loginCookieCheck();
         // use auth code here to handle app menu options
-        if (controller.getCurrentUserBean().as().isAuth()) {
+        if (getController().getCurrentUserBean().as().isAuth()) {
             log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
             searchView.getAppMenu().setLogOutVisible(true);
             searchView.getAppMenu().setSignUpVisible(false);
             searchView.getAppMenu().setUserInfoVisible(true);
-            searchView.setLoginResult(controller.getCurrentUserBean().as().getName(),
-                    controller.getCurrentUserBean().as().getEmail(), true);
+            searchView.setLoginResult(getController().getCurrentUserBean().as().getName(),
+                    getController().getCurrentUserBean().as().getEmail(), true);
         } else {
             searchView.getAppMenu().setUserInfoVisible(false);
             searchView.getAppMenu().setUserInfoVisible(false);
         }
-    }
-
-    public AppController getController() {
-        return controller;
     }
 
     /**

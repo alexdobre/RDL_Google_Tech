@@ -10,10 +10,10 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInEvent;
-import com.therdl.shared.events.LogOutEvent;
+import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.events.*;
 
 import java.util.logging.Logger;
 
@@ -67,6 +67,41 @@ public class AppMenu extends Composite  {
 
     public AppMenu() {
         initWidget(uiBinder.createAndBindUi(this));
+
+        // user has just sucessfully logged in update app menu
+        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
+
+            @Override
+            public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
+                setAppMenu(onLoginOkEvent.getCurrentUserBean());
+            }
+        });
+    }
+
+    /**
+     * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
+     *
+     * @param AutoBean currentUserBean
+     */
+
+    public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
+        if (currentUserBean.as().isAuth()) {
+            log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
+
+            setLogOutVisible(true);
+            setSignUpVisible(false);
+            setUserInfoVisible(true);
+            setUser(currentUserBean.as().getName());
+            setEmail(currentUserBean.as().getEmail());
+            setLogInVisible(false);
+        } else {
+
+            setLogOutVisible(false);
+            setSignUpVisible(true);
+            setUserInfoVisible(false);
+            setLogInVisible(true);
+        }
+
     }
 
     @UiHandler("profile")

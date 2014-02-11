@@ -538,7 +538,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     profileView.setAvatarWhenViewIsNotNull();
                 }
 
-                final ProfilePresenter profilePresenter = new ProfilePresenter(profileView);
+                final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
                 log.info("AppController Tokens.SERVICES ");
                 GWT.runAsync(new RunAsyncCallback() {
                     public void onFailure(Throwable caught) {
@@ -581,7 +581,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 }
 
                 if (profileView != null) {
-                    profileView.setAppMenu(currentUserBean);
+                    profileView.getAppMenu().setAppMenu(currentUserBean);
 
                 }
 
@@ -618,7 +618,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                         profileView.setAvatarWhenViewIsNotNull();
                     }
 
-                    final ProfilePresenter profilePresenter = new ProfilePresenter(profileView);
+                    final ProfilePresenter profilePresenter = new ProfilePresenter(profileView,this);
                     log.info("AppController Tokens.SERVICES ");
                     GWT.runAsync(new RunAsyncCallback() {
                         public void onFailure(Throwable caught) {

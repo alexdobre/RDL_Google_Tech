@@ -13,16 +13,14 @@ import java.util.logging.Logger;
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * this class will encapsulate the RDL forum presentation
  */
-public class StoriesPresenter implements Presenter, StoriesView.Presenter{
-    private static Logger log = Logger.getLogger("");
+public class StoriesPresenter  extends RdlAbstractPresenter implements StoriesView.Presenter{
 
     private final StoriesView storiesView;
 
-    private final AppController controller;
 
 
     public StoriesPresenter(StoriesView storiesView, AppController controller) {
-        this.controller = controller;
+        super(controller);
         this.storiesView = storiesView;
         this.storiesView.setPresenter(this);
     }
@@ -31,6 +29,7 @@ public class StoriesPresenter implements Presenter, StoriesView.Presenter{
     public void go(HasWidgets container) {
         container.clear();
         container.add(storiesView.asWidget());
+        loginCookieCheck();
     }
 
     /**
@@ -45,14 +44,13 @@ public class StoriesPresenter implements Presenter, StoriesView.Presenter{
     public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
         container.clear();
         container.add(storiesView.asWidget());
-        if (!controller.getCurrentUserBean().as().isAuth()) {
+        loginCookieCheck();
+        if (!getController().getCurrentUserBean().as().isAuth()) {
             log.info("WelcomePresenter go !controller.getCurrentUserBean().as().isAuth()");
             storiesView.getAppMenu().setLogOutVisible(false);
             storiesView.getAppMenu().setSignUpVisible(true);
             storiesView.getAppMenu().setUserInfoVisible(false);
         }
     }
-
-
 
 }

@@ -72,7 +72,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = cUserBean;
-        setAppMenu(currentUserBean);
+        appMenu.setAppMenu(currentUserBean);
 
         profileImagePanel.setStyleName("profileImagePanel");
 
@@ -103,15 +103,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         }
 
 
-        // user has just sucessfully logged in update app menu
-        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
-            @Override
-            public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
-                currentUserBean.as().setAuth(true);
-                setAppMenu(currentUserBean);
-            }
-        });
 
     }
 
@@ -174,31 +166,9 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
     }
 
-    /**
-     * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
-     *
-     * @param AutoBean currentUserBean
-     */
-
     @Override
-    public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
-        if (currentUserBean.as().isAuth()) {
-            log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
-
-            this.appMenu.setLogOutVisible(true);
-            this.appMenu.setSignUpVisible(false);
-            this.appMenu.setUserInfoVisible(true);
-            this.appMenu.setUser(currentUserBean.as().getName());
-            this.appMenu.setEmail(currentUserBean.as().getEmail());
-            this.appMenu.setLogInVisible(false);
-        } else {
-
-            this.appMenu.setLogOutVisible(false);
-            this.appMenu.setSignUpVisible(true);
-            this.appMenu.setUserInfoVisible(false);
-            this.appMenu.setLogInVisible(true);
-        }
-
+    public AppMenu getAppMenu(){
+        return appMenu;
     }
 
 

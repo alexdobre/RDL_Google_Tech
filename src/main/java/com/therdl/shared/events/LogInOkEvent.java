@@ -1,6 +1,8 @@
 package com.therdl.shared.events;
 
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.beans.CurrentUserBean;
 
 /**
  * Simple  log-in ok event no payload required
@@ -9,6 +11,16 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class LogInOkEvent extends GwtEvent<LogInOkEventEventHandler> {
 
+
+    private AutoBean<CurrentUserBean> currentUserBean;
+
+    public LogInOkEvent (AutoBean<CurrentUserBean>  currentUserBean){
+        this.currentUserBean = currentUserBean;
+    }
+
+    public AutoBean<CurrentUserBean> getCurrentUserBean(){
+        return currentUserBean;
+    }
 
     public static Type<LogInOkEventEventHandler> TYPE = new Type<LogInOkEventEventHandler>();
 
