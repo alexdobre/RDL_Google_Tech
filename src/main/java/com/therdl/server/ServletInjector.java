@@ -6,9 +6,11 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.therdl.server.api.DbFileService;
+import com.therdl.server.api.PaymentService;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
 import com.therdl.server.apiimpl.DbFileServiceImpl;
+import com.therdl.server.apiimpl.PaymentServiceImpl;
 import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
 import com.therdl.server.data.FileStorage;
@@ -48,12 +50,14 @@ public class ServletInjector extends GuiceServletContextListener {
                 bind(UserService.class).to(UserServiceImpl.class);
                 bind(DbFileService.class).to(DbFileServiceImpl.class);
                 bind(FileStorage.class).to(MongoFileStorage.class);
+                bind(PaymentService.class).to(PaymentServiceImpl.class);
 
                 serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
                 serve("/rdl/getUsers").with(UserDispatcherServlet.class);
                 serve("/rdl/getSession").with(SessionServlet.class);
                 serve("/rdl/avatarUpload").with(UploadServlet.class);
                 serve("/rdl/ipn").with(IpnServlet.class);
+                serve("/rdl/pdt").with(PdtServlet.class);
             }
         });
     }

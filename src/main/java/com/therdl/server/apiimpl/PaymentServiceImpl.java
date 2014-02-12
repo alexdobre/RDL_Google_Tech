@@ -1,7 +1,10 @@
 package com.therdl.server.apiimpl;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.mongodb.*;
 import com.therdl.server.api.PaymentService;
+import com.therdl.server.data.PaypalCredentials;
+import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 
@@ -59,5 +62,33 @@ public class PaymentServiceImpl implements PaymentService{
 //            log.log(Level.SEVERE,e.getMessage(),e);
 //        }
         return null;
+    }
+
+    @Override
+    public PaypalCredentials getPaypalCredentials(String type) {
+        //check for null
+        if (type == null || (type !="pdt" && type !="ipn")) {
+            log.severe("getPaypalCredentials wrong type supplied: "+type);
+            return null;
+        }
+
+        DB db = ServerUtils.getMongo();
+        //get the mail credentials from the DB
+        DBCollection coll = db.getCollection("paypalCredentials");
+
+        BasicDBObject query = new BasicDBObject();
+        query.put("uid", type);
+
+        DBCursor cursor = coll.find(query);
+        DBObject doc = cursor.next();
+
+        PaypalCredentials cred = new PaypalCredentials();
+        cred.setType((String)doc.get("type"));
+        cred.setUrl((String)doc.get("url"));
+        if (doc.containsField("token")){
+            cred.setToken((String)doc.get("token"));
+        }
+
+        return cred;
     }
 }

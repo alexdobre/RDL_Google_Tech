@@ -1,6 +1,7 @@
 package com.therdl.server.api;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.server.data.PaypalCredentials;
 import com.therdl.shared.beans.CurrentUserBean;
 
 /**
@@ -16,4 +17,11 @@ public interface PaymentService {
      * @return user bean with title if successful
      */
     public AutoBean<CurrentUserBean> processRdlSupporter (AutoBean<CurrentUserBean> currentUserBean);
+
+    /**
+     * Retrieve the paypal credentials from the database
+     * @param type
+     * @return
+     */
+    public PaypalCredentials getPaypalCredentials (String type);
 }
