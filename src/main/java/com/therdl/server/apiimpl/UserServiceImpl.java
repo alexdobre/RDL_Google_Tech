@@ -15,16 +15,12 @@ import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -41,9 +37,7 @@ public class UserServiceImpl implements UserService {
     private String defaultDatabaseName;
     private Beanery beanery;
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(UserServiceImpl.class);
-    private static Logger log = Logger.getLogger("");
-
+    private static Logger log = Logger.getLogger(UserServiceImpl.class.getName());
 
     /**
      * for testing
@@ -69,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
         Set<String> colls = db.getCollectionNames();
         for (String s : colls) {
-            sLogger.info(s);
+            log.info(s);
         }
         DBCollection coll = db.getCollection("rdlUserData");
 
@@ -115,6 +109,7 @@ public class UserServiceImpl implements UserService {
         checkedUserBean.as().setEmail(ub.getEmail());
         log.info("SID for user: "+ub.getSid());
         checkedUserBean.as().setSid(ub.getSid());
+        checkedUserBean.as().setPaypalId(ub.getPaypalId());
         checkedUserBean.as().setAction("OkUser");
         checkedUserBean.as().setTitles(ub.getTitles());
         checkedUserBean.as().setIsRDLSupporter(false);
@@ -157,7 +152,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserBean getUser(String id) {
-        sLogger.info("UserServiceImpl getUser  id: " + id);
+        log.info("UserServiceImpl getUser  id: " + id);
 
         beanery = AutoBeanFactorySource.create(Beanery.class);
         DB db = getMongo();
@@ -235,7 +230,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void createUser(UserBean user) {
-        sLogger.info("UserServiceImpl createUser  email : " + user.getEmail());
+        log.info("UserServiceImpl createUser  email : " + user.getEmail());
         DB db = getMongo();
 
         DBCollection coll = db.getCollection("rdlUserData");
@@ -254,7 +249,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserBean user) {
 
-        sLogger.info("UserServiceImpl updateUser  updateUser id: " + user.getId());
+        log.info("UserServiceImpl updateUser  updateUser id: " + user.getId());
         System.out.println("UserServiceImpl updateUser id :  " + user.getId());
 
         DB db = getMongo();
@@ -450,6 +445,7 @@ public class UserServiceImpl implements UserService {
         user.setPassHash((String) doc.get("passHash"));
         user.setEmail((String) doc.get("email"));
         user.setSid((String) doc.get("sid"));
+        user.setPaypalId((String) doc.get("paypalId"));
         user.setRep(RDLUtils.parseInt(doc.get("rep")));
         BasicDBList titles = (BasicDBList) doc.get("titles");
         BasicDBList friends = (BasicDBList) doc.get("friends");
@@ -548,6 +544,7 @@ public class UserServiceImpl implements UserService {
         doc.append("passHash", user.getPassHash());
         doc.append("email", user.getEmail());
         doc.append("sid", user.getSid());
+        doc.append("paypalId", user.getPaypalId());
         doc.append("rep", user.getRep());
 
         BasicDBList titlesList = new BasicDBList();
@@ -646,7 +643,7 @@ public class UserServiceImpl implements UserService {
             return db;
 
         } catch (UnknownHostException e) {
-            sLogger.error(e.getMessage());
+            log.severe(e.getMessage());
             return null;
         }
     }

@@ -7,11 +7,9 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
-import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -26,6 +24,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -49,7 +48,7 @@ import java.util.List;
 @Singleton
 public class UserDispatcherServlet extends HttpServlet {
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(UserDispatcherServlet.class);
+    private static Logger log = Logger.getLogger(UserDispatcherServlet.class.getName());
     private final Provider<HttpSession> sessions;
 
     /**
@@ -96,7 +95,7 @@ public class UserDispatcherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        sLogger.info("UserDispatcherServlet: doPost : " + req);
+        log.info("UserDispatcherServlet: doPost : " + req);
 
 
 //        PrintWriter out = resp.getWriter();
@@ -104,7 +103,7 @@ public class UserDispatcherServlet extends HttpServlet {
 
 
         String debugString = userService.getDebugString();
-        sLogger.info("UserDispatcherServlet:  "+debugString );
+        log.info("UserDispatcherServlet:  "+debugString );
 
         // get the json
         StringBuilder sb = new StringBuilder();
@@ -121,8 +120,8 @@ public class UserDispatcherServlet extends HttpServlet {
 
         if(actionBean.as().getAction().equals("getall") ) {
             List< UserBean > beans = userService.getAllUsers();
-            sLogger.info("UserDispatcherServlet: beans.size() "+beans.size());
-            sLogger.info("UserDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
+            log.info("UserDispatcherServlet: beans.size() "+beans.size());
+            log.info("UserDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
             ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
             int k = 0;
             for (UserBean bean : beans )   {
@@ -134,10 +133,10 @@ public class UserDispatcherServlet extends HttpServlet {
                 k++;
             }
 
-            sLogger.info("UserDispatcherServlet: beanList.size() "+beanList.size());
+            log.info("UserDispatcherServlet: beanList.size() "+beanList.size());
 
             Gson gson = new Gson();
-            sLogger.info(gson.toJson(beanList));
+            log.info(gson.toJson(beanList));
             PrintWriter out = resp.getWriter();
             out.write(gson.toJson(beanList));
             beanList.clear();
@@ -145,19 +144,19 @@ public class UserDispatcherServlet extends HttpServlet {
         }
 
         else if(actionBean.as().getAction().equals("save") ) {
-            sLogger.info("UserDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
+            log.info("UserDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving
-            sLogger.info("UserDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getEmail());
+            log.info("UserDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getEmail());
             userService.createUser(actionBean.as());
         }
         else if(actionBean.as().getAction().equals("update") ) {
-            sLogger.info("UserDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
-            sLogger.info("UserDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getEmail());
+            log.info("UserDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
+            log.info("UserDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getEmail());
             userService.updateUser(actionBean.as());
         }
         else if(actionBean.as().getAction().equals("delete") ) {
-            sLogger.info("UserDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
-            sLogger.info("UserDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
+            log.info("UserDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
+            log.info("UserDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
             userService.deleteUser(actionBean.as().getId());
         }
     }

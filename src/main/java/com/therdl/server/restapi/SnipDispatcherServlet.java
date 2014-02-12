@@ -13,7 +13,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -28,6 +27,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * SnipDispatcherServlet controller. This project uses the Guice injection
@@ -48,7 +48,7 @@ import java.util.List;
 @Singleton
 public class SnipDispatcherServlet extends HttpServlet {
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipDispatcherServlet.class);
+    private static Logger log = Logger.getLogger(SnipDispatcherServlet.class.getName());
     private final Provider<HttpSession> sessions;
 
     /**
@@ -106,7 +106,7 @@ public class SnipDispatcherServlet extends HttpServlet {
         resp.setContentType("application/json");
 
         String debugString = snipsService.getDebugString();
-        sLogger.info("SnipDispatcherServlet:  "+debugString );
+        log.info("SnipDispatcherServlet:  "+debugString );
 
         // get the json
         StringBuilder sb = new StringBuilder();
@@ -116,7 +116,7 @@ public class SnipDispatcherServlet extends HttpServlet {
             sb.append(str);
         }
         br.close();
-        sLogger.info("SnipDispatcherServlet: sb.toString()  "+sb.toString() );
+        log.info("SnipDispatcherServlet: sb.toString()  "+sb.toString() );
 
         // action bean as not all fields may have been set
         AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
@@ -124,15 +124,15 @@ public class SnipDispatcherServlet extends HttpServlet {
 
         if(actionBean.as().getAction().equals("getall")) {
             List<SnipBean> beans = snipsService.getAllSnips(actionBean.as().getPageIndex());
-            sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
-            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
+            log.info("SnipDispatcherServlet: beans.size() "+beans.size());
+            log.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
 
             ArrayList<HashMap<String,String>> beanList = getBeanList(beans);
 
-            sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
+            log.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
 
             Gson gson = new Gson();
-            sLogger.info(gson.toJson(beanList));
+            log.info(gson.toJson(beanList));
             PrintWriter out = resp.getWriter();
             out.write(gson.toJson(beanList));
             beanList.clear();
@@ -141,15 +141,15 @@ public class SnipDispatcherServlet extends HttpServlet {
 
         else if(actionBean.as().getAction().equals("search")) {
             List <SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(), actionBean.as().getPageIndex());
-            sLogger.info("SnipDispatcherServlet: beans.size() "+beans.size());
-            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
+            log.info("SnipDispatcherServlet: beans.size() "+beans.size());
+            log.info("SnipDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
 
             ArrayList<HashMap<String,String>> beanList = getBeanList(beans);
 
-            sLogger.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
+            log.info("SnipDispatcherServlet: beanList.size() "+beanList.size());
 
             Gson gson = new Gson();
-            sLogger.info(gson.toJson(beanList));
+            log.info(gson.toJson(beanList));
             PrintWriter out = resp.getWriter();
             out.write(gson.toJson(beanList));
             beanList.clear();
@@ -157,16 +157,16 @@ public class SnipDispatcherServlet extends HttpServlet {
         }
         else if(actionBean.as().getAction().equals("getSnip")) {
             SnipBean bean = snipsService.getSnip(actionBean.as().getId());
-            sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
-            sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
+            log.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
+            log.info("SnipDispatcherServlet: bean.id "+bean.getId());
             AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
             PrintWriter out = resp.getWriter();
             out.write(AutoBeanCodex.encode(autoBean).getPayload());
         }
         else if(actionBean.as().getAction().equals("viewSnip")) {
             SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.VIEWS);
-            sLogger.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
-            sLogger.info("SnipDispatcherServlet: bean.id "+bean.getId());
+            log.info("SnipDispatcherServlet: actionBean.id "+actionBean.as().getId());
+            log.info("SnipDispatcherServlet: bean.id "+bean.getId());
 
             String viewerId = actionBean.as().getViewerId();
             if(viewerId != null) {
@@ -183,9 +183,9 @@ public class SnipDispatcherServlet extends HttpServlet {
             out.write(AutoBeanCodex.encode(autoBean).getPayload());
         }
         else if(actionBean.as().getAction().equals("save") ) {
-            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
+            log.info("SnipDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving
-            sLogger.info("SnipDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getTitle());
+            log.info("SnipDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getTitle());
             // check that user id has been set for this bean
             String id = (String) sessions.get().getAttribute("userid");
             String userAvatarUrl =   "userAvatar/"+id+"small.jpg";
@@ -194,18 +194,18 @@ public class SnipDispatcherServlet extends HttpServlet {
             snipsService.createSnip(actionBean.as());
         }
         else if(actionBean.as().getAction().equals("update") ) {
-            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
-            sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getTitle());
+            log.info("SnipDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
+            log.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getTitle());
             actionBean.as().setEditDate(snipsService.makeTimeStamp());
             snipsService.updateSnip(actionBean.as());
         }
         else if(actionBean.as().getAction().equals("delete") ) {
-            sLogger.info("SnipDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
-            sLogger.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
+            log.info("SnipDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
+            log.info("SnipDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
             snipsService.deleteSnip(actionBean.as().getId());
         }
         else if(actionBean.as().getAction().equals("saveReference")) {
-            sLogger.info("SnipDispatcherServlet: saveReference");
+            log.info("SnipDispatcherServlet: saveReference");
 
             // increments reference counter of parent snip for reference type (positive/neutral/negative)
             String parentSnipId = actionBean.as().getId();
@@ -261,7 +261,7 @@ public class SnipDispatcherServlet extends HttpServlet {
             ArrayList<HashMap<String,String>> beanList = getBeanList(beanReferences);
 
             Gson gson = new Gson();
-            sLogger.info(gson.toJson(beanList));
+            log.info(gson.toJson(beanList));
             PrintWriter out = resp.getWriter();
             out.write(gson.toJson(beanList));
             beanList.clear();

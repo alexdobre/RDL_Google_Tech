@@ -7,11 +7,11 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.therdl.server.api.DbFileService;
 import com.therdl.shared.beans.Beanery;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 /**
  *  A file service implementation for images
@@ -25,7 +25,7 @@ public class DbFileServiceImpl implements DbFileService {
     private String defaultDatabaseName;
     private Beanery beanery;
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(DbFileServiceImpl.class);
+    private static Logger log = Logger.getLogger(DbFileServiceImpl.class.getName());
 
     /**
      * persist an image as a file
@@ -133,7 +133,7 @@ public class DbFileServiceImpl implements DbFileService {
             return db;
 
         } catch (UnknownHostException e) {
-            sLogger.error(e.getMessage());
+            log.severe(e.getMessage());
             return null;
         }
     }

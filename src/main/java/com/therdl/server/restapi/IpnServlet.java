@@ -5,13 +5,14 @@ import com.google.inject.Singleton;
 import com.therdl.server.paypal.IpnConfig;
 import com.therdl.server.paypal.IpnException;
 import com.therdl.server.paypal.IpnHandler;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This servlet receives the Paypal Notifications and passes processing to the IpnHandler
@@ -20,7 +21,7 @@ import java.io.IOException;
 @Singleton
 public class IpnServlet extends HttpServlet {
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(IpnServlet.class);
+    private static Logger log = Logger.getLogger(IpnServlet.class.getName());
 
 
     @Inject
@@ -58,7 +59,7 @@ public class IpnServlet extends HttpServlet {
                                                   "EUR"));
             ipnHandler.handleIpn(req);
         }catch (IpnException e){
-            sLogger.error("IPN exception",e);
+            log.log(Level.SEVERE,"IPN exception", e);
         }
     }
 }

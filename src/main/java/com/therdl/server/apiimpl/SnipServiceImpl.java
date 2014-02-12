@@ -1,7 +1,6 @@
 package com.therdl.server.apiimpl;
 
 
-import com.google.common.collect.Iterables;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.*;
@@ -12,14 +11,14 @@ import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import org.bson.types.ObjectId;
-import org.slf4j.LoggerFactory;
-
 
 import javax.inject.Singleton;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -38,7 +37,7 @@ public class SnipServiceImpl implements SnipsService {
     private String defaultDatabaseName;
     private Beanery beanery;
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(SnipServiceImpl.class);
+    private static Logger log = Logger.getLogger(SnipServiceImpl.class.getName());
 
 
     /**
@@ -158,7 +157,7 @@ public class SnipServiceImpl implements SnipsService {
      */
     @Override
     public SnipBean getSnip(String id) {
-        sLogger.info("SnipServiceImpl getSnip  id: " + id);
+        log.info("SnipServiceImpl getSnip  id: " + id);
 
         DB db = getMongo();
         BasicDBObject query = new BasicDBObject();
@@ -182,7 +181,7 @@ public class SnipServiceImpl implements SnipsService {
 
     @Override
     public String createSnip(SnipBean snip) {
-        sLogger.info("SnipServiceImpl createSnip  title: " + snip.getTitle());
+        log.info("SnipServiceImpl createSnip  title: " + snip.getTitle());
         DB db = getMongo();
 
         DBCollection coll = db.getCollection("rdlSnipData");
@@ -206,7 +205,7 @@ public class SnipServiceImpl implements SnipsService {
     @Override
     public void updateSnip(SnipBean snip) {
 
-        sLogger.info("SnipServiceImpl updateSnip  updateSnip id: " + snip.getId());
+        log.info("SnipServiceImpl updateSnip  updateSnip id: " + snip.getId());
         System.out.println("SnipServiceImpl updateSnip  updateSnip content " + snip.getId());
         System.out.println("SnipServiceImpl updateSnip  updateSnip content " + snip.getTitle());
 
@@ -560,7 +559,7 @@ public class SnipServiceImpl implements SnipsService {
             return db;
 
         } catch (UnknownHostException e) {
-            sLogger.error(e.getMessage());
+            log.severe(e.getMessage());
             return null;
         }
     }

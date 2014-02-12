@@ -4,8 +4,6 @@
  */
 package com.therdl.server.paypal;
 
-import org.slf4j.LoggerFactory;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -29,7 +27,7 @@ import java.util.logging.Logger;
 public class IpnHandler
 {
 
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(IpnHandler.class);
+    private static Logger log = Logger.getLogger(IpnHandler.class.getName());
     private IpnConfig ipnConfig;
     private IpnInfoService ipnInfoService;
 
@@ -54,13 +52,13 @@ public class IpnHandler
      * @throws IpnException
      */
     public IpnInfo handleIpn (HttpServletRequest request) throws IpnException {
-        logger.info("inside ipn");
+        log.info("inside ipn");
         IpnInfo ipnInfo = new IpnInfo();
         try
         {
             //1. Read all posted request parameters
             String requestParams = this.getAllRequestParams(request);
-            logger.info(requestParams);
+            log.info(requestParams);
 
             //2. Prepare 'notify-validate' command with exactly the same parameters
             Enumeration en = request.getParameterNames();
@@ -132,7 +130,7 @@ public class IpnHandler
             else
                 ipnInfo.setError("Inavlid response {" + res + "} expecting {VERIFIED}");
 
-            logger.info("ipnInfo = " + ipnInfo);
+            log.info("ipnInfo = " + ipnInfo);
 
             this.getIpnInfoService().log(ipnInfo);
 
@@ -144,7 +142,7 @@ public class IpnHandler
         {
             if(e instanceof IpnException)
                 throw (IpnException) e;
-            logger.error( e.toString(), e);
+            log.log(Level.SEVERE, e.toString(), e);
             throw new IpnException(e.toString());
         }
 

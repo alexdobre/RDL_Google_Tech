@@ -45,6 +45,9 @@ public interface AuthUserBean {
     String getSid();
     void setSid(String sid);
 
+    String getPaypalId();
+    void setPaypalId(String paypalId);
+
     Boolean getRememberMe();
     void setRememberMe(Boolean rememberMe);
 

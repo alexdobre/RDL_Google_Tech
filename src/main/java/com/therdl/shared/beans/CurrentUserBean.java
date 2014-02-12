@@ -39,8 +39,10 @@ public interface CurrentUserBean {
     void setEmail(String email);
 
     String getSid();
-
     void setSid(String sid);
+
+    String getPaypalId();
+    void setPaypalId(String paypalId);
 
     /**
      * this method is used to encapsulate the users authorisation status

@@ -1,13 +1,14 @@
 package com.therdl.server.util;
 
 import com.mongodb.*;
-import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Sends e-mails using credentials from the database
@@ -15,7 +16,7 @@ import java.util.Properties;
  */
 public class EmailSender {
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(EmailSender.class);
+    private static Logger log = Logger.getLogger(EmailSender.class.getName());
 
     /**
      *Sends an e-mail with the new user password
@@ -58,13 +59,13 @@ public class EmailSender {
             Transport.send(msg);
 
         } catch (AuthenticationFailedException ex) {
-            sLogger.error("Authentication failed", ex);
+            log.log(Level.SEVERE,"Authentication failed", ex);
 
         } catch (AddressException ex) {
-            sLogger.error("Wrong email address", ex);
+            log.log(Level.SEVERE, "Wrong email address", ex);
 
         } catch (MessagingException ex) {
-            sLogger.error("Message exception", ex);
+            log.log(Level.SEVERE, "Message exception", ex);
         }
     }
 

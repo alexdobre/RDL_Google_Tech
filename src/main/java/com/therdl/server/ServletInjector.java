@@ -14,7 +14,6 @@ import com.therdl.server.apiimpl.UserServiceImpl;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.data.MongoFileStorage;
 import com.therdl.server.restapi.*;
-import org.slf4j.LoggerFactory;
 
 /**
  * ServletInjector controller Guice injection. This project uses the Guice injection
@@ -37,8 +36,6 @@ import org.slf4j.LoggerFactory;
  */
 
 public class ServletInjector extends GuiceServletContextListener {
-
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(ServletInjector.class);
 
     @Override
     protected Injector getInjector() {

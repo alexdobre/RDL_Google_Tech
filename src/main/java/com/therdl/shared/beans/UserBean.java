@@ -72,6 +72,9 @@ public interface UserBean {
 
     void setSid(String sid);
 
+    String getPaypalId();
+    void setPaypalId(String paypalId);
+
     /**
      * methods below are composition for the Snip rdl schema
      */

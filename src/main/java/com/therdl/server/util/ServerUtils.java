@@ -3,10 +3,10 @@ package com.therdl.server.util;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import org.mindrot.jbcrypt.BCrypt;
-import org.slf4j.LoggerFactory;
-import java.util.UUID;
 
 import java.net.UnknownHostException;
+import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * Contains business logic common utility methods to be used on the server side
@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
  */
 public class ServerUtils {
 
-    private static org.slf4j.Logger sLogger = LoggerFactory.getLogger(ServerUtils.class);
+    private static Logger log = Logger.getLogger(EmailSender.class.getName());
 
     /**
      * Encrypts a string - used for storing passwords
@@ -61,7 +61,7 @@ public class ServerUtils {
             return db;
 
         } catch (UnknownHostException e) {
-            sLogger.error(e.getMessage());
+            log.severe(e.getMessage());
             return null;
         }
     }
