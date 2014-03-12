@@ -41,6 +41,10 @@
                 cursor: pointer;
             }
 
+            .forgotPasswordLink {
+                cursor: pointer;
+            }
+
             .validate {
 
             position:absolute;
@@ -72,6 +76,9 @@
                 <b:Button ui:field = "submit" text = "{i18n.submit}"  />
                 <g:Label ui:field = "loginFail" text = "{i18n.loginFailMsg}" styleName ='{style.validate}'  />
                 <g:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
+            </g:HorizontalPanel>
+            <g:HorizontalPanel horizontalAlignment = "left">
+                <g:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}" styleName="{style.forgotPasswordLink}"/>
             </g:HorizontalPanel>
         </g:VerticalPanel>
 </ui:UiBinder> 

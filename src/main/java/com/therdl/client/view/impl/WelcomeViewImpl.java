@@ -13,6 +13,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.presenter.ForgotPasswordPresenter;
+import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
@@ -140,6 +142,14 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         signInView.show();
         signInView.getLoginFail().setVisible(false);
 
+    }
+
+    @Override
+    public void showForgotPasswordPopUp() {
+        ForgotPassword forgotPassword = new ForgotPasswordImpl();
+        ForgotPasswordPresenter forgotPasswordPresenter = new ForgotPasswordPresenter(forgotPassword);
+        forgotPasswordPresenter.showForgotPasswordPopup();
+        signInView.hide();
     }
 
     /**

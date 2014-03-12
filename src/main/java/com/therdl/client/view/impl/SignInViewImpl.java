@@ -155,6 +155,15 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         History.newItem(RDLConstants.Tokens.SIGN_UP);
     }
 
+    /**
+     * click handler for sign up link, redirects to sign up view
+     * @param event
+     */
+    @UiHandler("forgotPassLink")
+    public void onForgotPassLinkClicked(ClickEvent event) {
+        welcomeViewImpl.showForgotPasswordPopUp();
+    }
+
 
     @Override
     public void setPresenter(Presenter presenter) {

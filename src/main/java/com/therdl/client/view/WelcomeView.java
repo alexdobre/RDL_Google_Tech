@@ -13,6 +13,7 @@ import com.therdl.shared.LoginHandler;
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
  * @ showLoginFail() displays the validation method when the login fails eg password incorrect
+ *  * @ showForgotPasswordPopUp() displays the popup form in forgetting password.
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav bar
  * using the user sign up result status
@@ -24,6 +25,8 @@ public interface WelcomeView {
     }
 
     public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler);
+
+    public void showForgotPasswordPopUp();
 
     void logout();
 
