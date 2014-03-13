@@ -6,6 +6,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.FileStorage;
+import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -145,6 +146,29 @@ public class SessionServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             log.info("Writing output: "+AutoBeanCodex.encode(checkedUser).getPayload());
             out.write(AutoBeanCodex.encode(checkedUser).getPayload());
+        } else if (action.equals("forgotPass")) {
+            String email = authBean.as().getEmail();
+            //checked if the email is a registered user.
+            UserBean userBean = userService.getUserByEmail(email);
+            if(userBean != null) {
+                String newPass = ServerUtils.generatePassword();
+                String newPassHash = ServerUtils.encryptString(newPass);
+                //update user hash password
+                userBean.setPassHash(newPassHash);
+                //update the user
+                userService.updateUser(userBean);
+                //send the new password to the user's registered email
+                EmailSender.sendNewPassEmail(newPass, email,ServerUtils.getMongo());
+                //return an email since it is registered
+                authBean.as().setEmail(userBean.getEmail());
+            } else {
+                //return a "null" email value because the email is not a registered user.
+                authBean.as().setEmail(null);
+            }
+
+            PrintWriter out = resp.getWriter();
+            log.info("Writing output: "+AutoBeanCodex.encode(authBean).getPayload());
+            out.write(AutoBeanCodex.encode(authBean).getPayload());
         }
 
     } // end doPost

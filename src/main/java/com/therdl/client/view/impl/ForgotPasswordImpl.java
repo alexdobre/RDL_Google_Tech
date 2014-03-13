@@ -1,14 +1,16 @@
 package com.therdl.client.view.impl;
 
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.therdl.client.view.ForgotPassword;
 
 /**
@@ -30,9 +32,19 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
     @UiField
     TextBox txtBoxEmail;
 
+    @UiField
+    Label lblEmailNotFound;
+
+    @UiField
+    Button btnSubmit;
+
+    @UiField
+    Modal modal;
+
     public ForgotPasswordImpl() {
         super(true);
         add(ourUiBinder.createAndBindUi(this));
+        lblEmailNotFound.setText("");
     }
 
     @Override
@@ -45,11 +57,29 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
         this.presenter = presenter;
     }
 
+    @Override
+    public HasText getLabelEmailNotFound() {
+        return lblEmailNotFound;
+    }
+
+    @Override
+    public Button getSubmitButton() {
+        return btnSubmit;
+    }
+
+    @Override
+    public Modal getModal() {
+        return modal;
+    }
+
     @UiHandler("btnSubmit")
     public void onSubmitClicked(ClickEvent event) {
-        String email = txtBoxEmail.getText();
-        if(presenter != null) {
-            presenter.doForgotPassword(email);
+        String email = txtBoxEmail.getText().trim();
+        if(!email.isEmpty()) {
+            if(presenter != null) {
+                presenter.doForgotPassword(email);
+            }
+            btnSubmit.setEnabled(false);
         }
     }
 
@@ -60,6 +90,6 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
      */
     @UiHandler("txtBoxEmail")
     public void onEmailFocused(FocusEvent event) {
-        txtBoxEmail.setText("");
+        lblEmailNotFound.setText("");
     }
 }

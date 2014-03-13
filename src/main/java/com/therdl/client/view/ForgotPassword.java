@@ -1,5 +1,8 @@
 package com.therdl.client.view;
 
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Modal;
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 
@@ -17,6 +20,10 @@ public interface ForgotPassword extends IsWidget {
         void doForgotPassword(String email);
         void showForgotPasswordPopup();
     }
-    PopupPanel getForgotPasswordPopup();
     void setPresenter(Presenter presenter);
+
+    PopupPanel getForgotPasswordPopup();
+    HasText getLabelEmailNotFound();
+    Button getSubmitButton();
+    Modal getModal();
 }
