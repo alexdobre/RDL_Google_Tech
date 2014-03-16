@@ -1,8 +1,5 @@
 package com.therdl.client.presenter;
 
-import com.github.gwtbootstrap.client.ui.Alert;
-import com.github.gwtbootstrap.client.ui.Modal;
-import com.github.gwtbootstrap.client.ui.constants.Device;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Window;
@@ -12,19 +9,18 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.shared.Constants;
+import com.therdl.shared.Global;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.JSOModel;
 
 import java.util.logging.Logger;
 
 /**
  * ForgotPasswordPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- *
- * */
+ */
 
- public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
+public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 
     protected static Logger log = Logger.getLogger(ForgotPasswordPresenter.class.getName());
     private Beanery beanery = GWT.create(Beanery.class);
@@ -60,11 +56,19 @@ import java.util.logging.Logger;
                     log.info("ForgotPasswordPresenter doForgotPassword onResponseReceived json" + response.getText());
                     // deserialise the bean
                     AutoBean<AuthUserBean> authUserBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
-                    if(authUserBean != null && authUserBean.as().getEmail() != null) {
-                        log.info(RDL.i18n.newPasswordSentToEmail());
+                    if (authUserBean.as().getEmail() != null) {
+                        //if resetting the password is successful
+                        if (!authUserBean.as().getEmail().equals(Global.ERROR)) {
+                            log.info(RDL.i18n.newPasswordSentToEmail());
 
-                        view.getForgotPasswordPopup().hide();
-                        view.getModal().show();
+                            view.getForgotPasswordPopup().hide();
+                            view.getModalSuccessResetPassword().show();
+                        } else if (authUserBean.as().getEmail().equals(Global.ERROR)) { //resetting the password failed
+                            log.info(RDL.i18n.newPasswordSentToEmail());
+
+                            view.getForgotPasswordPopup().hide();
+                            view.getModalFailResetPasswprd().show();
+                        }
                     } else {
                         log.info(RDL.i18n.cannotFindEmailSorry());
 

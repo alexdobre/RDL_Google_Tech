@@ -1,6 +1,7 @@
 package com.therdl.server.util;
 
 import com.mongodb.*;
+import com.therdl.shared.exceptions.RDLSendEmailException;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;
@@ -23,7 +24,7 @@ public class EmailSender {
      * @param newPass
      * @param email
      */
-    public static void sendNewPassEmail(String newPass,String email, DB db ){
+    public static void sendNewPassEmail(String newPass,String email, DB db ) throws RDLSendEmailException {
         //get the mail credentials from the DB
         DBCollection coll = db.getCollection("mailCredentials");
 
@@ -57,15 +58,17 @@ public class EmailSender {
             msg.setFrom(new InternetAddress(from));
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             Transport.send(msg);
-
         } catch (AuthenticationFailedException ex) {
             log.log(Level.SEVERE,"Authentication failed", ex);
+            throw new RDLSendEmailException();
 
         } catch (AddressException ex) {
             log.log(Level.SEVERE, "Wrong email address", ex);
+            throw new RDLSendEmailException();
 
         } catch (MessagingException ex) {
             log.log(Level.SEVERE, "Message exception", ex);
+            throw new RDLSendEmailException();
         }
     }
 
@@ -83,9 +86,9 @@ public class EmailSender {
     }
 
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws RDLSendEmailException {
         System.out.println("Send mail BEGIN: ");
-        sendNewPassEmail(ServerUtils.generatePassword(), "alx.dobre@gmail.com",ServerUtils.getMongo());
+        sendNewPassEmail(ServerUtils.generatePassword(), "markdiesta@gmail.com",ServerUtils.getMongo());
         System.out.println("Send mail END: ");
     }
 }

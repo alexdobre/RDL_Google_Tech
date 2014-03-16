@@ -39,7 +39,10 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
     Button btnSubmit;
 
     @UiField
-    Modal modal;
+    Modal modalSuccessResetPassword;
+
+    @UiField
+    Modal modalFailResetPassword;
 
     public ForgotPasswordImpl() {
         super(true);
@@ -68,8 +71,13 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
     }
 
     @Override
-    public Modal getModal() {
-        return modal;
+    public Modal getModalSuccessResetPassword() {
+        return modalSuccessResetPassword;
+    }
+
+    @Override
+    public Modal getModalFailResetPasswprd() {
+        return modalFailResetPassword;
     }
 
     @UiHandler("btnSubmit")

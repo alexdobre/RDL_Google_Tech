@@ -8,9 +8,11 @@ import com.therdl.server.api.UserService;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
+import com.therdl.shared.Global;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.exceptions.RDLSendEmailException;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -153,14 +155,23 @@ public class SessionServlet extends HttpServlet {
             if(userBean != null) {
                 String newPass = ServerUtils.generatePassword();
                 String newPassHash = ServerUtils.encryptString(newPass);
-                //update user hash password
-                userBean.setPassHash(newPassHash);
-                //update the user
-                userService.updateUser(userBean);
-                //send the new password to the user's registered email
-                EmailSender.sendNewPassEmail(newPass, email,ServerUtils.getMongo());
-                //return an email since it is registered
-                authBean.as().setEmail(userBean.getEmail());
+
+                try {
+                    //send the new password to the user's registered email
+                    EmailSender.sendNewPassEmail(newPass, email,ServerUtils.getMongo());
+
+                    //update user hash password
+                    userBean.setPassHash(newPassHash);
+                    //update the user
+                    userService.updateUser(userBean);
+
+                    //return an email since it is registered
+                    authBean.as().setEmail(userBean.getEmail());
+                } catch (RDLSendEmailException e) {
+                    //return a "error" value because there was an error in sending an email to the registered email address.
+                    authBean.as().setEmail(Global.ERROR);
+                }
+
             } else {
                 //return a "null" email value because the email is not a registered user.
                 authBean.as().setEmail(null);

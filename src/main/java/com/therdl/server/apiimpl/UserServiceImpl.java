@@ -13,6 +13,7 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.exceptions.RDLSendEmailException;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -415,7 +416,11 @@ public class UserServiceImpl implements UserService {
         updateUser(userBean);
 
         //send the e-mail
-        EmailSender.sendNewPassEmail(newPass,email,getMongo());
+        try {
+            EmailSender.sendNewPassEmail(newPass,email,getMongo());
+        } catch (RDLSendEmailException e) {
+            e.printStackTrace();
+        }
     }
 
 

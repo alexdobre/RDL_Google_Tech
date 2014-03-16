@@ -25,5 +25,6 @@ public interface ForgotPassword extends IsWidget {
     PopupPanel getForgotPasswordPopup();
     HasText getLabelEmailNotFound();
     Button getSubmitButton();
-    Modal getModal();
+    Modal getModalSuccessResetPassword();
+    Modal getModalFailResetPasswprd();
 }
