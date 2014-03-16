@@ -56,8 +56,8 @@ public class ServletInjector extends GuiceServletContextListener {
                 serve("/rdl/getUsers").with(UserDispatcherServlet.class);
                 serve("/rdl/getSession").with(SessionServlet.class);
                 serve("/rdl/avatarUpload").with(UploadServlet.class);
-                serve("/rdl/ipn").with(IpnServlet.class);
-                serve("/rdl/pdt").with(PdtServlet.class);
+                //serve("/rdl/ipn").with(IpnServlet.class);
+                //serve("/rdl/pdt").with(PdtServlet.class);
             }
         });
     }
