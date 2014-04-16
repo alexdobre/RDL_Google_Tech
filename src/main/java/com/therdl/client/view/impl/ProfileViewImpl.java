@@ -11,11 +11,9 @@ import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.AvatarUploadPopUp;
 import com.therdl.client.view.widget.TitleListRow;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInOkEvent;
-import com.therdl.shared.events.LogInOkEventEventHandler;
 
 import java.util.logging.Logger;
 
@@ -62,6 +60,9 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     @UiField
     HTMLPanel titlePanel;
 
+    @UiField
+    Anchor forgotPassLink;
+
     private Image pic;
 
     /**
@@ -98,12 +99,14 @@ public class ProfileViewImpl extends Composite implements ProfileView {
             setAvatar(currentUserBean.as().getAvatarUrl());
         }
 
+        forgotPassLink.setVisible(true);
         for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()){
             titlePanel.add(new TitleListRow(currentUserBean,titleBean).asWidget());
+
+            if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+                forgotPassLink.setVisible(false);
+            }
         }
-
-
-
 
     }
 
