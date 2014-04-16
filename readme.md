@@ -27,6 +27,46 @@ then set up in your application server
 url http://<your host>:<your port if not 80>/therdl  
 
 
+To fix a deploying error in JBOSS AS
+cd .../jboss-as-7.1.1.Final/standalone/configuration
+vi standalone.xml
+"enable-welcome-root="false" instead of "true".
+
+
+
+http://www.davidghedini.com/pg/entry/install_jboss_7_on_centos
+By default, JBoss 7.1.1 is bound to the loopback IP of 127.0.0.1, so if we want to make it available on the web, we need to change this.
+
+Locate standalone.xml under /usr/share/jboss-as/standalone/configuration/.
+
+Open standalone.xml in vi or a text editor and look for the public interfaces node as shown below.
+
+<interface name="public">
+<inet-address value="${jboss.bind.address:127.0.0.1}"/>
+</interface>
+
+To make JBoss publicly accessible, change 127.0.0.1 to either 0.0.0.0 to allow access on all interfaces or to your public IP.
+
+So, for example, if your public IP is 173.194.35.177, you would change it as so:
+
+view plaincopy to clipboardprint?
+<interfaces>
+        <interface name="management">
+            <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
+        </interface>
+        <interface name="public">
+            <inet-address value="${jboss.bind.address:173.194.35.177}"/>
+        </interface>
+        <!-- TODO - only show this if the jacorb subsystem is added  -->
+        <interface name="unsecure">
+            <!--
+              ~  Used for IIOP sockets in the standard configuration.
+              ~                  To secure JacORB you need to setup SSL
+              -->
+            <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
+        </interface>
+    </interfaces>
+
 
 
 please view open issues and contribute
@@ -37,3 +77,5 @@ please view open issues and contribute
  http://www.adrianwalker.org/2011/03/gwt-file-upload-with-event-based.html
  https://bitbucket.org/joscarsson/gwt-gaemultiupload-example/src/877e2d2c496b1a9f6c89ddbc433f64125047e3f4/src/gaemultiupload?at=master
  git pull -s recursive -X theirs origin master /
+
+

@@ -195,6 +195,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserBean getUserByPayPalId(String paypalId) {
+        log.info("UserServiceImpl getUserByPayPalId BEGIN paypalId: " + paypalId);
+
+        beanery = AutoBeanFactorySource.create(Beanery.class);
+        DB db = getMongo();
+        BasicDBObject query = new BasicDBObject();
+        query.put("paypalId", paypalId);
+        DBCollection coll = db.getCollection("rdlUserData");
+        DBCursor cursor = coll.find(query);
+        if (cursor.hasNext()){
+            DBObject doc = cursor.next();
+            UserBean user = buildBeanObject(doc);
+            log.info("UserServiceImpl getUserByPayPalId END FOUND: " + paypalId);
+            return user;
+        }
+
+        log.info("UserServiceImpl getUserByPayPalId END NOT FOUND: " + paypalId);
+        return null;
+    }
+
+    @Override
     public AutoBean<AuthUserBean> findUserBySid (String sid){
         log.info("UserServiceImpl findUserBySid BEGIN sid: " + sid);
 

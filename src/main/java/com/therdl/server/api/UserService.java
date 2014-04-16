@@ -41,6 +41,13 @@ public interface UserService {
     UserBean getUserByEmail(String email);
 
     /**
+     * gets the user Bean
+     * @param paypalId
+     * @return UserBean
+     */
+    UserBean getUserByPayPalId(String paypalId);
+
+    /**
      * creates the new user
      * @param user
      */

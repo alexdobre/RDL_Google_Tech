@@ -14,7 +14,7 @@ public class Constants {
      * true  : will optimize the paths for jboss this is the deployed mode
      * false : will optimize the paths for jetty this is the development mode
      */
-    public static final boolean DEPLOY = false;
+    public static final boolean DEPLOY = true;
     public static final int DEFAULT_PAGE_SIZE = 10;
     public static final int DEFAULT_REFERENCE_PAGE_SIZE = 2;
 
@@ -22,4 +22,7 @@ public class Constants {
     public static final String TWITTER_URL = "https://twitter.com/RDLSocial";
     public static final String YOUTUBE_URL = "http://www.youtube.com/user/AlexTheRDL";
     public static final String REDDIT_URL = "http://www.reddit.com/user/RDLSocial";
+
+    public static final String MAIN_PAGE = "/rdl.html";
+    public static final String ERROR_PAGE = "/error.jsp";
 }
