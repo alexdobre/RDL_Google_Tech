@@ -15,6 +15,10 @@ import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.data.MongoFileStorage;
+import com.therdl.server.paypal_payment.PayPalIPNServlet;
+import com.therdl.server.paypal_payment.PayPalConstants;
+import com.therdl.server.paypal_payment.PaypalSubscriptionCallbackServlet;
+import com.therdl.server.paypal_payment.PaypalSubscriptionServlet;
 import com.therdl.server.restapi.*;
 
 /**
@@ -56,8 +60,10 @@ public class ServletInjector extends GuiceServletContextListener {
                 serve("/rdl/getUsers").with(UserDispatcherServlet.class);
                 serve("/rdl/getSession").with(SessionServlet.class);
                 serve("/rdl/avatarUpload").with(UploadServlet.class);
-                //serve("/rdl/ipn").with(IpnServlet.class);
-                //serve("/rdl/pdt").with(PdtServlet.class);
+                serve("/rdl/pdt").with(PdtServlet.class);
+                serve(PayPalConstants.PAYPAL_IPN_NOTIFY_URL).with(PayPalIPNServlet.class);
+                serve(PayPalConstants.PAYPAL_CHECKOUT_URL).with(PaypalSubscriptionServlet.class);
+                serve(PayPalConstants.PAYPAL_RETURN_URL).with(PaypalSubscriptionCallbackServlet.class);
             }
         });
     }
