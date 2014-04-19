@@ -20,12 +20,14 @@ public interface SnipsService {
 
     /**
      * testing and development methods debug string
+     *
      * @return
      */
     String getDebugString();
 
     /**
      * gets the snip
+     *
      * @param id
      * @return
      */
@@ -33,6 +35,7 @@ public interface SnipsService {
 
     /**
      * creates the new snip
+     *
      * @param snip
      * @return returns id of the inserted record
      */
@@ -40,6 +43,7 @@ public interface SnipsService {
 
     /**
      * get all snips for a user
+     *
      * @param pageIndex
      * @return
      */
@@ -48,12 +52,14 @@ public interface SnipsService {
 
     /**
      * deletes the snip
+     *
      * @param id
      */
     void deleteSnip(String id);
 
     /**
      * updates the snip
+     *
      * @param snip
      * @return
      */
@@ -61,6 +67,7 @@ public interface SnipsService {
 
     /**
      * increments counter for the given snip id
+     *
      * @param id
      * @param field to increment. This can be viewCount, rep or positive/neutral/negative reference count
      * @return
@@ -69,7 +76,8 @@ public interface SnipsService {
 
     /**
      * search snips for the given search options
-     * @param snip search option data
+     *
+     * @param snip      search option data
      * @param pageIndex index of page
      * @return list of SnipBean
      */
@@ -77,6 +85,7 @@ public interface SnipsService {
 
     /**
      * makes current timestamp
+     *
      * @return current timestamp as String
      */
     public String makeTimeStamp();
@@ -84,6 +93,7 @@ public interface SnipsService {
     /**
      * snip json contains an array of link objects representing references for the current snip
      * adds a reference to that array for the snip with the given snip id
+     *
      * @param linkAutoBean Link bean object
      * @param parentSnipId parent snip id
      * @return parent modified SnipBean
@@ -92,6 +102,7 @@ public interface SnipsService {
 
     /**
      * finds references of the snip with the given id (id is in searchOptions bean) and filter
+     *
      * @param searchOptions to filter references
      * @return references as a list of SnipBean object
      */

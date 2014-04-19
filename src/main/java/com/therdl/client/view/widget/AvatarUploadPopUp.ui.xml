@@ -7,8 +7,8 @@
     </ui:style>
 
 
-    <g:HTMLPanel ui:field = "profileUpLoadFormPanel"  >
-        <g:FormPanel  ui:field = "uploadForm" />
+    <g:HTMLPanel ui:field="profileUpLoadFormPanel">
+        <g:FormPanel ui:field="uploadForm"/>
     </g:HTMLPanel>
 
 </ui:UiBinder>

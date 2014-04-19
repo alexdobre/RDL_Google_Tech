@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * This widget is a row in the titles list in the user's profile
  * Created by Alex on 07/02/14.
  */
-public class TitleListRow extends Composite{
+public class TitleListRow extends Composite {
     private static Logger log = Logger.getLogger("");
 
     interface TitleListRowUiBinder extends UiBinder<HTMLPanel, TitleListRow> {
@@ -32,10 +32,11 @@ public class TitleListRow extends Composite{
 
     /**
      * We supply the user bean and title to display to the row
+     *
      * @param currentUserBean
      * @param title
      */
-    public TitleListRow (AutoBean<CurrentUserBean> currentUserBean, UserBean.TitleBean title){
+    public TitleListRow(AutoBean<CurrentUserBean> currentUserBean, UserBean.TitleBean title) {
         initWidget(ourUiBinder.createAndBindUi(this));
         this.title = title;
         this.currentUserBean = currentUserBean;

@@ -6,14 +6,12 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.RegisterView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.*;
-
-import java.util.logging.Logger;
+import com.therdl.shared.beans.AuthUserBean;
+import com.therdl.shared.beans.CurrentUserBean;
 
 /**
  * RegisterPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)

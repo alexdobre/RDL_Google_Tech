@@ -6,17 +6,14 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.view.StoriesView;
 import com.therdl.shared.beans.CurrentUserBean;
 
-import java.util.logging.Logger;
-
 /**
  * storiesPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * this class will encapsulate the RDL forum presentation
  */
-public class StoriesPresenter  extends RdlAbstractPresenter implements StoriesView.Presenter{
+public class StoriesPresenter extends RdlAbstractPresenter implements StoriesView.Presenter {
 
     private final StoriesView storiesView;
-
 
 
     public StoriesPresenter(StoriesView storiesView, AppController controller) {

@@ -20,7 +20,7 @@ import com.therdl.client.view.common.ViewUtils;
  * contains icons for stream, tag, thread, post
  * when hover the text is shown for each module
  */
-public class ImprovementsMenu extends Composite{
+public class ImprovementsMenu extends Composite {
     interface ImprovementsMenuUiBinder extends UiBinder<HTMLPanel, ImprovementsMenu> {
     }
 
@@ -43,15 +43,13 @@ public class ImprovementsMenu extends Composite{
     }
 
     @UiHandler("proposalBtn")
-    public void onMouseOver(MouseOverEvent event)
-    {
+    public void onMouseOver(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.proposalDescription());
     }
 
 
     @UiHandler("pledgeBtn")
-    public void onMouseOver1(MouseOverEvent event)
-    {
+    public void onMouseOver1(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.pledgeDescription());
     }
 
@@ -64,14 +62,14 @@ public class ImprovementsMenu extends Composite{
         AbstractMediaPlayer player = null;
         try {
             // create the player, specifying URL of media
-            player = new YouTubePlayer("8TkrGCcDrTU","100%", "350px");
+            player = new YouTubePlayer("8TkrGCcDrTU", "100%", "350px");
             DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
             dialog.show();
-        } catch(PluginVersionException e) {
-            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."),event,450).show();
-        } catch(PluginNotFoundException e) {
+        } catch (PluginVersionException e) {
+            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
+        } catch (PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
-            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event,450).show();
+            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
         }
     }
 

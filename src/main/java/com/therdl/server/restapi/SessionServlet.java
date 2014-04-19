@@ -137,28 +137,28 @@ public class SessionServlet extends HttpServlet {
             sidLogic(authBean, checkedUser);
 
             PrintWriter out = resp.getWriter();
-            log.info("Writing output: "+AutoBeanCodex.encode(checkedUser).getPayload());
+            log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
             out.write(AutoBeanCodex.encode(checkedUser).getPayload());
 
-        }else if (action.equals("sidAuth")) {
+        } else if (action.equals("sidAuth")) {
             AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
 
             processCheckedUser(avatarDirUrl, authBean, checkedUser);
 
             PrintWriter out = resp.getWriter();
-            log.info("Writing output: "+AutoBeanCodex.encode(checkedUser).getPayload());
+            log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
             out.write(AutoBeanCodex.encode(checkedUser).getPayload());
         } else if (action.equals("forgotPass")) {
             String email = authBean.as().getEmail();
             //checked if the email is a registered user.
             UserBean userBean = userService.getUserByEmail(email);
-            if(userBean != null) {
+            if (userBean != null) {
                 String newPass = ServerUtils.generatePassword();
                 String newPassHash = ServerUtils.encryptString(newPass);
 
                 try {
                     //send the new password to the user's registered email
-                    EmailSender.sendNewPassEmail(newPass, email,ServerUtils.getMongo());
+                    EmailSender.sendNewPassEmail(newPass, email, ServerUtils.getMongo());
 
                     //update user hash password
                     userBean.setPassHash(newPassHash);
@@ -178,14 +178,14 @@ public class SessionServlet extends HttpServlet {
             }
 
             PrintWriter out = resp.getWriter();
-            log.info("Writing output: "+AutoBeanCodex.encode(authBean).getPayload());
+            log.info("Writing output: " + AutoBeanCodex.encode(authBean).getPayload());
             out.write(AutoBeanCodex.encode(authBean).getPayload());
         }
 
     } // end doPost
 
     private void processCheckedUser(String avatarDirUrl, AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
-        log.info("processCheckedUser "+checkedUser.as().toString());
+        log.info("processCheckedUser " + checkedUser.as().toString());
         if (checkedUser.as().getAction().equals("OkUser")) {
 
             checkedUser.as().setAuth(true);
@@ -215,14 +215,14 @@ public class SessionServlet extends HttpServlet {
     private void sidLogic(AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
         if (checkedUser.as().getAction().equals("OkUser")) {
             //SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
-            if (checkedUser.as().getSid()==null && authBean.as().getRememberMe()){
+            if (checkedUser.as().getSid() == null && authBean.as().getRememberMe()) {
                 //remember me was checked - if SID is null we set it
 
                 checkedUser.as().setSid(ServerUtils.generateUUID());
                 log.info("Update new SID");
                 userService.updateSid(checkedUser.as());
 
-            }else {
+            } else {
                 //remember me not checked
                 checkedUser.as().setSid(null);
                 log.info("Setting SID as null");

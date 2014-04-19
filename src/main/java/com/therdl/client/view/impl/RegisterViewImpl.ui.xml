@@ -10,24 +10,24 @@
             margin: 0 auto;
 
         }
+
         .main table {
             width: 48%;
             margin: 0 auto;
-            float:left;
+            float: left;
         }
 
-
         .title {
-            text-align:left;
+            text-align: left;
             font-size: 14px;
 
         }
 
         .inputs {
-            position:relative;
-            left:20px;
+            position: relative;
+            left: 20px;
             font-size: 12px;
-            margin:10px 20px 20px 10px;
+            margin: 10px 20px 20px 10px;
         }
 
         .description {
@@ -36,65 +36,68 @@
             padding: 0;
         }
 
-        .takeBtn input, .takeBtn button{
+        .takeBtn input, .takeBtn button {
 
         }
-        .label{
+
+        .label {
             font-size: 12px;
-            color:blue;
-            height:18px;
-            left:20px;
-            float:right;
+            color: blue;
+            height: 18px;
+            left: 20px;
+            float: right;
         }
 
     </ui:style>
     <g:HTMLPanel addStyleNames="{style.outer}">
-        <rdl:AppMenu ui:field="appMenu" />
-    <g:HTMLPanel addStyleNames="{style.main}">
+        <rdl:AppMenu ui:field="appMenu"/>
+        <g:HTMLPanel addStyleNames="{style.main}">
 
-        <div class= 'container'>
-        <div class = 'brand '> <H4 class="{style.title}">Enter your User Information</H4> </div>
-            <table>
-                <tr>
-                    <td>
-                        <g:Label styleName="{style.label}" text = "{i18n.userName}" />
-                    </td>
-                    <td>
-                        <g:TextBox ui:field="userName" styleName="{style.inputs}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <g:Label styleName="{style.label}" text="{i18n.email}" />
-                    </td>
-                    <td>
-                        <g:TextBox ui:field="email" styleName="{style.inputs}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <g:Label styleName="{style.label}" text="{i18n.password}"/>
-                    </td>
-                    <td>
-                        <g:PasswordTextBox ui:field="psswd" styleName="{style.inputs}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <g:Label styleName="{style.label}" text="{i18n.confirmPassword}"/>
-                    </td>
-                    <td>
-                        <g:PasswordTextBox ui:field="cpsswd" styleName="{style.inputs}"></g:PasswordTextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="3" align="right" class="{style.takeBtn}">
-                        <g:Button ui:field="submitBtn" text="{i18n.submit}"/>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </g:HTMLPanel>
+            <div class='container'>
+                <div class='brand '>
+                    <H4 class="{style.title}">Enter your User Information</H4>
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <g:Label styleName="{style.label}" text="{i18n.userName}"/>
+                        </td>
+                        <td>
+                            <g:TextBox ui:field="userName" styleName="{style.inputs}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <g:Label styleName="{style.label}" text="{i18n.email}"/>
+                        </td>
+                        <td>
+                            <g:TextBox ui:field="email" styleName="{style.inputs}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <g:Label styleName="{style.label}" text="{i18n.password}"/>
+                        </td>
+                        <td>
+                            <g:PasswordTextBox ui:field="psswd" styleName="{style.inputs}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <g:Label styleName="{style.label}" text="{i18n.confirmPassword}"/>
+                        </td>
+                        <td>
+                            <g:PasswordTextBox ui:field="cpsswd" styleName="{style.inputs}"></g:PasswordTextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" align="right" class="{style.takeBtn}">
+                            <g:Button ui:field="submitBtn" text="{i18n.submit}"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </g:HTMLPanel>
     </g:HTMLPanel>
 
 

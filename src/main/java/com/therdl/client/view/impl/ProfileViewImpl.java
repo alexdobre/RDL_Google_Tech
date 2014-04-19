@@ -100,10 +100,10 @@ public class ProfileViewImpl extends Composite implements ProfileView {
         }
 
         forgotPassLink.setVisible(true);
-        for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()){
-            titlePanel.add(new TitleListRow(currentUserBean,titleBean).asWidget());
+        for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()) {
+            titlePanel.add(new TitleListRow(currentUserBean, titleBean).asWidget());
 
-            if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+            if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
                 forgotPassLink.setVisible(false);
             }
         }
@@ -170,7 +170,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     }
 
     @Override
-    public AppMenu getAppMenu(){
+    public AppMenu getAppMenu() {
         return appMenu;
     }
 

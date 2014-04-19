@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * UserDispatcherServlet controller. This project uses the Guice injection
  * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
  * if you are from the Spring framework space
- *
+ * <p/>
  * UserDispatcherServlet uses Guice to implement  the command pattern re Gang of 4 design patterns
  * see http://java.dzone.com/articles/design-patterns-command
  *
@@ -41,8 +41,6 @@ import java.util.logging.Logger;
  * for new developers important to understand GWT Autonean cliet/server architecture
  * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
  * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
- *
- *
  */
 
 @Singleton
@@ -63,6 +61,7 @@ public class UserDispatcherServlet extends HttpServlet {
 
     /**
      * Guice injector
+     *
      * @param sessions
      * @param userService
      */
@@ -76,21 +75,20 @@ public class UserDispatcherServlet extends HttpServlet {
     /**
      * When code is running in the Maven Jetty plugin (development) the uri for this method will be
      * 'http://localhost:8080/rdl/getUsers' URL
-     *
+     * <p/>
      * When code is running in the JBoss Application server (deployment) the uri for this method will be
      * 'http://localhost:8080/therdl/rdl/getUsers' URL
-     * @param HttpServletRequest req  Standard Http ServletRequest
+     *
+     * @param HttpServletRequest  req  Standard Http ServletRequest
      * @param HttpServletResponse resp  Standard Http ServletResponse
      * @throws ServletException
-     * @throws IOException
-     *
-     * AutoBean<UserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
-     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
-     * here the actionBean relates the users requested action
-     * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex for serverside
-     * autobean serialisation
-     *
-     * Gson gson see http://code.google.com/p/google-gson/ for Gson serialaisation
+     * @throws IOException      AutoBean<UserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
+     *                          http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+     *                          here the actionBean relates the users requested action
+     *                          see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex for serverside
+     *                          autobean serialisation
+     *                          <p/>
+     *                          Gson gson see http://code.google.com/p/google-gson/ for Gson serialaisation
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -103,37 +101,37 @@ public class UserDispatcherServlet extends HttpServlet {
 
 
         String debugString = userService.getDebugString();
-        log.info("UserDispatcherServlet:  "+debugString );
+        log.info("UserDispatcherServlet:  " + debugString);
 
         // get the json
         StringBuilder sb = new StringBuilder();
         BufferedReader br = req.getReader();
         String str;
-        while( (str = br.readLine()) != null ){
+        while ((str = br.readLine()) != null) {
             sb.append(str);
         }
         br.close();
 
-       // this is a user bean refactor !!
+        // this is a user bean refactor !!
         AutoBean<UserBean> actionBean = AutoBeanCodex.decode(beanery, UserBean.class, sb.toString());
         sb.setLength(0);
 
-        if(actionBean.as().getAction().equals("getall") ) {
-            List< UserBean > beans = userService.getAllUsers();
-            log.info("UserDispatcherServlet: beans.size() "+beans.size());
-            log.info("UserDispatcherServlet: actionBean.as().getAction() getall "+actionBean.as().getAction());
-            ArrayList<HashMap<String,String>> beanList = new ArrayList<HashMap<String,String>>();
+        if (actionBean.as().getAction().equals("getall")) {
+            List<UserBean> beans = userService.getAllUsers();
+            log.info("UserDispatcherServlet: beans.size() " + beans.size());
+            log.info("UserDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
+            ArrayList<HashMap<String, String>> beanList = new ArrayList<HashMap<String, String>>();
             int k = 0;
-            for (UserBean bean : beans )   {
-                HashMap<String,String> 	beanBag = new HashMap<String, String>();
+            for (UserBean bean : beans) {
+                HashMap<String, String> beanBag = new HashMap<String, String>();
                 AutoBean<UserBean> autoBean = AutoBeanUtils.getAutoBean(bean);
                 String asJson = AutoBeanCodex.encode(autoBean).getPayload();
-                beanBag.put(Integer.toString(k),asJson);
+                beanBag.put(Integer.toString(k), asJson);
                 beanList.add(beanBag);
                 k++;
             }
 
-            log.info("UserDispatcherServlet: beanList.size() "+beanList.size());
+            log.info("UserDispatcherServlet: beanList.size() " + beanList.size());
 
             Gson gson = new Gson();
             log.info(gson.toJson(beanList));
@@ -141,22 +139,18 @@ public class UserDispatcherServlet extends HttpServlet {
             out.write(gson.toJson(beanList));
             beanList.clear();
             actionBean.as().setAction("dump");
-        }
-
-        else if(actionBean.as().getAction().equals("save") ) {
-            log.info("UserDispatcherServlet: actionBean.as().getAction() save "+actionBean.as().getAction());
+        } else if (actionBean.as().getAction().equals("save")) {
+            log.info("UserDispatcherServlet: actionBean.as().getAction() save " + actionBean.as().getAction());
             // action bean is actually a bean to be submitted for saving
-            log.info("UserDispatcherServlet:submitted bean for saving recieved  "+actionBean.as().getEmail());
+            log.info("UserDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getEmail());
             userService.createUser(actionBean.as());
-        }
-        else if(actionBean.as().getAction().equals("update") ) {
-            log.info("UserDispatcherServlet: actionBean.as().getAction() update "+actionBean.as().getAction());
-            log.info("UserDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getEmail());
+        } else if (actionBean.as().getAction().equals("update")) {
+            log.info("UserDispatcherServlet: actionBean.as().getAction() update " + actionBean.as().getAction());
+            log.info("UserDispatcherServlet:submitted bean for update recieved  " + actionBean.as().getEmail());
             userService.updateUser(actionBean.as());
-        }
-        else if(actionBean.as().getAction().equals("delete") ) {
-            log.info("UserDispatcherServlet: actionBean.as().getAction() delete "+actionBean.as().getAction());
-            log.info("UserDispatcherServlet:submitted bean for update recieved  "+actionBean.as().getId());
+        } else if (actionBean.as().getAction().equals("delete")) {
+            log.info("UserDispatcherServlet: actionBean.as().getAction() delete " + actionBean.as().getAction());
+            log.info("UserDispatcherServlet:submitted bean for update recieved  " + actionBean.as().getId());
             userService.deleteUser(actionBean.as().getId());
         }
     }

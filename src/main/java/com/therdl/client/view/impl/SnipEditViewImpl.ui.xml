@@ -1,17 +1,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder 
-  xmlns:ui="urn:ui:com.google.gwt.uibinder"
-  xmlns:g="urn:import:com.google.gwt.user.client.ui"
-  xmlns:rdl='urn:import:com.therdl.client.view.widget'>
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
-	<ui:style>
+    <ui:style>
 
         .mainPanel {
-            width:900px;
+            width: 900px;
             margin-top: 20px;
         }
+
         .snipTypeBar {
             width: 100%;
             border: 1px solid #000;
@@ -45,12 +46,12 @@
         }
 
         @external .radioBtn;
-        .radioBtn{
+        .radioBtn {
             margin-left: 10px;
             display: inline-block;
         }
 
-        .radioBtn label{
+        .radioBtn label {
             margin-left: 3px;
             margin-bottom: 0px;
             display: inline-block;
@@ -62,9 +63,9 @@
             display: inline-block;
         }
 
-        .labelText  {
+        .labelText {
             font-family: Arial, Sans-serif;
-            display:inline-block;
+            display: inline-block;
             font-size: 13px;
             text-align: left;
             font-weight: bold;
@@ -74,7 +75,7 @@
 
         .categoryField {
             width: 160px;
-            margin:5px;
+            margin: 5px;
         }
 
         .tagTextBox {
@@ -86,30 +87,30 @@
             width: 400px;
         }
 
-	</ui:style>
-	<g:HTMLPanel>
-        <rdl:AppMenu ui:field="appMenu" />
+    </ui:style>
+    <g:HTMLPanel>
+        <rdl:AppMenu ui:field="appMenu"/>
 
         <center>
             <g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
                 <g:FlowPanel ui:field="snipTypeBar" styleName="{style.snipTypeBar}"/>
                 <g:FlowPanel ui:field="categoryBar" styleName="{style.categoryBar}">
-                    <g:Label ui:field="categoryLabel" text="{i18n.category}:" styleName = '{style.labelText}'/>
-                    <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}'/>
+                    <g:Label ui:field="categoryLabel" text="{i18n.category}:" styleName='{style.labelText}'/>
+                    <g:ListBox ui:field="categoryList" styleName='{style.categoryField}'/>
 
-                    <g:Label ui:field="proposalTypeLabel" text="{i18n.type}:" styleName = '{style.labelText}'/>
-                    <g:ListBox ui:field = "proposalTypeList" styleName = '{style.categoryField}'/>
+                    <g:Label ui:field="proposalTypeLabel" text="{i18n.type}:" styleName='{style.labelText}'/>
+                    <g:ListBox ui:field="proposalTypeList" styleName='{style.categoryField}'/>
 
-                    <g:Label ui:field="proposalStateLabel" text="{i18n.state}:" styleName = '{style.labelText}'/>
-                    <g:ListBox ui:field = "proposalStateList" styleName = '{style.categoryField}'/>
+                    <g:Label ui:field="proposalStateLabel" text="{i18n.state}:" styleName='{style.labelText}'/>
+                    <g:ListBox ui:field="proposalStateList" styleName='{style.categoryField}'/>
 
-                    <g:Label text="{i18n.tag}:" styleName = '{style.labelText}'/>
-                    <g:TextBox ui:field = "tag" styleName="{style.tagTextBox}"/>
+                    <g:Label text="{i18n.tag}:" styleName='{style.labelText}'/>
+                    <g:TextBox ui:field="tag" styleName="{style.tagTextBox}"/>
                 </g:FlowPanel>
 
                 <g:FlowPanel ui:field="titleBar" styleName="{style.titleBar}">
-                    <g:Label text="{i18n.title}:" styleName = '{style.labelText}'/>
-                    <g:TextBox ui:field = "title" styleName="{style.titleTextBox}" tabIndex="1"/>
+                    <g:Label text="{i18n.title}:" styleName='{style.labelText}'/>
+                    <g:TextBox ui:field="title" styleName="{style.titleTextBox}" tabIndex="1"/>
                 </g:FlowPanel>
 
                 <g:FlowPanel ui:field="editorContainer" styleName="{style.editorContainer}">
@@ -122,5 +123,5 @@
                 </g:FlowPanel>
             </g:FlowPanel>
         </center>
-	</g:HTMLPanel>
+    </g:HTMLPanel>
 </ui:UiBinder> 

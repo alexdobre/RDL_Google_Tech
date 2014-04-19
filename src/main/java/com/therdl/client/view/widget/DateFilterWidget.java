@@ -20,7 +20,7 @@ import java.util.Date;
  * DateFilterWidget contains 2 TextBox to select dates (from, to). When clicking to TextBox, opens datePicker, to choose dates.
  * Used in search filter widgets (snip search filter and reference serach filter)
  */
-public class DateFilterWidget extends Composite{
+public class DateFilterWidget extends Composite {
     interface DateFilterWidgetUiBinder extends UiBinder<HTMLPanel, DateFilterWidget> {
     }
 
@@ -39,6 +39,7 @@ public class DateFilterWidget extends Composite{
     /**
      * handler for the dateFrom TextBox
      * opens date picker in a popup
+     *
      * @param event
      */
     @UiHandler("dateFrom")
@@ -49,6 +50,7 @@ public class DateFilterWidget extends Composite{
     /**
      * handler for the dateTo TextBox
      * opens date picker in a popup
+     *
      * @param event
      */
     @UiHandler("dateTo")
@@ -59,11 +61,12 @@ public class DateFilterWidget extends Composite{
     /**
      * creates gwt date picker in a popup
      * sets selected date to the text box
+     *
      * @param dateField date TextBox for dateTo or dateFrom
      */
 
     public void createDatePicker(final TextBox dateField) {
-        final PopupPanel popupPanel=new PopupPanel(true);
+        final PopupPanel popupPanel = new PopupPanel(true);
         datePicker = new DatePicker();
 
         datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
@@ -80,7 +83,7 @@ public class DateFilterWidget extends Composite{
 
         int x = dateField.getAbsoluteLeft();
         int y = dateField.getAbsoluteTop();
-        popupPanel.setPopupPosition(x, y+20);
+        popupPanel.setPopupPosition(x, y + 20);
         popupPanel.setStyleName("datePicker");
         // Set the default value
         datePicker.setValue(new Date(), true);
@@ -90,6 +93,7 @@ public class DateFilterWidget extends Composite{
 
     /**
      * returns dateFrom TextBox value
+     *
      * @return
      */
     public String getDateFrom() {
@@ -98,6 +102,7 @@ public class DateFilterWidget extends Composite{
 
     /**
      * returns dateTo TextBox value
+     *
      * @return
      */
     public String getDateTo() {
@@ -106,6 +111,7 @@ public class DateFilterWidget extends Composite{
 
     /**
      * sets dateFrom TextBox value
+     *
      * @param date
      */
     public void setDateFrom(String date) {
@@ -114,6 +120,7 @@ public class DateFilterWidget extends Composite{
 
     /**
      * sets dateTo TextBox value
+     *
      * @param date
      */
     public void setDateTo(String date) {

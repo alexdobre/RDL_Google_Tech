@@ -98,7 +98,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         currentBean.as().setAction("viewSnip");
         currentBean.as().setId(currentSnipId);
 
-        if(controller.getCurrentUserBean().as().isAuth()) {
+        if (controller.getCurrentUserBean().as().isAuth()) {
             currentBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
         }
 
@@ -129,6 +129,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
     /**
      * send a request to the server to save reference for current snip
+     *
      * @param bean representing reference object
      */
     public void saveReference(AutoBean<SnipBean> bean) {
@@ -195,7 +196,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
         searchOptionsBean.as().setPageIndex(pageIndex);
         searchOptionsBean.as().setId(currentSnipId);
 
-        if(controller.getCurrentUserBean().as().isAuth()) {
+        if (controller.getCurrentUserBean().as().isAuth()) {
             searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
         }
 
@@ -212,14 +213,14 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                     JsArray<JSOModel> data =
                             JSOModel.arrayFromJson(response.getText());
 
-              //      if (data.length() == 0) return;
+                    //      if (data.length() == 0) return;
 
                     ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
                     ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
                     for (int i = 0; i < data.length(); i++) {
                         jSonList.add(data.get(i));
-                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i+"")));
+                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
 
                     }
 
@@ -267,7 +268,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
                 public void onResponseReceived(Request request, Response response) {
                     log.info("giveSnipReputation=" + response.getText());
 
-                   // snipView.giveRepResponseHandler();
+                    // snipView.giveRepResponseHandler();
                     observer.onSuccess(response.getText());
                 }
 

@@ -82,8 +82,8 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
     @UiHandler("btnSubmit")
     public void onSubmitClicked(ClickEvent event) {
         String email = txtBoxEmail.getText().trim();
-        if(!email.isEmpty()) {
-            if(presenter != null) {
+        if (!email.isEmpty()) {
+            if (presenter != null) {
                 presenter.doForgotPassword(email);
             }
             btnSubmit.setEnabled(false);

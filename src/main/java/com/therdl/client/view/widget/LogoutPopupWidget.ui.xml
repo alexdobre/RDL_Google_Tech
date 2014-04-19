@@ -4,19 +4,20 @@
 
     <ui:style>
 
-        .labelText  {
+        .labelText {
             font-family: Arial, Sans-serif;
             font-size: 14px;
-            margin:20px;
+            margin: 20px;
             text-align: center;
         }
+
         .btnPanel {
             text-align: center;
         }
 
     </ui:style>
     <g:HTMLPanel>
-        <g:Label text = "{i18n.successfulLogOut}" styleName = '{style.labelText}' />
+        <g:Label text="{i18n.successfulLogOut}" styleName='{style.labelText}'/>
         <g:FlowPanel styleName="{style.btnPanel}">
             <g:Button ui:field="okBtn" text="{i18n.ok}"/>
         </g:FlowPanel>

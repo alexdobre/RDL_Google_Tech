@@ -85,21 +85,21 @@ public class SnipViewImpl extends Composite implements SnipView {
         this.currentUserBean = currentUserBean;
         setAppMenu(currentUserBean);
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-            radioBtnParentProp.getElement().getStyle().setProperty("display","none");
-        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            radioBtnParentProp.getElement().getStyle().setProperty("display", "none");
+        } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             btnTextShow = RDL.i18n.showPosts();
             btnTextHide = RDL.i18n.hidePosts();
             snipType = RDLConstants.SnipType.POST;
 
-            radioBtnParent.getElement().getStyle().setProperty("display","none");
-            radioBtnParentProp.getElement().getStyle().setProperty("display","none");
-        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            radioBtnParent.getElement().getStyle().setProperty("display", "none");
+            radioBtnParentProp.getElement().getStyle().setProperty("display", "none");
+        } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             btnTextShow = RDL.i18n.showPosts();
             btnTextHide = RDL.i18n.hidePosts();
-            snipType = RDLConstants.SnipType.PLEDGE+","+RDLConstants.SnipType.COUNTER;
+            snipType = RDLConstants.SnipType.PLEDGE + "," + RDLConstants.SnipType.COUNTER;
 
-            radioBtnParent.getElement().getStyle().setProperty("display","none");
+            radioBtnParent.getElement().getStyle().setProperty("display", "none");
         }
 
     }
@@ -146,7 +146,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     protected void onLoad() {
         referenceSearchFilterWidget = new ReferenceSearchFilterWidget(this);
         refFilterParent.add(referenceSearchFilterWidget);
-        refFilterParent.getElement().getStyle().setProperty("display","none");
+        refFilterParent.getElement().getStyle().setProperty("display", "none");
     }
 
     @Override
@@ -154,11 +154,12 @@ public class SnipViewImpl extends Composite implements SnipView {
         referenceListCont.clear();
         snipViewCont.clear();
         refFilterParent.clear();
-      //  checkboxBtnParent.clear();
+        //  checkboxBtnParent.clear();
     }
 
     /**
      * creates main gwt widgets of snip view page
+     *
      * @param snipBean snip as SnipBean object
      */
     public void viewSnip(AutoBean<SnipBean> snipBean) {
@@ -174,25 +175,25 @@ public class SnipViewImpl extends Composite implements SnipView {
 
         referenceCont.getElement().getStyle().setProperty("display", "none");
 
-        if(Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             leaveRef.setText(RDL.i18n.reply());
             saveRef.setText(RDL.i18n.savePost());
         }
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-            if(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            if (snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1) {
                 repBtn.getElement().getStyle().setProperty("display", "none");
             } else {
                 repBtn.getElement().getStyle().setProperty("display", "");
             }
 
-            if((currentUserBean.as().isAuth() && snipBean.as().getAuthor().equals(currentUserBean.as().getName())) || snipBean.as().getIsRefGivenByUser() == 1) {
+            if ((currentUserBean.as().isAuth() && snipBean.as().getAuthor().equals(currentUserBean.as().getName())) || snipBean.as().getIsRefGivenByUser() == 1) {
                 leaveRef.getElement().getStyle().setProperty("display", "none");
             } else {
                 leaveRef.getElement().getStyle().setProperty("display", "");
             }
         } else {
-            if(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1)
+            if (snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1)
                 repBtn.getElement().getStyle().setProperty("display", "none");
             else
                 repBtn.getElement().getStyle().setProperty("display", "");
@@ -204,14 +205,15 @@ public class SnipViewImpl extends Composite implements SnipView {
 
     /**
      * handler of the leave reference button. Opens an editor for creating new reference
+     *
      * @param event ClickEvent
      */
     @UiHandler("leaveRef")
     public void onLeaveRefClicked(ClickEvent event) {
-        if(currentUserBean.as().isAuth()) {
+        if (currentUserBean.as().isAuth()) {
             leaveRefHandler(currentUserBean);
         } else {
-            presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft()+120, leaveRef.getAbsoluteTop()-120, new LoginHandler() {
+            presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft() + 120, leaveRef.getAbsoluteTop() - 120, new LoginHandler() {
                 @Override
                 public void onSuccess(AutoBean<CurrentUserBean> userBean) {
                     leaveRefHandler(userBean);
@@ -221,7 +223,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     }
 
     private void leaveRefHandler(AutoBean<CurrentUserBean> userBean) {
-        if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter()) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter()) {
             Window.alert(RDL.i18n.pledgeCreateMsg());
         } else {
             referenceCont.getElement().getStyle().setProperty("display", "block");
@@ -236,6 +238,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     /**
      * handler of the closeRef button
      * closes editor
+     *
      * @param event
      */
     @UiHandler("closeRef")
@@ -246,11 +249,12 @@ public class SnipViewImpl extends Composite implements SnipView {
     /**
      * handler of the showRef button.
      * Calls presenter's function to retrieve references for the current viewed snip
+     *
      * @param event
      */
     @UiHandler("showRef")
     public void onShowRefClicked(ClickEvent event) {
-        if(showRef.getText().equals(RDL.i18n.showReferences()) || showRef.getText().equals(RDL.i18n.showPosts())) {
+        if (showRef.getText().equals(RDL.i18n.showReferences()) || showRef.getText().equals(RDL.i18n.showPosts())) {
             searchOptionsBean = beanery.snipBean();
             searchOptionsBean.as().setSortOrder(-1);
             searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
@@ -268,7 +272,7 @@ public class SnipViewImpl extends Composite implements SnipView {
     public void getSnipReferences(AutoBean<SnipBean> searchOptions) {
         this.searchOptionsBean = searchOptions;
 
-        loadingWidget.getElement().getStyle().setProperty("display","block");
+        loadingWidget.getElement().getStyle().setProperty("display", "block");
         presenter.getSnipReferences(searchOptions, 0);
     }
 
@@ -295,11 +299,12 @@ public class SnipViewImpl extends Composite implements SnipView {
      * when user clicks save reference button, request is sent to save reference and also the counter by refType is incremented
      * in response handler call this function to hide leave reference button and
      * also increment ref counter in the view for the saved reference type
-     * @param refType saved reference type
+     *
+     * @param refType  saved reference type
      * @param snipType saved snip type, can be reference/post/pledge/counter
      */
     public void saveReferenceResponseHandler(String refType, String snipType) {
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
             leaveRef.getElement().getStyle().setProperty("display", "none");
         snipListRow.incrementRefCounterByRefType(refType, snipType);
         referenceCont.getElement().getStyle().setProperty("display", "none");
@@ -308,31 +313,32 @@ public class SnipViewImpl extends Composite implements SnipView {
     /**
      * saves a reference
      * constructs bean object for reference and calls presenter's function to save created reference
+     *
      * @param event
      */
     @UiHandler("saveRef")
     public void onSaveRefClicked(ClickEvent event) {
-        if(editorWidget.getHTML().equals("")) {
+        if (editorWidget.getHTML().equals("")) {
             Window.alert("Reference content cannot be empty.");
             return;
         }
 
         AutoBean<SnipBean> newBean = beanery.snipBean();
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             String referenceType = RDLConstants.ReferenceType.POSITIVE;
 
-            if(rb2.getValue()) {
+            if (rb2.getValue()) {
                 referenceType = RDLConstants.ReferenceType.NEUTRAL;
-            } else if(rb3.getValue()) {
+            } else if (rb3.getValue()) {
                 referenceType = RDLConstants.ReferenceType.NEGATIVE;
             }
             newBean.as().setReferenceType(referenceType);
             newBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
-        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             newBean.as().setSnipType(RDLConstants.SnipType.POST);
-        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             String proposalType = RDLConstants.SnipType.PLEDGE;
-            if(prb2.getValue()) {
+            if (prb2.getValue()) {
                 proposalType = RDLConstants.SnipType.COUNTER;
             }
             newBean.as().setSnipType(proposalType);
@@ -351,13 +357,14 @@ public class SnipViewImpl extends Composite implements SnipView {
 
     /**
      * shows references in a tab panel with paging
+     *
      * @param beanList list of references as bean objects
      */
     public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-        loadingWidget.getElement().getStyle().setProperty("display","none");
+        loadingWidget.getElement().getStyle().setProperty("display", "none");
         showRef.setText(btnTextHide);
         referenceListCont.clear();
-    //    checkboxBtnParent.clear();
+        //    checkboxBtnParent.clear();
         bottomCont.getElement().getStyle().setProperty("display", "block");
         referenceListCont.getElement().getStyle().setProperty("display", "block");
         refFilterParent.getElement().getStyle().setProperty("display", "block");
@@ -367,27 +374,27 @@ public class SnipViewImpl extends Composite implements SnipView {
         // default size of rows in one tab
         int listRowSize = Constants.DEFAULT_REFERENCE_PAGE_SIZE;
         int tabCount = 1;
-        if(beanList.size() != 0) {
-            tabCount = (int) Math.ceil((double)beanList.get(0).as().getCount()/listRowSize);
+        if (beanList.size() != 0) {
+            tabCount = (int) Math.ceil((double) beanList.get(0).as().getCount() / listRowSize);
         }
 
         TabPanel tabPanel = new TabPanel();
 
         // creates tabs of count tabCount
-        for (int i=1; i<=tabCount; i++) {
+        for (int i = 1; i <= tabCount; i++) {
             // creates content of current tab
             FlowPanel tabContent = new FlowPanel();
 
-            if(beanList.size() == 0) {
+            if (beanList.size() == 0) {
                 tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
             }
-            tabPanel.add(tabContent, i+"");
+            tabPanel.add(tabContent, i + "");
 
         }
 
         tabPanel.setWidth("100%");
 
-        for (int j=0; j<beanList.size(); j++) {
+        for (int j = 0; j < beanList.size(); j++) {
             ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this);
             ((FlowPanel) tabPanel.getWidget(pageIndex)).add(referenceListRow);
         }
@@ -396,13 +403,12 @@ public class SnipViewImpl extends Composite implements SnipView {
         tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
-                loadingWidget.getElement().getStyle().setProperty("display","block");
+                loadingWidget.getElement().getStyle().setProperty("display", "block");
                 presenter.getSnipReferences(searchOptionsBean, integerBeforeSelectionEvent.getItem());
             }
         });
 
         referenceListCont.add(tabPanel);
-
 
 
     }

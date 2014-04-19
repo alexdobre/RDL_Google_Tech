@@ -13,6 +13,7 @@ public class AbuseDescription extends Composite {
 
     interface AbuseDescriptionUiBinder extends UiBinder<HTMLPanel, AbuseDescription> {
     }
+
     private static AbuseDescriptionUiBinder uiBinder = GWT.create(AbuseDescriptionUiBinder.class);
 
     public AbuseDescription() {

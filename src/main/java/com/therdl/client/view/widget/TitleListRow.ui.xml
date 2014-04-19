@@ -9,9 +9,9 @@
 
     </ui:style>
 
-    <g:HTMLPanel >
+    <g:HTMLPanel>
         <b:Row>
-        <g:Label ui:field="titleLabel" />
+            <g:Label ui:field="titleLabel"/>
         </b:Row>
 
     </g:HTMLPanel>

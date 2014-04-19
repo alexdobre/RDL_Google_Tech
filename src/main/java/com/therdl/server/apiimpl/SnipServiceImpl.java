@@ -53,6 +53,7 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * crud get
      * returns all snips ===  jpa findAll
+     *
      * @param pageIndex
      * @return
      */
@@ -66,7 +67,7 @@ public class SnipServiceImpl implements SnipsService {
         BasicDBObject query = new BasicDBObject();
         query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
         int collCount = coll.find(query).count();
-        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1)).skip((pageIndex)*Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);
+        DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1)).skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);
 
         while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
@@ -80,6 +81,7 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * search snips for the given search options
+     *
      * @param searchOptions search option data
      * @param pageIndex
      * @return list of SnipBean
@@ -112,9 +114,9 @@ public class SnipServiceImpl implements SnipsService {
             query.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
         if (searchOptions.getPosts() != null)
             query.put("posts", new BasicDBObject("$gte", searchOptions.getPosts()));
-        if(searchOptions.getSnipType() != null) {
+        if (searchOptions.getSnipType() != null) {
             query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
-        }else {
+        } else {
             query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
         }
         if (searchOptions.getProposalType() != null)
@@ -138,7 +140,8 @@ public class SnipServiceImpl implements SnipsService {
 
         DBCollection coll = db.getCollection("rdlSnipData");
         int collCount = coll.find(query).count();
-        DBCursor cursor = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);;
+        DBCursor cursor = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);
+        ;
 
         while (cursor.hasNext()) {
             DBObject doc = cursor.next();
@@ -231,6 +234,7 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * increments counter for the given snip id
+     *
      * @param id
      * @param field to increment. This can be viewCount, rep or positive/neutral/negative reference count
      * @return
@@ -253,6 +257,7 @@ public class SnipServiceImpl implements SnipsService {
     /**
      * snip json contains an array of link objects representing references for the current snip
      * adds a reference to that array for the snip with the given snip id
+     *
      * @param linkAutoBean Link bean object
      * @param parentSnipId parent snip id
      * @return parent modified SnipBean
@@ -262,7 +267,7 @@ public class SnipServiceImpl implements SnipsService {
         DBCollection coll = db.getCollection("rdlSnipData");
 
         BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(parentSnipId));
-        DBObject listItem = new BasicDBObject("links", new BasicDBObject("targetId",linkAutoBean.as().getTargetId()).append("rank",linkAutoBean.as().getRank()));
+        DBObject listItem = new BasicDBObject("links", new BasicDBObject("targetId", linkAutoBean.as().getTargetId()).append("rank", linkAutoBean.as().getRank()));
         DBObject updateQuery = new BasicDBObject("$push", listItem);
         DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
         SnipBean snip = buildBeanObject(dbObj);
@@ -271,6 +276,7 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * finds references of the snip with the given id (id is in searchOptions bean) and filter
+     *
      * @param searchOptions to filter references
      * @return references as a list of SnipBean object
      */
@@ -285,7 +291,7 @@ public class SnipServiceImpl implements SnipsService {
 
         // retrieve reference ids from the links nested array of the snip json
         List<ObjectId> referenceIds = new ArrayList<ObjectId>();
-        for (int i=0; i<snipBean.getLinks().size(); i++) {
+        for (int i = 0; i < snipBean.getLinks().size(); i++) {
             referenceIds.add(new ObjectId(snipBean.getLinks().get(i).getTargetId()));
         }
 
@@ -294,18 +300,18 @@ public class SnipServiceImpl implements SnipsService {
         query.put("_id", new BasicDBObject("$in", referenceIds));
 
         // filter references
-        if(searchOptions.getReferenceType() != null)
-           query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
-     //   if(searchOptions.getRep() != null)
-      //      query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+        if (searchOptions.getReferenceType() != null)
+            query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
+        //   if(searchOptions.getRep() != null)
+        //      query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
         if (searchOptions.getAuthor() != null)
             query.put("author", searchOptions.getAuthor());
-        if(searchOptions.getSnipType() != null)
+        if (searchOptions.getSnipType() != null)
             query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
 
         // if ti
-        if(searchOptions.getAuthorTitle() == null && searchOptions.getAuthorRep() == null) {
-            DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+        if (searchOptions.getAuthorTitle() == null && searchOptions.getAuthorRep() == null) {
+            DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
             int collCount = coll.find(query).count();
 
             while (collDocs.hasNext()) {
@@ -326,10 +332,11 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * this function is used when searching references/posts/pledges by author reputation or author title
-     * @param collDocs DBCursor for the references
+     *
+     * @param collDocs      DBCursor for the references
      * @param searchOptions searchOptions
-     * @param query query for snips
-     * @param pageIndex index of page
+     * @param query         query for snips
+     * @param pageIndex     index of page
      * @return SnipBean list
      */
     private List<SnipBean> filterReferencesByUser(DBCursor collDocs, SnipBean searchOptions, BasicDBObject query, int pageIndex) {
@@ -341,7 +348,7 @@ public class SnipServiceImpl implements SnipsService {
         List<String> authors = new ArrayList<String>();
         while (collDocs.hasNext()) {
             DBObject doc = collDocs.next();
-            if(!authors.contains(doc.get("author")))
+            if (!authors.contains(doc.get("author")))
                 authors.add((String) doc.get("author"));
 
         }
@@ -353,12 +360,12 @@ public class SnipServiceImpl implements SnipsService {
         queryUser.put("username", new BasicDBObject("$in", authors.toArray(new String[authors.size()])));
 
         // filter users by rep/title
-        if(searchOptions.getAuthorRep() != null)
+        if (searchOptions.getAuthorRep() != null)
             queryUser.put("rep", new BasicDBObject("$gte", searchOptions.getAuthorRep()));
-        if(searchOptions.getAuthorTitle() != null) {
-            if(searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_DEV))
+        if (searchOptions.getAuthorTitle() != null) {
+            if (searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_DEV))
                 queryUser.put("titles.titleName", RDLConstants.UserTitle.RDL_DEV);
-            else if(searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_USER))
+            else if (searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_USER))
                 queryUser.put("titles.titleName", new BasicDBObject("$ne", RDLConstants.UserTitle.RDL_DEV));
         }
         // query on user collection
@@ -374,7 +381,7 @@ public class SnipServiceImpl implements SnipsService {
         query.put("author", new BasicDBObject("$in", filteredAuthors.toArray(new String[filteredAuthors.size()])));
 
         // query to get snips for only filtered authors
-        DBCursor collDocs1 = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex)*Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+        DBCursor collDocs1 = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
         int collCount = coll.find(query).count();
 
         while (collDocs1.hasNext()) {
@@ -415,6 +422,7 @@ public class SnipServiceImpl implements SnipsService {
 
     /**
      * makes current timestamp
+     *
      * @return current timestamp as String
      */
     public String makeTimeStamp() {
@@ -513,7 +521,7 @@ public class SnipServiceImpl implements SnipsService {
         snip.setViews(RDLUtils.parseInt(doc.get("views")));
         snip.setTitle((String) doc.get("title"));
         snip.setReferenceType((String) doc.get("referenceType"));
-        snip.setPosRef(RDLUtils.parseInt( doc.get("posRef")));
+        snip.setPosRef(RDLUtils.parseInt(doc.get("posRef")));
         snip.setSubCat((String) doc.get("subCat"));
         snip.setParentTag((String) doc.get("parentTag"));
         snip.setVotes((String) doc.get("votes"));

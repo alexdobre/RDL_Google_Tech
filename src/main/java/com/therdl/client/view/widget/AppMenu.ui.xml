@@ -44,12 +44,12 @@
             </b:NavbarNav>
 
             <b:NavbarForm pull="LEFT">
-                <b:TextBox ui:field = "searchSiteContent" placeholder="Search Site Content" addStyleNames="col-lg-8"/>
+                <b:TextBox ui:field="searchSiteContent" placeholder="Search Site Content" addStyleNames="col-lg-8"/>
             </b:NavbarForm>
 
-            <b:NavbarText ui:field = "user" pull="RIGHT">
+            <b:NavbarText ui:field="user" pull="RIGHT">
                 <b:ListDropDown>
-                    <b:AnchorButton ui:field = "userdetails" toggle="DROPDOWN" text="{i18n.userDetails}"/>
+                    <b:AnchorButton ui:field="userdetails" toggle="DROPDOWN" text="{i18n.userDetails}"/>
                     <b:DropDownMenu>
                         <b:NavbarLink text="{i18n.email}" ui:field="email"/>
                         <b:NavbarLink text="{i18n.userProfile}" ui:field="profile"/>
@@ -58,8 +58,8 @@
                 </b:ListDropDown>
                 <b:ListDropDown>
                     <b:DropDownMenu>
-                        <b:NavbarLink  ui:field = "login" text="{i18n.logIn}"></b:NavbarLink>
-                        <b:NavbarLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavbarLink>
+                        <b:NavbarLink ui:field="login" text="{i18n.logIn}"></b:NavbarLink>
+                        <b:NavbarLink ui:field="signUp" text="{i18n.appMenuSignUp}"></b:NavbarLink>
                     </b:DropDownMenu>
                 </b:ListDropDown>
             </b:NavbarText>

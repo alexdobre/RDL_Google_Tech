@@ -11,8 +11,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Image;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.ForgotPasswordPresenter;
 import com.therdl.client.view.ForgotPassword;
@@ -26,7 +24,6 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInEvent;
 import com.therdl.shared.events.LogInEventEventHandler;
-import org.gwtbootstrap3.client.ui.*;
 
 import java.util.logging.Logger;
 
@@ -104,7 +101,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
             @Override
             public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp(500,30, null);
+                showLoginPopUp(500, 30, null);
             }
         });
 
@@ -129,8 +126,9 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
     /**
      * creates and shows login popup and sets its parameters
-     * @param posLeft left position
-     * @param posTop top position
+     *
+     * @param posLeft      left position
+     * @param posTop       top position
      * @param loginHandler handler which is called when login is successful
      */
     public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler) {
@@ -158,7 +156,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * shows log out popup with message
      */
     public void showLogoutPopUp() {
-        if(logoutPopup == null) {
+        if (logoutPopup == null) {
             logoutPopup = new LogoutPopupWidget();
             logoutPopup.setGlassEnabled(true);
             logoutPopup.setModal(true);
@@ -237,7 +235,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
      * @param passwordText supplied credential
      */
     public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
-        presenter.doLogIn(emailTxt, passwordText, rememberMe,null, loginHandler);
+        presenter.doLogIn(emailTxt, passwordText, rememberMe, null, loginHandler);
     }
 
     @Override
@@ -245,7 +243,7 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         return appMenu;
     }
 
-    public void init(){
+    public void init() {
     }
 
     /**
@@ -257,12 +255,12 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         AbstractMediaPlayer player = null;
         try {
             // create the player, specifying URL of media
-            player = new YouTubePlayer("wEJ40eqFBeo","100%", "350px");
-            DialogBox dialog = ViewUtils.constructDialogBox(player,event,450);
+            player = new YouTubePlayer("wEJ40eqFBeo", "100%", "350px");
+            DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
             dialog.show();
-        } catch(PluginVersionException e) {
+        } catch (PluginVersionException e) {
             ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
-        } catch(PluginNotFoundException e) {
+        } catch (PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
             ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
         }
@@ -279,41 +277,48 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new CompatibilityDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("connectionCat")
     public void onConnectionCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ConnectionDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("exteriorCat")
     public void onExteriorCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ExteriorDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("eroticismCat")
     public void onEroticismCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new EroticismDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("seductionCat")
     public void onSeductionCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new SeductionDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("psyTendCat")
     public void onPsyTendCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new PsyTendDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("affairsCat")
     public void onAffairsCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AffairsDescription(), event, 800);
         simplePopup.show();
     }
+
     @UiHandler("abuseCat")
     public void onAbuseCatClick(ClickEvent event) {
         DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AbuseDescription(), event, 800);
         simplePopup.show();
     }
-   
+
 }
 

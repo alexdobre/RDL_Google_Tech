@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-public class LoadingWidget extends Composite{
+public class LoadingWidget extends Composite {
     interface LoadingWidgetUiBinder extends UiBinder<HTMLPanel, LoadingWidget> {
     }
 
@@ -21,8 +21,8 @@ public class LoadingWidget extends Composite{
     }
 
     public void setSizes(String width, String height) {
-        loadingPanel.getElement().getStyle().setProperty("width",width);
-        loadingPanel.getElement().getStyle().setProperty("height",height);
+        loadingPanel.getElement().getStyle().setProperty("width", width);
+        loadingPanel.getElement().getStyle().setProperty("height", height);
 
     }
 }

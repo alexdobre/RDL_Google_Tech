@@ -1,7 +1,10 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -110,19 +113,19 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
      */
     @UiHandler("submit")
     public void onSubmit(ClickEvent event) {
-       onSubmit();
+        onSubmit();
     }
 
     @UiHandler("password")
-      public void onPassEnter(KeyDownEvent event) {
-        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+    public void onPassEnter(KeyDownEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
             onSubmit();
         }
     }
 
     @UiHandler("email")
     public void onEmailEnter(KeyDownEvent event) {
-        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
             onSubmit();
         }
     }
@@ -137,7 +140,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
 
         if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
-            welcomeViewImpl.onSubmit(eMail, password,rememberMe);
+            welcomeViewImpl.onSubmit(eMail, password, rememberMe);
 
         } else {
             loginFail.setVisible(true);
@@ -148,6 +151,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
     /**
      * click handler for sign up link, redirects to sign up view
+     *
      * @param event
      */
     @UiHandler("signUpLink")
@@ -157,6 +161,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
     /**
      * click handler for sign up link, redirects to sign up view
+     *
      * @param event
      */
     @UiHandler("forgotPassLink")

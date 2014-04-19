@@ -86,16 +86,16 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         initWidget(uiBinder.createAndBindUi(this));
         this.currentUserBean = currentUserBean;
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             pageToRedirect = RDLConstants.Tokens.SNIPS;
             createSnipTypeBar();
             createCategoryList();
             hideProposalLists();
-        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             pageToRedirect = RDLConstants.Tokens.STORIES;
             createCategoryList();
             hideProposalLists();
-        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             pageToRedirect = RDLConstants.Tokens.IMPROVEMENTS;
             ViewUtils.createProposalTypeList(proposalTypeList);
             ViewUtils.createProposalStateList(proposalStateList);
@@ -108,7 +108,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     @Override
     protected void onLoad() {
         super.onLoad();
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             initSnipTypeMenu();
         else
             snipTypeBar.getElement().getStyle().setProperty("display", "none");
@@ -152,7 +152,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         while (iterator.hasNext()) {
             Map.Entry mEntry = (Map.Entry) iterator.next();
 
-            Image img = new Image(((ImageResource)imageResources.get(mEntry.getKey())).getSafeUri().asString());
+            Image img = new Image(((ImageResource) imageResources.get(mEntry.getKey())).getSafeUri().asString());
             img.setWidth("40px");
             img.setHeight("40px");
             img.setStyleName("snipTypeImg");
@@ -167,7 +167,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
             snipTypeBar.add(rdBtn);
 
             // check the first radio button
-            if(snipTypeRadioBtnList.size() == 1)
+            if (snipTypeRadioBtnList.size() == 1)
                 rdBtn.setValue(true);
 
         }
@@ -179,7 +179,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
      */
     void createCategoryList() {
         categoryList.addItem("Select a category");
-        for(CoreCategory item : CoreCategory.values()) {
+        for (CoreCategory item : CoreCategory.values()) {
             categoryList.addItem(item.getShortName());
         }
     }
@@ -188,22 +188,23 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
      * hides category list
      */
     void hideCategoryList() {
-        categoryLabel.getElement().getStyle().setProperty("display","none");
-        categoryList.getElement().getStyle().setProperty("display","none");
+        categoryLabel.getElement().getStyle().setProperty("display", "none");
+        categoryList.getElement().getStyle().setProperty("display", "none");
     }
 
     /**
      * hides proposal type and state lists
      */
     void hideProposalLists() {
-        proposalTypeLabel.getElement().getStyle().setProperty("display","none");
-        proposalTypeList.getElement().getStyle().setProperty("display","none");
-        proposalStateLabel.getElement().getStyle().setProperty("display","none");
-        proposalStateList.getElement().getStyle().setProperty("display","none");
+        proposalTypeLabel.getElement().getStyle().setProperty("display", "none");
+        proposalTypeList.getElement().getStyle().setProperty("display", "none");
+        proposalStateLabel.getElement().getStyle().setProperty("display", "none");
+        proposalStateList.getElement().getStyle().setProperty("display", "none");
     }
 
     /**
      * sets currentSnipBean
+     *
      * @param snipBean
      */
     public void setCurrentSnipBean(AutoBean<SnipBean> snipBean) {
@@ -212,6 +213,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
     /**
      * view edited snip, set title, content, snip type, category and subcategory values
+     *
      * @param snipBean
      */
     public void viewEditedSnip(AutoBean<SnipBean> snipBean) {
@@ -221,33 +223,33 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
         title.setText(snipBean.as().getTitle());
         editorWidget.setHTML(snipBean.as().getContent());
 
-        if(!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-            for(int i=0; i<categoryList.getItemCount(); i++) {
-                if(categoryList.getItemText(i).equals(snipBean.as().getCoreCat())) {
+        if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+            for (int i = 0; i < categoryList.getItemCount(); i++) {
+                if (categoryList.getItemText(i).equals(snipBean.as().getCoreCat())) {
                     categoryList.setSelectedIndex(i);
                     break;
                 }
             }
         } else {
-            for(int i=0; i<proposalTypeList.getItemCount(); i++) {
-                if(proposalTypeList.getValue(i).equals(snipBean.as().getProposalType())) {
+            for (int i = 0; i < proposalTypeList.getItemCount(); i++) {
+                if (proposalTypeList.getValue(i).equals(snipBean.as().getProposalType())) {
                     proposalTypeList.setSelectedIndex(i);
                     break;
                 }
             }
 
-            for(int i=0; i<proposalStateList.getItemCount(); i++) {
-                if(proposalStateList.getValue(i).equals(snipBean.as().getProposalState())) {
+            for (int i = 0; i < proposalStateList.getItemCount(); i++) {
+                if (proposalStateList.getValue(i).equals(snipBean.as().getProposalState())) {
                     proposalStateList.setSelectedIndex(i);
                     break;
                 }
             }
         }
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-            for(RadioButton radioBtn : snipTypeRadioBtnList) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            for (RadioButton radioBtn : snipTypeRadioBtnList) {
                 radioBtn.setEnabled(false);
-                if(snipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
+                if (snipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
                     radioBtn.setValue(true);
 
             }
@@ -258,10 +260,10 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
      * snip type menu initial state
      */
     private void initSnipTypeMenu() {
-        for(int i=0; i<snipTypeRadioBtnList.size(); i++) {
+        for (int i = 0; i < snipTypeRadioBtnList.size(); i++) {
             snipTypeRadioBtnList.get(i).setEnabled(true);
 
-            if(i==0) {
+            if (i == 0) {
                 snipTypeRadioBtnList.get(i).setValue(true);
             }
         }
@@ -270,49 +272,50 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     /**
      * save button click handler, init snip bean and sets values from UI widgets
      * this is called also for save/edit. Sets current snip id in this case.
+     *
      * @param event
      */
 
     @UiHandler("saveSnip")
     void onSaveSnip(ClickEvent event) {
-        if(title.getText().equals("")) {
+        if (title.getText().equals("")) {
             Window.alert(RDL.i18n.titleWarningText());
             return;
         }
 
-        if(!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && categoryList.getSelectedIndex() == 0) {
+        if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && categoryList.getSelectedIndex() == 0) {
             Window.alert(RDL.i18n.categoryWarningText());
             return;
         }
 
 
         AutoBean<SnipBean> newBean = beanery.snipBean();
-        if(currentSnipBean != null) {
+        if (currentSnipBean != null) {
             newBean = currentSnipBean;
         }
         // put snip data into the bean
         newBean.as().setTitle(title.getText());
         newBean.as().setContent(editorWidget.getHTML());
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             // check which snip type is sets
-            for(RadioButton radioBtn : snipTypeRadioBtnList) {
-                if(radioBtn.getValue())
+            for (RadioButton radioBtn : snipTypeRadioBtnList) {
+                if (radioBtn.getValue())
                     newBean.as().setSnipType(radioBtn.getElement().getAttribute("name"));
             }
 
             newBean.as().setCoreCat(categoryList.getItemText(categoryList.getSelectedIndex()));
-        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             newBean.as().setSnipType(RDLConstants.SnipType.THREAD);
             newBean.as().setCoreCat(categoryList.getItemText(categoryList.getSelectedIndex()));
-        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             newBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
 
             newBean.as().setProposalType(proposalTypeList.getValue(proposalTypeList.getSelectedIndex()));
             newBean.as().setProposalState(proposalStateList.getValue(proposalStateList.getSelectedIndex()));
         }
 
-        if(currentSnipBean == null) {
+        if (currentSnipBean == null) {
             // sets counters to 0
             newBean.as().setAuthor(currentUserBean.as().getName());
             newBean.as().setViews(0);
@@ -334,20 +337,21 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
     /**
      * delete button click handler, calls presenter's function to delete snip with the given id
+     *
      * @param event
      */
     @UiHandler("deleteSnip")
     void onDeleteSnip(ClickEvent event) {
-        if(currentSnipBean != null) {
+        if (currentSnipBean != null) {
             /**
              * if snip has some reference o not allow to delete it. Show popup message instead
              */
-            if(hasLinks()) {
-                if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+            if (hasLinks()) {
+                if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
                     Window.alert(RDL.i18n.deleteSnipMsg());
-                else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
+                else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
                     Window.alert(RDL.i18n.deleteThreadMsg());
-                else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+                else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
                     Window.alert(RDL.i18n.deleteThreadMsg());
 
             } else {
@@ -358,14 +362,15 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
     /**
      * checks if current snip has any reference, thread has posts or proposal has pledges or counters
+     *
      * @return true if has
      */
     private boolean hasLinks() {
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             return currentSnipBean.as().getPosRef() > 0 || currentSnipBean.as().getNeutralRef() > 0 || currentSnipBean.as().getNegativeRef() > 0;
-        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
+        else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
             return currentSnipBean.as().getPosts() > 0;
-        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+        else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
             return currentSnipBean.as().getPledges() > 0 || currentSnipBean.as().getCounters() > 0;
         else
             return false;
@@ -380,9 +385,9 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
      * Sets the upper header Menu to the correct state for supplied credentials
      * post sign up called from presenter
      *
-     * @param name String supplied credential
+     * @param name  String supplied credential
      * @param email String supplied credential
-     * @param auth boolean auth state from server via presenter
+     * @param auth  boolean auth state from server via presenter
      */
 
     @Override

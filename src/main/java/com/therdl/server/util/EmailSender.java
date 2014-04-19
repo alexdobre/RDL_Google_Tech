@@ -20,11 +20,12 @@ public class EmailSender {
     private static Logger log = Logger.getLogger(EmailSender.class.getName());
 
     /**
-     *Sends an e-mail with the new user password
+     * Sends an e-mail with the new user password
+     *
      * @param newPass
      * @param email
      */
-    public static void sendNewPassEmail(String newPass,String email, DB db ) throws RDLSendEmailException {
+    public static void sendNewPassEmail(String newPass, String email, DB db) throws RDLSendEmailException {
         //get the mail credentials from the DB
         DBCollection coll = db.getCollection("mailCredentials");
 
@@ -34,17 +35,17 @@ public class EmailSender {
         DBCursor cursor = coll.find(query);
         DBObject doc = cursor.next();
 
-        String from = (String)doc.get("from");
+        String from = (String) doc.get("from");
         String to = email;
         String subject = "The RDL password reset";
-        String message = "Your RDL password has been reset. Your new password is: "+newPass+" . Please go to www.therdl.com to log in and change it.";
-        String login = (String)doc.get("login");
-        String password = (String)doc.get("password");
+        String message = "Your RDL password has been reset. Your new password is: " + newPass + " . Please go to www.therdl.com to log in and change it.";
+        String login = (String) doc.get("login");
+        String password = (String) doc.get("password");
 
         try {
             Properties props = new Properties();
             props.setProperty("mail.host", (String) doc.get("mailHost"));
-            props.setProperty("mail.smtp.port",""+((Double)doc.get("smtpPort")).intValue());
+            props.setProperty("mail.smtp.port", "" + ((Double) doc.get("smtpPort")).intValue());
             props.setProperty("mail.smtp.auth", "true");
             props.setProperty("mail.smtp.starttls.enable", "true");
 
@@ -59,7 +60,7 @@ public class EmailSender {
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             Transport.send(msg);
         } catch (AuthenticationFailedException ex) {
-            log.log(Level.SEVERE,"Authentication failed", ex);
+            log.log(Level.SEVERE, "Authentication failed", ex);
             throw new RDLSendEmailException();
 
         } catch (AddressException ex) {
@@ -88,7 +89,7 @@ public class EmailSender {
 
     public static void main(String args[]) throws RDLSendEmailException {
         System.out.println("Send mail BEGIN: ");
-        sendNewPassEmail(ServerUtils.generatePassword(), "markdiesta@gmail.com",ServerUtils.getMongo());
+        sendNewPassEmail(ServerUtils.generatePassword(), "markdiesta@gmail.com", ServerUtils.getMongo());
         System.out.println("Send mail END: ");
     }
 }

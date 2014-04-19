@@ -91,7 +91,7 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 
     public void setToken(String token) {
         String[] tokenSplit = token.split(":");
-        if(tokenSplit.length == 2) {
+        if (tokenSplit.length == 2) {
             this.token = tokenSplit[0];
             this.authorName = tokenSplit[1];
         } else {
@@ -105,13 +105,13 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
         super.onLoad();
 
         if (token.equals(RDLConstants.Tokens.IMPROVEMENTS)) {
-            if(authorName != null) {
+            if (authorName != null) {
                 AutoBean<SnipBean> searchOptionsBean = initSearchOptionsBean();
                 searchOptionsBean.as().setAuthor(authorName);
 
                 doFilterSearch(searchOptionsBean, 0);
             } else {
-                if(!firstTimeLoaded)
+                if (!firstTimeLoaded)
                     getInitialSnipList(0);
             }
         } else {
@@ -151,7 +151,7 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
         authorName = null;
         impListRowContainer.clear();
         impListRowContainer.add(new ListWidget(this, beanList, pageIndex));
-        impLoadingWidget.getElement().getStyle().setProperty("display","none");
+        impLoadingWidget.getElement().getStyle().setProperty("display", "none");
     }
 
     @Override
@@ -181,13 +181,14 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 
     /**
      * call presenter function to search snips for the given search options
+     *
      * @param searchOptionsBean bean for the search options
      * @param pageIndex
      */
 
     @Override
     public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
-        impLoadingWidget.getElement().getStyle().setProperty("display","block");
+        impLoadingWidget.getElement().getStyle().setProperty("display", "block");
         currentSearchOptionsBean = searchOptionsBean;
         searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
         presenter.searchSnips(searchOptionsBean, pageIndex);
@@ -200,7 +201,7 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
     public void getInitialSnipList(int pageIndex) {
         firstTimeLoaded = true;
         currentSearchOptionsBean = null;
-        impLoadingWidget.getElement().getStyle().setProperty("display","block");
+        impLoadingWidget.getElement().getStyle().setProperty("display", "block");
 
         presenter.searchSnips(initSearchOptionsBean(), pageIndex);
     }

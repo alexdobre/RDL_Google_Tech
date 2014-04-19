@@ -1,28 +1,22 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Constants;
-import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * SnipEditPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -109,7 +103,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditV
     @Override
     public void submitEditedBean(AutoBean<SnipBean> bean, final String pageToRedirect) {
         bean.as().setAction("update");
-        log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle()+";snipType="+bean.as().getSnipType());
+        log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle() + ";snipType=" + bean.as().getSnipType());
         log.info("SnipEditPresenter submit to server");
         String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
@@ -132,7 +126,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditV
 
                     if (response.getStatusCode() == 200) {
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(pageToRedirect+":"+getController().getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect + ":" + getController().getCurrentUserBean().as().getName());
 
                     } else {
                         log.info("SnipEditPresenter submit post fail");
@@ -183,7 +177,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditV
 
                     if (response.getStatusCode() == 200) {
                         log.info("SnipEditPresenter onDeleteSnip ok now validating");
-                        History.newItem(pageToRedirect+":"+getController().getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect + ":" + getController().getCurrentUserBean().as().getName());
 
                     } else {
                         log.info("SnipEditPresenter onDeleteSnip fail");
@@ -238,7 +232,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditV
 
                     if (response.getStatusCode() == 200) {
                         log.info("SnipEditPresenter submit post ok now validating");
-                        History.newItem(pageToRedirect+":"+getController().getCurrentUserBean().as().getName());
+                        History.newItem(pageToRedirect + ":" + getController().getCurrentUserBean().as().getName());
                     } else {
                         log.info("SnipEditPresenter submit post fail");
                     }

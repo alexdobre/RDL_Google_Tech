@@ -13,7 +13,7 @@ import com.therdl.shared.Constants;
  * gwt widget class for the social media icons (facebook, twitter, youtube and reddit)
  * used in the welcome page and snip list view
  */
-public class SocialPanel extends Composite{
+public class SocialPanel extends Composite {
     interface SocialPanelUiBinder extends UiBinder<HTMLPanel, SocialPanel> {
     }
 
@@ -35,8 +35,9 @@ public class SocialPanel extends Composite{
 
     /**
      * creates gwt Anchor element for the given image resource and url
+     *
      * @param imgRes image resource
-     * @param url url to link
+     * @param url    url to link
      * @return
      */
 

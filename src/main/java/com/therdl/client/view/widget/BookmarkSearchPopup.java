@@ -3,7 +3,6 @@ package com.therdl.client.view.widget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -29,6 +28,7 @@ public class BookmarkSearchPopup extends PopupPanel {
      * constructor BookmarkSearchPopup
      * forms url and sets to the text box
      * url has the following format example: http://localhost:8080/#snips:title=aaa:coreCat=Compatibility:author=serine
+     *
      * @param searchFilterWidget
      */
     public BookmarkSearchPopup(SearchFilterWidget searchFilterWidget) {
@@ -41,92 +41,93 @@ public class BookmarkSearchPopup extends PopupPanel {
 
         String url = "";
 
-        if(formURl().length() != 0) {
-            url = ":"+formURl().toString().replace(" ","+");
+        if (formURl().length() != 0) {
+            url = ":" + formURl().toString().replace(" ", "+");
         }
 
         String moduleToken = "";
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             moduleToken = RDLConstants.Tokens.SNIPS;
-        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
+        else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
             moduleToken = RDLConstants.Tokens.STORIES;
-        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+        else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
             moduleToken = RDLConstants.Tokens.IMPROVEMENTS;
 
-        getLinkTextBox.setText(GWT.getHostPageBaseURL()+"#"+moduleToken+ url);
+        getLinkTextBox.setText(GWT.getHostPageBaseURL() + "#" + moduleToken + url);
     }
 
     /**
      * forms bookmark url from the values of the search widget's gui elements
+     *
      * @return constructed url as a StringBuilder object
      */
     public StringBuilder formURl() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        if(!searchFilterWidget.title.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.TITLE+"="+searchFilterWidget.title.getText()+":");
+        if (!searchFilterWidget.title.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.TITLE + "=" + searchFilterWidget.title.getText() + ":");
         }
 
         String selCategories = ViewUtils.getSelectedItems(searchFilterWidget.categoryList);
-        if(!selCategories.equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT+"="+selCategories+":");
+        if (!selCategories.equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.CORE_CAT + "=" + selCategories + ":");
         }
 
-        if(!searchFilterWidget.posRef.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.POS_REF+"="+searchFilterWidget.posRef.getText()+":");
+        if (!searchFilterWidget.posRef.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.POS_REF + "=" + searchFilterWidget.posRef.getText() + ":");
         }
 
-        if(!searchFilterWidget.neutralRef.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.NEUTRAL_REF+"="+searchFilterWidget.neutralRef.getText()+":");
+        if (!searchFilterWidget.neutralRef.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.NEUTRAL_REF + "=" + searchFilterWidget.neutralRef.getText() + ":");
         }
 
-        if(!searchFilterWidget.negativeRef.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.NEGATIVE_REF+"="+searchFilterWidget.negativeRef.getText()+":");
+        if (!searchFilterWidget.negativeRef.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.NEGATIVE_REF + "=" + searchFilterWidget.negativeRef.getText() + ":");
         }
 
-        if(!searchFilterWidget.postCount.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.POSTS+"="+searchFilterWidget.postCount.getText()+":");
+        if (!searchFilterWidget.postCount.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.POSTS + "=" + searchFilterWidget.postCount.getText() + ":");
         }
 
-        if(!searchFilterWidget.snipRep.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.REP+"="+searchFilterWidget.snipRep.getText()+":");
+        if (!searchFilterWidget.snipRep.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.REP + "=" + searchFilterWidget.snipRep.getText() + ":");
         }
 
-        if(!searchFilterWidget.content.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.CONTENT+"="+searchFilterWidget.content.getText()+":");
+        if (!searchFilterWidget.content.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.CONTENT + "=" + searchFilterWidget.content.getText() + ":");
         }
 
-        if(!searchFilterWidget.author.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.AUTHOR+"="+searchFilterWidget.author.getText()+":");
+        if (!searchFilterWidget.author.getText().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.AUTHOR + "=" + searchFilterWidget.author.getText() + ":");
         }
 
-        if(!searchFilterWidget.dateFilterWidget.getDateFrom().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_FROM+"="+searchFilterWidget.dateFilterWidget.getDateFrom()+":");
+        if (!searchFilterWidget.dateFilterWidget.getDateFrom().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_FROM + "=" + searchFilterWidget.dateFilterWidget.getDateFrom() + ":");
         }
 
-        if(!searchFilterWidget.dateFilterWidget.getDateTo().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO+"="+searchFilterWidget.dateFilterWidget.getDateTo()+":");
+        if (!searchFilterWidget.dateFilterWidget.getDateTo().equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.DATE_TO + "=" + searchFilterWidget.dateFilterWidget.getDateTo() + ":");
         }
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS) && !searchFilterWidget.getCheckedSnipTypes().equals(""))
-            stringBuilder.append(RDLConstants.BookmarkSearch.SNIP_TYPE+"="+searchFilterWidget.getCheckedSnipTypes()+":");
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) && !searchFilterWidget.getCheckedSnipTypes().equals(""))
+            stringBuilder.append(RDLConstants.BookmarkSearch.SNIP_TYPE + "=" + searchFilterWidget.getCheckedSnipTypes() + ":");
 
         String selProposalTypes = ViewUtils.getSelectedItems(searchFilterWidget.proposalTypeList);
-        if(!selProposalTypes.equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.PROPOSAL_TYPE+"="+selProposalTypes+":");
+        if (!selProposalTypes.equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.PROPOSAL_TYPE + "=" + selProposalTypes + ":");
         }
 
         String selProposalStates = ViewUtils.getSelectedItems(searchFilterWidget.proposalStateList);
-        if(!selProposalStates.equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.PROPOSAL_STATE+"="+selProposalStates+":");
+        if (!selProposalStates.equals("")) {
+            stringBuilder.append(RDLConstants.BookmarkSearch.PROPOSAL_STATE + "=" + selProposalStates + ":");
         }
 
-        stringBuilder.append(RDLConstants.BookmarkSearch.SORT_FIELD+"="+searchFilterWidget.getSortField()+":");
-        stringBuilder.append(RDLConstants.BookmarkSearch.SORT_ORDER+"="+searchFilterWidget.getSortOrder()+":");
+        stringBuilder.append(RDLConstants.BookmarkSearch.SORT_FIELD + "=" + searchFilterWidget.getSortField() + ":");
+        stringBuilder.append(RDLConstants.BookmarkSearch.SORT_ORDER + "=" + searchFilterWidget.getSortOrder() + ":");
 
-        if(stringBuilder.length() != 0) {
-            stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        if (stringBuilder.length() != 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
         return stringBuilder;
     }

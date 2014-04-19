@@ -6,7 +6,7 @@ package com.therdl.server.paypal;
 
 /**
  * Model class to hold Paypal IPN Notification related information
- *
+ * <p/>
  * User: smhumayun
  * Date: 7/6/13
  * Time: 6:15 PM

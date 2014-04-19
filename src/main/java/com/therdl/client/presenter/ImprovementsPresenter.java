@@ -4,18 +4,14 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.ImprovementsView;
-import com.therdl.client.view.StoriesView;
-import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.beans.CurrentUserBean;
-
-import java.util.logging.Logger;
 
 /**
  * storiesPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * this class will encapsulate the RDL user issues submission and voting
  */
-public class ImprovementsPresenter extends RdlAbstractPresenter implements ImprovementsView.Presenter{
+public class ImprovementsPresenter extends RdlAbstractPresenter implements ImprovementsView.Presenter {
 
 
     private final ImprovementsView improvementsView;
@@ -52,7 +48,6 @@ public class ImprovementsPresenter extends RdlAbstractPresenter implements Impro
 
         loginCookieCheck();
     }
-
 
 
 }

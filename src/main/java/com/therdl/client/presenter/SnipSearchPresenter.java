@@ -9,10 +9,11 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SearchView;
 import com.therdl.shared.Constants;
-import com.therdl.shared.beans.*;
+import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.JSOModel;
+import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * SnipSearchPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -114,11 +115,11 @@ public class SnipSearchPresenter extends RdlAbstractPresenter implements SearchV
 
                     for (int i = 0; i < data.length(); i++) {
                         jSonList.add(data.get(i));
-                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i+"")));
+                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
 
                     }
 
-                    searchView.displaySnipList(beanList,pageIndex);
+                    searchView.displaySnipList(beanList, pageIndex);
                 }
 
                 @Override

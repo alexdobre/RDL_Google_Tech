@@ -14,11 +14,11 @@ public class LogInOkEvent extends GwtEvent<LogInOkEventEventHandler> {
 
     private AutoBean<CurrentUserBean> currentUserBean;
 
-    public LogInOkEvent (AutoBean<CurrentUserBean>  currentUserBean){
+    public LogInOkEvent(AutoBean<CurrentUserBean> currentUserBean) {
         this.currentUserBean = currentUserBean;
     }
 
-    public AutoBean<CurrentUserBean> getCurrentUserBean(){
+    public AutoBean<CurrentUserBean> getCurrentUserBean() {
         return currentUserBean;
     }
 

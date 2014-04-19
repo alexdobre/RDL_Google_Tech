@@ -54,8 +54,8 @@ public class SearchFilterWidget extends Composite {
     @UiField
     ListBox categoryList, proposalTypeList, proposalStateList;
 
- //   @UiField
- //   ListBox subCategoryList;
+    //   @UiField
+    //   ListBox subCategoryList;
 
     @UiField
     DateFilterWidget dateFilterWidget;
@@ -70,7 +70,7 @@ public class SearchFilterWidget extends Composite {
     @UiField
     FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, typePanel, pledgesPanel, countersPanel;
 
-   // DatePicker datePicker;
+    // DatePicker datePicker;
 
     Image selectedArrow;
 
@@ -96,23 +96,24 @@ public class SearchFilterWidget extends Composite {
 
     private Beanery beanery = GWT.create(Beanery.class);
 
-    interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> { }
+    interface SnipSearchWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> {
+    }
 
     public SearchFilterWidget(SearchView snipSearchView) {
         initWidget(uiBinder.createAndBindUi(this));
         this.view = snipSearchView;
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             editPageToken = RDLConstants.Tokens.SNIP_EDIT;
 
             createTypeFilter();
 
-            posRef.getElement().getStyle().setProperty("border","1px solid green");
-            neutralRef.getElement().getStyle().setProperty("border","1px solid grey");
-            negativeRef.getElement().getStyle().setProperty("border","1px solid red");
+            posRef.getElement().getStyle().setProperty("border", "1px solid green");
+            neutralRef.getElement().getStyle().setProperty("border", "1px solid grey");
+            negativeRef.getElement().getStyle().setProperty("border", "1px solid red");
 
-            postLabel.getElement().getStyle().setProperty("display","none");
-            postPanel.getElement().getStyle().setProperty("display","none");
+            postLabel.getElement().getStyle().setProperty("display", "none");
+            postPanel.getElement().getStyle().setProperty("display", "none");
 
             hideProposalItems();
 
@@ -124,9 +125,9 @@ public class SearchFilterWidget extends Composite {
         } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             editPageToken = RDLConstants.Tokens.THREAD_EDIT;
 
-            typeLabel.getElement().getStyle().setProperty("display","none");
-            refPanel.getElement().getStyle().setProperty("display","none");
-            refLabel.getElement().getStyle().setProperty("display","none");
+            typeLabel.getElement().getStyle().setProperty("display", "none");
+            refPanel.getElement().getStyle().setProperty("display", "none");
+            refLabel.getElement().getStyle().setProperty("display", "none");
             hideProposalItems();
 
             filterLabel.setText(RDL.i18n.filterThreads());
@@ -135,20 +136,20 @@ public class SearchFilterWidget extends Composite {
         } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             editPageToken = RDLConstants.Tokens.PROPOSAL_EDIT;
 
-            typeLabel.getElement().getStyle().setProperty("display","none");
-            refPanel.getElement().getStyle().setProperty("display","none");
-            refLabel.getElement().getStyle().setProperty("display","none");
-            postLabel.getElement().getStyle().setProperty("display","none");
-            postPanel.getElement().getStyle().setProperty("display","none");
+            typeLabel.getElement().getStyle().setProperty("display", "none");
+            refPanel.getElement().getStyle().setProperty("display", "none");
+            refLabel.getElement().getStyle().setProperty("display", "none");
+            postLabel.getElement().getStyle().setProperty("display", "none");
+            postPanel.getElement().getStyle().setProperty("display", "none");
 
-            categoryList.getElement().getStyle().setProperty("display","none");
-            categoryLabel.getElement().getStyle().setProperty("display","none");
+            categoryList.getElement().getStyle().setProperty("display", "none");
+            categoryLabel.getElement().getStyle().setProperty("display", "none");
 
-            viewsLabel.getElement().getStyle().setProperty("display","none");
-            viewPanel.getElement().getStyle().setProperty("display","none");
+            viewsLabel.getElement().getStyle().setProperty("display", "none");
+            viewPanel.getElement().getStyle().setProperty("display", "none");
 
-            contentLabel.getElement().getStyle().setProperty("display","none");
-            content.getElement().getStyle().setProperty("display","none");
+            contentLabel.getElement().getStyle().setProperty("display", "none");
+            content.getElement().getStyle().setProperty("display", "none");
 
             filterLabel.setText(RDL.i18n.filterProposals());
 
@@ -159,7 +160,7 @@ public class SearchFilterWidget extends Composite {
 
         createSortArrows();
 
-	}
+    }
 
     /**
      * create checkbox group for snip type (snip, fastcap, material, habit)
@@ -171,15 +172,15 @@ public class SearchFilterWidget extends Composite {
         snipTypeHm.put(RDLConstants.SnipType.HABIT, RDL.i18n.habit());
 
         Iterator itHm = snipTypeHm.entrySet().iterator();
-        int i=0;
-        while(itHm.hasNext()) {
+        int i = 0;
+        while (itHm.hasNext()) {
             Map.Entry pairs = (Map.Entry) itHm.next();
 
             checkBoxArray[i] = new CheckBox((String) pairs.getValue());
             checkBoxArray[i].setValue(true);
             checkBoxArray[i].setStyleName("checkBoxBtn");
-            if(pairs.getKey().equals(RDLConstants.SnipType.FAST_CAP)) {
-                checkBoxArray[i].getElement().getStyle().setProperty("marginLeft","36px");
+            if (pairs.getKey().equals(RDLConstants.SnipType.FAST_CAP)) {
+                checkBoxArray[i].getElement().getStyle().setProperty("marginLeft", "36px");
             }
 
             typePanel.add(checkBoxArray[i]);
@@ -195,13 +196,13 @@ public class SearchFilterWidget extends Composite {
     private void createSortArrows() {
         FlowPanel[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel};
         String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP,
-                            RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE,
-                            RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF,
-                            RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS,
-                            RDLConstants.SnipFields.PLEDGES, RDLConstants.SnipFields.COUNTERS
-                        };
+                RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE,
+                RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF,
+                RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS,
+                RDLConstants.SnipFields.PLEDGES, RDLConstants.SnipFields.COUNTERS
+        };
 
-        for (int i=0; i<flowPanels.length; i++) {
+        for (int i = 0; i < flowPanels.length; i++) {
             final String keyName = keyNames[i];
             FlowPanel arrowPanel = new FlowPanel();
             Image imgUp = new Image(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
@@ -213,7 +214,7 @@ public class SearchFilterWidget extends Composite {
             imgUp.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent clickEvent) {
-                    if(sortOrder == 1)
+                    if (sortOrder == 1)
                         selectedArrow.setUrl(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
                     else
                         selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
@@ -236,7 +237,7 @@ public class SearchFilterWidget extends Composite {
             imgDown.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent clickEvent) {
-                    if(sortOrder == 1)
+                    if (sortOrder == 1)
                         selectedArrow.setUrl(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
                     else
                         selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
@@ -250,11 +251,11 @@ public class SearchFilterWidget extends Composite {
                 }
             });
 
-            arrowPanel.getElement().getStyle().setProperty("float","right");
-            arrowPanel.getElement().getStyle().setProperty("marginTop","2px");
+            arrowPanel.getElement().getStyle().setProperty("float", "right");
+            arrowPanel.getElement().getStyle().setProperty("marginTop", "2px");
             flowPanels[i].add(arrowPanel);
 
-            if(flowPanels[i].equals(datePanel)) {
+            if (flowPanels[i].equals(datePanel)) {
                 selectedArrow = imgDown;
                 selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
 
@@ -268,9 +269,9 @@ public class SearchFilterWidget extends Composite {
      * creates category list for snips
      */
     void createCategoryList() {
-     //   categoryList.addItem("Select a category");
-        int i=0;
-        for(CoreCategory item : CoreCategory.values()) {
+        //   categoryList.addItem("Select a category");
+        int i = 0;
+        for (CoreCategory item : CoreCategory.values()) {
             categoryList.addItem(item.getShortName());
             categoryList.setValue(i, item.getShortName());
             i++;
@@ -278,22 +279,23 @@ public class SearchFilterWidget extends Composite {
     }
 
     private void hideProposalItems() {
-        proposalStateLabel.getElement().getStyle().setProperty("display","none");
-        proposalStateList.getElement().getStyle().setProperty("display","none");
+        proposalStateLabel.getElement().getStyle().setProperty("display", "none");
+        proposalStateList.getElement().getStyle().setProperty("display", "none");
 
-        proposalTypeLabel.getElement().getStyle().setProperty("display","none");
-        proposalTypeList.getElement().getStyle().setProperty("display","none");
+        proposalTypeLabel.getElement().getStyle().setProperty("display", "none");
+        proposalTypeList.getElement().getStyle().setProperty("display", "none");
 
-        pledgesCountLabel.getElement().getStyle().setProperty("display","none");
-        pledgesPanel.getElement().getStyle().setProperty("display","none");
+        pledgesCountLabel.getElement().getStyle().setProperty("display", "none");
+        pledgesPanel.getElement().getStyle().setProperty("display", "none");
 
-        countersCountLabel.getElement().getStyle().setProperty("display","none");
-        countersPanel.getElement().getStyle().setProperty("display","none");
+        countersCountLabel.getElement().getStyle().setProperty("display", "none");
+        countersPanel.getElement().getStyle().setProperty("display", "none");
     }
 
     /**
      * click handle for link button for bookmark search
      * bookmark search popup is opened in the button side
+     *
      * @param event
      */
 
@@ -302,13 +304,14 @@ public class SearchFilterWidget extends Composite {
         BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this);
         int x = getLinkBtn.getAbsoluteLeft();
         int y = getLinkBtn.getAbsoluteTop();
-        bookmarkSearchPopup.setPopupPosition(x+getLinkBtn.getOffsetWidth(), y);
+        bookmarkSearchPopup.setPopupPosition(x + getLinkBtn.getOffsetWidth(), y);
         bookmarkSearchPopup.show();
     }
 
     /**
      * construct snip bean object from the popup fields
      * at the end when there is no any search option gets initial list, else do the filtered search
+     *
      * @param event
      */
 
@@ -319,100 +322,101 @@ public class SearchFilterWidget extends Composite {
 
     /**
      * forms search option bean from filter form elements
+     *
      * @return search option bean as SnipBean object
      */
     private AutoBean<SnipBean> formSearchOptionBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
         String titleText = title.getText();
-        if(!titleText.equals("")) {
+        if (!titleText.equals("")) {
             searchOptionsBean.as().setTitle(titleText);
         }
 
         String contentText = content.getText();
-        if(!contentText.equals("")) {
+        if (!contentText.equals("")) {
             searchOptionsBean.as().setContent(contentText);
         }
 
         String authorText = author.getText();
-        if(!authorText.equals("")) {
+        if (!authorText.equals("")) {
             searchOptionsBean.as().setAuthor(authorText);
         }
 
         String dateFromText = dateFilterWidget.getDateFrom();
-        if(!dateFromText.equals("")) {
+        if (!dateFromText.equals("")) {
             searchOptionsBean.as().setDateFrom(dateFromText);
         }
 
         String dateToText = dateFilterWidget.getDateTo();
-        if(!dateToText.equals("")) {
+        if (!dateToText.equals("")) {
             searchOptionsBean.as().setDateTo(dateToText);
         }
 
-        if(!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             String categories = ViewUtils.getSelectedItems(categoryList);
-            if(!categories.equals("")) {
+            if (!categories.equals("")) {
                 searchOptionsBean.as().setCoreCat(categories);
             }
         } else {
             String proposalTypes = ViewUtils.getSelectedItems(proposalTypeList);
-            if(!proposalTypes.equals("")) {
+            if (!proposalTypes.equals("")) {
                 searchOptionsBean.as().setProposalType(proposalTypes);
             }
 
             String proposalStates = ViewUtils.getSelectedItems(proposalStateList);
-            if(!proposalStates.equals("")) {
+            if (!proposalStates.equals("")) {
                 searchOptionsBean.as().setProposalState(proposalStates);
             }
         }
 
         String posRefText = posRef.getText();
-        if(!posRefText.equals("")) {
+        if (!posRefText.equals("")) {
             searchOptionsBean.as().setPosRef(Integer.parseInt(posRefText));
         }
 
         String neutralRefText = neutralRef.getText();
-        if(!neutralRefText.equals("")) {
+        if (!neutralRefText.equals("")) {
             searchOptionsBean.as().setNeutralRef(Integer.parseInt(neutralRefText));
         }
 
         String negativeRefText = negativeRef.getText();
-        if(!negativeRefText.equals("")) {
+        if (!negativeRefText.equals("")) {
             searchOptionsBean.as().setNegativeRef(Integer.parseInt(negativeRefText));
         }
 
         String viewsText = viewCount.getText();
-        if(!viewsText.equals("")) {
+        if (!viewsText.equals("")) {
             searchOptionsBean.as().setViews(Integer.parseInt(viewsText));
         }
 
         String postsText = postCount.getText();
-        if(!postsText.equals("")) {
+        if (!postsText.equals("")) {
             searchOptionsBean.as().setPosts(Integer.parseInt(postsText));
         }
 
         String pledgesText = pledgesCount.getText();
-        if(!pledgesText.equals("")) {
+        if (!pledgesText.equals("")) {
             searchOptionsBean.as().setPledges(Integer.parseInt(pledgesText));
         }
 
-        String countersText =  countersCount.getText();
-        if(!countersText.equals("")) {
+        String countersText = countersCount.getText();
+        if (!countersText.equals("")) {
             searchOptionsBean.as().setCounters(Integer.parseInt(countersText));
         }
 
         String snipRepText = snipRep.getText();
-        if(!snipRepText.equals("")) {
+        if (!snipRepText.equals("")) {
             searchOptionsBean.as().setRep(Integer.parseInt(snipRepText));
         }
 
         searchOptionsBean.as().setSortOrder(sortOrder);
         searchOptionsBean.as().setSortField(sortField);
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
             searchOptionsBean.as().setSnipType(getCheckedSnipTypes());
-        else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
+        else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
             searchOptionsBean.as().setSnipType(RDLConstants.SnipType.THREAD);
-        else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+        else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
             searchOptionsBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
 
         return searchOptionsBean;
@@ -420,18 +424,19 @@ public class SearchFilterWidget extends Composite {
 
     /**
      * checks which snip type checkboxes are checked
+     *
      * @return returns snip type values separated by comma
      */
     public String getCheckedSnipTypes() {
         List keys = new ArrayList(snipTypeHm.keySet());
         String checkedFlags = "";
-        for (int j=0; j<checkBoxArray.length; j++) {
-            if(checkBoxArray[j].getValue()) {
-                checkedFlags += keys.get(j)+",";
+        for (int j = 0; j < checkBoxArray.length; j++) {
+            if (checkBoxArray[j].getValue()) {
+                checkedFlags += keys.get(j) + ",";
             }
         }
-        if(!checkedFlags.equals(""))
-            checkedFlags = checkedFlags.substring(0,checkedFlags.length()-1);
+        if (!checkedFlags.equals(""))
+            checkedFlags = checkedFlags.substring(0, checkedFlags.length() - 1);
 
         return checkedFlags;
     }
@@ -439,15 +444,16 @@ public class SearchFilterWidget extends Composite {
     /**
      * handler for the create new button
      * opens create/edit snip view
+     *
      * @param event
      */
-	@UiHandler("createNewButton")
-	void onCreateNewButtonClick(ClickEvent event) {
-        if(view.getPresenter().getController().getCurrentUserBean().as().isAuth()) {
+    @UiHandler("createNewButton")
+    void onCreateNewButtonClick(ClickEvent event) {
+        if (view.getPresenter().getController().getCurrentUserBean().as().isAuth()) {
             createNewBtnHandler(editPageToken, view.getCurrentUserBean());
         } else {
             final String pageToRedirect = editPageToken;
-            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft()+90, createNewButton.getAbsoluteTop()-120, new LoginHandler() {
+            view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft() + 90, createNewButton.getAbsoluteTop() - 120, new LoginHandler() {
 
                 @Override
                 public void onSuccess(AutoBean<CurrentUserBean> currentUserBean) {
@@ -456,10 +462,10 @@ public class SearchFilterWidget extends Composite {
                 }
             });
         }
-	}
+    }
 
     private void createNewBtnHandler(String editPageToken, AutoBean<CurrentUserBean> userBean) {
-        if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter())
+        if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter())
             Window.alert(RDL.i18n.proposalCreateMsg());
         else
             History.newItem(editPageToken);
@@ -467,6 +473,7 @@ public class SearchFilterWidget extends Composite {
 
     /**
      * sets filter's fields by given bean
+     *
      * @param searchOptionsBean
      */
 
@@ -474,22 +481,22 @@ public class SearchFilterWidget extends Composite {
         title.setText(searchOptionsBean.as().getTitle() != null ? searchOptionsBean.as().getTitle() : "");
         content.setText(searchOptionsBean.as().getContent() != null ? searchOptionsBean.as().getContent() : "");
         author.setText(searchOptionsBean.as().getAuthor() != null ? searchOptionsBean.as().getAuthor() : "");
-        posRef.setText(searchOptionsBean.as().getPosRef() != null ? searchOptionsBean.as().getPosRef()+"" : "");
-        neutralRef.setText(searchOptionsBean.as().getNeutralRef() != null ? searchOptionsBean.as().getNeutralRef()+"" : "");
-        negativeRef.setText(searchOptionsBean.as().getNegativeRef() != null ? searchOptionsBean.as().getNegativeRef()+"" : "");
-        postCount.setText(searchOptionsBean.as().getPosts() != null ? searchOptionsBean.as().getPosts()+"" : "");
-        viewCount.setText(searchOptionsBean.as().getViews() != null ? searchOptionsBean.as().getViews()+"" : "");
-        pledgesCount.setText(searchOptionsBean.as().getPledges() != null ? searchOptionsBean.as().getPledges()+"" : "");
-        countersCount.setText(searchOptionsBean.as().getCounters() != null ? searchOptionsBean.as().getCounters()+"" : "");
-        snipRep.setText(searchOptionsBean.as().getRep() != null ? searchOptionsBean.as().getRep()+"" : "");
+        posRef.setText(searchOptionsBean.as().getPosRef() != null ? searchOptionsBean.as().getPosRef() + "" : "");
+        neutralRef.setText(searchOptionsBean.as().getNeutralRef() != null ? searchOptionsBean.as().getNeutralRef() + "" : "");
+        negativeRef.setText(searchOptionsBean.as().getNegativeRef() != null ? searchOptionsBean.as().getNegativeRef() + "" : "");
+        postCount.setText(searchOptionsBean.as().getPosts() != null ? searchOptionsBean.as().getPosts() + "" : "");
+        viewCount.setText(searchOptionsBean.as().getViews() != null ? searchOptionsBean.as().getViews() + "" : "");
+        pledgesCount.setText(searchOptionsBean.as().getPledges() != null ? searchOptionsBean.as().getPledges() + "" : "");
+        countersCount.setText(searchOptionsBean.as().getCounters() != null ? searchOptionsBean.as().getCounters() + "" : "");
+        snipRep.setText(searchOptionsBean.as().getRep() != null ? searchOptionsBean.as().getRep() + "" : "");
 
-        dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom() != null ? searchOptionsBean.as().getDateFrom()+"" : "");
-        dateFilterWidget.setDateTo(searchOptionsBean.as().getDateTo() != null ? searchOptionsBean.as().getDateTo()+"" : "");
+        dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom() != null ? searchOptionsBean.as().getDateFrom() + "" : "");
+        dateFilterWidget.setDateTo(searchOptionsBean.as().getDateTo() != null ? searchOptionsBean.as().getDateTo() + "" : "");
 
 
-        if(searchOptionsBean.as().getCoreCat() != null) {
-            for(int i=0; i<categoryList.getItemCount(); i++) {
-                if(categoryList.getItemText(i).equals(searchOptionsBean.as().getCoreCat())) {
+        if (searchOptionsBean.as().getCoreCat() != null) {
+            for (int i = 0; i < categoryList.getItemCount(); i++) {
+                if (categoryList.getItemText(i).equals(searchOptionsBean.as().getCoreCat())) {
                     categoryList.setSelectedIndex(i);
                     break;
                 }
@@ -498,20 +505,20 @@ public class SearchFilterWidget extends Composite {
 //            categoryList.setSelectedIndex(0);
 //        }
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-            if(searchOptionsBean.as().getSnipType() != null && searchOptionsBean.as().getSnipType() != "") {
-                log.info("snipTypes="+searchOptionsBean.as().getSnipType());
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+            if (searchOptionsBean.as().getSnipType() != null && searchOptionsBean.as().getSnipType() != "") {
+                log.info("snipTypes=" + searchOptionsBean.as().getSnipType());
                 String[] snipTypes = searchOptionsBean.as().getSnipType().split(",");
-                for (int j=0; j<checkBoxArray.length; j++) {
+                for (int j = 0; j < checkBoxArray.length; j++) {
                     checkBoxArray[j].setValue(false);
-                    for(int i=0; i<snipTypes.length; i++) {
-                        if(checkBoxArray[j].getText().equals(snipTypeHm.get(snipTypes[i])))
+                    for (int i = 0; i < snipTypes.length; i++) {
+                        if (checkBoxArray[j].getText().equals(snipTypeHm.get(snipTypes[i])))
                             checkBoxArray[j].setValue(true);
 
                     }
                 }
             } else {
-                for (int j=0; j<checkBoxArray.length; j++) {
+                for (int j = 0; j < checkBoxArray.length; j++) {
                     checkBoxArray[j].setValue(true);
                 }
             }

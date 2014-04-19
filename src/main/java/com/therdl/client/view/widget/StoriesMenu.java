@@ -20,7 +20,7 @@ import com.therdl.client.view.common.ViewUtils;
  * contains icons for stream, tag, thread, post
  * when hover the text is shown for each module
  */
-public class StoriesMenu extends Composite{
+public class StoriesMenu extends Composite {
     interface StoriesMenuUiBinder extends UiBinder<HTMLPanel, StoriesMenu> {
     }
 
@@ -49,29 +49,25 @@ public class StoriesMenu extends Composite{
     }
 
     @UiHandler("streamBtn")
-    public void onMouseOver(MouseOverEvent event)
-    {
+    public void onMouseOver(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.streamDescription());
     }
 
 
     @UiHandler("tagBtn")
-    public void onMouseOver1(MouseOverEvent event)
-    {
+    public void onMouseOver1(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.tagDescription());
     }
 
 
     @UiHandler("threadBtn")
-    public void onMouseOver2(MouseOverEvent event)
-    {
+    public void onMouseOver2(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.threadDescription());
     }
 
 
     @UiHandler("postBtn")
-    public void onMouseOver3(MouseOverEvent event)
-    {
+    public void onMouseOver3(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.postDescription());
     }
 
@@ -84,14 +80,14 @@ public class StoriesMenu extends Composite{
         AbstractMediaPlayer player = null;
         try {
             // create the player, specifying URL of media
-            player = new YouTubePlayer("O4RRX70shsM","100%", "350px");
+            player = new YouTubePlayer("O4RRX70shsM", "100%", "350px");
             DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
             dialog.show();
-        } catch(PluginVersionException e) {
-            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."),event,450).show();
-        } catch(PluginNotFoundException e) {
+        } catch (PluginVersionException e) {
+            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
+        } catch (PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
-            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event,450).show();
+            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
         }
     }
 }

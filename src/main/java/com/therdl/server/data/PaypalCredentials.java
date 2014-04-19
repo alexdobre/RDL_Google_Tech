@@ -2,7 +2,6 @@ package com.therdl.server.data;
 
 /**
  * Bean to store the PaypalCredentials retrieved from the database
- *
  */
 public class PaypalCredentials {
 

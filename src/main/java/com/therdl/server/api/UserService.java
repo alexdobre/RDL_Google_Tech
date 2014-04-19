@@ -1,10 +1,10 @@
 package com.therdl.server.api;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.mongodb.DB;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
+
 import java.util.List;
 
 
@@ -21,13 +21,16 @@ public interface UserService {
 
     /**
      * testing and development methods debug string
+     *
      * @return
      */
     String getDebugString();
+
     UserBean getLastUser(String id);
 
     /**
      * gets the user Bean
+     *
      * @param id
      * @return
      */
@@ -35,6 +38,7 @@ public interface UserService {
 
     /**
      * gets the user Bean
+     *
      * @param email
      * @return UserBean
      */
@@ -42,6 +46,7 @@ public interface UserService {
 
     /**
      * gets the user Bean
+     *
      * @param paypalId
      * @return UserBean
      */
@@ -49,12 +54,14 @@ public interface UserService {
 
     /**
      * creates the new user
+     *
      * @param user
      */
     void createUser(UserBean user);
 
     /**
      * get all users (List<UserBean>)
+     *
      * @param id
      * @return
      */
@@ -62,6 +69,7 @@ public interface UserService {
 
     /**
      * deletes the user
+     *
      * @param id
      */
     void deleteUser(String id);
@@ -69,15 +77,17 @@ public interface UserService {
     /**
      * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
      * the function adds a reputation given object to the list. Finds user by email.
+     *
      * @param repGivenBean repGivenBean
-     * @param userEmail email
+     * @param userEmail    email
      * @return modified UserBean
      */
     public UserBean addRepGiven(AutoBean<UserBean.RepGivenBean> repGivenBean, String userEmail);
 
     /**
      * checks if user gave a reputation to the snip with the given snipId
-     * @param email user email
+     *
+     * @param email  user email
      * @param snipId snipId
      * @return Integer 1 or 0
      */
@@ -85,22 +95,26 @@ public interface UserService {
 
     /**
      * sets isRepGivenByUser flag for input snip beans
-     * @param email current user
+     *
+     * @param email     current user
      * @param snipBeans snip beans as list
      */
     public void setRepGivenForSnips(String email, List<SnipBean> snipBeans);
+
     /**
      * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
      * the function adds a reference given object to the list. Finds user by email.
+     *
      * @param refGivenBean refGivenBean
-     * @param userEmail email
+     * @param userEmail    email
      * @return modified UserBean
      */
     public UserBean addRefGiven(AutoBean<UserBean.RefGivenBean> refGivenBean, String userEmail);
 
     /**
      * checks if user wrote a reference to the snip with the given snipId
-     * @param email user email
+     *
+     * @param email  user email
      * @param snipId snipId
      * @return Integer 1 or 0
      */
@@ -108,6 +122,7 @@ public interface UserService {
 
     /**
      * updates the user
+     *
      * @param user
      * @return
      */
@@ -115,6 +130,7 @@ public interface UserService {
 
     /**
      * updates the SID of the user only
+     *
      * @param bean
      */
     public void updateSid(AuthUserBean bean);
@@ -122,6 +138,7 @@ public interface UserService {
 
     /**
      * finds a user on email
+     *
      * @param bean
      * @param hash
      * @return UserBean
@@ -130,15 +147,17 @@ public interface UserService {
 
     /**
      * Finds a user by SID
+     *
      * @param sid
      * @return
      */
-   public AutoBean<AuthUserBean> findUserBySid (String sid);
+    public AutoBean<AuthUserBean> findUserBySid(String sid);
 
     /**
      * Resets a user password and sends an e-mail to the user with it
+     *
      * @param email
      */
-    public void recoverPassword (String email);
+    public void recoverPassword(String email);
 
 }

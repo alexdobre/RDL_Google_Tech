@@ -6,10 +6,10 @@
         >
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
-	<ui:style>
-        .labelText  {
+    <ui:style>
+        .labelText {
             font-family: Arial, Sans-serif;
-            display:inline-block;
+            display: inline-block;
             font-size: 14px;
             text-align: left;
             width: 84px;
@@ -18,51 +18,51 @@
 
         .textField {
             border: 1px solid #AACCEE;
-            display:inline-block;
-            font-size:10px;
+            display: inline-block;
+            font-size: 10px;
             padding: 3px;
             width: 150px;
-            margin:5px;
+            margin: 5px;
             float: left;
         }
+
         .posRef {
             width: 30px;
             border: 2px solid #758211;
-            font-size:10px;
+            font-size: 10px;
             padding: 3px;
-            margin-left:5px;
+            margin-left: 5px;
         }
 
         .neutralRef {
             width: 30px;
             border: 2px solid #a7a77c;
-            font-size:10px;
+            font-size: 10px;
             padding: 3px;
-            margin-left:5px;
+            margin-left: 5px;
         }
 
         .negativeRef {
             width: 30px;
             border: 2px solid #920E05;
-            font-size:10px;
+            font-size: 10px;
             padding: 3px;
-            margin-left:5px;
+            margin-left: 5px;
         }
-
 
         .categoryField {
             width: 160px;
-            margin:5px;
+            margin: 5px;
         }
 
         .submitPanel {
-            display:block;
-            width:280px !important;
+            display: block;
+            width: 280px !important;
         }
 
         @external .getLinkPopup;
         .getLinkPopup {
-            margin:0;
+            margin: 0;
         }
 
         @external .arrowImg;
@@ -95,134 +95,171 @@
             float: left;
         }
 
-	</ui:style>
+    </ui:style>
 
     <g:VerticalPanel>
 
-        <g:HTMLPanel styleName = '{style.submitPanel}' ui:field="container">
+        <g:HTMLPanel styleName='{style.submitPanel}' ui:field="container">
             <table>
                 <tr>
-                    <td><g:Label ui:field="filterLabel" styleName = '{style.labelText}' /></td>
-                    <td><b:Button ui:field="getLinkBtn" text="{i18n.link}" /></td>
+                    <td>
+                        <g:Label ui:field="filterLabel" styleName='{style.labelText}'/>
+                    </td>
+                    <td>
+                        <b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td><g:Label text="{i18n.title}" styleName = '{style.labelText}'/></td>
                     <td>
-                        <g:TextBox ui:field = "title" styleName = '{style.textField}'></g:TextBox>
+                        <g:Label text="{i18n.title}" styleName='{style.labelText}'/>
+                    </td>
+                    <td>
+                        <g:TextBox ui:field="title" styleName='{style.textField}'></g:TextBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="typeLabel" text="{i18n.type}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label ui:field="typeLabel" text="{i18n.type}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="typePanel"></g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="proposalTypeLabel" text="{i18n.type}" styleName = '{style.labelText}'/></td>
                     <td>
-                        <g:ListBox ui:field = "proposalTypeList" styleName = '{style.categoryField}' multipleSelect="true"></g:ListBox>
+                        <g:Label ui:field="proposalTypeLabel" text="{i18n.type}" styleName='{style.labelText}'/>
+                    </td>
+                    <td>
+                        <g:ListBox ui:field="proposalTypeList" styleName='{style.categoryField}'
+                                   multipleSelect="true"></g:ListBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="proposalStateLabel" text="{i18n.state}" styleName = '{style.labelText}'/></td>
                     <td>
-                        <g:ListBox ui:field = "proposalStateList" styleName = '{style.categoryField}' multipleSelect="true"></g:ListBox>
+                        <g:Label ui:field="proposalStateLabel" text="{i18n.state}" styleName='{style.labelText}'/>
+                    </td>
+                    <td>
+                        <g:ListBox ui:field="proposalStateList" styleName='{style.categoryField}'
+                                   multipleSelect="true"></g:ListBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="categoryLabel" text="{i18n.category}" styleName = '{style.labelText}'/></td>
                     <td>
-                        <g:ListBox ui:field = "categoryList" styleName = '{style.categoryField}' multipleSelect="true"></g:ListBox>
+                        <g:Label ui:field="categoryLabel" text="{i18n.category}" styleName='{style.labelText}'/>
+                    </td>
+                    <td>
+                        <g:ListBox ui:field="categoryList" styleName='{style.categoryField}'
+                                   multipleSelect="true"></g:ListBox>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="pledgesCountLabel" text="{i18n.pledges}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label ui:field="pledgesCountLabel" text="{i18n.pledges}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="pledgesPanel">
-                            <g:TextBox ui:field = "pledgesCount" styleName = '{style.textField}'></g:TextBox>
+                            <g:TextBox ui:field="pledgesCount" styleName='{style.textField}'></g:TextBox>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="countersCountLabel" text="{i18n.counters}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label ui:field="countersCountLabel" text="{i18n.counters}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="countersPanel">
-                            <g:TextBox ui:field = "countersCount" styleName = '{style.textField}'></g:TextBox>
+                            <g:TextBox ui:field="countersCount" styleName='{style.textField}'></g:TextBox>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="refLabel" text="{i18n.ref}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label ui:field="refLabel" text="{i18n.ref}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="refPanel">
                             <g:FlowPanel ui:field="posRefPanel" styleName="{style.refPanel}">
-                                <g:TextBox ui:field = "posRef" styleName = '{style.posRef}' />
+                                <g:TextBox ui:field="posRef" styleName='{style.posRef}'/>
                             </g:FlowPanel>
 
                             <g:FlowPanel ui:field="neutralRefPanel" styleName="{style.refPanel}">
-                                <g:TextBox ui:field = "neutralRef" styleName = '{style.neutralRef}' />
+                                <g:TextBox ui:field="neutralRef" styleName='{style.neutralRef}'/>
                             </g:FlowPanel>
 
                             <g:FlowPanel ui:field="negativeRefPanel" styleName="{style.refPanel}">
-                                <g:TextBox ui:field = "negativeRef" styleName = '{style.negativeRef}' />
+                                <g:TextBox ui:field="negativeRef" styleName='{style.negativeRef}'/>
                             </g:FlowPanel>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="postLabel" text="{i18n.posts}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label ui:field="postLabel" text="{i18n.posts}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="postPanel">
-                            <g:TextBox ui:field = "postCount" styleName = '{style.textField}' />
+                            <g:TextBox ui:field="postCount" styleName='{style.textField}'/>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="viewsLabel" text="{i18n.views}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label ui:field="viewsLabel" text="{i18n.views}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="viewPanel">
-                            <g:TextBox ui:field = "viewCount" styleName = '{style.textField}' />
+                            <g:TextBox ui:field="viewCount" styleName='{style.textField}'/>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.reputation}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label text="{i18n.reputation}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="repPanel">
-                            <g:TextBox ui:field = "snipRep" styleName = '{style.textField}'></g:TextBox>
+                            <g:TextBox ui:field="snipRep" styleName='{style.textField}'></g:TextBox>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label ui:field="contentLabel" text="{i18n.content}" styleName = '{style.labelText}'/></td>
-                    <td><g:TextBox ui:field = "content" styleName = '{style.textField}'></g:TextBox></td>
+                    <td>
+                        <g:Label ui:field="contentLabel" text="{i18n.content}" styleName='{style.labelText}'/>
+                    </td>
+                    <td>
+                        <g:TextBox ui:field="content" styleName='{style.textField}'></g:TextBox>
+                    </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.author}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label text="{i18n.author}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="authorPanel">
-                            <g:TextBox ui:field = "author" styleName = '{style.textField}' />
+                            <g:TextBox ui:field="author" styleName='{style.textField}'/>
                         </g:FlowPanel>
                     </td>
                 </tr>
 
                 <tr>
-                    <td><g:Label text="{i18n.date}" styleName = '{style.labelText}'/></td>
+                    <td>
+                        <g:Label text="{i18n.date}" styleName='{style.labelText}'/>
+                    </td>
                     <td>
                         <g:FlowPanel ui:field="datePanel">
-                            <rdl:DateFilterWidget ui:field="dateFilterWidget" styleName="{style.dateFilterWidget}" />
+                            <rdl:DateFilterWidget ui:field="dateFilterWidget" styleName="{style.dateFilterWidget}"/>
                         </g:FlowPanel>
                     </td>
                 </tr>
@@ -230,8 +267,8 @@
                 <tr>
                     <td></td>
                     <td>
-                        <b:Button ui:field="submit" text = "{i18n.filter}" />
-                        <b:Button ui:field="createNewButton" text="{i18n.createNew}" />
+                        <b:Button ui:field="submit" text="{i18n.filter}"/>
+                        <b:Button ui:field="createNewButton" text="{i18n.createNew}"/>
                     </td>
                 </tr>
 

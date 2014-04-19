@@ -19,13 +19,12 @@ import java.util.logging.Logger;
 
 /**
  * Paypal IPN Notification Handler Class
- *
+ * <p/>
  * User: smhumayun
  * Date: 7/6/13
  * Time: 5:48 PM
  */
-public class IpnHandler
-{
+public class IpnHandler {
 
     private static Logger log = Logger.getLogger(IpnHandler.class.getName());
     private IpnConfig ipnConfig;
@@ -33,29 +32,28 @@ public class IpnHandler
 
     /**
      * This method handles the Paypal IPN Notification as follows:
-     *      1. Read all posted request parameters
-     *      2. Prepare 'notify-validate' command with exactly the same parameters
-     *      3. Post above command to Paypal IPN URL {@link IpnConfig#ipnUrl}
-     *      4. Read response from Paypal
-     *      5. Capture Paypal IPN information
-     *      6. Validate captured Paypal IPN Information
-     *          6.1. Check that paymentStatus=Completed
-     *          6.2. Check that txnId has not been previously processed
-     *          6.3. Check that receiverEmail matches with configured {@link IpnConfig#receiverEmail}
-     *          6.4. Check that paymentAmount matches with configured {@link IpnConfig#paymentAmount}
-     *          6.5. Check that paymentCurrency matches with configured {@link IpnConfig#paymentCurrency}
-     *      7. In case of any failed validation checks, throw {@link IpnException}
-     *      8. If all is well, return {@link IpnInfo} to the caller for further business logic execution
+     * 1. Read all posted request parameters
+     * 2. Prepare 'notify-validate' command with exactly the same parameters
+     * 3. Post above command to Paypal IPN URL {@link IpnConfig#ipnUrl}
+     * 4. Read response from Paypal
+     * 5. Capture Paypal IPN information
+     * 6. Validate captured Paypal IPN Information
+     * 6.1. Check that paymentStatus=Completed
+     * 6.2. Check that txnId has not been previously processed
+     * 6.3. Check that receiverEmail matches with configured {@link IpnConfig#receiverEmail}
+     * 6.4. Check that paymentAmount matches with configured {@link IpnConfig#paymentAmount}
+     * 6.5. Check that paymentCurrency matches with configured {@link IpnConfig#paymentCurrency}
+     * 7. In case of any failed validation checks, throw {@link IpnException}
+     * 8. If all is well, return {@link IpnInfo} to the caller for further business logic execution
      *
      * @param request {@link javax.servlet.http.HttpServletRequest}
      * @return {@link IpnInfo}
      * @throws IpnException
      */
-    public IpnInfo handleIpn (HttpServletRequest request) throws IpnException {
+    public IpnInfo handleIpn(HttpServletRequest request) throws IpnException {
         log.info("inside ipn");
         IpnInfo ipnInfo = new IpnInfo();
-        try
-        {
+        try {
             //1. Read all posted request parameters
             String requestParams = this.getAllRequestParams(request);
             log.info(requestParams);
@@ -104,30 +102,29 @@ public class IpnHandler
             if (res.equals("VERIFIED")) {
 
                 //6.1. Check that paymentStatus=Completed
-                if(ipnInfo.getPaymentStatus() == null || !ipnInfo.getPaymentStatus().equalsIgnoreCase("COMPLETED"))
+                if (ipnInfo.getPaymentStatus() == null || !ipnInfo.getPaymentStatus().equalsIgnoreCase("COMPLETED"))
                     ipnInfo.setError("payment_status IS NOT COMPLETED {" + ipnInfo.getPaymentStatus() + "}");
 
                 //6.2. Check that txnId has not been previously processed
                 IpnInfo oldIpnInfo = this.getIpnInfoService().getIpnInfo(ipnInfo.getTxnId());
-                if(oldIpnInfo != null)
+                if (oldIpnInfo != null)
                     ipnInfo.setError("txn_id is already processed {old ipn_info " + oldIpnInfo);
 
                 //6.3. Check that receiverEmail matches with configured {@link IpnConfig#receiverEmail}
-                if(!ipnInfo.getReceiverEmail().equalsIgnoreCase(this.getIpnConfig().getReceiverEmail()))
+                if (!ipnInfo.getReceiverEmail().equalsIgnoreCase(this.getIpnConfig().getReceiverEmail()))
                     ipnInfo.setError("receiver_email " + ipnInfo.getReceiverEmail()
                             + " does not match with configured ipn email " + this.getIpnConfig().getReceiverEmail());
 
                 //6.4. Check that paymentAmount matches with configured {@link IpnConfig#paymentAmount}
-                if(Double.parseDouble(ipnInfo.getPaymentAmount()) != Double.parseDouble(this.getIpnConfig().getPaymentAmount()))
+                if (Double.parseDouble(ipnInfo.getPaymentAmount()) != Double.parseDouble(this.getIpnConfig().getPaymentAmount()))
                     ipnInfo.setError("payment amount mc_gross " + ipnInfo.getPaymentAmount()
                             + " does not match with configured ipn amount " + this.getIpnConfig().getPaymentAmount());
 
                 //6.5. Check that paymentCurrency matches with configured {@link IpnConfig#paymentCurrency}
-                if(!ipnInfo.getPaymentCurrency().equalsIgnoreCase(this.getIpnConfig().getPaymentCurrency()))
+                if (!ipnInfo.getPaymentCurrency().equalsIgnoreCase(this.getIpnConfig().getPaymentCurrency()))
                     ipnInfo.setError("payment currency mc_currency " + ipnInfo.getPaymentCurrency()
                             + " does not match with configured ipn currency " + this.getIpnConfig().getPaymentCurrency());
-            }
-            else
+            } else
                 ipnInfo.setError("Inavlid response {" + res + "} expecting {VERIFIED}");
 
             log.info("ipnInfo = " + ipnInfo);
@@ -135,12 +132,10 @@ public class IpnHandler
             this.getIpnInfoService().log(ipnInfo);
 
             //7. In case of any failed validation checks, throw {@link IpnException}
-            if(ipnInfo.getError() != null)
+            if (ipnInfo.getError() != null)
                 throw new IpnException(ipnInfo.getError());
-        }
-        catch(Exception e)
-        {
-            if(e instanceof IpnException)
+        } catch (Exception e) {
+            if (e instanceof IpnException)
                 throw (IpnException) e;
             log.log(Level.SEVERE, e.toString(), e);
             throw new IpnException(e.toString());
@@ -155,19 +150,17 @@ public class IpnHandler
      *
      * @param request {@link javax.servlet.http.HttpServletRequest}
      * @return all request parameters in the form:
-     *                                              param-name 1
-     *                                                  param-value
-     *                                              param-name 2
-     *                                                  param-value
-     *                                                  param-value (in case of multiple values)
+     *         param-name 1
+     *         param-value
+     *         param-name 2
+     *         param-value
+     *         param-value (in case of multiple values)
      */
-    private String getAllRequestParams(HttpServletRequest request)
-    {
+    private String getAllRequestParams(HttpServletRequest request) {
         Map map = request.getParameterMap();
         StringBuilder sb = new StringBuilder("\nREQUEST PARAMETERS\n");
-        for (Iterator it = map.keySet().iterator(); it.hasNext();)
-        {
-            String pn = (String)it.next();
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); ) {
+            String pn = (String) it.next();
             sb.append(pn).append("\n");
             String[] pvs = (String[]) map.get(pn);
             for (int i = 0; i < pvs.length; i++) {

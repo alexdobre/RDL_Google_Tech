@@ -4,14 +4,14 @@
         .dateField {
             width: 67px;
             border: 1px solid #AACCEE;
-            display:inline-block;
-            font-size:10px;
+            display: inline-block;
+            font-size: 10px;
             padding: 3px;
-            margin:2px;
+            margin: 2px;
         }
     </ui:style>
     <g:HTMLPanel>
-        <g:TextBox ui:field = "dateFrom" styleName = '{style.dateField}' />
-        <g:TextBox ui:field = "dateTo" styleName = '{style.dateField}' />
+        <g:TextBox ui:field="dateFrom" styleName='{style.dateField}'/>
+        <g:TextBox ui:field="dateTo" styleName='{style.dateField}'/>
     </g:HTMLPanel>
 </ui:UiBinder>
