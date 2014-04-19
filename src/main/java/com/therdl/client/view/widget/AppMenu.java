@@ -181,11 +181,11 @@ public class AppMenu extends Composite {
 //        stories.setActive(true);
     }
 
-//    @UiHandler("improvements")
-//    public void onImprovementsClick(ClickEvent event) {
-//        log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
-//        History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
-//    }
+    @UiHandler("improvements")
+    public void onImprovementsClick(ClickEvent event) {
+        log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
+        History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
+    }
 
     /**
      * Sets the improvements element as active in the menu
