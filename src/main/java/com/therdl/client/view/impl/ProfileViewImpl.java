@@ -61,7 +61,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     HTMLPanel titlePanel;
 
     @UiField
-    Anchor forgotPassLink;
+    Anchor ancBeAMember;
 
     private Image pic;
 
@@ -99,12 +99,12 @@ public class ProfileViewImpl extends Composite implements ProfileView {
             setAvatar(currentUserBean.as().getAvatarUrl());
         }
 
-        forgotPassLink.setVisible(true);
+        ancBeAMember.setVisible(true);
         for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()){
             titlePanel.add(new TitleListRow(currentUserBean,titleBean).asWidget());
 
             if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-                forgotPassLink.setVisible(false);
+                ancBeAMember.setVisible(false);
             }
         }
 

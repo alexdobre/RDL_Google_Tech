@@ -15,7 +15,7 @@
             </b:Row>
 
             <g:HTMLPanel ui:field="titlePanel"></g:HTMLPanel>
-            <g:Anchor ui:field="forgotPassLink" text="Be a Member!" href="/rdl/paypalCheckout"/>
+            <g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
         </div>
     </g:HTMLPanel>
 </ui:UiBinder>
