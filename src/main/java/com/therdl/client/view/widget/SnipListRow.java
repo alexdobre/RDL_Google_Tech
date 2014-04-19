@@ -8,10 +8,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
-import com.github.gwtbootstrap.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.cssbundles.Resources;
@@ -20,8 +16,6 @@ import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.SnipViewEvent;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -49,7 +43,7 @@ public class SnipListRow extends Composite{
     @UiField
     Image snipImg;
     @UiField
-    Button editBtn;
+    org.gwtbootstrap3.client.ui.Button editBtn;
     @UiField
     FlowPanel editBtnParent, postsPanel, refPanel, pledgesPanel, countersPanel, viewPanel;
     @UiField

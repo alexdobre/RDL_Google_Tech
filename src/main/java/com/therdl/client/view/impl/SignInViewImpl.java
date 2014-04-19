@@ -46,7 +46,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
     TextBox email;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button submit;
+    org.gwtbootstrap3.client.ui.Button submit;
 
     @UiField
     CheckBox rememberMe;

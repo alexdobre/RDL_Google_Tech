@@ -1,27 +1,26 @@
 package com.therdl.client.view.widget;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
-import com.therdl.client.view.impl.SnipSearchViewImpl;
-import com.therdl.shared.*;
+import com.therdl.shared.CoreCategory;
+import com.therdl.shared.Global;
+import com.therdl.shared.LoginHandler;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.beans.UserBean;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -38,13 +37,13 @@ public class SearchFilterWidget extends Composite {
     private static SnipSearchWidgetUiBinder uiBinder = GWT.create(SnipSearchWidgetUiBinder.class);
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button submit;
+    org.gwtbootstrap3.client.ui.Button submit;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button getLinkBtn;
+    org.gwtbootstrap3.client.ui.Button getLinkBtn;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button createNewButton;
+    org.gwtbootstrap3.client.ui.Button createNewButton;
 
     @UiField
     TextBox title, content, author, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep, pledgesCount, countersCount;

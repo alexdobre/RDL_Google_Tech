@@ -14,7 +14,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.therdl.client.RDL;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.shared.Constants;
 
 /**
  * gwt widget class for top bar menu in the stories view
@@ -43,7 +42,7 @@ public class StoriesMenu extends Composite{
     SpanElement hoverDiv;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button storiesVideoButton;
+    org.gwtbootstrap3.client.ui.Button storiesVideoButton;
 
     public StoriesMenu() {
         initWidget(ourUiBinder.createAndBindUi(this));

@@ -1,36 +1,69 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+        >
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
-    <b:ResponsiveNavbar>
-        <b:Brand ui:field="home">TheRDL</b:Brand>
+    <!--<b:Navbar>-->
+    <!--<b:NavbarBrand ui:field="home">TheRDL</b:NavbarBrand>-->
 
-        <b:NavCollapse>
-            <b:Nav>
-                <b:VerticalDivider />
-                <b:NavLink ui:field = "ideas" text="{i18n.ideas}"></b:NavLink>
-                <b:NavLink ui:field = "stories" text="{i18n.stories}"></b:NavLink>
-                <b:NavLink ui:field = "improvements" text="{i18n.improvements}"></b:NavLink>
-                <b:VerticalDivider />
-            </b:Nav>
+    <!--<b:NavbarCollapse>-->
+    <!--<b:Nav>-->
+    <!--<b:NavbarLink ui:field = "ideas" text="{i18n.ideas}"></b:NavbarLink>-->
+    <!--<b:NavbarLink ui:field = "stories" text="{i18n.stories}"></b:NavbarLink>-->
+    <!--<b:NavbarLink ui:field = "improvements" text="{i18n.improvements}"></b:NavbarLink>-->
+    <!--</b:Nav>-->
 
-            <b:NavForm size="4" ui:field = "searchSiteContent" placeholder="Search Site Content" />
+    <!--<b:NavbarForm size="4" ui:field = "searchSiteContent" />-->
 
-            <b:Nav alignment="RIGHT">
-                <b:VerticalDivider />
-                <b:Dropdown ui:field = "userdetails" text="{i18n.userDetails}">
-                    <b:NavHeader text="{i18n.userName}" ui:field = "user"/>
-                    <b:NavLink text="{i18n.email}" ui:field = "email"/>
-                    <b:NavLink text="{i18n.userProfile}" ui:field = "profile"/>
-                    <b:NavLink text="{i18n.logOut}" ui:field = "out"/>
-                </b:Dropdown>
-                <b:NavLink  ui:field = "login" text="{i18n.logIn}"></b:NavLink>
-                <b:NavLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavLink>
-            </b:Nav>
+    <!--<b:Nav >-->
+    <!--<b:DropDown ui:field = "userdetails" title="{i18n.userDetails}">-->
+    <!--<b:NavbarHeader title="{i18n.userName}" ui:field = "user"/>-->
+    <!--<b:NavbarLink text="{i18n.email}" ui:field = "email"/>-->
+    <!--<b:NavbarLink text="{i18n.userProfile}" ui:field = "profile"/>-->
+    <!--<b:NavbarLink text="{i18n.logOut}" ui:field = "out"/>-->
+    <!--</b:DropDown>-->
+    <!--<b:NavbarLink  ui:field = "login" text="{i18n.logIn}"></b:NavbarLink>-->
+    <!--<b:NavbarLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavbarLink>-->
+    <!--</b:Nav>-->
 
-        </b:NavCollapse>
-    </b:ResponsiveNavbar>
+    <!--</b:NavbarCollapse>-->
+    <!--</b:Navbar>-->
+
+    <b:Navbar>
+        <b:NavbarHeader>
+            <b:NavbarBrand ui:field="home">TheRDL</b:NavbarBrand>
+            <b:NavbarCollapseButton target="#navbar-collapse"/>
+        </b:NavbarHeader>
+
+        <b:NavbarCollapse b:id="navbar-collapse">
+            <b:NavbarNav>
+                <b:NavbarLink ui:field="ideas" text="{i18n.ideas}"></b:NavbarLink>
+                <b:NavbarLink ui:field="stories" text="{i18n.stories}"></b:NavbarLink>
+                <b:NavbarLink ui:field="improvements" text="{i18n.improvements}"></b:NavbarLink>
+            </b:NavbarNav>
+
+            <b:NavbarForm pull="LEFT">
+                <b:TextBox ui:field = "searchSiteContent" placeholder="Search Site Content" addStyleNames="col-lg-8"/>
+            </b:NavbarForm>
+
+            <b:NavbarText ui:field = "user" pull="RIGHT">
+                <b:ListDropDown>
+                    <b:AnchorButton ui:field = "userdetails" toggle="DROPDOWN" text="{i18n.userDetails}"/>
+                    <b:DropDownMenu>
+                        <b:NavbarLink text="{i18n.email}" ui:field="email"/>
+                        <b:NavbarLink text="{i18n.userProfile}" ui:field="profile"/>
+                        <b:NavbarLink text="{i18n.logOut}" ui:field="out"/>
+                    </b:DropDownMenu>
+                </b:ListDropDown>
+                <b:ListDropDown>
+                    <b:DropDownMenu>
+                        <b:NavbarLink  ui:field = "login" text="{i18n.logIn}"></b:NavbarLink>
+                        <b:NavbarLink  ui:field = "signUp" text="{i18n.appMenuSignUp}"></b:NavbarLink>
+                    </b:DropDownMenu>
+                </b:ListDropDown>
+            </b:NavbarText>
+        </b:NavbarCollapse>
+    </b:Navbar>
 
 </ui:UiBinder> 

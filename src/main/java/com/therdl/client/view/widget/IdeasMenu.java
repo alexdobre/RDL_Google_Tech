@@ -14,7 +14,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.therdl.client.RDL;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.shared.Constants;
 
 /**
  * gwt widget class for top bar menu in the snip list view
@@ -43,7 +42,7 @@ public class IdeasMenu extends Composite{
     SpanElement hoverDiv;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button ideasVideoButton;
+    org.gwtbootstrap3.client.ui.Button ideasVideoButton;
 
     public IdeasMenu() {
         initWidget(ourUiBinder.createAndBindUi(this));

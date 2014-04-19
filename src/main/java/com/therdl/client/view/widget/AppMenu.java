@@ -1,6 +1,5 @@
 package com.therdl.client.view.widget;
 
-import com.github.gwtbootstrap.client.ui.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -8,12 +7,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
+import org.gwtbootstrap3.client.ui.*;
 
 import java.util.logging.Logger;
 
@@ -44,22 +43,31 @@ public class AppMenu extends Composite  {
 
     private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
 
-    @UiField Brand home;
-    @UiField NavLink ideas;
-    @UiField NavLink stories;
-    @UiField NavLink improvements;
-    @UiField NavLink signUp;
-    @UiField NavLink login;
-
-    @UiField NavForm searchSiteContent;
+    @UiField
+    NavbarBrand home;
+    @UiField
+    NavbarLink ideas;
+    @UiField
+    NavbarLink stories;
+    @UiField
+    NavbarLink improvements;
+//    @UiField
+//    NavbarLink signUp;
+//    @UiField
+//    NavbarLink login;
 
 
     // auth flow
-    @UiField Dropdown userdetails;
-    @UiField NavHeader user;
-    @UiField NavLink email;
-    @UiField NavLink profile;
-    @UiField NavLink out;
+//    @UiField
+//    AnchorButton userdetails;
+//    @UiField
+//    NavbarText user;
+//    @UiField
+//    NavbarLink email;
+//    @UiField
+//    NavbarLink profile;
+//    @UiField
+//    NavbarLink out;
 
 
     interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
@@ -104,35 +112,35 @@ public class AppMenu extends Composite  {
 
     }
 
-    @UiHandler("profile")
-    public void onProfileClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
-        History.newItem(RDLConstants.Tokens.PROFILE + ":" + user.getText());
-    }
-      
-    @UiHandler("out")
-    public void onLogoutClick(ClickEvent event) {
-        log.info("AppMenu: logout");
-        GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
-    }
-
-    @UiHandler("login")
-    public void onLoginClick(ClickEvent event) {
-        log.info("AppMenu: login");
-        GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
-    }
-
-    @UiHandler("signUp")
-    public void onSignUpClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
-        History.newItem(RDLConstants.Tokens.SIGN_UP);
-    }
+//    @UiHandler("profile")
+//    public void onProfileClick(ClickEvent event) {
+//        log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
+//        History.newItem(RDLConstants.Tokens.PROFILE + ":" + user.getTitle());
+//    }
+//
+//    @UiHandler("out")
+//    public void onLogoutClick(ClickEvent event) {
+//        log.info("AppMenu: logout");
+//        GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
+//    }
+//
+//    @UiHandler("login")
+//    public void onLoginClick(ClickEvent event) {
+//        log.info("AppMenu: login");
+//        GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
+//    }
+//
+//    @UiHandler("signUp")
+//    public void onSignUpClick(ClickEvent event) {
+//        log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
+//        History.newItem(RDLConstants.Tokens.SIGN_UP);
+//    }
 
     /**
      * Sets the signUp element as active in the menu
      */
     public void setSignUpActive(){
-        signUp.setActive(true);
+//        signUp.setActive(true);
     }
 
     @UiHandler("home")
@@ -145,7 +153,7 @@ public class AppMenu extends Composite  {
      * Sets the home element as active in the menu
      */
     public void setHomeActive(){
-        home.setEnabled(false);
+//        home.setEnabled(false);
         home.addStyleName("brandActive");
     }
 
@@ -159,7 +167,7 @@ public class AppMenu extends Composite  {
      * Sets the ideas element as active in the menu
      */
     public void setIdeasActive(){
-        ideas.setActive(true);
+//        ideas.setActive(true);
     }
 
     @UiHandler("stories")
@@ -172,7 +180,7 @@ public class AppMenu extends Composite  {
      * Sets the stories element as active in the menu
      */
     public void setStoriesActive(){
-        stories.setActive(true);
+//        stories.setActive(true);
     }
 
     @UiHandler("improvements")
@@ -185,7 +193,7 @@ public class AppMenu extends Composite  {
      * Sets the improvements element as active in the menu
      */
     public void setImprovementsActive(){
-        improvements.setActive(true);
+//        improvements.setActive(true);
     }
 
     /**
@@ -194,7 +202,7 @@ public class AppMenu extends Composite  {
      */
     public void setUser(String id) {
         log.info("AppMenu:setUser "+id);
-        user.setText(id);
+//        user.setTitle(id);
     }
 
     /**
@@ -203,7 +211,7 @@ public class AppMenu extends Composite  {
      */
     public void setEmail(String id) {
         log.info("AppMenu:setEmail "+id);
-        email.setText(id);
+//        email.setText(id);
 
     }
 
@@ -213,7 +221,7 @@ public class AppMenu extends Composite  {
      */
     public void  setSignUpVisible (boolean state){
         log.info("AppMenu: setSignUpVisible "+state);
-        signUp.setVisible(state);
+//        signUp.setVisible(state);
     }
 
     /**
@@ -222,9 +230,9 @@ public class AppMenu extends Composite  {
      */
     public void  setUserInfoVisible (boolean state) {
         log.info("AppMenu: setUserInfoVisible "+state);
-        userdetails.setVisible(state);
-        user.setVisible(state);
-        email.setVisible(state);
+//        userdetails.setVisible(state);
+//        user.setVisible(state);
+//        email.setVisible(state);
     }
 
     /**
@@ -233,7 +241,7 @@ public class AppMenu extends Composite  {
      */
     public void setLogOutVisible(boolean state) {
         log.info("AppMenu: setLogOutVisible "+state);
-        this.out.setVisible(state);
+//        this.out.setVisible(state);
 
     }
 
@@ -243,7 +251,7 @@ public class AppMenu extends Composite  {
      */
     public void setLogInVisible(boolean state) {
         log.info("AppMenu: setLogInVisible "+state);
-        this.login.setVisible(state);
+//        this.login.setVisible(state);
 
     }
 
@@ -264,7 +272,7 @@ public class AppMenu extends Composite  {
      */
     public void setSignUpView() {
         log.info("AppMenu: setSignUpView ");
-        this.login.setVisible(false);
+//        this.login.setVisible(false);
         setUserInfoVisible (false);
     }
 

@@ -5,13 +5,14 @@ import com.bramosystems.oss.player.core.client.AbstractMediaPlayer;
 import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.youtube.client.YouTubePlayer;
-import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Image;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.ForgotPasswordPresenter;
 import com.therdl.client.view.ForgotPassword;
@@ -25,6 +26,7 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInEvent;
 import com.therdl.shared.events.LogInEventEventHandler;
+import org.gwtbootstrap3.client.ui.*;
 
 import java.util.logging.Logger;
 
@@ -66,24 +68,24 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     @UiField
     Image logo;
     @UiField
-    Button compatibilityCat;
+    org.gwtbootstrap3.client.ui.Button compatibilityCat;
     @UiField
-    Button connectionCat;
+    org.gwtbootstrap3.client.ui.Button connectionCat;
     @UiField
-    Button exteriorCat;
+    org.gwtbootstrap3.client.ui.Button exteriorCat;
     @UiField
-    Button eroticismCat;
+    org.gwtbootstrap3.client.ui.Button eroticismCat;
     @UiField
-    Button seductionCat;
+    org.gwtbootstrap3.client.ui.Button seductionCat;
     @UiField
-    Button psyTendCat;
+    org.gwtbootstrap3.client.ui.Button psyTendCat;
     @UiField
-    Button affairsCat;
+    org.gwtbootstrap3.client.ui.Button affairsCat;
     @UiField
-    Button abuseCat;
+    org.gwtbootstrap3.client.ui.Button abuseCat;
 
     @UiField
-    Button welcomeVideoButton;
+    org.gwtbootstrap3.client.ui.Button welcomeVideoButton;
 
     LogoutPopupWidget logoutPopup;
 

@@ -1,10 +1,10 @@
 package com.therdl.client.view;
 
-import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
 
 /**
  * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
