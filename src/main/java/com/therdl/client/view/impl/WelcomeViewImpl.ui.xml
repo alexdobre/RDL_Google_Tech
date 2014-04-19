@@ -37,163 +37,180 @@
 
         <rdl:AppMenu ui:field="appMenu"/>
 
-        <div class="container">
-            <b:Row>
+            <b:FluidContainer>
+                <b:Row>
+                    <b:Column size="MD_4">
+                        <g:AbsolutePanel styleName="{style.mainContainer}">
+                            <b:Button ui:field="compatibilityCat" text="Compatibility"/>
+                            <b:Button ui:field="connectionCat" text="Connection"/>
+                            <b:Button ui:field="exteriorCat" text="Exterior"/>
+                            <b:Button ui:field="eroticismCat" text="Eroticism"/>
+                            <b:Button ui:field="seductionCat" text="Seduction"/>
+                            <b:Button ui:field="psyTendCat" text="Psy Tend"/>
+                            <b:Button ui:field="affairsCat" text="Affairs"/>
+                            <b:Button ui:field="abuseCat" text="Abuse"/>
 
-                <b:Column size="4">
-                    <g:AbsolutePanel styleName="{style.mainContainer}">
-                        <b:Button size="SMALL" ui:field="compatibilityCat" text="Compatibility"/>
-                        <b:Button size="SMALL" ui:field="connectionCat" text="Connection"/>
-                        <b:Button size="SMALL" ui:field="exteriorCat" text="Exterior"/>
-                        <b:Button size="SMALL" ui:field="eroticismCat" text="Eroticism"/>
-                        <b:Button size="SMALL" ui:field="seductionCat" text="Seduction"/>
-                        <b:Button size="SMALL" ui:field="psyTendCat" text="Psy Tend"/>
-                        <b:Button size="SMALL" ui:field="affairsCat" text="Affairs"/>
-                        <b:Button size="SMALL" ui:field="abuseCat" text="Abuse"/>
+                            <g:at left='0' top='0'>
+                                <g:AbsolutePanel styleName="{style.logoPanel}">
+                                    <g:at left='90' top='10'>
+                                        <g:Image ui:field="logo" resource='{res.landingImage}'/>
+                                    </g:at>
+                                </g:AbsolutePanel>
+                            </g:at>
 
-                        <g:at left='0' top='0'>
-                            <g:AbsolutePanel styleName="{style.logoPanel}">
-                                <g:at left='90' top='10'>
-                                    <g:Image ui:field="logo" resource='{res.landingImage}'/>
-                                </g:at>
-                            </g:AbsolutePanel>
-                        </g:at>
+                            <g:at left='85' top='205'>
+                                <b:Button ui:field="welcomeVideoButton">Load introduction video</b:Button>
+                            </g:at>
 
-                        <g:at left='85' top='205'>
-                            <b:Button ui:field="welcomeVideoButton">Load introduction video</b:Button>
-                        </g:at>
+                            <g:at left='70' top='280'>
+                                <g:VerticalPanel>
+                                    <rdl:SocialPanel ui:field="socialPanel"/>
+                                </g:VerticalPanel>
 
-                        <g:at left='70' top='280'>
-                            <g:VerticalPanel>
-                                <rdl:SocialPanel ui:field="socialPanel"/>
-                            </g:VerticalPanel>
+                            </g:at>
+                        </g:AbsolutePanel>
+                    </b:Column>
+                    <b:Column size="MD_8">
+                        <g:HTMLPanel styleName="{style.titlePanel}">
 
-                        </g:at>
-                    </g:AbsolutePanel>
-                </b:Column>
-                <b:Column size="8">
-                    <g:HTMLPanel styleName="{style.titlePanel}">
+                            <h1>The Relationship Driving License
+                                <sup>PRE-ALPHA</sup>
+                            </h1>
 
-                        <h1>The Relationship Driving License
-                            <sup>PRE-ALPHA</sup>
-                        </h1>
-
-                        <h3 class="margin-base-vertical text-center">Things have changed.</h3>
-
-
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                You don’t need an expert to tell you that in the past couple of generations in most
-                                cultures around the world, the context in which long term romantic erotic relationships
-                                evolve has changed.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                It seems to me that a relationship has to stand much more on it’s own two feet now else
-                                it fails. I think these changes are overall for the better because they have given rise
-                                to the need for people to think seriously about and develop solid relationship skills
-                                and habits.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                The stigma associated with break ups and divorce is much lower.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                Women are now more financially independent as they should be given equal rights to men
-                                and they choose just as men do to be career focused as well as family focused and the
-                                balance between the two is a challenge.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                Both partners expect high levels of attraction and eroticism as well as connection
-                                throughout their relationship as a given, while this is obvious to most readers it’s a
-                                fairly new idea in most cultures.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                Couples are now more atomic. Where in previous generations a couple would live with an
-                                extended community that would help with emotional, perhaps financial and child raising
-                                support partners now have to rely on each other for all these things.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                It seems to me that if we choose to build a solid healthy long term relationship we need
-                                to have a range of skills and habits and I look around and I see that generally speaking
-                                we do not have them. We therefore need to learn what they are and practice them.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                They way we should learn in my opinion is from each other. Indeed how else can we learn?
-                                Current relationship experts are just those who had access to the intimacy of many
-                                people. Each person has a story to tell, valuable information to share. Each one of you
-                                is an expert in your own relationship because it’s yours and you’ve learned precious
-                                lessons going through it. The problem is that buy and large we don’t share these
-                                lessons. They are locked away behind cultural taboos, especially the ones around
-                                eroticism.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                This is why The Relationship Driving license is being developed. Through the anonymity
-                                of the internet we set aside a lot of the barriers to free and deep discussion. &nbsp;Here
-                                you can come in completely anonymous, share your story and find advice and support as
-                                you will discover that whatever you are going through, you are not alone. Many others
-                                share in your joy or sorrow. Here you can take the lessons you learned and contribute
-                                them and rate and reference others contributions as we build a repository of solid
-                                relationship information and habits.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                And what if we had a mechanism to filter and rate snips of information, to refine our
-                                understanding when necessary? After all relationships are very complex and there are
-                                many questions that I myself would like to get answers for.
-                            </span>
-                        </p>
-                        <br/>
-                        <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
-                        <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: center;">
-                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
-                                Well then I think we would have the foundation to the crazy ambitious goal to make
-                                romantic erotic relationships education part of the main stream. As we need history we
-                                need the skills and habits to build relationships.
-                            </span>
-                        </p>
-                        <h3 class="margin-base-vertical text-center">Welcome to the Relationship Driving License!</h3>
-
-                    </g:HTMLPanel>
-
-                </b:Column>
+                            <h3 class="margin-base-vertical text-center">Things have changed.</h3>
 
 
-            </b:Row>
-        </div>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    You don’t need an expert to tell you that in the past couple of generations in most
+                                    cultures around the world, the context in which long term romantic erotic
+                                    relationships
+                                    evolve has changed.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    It seems to me that a relationship has to stand much more on it’s own two feet now
+                                    else
+                                    it fails. I think these changes are overall for the better because they have given
+                                    rise
+                                    to the need for people to think seriously about and develop solid relationship
+                                    skills
+                                    and habits.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    The stigma associated with break ups and divorce is much lower.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    Women are now more financially independent as they should be given equal rights to
+                                    men
+                                    and they choose just as men do to be career focused as well as family focused and
+                                    the
+                                    balance between the two is a challenge.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    Both partners expect high levels of attraction and eroticism as well as connection
+                                    throughout their relationship as a given, while this is obvious to most readers it’s
+                                    a
+                                    fairly new idea in most cultures.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    Couples are now more atomic. Where in previous generations a couple would live with
+                                    an
+                                    extended community that would help with emotional, perhaps financial and child
+                                    raising
+                                    support partners now have to rely on each other for all these things.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    It seems to me that if we choose to build a solid healthy long term relationship we
+                                    need
+                                    to have a range of skills and habits and I look around and I see that generally
+                                    speaking
+                                    we do not have them. We therefore need to learn what they are and practice them.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    They way we should learn in my opinion is from each other. Indeed how else can we
+                                    learn?
+                                    Current relationship experts are just those who had access to the intimacy of many
+                                    people. Each person has a story to tell, valuable information to share. Each one of
+                                    you
+                                    is an expert in your own relationship because it’s yours and you’ve learned precious
+                                    lessons going through it. The problem is that buy and large we don’t share these
+                                    lessons. They are locked away behind cultural taboos, especially the ones around
+                                    eroticism.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    This is why The Relationship Driving license is being developed. Through the
+                                    anonymity
+                                    of the internet we set aside a lot of the barriers to free and deep discussion.
+                                    &nbsp;Here
+                                    you can come in completely anonymous, share your story and find advice and support
+                                    as
+                                    you will discover that whatever you are going through, you are not alone. Many
+                                    others
+                                    share in your joy or sorrow. Here you can take the lessons you learned and
+                                    contribute
+                                    them and rate and reference others contributions as we build a repository of solid
+                                    relationship information and habits.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    And what if we had a mechanism to filter and rate snips of information, to refine
+                                    our
+                                    understanding when necessary? After all relationships are very complex and there are
+                                    many questions that I myself would like to get answers for.
+                                </span>
+                            </p>
+                            <br/>
+                            <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span>
+                            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: center;">
+                                <span style="font-size:15px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">
+                                    Well then I think we would have the foundation to the crazy ambitious goal to make
+                                    romantic erotic relationships education part of the main stream. As we need history
+                                    we
+                                    need the skills and habits to build relationships.
+                                </span>
+                            </p>
+                            <h3 class="margin-base-vertical text-center">Welcome to the Relationship Driving License!
+                            </h3>
+
+                        </g:HTMLPanel>
+                    </b:Column>
+                </b:Row>
+            </b:FluidContainer>
     </g:HTMLPanel>
 
 
