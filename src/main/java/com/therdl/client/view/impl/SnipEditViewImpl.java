@@ -64,13 +64,13 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
     ListBox categoryList, proposalTypeList, proposalStateList;
 
     @UiField
-    TextBox title;
+    org.gwtbootstrap3.client.ui.TextBox title;
 
     @UiField
-    Button saveSnip, deleteSnip;
+    org.gwtbootstrap3.client.ui.Button saveSnip, deleteSnip;
 
     @UiField
-    Label categoryLabel, proposalTypeLabel, proposalStateLabel;
+    org.gwtbootstrap3.client.ui.Label categoryLabel, proposalTypeLabel, proposalStateLabel;
 
     @UiField
     EditorWidget editorWidget;

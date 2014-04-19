@@ -61,7 +61,7 @@ public class RegisterViewImpl extends Composite implements RegisterView {
     PasswordTextBox cpsswd;
 
     @UiField
-    Button submitBtn;
+    org.gwtbootstrap3.client.ui.Button submitBtn;
 
     private String username;
     private String password;

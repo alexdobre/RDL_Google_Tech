@@ -46,7 +46,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
     PasswordTextBox password;
 
     @UiField
-    TextBox email;
+    org.gwtbootstrap3.client.ui.TextBox email;
 
     @UiField
     org.gwtbootstrap3.client.ui.Button submit;
@@ -56,7 +56,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
 
     @UiField
-    Label loginFail;
+    org.gwtbootstrap3.client.ui.Label loginFail;
 
 
     interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
@@ -180,12 +180,12 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
         return password;
     }
 
-    public TextBox getEmail() {
+    public org.gwtbootstrap3.client.ui.TextBox getEmail() {
         return email;
     }
 
     @Override
-    public Label getLoginFail() {
+    public org.gwtbootstrap3.client.ui.Label getLoginFail() {
         return loginFail;
     }
 

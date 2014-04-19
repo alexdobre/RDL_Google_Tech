@@ -10,9 +10,13 @@
     </ui:style>
 
     <g:HTMLPanel>
-        <b:Row>
-            <g:Label ui:field="titleLabel"/>
-        </b:Row>
+        <b:FluidContainer>
+            <b:Row>
+                <b:Column size="MD_4">
+                    <g:Label ui:field="titleLabel"/>
+                </b:Column>
+            </b:Row>
+        </b:FluidContainer>
 
     </g:HTMLPanel>
 </ui:UiBinder>

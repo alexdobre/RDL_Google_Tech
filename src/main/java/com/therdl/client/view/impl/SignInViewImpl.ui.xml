@@ -61,21 +61,21 @@
     <g:VerticalPanel styleName='{style.container}'>
         <g:Label text="{i18n.pleaseLogin}" styleName='{style.labelText}'/>
         <g:HorizontalPanel verticalAlignment="middle">
-            <g:TextBox ui:field="email" styleName='{style.loginBox}'></g:TextBox>
-            <g:Label styleName='{style.labelText}' text="{i18n.password}"/>
+            <b:TextBox ui:field="email" styleName='{style.loginBox}'/>
+            <b:Label styleName='{style.labelText}' text="{i18n.password}"/>
             <g:PasswordTextBox ui:field="password" styleName='{style.pswwdBox}'></g:PasswordTextBox>
         </g:HorizontalPanel>
         <g:HorizontalPanel verticalAlignment="middle">
-            <g:Label styleName='{style.labelText}' text="{i18n.rememberMe}"/>
+            <b:Label styleName='{style.labelText}' text="{i18n.rememberMe}"/>
             <g:CheckBox ui:field="rememberMe"></g:CheckBox>
         </g:HorizontalPanel>
         <g:HorizontalPanel verticalAlignment="middle">
             <b:Button ui:field="submit" text="{i18n.submit}"/>
-            <g:Label ui:field="loginFail" text="{i18n.loginFailMsg}" styleName='{style.validate}'/>
-            <g:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
+            <b:Label ui:field="loginFail" text="{i18n.loginFailMsg}" styleName='{style.validate}'/>
+            <b:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
         </g:HorizontalPanel>
         <g:HorizontalPanel horizontalAlignment="left">
-            <g:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}" styleName="{style.forgotPasswordLink}"/>
+            <b:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}" styleName="{style.forgotPasswordLink}"/>
         </g:HorizontalPanel>
     </g:VerticalPanel>
 </ui:UiBinder> 

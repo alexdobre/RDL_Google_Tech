@@ -7,15 +7,15 @@
 
     <g:HTMLPanel>
         <rdl:AppMenu ui:field="appMenu"/>
-
-        <div class="container">
+        <b:FluidContainer>
             <b:Row>
+                <b:Column size="MD_4">
+                    <g:FocusPanel ui:field="profileImagePanel"></g:FocusPanel>
 
-                <g:FocusPanel ui:field="profileImagePanel"></g:FocusPanel>
+                    <g:HTMLPanel ui:field="titlePanel"></g:HTMLPanel>
+                    <g:Anchor ui:field="forgotPassLink" text="Be a Member!" href="/rdl/paypalCheckout"/>
+                </b:Column>
             </b:Row>
-
-            <g:HTMLPanel ui:field="titlePanel"></g:HTMLPanel>
-            <g:Anchor ui:field="forgotPassLink" text="Be a Member!" href="/rdl/paypalCheckout"/>
-        </div>
+        </b:FluidContainer>
     </g:HTMLPanel>
 </ui:UiBinder>

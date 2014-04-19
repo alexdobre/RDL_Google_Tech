@@ -1,9 +1,7 @@
 package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * see com.therdl.client.view.impl.SignInViewImpl javadoc for the
@@ -27,11 +25,11 @@ public interface SignInView extends IsWidget {
 
     PasswordTextBox getPassword();
 
-    TextBox getEmail();
+    org.gwtbootstrap3.client.ui.TextBox getEmail();
 
     void setSignIsVisible(boolean state);
 
-    Label getLoginFail();
+    org.gwtbootstrap3.client.ui.Label getLoginFail();
 
 
 }
