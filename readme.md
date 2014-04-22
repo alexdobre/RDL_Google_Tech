@@ -50,22 +50,6 @@ Open standalone.xml in vi or a text editor and look for the public interfaces no
 
 To make JBoss publicly accessible, change 127.0.0.1 to either 0.0.0.0 to allow access on all interfaces or to your public IP.
 
-So, for example, if your public IP is 173.194.35.177, you would change it as so:
-
-
-<interfaces>
-    <interface name="management">
-        <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
-    </interface>
-    <interface name="public">
-        <inet-address value="${jboss.bind.address:173.194.35.177}"/>
-    </interface>
-    <!-- TODO - only show this if the jacorb subsystem is added  -->
-    <interface name="unsecure">
-        <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
-    </interface>
-</interfaces>
-
 
 
 please view open issues and contribute
