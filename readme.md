@@ -1,7 +1,10 @@
 The RDL main web application  
 ============================
 
-Build Instructions  
+Build Instructions
+
+Follw this step in installing merchant-sdk and paypal-core in local repository.
+https://github.com/paypal/merchant-sdk-java
 
 
 Test in local stack  
@@ -49,23 +52,19 @@ To make JBoss publicly accessible, change 127.0.0.1 to either 0.0.0.0 to allow a
 
 So, for example, if your public IP is 173.194.35.177, you would change it as so:
 
-view plaincopy to clipboardprint?
+
 <interfaces>
-        <interface name="management">
-            <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
-        </interface>
-        <interface name="public">
-            <inet-address value="${jboss.bind.address:173.194.35.177}"/>
-        </interface>
-        <!-- TODO - only show this if the jacorb subsystem is added  -->
-        <interface name="unsecure">
-            <!--
-              ~  Used for IIOP sockets in the standard configuration.
-              ~                  To secure JacORB you need to setup SSL
-              -->
-            <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
-        </interface>
-    </interfaces>
+    <interface name="management">
+        <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
+    </interface>
+    <interface name="public">
+        <inet-address value="${jboss.bind.address:173.194.35.177}"/>
+    </interface>
+    <!-- TODO - only show this if the jacorb subsystem is added  -->
+    <interface name="unsecure">
+        <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
+    </interface>
+</interfaces>
 
 
 
