@@ -1,10 +1,6 @@
 package com.therdl.client.view.impl;
 
 
-import com.bramosystems.oss.player.core.client.AbstractMediaPlayer;
-import com.bramosystems.oss.player.core.client.PluginNotFoundException;
-import com.bramosystems.oss.player.core.client.PluginVersionException;
-import com.bramosystems.oss.player.youtube.client.YouTubePlayer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -246,25 +242,25 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
     public void init() {
     }
 
-    /**
-     * Loads the introduction video
-     */
-    @UiHandler("welcomeVideoButton")
-    public void onClickVideoIntro(ClickEvent event) {
-        //we initialize the welcome video player
-        AbstractMediaPlayer player = null;
-        try {
-            // create the player, specifying URL of media
-            player = new YouTubePlayer("wEJ40eqFBeo", "100%", "350px");
-            DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
-            dialog.show();
-        } catch (PluginVersionException e) {
-            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
-        } catch (PluginNotFoundException e) {
-            // catch PluginNotFoundException and display a friendly notice.
-            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
-        }
-    }
+//    /**
+//     * Loads the introduction video
+//     */
+//    @UiHandler("welcomeVideoButton")
+//    public void onClickVideoIntro(ClickEvent event) {
+//        //we initialize the welcome video player
+//        AbstractMediaPlayer player = null;
+//        try {
+//            // create the player, specifying URL of media
+//            player = new YouTubePlayer("wEJ40eqFBeo", "100%", "350px");
+//            DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
+//            dialog.show();
+//        } catch (PluginVersionException e) {
+//            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
+//        } catch (PluginNotFoundException e) {
+//            // catch PluginNotFoundException and display a friendly notice.
+//            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
+//        }
+//    }
 
 
     /**

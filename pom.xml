@@ -21,33 +21,12 @@
         <jdk.version>1.7</jdk.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>bramosystems</id>
-            <url>http://downloads.bramosystems.com/maven2/releases</url>
-        </repository>
-
-        <repository>
-            <id>sonatype</id>
-            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots><enabled>true</enabled></snapshots>
-            <releases><enabled>false</enabled></releases>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- password hashing -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.3m</version>
-        </dependency>
-
-        <!-- media player -->
-        <dependency>
-            <groupId>com.bramosystems.oss.player</groupId>
-            <artifactId>youtube-player-provider</artifactId>
-            <version>2.0</version>
         </dependency>
 
         <!-- MongDB java driver to hook up to MongoDB server -->
@@ -171,9 +150,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.gwtbootstrap</groupId>
-            <artifactId>gwt-bootstrap</artifactId>
-            <version>2.2.1.0</version>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3</artifactId>
+            <version>0.6</version>
             <scope>provided</scope>
         </dependency>
 
