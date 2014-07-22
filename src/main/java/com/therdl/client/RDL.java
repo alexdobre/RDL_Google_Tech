@@ -44,8 +44,6 @@ public class RDL implements EntryPoint {
       rp.setSize("100%","1500px");
       //we let the appController take over
       appController.go(rp);
-
-
   }
 
 }

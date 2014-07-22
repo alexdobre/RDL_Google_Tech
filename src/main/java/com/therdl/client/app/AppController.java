@@ -145,7 +145,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
         this.currentUserBean.as().setAuth(false);
         this.currentUserBean.as().setRegistered(false);
         if ("".equals(History.getToken())) {
-            History.newItem(RDLConstants.Tokens.WELCOME);
+            History.newItem(RDLConstants.Tokens.STORIES);
         } else {
             History.fireCurrentHistoryState();
         }
