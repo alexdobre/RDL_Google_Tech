@@ -1,9 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
-	<ui:style>
+    <ui:style>
 
     </ui:style>
     <!-- weird google syntax no method parenthesis in ui binder -->
@@ -26,6 +26,6 @@
         </div>   -->
 
 
-                                                           -
+        -
     </g:HTMLPanel>
 </ui:UiBinder> 

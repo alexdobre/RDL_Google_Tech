@@ -1,9 +1,15 @@
 package com.therdl.server.restapi;
+
 import com.google.inject.Singleton;
 import com.therdl.server.api.PaymentService;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.PaypalCredentials;
 
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,17 +19,12 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 /**
  * Processes the IPN messages from Paypal and updates the user's title accordingly
  * See: https://developer.paypal.com/webapps/developer/docs/classic/products/instant-payment-notification/
  */
 @Singleton
-public class IpnServlet extends HttpServlet  {
+public class IpnServlet extends HttpServlet {
 
     private static final long serialVersionUID = -292632340436154976L;
     static final String NotifyValidate = "cmd=_notify-validate";
@@ -34,7 +35,7 @@ public class IpnServlet extends HttpServlet  {
     private final PaypalCredentials paypalCredentials;
 
     @Inject
-    public IpnServlet( UserService userService, PaymentService paymentService) {
+    public IpnServlet(UserService userService, PaymentService paymentService) {
         this.paymentService = paymentService;
         this.userService = userService;
 

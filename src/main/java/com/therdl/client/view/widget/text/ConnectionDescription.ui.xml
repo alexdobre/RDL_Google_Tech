@@ -1,6 +1,5 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:style>
 
@@ -8,27 +7,117 @@
     <g:HTMLPanel>
 
         <span id="docs-internal-guid-57ea1dba-3e2c-3d0f-4abe-c1890fc0c833">
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>The skills of emotional support (connection)</b></span></p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>The skills of emotional support (connection)</b>
+                </span>
+            </p>
         </span>
         <hr/>
         <span id="docs-internal-guid-57ea1dba-3e2c-3d0f-4abe-c1890fc0c833">
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">There are multiple facets of emotional support between spouses and we have a good set of materials covering them: </span></p>
-            <br/><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Willard F Junior Harley - His needs her needs</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">A run down of the most common emotional needs in both men and women explaining what they are, how they are prioritized differently between individuals and sexes and how to fulfill them. Complete with a test to determine ones own most important needs part of our RDL profile.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><font color="#0000ff">*still need a good material on communicating sensitive topics</font></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">We all seem to agree on how communication is important in relationships. However that agreement seems to stop when we hit our own personal sensitive topics. we block for reasons such as shame, conflict avoidance and cultural pressure. To avoid pain many of our deepest fears, sensibilities, past experiences and fantasies remain our secrets. What should be told and what should be kept. From sexual fantasies and past partners to how much money I spent shopping where is the balance of open honest communication?</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>John Gray - &nbsp;Men are from Mars women are from Venus</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">A relationship classic, John Gray examines some of the common patterns and differences in women and men's behavior along with solid advice and techniques in fostering a beautiful relationship.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Gary Chapman - five love languages</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">We all seem to give love as we would like to receive it. It is interesting to note how different individuals have different preferences on how they feel loved and appreciated. Complete with a love languages test, part of our RDL profile, this material is very important in securing our love expression efforts reaching their intended target with the intended intensity.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Florence Littauer - Personality plus</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Useful in all interpersonal interactions, a presentation of the different personality types of people helps us understand ourselves as well as the people around us. With strengths and weaknesses this material helps us positively interact despite our differences. Comes with a personality test that is a part of our RDL profile providing great insight into oneself and others.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Allan Pease - Why men don’t listen and women can’t read maps</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Allan Pease explains how our brains are measurably different between the sexes. How we naturally excel at some tasks and have difficulty in others while wrongly expecting the same of the opposite sex. A stepping stone in the quest for loving understanding between partners.</span></p>
-            <div><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></div>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    There are multiple facets of emotional support between spouses and we have a good set of materials
+                    covering them:
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Willard F Junior Harley - His needs her needs</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">A
+                    run down of the most common emotional needs in both men and women explaining what they are, how they
+                    are prioritized differently between individuals and sexes and how to fulfill them. Complete with a
+                    test to determine ones own most important needs part of our RDL profile.
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <font color="#0000ff">*still need a good material on communicating sensitive topics</font>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">We
+                    all seem to agree on how communication is important in relationships. However that agreement seems
+                    to stop when we hit our own personal sensitive topics. we block for reasons such as shame, conflict
+                    avoidance and cultural pressure. To avoid pain many of our deepest fears, sensibilities, past
+                    experiences and fantasies remain our secrets. What should be told and what should be kept. From
+                    sexual fantasies and past partners to how much money I spent shopping where is the balance of open
+                    honest communication?
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>John Gray - &nbsp;Men are from Mars women are from Venus</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">A
+                    relationship classic, John Gray examines some of the common patterns and differences in women and
+                    men's behavior along with solid advice and techniques in fostering a beautiful relationship.
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Gary Chapman - five love languages</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">We
+                    all seem to give love as we would like to receive it. It is interesting to note how different
+                    individuals have different preferences on how they feel loved and appreciated. Complete with a love
+                    languages test, part of our RDL profile, this material is very important in securing our love
+                    expression efforts reaching their intended target with the intended intensity.
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Florence Littauer - Personality plus</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Useful in all interpersonal interactions, a presentation of the different personality types of
+                    people helps us understand ourselves as well as the people around us. With strengths and weaknesses
+                    this material helps us positively interact despite our differences. Comes with a personality test
+                    that is a part of our RDL profile providing great insight into oneself and others.
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Allan Pease - Why men don’t listen and women can’t read maps</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Allan Pease explains how our brains are measurably different between the sexes. How we naturally
+                    excel at some tasks and have difficulty in others while wrongly expecting the same of the opposite
+                    sex. A stepping stone in the quest for loving understanding between partners.
+                </span>
+            </p>
+            <div>
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </div>
         </span>
     </g:HTMLPanel>
 </ui:UiBinder>

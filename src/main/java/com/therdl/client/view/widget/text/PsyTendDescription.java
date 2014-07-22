@@ -13,6 +13,7 @@ public class PsyTendDescription extends Composite {
 
     interface PsyTendDescriptionUiBinder extends UiBinder<HTMLPanel, PsyTendDescription> {
     }
+
     private static PsyTendDescriptionUiBinder uiBinder = GWT.create(PsyTendDescriptionUiBinder.class);
 
     public PsyTendDescription() {

@@ -6,9 +6,9 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.i18n.I18NConstants;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  *
@@ -16,34 +16,33 @@ import java.util.logging.Logger;
  * see  resources/com/therdl/rdl.gwt.xml for configuratiom
  * for internationalisation
  * @ AppController appController see com.therdl.client.app.AppController java doc
- *
  */
 public class RDL implements EntryPoint {
 
 
-  private static Logger sLogger = Logger.getLogger("");
-  public static final I18NConstants i18n = GWT.create(I18NConstants.class);
+    private static Logger sLogger = Logger.getLogger("");
+    public static final I18NConstants i18n = GWT.create(I18NConstants.class);
 
-  public void onModuleLoad() {
+    public void onModuleLoad() {
 
-      sLogger.info("Refactoring to a loosley coupled web application");
-      sLogger.info("http://en.wikipedia.org/wiki/Loose_coupling");
-      sLogger.info("Ajax logging window enabled");
+        sLogger.info("Refactoring to a loosley coupled web application");
+        sLogger.info("http://en.wikipedia.org/wiki/Loose_coupling");
+        sLogger.info("Ajax logging window enabled");
 
-      //OK so what will happen on our model load
-      //Initialize logging
-      GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
-          public void onUncaughtException(Throwable e) {
-              sLogger.log(Level.INFO, e.getMessage(), e);
-          }
-      });
+        //OK so what will happen on our model load
+        //Initialize logging
+        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+            public void onUncaughtException(Throwable e) {
+                sLogger.log(Level.INFO, e.getMessage(), e);
+            }
+        });
 
-      AppController appController = new AppController();
-      // need this for landing page
-      RootLayoutPanel rp = RootLayoutPanel.get();
-      rp.setSize("100%","1500px");
-      //we let the appController take over
-      appController.go(rp);
-  }
+        AppController appController = new AppController();
+        // need this for landing page
+        RootLayoutPanel rp = RootLayoutPanel.get();
+        rp.setSize("100%", "1500px");
+        //we let the appController take over
+        appController.go(rp);
+    }
 
 }

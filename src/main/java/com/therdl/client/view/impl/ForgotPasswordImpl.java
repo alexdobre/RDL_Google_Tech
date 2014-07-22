@@ -1,16 +1,15 @@
 package com.therdl.client.view.impl;
 
-import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
-import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.TextBox;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.ForgotPassword;
 
 /**
@@ -30,19 +29,19 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
     private Presenter presenter;
 
     @UiField
-    TextBox txtBoxEmail;
+    org.gwtbootstrap3.client.ui.TextBox txtBoxEmail;
 
     @UiField
     Label lblEmailNotFound;
 
     @UiField
-    Button btnSubmit;
+    org.gwtbootstrap3.client.ui.Button btnSubmit;
 
     @UiField
-    Modal modalSuccessResetPassword;
+    org.gwtbootstrap3.client.ui.Modal modalSuccessResetPassword;
 
     @UiField
-    Modal modalFailResetPassword;
+    org.gwtbootstrap3.client.ui.Modal modalFailResetPassword;
 
     public ForgotPasswordImpl() {
         super(true);
@@ -66,25 +65,25 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
     }
 
     @Override
-    public Button getSubmitButton() {
+    public org.gwtbootstrap3.client.ui.Button getSubmitButton() {
         return btnSubmit;
     }
 
     @Override
-    public Modal getModalSuccessResetPassword() {
+    public org.gwtbootstrap3.client.ui.Modal getModalSuccessResetPassword() {
         return modalSuccessResetPassword;
     }
 
     @Override
-    public Modal getModalFailResetPasswprd() {
+    public org.gwtbootstrap3.client.ui.Modal getModalFailResetPasswprd() {
         return modalFailResetPassword;
     }
 
     @UiHandler("btnSubmit")
     public void onSubmitClicked(ClickEvent event) {
         String email = txtBoxEmail.getText().trim();
-        if(!email.isEmpty()) {
-            if(presenter != null) {
+        if (!email.isEmpty()) {
+            if (presenter != null) {
                 presenter.doForgotPassword(email);
             }
             btnSubmit.setEnabled(false);

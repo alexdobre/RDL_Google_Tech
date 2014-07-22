@@ -6,7 +6,7 @@ package com.therdl.server.paypal;
 
 /**
  * Arbitrary service class to simulate the storage and retrieval of Paypal IPN Notification related information
- *
+ * <p/>
  * User: smhumayun
  * Date: 7/6/13
  * Time: 6:23 PM
@@ -19,7 +19,7 @@ public class IpnInfoService {
      * @param ipnInfo {@link IpnInfo}
      * @throws IpnException
      */
-    public void log (final IpnInfo ipnInfo) throws IpnException {
+    public void log(final IpnInfo ipnInfo) throws IpnException {
         /**
          * Implementation...
          */
@@ -32,7 +32,7 @@ public class IpnInfoService {
      * @return {@link IpnInfo}
      * @throws IpnException
      */
-    public IpnInfo getIpnInfo (final String txnId) throws IpnException {
+    public IpnInfo getIpnInfo(final String txnId) throws IpnException {
         IpnInfo ipnInfo = null;
         /**
          * Implementation...

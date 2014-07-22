@@ -13,15 +13,17 @@ public interface PaymentService {
 
     /**
      * Process the payment subscription with PayPal and return the user with the title RDLSupporter if successful
+     *
      * @param currentUserBean a completed bean with paypalId present
      * @return user bean with title if successful
      */
-    public AutoBean<CurrentUserBean> processRdlSupporter (AutoBean<CurrentUserBean> currentUserBean);
+    public AutoBean<CurrentUserBean> processRdlSupporter(AutoBean<CurrentUserBean> currentUserBean);
 
     /**
      * Retrieve the paypal credentials from the database
+     *
      * @param type
      * @return
      */
-    public PaypalCredentials getPaypalCredentials (String type);
+    public PaypalCredentials getPaypalCredentials(String type);
 }

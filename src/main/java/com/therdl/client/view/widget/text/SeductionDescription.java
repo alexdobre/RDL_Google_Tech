@@ -13,6 +13,7 @@ public class SeductionDescription extends Composite {
 
     interface SeductionDescriptionUiBinder extends UiBinder<HTMLPanel, SeductionDescription> {
     }
+
     private static SeductionDescriptionUiBinder uiBinder = GWT.create(SeductionDescriptionUiBinder.class);
 
     public SeductionDescription() {

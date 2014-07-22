@@ -1,13 +1,15 @@
 package com.therdl.server.restapi;
 
 import com.google.inject.Singleton;
-import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.PaymentService;
 import com.therdl.server.api.UserService;
-import com.therdl.server.data.FileStorage;
 import com.therdl.server.data.PaypalCredentials;
-import com.therdl.shared.beans.Beanery;
 
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,21 +20,13 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 /**
  * This servlet responds to paypal's Payment Data Transfer to confirm to the user that a transaction has taken place.
  * It also Updates the user's title in accordance.
  * See: https://developer.paypal.com/docs/classic/products/payment-data-transfer/
  */
 @Singleton
-public class PdtServlet extends HttpServlet{
+public class PdtServlet extends HttpServlet {
 
     private static final long serialVersionUID = 5944361005662719642L;
 
@@ -44,7 +38,7 @@ public class PdtServlet extends HttpServlet{
     private final PaypalCredentials paypalCredentials;
 
     @Inject
-    public PdtServlet( UserService userService, PaymentService paymentService) {
+    public PdtServlet(UserService userService, PaymentService paymentService) {
         this.paymentService = paymentService;
         this.userService = userService;
 
@@ -57,26 +51,26 @@ public class PdtServlet extends HttpServlet{
 
         String str = NotifySync + "&" + paypalCredentials.getToken();
 
-        Enumeration en=request.getParameterNames();
+        Enumeration en = request.getParameterNames();
         while (en.hasMoreElements()) {
-            String paramName=(String)en.nextElement();
-            String paramValue=request.getParameter(paramName);
-            str=str+"&"+paramName+"="+URLEncoder.encode(paramValue,"UTF-8");
+            String paramName = (String) en.nextElement();
+            String paramValue = request.getParameter(paramName);
+            str = str + "&" + paramName + "=" + URLEncoder.encode(paramValue, "UTF-8");
         }
 
         //  Post back to PayPal system to validate
         //  NOTE: change http: to https: in the following URL to verify using SSL (for increased security).
         //  using HTTPS requires either Java 1.4 or greater, or Java Secure Socket Extension (JSSE) and configured for older versions.
-        URL u=new URL(paypalCredentials.getUrl());
-        URLConnection uc=u.openConnection();
+        URL u = new URL(paypalCredentials.getUrl());
+        URLConnection uc = u.openConnection();
         uc.setDoOutput(true);
-        uc.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-        PrintWriter pw=new PrintWriter(uc.getOutputStream());
+        uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        PrintWriter pw = new PrintWriter(uc.getOutputStream());
         pw.println(str);
         pw.close();
 
         //Read response
-        BufferedReader in=new BufferedReader(new InputStreamReader(uc.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 
         String res = in.readLine();
         in.close();
@@ -84,20 +78,20 @@ public class PdtServlet extends HttpServlet{
         if (res.equals("SUCCESS")) {
 
             response.setContentType("text/html");
-            PrintWriter out=response.getWriter();
-            String title="Purchase Confirmation";
-            out.println("<Html><Head><Title>" + title +"</Title></Head>\n<Body Bgcolor=\"#FDF5E6\">\n<H1 Align=Center>"+title+"</H1>\n"+
+            PrintWriter out = response.getWriter();
+            String title = "Purchase Confirmation";
+            out.println("<Html><Head><Title>" + title + "</Title></Head>\n<Body Bgcolor=\"#FDF5E6\">\n<H1 Align=Center>" + title + "</H1>\n" +
                     "<p>  Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you. "
                     + "  You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
 
-                    + "<Table Border=1 Align=Center>\n"+"<Tr Bgcolor=\"#FFAD00\"><Th>Description</Th><Th>Value</Th></Tr>");
+                    + "<Table Border=1 Align=Center>\n" + "<Tr Bgcolor=\"#FFAD00\"><Th>Description</Th><Th>Value</Th></Tr>");
 
 
-            en=request.getParameterNames();
+            en = request.getParameterNames();
             while (en.hasMoreElements()) {
-                String paramName=(String)en.nextElement();
-                String paramValue=request.getParameter(paramName);
-                out.println("<tr><td>" + paramName + "</td><td>" + URLDecoder.decode(paramValue,"UTF-8") + "</td></tr>");
+                String paramName = (String) en.nextElement();
+                String paramValue = request.getParameter(paramName);
+                out.println("<tr><td>" + paramName + "</td><td>" + URLDecoder.decode(paramValue, "UTF-8") + "</td></tr>");
 
             }
         }

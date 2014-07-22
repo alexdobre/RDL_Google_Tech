@@ -6,7 +6,7 @@
         .loadingPanel {
             z-index: 5;
             opacity: .5;
-            width:750px;
+            width: 750px;
             height: 500px;
             padding-top: 50px;
             position: absolute;

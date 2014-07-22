@@ -18,11 +18,12 @@ public class ServerUtils {
 
     /**
      * Encrypts a string - used for storing passwords
+     *
      * @param input the string to be encrypted
      * @return the encrypted string
      */
-    public static String encryptString (String input){
-        if (input == null || input.equals("")){
+    public static String encryptString(String input) {
+        if (input == null || input.equals("")) {
             return null;
         }
         String hash = BCrypt.hashpw(input, BCrypt.gensalt());
@@ -31,19 +32,20 @@ public class ServerUtils {
 
     /**
      * Generates a new password for the user
+     *
      * @return the randomly generated password
      */
-    public static String generatePassword(){
+    public static String generatePassword() {
         //we generate a random sequence of 6 numbers
         StringBuilder sb = new StringBuilder();
-        for (int i=0; i<6;i++){
+        for (int i = 0; i < 6; i++) {
             sb.append((int) (Math.random() * 10));
         }
-          
+
         return sb.toString();
     }
 
-    public static String generateUUID(){
+    public static String generateUUID() {
         return UUID.randomUUID().toString();
     }
 

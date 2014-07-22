@@ -33,21 +33,21 @@ public class ListWidget extends Composite {
         // default size of rows in one tab
         int listRowSize = Constants.DEFAULT_PAGE_SIZE;
         int tabCount = 1;
-        if(beanList.size() != 0) {
-            tabCount = (int) Math.ceil((double)beanList.get(0).as().getCount()/listRowSize);
+        if (beanList.size() != 0) {
+            tabCount = (int) Math.ceil((double) beanList.get(0).as().getCount() / listRowSize);
         }
 
         TabPanel tabPanel = new TabPanel();
 
         // creates tabs of count tabCount
-        for (int i=1; i<=tabCount; i++) {
+        for (int i = 1; i <= tabCount; i++) {
             // creates content of current tab
             FlowPanel tabContent = new FlowPanel();
-            if(beanList.size() == 0) {
+            if (beanList.size() == 0) {
                 tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
             }
 
-            tabPanel.add(tabContent, i+"");
+            tabPanel.add(tabContent, i + "");
 
         }
 
@@ -56,7 +56,7 @@ public class ListWidget extends Composite {
         tabPanel.setWidth("100%");
         //select first tab
 
-        for (int j=0; j<beanList.size(); j++) {
+        for (int j = 0; j < beanList.size(); j++) {
             SnipListRow snipListRow = new SnipListRow(beanList.get(j), searchView.getCurrentUserBean(), false);
             ((FlowPanel) tabPanel.getWidget(pageIndex)).add(snipListRow);
         }
@@ -66,7 +66,7 @@ public class ListWidget extends Composite {
         tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
-                if(searchView.getCurrentSearchOptionsBean() != null) {
+                if (searchView.getCurrentSearchOptionsBean() != null) {
                     searchView.doFilterSearch(searchView.getCurrentSearchOptionsBean(), integerBeforeSelectionEvent.getItem());
                 } else {
                     searchView.getInitialSnipList(integerBeforeSelectionEvent.getItem());

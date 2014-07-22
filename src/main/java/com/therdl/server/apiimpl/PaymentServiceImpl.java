@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * Created by Alex on 12/02/14.
  */
 @Singleton
-public class PaymentServiceImpl implements PaymentService{
+public class PaymentServiceImpl implements PaymentService {
 
     private Beanery beanery;
     private static Logger log = Logger.getLogger("");
@@ -67,8 +67,8 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public PaypalCredentials getPaypalCredentials(String type) {
         //check for null
-        if (type == null || (type !="pdt" && type !="ipn")) {
-            log.severe("getPaypalCredentials wrong type supplied: "+type);
+        if (type == null || (type != "pdt" && type != "ipn")) {
+            log.severe("getPaypalCredentials wrong type supplied: " + type);
             return null;
         }
 
@@ -83,10 +83,10 @@ public class PaymentServiceImpl implements PaymentService{
         DBObject doc = cursor.next();
 
         PaypalCredentials cred = new PaypalCredentials();
-        cred.setType((String)doc.get("type"));
-        cred.setUrl((String)doc.get("url"));
-        if (doc.containsField("token")){
-            cred.setToken((String)doc.get("token"));
+        cred.setType((String) doc.get("type"));
+        cred.setUrl((String) doc.get("url"));
+        if (doc.containsField("token")) {
+            cred.setToken((String) doc.get("token"));
         }
 
         return cred;

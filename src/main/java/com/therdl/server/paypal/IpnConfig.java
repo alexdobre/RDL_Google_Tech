@@ -6,7 +6,7 @@ package com.therdl.server.paypal;
 
 /**
  * This class serves as a model to hold Paypal IPN Integration Configuration
- *
+ * <p/>
  * User: smhumayun
  * Date: 7/6/13
  * Time: 6:06 PM
@@ -18,7 +18,7 @@ public class IpnConfig {
     private String paymentAmount;
     private String paymentCurrency;
 
-    public IpnConfig (String ipnUrl, String receiverEmail, String paymentAmount, String paymentCurrency) {
+    public IpnConfig(String ipnUrl, String receiverEmail, String paymentAmount, String paymentCurrency) {
 
         this.ipnUrl = ipnUrl;
         this.receiverEmail = receiverEmail;

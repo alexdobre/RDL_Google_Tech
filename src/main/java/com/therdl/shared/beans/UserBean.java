@@ -73,6 +73,7 @@ public interface UserBean {
     void setSid(String sid);
 
     String getPaypalId();
+
     void setPaypalId(String paypalId);
 
     /**

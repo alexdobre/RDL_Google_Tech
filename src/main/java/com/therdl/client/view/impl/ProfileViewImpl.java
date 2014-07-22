@@ -170,7 +170,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
     }
 
     @Override
-    public AppMenu getAppMenu(){
+    public AppMenu getAppMenu() {
         return appMenu;
     }
 

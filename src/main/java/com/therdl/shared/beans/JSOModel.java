@@ -1,11 +1,11 @@
 package com.therdl.shared.beans;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -88,7 +88,9 @@ public class JSOModel extends JavaScriptObject {
      */
     public final native JsArrayString keys() /*-{
         var a = new Array();
-        for (var p in this) { a.push(p); }
+        for (var p in this) {
+            a.push(p);
+        }
         return a;
     }-*/;
 

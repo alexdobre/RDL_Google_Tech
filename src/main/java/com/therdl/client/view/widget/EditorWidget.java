@@ -1,7 +1,9 @@
 package com.therdl.client.view.widget;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -9,7 +11,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.therdl.client.view.widget.editor.RichTextToolbar;
 
-public class EditorWidget extends Composite{
+public class EditorWidget extends Composite {
     interface EditorWidgetUiBinder extends UiBinder<HTMLPanel, EditorWidget> {
     }
 
@@ -22,7 +24,7 @@ public class EditorWidget extends Composite{
     public EditorWidget() {
         initWidget(ourUiBinder.createAndBindUi(this));
         richTextArea = new RichTextArea();
-        richTextArea.setSize("100%","300px");
+        richTextArea.setSize("100%", "300px");
         richTextArea.setTabIndex(2);
 
         /**
@@ -34,7 +36,7 @@ public class EditorWidget extends Composite{
                 RichTextArea textArea = (RichTextArea) keyDownEvent.getSource();
                 int keyCode = keyDownEvent.getNativeKeyCode();
 
-                if(textArea.getText().length() > 10000 && !isNotADigit(keyCode)) {
+                if (textArea.getText().length() > 10000 && !isNotADigit(keyCode)) {
                     keyDownEvent.preventDefault();
                     keyDownEvent.stopPropagation();
                 }
@@ -49,6 +51,7 @@ public class EditorWidget extends Composite{
 
     /**
      * checks if pressed key is a special key or not
+     *
      * @param keyCode
      * @return
      */
@@ -64,6 +67,7 @@ public class EditorWidget extends Composite{
 
     /**
      * allows to get content as HTML from outside of this class
+     *
      * @return html content as String
      */
     public String getHTML() {
@@ -72,6 +76,7 @@ public class EditorWidget extends Composite{
 
     /**
      * sets html content to rich text area
+     *
      * @param html
      */
     public void setHTML(String html) {

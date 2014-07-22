@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 import com.therdl.server.api.UserService;
 import com.therdl.shared.Constants;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileResponseType;
-import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentResponseType;
-import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsResponseType;
 
 import javax.inject.Provider;
 import javax.servlet.ServletException;

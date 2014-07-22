@@ -6,7 +6,6 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.cssbundles.Resources;
@@ -30,14 +29,14 @@ import com.therdl.shared.events.SnipViewEvent;
  * @ void setViewButtonCallbackGWT JSNI method  allows callback thru the java method viewButtonCallbackGWT
  * @ static void viewButtonCallbackGWT passes thru the setViewButtonCallbackGWT JSNI method open a snip
  * view event
-
  */
 public class SearchListWidget extends Composite {
 
 
     private static SearchListViewUiBinder uiBinder = GWT.create(SearchListViewUiBinder.class);
 
-    interface SearchListViewUiBinder extends  UiBinder<Widget, SearchListWidget> {  }
+    interface SearchListViewUiBinder extends UiBinder<Widget, SearchListWidget> {
+    }
 
     public SearchListWidget() {
 
@@ -79,68 +78,69 @@ public class SearchListWidget extends Composite {
      * destroys the Closure ListWidget when the ListWidget goes out of focus
      */
     private native void resetDom() /*-{
-         var toolbars  = $doc.getElementsByClassName('goog-toolbar');
+        var toolbars = $doc.getElementsByClassName('goog-toolbar');
 
-         if (toolbars) {
-           while(toolbars.length > 0){
+        if (toolbars) {
+            while (toolbars.length > 0) {
                 toolbars[0].parentNode.removeChild(toolbars[0]);
-                 }
+            }
 
-         }
+        }
 
-        var popUps  = $doc.getElementsByClassName('modal-dialog');
+        var popUps = $doc.getElementsByClassName('modal-dialog');
 
-                if (popUps) {
+        if (popUps) {
 
-           while(popUps.length > 0){
+            while (popUps.length > 0) {
                 popUps[0].parentNode.removeChild(popUps[0]);
-                 }
+            }
 
-         }
+        }
 
-       $wnd.widjdev.tabdev = null;
+        $wnd.widjdev.tabdev = null;
     }-*/;
-
 
 
     /**
      * JSNI set up code. This will call js function, data is converted like this [{},{}]
-     * @param SearchListWidget w === to 'this' in JSNI
+     *
+     * @param SearchListWidget  w === to 'this' in JSNI
      * @param JsArray<JSOModel> data
-     * @param int pSize paging variable
+     * @param int               pSize paging variable
      */
     public native void bootStrapList(SearchListWidget w, JsArray<JSOModel> data, int pSize) /*-{
         var menu = $doc.getElementById('menu');
         // data now have the following format: [{"0":"{}"},{"1":"{}"}]: Change that like this [{},{}]
         var dataJs = [];
-        for(var i=0; i<data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
             dataJs.push(eval('(' + data[i][i] + ')'));
         }
         // calls closure js function from tabdev.js
 
-        var tabCount = Math.ceil(dataJs.length/pSize);
-        if(dataJs.length == 0) {
+        var tabCount = Math.ceil(dataJs.length / pSize);
+        if (dataJs.length == 0) {
             pSize = 1;
             tabCount = 1;
         }
-          $wnd.widjdev.tabdev.setTabs(menu, dataJs, pSize, tabCount);
+        $wnd.widjdev.tabdev.setTabs(menu, dataJs, pSize, tabCount);
 
-	}-*/;
+    }-*/;
 
 
     /**
      * opens a snip view for a snip with a unique identifier for the snip
      * called form the closure code by the setViewButtonCallbackGWT(SearchListWidget x)
      * JSNI method
+     *
      * @param String snipId unique identifier
      */
     public static void viewButtonCallbackGWT(String snipId) {
-         // open a new snip view
+        // open a new snip view
         GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipId));
     }
 
     public static void editButtonCallbackGWT(String snipId) {
-        History.newItem(RDLConstants.Tokens.SNIP_EDIT+":"+snipId);
+        History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + snipId);
     }
 
     public native void setViewButtonCallbackGWT(SearchListWidget x)/*-{
@@ -151,6 +151,7 @@ public class SearchListWidget extends Composite {
      * JSNI method opens a snip view for a snip with a call to viewButtonCallbackGWT(String snipId)
      * called by Closure event in com.therdl.client.view.cssbundles/tabdev.js
      * JSNI method
+     *
      * @param SearchListWidget x  SearchListWidget === 'this' in JSNI
      */
     public native void setEditButtonCallbackGWT(SearchListWidget x) /*-{

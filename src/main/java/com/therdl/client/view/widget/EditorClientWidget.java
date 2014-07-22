@@ -40,17 +40,17 @@ import java.util.logging.Logger;
  * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
 
-public class EditorClientWidget extends Composite  {
+public class EditorClientWidget extends Composite {
     private static Logger log = Logger.getLogger("");
     private Beanery beanery = GWT.create(Beanery.class);
 
-	private static EditorClientViewUiBinder uiBinder = GWT
-			.create(EditorClientViewUiBinder.class);
+    private static EditorClientViewUiBinder uiBinder = GWT
+            .create(EditorClientViewUiBinder.class);
 
 
-	interface EditorClientViewUiBinder extends
-			UiBinder<Widget, EditorClientWidget> {
-	}
+    interface EditorClientViewUiBinder extends
+            UiBinder<Widget, EditorClientWidget> {
+    }
 
     boolean isInjected;
 
@@ -64,7 +64,7 @@ public class EditorClientWidget extends Composite  {
     SnipEditViewImpl snipEditView;
     AutoBean<CurrentUserBean> currentUserBean;
 
-	public EditorClientWidget(SnipEditViewImpl snipEditView, AutoBean<CurrentUserBean> currentUserBean) {
+    public EditorClientWidget(SnipEditViewImpl snipEditView, AutoBean<CurrentUserBean> currentUserBean) {
         this.snipEditView = snipEditView;
         this.currentUserBean = currentUserBean;
         Resources.INSTANCE.editorCss().ensureInjected();
@@ -75,7 +75,7 @@ public class EditorClientWidget extends Composite  {
     protected void onLoad() {
         super.onLoad();
         injectScript();
-      //  bootStrapEditor(this);
+        //  bootStrapEditor(this);
         this.setVisible(true);
     }
 
@@ -95,8 +95,8 @@ public class EditorClientWidget extends Composite  {
     private void injectScript() {
         // uncomment condition because when switching list and editor views second time the js scripts does not included into the html
         //if(!isInjected) {
-            ScriptInjector.fromString(Resources.INSTANCE.dialogView().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
-            isInjected = true;
+        ScriptInjector.fromString(Resources.INSTANCE.dialogView().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
+        isInjected = true;
         //}
     }
 
@@ -119,7 +119,7 @@ public class EditorClientWidget extends Composite  {
         newBean.as().setSubCat(snipData.get("subCat"));
 
 
-        if(snipData.get("currentSnipId").equals("")) {
+        if (snipData.get("currentSnipId").equals("")) {
             newBean.as().setAuthor(currentUserBean.as().getName());
             newBean.as().setViews(0);
             newBean.as().setPosRef(0);
@@ -128,10 +128,10 @@ public class EditorClientWidget extends Composite  {
             newBean.as().setRep(0);
             newBean.as().setSnipType(RDLConstants.SnipType.SNIP);
 
-         //   snipEditView.submitBean(newBean);
+            //   snipEditView.submitBean(newBean);
         } else {
             newBean.as().setId(snipData.get("currentSnipId"));
-        //    snipEditView.submitEditBean(newBean);
+            //    snipEditView.submitEditBean(newBean);
         }
 
         History.newItem(RDLConstants.Tokens.SNIPS);
@@ -144,10 +144,10 @@ public class EditorClientWidget extends Composite  {
     void onDeleteSnip(ClickEvent event) {
         // test data
         JSOModel snipData = getSnipData();
-        if(snipData.get("currentSnipId").equals("")) {
+        if (snipData.get("currentSnipId").equals("")) {
             Window.alert("there is no selected snip to delete");
         } else {
-           // snipEditView.onDeleteSnip(snipData.get("currentSnipId"));
+            // snipEditView.onDeleteSnip(snipData.get("currentSnipId"));
             Window.alert("deleted");
         }
         History.newItem(RDLConstants.Tokens.SNIPS);
@@ -159,7 +159,7 @@ public class EditorClientWidget extends Composite  {
      */
 
     public native void bootStrapEditor(EditorClientWidget w, JSOModel snipData) /*-{
-	    var snipEditor = new $wnd.widjdev.SnipEditor(snipData);
+        var snipEditor = new $wnd.widjdev.SnipEditor(snipData);
     }-*/;
 
     public native void bootStrapEditor(EditorClientWidget w) /*-{
@@ -168,8 +168,8 @@ public class EditorClientWidget extends Composite  {
 
     public native void setSnipComboBox(JsArray<JSOModel> data) /*-{
         // clear snip combo to init with new data
-        var snipComboParent  = $doc.getElementById('snipComboParent');
-        if(snipComboParent) {
+        var snipComboParent = $doc.getElementById('snipComboParent');
+        if (snipComboParent) {
             while (snipComboParent.lastChild)
                 snipComboParent.removeChild(snipComboParent.lastChild);
         }
@@ -183,8 +183,8 @@ public class EditorClientWidget extends Composite  {
 
     private native void resetDom() /*-{
         // removes dom objects, the container is the editorContainer declared in the EditorClientWidget.ui.xml
-        var editorContainer  = $doc.getElementById('editorContainer');
-        if(editorContainer) {
+        var editorContainer = $doc.getElementById('editorContainer');
+        if (editorContainer) {
             while (editorContainer.lastChild)
                 editorContainer.removeChild(editorContainer.lastChild);
         }
@@ -198,6 +198,7 @@ public class EditorClientWidget extends Composite  {
         Window.alert(contents);
 
     }
+
     public void btnSetContentClick() {
         String temp = "this is the test content";
         setContent(temp);
@@ -205,7 +206,7 @@ public class EditorClientWidget extends Composite  {
     }
 
     private native void getEditor() /*-{
-        $wnd.document.getElementById('editorDiv').display= 'block';
+        $wnd.document.getElementById('editorDiv').display = 'block';
     }-*/;
 
     /*
@@ -213,7 +214,7 @@ public class EditorClientWidget extends Composite  {
      * @return JSOModel for snip data
      */
     public native JSOModel getSnipData() /*-{
-         return $wnd.widjdev.SnipEditor.getSnipData();
+        return $wnd.widjdev.SnipEditor.getSnipData();
     }-*/;
 
     private native String getContent() /*-{
@@ -221,12 +222,12 @@ public class EditorClientWidget extends Composite  {
     }-*/;
 
     private native void setContent(String t) /*-{
-       $wnd.widjdev.setEditort.setcontents(t);
+        $wnd.widjdev.setEditort.setcontents(t);
     }-*/;
 
 
     private native void hideEditor() /*-{
-        $wnd.document.getElementById('editorDiv').display= 'none';
+        $wnd.document.getElementById('editorDiv').display = 'none';
     }-*/;
 
 

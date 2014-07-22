@@ -13,6 +13,7 @@ public class ConnectionDescription extends Composite {
 
     interface ConnectionDescriptionUiBinder extends UiBinder<HTMLPanel, ConnectionDescription> {
     }
+
     private static ConnectionDescriptionUiBinder uiBinder = GWT.create(ConnectionDescriptionUiBinder.class);
 
     public ConnectionDescription() {

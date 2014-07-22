@@ -13,6 +13,7 @@ public class EroticismDescription extends Composite {
 
     interface EroticismDescriptionUiBinder extends UiBinder<HTMLPanel, EroticismDescription> {
     }
+
     private static EroticismDescriptionUiBinder uiBinder = GWT.create(EroticismDescriptionUiBinder.class);
 
     public EroticismDescription() {

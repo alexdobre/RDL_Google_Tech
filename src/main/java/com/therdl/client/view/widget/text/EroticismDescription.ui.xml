@@ -1,6 +1,5 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:style>
 
@@ -9,34 +8,157 @@
 
 
         <span id="docs-internal-guid-57ea1dba-3e30-90da-b7f8-d43062f3f57b">
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>The mechanisms of eroticism (attraction and sexuality)</b></span></p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>The mechanisms of eroticism (attraction and sexuality)</b>
+                </span>
+            </p>
             <hr/>
 
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Attraction and sexuality are intimately intertwined in the notion of Eroticism.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">This topic is still quite new and not as well understood as emotional support. Cultural taboos around this have only recently began to weaken and allow a more free and inquisitive look at attraction and sexuality.</span></p>
-            <br/><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Eshter Perel - Mating in captivity</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">An eye opening, paradigm shifting material on the nature and flow of eroticism in couples. Answers to questions such as: Why does erotic passion wane over time even in couples that deeply love each other? and Why does sex make babies and often babies spell the end of sex? How do you keep erotic love alive and flourishing in a long term relationship?</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
-            <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Athol Kay - Married Man Sex life</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span></p>
-            <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; margin-left: 36pt; text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Too often men in long term relationships push aside. lose focus or forget the behaviors and actions that naturally elicit and maintain erotic attraction in women. Eroticism is often not very politically correct, the things we fight against during the day are the things that excite us during the evening. An essential material for both men and women interested in keeping erotic attraction powerful over time.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Nancy Friday - My secret garden</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Women’s sexuality is a lot more colourful, adventurous and deep than many cultures have allowed it to express. The refuge has become the imagination and in the almost never revealed world of women’s sexual fantasies pleasure expression flourishes. With a beautiful collection of fantasies drawn forth from many women, Nancy Friday gives us a peek into what sexuality really is.</span></p>
-            <br/><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><b><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Daniel Berenger - What do women want</span><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"> </span></b><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">In What Do Women Want? Adventures in the Science of Female Desire, critically acclaimed journalist Daniel Bergne disseminates the latest scientific research and paints an unprecedented portrait of female lust: the triggers, the fantasies, the mind-body connection (and disconnection), the reasons behind the loss of libido, and, most revelatory, that this loss is not inevitable.</span></p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Attraction and sexuality are intimately intertwined in the notion of Eroticism.
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">This
+                    topic is still quite new and not as well understood as emotional support. Cultural taboos around
+                    this have only recently began to weaken and allow a more free and inquisitive look at attraction and
+                    sexuality.
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Eshter Perel - Mating in captivity</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">An
+                    eye opening, paradigm shifting material on the nature and flow of eroticism in couples. Answers to
+                    questions such as: Why does erotic passion wane over time even in couples that deeply love each
+                    other? and Why does sex make babies and often babies spell the end of sex? How do you keep erotic
+                    love alive and flourishing in a long term relationship?
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </p>
+            <p dir="ltr" style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Athol Kay - Married Man Sex life</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            </p>
+            <p dir="ltr"
+               style="line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; margin-left: 36pt; text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Too
+                    often men in long term relationships push aside. lose focus or forget the behaviors and actions that
+                    naturally elicit and maintain erotic attraction in women. Eroticism is often not very politically
+                    correct, the things we fight against during the day are the things that excite us during the
+                    evening. An essential material for both men and women interested in keeping erotic attraction
+                    powerful over time.
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Nancy Friday - My secret garden</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Women’s sexuality is a lot more colourful, adventurous and deep than many cultures have allowed it
+                    to express. The refuge has become the imagination and in the almost never revealed world of women’s
+                    sexual fantasies pleasure expression flourishes. With a beautiful collection of fantasies drawn
+                    forth from many women, Nancy Friday gives us a peek into what sexuality really is.
+                </span>
+            </p>
+            <br/>
             <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Bergner asks: Are women actually the less monogamous gender? Do women really crave intimacy and emotional connection? Are women more disposed to sex with strangers and multiple pairings than either science or society have ever let on? And is “the fairer sex” actually more sexually aggressive and anarchic than men?</span></p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <b>
+                    <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                        Daniel Berenger - What do women want
+                    </span>
+                    <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+                </b>
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">In
+                    What Do Women Want? Adventures in the Science of Female Desire, critically acclaimed journalist
+                    Daniel Bergne disseminates the latest scientific research and paints an unprecedented portrait of
+                    female lust: the triggers, the fantasies, the mind-body connection (and disconnection), the reasons
+                    behind the loss of libido, and, most revelatory, that this loss is not inevitable.
+                </span>
+            </p>
             <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">While debunking the myths popularized by evolutionary psychology, Bergner also looks at the future of female sexuality. Pharmaceutical companies are pouring billions of dollars to develop a “Viagra” for women. But will it ever be released? Or are we not yet ready for a world in which women can become aroused at the simple popping of a pill?</span></p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Bergner asks: Are women actually the less monogamous gender? Do women really crave intimacy and
+                    emotional connection? Are women more disposed to sex with strangers and multiple pairings than
+                    either science or society have ever let on? And is “the fairer sex” actually more sexually
+                    aggressive and anarchic than men?
+                </span>
+            </p>
             <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Insightful and illuminating, What Do Women Want? is a deeper exploration of Daniel Bergner's provocative New York Times Magazine cover story; it will spark dynamic debates and discussions for years to come.</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><br/></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Robert A Glover - No more Mr nice guy</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">In modern times, cultural conditioning in some parts of the world has taught men to focus almost exclusively on emotional support skills to the detriment of attraction. Going deeper into male psychology and examining common patterns of so called “nice guys” this material is an eye opening read to bring balance back to your relationship.</span></p>
-            <div><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></div>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    While debunking the myths popularized by evolutionary psychology, Bergner also looks at the future
+                    of female sexuality. Pharmaceutical companies are pouring billions of dollars to develop a “Viagra”
+                    for women. But will it ever be released? Or are we not yet ready for a world in which women can
+                    become aroused at the simple popping of a pill?
+                </span>
+            </p>
+            <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Insightful and illuminating, What Do Women Want? is a deeper exploration of Daniel Bergner's
+                    provocative New York Times Magazine cover story; it will spark dynamic debates and discussions for
+                    years to come.
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <br/>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Robert A Glover - No more Mr nice guy</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">In
+                    modern times, cultural conditioning in some parts of the world has taught men to focus almost
+                    exclusively on emotional support skills to the detriment of attraction. Going deeper into male
+                    psychology and examining common patterns of so called “nice guys” this material is an eye opening
+                    read to bring balance back to your relationship.
+                </span>
+            </p>
+            <div>
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </div>
         </span>
 
     </g:HTMLPanel>

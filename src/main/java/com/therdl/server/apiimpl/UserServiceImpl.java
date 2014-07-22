@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash) {
-        log.info("Find user Begin: "+bean.getEmail());
+        log.info("Find user Begin: " + bean.getEmail());
         beanery = AutoBeanFactorySource.create(Beanery.class);
         AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
         UserBean ub = getUserByEmail(bean.getEmail());
@@ -101,22 +101,22 @@ public class UserServiceImpl implements UserService {
 
 
         checkedUserBean.as().setAction("NotOkUser");
-        log.info("Find user END NOK: "+bean.getEmail());
+        log.info("Find user END NOK: " + bean.getEmail());
         return checkedUserBean;
     }
 
-    private AutoBean<AuthUserBean> transformUserBeanInAuthUserBean( AutoBean<AuthUserBean> checkedUserBean, UserBean ub) {
+    private AutoBean<AuthUserBean> transformUserBeanInAuthUserBean(AutoBean<AuthUserBean> checkedUserBean, UserBean ub) {
         checkedUserBean.as().setName(ub.getUsername());
         checkedUserBean.as().setEmail(ub.getEmail());
-        log.info("SID for user: "+ub.getSid());
+        log.info("SID for user: " + ub.getSid());
         checkedUserBean.as().setSid(ub.getSid());
         checkedUserBean.as().setPaypalId(ub.getPaypalId());
         checkedUserBean.as().setAction("OkUser");
         checkedUserBean.as().setTitles(ub.getTitles());
         checkedUserBean.as().setIsRDLSupporter(false);
 
-        for (UserBean.TitleBean titleBean: ub.getTitles()) {
-            if(titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+        for (UserBean.TitleBean titleBean : ub.getTitles()) {
+            if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
                 checkedUserBean.as().setIsRDLSupporter(true);
                 break;
             }
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
         // always check for null
         if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
-        log.info("Find user END OK: "+checkedUserBean.as().getEmail());
+        log.info("Find user END OK: " + checkedUserBean.as().getEmail());
         return checkedUserBean;
     }
 
@@ -170,6 +170,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * gets user by email
+     *
      * @param email
      * @return
      */
@@ -183,8 +184,8 @@ public class UserServiceImpl implements UserService {
         query.put("email", email);
         DBCollection coll = db.getCollection("rdlUserData");
         DBCursor cursor = coll.find(query);
-        if (cursor.hasNext()){
-        DBObject doc = cursor.next();
+        if (cursor.hasNext()) {
+            DBObject doc = cursor.next();
             UserBean user = buildBeanObject(doc);
             log.info("UserServiceImpl getUserByEmail END FOUND: " + email);
             return user;
@@ -204,7 +205,7 @@ public class UserServiceImpl implements UserService {
         query.put("paypalId", paypalId);
         DBCollection coll = db.getCollection("rdlUserData");
         DBCursor cursor = coll.find(query);
-        if (cursor.hasNext()){
+        if (cursor.hasNext()) {
             DBObject doc = cursor.next();
             UserBean user = buildBeanObject(doc);
             log.info("UserServiceImpl getUserByPayPalId END FOUND: " + paypalId);
@@ -216,7 +217,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AutoBean<AuthUserBean> findUserBySid (String sid){
+    public AutoBean<AuthUserBean> findUserBySid(String sid) {
         log.info("UserServiceImpl findUserBySid BEGIN sid: " + sid);
 
         beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -228,11 +229,11 @@ public class UserServiceImpl implements UserService {
 
         AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
 
-        if (cursor.hasNext()){
+        if (cursor.hasNext()) {
             DBObject doc = cursor.next();
             UserBean user = buildBeanObject(doc);
             log.info("UserServiceImpl findUserBySid END FOUND: " + sid);
-            return transformUserBeanInAuthUserBean(checkedUserBean,user);
+            return transformUserBeanInAuthUserBean(checkedUserBean, user);
         }
 
         log.info("UserServiceImpl getUserByEmail END NOT FOUND: " + sid);
@@ -295,7 +296,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-     public void updateSid(AuthUserBean bean){
+    public void updateSid(AuthUserBean bean) {
         log.info("UserServiceImpl updateSid BEGIN email: " + bean.getEmail());
         DB db = getMongo();
         DBCollection coll = db.getCollection("rdlUserData");
@@ -329,8 +330,9 @@ public class UserServiceImpl implements UserService {
     /**
      * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
      * the function adds a reputation given object to the list. Finds user by email.
+     *
      * @param repGivenBean repGivenBean
-     * @param userEmail email
+     * @param userEmail    email
      * @return modified UserBean
      */
     public UserBean addRepGiven(AutoBean<UserBean.RepGivenBean> repGivenBean, String userEmail) {
@@ -338,7 +340,7 @@ public class UserServiceImpl implements UserService {
         DBCollection coll = db.getCollection("rdlUserData");
 
         BasicDBObject searchQuery = new BasicDBObject().append("email", userEmail);
-        DBObject listItem = new BasicDBObject("repGiven", new BasicDBObject("snipId",repGivenBean.as().getSnipId()).append("date",repGivenBean.as().getDate()));
+        DBObject listItem = new BasicDBObject("repGiven", new BasicDBObject("snipId", repGivenBean.as().getSnipId()).append("date", repGivenBean.as().getDate()));
         DBObject updateQuery = new BasicDBObject("$push", listItem);
         DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
         UserBean user = buildBeanObject(dbObj);
@@ -347,16 +349,17 @@ public class UserServiceImpl implements UserService {
 
     /**
      * checks if user gave a reputation to the snip with the given snipId
-     * @param email user email
+     *
+     * @param email  user email
      * @param snipId snipId
      * @return Integer 1 or 0
      */
     public Integer isRepGivenForSnip(String email, String snipId) {
         UserBean userBean = getUserByEmail(email);
 
-        if(userBean.getRepGiven() != null) {
+        if (userBean.getRepGiven() != null) {
             for (UserBean.RepGivenBean repGiven : userBean.getRepGiven()) {
-                if(repGiven.getSnipId().equals(snipId))
+                if (repGiven.getSnipId().equals(snipId))
                     return 1;
             }
         }
@@ -366,16 +369,17 @@ public class UserServiceImpl implements UserService {
 
     /**
      * sets isRepGivenByUser flag for input snip beans
-     * @param email current user
+     *
+     * @param email     current user
      * @param snipBeans snip beans as list
      */
     public void setRepGivenForSnips(String email, List<SnipBean> snipBeans) {
         UserBean userBean = getUserByEmail(email);
-        if(userBean.getRepGiven() != null) {
+        if (userBean.getRepGiven() != null) {
             for (SnipBean snipBean : snipBeans) {
                 snipBean.setIsRepGivenByUser(0);
                 for (UserBean.RepGivenBean repGiven : userBean.getRepGiven()) {
-                    if(repGiven.getSnipId().equals(snipBean.getId())) {
+                    if (repGiven.getSnipId().equals(snipBean.getId())) {
                         snipBean.setIsRepGivenByUser(1);
                         break;
                     }
@@ -388,8 +392,9 @@ public class UserServiceImpl implements UserService {
     /**
      * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
      * the function adds a reference given object to the list. Finds user by email.
+     *
      * @param refGivenBean refGivenBean
-     * @param userEmail email
+     * @param userEmail    email
      * @return modified UserBean
      */
     public UserBean addRefGiven(AutoBean<UserBean.RefGivenBean> refGivenBean, String userEmail) {
@@ -397,7 +402,7 @@ public class UserServiceImpl implements UserService {
         DBCollection coll = db.getCollection("rdlUserData");
 
         BasicDBObject searchQuery = new BasicDBObject().append("email", userEmail);
-        DBObject listItem = new BasicDBObject("refGiven", new BasicDBObject("snipId",refGivenBean.as().getSnipId()).append("date",refGivenBean.as().getDate()));
+        DBObject listItem = new BasicDBObject("refGiven", new BasicDBObject("snipId", refGivenBean.as().getSnipId()).append("date", refGivenBean.as().getDate()));
         DBObject updateQuery = new BasicDBObject("$push", listItem);
         DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
         UserBean user = buildBeanObject(dbObj);
@@ -406,16 +411,17 @@ public class UserServiceImpl implements UserService {
 
     /**
      * checks if user wrote a reference to the snip with the given snipId
-     * @param email user email
+     *
+     * @param email  user email
      * @param snipId snipId
      * @return Integer 1 or 0
      */
     public Integer isRefGivenForSnip(String email, String snipId) {
         UserBean userBean = getUserByEmail(email);
 
-        if(userBean.getRefGiven() != null) {
+        if (userBean.getRefGiven() != null) {
             for (UserBean.RefGivenBean refGiven : userBean.getRefGiven()) {
-                if(refGiven.getSnipId().equals(snipId))
+                if (refGiven.getSnipId().equals(snipId))
                     return 1;
             }
         }
@@ -425,7 +431,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void recoverPassword (String email){
+    public void recoverPassword(String email) {
         String newPass = ServerUtils.generatePassword();
         String newPassHash = ServerUtils.encryptString(newPass);
 
@@ -438,7 +444,7 @@ public class UserServiceImpl implements UserService {
 
         //send the e-mail
         try {
-            EmailSender.sendNewPassEmail(newPass,email,getMongo());
+            EmailSender.sendNewPassEmail(newPass, email, getMongo());
         } catch (RDLSendEmailException e) {
             e.printStackTrace();
         }
@@ -526,7 +532,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserBean.RefGivenBean> refGivenList = new ArrayList<UserBean.RefGivenBean>();
 
-        if(refGiven != null) {
+        if (refGiven != null) {
             for (Object obj : refGiven) {
                 UserBean.RefGivenBean refGivenBean = beanery.userRefGivenBean().as();
                 refGivenBean.setSnipId((String) ((BasicDBObject) obj).get("snipId"));

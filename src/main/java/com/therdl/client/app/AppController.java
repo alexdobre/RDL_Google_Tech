@@ -7,13 +7,10 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
-
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.*;
-
 import com.therdl.client.view.*;
 import com.therdl.client.view.impl.*;
-import com.therdl.client.view.SnipView;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
@@ -121,12 +118,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
             @Override
             public void onSnipSelectEvent(SnipViewEvent event) {
-                if(Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-                    History.newItem(RDLConstants.Tokens.SNIP_VIEW+":"+event.getSnipId());
-                else if(Global.moduleName.equals(RDLConstants.Modules.STORIES))
-                    History.newItem(RDLConstants.Tokens.THREAD_VIEW+":"+event.getSnipId());
-                else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-                    History.newItem(RDLConstants.Tokens.PROPOSAL_VIEW+":"+event.getSnipId());
+                if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+                    History.newItem(RDLConstants.Tokens.SNIP_VIEW + ":" + event.getSnipId());
+                else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
+                    History.newItem(RDLConstants.Tokens.THREAD_VIEW + ":" + event.getSnipId());
+                else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+                    History.newItem(RDLConstants.Tokens.PROPOSAL_VIEW + ":" + event.getSnipId());
             }
         });
 
@@ -171,6 +168,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
     /**
      * returns WelcomeView, if is null, initialize
+     *
      * @return WelcomeView
      */
     public WelcomeView getWelcomeView() {
@@ -248,12 +246,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     }
 
                     public void onSuccess() {
-                   //     if (currentUserBean.as().isAuth()) {
-                            snipPresenter.go(container, currentUserBean);
-                    //    } else {
-                    //        History.newItem(RDLConstants.Tokens.WELCOME);
-                    //    }
-
+                        //     if (currentUserBean.as().isAuth()) {
+                        snipPresenter.go(container, currentUserBean);
+                        //    } else {
+                        //        History.newItem(RDLConstants.Tokens.WELCOME);
+                        //    }
 
 
                     }
@@ -289,7 +286,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                         //    }
 
 
-
                     }
                 });
 
@@ -306,7 +302,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 }
 
                 searchView.setToken(event.getValue());
-                if(tokenSplit.length == 2)
+                if (tokenSplit.length == 2)
                     searchView.setAuthorName(tokenSplit[1]);
 
                 final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(searchView, this);
@@ -335,7 +331,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     storiesView = new StoriesViewImpl(currentUserBean);
                 }
                 storiesView.setToken(event.getValue());
-                if(tokenSplit.length == 2)
+                if (tokenSplit.length == 2)
                     storiesView.setAuthorName(tokenSplit[1]);
 
                 final SnipSearchPresenter storiesPresenter = new SnipSearchPresenter(storiesView, this);
@@ -392,7 +388,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     improvementsView = new ImprovementsViewImpl(currentUserBean);
                 }
                 improvementsView.setToken(event.getValue());
-                if(tokenSplit.length == 2)
+                if (tokenSplit.length == 2)
                     improvementsView.setAuthorName(tokenSplit[1]);
 
                 final SnipSearchPresenter improvementsPresenter = new SnipSearchPresenter(improvementsView, this);
@@ -438,9 +434,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                         }
                     }
                 });
-            }
-
-            else if (token.equals(RDLConstants.Tokens.PROPOSAL_VIEW)) {
+            } else if (token.equals(RDLConstants.Tokens.PROPOSAL_VIEW)) {
                 Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
                 log.info("AppController Tokens.PROPOSAL_VIEW");
 
@@ -466,7 +460,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                         //    } else {
                         //        History.newItem(RDLConstants.Tokens.WELCOME);
                         //    }
-
 
 
                     }
@@ -620,7 +613,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                         profileView.setAvatarWhenViewIsNotNull();
                     }
 
-                    final ProfilePresenter profilePresenter = new ProfilePresenter(profileView,this);
+                    final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
                     log.info("AppController Tokens.SERVICES ");
                     GWT.runAsync(new RunAsyncCallback() {
                         public void onFailure(Throwable caught) {
@@ -651,10 +644,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
      * sets the currentUserBean for the  view in the WelcomePresenter dologin method
      * the values below are all strings extracted from a simple form input
      *
-     * @param name      String  for user name
-     * @param email     String  for user email
-     * @param avatarUrl String for user image location acts as a url for mongo/filesystem
-     * @param state     boolean for state information
+     * @param name       String  for user name
+     * @param email      String  for user email
+     * @param avatarUrl  String for user image location acts as a url for mongo/filesystem
+     * @param state      boolean for state information
      * @param titleBeans user titles
      */
     public void setCurrentUserBean(String name, String email, String avatarUrl, boolean state, List<UserBean.TitleBean> titleBeans, boolean isRDLSupporter) {

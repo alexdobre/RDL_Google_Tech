@@ -13,6 +13,7 @@ public class ExteriorDescription extends Composite {
 
     interface ExteriorDescriptionUiBinder extends UiBinder<HTMLPanel, ExteriorDescription> {
     }
+
     private static ExteriorDescriptionUiBinder uiBinder = GWT.create(ExteriorDescriptionUiBinder.class);
 
     public ExteriorDescription() {

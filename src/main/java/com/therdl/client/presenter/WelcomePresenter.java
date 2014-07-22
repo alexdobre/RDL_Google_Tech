@@ -1,22 +1,10 @@
 package com.therdl.client.presenter;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.WelcomeView;
-import com.therdl.shared.Constants;
-import com.therdl.shared.LoginHandler;
-import com.therdl.shared.beans.*;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInOkEvent;
-
-import java.util.Date;
-import java.util.logging.Logger;
+import com.therdl.shared.beans.CurrentUserBean;
 
 
 /**
@@ -37,7 +25,6 @@ public class WelcomePresenter extends RdlAbstractPresenter implements WelcomeVie
     private String avatarUrl = null;
 
     private final WelcomeView welcomeView;
-
 
 
     public WelcomePresenter(WelcomeView welcomeView, AppController controller) {

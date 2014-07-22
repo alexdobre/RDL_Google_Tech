@@ -1,6 +1,5 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:style>
 
@@ -8,29 +7,120 @@
     <g:HTMLPanel>
 
         <span id="docs-internal-guid-57ea1dba-3e37-1e6d-eeb1-9f579e7f39e9">
-            <p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="vertical-align: baseline; font-size: 15px; line-height: 17px; white-space: pre-wrap;"><font face="Arial"><b>Abuse</b></font></span></p>
-            <p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: justify;"><span style="vertical-align: baseline; font-size: 15px; line-height: 17px; white-space: pre-wrap;"></span></p>
+            <p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: justify;">
+                <span style="vertical-align: baseline; font-size: 15px; line-height: 17px; white-space: pre-wrap;">
+                    <font face="Arial">
+                        <b>Abuse</b>
+                    </font>
+                </span>
+            </p>
+            <p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: justify;">
+                <span style="vertical-align: baseline; font-size: 15px; line-height: 17px; white-space: pre-wrap;"></span>
+            </p>
             <hr/>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Abuse is so prevalent and so destructive that it get’s it’s own separate category. It is not a psychological tendency as being abusive is an attitude problem. People that are abusive do so selectively and they can turn it on and off at will. </span></p>
-            <br/><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Abuse is poorly understood and often misunderstood by people who are not well documented on it. It takes great many forms and it can be from overt to expertly subtle. It can be from illegal (such as domestic violence) to impossible to prove in court but just as destructive. </span></p>
-            <br/><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">A definition of abuse found in Lundy Bancroft’s book which stuck with me is: “Abuse is the opposite of respect. You do not abuse those you respect and you do not respect those who you abuse. ”</span></p>
-            <br/><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Abuse infringes on basic human dignity as put forth in the UN’s Universal Declaration of Human Rights. It is not limited to relationships, indeed the tactics a dictator may use to maintain power over a nation are disturbingly similar to the tactics an abuser inside a relationship would use. </span></p>
-            <br/><span style="font-size: 16px; font-family: Arial; text-decoration: underline; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Lundy Bancroft - Why Does He Do That?</b>: Inside the Minds of Angry and Controlling Men</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">"He doesn't mean to hurt me-he just loses control." "He can be sweet and gentle."</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">"He's scared me a few times, but he never hurts the children-he's a great father."</span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">"He's had a really hard life..." </span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Women in abusive relationships tell themselves these things every day. Now they can see inside the minds of angry and controlling men-and change their own lives. In this groundbreaking book, a counselor shows how to improve, survive, or leave an abusive relationship, with: </span></p>
-            <br/><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">-The early warning signs - Nine abusive personality types -How to tell if an abuser can change, is changing, or ever will - The role of drugs and alcohol - What can be fixed, and what can't - How to leave a relationship safely</span></p>
-            <br/><span style="font-size: 16px; font-family: Arial; text-decoration: underline; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;"><span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>Sam Vaknin - Toxic relationships, abuse and it’s aftermath</b></span></p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;"><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Abuse can have many forms. Covert or overt, direct, indirect, through the environment, physical, emotional. It is important for us to understand that abuse is not just husband beating his wife, and that in all it’s forms abusive tendencies is much more common than we would think, and that the perpetrators are not always men. A must read for any person serious about forming a long term relationship.</span></p>
-            <div><span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><br/></span></div>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </p>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Abuse is so prevalent and so destructive that it get’s it’s own separate category. It is not a
+                    psychological tendency as being abusive is an attitude problem. People that are abusive do so
+                    selectively and they can turn it on and off at will.
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Abuse is poorly understood and often misunderstood by people who are not well documented on it. It
+                    takes great many forms and it can be from overt to expertly subtle. It can be from illegal (such as
+                    domestic violence) to impossible to prove in court but just as destructive.
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">A
+                    definition of abuse found in Lundy Bancroft’s book which stuck with me is: “Abuse is the opposite of
+                    respect. You do not abuse those you respect and you do not respect those who you abuse. ”
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Abuse infringes on basic human dignity as put forth in the UN’s Universal Declaration of Human
+                    Rights. It is not limited to relationships, indeed the tactics a dictator may use to maintain power
+                    over a nation are disturbingly similar to the tactics an abuser inside a relationship would use.
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 16px; font-family: Arial; text-decoration: underline; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"><b>
+                    Lundy Bancroft - Why Does He Do That?</b>: Inside the Minds of Angry and Controlling Men
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">"He
+                    doesn't mean to hurt me-he just loses control." "He can be sweet and gentle."
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    "He's scared me a few times, but he never hurts the children-he's a great father."
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    "He's had a really hard life..."
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Women in abusive relationships tell themselves these things every day. Now they can see inside the
+                    minds of angry and controlling men-and change their own lives. In this groundbreaking book, a
+                    counselor shows how to improve, survive, or leave an abusive relationship, with:
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">-The
+                    early warning signs - Nine abusive personality types -How to tell if an abuser can change, is
+                    changing, or ever will - The role of drugs and alcohol - What can be fixed, and what can't - How to
+                    leave a relationship safely
+                </span>
+            </p>
+            <br/>
+            <span style="font-size: 16px; font-family: Arial; text-decoration: underline; vertical-align: baseline; white-space: pre-wrap;"></span>
+            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <b>Sam Vaknin - Toxic relationships, abuse and it’s aftermath</b>
+                </span>
+            </p>
+            <p dir="ltr"
+               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    Abuse can have many forms. Covert or overt, direct, indirect, through the environment, physical,
+                    emotional. It is important for us to understand that abuse is not just husband beating his wife, and
+                    that in all it’s forms abusive tendencies is much more common than we would think, and that the
+                    perpetrators are not always men. A must read for any person serious about forming a long term
+                    relationship.
+                </span>
+            </p>
+            <div>
+                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+                    <br/>
+                </span>
+            </div>
         </span>
 
     </g:HTMLPanel>

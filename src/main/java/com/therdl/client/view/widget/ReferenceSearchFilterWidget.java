@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 /**
  * gwt widget class for reference search filter, used in snip view page
  */
-public class ReferenceSearchFilterWidget extends Composite{
+public class ReferenceSearchFilterWidget extends Composite {
     private static Logger log = Logger.getLogger("");
 
     interface ReferenceSearchFilterWidgetUiBinder extends UiBinder<HTMLPanel, ReferenceSearchFilterWidget> {
@@ -63,13 +63,13 @@ public class ReferenceSearchFilterWidget extends Composite{
         initWidget(ourUiBinder.createAndBindUi(this));
         this.view = view;
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             initRefTypeCheckboxes();
         } else {
-            typeLabel.getElement().getStyle().setProperty("display","none");
+            typeLabel.getElement().getStyle().setProperty("display", "none");
             filterLabel.setText(RDL.i18n.filterPosts());
         }
-        if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
             initProposalCheckBoxes();
         }
         createSortArrows();
@@ -106,7 +106,7 @@ public class ReferenceSearchFilterWidget extends Composite{
         FlowPanel[] flowPanels = {authorRepPanel, authorNamePanel, datePanel};
         String[] keyNames = {RDLConstants.SnipFields.REP, RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE};
 
-        for (int i=0; i<flowPanels.length; i++) {
+        for (int i = 0; i < flowPanels.length; i++) {
             final String keyName = keyNames[i];
             FlowPanel arrowPanel = new FlowPanel();
             Image imgUp = new Image(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
@@ -118,7 +118,7 @@ public class ReferenceSearchFilterWidget extends Composite{
             imgUp.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent clickEvent) {
-                    if(sortOrder == 1)
+                    if (sortOrder == 1)
                         selectedArrow.setUrl(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
                     else
                         selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
@@ -141,7 +141,7 @@ public class ReferenceSearchFilterWidget extends Composite{
             imgDown.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent clickEvent) {
-                    if(sortOrder == 1)
+                    if (sortOrder == 1)
                         selectedArrow.setUrl(Resources.INSTANCE.arrowUpGrey().getSafeUri().asString());
                     else
                         selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
@@ -155,11 +155,11 @@ public class ReferenceSearchFilterWidget extends Composite{
                 }
             });
 
-            arrowPanel.getElement().getStyle().setProperty("float","right");
-            arrowPanel.getElement().getStyle().setProperty("marginTop","2px");
+            arrowPanel.getElement().getStyle().setProperty("float", "right");
+            arrowPanel.getElement().getStyle().setProperty("marginTop", "2px");
             flowPanels[i].add(arrowPanel);
 
-            if(flowPanels[i].equals(datePanel)) {
+            if (flowPanels[i].equals(datePanel)) {
                 selectedArrow = imgDown;
                 selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
 
@@ -177,45 +177,46 @@ public class ReferenceSearchFilterWidget extends Composite{
 
     /**
      * forms search option bean from filter form elements
+     *
      * @return search option bean as SnipBean object
      */
     private AutoBean<SnipBean> formSearchOptionsBean() {
         AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 
-        if(!authorRep.getText().equals(""))
+        if (!authorRep.getText().equals(""))
             searchOptionsBean.as().setAuthorRep(Integer.parseInt(authorRep.getText()));
 
-        if(!authorName.getText().equals(""))
+        if (!authorName.getText().equals(""))
             searchOptionsBean.as().setAuthor(authorName.getText());
 
-        if(!dateFilterWidget.getDateFrom().equals(""))
+        if (!dateFilterWidget.getDateFrom().equals(""))
             searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateFrom());
 
-        if(!dateFilterWidget.getDateTo().equals(""))
+        if (!dateFilterWidget.getDateTo().equals(""))
             searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateTo());
 
-        if(Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+        if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
             searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxList));
             searchOptionsBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
 
-        } else if(Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
             searchOptionsBean.as().setSnipType(RDLConstants.SnipType.POST);
-        } else if(Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+        } else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 
-            if(checkBoxListProp.get(0).getValue() && !checkBoxListProp.get(1).getValue()) {
+            if (checkBoxListProp.get(0).getValue() && !checkBoxListProp.get(1).getValue()) {
                 searchOptionsBean.as().setAuthorTitle(RDLConstants.UserTitle.RDL_DEV);
-            } else if(!checkBoxListProp.get(0).getValue() && checkBoxListProp.get(1).getValue()) {
+            } else if (!checkBoxListProp.get(0).getValue() && checkBoxListProp.get(1).getValue()) {
                 searchOptionsBean.as().setAuthorTitle(RDLConstants.UserTitle.RDL_USER);
             }
 
             String checkedTypes = "";
-            if(checkBoxListProp.get(2).getValue())
+            if (checkBoxListProp.get(2).getValue())
                 checkedTypes += RDLConstants.SnipType.PLEDGE + ",";
-            if(checkBoxListProp.get(3).getValue())
+            if (checkBoxListProp.get(3).getValue())
                 checkedTypes += RDLConstants.SnipType.COUNTER + ",";
 
-            if(!checkedTypes.equals(""))
-                checkedTypes = checkedTypes.substring(0,checkedTypes.length()-1);
+            if (!checkedTypes.equals(""))
+                checkedTypes = checkedTypes.substring(0, checkedTypes.length() - 1);
 
             searchOptionsBean.as().setSnipType(checkedTypes);
 

@@ -39,27 +39,27 @@ public class IpnServletOld extends HttpServlet {
      * @param HttpServletRequest  req  Standard Http ServletRequest
      * @param HttpServletResponse resp  Standard Http ServletResponse
      * @throws javax.servlet.ServletException
-     * @throws java.io.IOException      String userId users user id unique identifier
-     *                          ServletFileUpload upload  apache commons file upload
-     *                          String userName users user name
-     *                          String avatarUrl relative uri to the image
-     *                          AutoBean<AuthUserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
-     *                          http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
-     *                          here the actionBean relates the users requested action
+     * @throws java.io.IOException            String userId users user id unique identifier
+     *                                        ServletFileUpload upload  apache commons file upload
+     *                                        String userName users user name
+     *                                        String avatarUrl relative uri to the image
+     *                                        AutoBean<AuthUserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
+     *                                        http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+     *                                        here the actionBean relates the users requested action
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
+        try {
             IpnHandler ipnHandler = new IpnHandler();
             // For Production/Live - https://www.paypal.com/cgi-bin/webscr
             // For Sandbox/Testing - https://www.sandbox.paypal.com/cgi-bin/webscr
             ipnHandler.setIpnConfig(new IpnConfig("https://www.sandbox.paypal.com/cgi-bin/webscr",
-                                                  "alx.dobre@gmail.com",
-                                                  "5",
-                                                  "EUR"));
+                    "alx.dobre@gmail.com",
+                    "5",
+                    "EUR"));
             ipnHandler.handleIpn(req);
-        }catch (IpnException e){
-            log.log(Level.SEVERE,"IPN exception", e);
+        } catch (IpnException e) {
+            log.log(Level.SEVERE, "IPN exception", e);
         }
     }
 }

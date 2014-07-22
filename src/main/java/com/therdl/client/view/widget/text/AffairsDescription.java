@@ -13,6 +13,7 @@ public class AffairsDescription extends Composite {
 
     interface AffairsDescriptionUiBinder extends UiBinder<HTMLPanel, AffairsDescription> {
     }
+
     private static AffairsDescriptionUiBinder uiBinder = GWT.create(AffairsDescriptionUiBinder.class);
 
     public AffairsDescription() {

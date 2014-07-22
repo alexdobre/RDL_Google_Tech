@@ -14,14 +14,13 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.therdl.client.RDL;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.shared.Constants;
 
 /**
  * gwt widget class for top bar menu in the snip list view
  * contains icons for snip, fastcap, material, habit
  * when hover the text is shown for each module
  */
-public class IdeasMenu extends Composite{
+public class IdeasMenu extends Composite {
     interface IdeasMenuUiBinder extends UiBinder<HTMLPanel, IdeasMenu> {
     }
 
@@ -43,36 +42,32 @@ public class IdeasMenu extends Composite{
     SpanElement hoverDiv;
 
     @UiField
-    com.github.gwtbootstrap.client.ui.Button ideasVideoButton;
+    org.gwtbootstrap3.client.ui.Button ideasVideoButton;
 
     public IdeasMenu() {
         initWidget(ourUiBinder.createAndBindUi(this));
     }
 
     @UiHandler("snipBtn")
-    public void onMouseOver(MouseOverEvent event)
-    {
+    public void onMouseOver(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.snipDescription());
     }
 
 
     @UiHandler("fastCapBtn")
-    public void onMouseOver1(MouseOverEvent event)
-    {
+    public void onMouseOver1(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.fastCapDescription());
     }
 
 
     @UiHandler("materialBtn")
-    public void onMouseOver2(MouseOverEvent event)
-    {
+    public void onMouseOver2(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.materialDescription());
     }
 
 
     @UiHandler("habitBtn")
-    public void onMouseOver3(MouseOverEvent event)
-    {
+    public void onMouseOver3(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.habitDescription());
     }
 
@@ -86,14 +81,14 @@ public class IdeasMenu extends Composite{
         AbstractMediaPlayer player = null;
         try {
             // create the player, specifying URL of media
-            player = new YouTubePlayer("GDB1-H-iHR4","100%", "350px");
+            player = new YouTubePlayer("GDB1-H-iHR4", "100%", "350px");
             DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
             dialog.show();
-        } catch(PluginVersionException e) {
-            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."),event,450).show();
-        } catch(PluginNotFoundException e) {
+        } catch (PluginVersionException e) {
+            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
+        } catch (PluginNotFoundException e) {
             // catch PluginNotFoundException and display a friendly notice.
-            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."),event,450).show();
+            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
         }
     }
 }

@@ -13,6 +13,7 @@ public class CompatibilityDescription extends Composite {
 
     interface CompatibilityDescriptionUiBinder extends UiBinder<HTMLPanel, CompatibilityDescription> {
     }
+
     private static CompatibilityDescriptionUiBinder uiBinder = GWT.create(CompatibilityDescriptionUiBinder.class);
 
     public CompatibilityDescription() {

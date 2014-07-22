@@ -8,7 +8,6 @@ import com.therdl.server.api.UserService;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
-import urn.ebay.api.PayPalAPI.GetRecurringPaymentsProfileDetailsResponseType;
 
 import javax.inject.Provider;
 import javax.servlet.ServletException;

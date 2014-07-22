@@ -14,11 +14,12 @@ import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
 /**
- *  A file service implementation for images
- *  uses Mongo libary GridFS can be extended to
- *  video and audio  see http://docs.mongodb.org/manual/core/gridfs/
- *  @ String defaultDatabaseName, mongo database, in this case is 'rdl'
- *  @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+ * A file service implementation for images
+ * uses Mongo libary GridFS can be extended to
+ * video and audio  see http://docs.mongodb.org/manual/core/gridfs/
+ *
+ * @ String defaultDatabaseName, mongo database, in this case is 'rdl'
+ * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
 public class DbFileServiceImpl implements DbFileService {
 
@@ -29,7 +30,8 @@ public class DbFileServiceImpl implements DbFileService {
 
     /**
      * persist an image as a file
-     * @param File imageFile the file to be saved
+     *
+     * @param File   imageFile the file to be saved
      * @param String fileName the file name
      */
     @Override
@@ -53,6 +55,7 @@ public class DbFileServiceImpl implements DbFileService {
 
     /**
      * persist an image as a ByteArray
+     *
      * @param byte[] imageBtyeArray  a byte array of image data
      * @param String fileName
      */
@@ -72,23 +75,25 @@ public class DbFileServiceImpl implements DbFileService {
 
     /**
      * crud get
-     * @param fileName  name of file to retrieve
+     *
+     * @param fileName name of file to retrieve
      * @return
      */
     @Override
     public File getImage(String fileName) {
         DB db = getMongo();
         GridFS gfsAvatarImage = new GridFS(db, "avatar");
-        GridFSDBFile savedAvatarImage= gfsAvatarImage.findOne(fileName);
+        GridFSDBFile savedAvatarImage = gfsAvatarImage.findOne(fileName);
         // here we need to write the file to the filesystem so it can be picked up by javascript
 
         return null;
     }
 
     /**
-     *  crud update
+     * crud update
+     *
      * @param String avatarDirUrl his uri is used for the javascript layer
-     * to retrieve the image
+     *               to retrieve the image
      * @param String fileName name of the image
      * @return
      */
@@ -97,16 +102,16 @@ public class DbFileServiceImpl implements DbFileService {
 
         DB db = getMongo();
         GridFS gfsAvatarImage = new GridFS(db, "avatar");
-        GridFSDBFile savedAvatarImage= gfsAvatarImage.findOne(fileName);
+        GridFSDBFile savedAvatarImage = gfsAvatarImage.findOne(fileName);
         if (savedAvatarImage != null) {
 
-            File avatarFile = new File(avatarDirUrl+ File.separator+fileName+"small.jpg");
+            File avatarFile = new File(avatarDirUrl + File.separator + fileName + "small.jpg");
             try {
-            avatarFile.delete();
-            avatarFile.createNewFile();
-            savedAvatarImage.writeTo(avatarFile);
+                avatarFile.delete();
+                avatarFile.createNewFile();
+                savedAvatarImage.writeTo(avatarFile);
 
-            return true;
+                return true;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -118,9 +123,10 @@ public class DbFileServiceImpl implements DbFileService {
 
 
     /**
-     *  MongoClient("localhost", 27017)
-     *  later the above  url will be changed to a cloud based schema hence
-     *  UnknownHostException  exception
+     * MongoClient("localhost", 27017)
+     * later the above  url will be changed to a cloud based schema hence
+     * UnknownHostException  exception
+     *
      * @return
      */
     private DB getMongo() {

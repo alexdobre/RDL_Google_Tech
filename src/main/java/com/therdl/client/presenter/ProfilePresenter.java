@@ -1,14 +1,10 @@
 package com.therdl.client.presenter;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.ProfileView;
-import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
-
-import java.util.logging.Logger;
 
 /**
  * ProfilePresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)

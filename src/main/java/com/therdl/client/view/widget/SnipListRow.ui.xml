@@ -1,7 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             >
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+        >
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
@@ -16,17 +16,18 @@
         }
 
         .label {
-            padding-left:0px;
+            padding-left: 0px;
         }
 
         .secondColDiv {
             margin: 0 20px 2px 20px;
             float: left;
         }
+
         .buttonPanel {
-            float:left;
-            margin-top:30px;
-            margin-left:20px;
+            float: left;
+            margin-top: 30px;
+            margin-left: 20px;
             display: none;
         }
 
@@ -76,27 +77,43 @@
 
                     <div>
                         <div style="float:left;">
-                            <div><g:Label ui:field="userName" styleName="{style.label}"/></div>
-                            <div><g:Label ui:field="titleLabel" styleName="{style.label}"/></div>
+                            <div>
+                                <g:Label ui:field="userName" styleName="{style.label}"/>
+                            </div>
+                            <div>
+                                <g:Label ui:field="titleLabel" styleName="{style.label}"/>
+                            </div>
                         </div>
                         <div style="float:left;margin-left: 20px;">
                             <g:FlowPanel ui:field="refPanel">
-                                <g:FlowPanel><g:Label ui:field="posRef" styleName="{style.label}"/></g:FlowPanel>
-                                <g:FlowPanel><g:Label ui:field="neutRef" styleName="{style.label}"/></g:FlowPanel>
-                                <g:FlowPanel><g:Label ui:field="negRef" styleName="{style.label}"/></g:FlowPanel>
+                                <g:FlowPanel>
+                                    <g:Label ui:field="posRef" styleName="{style.label}"/>
+                                </g:FlowPanel>
+                                <g:FlowPanel>
+                                    <g:Label ui:field="neutRef" styleName="{style.label}"/>
+                                </g:FlowPanel>
+                                <g:FlowPanel>
+                                    <g:Label ui:field="negRef" styleName="{style.label}"/>
+                                </g:FlowPanel>
                             </g:FlowPanel>
                             <g:FlowPanel ui:field="postsPanel">
-                                <g:FlowPanel><g:Label ui:field="postsCount" styleName="{style.label}"/></g:FlowPanel>
+                                <g:FlowPanel>
+                                    <g:Label ui:field="postsCount" styleName="{style.label}"/>
+                                </g:FlowPanel>
                             </g:FlowPanel>
 
                             <g:FlowPanel ui:field="pledgesPanel">
-                                <g:FlowPanel><g:Label ui:field="pledgesCount" styleName="{style.label}"/></g:FlowPanel>
+                                <g:FlowPanel>
+                                    <g:Label ui:field="pledgesCount" styleName="{style.label}"/>
+                                </g:FlowPanel>
                             </g:FlowPanel>
 
                         </div>
                         <div style="float:left;margin-left: 10px;">
                             <g:FlowPanel ui:field="countersPanel">
-                                <g:FlowPanel><g:Label ui:field="countersCount" styleName="{style.label}"/></g:FlowPanel>
+                                <g:FlowPanel>
+                                    <g:Label ui:field="countersCount" styleName="{style.label}"/>
+                                </g:FlowPanel>
                             </g:FlowPanel>
                         </div>
                         <div style="float:left;margin-left: 40px;">
@@ -106,7 +123,9 @@
                         </div>
 
                         <div style="float:left;margin-left: 15px;">
-                            <div><g:Label ui:field="creationDate" styleName="{style.label}"/></div>
+                            <div>
+                                <g:Label ui:field="creationDate" styleName="{style.label}"/>
+                            </div>
                             <g:FlowPanel styleName="{style.editBtnParent}" ui:field="editBtnParent">
                                 <b:Button ui:field="editBtn" text="{i18n.edit}"/>
                             </g:FlowPanel>
