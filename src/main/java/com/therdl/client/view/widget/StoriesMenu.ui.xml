@@ -24,19 +24,6 @@
 
     <g:HTMLPanel>
         <div align="center" style="padding-top:5px; width: 1024px; margin:auto;">
-            <div style="float:left; margin-left: 85px; margin-top:6px; max-width:20%;">
-                <b:Button ui:field="storiesVideoButton">Load stories video</b:Button>
-            </div>
-            <g:FocusPanel ui:field="streamBtn" styleName="{style.btn}">
-                <g:Image ui:field="streamImg" url='{res.StreamImageGif.getSafeUri.asString}' width="40px"
-                         height="40px"/>
-            </g:FocusPanel>
-            <g:Label text="{i18n.stream}" styleName="{style.storiesLabel}"/>
-
-            <g:FocusPanel ui:field="tagBtn" styleName="{style.btn}">
-                <g:Image ui:field="tagImg" url='{res.TagImageGif.getSafeUri.asString}' styleName="{style.storiesImg}"/>
-            </g:FocusPanel>
-            <g:Label text="{i18n.tag}" styleName="{style.storiesLabel}"/>
 
             <g:FocusPanel ui:field="threadBtn" styleName="{style.btn}">
                 <g:Image ui:field="materialImg" url='{res.ThreadImageGif.getSafeUri.asString}'

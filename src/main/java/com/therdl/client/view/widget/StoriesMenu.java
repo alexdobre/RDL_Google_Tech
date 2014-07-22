@@ -23,12 +23,6 @@ public class StoriesMenu extends Composite {
     private static StoriesMenuUiBinder ourUiBinder = GWT.create(StoriesMenuUiBinder.class);
 
     @UiField
-    FocusPanel streamBtn;
-
-    @UiField
-    FocusPanel tagBtn;
-
-    @UiField
     FocusPanel threadBtn;
 
     @UiField
@@ -37,30 +31,14 @@ public class StoriesMenu extends Composite {
     @UiField
     SpanElement hoverDiv;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Button storiesVideoButton;
-
     public StoriesMenu() {
         initWidget(ourUiBinder.createAndBindUi(this));
     }
-
-    @UiHandler("streamBtn")
-    public void onMouseOver(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.streamDescription());
-    }
-
-
-    @UiHandler("tagBtn")
-    public void onMouseOver1(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.tagDescription());
-    }
-
 
     @UiHandler("threadBtn")
     public void onMouseOver2(MouseOverEvent event) {
         hoverDiv.setInnerHTML(RDL.i18n.threadDescription());
     }
-
 
     @UiHandler("postBtn")
     public void onMouseOver3(MouseOverEvent event) {
