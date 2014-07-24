@@ -3,11 +3,13 @@ package com.therdl.server.apiimpl;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.mongodb.*;
 import com.therdl.server.api.PaymentService;
+import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.PaypalCredentials;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.logging.Logger;
 
@@ -18,8 +20,15 @@ import java.util.logging.Logger;
 @Singleton
 public class PaymentServiceImpl implements PaymentService {
 
+	private static Logger log = Logger.getLogger("");
+
     private Beanery beanery;
-    private static Logger log = Logger.getLogger("");
+	private DbProvider dbProvider;
+
+	@Inject
+	public PaymentServiceImpl (DbProvider dbProvider){
+		this.dbProvider = dbProvider;
+	}
 
     @Override
     public AutoBean<CurrentUserBean> processRdlSupporter(AutoBean<CurrentUserBean> currentUserBean) {
@@ -72,7 +81,7 @@ public class PaymentServiceImpl implements PaymentService {
             return null;
         }
 
-        DB db = ServerUtils.getMongo();
+        DB db = dbProvider.getDb();
         //get the mail credentials from the DB
         DBCollection coll = db.getCollection("paypalCredentials");
 

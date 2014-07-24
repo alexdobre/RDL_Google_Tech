@@ -1,11 +1,9 @@
 package com.therdl.server.restapi;
 
-import com.google.inject.Singleton;
 import com.therdl.server.api.PaymentService;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.PaypalCredentials;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +23,6 @@ import java.util.Enumeration;
  * It also Updates the user's title in accordance.
  * See: https://developer.paypal.com/docs/classic/products/payment-data-transfer/
  */
-@Singleton
 public class PdtServlet extends HttpServlet {
 
     private static final long serialVersionUID = 5944361005662719642L;
@@ -37,7 +34,6 @@ public class PdtServlet extends HttpServlet {
 
     private final PaypalCredentials paypalCredentials;
 
-    @Inject
     public PdtServlet(UserService userService, PaymentService paymentService) {
         this.paymentService = paymentService;
         this.userService = userService;

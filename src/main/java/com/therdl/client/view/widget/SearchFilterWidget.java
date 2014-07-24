@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.google.gwt.user.client.ui.*;
+import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Legend;
 
@@ -18,14 +20,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SearchView;
@@ -62,10 +56,10 @@ public class SearchFilterWidget extends Composite {
 	org.gwtbootstrap3.client.ui.Button createNewButton;
 
 	@UiField
-	TextBox content, author, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep, pledgesCount, countersCount;
+	TextBox content, author, postCount, viewCount, snipRep;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.TextBox title;
+	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef;
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
@@ -77,19 +71,16 @@ public class SearchFilterWidget extends Composite {
 	DateFilterWidget dateFilterWidget;
 
 	@UiField
-	FlowPanel refPanel;
+	Label postLabel, viewsLabel, contentLabel;
 
 	@UiField
-	Label refLabel, postLabel, viewsLabel, contentLabel, pledgesCountLabel, countersCountLabel;
-
-	@UiField
-	FormLabel typeLabel, proposalTypeLabel, proposalStateLabel, categoryLabel;
+	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup;
 
 	@UiField
 	Legend filterLabel;
 
 	@UiField
-	FlowPanel viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel, typePanel;
+	InsertPanel.ForIsWidget viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel, typePanel, refPanel;
 
 	Image selectedArrow;
 
@@ -129,23 +120,16 @@ public class SearchFilterWidget extends Composite {
 			neutralRef.getElement().getStyle().setProperty("border", "1px solid grey");
 			negativeRef.getElement().getStyle().setProperty("border", "1px solid red");
 
-			postLabel.getElement().getStyle().setProperty("display", "none");
-			postPanel.getElement().getStyle().setProperty("display", "none");
-
-			hideProposalItems();
+			hideUnusedItems();
 
 			filterLabel.setText(RDL.i18n.filterSnips());
 
 			createCategoryList();
 
-
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
 			editPageToken = RDLConstants.Tokens.THREAD_EDIT;
 
-			typeLabel.getElement().getStyle().setProperty("display", "none");
-			refPanel.getElement().getStyle().setProperty("display", "none");
-			refLabel.getElement().getStyle().setProperty("display", "none");
-			hideProposalItems();
+			hideUnusedItems();
 
 			filterLabel.setText(RDL.i18n.filterThreads());
 
@@ -153,20 +137,7 @@ public class SearchFilterWidget extends Composite {
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			editPageToken = RDLConstants.Tokens.PROPOSAL_EDIT;
 
-			typeLabel.getElement().getStyle().setProperty("display", "none");
-			refPanel.getElement().getStyle().setProperty("display", "none");
-			refLabel.getElement().getStyle().setProperty("display", "none");
-			postLabel.getElement().getStyle().setProperty("display", "none");
-			postPanel.getElement().getStyle().setProperty("display", "none");
-
-			categoryList.getElement().getStyle().setProperty("display", "none");
-			categoryLabel.getElement().getStyle().setProperty("display", "none");
-
-			viewsLabel.getElement().getStyle().setProperty("display", "none");
-			viewPanel.getElement().getStyle().setProperty("display", "none");
-
-			contentLabel.getElement().getStyle().setProperty("display", "none");
-			content.getElement().getStyle().setProperty("display", "none");
+			hideUnusedItems();
 
 			filterLabel.setText(RDL.i18n.filterProposals());
 
@@ -191,9 +162,9 @@ public class SearchFilterWidget extends Composite {
 		Iterator itHm = snipTypeHm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry)itHm.next();
+			Map.Entry pairs = (Map.Entry) itHm.next();
 
-			checkBoxArray[i] = new CheckBox((String)pairs.getValue());
+			checkBoxArray[i] = new CheckBox((String) pairs.getValue());
 			checkBoxArray[i].setValue(true);
 			checkBoxArray[i].setStyleName("checkBoxBtn");
 			if (pairs.getKey().equals(RDLConstants.SnipType.FAST_CAP)) {
@@ -211,8 +182,8 @@ public class SearchFilterWidget extends Composite {
 	 * default order is descending order by creation date
 	 */
 	private void createSortArrows() {
-		FlowPanel[] flowPanels = { viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel };
-		String[] keyNames = { RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP,
+		InsertPanel.ForIsWidget[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel};
+		String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP,
 				RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE,
 				RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF,
 				RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS,
@@ -236,7 +207,7 @@ public class SearchFilterWidget extends Composite {
 					else
 						selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
 
-					selectedArrow = (Image)clickEvent.getSource();
+					selectedArrow = (Image) clickEvent.getSource();
 					sortOrder = 1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowUpGreen().getSafeUri().asString());
@@ -259,7 +230,7 @@ public class SearchFilterWidget extends Composite {
 					else
 						selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
 
-					selectedArrow = (Image)clickEvent.getSource();
+					selectedArrow = (Image) clickEvent.getSource();
 					sortOrder = -1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
@@ -295,18 +266,38 @@ public class SearchFilterWidget extends Composite {
 		}
 	}
 
+	private void hideUnusedItems(){
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)){
+			postLabel.getElement().getStyle().setProperty("display", "none");
+			//postPanel.getElement().getStyle().setProperty("display", "none");
+			hideProposalItems();
+
+		}else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+			typeFormGroup.getElement().getStyle().setProperty("display", "none");
+			refFormGroup.getElement().getStyle().setProperty("display", "none");
+			hideProposalItems();
+
+		}else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			typeFormGroup.getElement().getStyle().setProperty("display", "none");
+			refFormGroup.getElement().getStyle().setProperty("display", "none");
+			postLabel.getElement().getStyle().setProperty("display", "none");
+			//postPanel.getElement().getStyle().setProperty("display", "none");
+
+			categoryFormGroup.getElement().getStyle().setProperty("display", "none");
+
+			viewsLabel.getElement().getStyle().setProperty("display", "none");
+			//viewPanel.getElement().getStyle().setProperty("display", "none");
+
+			contentLabel.getElement().getStyle().setProperty("display", "none");
+			content.getElement().getStyle().setProperty("display", "none");
+		}
+	}
+
 	private void hideProposalItems() {
-		proposalStateLabel.getElement().getStyle().setProperty("display", "none");
-		proposalStateList.getElement().getStyle().setProperty("display", "none");
-
-		proposalTypeLabel.getElement().getStyle().setProperty("display", "none");
-		proposalTypeList.getElement().getStyle().setProperty("display", "none");
-
-		pledgesCountLabel.getElement().getStyle().setProperty("display", "none");
-		pledgesPanel.getElement().getStyle().setProperty("display", "none");
-
-		countersCountLabel.getElement().getStyle().setProperty("display", "none");
-		countersPanel.getElement().getStyle().setProperty("display", "none");
+		proposalStateFormGroup.getElement().getStyle().setProperty("display", "none");
+		proposalTypeFormGroup.getElement().getStyle().setProperty("display", "none");
+		pledgesFormGroup.getElement().getStyle().setProperty("display", "none");
+		countersFormGroup.getElement().getStyle().setProperty("display", "none");
 	}
 
 	/**

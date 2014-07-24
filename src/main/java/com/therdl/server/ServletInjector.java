@@ -13,6 +13,8 @@ import com.therdl.server.apiimpl.DbFileServiceImpl;
 import com.therdl.server.apiimpl.PaymentServiceImpl;
 import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
+import com.therdl.server.data.DbProvider;
+import com.therdl.server.data.DbProviderImpl;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.data.MongoFileStorage;
 import com.therdl.server.paypal_payment.PayPalConstants;
@@ -43,28 +45,27 @@ import com.therdl.server.restapi.*;
 
 public class ServletInjector extends GuiceServletContextListener {
 
-    @Override
-    protected Injector getInjector() {
-        return Guice.createInjector(new ServletModule() {
+	@Override
+	protected Injector getInjector() {
+		return Guice.createInjector(new ServletModule() {
 
-            @Override
-            protected void configureServlets() {
+			@Override
+			protected void configureServlets() {
+				bind(DbProvider.class).to(DbProviderImpl.class);
+				bind(SnipsService.class).to(SnipServiceImpl.class);
+				bind(UserService.class).to(UserServiceImpl.class);
+				bind(DbFileService.class).to(DbFileServiceImpl.class);
+				bind(FileStorage.class).to(MongoFileStorage.class);
+				bind(PaymentService.class).to(PaymentServiceImpl.class);
 
-                bind(SnipsService.class).to(SnipServiceImpl.class);
-                bind(UserService.class).to(UserServiceImpl.class);
-                bind(DbFileService.class).to(DbFileServiceImpl.class);
-                bind(FileStorage.class).to(MongoFileStorage.class);
-                bind(PaymentService.class).to(PaymentServiceImpl.class);
-
-                serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
-                serve("/rdl/getUsers").with(UserDispatcherServlet.class);
-                serve("/rdl/getSession").with(SessionServlet.class);
-                serve("/rdl/avatarUpload").with(UploadServlet.class);
-                serve("/rdl/pdt").with(PdtServlet.class);
-                serve(PayPalConstants.PAYPAL_IPN_NOTIFY_URL).with(PayPalIPNServlet.class);
-                serve(PayPalConstants.PAYPAL_CHECKOUT_URL).with(PaypalSubscriptionServlet.class);
-                serve(PayPalConstants.PAYPAL_RETURN_URL).with(PaypalSubscriptionCallbackServlet.class);
-            }
-        });
-    }
+				serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
+				serve("/rdl/getUsers").with(UserDispatcherServlet.class);
+				serve("/rdl/getSession").with(SessionServlet.class);
+				serve("/rdl/avatarUpload").with(UploadServlet.class);
+				serve(PayPalConstants.PAYPAL_IPN_NOTIFY_URL).with(PayPalIPNServlet.class);
+				serve(PayPalConstants.PAYPAL_CHECKOUT_URL).with(PaypalSubscriptionServlet.class);
+				serve(PayPalConstants.PAYPAL_RETURN_URL).with(PaypalSubscriptionCallbackServlet.class);
+			}
+		});
+	}
 }

@@ -9,11 +9,11 @@
 		<b:FluidContainer>
 			<rdl:AppMenu ui:field="appMenu"/>
 			<b:Row>
-					<b:Column size="MD_2">
+					<b:Column size="MD_3">
 						<b:FluidContainer ui:field="threadSearchWidgetPanel"/>
 						<rdl:SocialPanel styleName="{style.socialPanel}"/>
 					</b:Column>
-					<b:Column size="MD_10">
+					<b:Column size="MD_9">
 						<rdl:LoadingWidget ui:field="threadLoadingWidget"
 						                   styleName="{style.snipListRowContainer}"></rdl:LoadingWidget>
 						<g:FlowPanel ui:field="threadListRowContainer" styleName='{style.snipListRowContainer}'/>

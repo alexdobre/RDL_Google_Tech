@@ -5,6 +5,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.UserService;
+import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.FileStorage;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
@@ -44,191 +45,192 @@ import java.util.logging.Logger;
 @Singleton
 public class SessionServlet extends HttpServlet {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    private final Provider<HttpSession> session;
-    private Beanery beanery;
-    private UserService userService;
-    private FileStorage mongoFileStorage;
+	private final Provider<HttpSession> session;
+	private Beanery beanery;
+	private DbProvider dbProvider;
+	private UserService userService;
+	private FileStorage mongoFileStorage;
 
-    @Inject
-    public SessionServlet(Provider<HttpSession> sessions, UserService userService, FileStorage mongoFileStorage) {
-        this.session = sessions;
-        this.mongoFileStorage = mongoFileStorage;
-        this.userService = userService;
-        beanery = AutoBeanFactorySource.create(Beanery.class);
-
-
-    }
-
-    /**
-     * This is the equivalent main method for this class
-     *
-     * @param HttpServletRequest  req  Standard Http ServletRequest
-     * @param HttpServletResponse resp  Standard Http ServletResponse
-     * @throws ServletException
-     * @throws IOException      String contextRoot, obtains the top level directory to find resource in server runtime directory
-     *                          String avatarDirUrl uri for avatar image constructed from contextRoot
-     *                          AutoBean<AuthUserBean> authBean user credentials from client
-     */
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        resp.setContentType("application/json");
-        // we need the path to the avatar file wherever it is deployed by jboss or wherever the application is running
-        String contextRoot = getServletContext().getRealPath("/");
-        String avatarDirUrl = contextRoot + File.separator + "userAvatar";
-
-        // get the json
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = req.getReader();
-        String str;
-        while ((str = br.readLine()) != null) {
-            sb.append(str);
-        }
-        br.close();
-
-        log.info("SessionServlet signUp authBean json recieved" + sb.toString());
-
-        AutoBean<AuthUserBean> authBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, sb.toString());
-
-        String action = authBean.as().getAction();
-        log.info("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
+	@Inject
+	public SessionServlet(Provider<HttpSession> sessions, UserService userService, FileStorage mongoFileStorage) {
+		this.session = sessions;
+		this.mongoFileStorage = mongoFileStorage;
+		this.userService = userService;
+		beanery = AutoBeanFactorySource.create(Beanery.class);
 
 
-        if (action.equals("signUp")) {
+	}
 
-            AutoBean<UserBean> newUserBean = beanery.userBean();
-            log.info("SessionServlet password hash = " + authBean.as().getEmail());
-            newUserBean.as().setEmail(authBean.as().getEmail());
-            log.info("SessionServlet password hash = " + authBean.as().getName());
-            //generate a unique session ID
-            newUserBean.as().setSid(ServerUtils.generateUUID());
-            newUserBean.as().setUsername(authBean.as().getName());
-            String password = authBean.as().getPassword();
-            String hash = ServerUtils.encryptString(password);
-            log.info("SessionServlet password hash = " + hash);
-            newUserBean.as().setPassHash(hash);
-            newUserBean.as().setRep(authBean.as().getRep());
-            userService.createUser(newUserBean.as());
-            authBean.as().setAuth(true);
-            authBean.as().setAction("newUserOk");
-            authBean.as().setName(authBean.as().getName());
-            String avatarUrl = avatarDirUrl + File.separator + "avatar-empty.jpg";
-            authBean.as().setAvatarUrl(avatarUrl);
-            session.get().setAttribute("userid", newUserBean.as().getEmail());
-            session.get().setAttribute("sid", newUserBean.as().getSid());
-            session.get().setAttribute("username", newUserBean.as().getUsername());
-            log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
-            PrintWriter out = resp.getWriter();
-            out.write(AutoBeanCodex.encode(authBean).getPayload());
+	/**
+	 * This is the equivalent main method for this class
+	 *
+	 * @param req  req  Standard Http ServletRequest
+	 * @param resp resp  Standard Http ServletResponse
+	 * @throws ServletException
+	 * @throws IOException      String contextRoot, obtains the top level directory to find resource in server runtime directory
+	 *                          String avatarDirUrl uri for avatar image constructed from contextRoot
+	 *                          AutoBean<AuthUserBean> authBean user credentials from client
+	 */
 
-        } // end sign up
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		resp.setContentType("application/json");
+		// we need the path to the avatar file wherever it is deployed by jboss or wherever the application is running
+		String contextRoot = getServletContext().getRealPath("/");
+		String avatarDirUrl = contextRoot + File.separator + "userAvatar";
+
+		// get the json
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = req.getReader();
+		String str;
+		while ((str = br.readLine()) != null) {
+			sb.append(str);
+		}
+		br.close();
+
+		log.info("SessionServlet signUp authBean json recieved" + sb.toString());
+
+		AutoBean<AuthUserBean> authBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, sb.toString());
+
+		String action = authBean.as().getAction();
+		log.info("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
 
 
-        else if (action.equals("auth")) {
+		if (action.equals("signUp")) {
 
-            String password = authBean.as().getPassword();
-            // get the user from the database if exists
-            AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
+			AutoBean<UserBean> newUserBean = beanery.userBean();
+			log.info("SessionServlet password hash = " + authBean.as().getEmail());
+			newUserBean.as().setEmail(authBean.as().getEmail());
+			log.info("SessionServlet password hash = " + authBean.as().getName());
+			//generate a unique session ID
+			newUserBean.as().setSid(ServerUtils.generateUUID());
+			newUserBean.as().setUsername(authBean.as().getName());
+			String password = authBean.as().getPassword();
+			String hash = ServerUtils.encryptString(password);
+			log.info("SessionServlet password hash = " + hash);
+			newUserBean.as().setPassHash(hash);
+			newUserBean.as().setRep(authBean.as().getRep());
+			userService.createUser(newUserBean.as());
+			authBean.as().setAuth(true);
+			authBean.as().setAction("newUserOk");
+			authBean.as().setName(authBean.as().getName());
+			String avatarUrl = avatarDirUrl + File.separator + "avatar-empty.jpg";
+			authBean.as().setAvatarUrl(avatarUrl);
+			session.get().setAttribute("userid", newUserBean.as().getEmail());
+			session.get().setAttribute("sid", newUserBean.as().getSid());
+			session.get().setAttribute("username", newUserBean.as().getUsername());
+			log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
+			PrintWriter out = resp.getWriter();
+			out.write(AutoBeanCodex.encode(authBean).getPayload());
 
-            processCheckedUser(avatarDirUrl, authBean, checkedUser);
-            sidLogic(authBean, checkedUser);
+		} // end sign up
 
-            PrintWriter out = resp.getWriter();
-            log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
-            out.write(AutoBeanCodex.encode(checkedUser).getPayload());
 
-        } else if (action.equals("sidAuth")) {
-            AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
+		else if (action.equals("auth")) {
 
-            processCheckedUser(avatarDirUrl, authBean, checkedUser);
+			String password = authBean.as().getPassword();
+			// get the user from the database if exists
+			AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
 
-            PrintWriter out = resp.getWriter();
-            log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
-            out.write(AutoBeanCodex.encode(checkedUser).getPayload());
-        } else if (action.equals("forgotPass")) {
-            String email = authBean.as().getEmail();
-            //checked if the email is a registered user.
-            UserBean userBean = userService.getUserByEmail(email);
-            if (userBean != null) {
-                String newPass = ServerUtils.generatePassword();
-                String newPassHash = ServerUtils.encryptString(newPass);
+			processCheckedUser(avatarDirUrl, authBean, checkedUser);
+			sidLogic(authBean, checkedUser);
 
-                try {
-                    //send the new password to the user's registered email
-                    EmailSender.sendNewPassEmail(newPass, email, ServerUtils.getMongo());
+			PrintWriter out = resp.getWriter();
+			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
+			out.write(AutoBeanCodex.encode(checkedUser).getPayload());
 
-                    //update user hash password
-                    userBean.setPassHash(newPassHash);
-                    //update the user
-                    userService.updateUser(userBean);
+		} else if (action.equals("sidAuth")) {
+			AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
 
-                    //return an email since it is registered
-                    authBean.as().setEmail(userBean.getEmail());
-                } catch (RDLSendEmailException e) {
-                    //return a "error" value because there was an error in sending an email to the registered email address.
-                    authBean.as().setEmail(Global.ERROR);
-                }
+			processCheckedUser(avatarDirUrl, authBean, checkedUser);
 
-            } else {
-                //return a "null" email value because the email is not a registered user.
-                authBean.as().setEmail(null);
-            }
+			PrintWriter out = resp.getWriter();
+			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
+			out.write(AutoBeanCodex.encode(checkedUser).getPayload());
+		} else if (action.equals("forgotPass")) {
+			String email = authBean.as().getEmail();
+			//checked if the email is a registered user.
+			UserBean userBean = userService.getUserByEmail(email);
+			if (userBean != null) {
+				String newPass = ServerUtils.generatePassword();
+				String newPassHash = ServerUtils.encryptString(newPass);
 
-            PrintWriter out = resp.getWriter();
-            log.info("Writing output: " + AutoBeanCodex.encode(authBean).getPayload());
-            out.write(AutoBeanCodex.encode(authBean).getPayload());
-        }
+				try {
+					//send the new password to the user's registered email
+					EmailSender.sendNewPassEmail(newPass, email, dbProvider.getDb());
 
-    } // end doPost
+					//update user hash password
+					userBean.setPassHash(newPassHash);
+					//update the user
+					userService.updateUser(userBean);
 
-    private void processCheckedUser(String avatarDirUrl, AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
-        log.info("processCheckedUser " + checkedUser.as().toString());
-        if (checkedUser.as().getAction().equals("OkUser")) {
+					//return an email since it is registered
+					authBean.as().setEmail(userBean.getEmail());
+				} catch (RDLSendEmailException e) {
+					//return a "error" value because there was an error in sending an email to the registered email address.
+					authBean.as().setEmail(Global.ERROR);
+				}
 
-            checkedUser.as().setAuth(true);
-            // we can use this server side to obtain userId from session
-            session.get().setAttribute("userid", checkedUser.as().getEmail());
-            session.get().setAttribute("name", checkedUser.as().getName());
+			} else {
+				//return a "null" email value because the email is not a registered user.
+				authBean.as().setEmail(null);
+			}
 
-            // need to check if file exists and write to filesystem
-            boolean avatarExists = mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
-            if (avatarExists) {
-                // javascript from modulle base in target/war
-                String avatarUrl = "userAvatar" + File.separator + checkedUser.as().getName() + "small.jpg";
-                checkedUser.as().setAvatarUrl(avatarUrl);
-            } else {
-                // javascript from modulle base in target/war
-                String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
-                checkedUser.as().setAvatarUrl(avatarUrl);
-            }
-        } else {
-            checkedUser.as().setAuth(false);
-            // javascript from modulle base in target/war
-            String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
-            checkedUser.as().setAvatarUrl(avatarUrl);
-        }
-    }
+			PrintWriter out = resp.getWriter();
+			log.info("Writing output: " + AutoBeanCodex.encode(authBean).getPayload());
+			out.write(AutoBeanCodex.encode(authBean).getPayload());
+		}
 
-    private void sidLogic(AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
-        if (checkedUser.as().getAction().equals("OkUser")) {
-            //SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
-            if (checkedUser.as().getSid() == null && authBean.as().getRememberMe()) {
-                //remember me was checked - if SID is null we set it
+	} // end doPost
 
-                checkedUser.as().setSid(ServerUtils.generateUUID());
-                log.info("Update new SID");
-                userService.updateSid(checkedUser.as());
+	private void processCheckedUser(String avatarDirUrl, AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
+		log.info("processCheckedUser " + checkedUser.as().toString());
+		if (checkedUser.as().getAction().equals("OkUser")) {
 
-            } else {
-                //remember me not checked
-                checkedUser.as().setSid(null);
-                log.info("Setting SID as null");
-                userService.updateSid(checkedUser.as());
-            }
-        }
-    }
+			checkedUser.as().setAuth(true);
+			// we can use this server side to obtain userId from session
+			session.get().setAttribute("userid", checkedUser.as().getEmail());
+			session.get().setAttribute("name", checkedUser.as().getName());
+
+			// need to check if file exists and write to filesystem
+			boolean avatarExists = mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
+			if (avatarExists) {
+				// javascript from modulle base in target/war
+				String avatarUrl = "userAvatar" + File.separator + checkedUser.as().getName() + "small.jpg";
+				checkedUser.as().setAvatarUrl(avatarUrl);
+			} else {
+				// javascript from modulle base in target/war
+				String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
+				checkedUser.as().setAvatarUrl(avatarUrl);
+			}
+		} else {
+			checkedUser.as().setAuth(false);
+			// javascript from modulle base in target/war
+			String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
+			checkedUser.as().setAvatarUrl(avatarUrl);
+		}
+	}
+
+	private void sidLogic(AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
+		if (checkedUser.as().getAction().equals("OkUser")) {
+			//SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
+			if (checkedUser.as().getSid() == null && authBean.as().getRememberMe()) {
+				//remember me was checked - if SID is null we set it
+
+				checkedUser.as().setSid(ServerUtils.generateUUID());
+				log.info("Update new SID");
+				userService.updateSid(checkedUser.as());
+
+			} else {
+				//remember me not checked
+				checkedUser.as().setSid(null);
+				log.info("Setting SID as null");
+				userService.updateSid(checkedUser.as());
+			}
+		}
+	}
 
 }

@@ -1,16 +1,17 @@
 package com.therdl.server.apiimpl;
 
+import com.google.inject.Singleton;
 import com.mongodb.DB;
-import com.mongodb.MongoClient;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.therdl.server.api.DbFileService;
+import com.therdl.server.data.DbProvider;
 import com.therdl.shared.beans.Beanery;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
 /**
@@ -21,126 +22,113 @@ import java.util.logging.Logger;
  * @ String defaultDatabaseName, mongo database, in this case is 'rdl'
  * @ Beanery beanery, see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
+@Singleton
 public class DbFileServiceImpl implements DbFileService {
 
-    private String defaultDatabaseName;
-    private Beanery beanery;
+	private DbProvider dbProvider;
+	private Beanery beanery;
 
-    private static Logger log = Logger.getLogger(DbFileServiceImpl.class.getName());
+	private static Logger log = Logger.getLogger(DbFileServiceImpl.class.getName());
 
-    /**
-     * persist an image as a file
-     *
-     * @param File   imageFile the file to be saved
-     * @param String fileName the file name
-     */
-    @Override
-    public void saveIamage(File imageFile, String fileName) {
-        DB db = getMongo();
-        // create a file store
-        GridFS gfsAvatarImage = new GridFS(db, "avatar");
-        // create a gfs file object
-        try {
-            GridFSInputFile gfsFile = gfsAvatarImage.createFile(imageFile);
-            // name the file
-            gfsFile.setFilename(fileName);
-            // save the file
-            gfsFile.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	@Inject
+	public DbFileServiceImpl (DbProvider dbProvider){
+		this.dbProvider = dbProvider;
+	}
 
-
-    }
-
-    /**
-     * persist an image as a ByteArray
-     *
-     * @param byte[] imageBtyeArray  a byte array of image data
-     * @param String fileName
-     */
-    @Override
-    public void saveImageBytes(byte[] imageBtyeArray, String fileName) {
-
-        DB db = getMongo();
-        // create a file store
-        GridFS gfsAvatarImage = new GridFS(db, "avatar");
-        // create a gfs file object from a byte array
-        GridFSInputFile gfsFile = gfsAvatarImage.createFile(imageBtyeArray);
-        // name the file
-        gfsFile.setFilename(fileName);
-        // save the file
-        gfsFile.save();
-    }
-
-    /**
-     * crud get
-     *
-     * @param fileName name of file to retrieve
-     * @return
-     */
-    @Override
-    public File getImage(String fileName) {
-        DB db = getMongo();
-        GridFS gfsAvatarImage = new GridFS(db, "avatar");
-        GridFSDBFile savedAvatarImage = gfsAvatarImage.findOne(fileName);
-        // here we need to write the file to the filesystem so it can be picked up by javascript
-
-        return null;
-    }
-
-    /**
-     * crud update
-     *
-     * @param String avatarDirUrl his uri is used for the javascript layer
-     *               to retrieve the image
-     * @param String fileName name of the image
-     * @return
-     */
-    @Override
-    public boolean setUserAvatar(String avatarDirUrl, String fileName) {
-
-        DB db = getMongo();
-        GridFS gfsAvatarImage = new GridFS(db, "avatar");
-        GridFSDBFile savedAvatarImage = gfsAvatarImage.findOne(fileName);
-        if (savedAvatarImage != null) {
-
-            File avatarFile = new File(avatarDirUrl + File.separator + fileName + "small.jpg");
-            try {
-                avatarFile.delete();
-                avatarFile.createNewFile();
-                savedAvatarImage.writeTo(avatarFile);
-
-                return true;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return false;
-    }
+	/**
+	 * persist an image as a file
+	 *
+	 * @param imageFile imageFile the file to be saved
+	 * @param fileName  fileName the file name
+	 */
+	@Override
+	public void saveIamage(File imageFile, String fileName) {
+		DB db = getMongo();
+		// create a file store
+		GridFS gfsAvatarImage = new GridFS(db, "avatar");
+		// create a gfs file object
+		try {
+			GridFSInputFile gfsFile = gfsAvatarImage.createFile(imageFile);
+			// name the file
+			gfsFile.setFilename(fileName);
+			// save the file
+			gfsFile.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 
-    /**
-     * MongoClient("localhost", 27017)
-     * later the above  url will be changed to a cloud based schema hence
-     * UnknownHostException  exception
-     *
-     * @return
-     */
-    private DB getMongo() {
+	}
 
-        defaultDatabaseName = "rdl";
+	/**
+	 * persist an image as a ByteArray
+	 *
+	 * @param imageBtyeArray a byte array of image data
+	 * @param fileName
+	 */
+	@Override
+	public void saveImageBytes(byte[] imageBtyeArray, String fileName) {
 
-        try {
-            MongoClient mongo = new MongoClient("localhost", 27017);
-            DB db = mongo.getDB(defaultDatabaseName);
-            return db;
+		DB db = getMongo();
+		// create a file store
+		GridFS gfsAvatarImage = new GridFS(db, "avatar");
+		// create a gfs file object from a byte array
+		GridFSInputFile gfsFile = gfsAvatarImage.createFile(imageBtyeArray);
+		// name the file
+		gfsFile.setFilename(fileName);
+		// save the file
+		gfsFile.save();
+	}
 
-        } catch (UnknownHostException e) {
-            log.severe(e.getMessage());
-            return null;
-        }
-    }
+	/**
+	 * crud get
+	 *
+	 * @param fileName name of file to retrieve
+	 * @return
+	 */
+	@Override
+	public File getImage(String fileName) {
+		DB db = getMongo();
+		GridFS gfsAvatarImage = new GridFS(db, "avatar");
+		GridFSDBFile savedAvatarImage = gfsAvatarImage.findOne(fileName);
+		// here we need to write the file to the filesystem so it can be picked up by javascript
+
+		return null;
+	}
+
+	/**
+	 * crud update
+	 *
+	 * @param avatarDirUrl avatarDirUrl his uri is used for the javascript layer
+	 *                     to retrieve the image
+	 * @param fileName     fileName name of the image
+	 * @return
+	 */
+	@Override
+	public boolean setUserAvatar(String avatarDirUrl, String fileName) {
+
+		DB db = getMongo();
+		GridFS gfsAvatarImage = new GridFS(db, "avatar");
+		GridFSDBFile savedAvatarImage = gfsAvatarImage.findOne(fileName);
+		if (savedAvatarImage != null) {
+
+			File avatarFile = new File(avatarDirUrl + File.separator + fileName + "small.jpg");
+			try {
+				avatarFile.delete();
+				avatarFile.createNewFile();
+				savedAvatarImage.writeTo(avatarFile);
+
+				return true;
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	private DB getMongo() {
+		return dbProvider.getDb();
+	}
 }

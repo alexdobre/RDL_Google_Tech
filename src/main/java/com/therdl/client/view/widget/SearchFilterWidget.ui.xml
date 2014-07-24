@@ -70,10 +70,6 @@
             margin-top: 5px;
         }
 
-        .refPanel {
-            float: left;
-        }
-
         @external .checkBoxBtn;
         .checkBoxBtn {
             margin-left: 13px;
@@ -90,6 +86,10 @@
             float: left;
         }
 
+	    .displayNone {
+	        display: none;
+	    }
+
     </ui:style>
 
 	<g:HTMLPanel>
@@ -100,36 +100,67 @@
 			     <b:Legend ui:field="filterLabel" />
 
 		        <b:FormGroup>
-			        <b:FormLabel for="formName" addStyleNames="col-lg-3" text="{i18n.title}"/>
+			        <b:FormLabel for="searchTitle" addStyleNames="col-lg-3" text="{i18n.title}"/>
 			        <g:FlowPanel addStyleNames="col-lg-9">
-				        <b:TextBox ui:field="title" b:id="formName"/>
+				        <b:TextBox ui:field="title" b:id="searchTitle"/>
 			        </g:FlowPanel>
 		        </b:FormGroup>
 
-			    <b:FormGroup>
-				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}" ui:field="typeLabel"/>
+			    <b:FormGroup ui:field="typeFormGroup">
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}" />
 				    <g:FlowPanel addStyleNames="col-lg-9" ui:field="typePanel"/>
 			    </b:FormGroup>
 
-			    <b:FormGroup>
-				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}" ui:field="proposalTypeLabel"/>
+			    <b:FormGroup ui:field="proposalTypeFormGroup">
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}"/>
 				    <g:FlowPanel addStyleNames="col-lg-9">
 				        <g:ListBox ui:field="proposalTypeList" multipleSelect="true" addStyleNames="col-lg-8"/>
 				    </g:FlowPanel>
 			    </b:FormGroup>
 
-			    <b:FormGroup>
-				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.state}" ui:field="proposalStateLabel"/>
+			    <b:FormGroup ui:field="proposalStateFormGroup">
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.state}"/>
 				    <g:FlowPanel addStyleNames="col-lg-9">
 					    <g:ListBox ui:field="proposalStateList" multipleSelect="true" addStyleNames="col-lg-8"/>
 				    </g:FlowPanel>
 			    </b:FormGroup>
 
-			    <b:FormGroup>
-				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.category}" ui:field="categoryLabel"/>
+			    <b:FormGroup ui:field="categoryFormGroup">
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.category}"/>
 				    <g:FlowPanel addStyleNames="col-lg-9">
-					    <g:ListBox ui:field="categoryList" multipleSelect="true" addStyleNames="col-lg-12"/>
+					    <g:ListBox ui:field="categoryList" multipleSelect="true" addStyleNames="col-lg-10"/>
 				    </g:FlowPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup ui:field="pledgesFormGroup">
+				    <b:FormLabel for="searchPledges" addStyleNames="col-lg-3" text="{i18n.pledges}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="pledgesPanel">
+					    <b:TextBox ui:field="pledgesCount" b:id="searchPledges"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup ui:field="countersFormGroup">
+				    <b:FormLabel for="searchCounters" addStyleNames="col-lg-3" text="{i18n.counters}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="countersPanel">
+					    <b:TextBox ui:field="countersCount" b:id="searchCounters"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup ui:field="refFormGroup">
+				    <b:FormLabel for="searchCounters" addStyleNames="col-lg-3" text="{i18n.ref}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="refPanel">
+					    <g:HorizontalPanel ui:field="posRefPanel">
+						    <b:TextBox ui:field="posRef" styleName='{style.posRef}'/>
+					    </g:HorizontalPanel>
+
+					    <g:HorizontalPanel ui:field="neutralRefPanel">
+						    <b:TextBox ui:field="neutralRef" styleName='{style.neutralRef}'/>
+					    </g:HorizontalPanel>
+
+					    <g:HorizontalPanel ui:field="negativeRefPanel">
+						    <b:TextBox ui:field="negativeRef" styleName='{style.negativeRef}'/>
+					    </g:HorizontalPanel>
+				    </g:HorizontalPanel>
 			    </b:FormGroup>
 
 			    <b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
@@ -137,48 +168,6 @@
 		</b:Form>
 
             <table>
-                <tr>
-                    <td>
-                        <g:Label ui:field="pledgesCountLabel" text="{i18n.pledges}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="pledgesPanel">
-                            <g:TextBox ui:field="pledgesCount" styleName='{style.textField}'></g:TextBox>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="countersCountLabel" text="{i18n.counters}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="countersPanel">
-                            <g:TextBox ui:field="countersCount" styleName='{style.textField}'></g:TextBox>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="refLabel" text="{i18n.ref}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="refPanel">
-                            <g:FlowPanel ui:field="posRefPanel" styleName="{style.refPanel}">
-                                <g:TextBox ui:field="posRef" styleName='{style.posRef}'/>
-                            </g:FlowPanel>
-
-                            <g:FlowPanel ui:field="neutralRefPanel" styleName="{style.refPanel}">
-                                <g:TextBox ui:field="neutralRef" styleName='{style.neutralRef}'/>
-                            </g:FlowPanel>
-
-                            <g:FlowPanel ui:field="negativeRefPanel" styleName="{style.refPanel}">
-                                <g:TextBox ui:field="negativeRef" styleName='{style.negativeRef}'/>
-                            </g:FlowPanel>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
 
                 <tr>
                     <td>
