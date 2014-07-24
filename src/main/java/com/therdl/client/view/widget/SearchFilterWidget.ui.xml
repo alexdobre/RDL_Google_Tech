@@ -55,11 +55,6 @@
             margin: 5px;
         }
 
-        .submitPanel {
-            display: block;
-            width: 280px !important;
-        }
-
         @external .getLinkPopup;
         .getLinkPopup {
             margin: 0;
@@ -97,66 +92,51 @@
 
     </ui:style>
 
-    <g:VerticalPanel>
+	<g:HTMLPanel>
 
-        <g:HTMLPanel styleName='{style.submitPanel}' ui:field="container">
+
+		<b:Form type="HORIZONTAL">
+		    <b:FieldSet>
+			     <b:Legend ui:field="filterLabel" />
+
+		        <b:FormGroup>
+			        <b:FormLabel for="formName" addStyleNames="col-lg-3" text="{i18n.title}"/>
+			        <g:FlowPanel addStyleNames="col-lg-9">
+				        <b:TextBox ui:field="title" b:id="formName"/>
+			        </g:FlowPanel>
+		        </b:FormGroup>
+
+			    <b:FormGroup>
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}" ui:field="typeLabel"/>
+				    <g:FlowPanel addStyleNames="col-lg-9" ui:field="typePanel"/>
+			    </b:FormGroup>
+
+			    <b:FormGroup>
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}" ui:field="proposalTypeLabel"/>
+				    <g:FlowPanel addStyleNames="col-lg-9">
+				        <g:ListBox ui:field="proposalTypeList" multipleSelect="true" addStyleNames="col-lg-8"/>
+				    </g:FlowPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup>
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.state}" ui:field="proposalStateLabel"/>
+				    <g:FlowPanel addStyleNames="col-lg-9">
+					    <g:ListBox ui:field="proposalStateList" multipleSelect="true" addStyleNames="col-lg-8"/>
+				    </g:FlowPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup>
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.category}" ui:field="categoryLabel"/>
+				    <g:FlowPanel addStyleNames="col-lg-9">
+					    <g:ListBox ui:field="categoryList" multipleSelect="true" addStyleNames="col-lg-12"/>
+				    </g:FlowPanel>
+			    </b:FormGroup>
+
+			    <b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
+		    </b:FieldSet>
+		</b:Form>
+
             <table>
-                <tr>
-                    <td>
-                        <g:Label ui:field="filterLabel" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <g:Label text="{i18n.title}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:TextBox ui:field="title" styleName='{style.textField}'></g:TextBox>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="typeLabel" text="{i18n.type}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="typePanel"></g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="proposalTypeLabel" text="{i18n.type}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:ListBox ui:field="proposalTypeList" styleName='{style.categoryField}'
-                                   multipleSelect="true"></g:ListBox>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="proposalStateLabel" text="{i18n.state}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:ListBox ui:field="proposalStateList" styleName='{style.categoryField}'
-                                   multipleSelect="true"></g:ListBox>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="categoryLabel" text="{i18n.category}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:ListBox ui:field="categoryList" styleName='{style.categoryField}'
-                                   multipleSelect="true"></g:ListBox>
-                    </td>
-                </tr>
-
                 <tr>
                     <td>
                         <g:Label ui:field="pledgesCountLabel" text="{i18n.pledges}" styleName='{style.labelText}'/>
@@ -274,7 +254,5 @@
 
             </table>
 
-        </g:HTMLPanel>
-
-    </g:VerticalPanel>
+	</g:HTMLPanel>
 </ui:UiBinder> 

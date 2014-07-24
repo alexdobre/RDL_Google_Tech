@@ -12,6 +12,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.*;
+
 import org.gwtbootstrap3.client.ui.*;
 
 import java.util.logging.Logger;
@@ -21,7 +22,6 @@ import java.util.logging.Logger;
  * Application menu often referred  to as a 'NavBar' in a TwitterBootstrap scheme for example
  *
  * @MenuItem menuBar, ideas, home, improvements, profile, userdetails, user, email, out, signUp, login.
- * <p/>
  * all these menu items can trigger events, when clicked in the widget the following  inner class
  * ScheduledCommand  is created <menu item>.setScheduledCommand(<Scheduler.ScheduledCommand> class)
  * this can then fire a event, in this application these events break down into two types
@@ -38,233 +38,233 @@ import java.util.logging.Logger;
  */
 public class AppMenu extends Composite {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
+	private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
 
-    @UiField
-    NavbarBrand home;
-    @UiField
-    ListItem ideas;
-    @UiField
-    ListItem stories;
-    @UiField
-    ListItem improvements;
-    @UiField
-    ListItem signUp;
-    @UiField
-    ListItem login;
-
-
-    // auth flow
-    @UiField
-    AnchorButton userdetails;
-    @UiField
-    NavbarHeader user;
-    @UiField
-    ListItem email;
-    @UiField
-    ListItem profile;
-    @UiField
-    ListItem out;
+	@UiField
+	NavbarBrand home;
+	@UiField
+	ListItem ideas;
+	@UiField
+	ListItem stories;
+	@UiField
+	ListItem improvements;
+	@UiField
+	ListItem signUp;
+	@UiField
+	ListItem login;
 
 
-    interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
-    }
-
-    public AppMenu() {
-        initWidget(uiBinder.createAndBindUi(this));
-
-        // user has just sucessfully logged in update app menu
-        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
-
-            @Override
-            public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
-                setAppMenu(onLoginOkEvent.getCurrentUserBean());
-            }
-        });
-    }
-
-    /**
-     * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
-     *
-     * @param AutoBean currentUserBean
-     */
-
-    public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
-        if (currentUserBean.as().isAuth()) {
-            log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
-
-            setLogOutVisible(true);
-            setSignUpVisible(false);
-            setUserInfoVisible(true);
-            setUser(currentUserBean.as().getName());
-            setEmail(currentUserBean.as().getEmail());
-            setLogInVisible(false);
-        } else {
-
-            setLogOutVisible(false);
-            setSignUpVisible(true);
-            setUserInfoVisible(false);
-            setLogInVisible(true);
-        }
-
-    }
-
-    @UiHandler("profile")
-    public void onProfileClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
-        History.newItem(RDLConstants.Tokens.PROFILE + ":" + user.getTitle());
-    }
-
-    @UiHandler("out")
-    public void onLogoutClick(ClickEvent event) {
-        log.info("AppMenu: logout");
-        GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
-    }
-
-    @UiHandler("login")
-    public void onLoginClick(ClickEvent event) {
-        log.info("AppMenu: login");
-        GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
-    }
-
-    @UiHandler("signUp")
-    public void onSignUpClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
-        History.newItem(RDLConstants.Tokens.SIGN_UP);
-    }
-
-    /**
-     * Sets the signUp element as active in the menu
-     */
-    public void setSignUpActive() {
-        signUp.setActive(true);
-    }
-
-    @UiHandler("home")
-    public void onHomeClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens home");
-        History.newItem(RDLConstants.Tokens.WELCOME);
-    }
-
-    /**
-     * Sets the home element as active in the menu
-     */
-    public void setHomeActive() {
-        home.addStyleName("brandActive");
-    }
-
-    @UiHandler("ideas")
-    public void onIdeasClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens.ideas");
-        History.newItem(RDLConstants.Tokens.SNIPS);
-    }
-
-    /**
-     * Sets the ideas element as active in the menu
-     */
-    public void setIdeasActive() {
-        ideas.setActive(true);
-    }
-
-    @UiHandler("stories")
-    public void onStoriesClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens.stories");
-        History.newItem(RDLConstants.Tokens.STORIES);
-    }
-
-    /**
-     * Sets the stories element as active in the menu
-     */
-    public void setStoriesActive() {
-//        stories.setActive(true);
-    }
-
-    @UiHandler("improvements")
-    public void onImprovementsClick(ClickEvent event) {
-        log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
-        History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
-    }
-
-    /**
-     * Sets the improvements element as active in the menu
-     */
-    public void setImprovementsActive() {
-//        improvements.setActive(true);
-    }
-
-    /**
-     * displays the username
-     */
-    public void setUser(String id) {
-        log.info("AppMenu:setUser " + id);
-//        user.setTitle(id);
-    }
-
-    /**
-     * displays the email string
-     */
-    public void setEmail(String id) {
-        log.info("AppMenu:setEmail " + id);
-        email.setText(id);
-
-    }
-
-    /**
-     * displays the SignUp option
-     */
-    public void setSignUpVisible(boolean state) {
-        log.info("AppMenu: setSignUpVisible " + state);
-        signUp.setVisible(state);
-    }
-
-    /**
-     * displays the UserInfo details in a drop down
-     */
-    public void setUserInfoVisible(boolean state) {
-        log.info("AppMenu: setUserInfoVisible " + state);
-        userdetails.setVisible(state);
-        user.setVisible(state);
-        email.setVisible(state);
-    }
-
-    /**
-     * displays the LogOut option
-     */
-    public void setLogOutVisible(boolean state) {
-        log.info("AppMenu: setLogOutVisible " + state);
-        this.out.setVisible(state);
-
-    }
-
-    /**
-     * displays the LogIn option
-     */
-    public void setLogInVisible(boolean state) {
-        log.info("AppMenu: setLogInVisible " + state);
-        this.login.setVisible(state);
-
-    }
-
-    /**
-     * displays the MainGroup of items currently only Improvements
-     *
-     * @param state
-     */
-    public void setMainGroupVisible(boolean state) {
-        log.info("AppMenu: setMainGroupVisible " + state);
-        this.improvements.setVisible(state);
-    }
+	// auth flow
+	@UiField
+	AnchorButton userDetails;
+	@UiField
+	NavbarHeader user;
+	@UiField
+	ListItem email;
+	@UiField
+	ListItem profile;
+	@UiField
+	ListItem out;
 
 
-    /**
-     * sets the sign up display options
-     */
-    public void setSignUpView() {
-        log.info("AppMenu: setSignUpView ");
-        this.login.setVisible(false);
-        setUserInfoVisible(false);
-    }
+	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
+	}
+
+	public AppMenu() {
+		initWidget(uiBinder.createAndBindUi(this));
+
+		// user has just sucessfully logged in update app menu
+		GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
+
+			@Override
+			public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
+				setAppMenu(onLoginOkEvent.getCurrentUserBean());
+			}
+		});
+	}
+
+	/**
+	 * Sets the upper header Menu to the correct state for a given users auth state(eg logged in)
+	 *
+	 * @param currentUserBean
+	 */
+
+	public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
+		if (currentUserBean.as().isAuth()) {
+			log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
+
+			setLogOutVisible(true);
+			setSignUpVisible(false);
+			setUserInfoVisible(true);
+			setUser(currentUserBean.as().getName());
+			setEmail(currentUserBean.as().getEmail());
+			setLogInVisible(false);
+		} else {
+
+			setLogOutVisible(false);
+			setSignUpVisible(true);
+			setUserInfoVisible(false);
+			setLogInVisible(true);
+		}
+
+	}
+
+	@UiHandler("profile")
+	public void onProfileClick(ClickEvent event) {
+		log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
+		History.newItem(RDLConstants.Tokens.PROFILE + ":" + user.getTitle());
+	}
+
+	@UiHandler("out")
+	public void onLogoutClick(ClickEvent event) {
+		log.info("AppMenu: logout");
+		GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
+	}
+
+	@UiHandler("login")
+	public void onLoginClick(ClickEvent event) {
+		log.info("AppMenu: login");
+		GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
+	}
+
+	@UiHandler("signUp")
+	public void onSignUpClick(ClickEvent event) {
+		log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
+		History.newItem(RDLConstants.Tokens.SIGN_UP);
+	}
+
+	/**
+	 * Sets the signUp element as active in the menu
+	 */
+	public void setSignUpActive() {
+		signUp.setActive(true);
+	}
+
+	@UiHandler("home")
+	public void onHomeClick(ClickEvent event) {
+		log.info("AppMenu: History.newItem RDLConstants.Tokens home");
+		History.newItem(RDLConstants.Tokens.WELCOME);
+	}
+
+	/**
+	 * Sets the home element as active in the menu
+	 */
+	public void setHomeActive() {
+		home.addStyleName("brandActive");
+	}
+
+	@UiHandler("ideas")
+	public void onIdeasClick(ClickEvent event) {
+		log.info("AppMenu: History.newItem RDLConstants.Tokens.ideas");
+		History.newItem(RDLConstants.Tokens.SNIPS);
+	}
+
+	/**
+	 * Sets the ideas element as active in the menu
+	 */
+	public void setIdeasActive() {
+		ideas.setActive(true);
+	}
+
+	@UiHandler("stories")
+	public void onStoriesClick(ClickEvent event) {
+		log.info("AppMenu: History.newItem RDLConstants.Tokens.stories");
+		History.newItem(RDLConstants.Tokens.STORIES);
+	}
+
+	/**
+	 * Sets the stories element as active in the menu
+	 */
+	public void setStoriesActive() {
+		stories.setActive(true);
+	}
+
+	@UiHandler("improvements")
+	public void onImprovementsClick(ClickEvent event) {
+		log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
+		History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
+	}
+
+	/**
+	 * Sets the improvements element as active in the menu
+	 */
+	public void setImprovementsActive() {
+		improvements.setActive(true);
+	}
+
+	/**
+	 * displays the username
+	 */
+	public void setUser(String id) {
+		log.info("AppMenu:setUser " + id);
+		user.setTitle(id);
+	}
+
+	/**
+	 * displays the email string
+	 */
+	public void setEmail(String id) {
+		log.info("AppMenu:setEmail " + id);
+		email.setText(id);
+
+	}
+
+	/**
+	 * displays the SignUp option
+	 */
+	public void setSignUpVisible(boolean state) {
+		log.info("AppMenu: setSignUpVisible " + state);
+		signUp.setVisible(state);
+	}
+
+	/**
+	 * displays the UserInfo details in a drop down
+	 */
+	public void setUserInfoVisible(boolean state) {
+		log.info("AppMenu: setUserInfoVisible " + state);
+		userDetails.setVisible(state);
+		user.setVisible(state);
+		email.setVisible(state);
+	}
+
+	/**
+	 * displays the LogOut option
+	 */
+	public void setLogOutVisible(boolean state) {
+		log.info("AppMenu: setLogOutVisible " + state);
+		this.out.setVisible(state);
+
+	}
+
+	/**
+	 * displays the LogIn option
+	 */
+	public void setLogInVisible(boolean state) {
+		log.info("AppMenu: setLogInVisible " + state);
+		this.login.setVisible(state);
+
+	}
+
+	/**
+	 * displays the MainGroup of items currently only Improvements
+	 *
+	 * @param state
+	 */
+	public void setMainGroupVisible(boolean state) {
+		log.info("AppMenu: setMainGroupVisible " + state);
+		this.improvements.setVisible(state);
+	}
+
+
+	/**
+	 * sets the sign up display options
+	 */
+	public void setSignUpView() {
+		log.info("AppMenu: setSignUpView ");
+		this.login.setVisible(false);
+		setUserInfoVisible(false);
+	}
 
 }

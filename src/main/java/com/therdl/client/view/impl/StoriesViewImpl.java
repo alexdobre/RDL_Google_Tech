@@ -1,5 +1,10 @@
 package com.therdl.client.view.impl;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.FluidContainer;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -18,9 +23,6 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 /**
  * StoriesViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#view
@@ -35,174 +37,173 @@ import java.util.logging.Logger;
  */
 public class StoriesViewImpl extends Composite implements SearchView {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    private static StoriesViewImplUiBinder uiBinder = GWT.create(StoriesViewImplUiBinder.class);
+	private static StoriesViewImplUiBinder uiBinder = GWT.create(StoriesViewImplUiBinder.class);
 
-    @Override
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
-    }
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
 
-    @Override
-    public Presenter getPresenter() {
-        return presenter;
-    }
+	@Override
+	public Presenter getPresenter() {
+		return presenter;
+	}
 
-    interface StoriesViewImplUiBinder extends UiBinder<Widget, StoriesViewImpl> {
-    }
+	interface StoriesViewImplUiBinder extends UiBinder<Widget, StoriesViewImpl> {
+	}
 
-    private Presenter presenter;
+	private Presenter presenter;
 
-    SearchFilterWidget searchFilterWidget;
+	SearchFilterWidget searchFilterWidget;
 
-    @UiField
-    AppMenu appMenu;
+	@UiField
+	AppMenu appMenu;
 
+	@UiField
+	FluidContainer threadSearchWidgetPanel;
 
-    @UiField
-    FlowPanel threadSearchWidgetPanel;
+	@UiField
+	FlowPanel threadListRowContainer;
 
-    @UiField
-    FlowPanel threadListRowContainer;
+	@UiField
+	LoadingWidget threadLoadingWidget;
 
-    @UiField
-    LoadingWidget threadLoadingWidget;
+	private AutoBean<CurrentUserBean> currentUserBean;
 
-    private AutoBean<CurrentUserBean> currentUserBean;
+	private AutoBean<SnipBean> currentSearchOptionsBean;
 
-    private AutoBean<SnipBean> currentSearchOptionsBean;
+	private Beanery beanery = GWT.create(Beanery.class);
 
-    private Beanery beanery = GWT.create(Beanery.class);
+	private String token;
 
-    private String token;
+	private String authorName;
+	private boolean firstTimeLoaded = false;
 
-    private String authorName;
-    private boolean firstTimeLoaded = false;
+	public StoriesViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+		initWidget(uiBinder.createAndBindUi(this));
+		this.currentUserBean = currentUserBean;
 
-    public StoriesViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
-        initWidget(uiBinder.createAndBindUi(this));
-        this.currentUserBean = currentUserBean;
+		searchFilterWidget = new SearchFilterWidget(this);
+		threadSearchWidgetPanel.add(searchFilterWidget);
 
-        searchFilterWidget = new SearchFilterWidget(this);
-        threadSearchWidgetPanel.add(searchFilterWidget);
+	}
 
-    }
+	public void setToken(String token) {
+		String[] tokenSplit = token.split(":");
+		if (tokenSplit.length == 2) {
+			this.token = tokenSplit[0];
+			this.authorName = tokenSplit[1];
+		} else {
+			this.token = token;
+			this.authorName = null;
+		}
+	}
 
-    public void setToken(String token) {
-        String[] tokenSplit = token.split(":");
-        if (tokenSplit.length == 2) {
-            this.token = tokenSplit[0];
-            this.authorName = tokenSplit[1];
-        } else {
-            this.token = token;
-            this.authorName = null;
-        }
-    }
+	@Override
+	protected void onLoad() {
+		super.onLoad();
 
-    @Override
-    protected void onLoad() {
-        super.onLoad();
+		if (token.equals(RDLConstants.Tokens.STORIES)) {
+			if (authorName != null) {
+				AutoBean<SnipBean> searchOptionsBean = initSearchOptionsBean();
+				searchOptionsBean.as().setAuthor(authorName);
 
-        if (token.equals(RDLConstants.Tokens.STORIES)) {
-            if (authorName != null) {
-                AutoBean<SnipBean> searchOptionsBean = initSearchOptionsBean();
-                searchOptionsBean.as().setAuthor(authorName);
+				doFilterSearch(searchOptionsBean, 0);
+			} else {
+				if (!firstTimeLoaded)
+					getInitialSnipList(0);
+			}
+		} else {
+			AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
+			snipBean.as().setSnipType(RDLConstants.SnipType.THREAD);
+			doFilterSearch(snipBean, 0);
+		}
 
-                doFilterSearch(searchOptionsBean, 0);
-            } else {
-                if (!firstTimeLoaded)
-                    getInitialSnipList(0);
-            }
-        } else {
-            AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
-            snipBean.as().setSnipType(RDLConstants.SnipType.THREAD);
-            doFilterSearch(snipBean, 0);
-        }
+		appMenu.setSignUpVisible(true);
+		appMenu.setStoriesActive();
 
-        appMenu.setSignUpVisible(true);
-        appMenu.setStoriesActive();
+	}
 
-    }
+	public AutoBean<SnipBean> initSearchOptionsBean() {
+		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+		searchOptionsBean.as().setSortOrder(-1);
+		searchOptionsBean.as().setSnipType(RDLConstants.SnipType.THREAD);
 
-    public AutoBean<SnipBean> initSearchOptionsBean() {
-        AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-        searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
-        searchOptionsBean.as().setSortOrder(-1);
-        searchOptionsBean.as().setSnipType(RDLConstants.SnipType.THREAD);
+		return searchOptionsBean;
+	}
 
-        return searchOptionsBean;
-    }
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
+	public AutoBean<CurrentUserBean> getCurrentUserBean() {
+		return currentUserBean;
+	}
 
-    public AutoBean<CurrentUserBean> getCurrentUserBean() {
-        return currentUserBean;
-    }
+	public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
+		return currentSearchOptionsBean;
+	}
 
-    public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
-        return currentSearchOptionsBean;
-    }
+	@Override
+	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+		authorName = null;
+		threadListRowContainer.clear();
+		threadListRowContainer.add(new ListWidget(this, beanList, pageIndex));
+		threadLoadingWidget.getElement().getStyle().setProperty("display", "none");
+	}
 
-    @Override
-    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-        authorName = null;
-        threadListRowContainer.clear();
-        threadListRowContainer.add(new ListWidget(this, beanList, pageIndex));
-        threadLoadingWidget.getElement().getStyle().setProperty("display", "none");
-    }
+	@Override
+	public void setLoginResult(String name, String email, boolean auth) {
+		if (auth) {
+			log.info("SnipSearchViewImpl setloginresult auth true " + name);
 
-    @Override
-    public void setLoginResult(String name, String email, boolean auth) {
-        if (auth) {
-            log.info("SnipSearchViewImpl setloginresult auth true " + name);
+			this.appMenu.setLogOutVisible(true);
+			this.appMenu.setSignUpVisible(false);
+			this.appMenu.setUserInfoVisible(true);
+			this.appMenu.setUser(name);
+			this.appMenu.setEmail(email);
+			this.appMenu.setLogInVisible(false);
+		} else {
+			this.appMenu.setLogOutVisible(false);
+			this.appMenu.setSignUpVisible(true);
+			this.appMenu.setUserInfoVisible(false);
+			this.appMenu.setLogInVisible(true);
+		}
 
-            this.appMenu.setLogOutVisible(true);
-            this.appMenu.setSignUpVisible(false);
-            this.appMenu.setUserInfoVisible(true);
-            this.appMenu.setUser(name);
-            this.appMenu.setEmail(email);
-            this.appMenu.setLogInVisible(false);
-        } else {
-            this.appMenu.setLogOutVisible(false);
-            this.appMenu.setSignUpVisible(true);
-            this.appMenu.setUserInfoVisible(false);
-            this.appMenu.setLogInVisible(true);
-        }
+	}
 
-    }
+	@Override
+	public AppMenu getAppMenu() {
+		return this.appMenu;
+	}
 
-    @Override
-    public AppMenu getAppMenu() {
-        return this.appMenu;
-    }
+	/**
+	 * call presenter function to search snips for the given search options
+	 *
+	 * @param searchOptionsBean bean for the search options
+	 * @param pageIndex
+	 */
 
-    /**
-     * call presenter function to search snips for the given search options
-     *
-     * @param searchOptionsBean bean for the search options
-     * @param pageIndex
-     */
+	@Override
+	public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
+		threadLoadingWidget.getElement().getStyle().setProperty("display", "block");
+		currentSearchOptionsBean = searchOptionsBean;
+		searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
+		presenter.searchSnips(searchOptionsBean, pageIndex);
+	}
 
-    @Override
-    public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
-        threadLoadingWidget.getElement().getStyle().setProperty("display", "block");
-        currentSearchOptionsBean = searchOptionsBean;
-        searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
-        presenter.searchSnips(searchOptionsBean, pageIndex);
-    }
+	/**
+	 * call presenter function to retrieve initial list for snips
+	 */
+	@Override
+	public void getInitialSnipList(int pageIndex) {
+		firstTimeLoaded = true;
+		currentSearchOptionsBean = null;
+		threadLoadingWidget.getElement().getStyle().setProperty("display", "block");
 
-    /**
-     * call presenter function to retrieve initial list for snips
-     */
-    @Override
-    public void getInitialSnipList(int pageIndex) {
-        firstTimeLoaded = true;
-        currentSearchOptionsBean = null;
-        threadLoadingWidget.getElement().getStyle().setProperty("display", "block");
-
-        presenter.searchSnips(initSearchOptionsBean(), pageIndex);
-    }
+		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
+	}
 }

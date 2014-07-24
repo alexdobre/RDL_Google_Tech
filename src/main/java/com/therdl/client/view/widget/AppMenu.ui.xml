@@ -26,7 +26,7 @@
                 <b:ListItem ui:field="signUp" text="{i18n.appMenuSignUp}"/>
                 <b:ListDropDown>
                     <b:Divider/>
-                    <b:AnchorButton ui:field="userdetails" toggle="DROPDOWN" text="{i18n.userDetails}"></b:AnchorButton>
+                    <b:AnchorButton ui:field="userDetails" toggle="DROPDOWN" text="{i18n.userDetails}"></b:AnchorButton>
                     <b:DropDownMenu>
                         <b:NavbarHeader title="{i18n.userName}" ui:field="user"></b:NavbarHeader>
                         <b:ListItem text="{i18n.email}" ui:field="email"></b:ListItem>
