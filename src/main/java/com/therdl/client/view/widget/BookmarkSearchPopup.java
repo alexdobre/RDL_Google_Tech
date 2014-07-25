@@ -94,10 +94,6 @@ public class BookmarkSearchPopup extends PopupPanel {
             stringBuilder.append(RDLConstants.BookmarkSearch.REP + "=" + searchFilterWidget.snipRep.getText() + ":");
         }
 
-        if (!searchFilterWidget.content.getText().equals("")) {
-            stringBuilder.append(RDLConstants.BookmarkSearch.CONTENT + "=" + searchFilterWidget.content.getText() + ":");
-        }
-
         if (!searchFilterWidget.author.getText().equals("")) {
             stringBuilder.append(RDLConstants.BookmarkSearch.AUTHOR + "=" + searchFilterWidget.author.getText() + ":");
         }

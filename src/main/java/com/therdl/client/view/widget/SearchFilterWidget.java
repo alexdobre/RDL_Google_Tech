@@ -56,10 +56,7 @@ public class SearchFilterWidget extends Composite {
 	org.gwtbootstrap3.client.ui.Button createNewButton;
 
 	@UiField
-	TextBox content, author, postCount, viewCount, snipRep;
-
-	@UiField
-	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef;
+	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep, author;
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
@@ -71,10 +68,7 @@ public class SearchFilterWidget extends Composite {
 	DateFilterWidget dateFilterWidget;
 
 	@UiField
-	Label postLabel, viewsLabel, contentLabel;
-
-	@UiField
-	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup;
+	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup, postsFormGroup, viewsFormGroup;
 
 	@UiField
 	Legend filterLabel;
@@ -268,8 +262,7 @@ public class SearchFilterWidget extends Composite {
 
 	private void hideUnusedItems(){
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)){
-			postLabel.getElement().getStyle().setProperty("display", "none");
-			//postPanel.getElement().getStyle().setProperty("display", "none");
+			postsFormGroup.getElement().getStyle().setProperty("display", "none");
 			hideProposalItems();
 
 		}else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
@@ -280,16 +273,9 @@ public class SearchFilterWidget extends Composite {
 		}else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			typeFormGroup.getElement().getStyle().setProperty("display", "none");
 			refFormGroup.getElement().getStyle().setProperty("display", "none");
-			postLabel.getElement().getStyle().setProperty("display", "none");
-			//postPanel.getElement().getStyle().setProperty("display", "none");
-
+			postsFormGroup.getElement().getStyle().setProperty("display", "none");
 			categoryFormGroup.getElement().getStyle().setProperty("display", "none");
-
-			viewsLabel.getElement().getStyle().setProperty("display", "none");
-			//viewPanel.getElement().getStyle().setProperty("display", "none");
-
-			contentLabel.getElement().getStyle().setProperty("display", "none");
-			content.getElement().getStyle().setProperty("display", "none");
+			viewsFormGroup.getElement().getStyle().setProperty("display", "none");
 		}
 	}
 
@@ -338,11 +324,6 @@ public class SearchFilterWidget extends Composite {
 		String titleText = title.getText();
 		if (!titleText.equals("")) {
 			searchOptionsBean.as().setTitle(titleText);
-		}
-
-		String contentText = content.getText();
-		if (!contentText.equals("")) {
-			searchOptionsBean.as().setContent(contentText);
 		}
 
 		String authorText = author.getText();
@@ -487,7 +468,6 @@ public class SearchFilterWidget extends Composite {
 
 	public void setSearchFilterFields(AutoBean<SnipBean> searchOptionsBean) {
 		title.setText(searchOptionsBean.as().getTitle() != null ? searchOptionsBean.as().getTitle() : "");
-		content.setText(searchOptionsBean.as().getContent() != null ? searchOptionsBean.as().getContent() : "");
 		author.setText(searchOptionsBean.as().getAuthor() != null ? searchOptionsBean.as().getAuthor() : "");
 		posRef.setText(searchOptionsBean.as().getPosRef() != null ? searchOptionsBean.as().getPosRef() + "" : "");
 		neutralRef.setText(searchOptionsBean.as().getNeutralRef() != null ? searchOptionsBean.as().getNeutralRef() + "" : "");

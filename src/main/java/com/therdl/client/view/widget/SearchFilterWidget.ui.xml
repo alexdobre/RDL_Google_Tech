@@ -7,54 +7,6 @@
     <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
     <ui:style>
-        .labelText {
-            font-family: Arial, Sans-serif;
-            display: inline-block;
-            font-size: 14px;
-            text-align: left;
-            width: 84px;
-            /*  margin:10px;    */
-        }
-
-        .textField {
-            border: 1px solid #AACCEE;
-            display: inline-block;
-            font-size: 10px;
-            padding: 3px;
-            width: 150px;
-            margin: 5px;
-            float: left;
-        }
-
-        .posRef {
-            width: 30px;
-            border: 2px solid #758211;
-            font-size: 10px;
-            padding: 3px;
-            margin-left: 5px;
-        }
-
-        .neutralRef {
-            width: 30px;
-            border: 2px solid #a7a77c;
-            font-size: 10px;
-            padding: 3px;
-            margin-left: 5px;
-        }
-
-        .negativeRef {
-            width: 30px;
-            border: 2px solid #920E05;
-            font-size: 10px;
-            padding: 3px;
-            margin-left: 5px;
-        }
-
-        .categoryField {
-            width: 160px;
-            margin: 5px;
-        }
-
         @external .getLinkPopup;
         .getLinkPopup {
             margin: 0;
@@ -85,10 +37,6 @@
         .dateFilterWidget {
             float: left;
         }
-
-	    .displayNone {
-	        display: none;
-	    }
 
     </ui:style>
 
@@ -148,100 +96,70 @@
 
 			    <b:FormGroup ui:field="refFormGroup">
 				    <b:FormLabel for="searchCounters" addStyleNames="col-lg-3" text="{i18n.ref}"/>
-				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="refPanel">
-					    <g:HorizontalPanel ui:field="posRefPanel">
-						    <b:TextBox ui:field="posRef" styleName='{style.posRef}'/>
+				    <g:HorizontalPanel addStyleNames="col-lg-9" ui:field="refPanel">
+					    <g:HorizontalPanel ui:field="posRefPanel" addStyleNames="col-lg-10">
+						    <b:TextBox ui:field="posRef" />
 					    </g:HorizontalPanel>
 
-					    <g:HorizontalPanel ui:field="neutralRefPanel">
-						    <b:TextBox ui:field="neutralRef" styleName='{style.neutralRef}'/>
+					    <g:HorizontalPanel ui:field="neutralRefPanel" addStyleNames="col-lg-10">
+						    <b:TextBox ui:field="neutralRef" />
 					    </g:HorizontalPanel>
 
-					    <g:HorizontalPanel ui:field="negativeRefPanel">
-						    <b:TextBox ui:field="negativeRef" styleName='{style.negativeRef}'/>
+					    <g:HorizontalPanel ui:field="negativeRefPanel" addStyleNames="col-lg-10">
+						    <b:TextBox ui:field="negativeRef" />
 					    </g:HorizontalPanel>
 				    </g:HorizontalPanel>
 			    </b:FormGroup>
 
-			    <b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
+			    <b:FormGroup ui:field="postsFormGroup">
+				    <b:FormLabel for="searchPosts" addStyleNames="col-lg-3" text="{i18n.posts}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="postPanel">
+					    <b:TextBox ui:field="postCount" b:id="searchPosts"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup ui:field="viewsFormGroup">
+				    <b:FormLabel for="searchViews" addStyleNames="col-lg-3" text="{i18n.views}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="viewPanel">
+					    <b:TextBox ui:field="viewCount" b:id="searchViews"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup ui:field="repFormGroup">
+				    <b:FormLabel for="searchRep" addStyleNames="col-lg-3" text="{i18n.reputation}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="repPanel">
+					    <b:TextBox ui:field="snipRep" b:id="searchRep"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup>
+				    <b:FormLabel for="searchAuthor" addStyleNames="col-lg-3" text="{i18n.author}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="authorPanel">
+					    <b:TextBox ui:field="author" b:id="searchAuthor"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:FormGroup>
+				    <b:FormLabel addStyleNames="col-lg-3" text="{i18n.date}"/>
+				    <g:HorizontalPanel addStyleNames="col-lg-6" ui:field="datePanel">
+					    <rdl:DateFilterWidget ui:field="dateFilterWidget" styleName="{style.dateFilterWidget}"/>
+				    </g:HorizontalPanel>
+			    </b:FormGroup>
+
+			    <b:ButtonToolBar>
+				    <b:ButtonGroup>
+					    <b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
+				    </b:ButtonGroup>
+					<b:ButtonGroup>
+					    <b:Button ui:field="submit" text="{i18n.filter}"/>
+					</b:ButtonGroup>
+					<b:ButtonGroup>
+					    <b:Button ui:field="createNewButton" text="{i18n.createNew}"/>
+				    </b:ButtonGroup>
+			    </b:ButtonToolBar>
+
 		    </b:FieldSet>
 		</b:Form>
-
-            <table>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="postLabel" text="{i18n.posts}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="postPanel">
-                            <g:TextBox ui:field="postCount" styleName='{style.textField}'/>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="viewsLabel" text="{i18n.views}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="viewPanel">
-                            <g:TextBox ui:field="viewCount" styleName='{style.textField}'/>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label text="{i18n.reputation}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="repPanel">
-                            <g:TextBox ui:field="snipRep" styleName='{style.textField}'></g:TextBox>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label ui:field="contentLabel" text="{i18n.content}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:TextBox ui:field="content" styleName='{style.textField}'></g:TextBox>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label text="{i18n.author}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="authorPanel">
-                            <g:TextBox ui:field="author" styleName='{style.textField}'/>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <g:Label text="{i18n.date}" styleName='{style.labelText}'/>
-                    </td>
-                    <td>
-                        <g:FlowPanel ui:field="datePanel">
-                            <rdl:DateFilterWidget ui:field="dateFilterWidget" styleName="{style.dateFilterWidget}"/>
-                        </g:FlowPanel>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td></td>
-                    <td>
-                        <b:Button ui:field="submit" text="{i18n.filter}"/>
-                        <b:Button ui:field="createNewButton" text="{i18n.createNew}"/>
-                    </td>
-                </tr>
-
-            </table>
 
 	</g:HTMLPanel>
 </ui:UiBinder> 
