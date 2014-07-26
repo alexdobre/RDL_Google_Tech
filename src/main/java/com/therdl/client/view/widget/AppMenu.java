@@ -45,15 +45,15 @@ public class AppMenu extends Composite {
 	@UiField
 	NavbarBrand home;
 	@UiField
-	ListItem ideas;
+	AnchorListItem ideas;
 	@UiField
-	ListItem stories;
+	AnchorListItem stories;
 	@UiField
-	ListItem improvements;
+	AnchorListItem improvements;
 	@UiField
-	ListItem signUp;
+	AnchorListItem signUp;
 	@UiField
-	ListItem login;
+	AnchorListItem login;
 
 
 	// auth flow
@@ -62,11 +62,11 @@ public class AppMenu extends Composite {
 	@UiField
 	NavbarHeader user;
 	@UiField
-	ListItem email;
+	AnchorListItem email;
 	@UiField
-	ListItem profile;
+	AnchorListItem profile;
 	@UiField
-	ListItem out;
+	AnchorListItem out;
 
 
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
@@ -129,23 +129,11 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
 	}
 
-	@UiHandler("signUp")
-	public void onSignUpClick(ClickEvent event) {
-		log.info("AppMenu: History.newItem RDLConstants.Tokens.Signup");
-		History.newItem(RDLConstants.Tokens.SIGN_UP);
-	}
-
 	/**
 	 * Sets the signUp element as active in the menu
 	 */
 	public void setSignUpActive() {
 		signUp.setActive(true);
-	}
-
-	@UiHandler("home")
-	public void onHomeClick(ClickEvent event) {
-		log.info("AppMenu: History.newItem RDLConstants.Tokens home");
-		History.newItem(RDLConstants.Tokens.WELCOME);
 	}
 
 	/**
@@ -155,12 +143,6 @@ public class AppMenu extends Composite {
 		home.addStyleName("brandActive");
 	}
 
-	@UiHandler("ideas")
-	public void onIdeasClick(ClickEvent event) {
-		log.info("AppMenu: History.newItem RDLConstants.Tokens.ideas");
-		History.newItem(RDLConstants.Tokens.SNIPS);
-	}
-
 	/**
 	 * Sets the ideas element as active in the menu
 	 */
@@ -168,23 +150,11 @@ public class AppMenu extends Composite {
 		ideas.setActive(true);
 	}
 
-	@UiHandler("stories")
-	public void onStoriesClick(ClickEvent event) {
-		log.info("AppMenu: History.newItem RDLConstants.Tokens.stories");
-		History.newItem(RDLConstants.Tokens.STORIES);
-	}
-
 	/**
 	 * Sets the stories element as active in the menu
 	 */
 	public void setStoriesActive() {
 		stories.setActive(true);
-	}
-
-	@UiHandler("improvements")
-	public void onImprovementsClick(ClickEvent event) {
-		log.info("AppMenu: History.newItem RDLConstants.Tokens.improvements");
-		History.newItem(RDLConstants.Tokens.IMPROVEMENTS);
 	}
 
 	/**

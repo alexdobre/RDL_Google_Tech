@@ -7,7 +7,7 @@
 
     <g:HTMLPanel>
         <rdl:AppMenu ui:field="appMenu"/>
-        <b:FluidContainer>
+        <b:Container>
             <b:Row>
                 <b:Column size="MD_4">
                     <g:FocusPanel ui:field="profileImagePanel"></g:FocusPanel>
@@ -16,6 +16,6 @@
                     <g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
                 </b:Column>
             </b:Row>
-        </b:FluidContainer>
+        </b:Container>
     </g:HTMLPanel>
 </ui:UiBinder>

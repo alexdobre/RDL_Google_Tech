@@ -3,14 +3,21 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
-    <ui:style src="../cssbundles/searchView.css"/>
+	<ui:style src="../cssbundles/searchView.css">
+		.push {
+		padding-top: 70px;
+		}
+	</ui:style>
 
-	<g:HTMLPanel>
-		<b:FluidContainer>
+	<g:ScrollPanel>
+		<b:Container>
 			<rdl:AppMenu ui:field="appMenu"/>
-			<b:Row>
+
+			<g:SimplePanel addStyleNames="{style.push}">
+
+				<b:Row>
 					<b:Column size="MD_3">
-						<b:FluidContainer ui:field="threadSearchWidgetPanel"/>
+						<g:FlowPanel ui:field="threadSearchWidgetPanel"/>
 						<rdl:SocialPanel styleName="{style.socialPanel}"/>
 					</b:Column>
 					<b:Column size="MD_9">
@@ -18,7 +25,11 @@
 						                   styleName="{style.snipListRowContainer}"></rdl:LoadingWidget>
 						<g:FlowPanel ui:field="threadListRowContainer" styleName='{style.snipListRowContainer}'/>
 					</b:Column>
-			</b:Row>
-		</b:FluidContainer>
-    </g:HTMLPanel>
+				</b:Row>
+
+			</g:SimplePanel>
+
+		</b:Container>
+	</g:ScrollPanel>
+
 </ui:UiBinder>

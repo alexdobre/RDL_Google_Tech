@@ -37,7 +37,7 @@
 
         <rdl:AppMenu ui:field="appMenu"/>
 
-            <b:FluidContainer>
+            <b:Container>
                 <b:Row>
                     <b:Column size="MD_4">
                         <g:AbsolutePanel styleName="{style.mainContainer}">
@@ -210,7 +210,7 @@
                         </g:HTMLPanel>
                     </b:Column>
                 </b:Row>
-            </b:FluidContainer>
+            </b:Container>
     </g:HTMLPanel>
 
 

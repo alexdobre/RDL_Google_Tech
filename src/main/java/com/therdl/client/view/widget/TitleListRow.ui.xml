@@ -10,13 +10,13 @@
     </ui:style>
 
     <g:HTMLPanel>
-        <b:FluidContainer>
+        <b:Container>
             <b:Row>
                 <b:Column size="MD_4">
                     <g:Label ui:field="titleLabel"/>
                 </b:Column>
             </b:Row>
-        </b:FluidContainer>
+        </b:Container>
 
     </g:HTMLPanel>
 </ui:UiBinder>

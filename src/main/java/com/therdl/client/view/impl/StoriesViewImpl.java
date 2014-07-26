@@ -1,10 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.FluidContainer;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -22,6 +17,10 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Panel;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * StoriesViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -62,7 +61,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
 	AppMenu appMenu;
 
 	@UiField
-	FluidContainer threadSearchWidgetPanel;
+	FlowPanel threadSearchWidgetPanel;
 
 	@UiField
 	FlowPanel threadListRowContainer;
