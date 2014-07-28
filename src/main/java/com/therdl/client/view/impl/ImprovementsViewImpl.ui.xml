@@ -13,9 +13,8 @@
                     <g:FlowPanel ui:field="impSearchWidgetPanel"/>
                     <rdl:SocialPanel styleName="{style.socialPanel}"/>
                 </g:FlowPanel>
-                <rdl:LoadingWidget ui:field="impLoadingWidget"
-                                   styleName="{style.snipListRowContainer}"></rdl:LoadingWidget>
-                <g:FlowPanel ui:field="impListRowContainer" styleName='{style.snipListRowContainer}'/>
+                <rdl:LoadingWidget ui:field="impLoadingWidget"></rdl:LoadingWidget>
+                <g:FlowPanel ui:field="impListRowContainer" />
             </g:FlowPanel>
         </div>
     </g:HTMLPanel>

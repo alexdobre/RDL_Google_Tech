@@ -147,10 +147,10 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
     }
 
     @Override
-    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
         authorName = null;
         impListRowContainer.clear();
-        impListRowContainer.add(new ListWidget(this, beanList, pageIndex));
+        impListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
         impLoadingWidget.getElement().getStyle().setProperty("display", "none");
     }
 

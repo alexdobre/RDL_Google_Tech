@@ -147,10 +147,10 @@ public class StoriesViewImpl extends Composite implements SearchView {
 	}
 
 	@Override
-	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		authorName = null;
 		threadListRowContainer.clear();
-		threadListRowContainer.add(new ListWidget(this, beanList, pageIndex));
+		threadListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
 		threadLoadingWidget.getElement().getStyle().setProperty("display", "none");
 	}
 

@@ -1,6 +1,30 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:HTMLPanel ui:field="rootPanel">
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui">
+
+	<ui:style>
+		.margin-fix {
+			margin-bottom: 0;
+			margin-top: 0;
+			padding-bottom: 0;
+			padding-top: 0;
+		}
+	</ui:style>
+
+    <g:HTMLPanel>
+
+		    <b:Row>
+			    <b:Column size="MD_3" offset="MD_9">
+				    <b:Pagination addStyleNames="{style.margin-fix}">
+					    <b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
+					    <b:AnchorListItem icon="ANGLE_DOUBLE_LEFT"/>
+					    <b:AnchorListItem icon="ANGLE_DOUBLE_RIGHT"/>
+				    </b:Pagination>
+			    </b:Column>
+		    </b:Row>
+			<g:HTMLPanel ui:field="rootPanel">
+			</g:HTMLPanel>
 
     </g:HTMLPanel>
 </ui:UiBinder>

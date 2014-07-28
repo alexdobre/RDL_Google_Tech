@@ -50,7 +50,7 @@ public interface SearchView {
 
     Widget asWidget();
 
-    void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
+    void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
 
     void setLoginResult(String name, String email, boolean auth);
 

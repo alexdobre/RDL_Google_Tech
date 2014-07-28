@@ -31,7 +31,6 @@ import java.util.logging.Logger;
  * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * @ AppMenu appMenu the upper menu view
  * @ AutoBean<CurrentUserBean> currentUserBean contains user parameters like auth state
- * @ EditorClientWidget editorClientWidget, closure editor widget
  * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter

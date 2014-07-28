@@ -13,9 +13,8 @@
                     <g:FlowPanel ui:field="snipSearchWidgetPanel"/>
                     <rdl:SocialPanel styleName="{style.socialPanel}"/>
                 </g:FlowPanel>
-                <rdl:LoadingWidget ui:field="loadingWidget"
-                                   styleName="{style.snipListRowContainer}"></rdl:LoadingWidget>
-                <g:FlowPanel ui:field="snipListRowContainer" styleName='{style.snipListRowContainer}'/>
+                <rdl:LoadingWidget ui:field="loadingWidget"></rdl:LoadingWidget>
+                <g:FlowPanel ui:field="snipListRowContainer"/>
             </g:FlowPanel>
         </div>
     </g:HTMLPanel>

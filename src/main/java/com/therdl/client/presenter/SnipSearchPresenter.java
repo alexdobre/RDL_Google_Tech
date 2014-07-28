@@ -119,7 +119,7 @@ public class SnipSearchPresenter extends RdlAbstractPresenter implements SearchV
 
                     }
 
-                    searchView.displaySnipList(beanList, pageIndex);
+                    searchView.displaySnipList(beanList, pageIndex, calculateListRange(beanList.size(),pageIndex));
                 }
 
                 @Override

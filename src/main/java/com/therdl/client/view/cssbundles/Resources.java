@@ -20,21 +20,6 @@ public interface Resources extends ClientBundle {
     // under the hood to instruct the compiler to use deferred binding.
     public static final Resources INSTANCE = GWT.create(Resources.class);
 
-
-    @CssResource.NotStrict
-    @Source("closure.css")
-    public CssResource editorCss();
-
-    @CssResource.NotStrict
-    @Source("closureList.css")
-    public CssResource listCss();
-
-    @Source("tabdev.js")
-    public TextResource widjdevList();
-
-    @Source("snipeditor.js")
-    public TextResource dialogView();
-
     @Source("imagebund/RDL_logo_med_no_text.png")
     @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
     ImageResource landingImage();

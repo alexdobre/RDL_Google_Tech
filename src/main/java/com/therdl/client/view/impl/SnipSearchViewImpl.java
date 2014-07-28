@@ -27,7 +27,6 @@ import java.util.logging.Logger;
  * this class provides GUI so user can search and view a list of snips
  *
  * @ SearchFilterWidget searchFilterWidget, a filter widget for the search
- * @ SearchListWidget searchListWidget, this is the row widget in the list of rows
  * @ AppMenu appMenu the upper menu view
  * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * @ String token, a GWT History token see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
@@ -146,10 +145,10 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
     }
 
     @Override
-    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+    public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
         authorName = null;
         snipListRowContainer.clear();
-        snipListRowContainer.add(new ListWidget(this, beanList, pageIndex));
+        snipListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
         loadingWidget.getElement().getStyle().setProperty("display", "none");
     }
 

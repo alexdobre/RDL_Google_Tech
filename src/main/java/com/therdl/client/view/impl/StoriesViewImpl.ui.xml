@@ -21,9 +21,8 @@
 						<rdl:SocialPanel styleName="{style.socialPanel}"/>
 					</b:Column>
 					<b:Column size="MD_9">
-						<rdl:LoadingWidget ui:field="threadLoadingWidget"
-						                   styleName="{style.snipListRowContainer}"></rdl:LoadingWidget>
-						<g:FlowPanel ui:field="threadListRowContainer" styleName='{style.snipListRowContainer}'/>
+						<rdl:LoadingWidget ui:field="threadLoadingWidget"></rdl:LoadingWidget>
+						<g:FlowPanel ui:field="threadListRowContainer"/>
 					</b:Column>
 				</b:Row>
 
