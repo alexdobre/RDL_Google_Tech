@@ -7,24 +7,26 @@
 		.margin-fix {
 			margin-bottom: 0;
 			margin-top: 0;
-			padding-bottom: 0;
+			padding-bottom: 2px;
 			padding-top: 0;
+			float: right;
 		}
 	</ui:style>
 
     <g:HTMLPanel>
-
-		    <b:Row>
-			    <b:Column size="MD_3" offset="MD_9">
-				    <b:Pagination addStyleNames="{style.margin-fix}">
-					    <b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
-					    <b:AnchorListItem icon="ANGLE_DOUBLE_LEFT"/>
-					    <b:AnchorListItem icon="ANGLE_DOUBLE_RIGHT"/>
-				    </b:Pagination>
-			    </b:Column>
-		    </b:Row>
-			<g:HTMLPanel ui:field="rootPanel">
-			</g:HTMLPanel>
-
+	    <b:Row>
+		    <b:Column size="MD_3" offset="MD_9">
+			    <b:Pagination addStyleNames="{style.margin-fix}">
+				    <b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
+				    <b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
+				    <b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
+			    </b:Pagination>
+		    </b:Column>
+	    </b:Row>
+        <b:Row>
+	        <b:Column size="MD_12">
+		        <b:LinkedGroup ui:field="listGroup"/>
+	        </b:Column>
+        </b:Row>
     </g:HTMLPanel>
 </ui:UiBinder>

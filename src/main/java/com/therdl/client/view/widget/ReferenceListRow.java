@@ -28,7 +28,7 @@ public class ReferenceListRow extends Composite {
     private AutoBean<SnipBean> referenceBean;
 
     @UiField
-    FlowPanel rightPanel, badgePanel;
+    FlowPanel rightPanel;
 
     @UiField
     RichTextArea richTextAreaRef;
@@ -85,19 +85,6 @@ public class ReferenceListRow extends Composite {
                 refRepBtn.getElement().getStyle().setProperty("display", "");
             }
         }
-        // create badge table
-        Grid badgeGrid = new Grid(4, 2);
-        badgeGrid.setCellPadding(2);
-        for (int row = 0; row < 4; ++row) {
-            for (int col = 0; col < 2; ++col) {
-                Image img = new Image(Resources.INSTANCE.badgeImage().getSafeUri().asString());
-                img.setWidth("27px");
-                img.setHeight("30px");
-                badgeGrid.setWidget(row, col, img);
-            }
-        }
-
-        badgePanel.add(badgeGrid);
     }
 
     @UiHandler("refRepBtn")

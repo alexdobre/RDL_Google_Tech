@@ -38,11 +38,6 @@
             width: 130px;
         }
 
-        .badgePanel {
-            margin: 3px 0px 3px 0px;
-            width: 90px;
-        }
-
         .refFlag {
             height: 30px;
             width: 65px;
@@ -65,15 +60,10 @@
     <g:HTMLPanel styleName="{style.rootPanel}">
         <g:HorizontalPanel styleName="{style.horizontalPanel}">
             <g:FlowPanel ui:field="leftPanel" styleName="{style.leftPanel}">
-                <g:Image url='{res.avatarImage.getSafeUri.asString}' styleName="{style.userImg}"></g:Image>
                 <g:Label ui:field="rep" styleName="{style.label}"></g:Label>
 
                 <g:Label ui:field="titleLabel" styleName="{style.label}"></g:Label>
                 <g:Label ui:field="userName" styleName="{style.label}"></g:Label>
-
-                <g:FlowPanel ui:field="badgePanel" styleName="{style.badgePanel}">
-
-                </g:FlowPanel>
 
                 <g:Label ui:field="creationDate" styleName="{style.label}"></g:Label>
             </g:FlowPanel>
