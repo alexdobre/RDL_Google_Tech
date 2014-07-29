@@ -95,7 +95,6 @@ public class SearchFilterWidget extends Composite {
 
 	SearchView view;
 
-	private BookmarkSearchPopup bookmarkSearchPopup;
 	private String editPageToken;
 
 	private Beanery beanery = GWT.create(Beanery.class);

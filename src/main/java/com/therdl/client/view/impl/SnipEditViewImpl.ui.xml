@@ -9,26 +9,13 @@
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
     <ui:style>
 
-        .mainPanel {
-            width: 900px;
-            margin-top: 20px;
-        }
+	    .push {
+	    padding-top: 55px;
+	    }
 
         .snipTypeBar {
             width: 100%;
             border: 1px solid #000;
-        }
-
-        .categoryBar, .titleBar {
-            width: 100%;
-            border: 1px solid #000;
-            margin-top: 2px;
-            height: 40px;
-            text-align: left;
-        }
-
-        .titleBar {
-            padding-top: 5px;
         }
 
         .editorContainer {
@@ -74,45 +61,41 @@
             margin-right: 20px;
         }
 
-        .categoryField {
-            width: 160px;
-            margin: 5px;
-        }
-
-        .tagTextBox {
-            width: 250px;
-            margin-top: 5px;
-        }
-
         .titleTextBox {
             width: 400px;
         }
 
     </ui:style>
-    <g:HTMLPanel>
-        <rdl:AppMenu ui:field="appMenu"/>
+	<g:ScrollPanel>
+		<b:Container>
+			<rdl:AppMenu ui:field="appMenu"/>
 
-        <center>
-            <g:FlowPanel ui:field='mainPanel' styleName="{style.mainPanel}">
+			<b:Form type="HORIZONTAL" addStyleNames="{style.push}">
+				<b:FieldSet>
                 <g:FlowPanel ui:field="snipTypeBar" styleName="{style.snipTypeBar}"/>
-                <g:FlowPanel ui:field="categoryBar" styleName="{style.categoryBar}">
-                    <b:Label ui:field="categoryLabel" text="{i18n.category}:" styleName='{style.labelText}'/>
-                    <g:ListBox ui:field="categoryList" styleName='{style.categoryField}'/>
+				<b:FormGroup ui:field="categoryFormGroup">
+					<b:FormLabel for="formCategList" addStyleNames="col-lg-2" text="{i18n.category}:" />
+					<g:FlowPanel addStyleNames="col-lg-3" >
+						<b:ListBox b:id="formCategList" ui:field="categoryList"/>
+					</g:FlowPanel>
+				</b:FormGroup>
 
-                    <b:Label ui:field="proposalTypeLabel" text="{i18n.type}:" styleName='{style.labelText}'/>
-                    <g:ListBox ui:field="proposalTypeList" styleName='{style.categoryField}'/>
+				<b:FormGroup ui:field="proposalFormGroup">
+					<b:FormLabel for="formPropTypeList" addStyleNames="col-lg-2" text="{i18n.type}:" />
+					<g:FlowPanel addStyleNames="col-lg-3" >
+						<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
+					</g:FlowPanel>
 
-                    <b:Label ui:field="proposalStateLabel" text="{i18n.state}:" styleName='{style.labelText}'/>
-                    <g:ListBox ui:field="proposalStateList" styleName='{style.categoryField}'/>
+					<b:FormLabel for="formStateList" addStyleNames="col-lg-2" text="{i18n.state}:" />
+					<g:FlowPanel addStyleNames="col-lg-3" >
+						<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
+					</g:FlowPanel>
+				</b:FormGroup>
 
-                    <b:Label text="{i18n.tag}:" styleName='{style.labelText}'/>
-                    <b:TextBox ui:field="tag" styleName="{style.tagTextBox}"/>
-                </g:FlowPanel>
-
-                <g:FlowPanel ui:field="titleBar" styleName="{style.titleBar}">
+				<b:FormGroup>
                     <b:Label text="{i18n.title}:" styleName='{style.labelText}'/>
                     <b:TextBox ui:field="title" styleName="{style.titleTextBox}" tabIndex="1"/>
-                </g:FlowPanel>
+                </b:FormGroup>
 
                 <g:FlowPanel ui:field="editorContainer" styleName="{style.editorContainer}">
                     <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
@@ -122,7 +105,9 @@
                     <b:Button ui:field="saveSnip" text="{i18n.save}"/>
                     <b:Button ui:field="deleteSnip" text="{i18n.delete}"/>
                 </g:FlowPanel>
-            </g:FlowPanel>
-        </center>
-    </g:HTMLPanel>
+				</b:FieldSet>
+	        </b:Form>
+		</b:Container>
+	</g:ScrollPanel>
+
 </ui:UiBinder> 

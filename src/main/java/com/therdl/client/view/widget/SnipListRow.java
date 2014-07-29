@@ -1,5 +1,13 @@
 package com.therdl.client.view.widget;
 
+import java.util.Date;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Tooltip;
+import org.gwtbootstrap3.client.ui.constants.Trigger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -7,10 +15,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -22,11 +28,6 @@ import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Heading;
-
-import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * gwt widget for snip list row
@@ -34,6 +35,8 @@ import java.util.logging.Logger;
  */
 public class SnipListRow extends Composite {
 	private static Logger log = Logger.getLogger("");
+
+	private static final int TITLE_MAX_LENGTH = 60;
 
 	interface SnipListRowUiBinder extends UiBinder<HTMLPanel, SnipListRow> {
 	}
@@ -55,9 +58,11 @@ public class SnipListRow extends Composite {
 	@UiField
 	org.gwtbootstrap3.client.ui.Button editBtn;
 	@UiField
-	FlowPanel editBtnParent, postsPanel, refPanel, pledgesPanel, countersPanel, viewPanel;
+	FlowPanel editBtnParent, refPanel, pledgesPanel, countersPanel;
 	@UiField
-	Heading snipTitle;
+	Anchor snipTitle;
+	@UiField
+	Tooltip snipTitleTooltip, snipImageTooltip;
 
 	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, boolean viewButtons) {
 		initWidget(ourUiBinder.createAndBindUi(this));
@@ -87,22 +92,14 @@ public class SnipListRow extends Composite {
 
 		// set tooltip on the snip img and top color stripe
 
-		String toolTip = snipBean.as().getTitle() + " / " + snipBean.as().getCoreCat();
+		String toolTip = snipBean.as().getSnipType() + " / " + snipBean.as().getCoreCat();
 
 		// sets snip data
-		snipImgParent.setTitle(toolTip);
+		snipImageTooltip.setTitle(toolTip);
 		colorStripe.setTitle(toolTip);
 
 		rep.setText(snipBean.as().getRep() + "");
-		snipTitle.setText(snipBean.as().getTitle());
-
-//		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-//			snipTitle.setHref(GWT.getHostPageBaseURL() + "#" + RDLConstants.Tokens.SNIP_VIEW + ":" + snipBean.as().getId());
-//		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
-//			snipTitle.setHref(GWT.getHostPageBaseURL() + "#" + RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
-//		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-//			snipTitle.setHref(GWT.getHostPageBaseURL() + "#" + RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
-
+		displaySnipTitle();
 
 		posRef.setText(snipBean.as().getPosRef() + " " + RDL.i18n.positiveRef());
 		neutRef.setText(snipBean.as().getNeutralRef() + " " + RDL.i18n.neutralRef());
@@ -139,7 +136,7 @@ public class SnipListRow extends Composite {
 		}
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			postsPanel.getElement().getStyle().setProperty("display", "none");
+			postsCount.getElement().getStyle().setProperty("display", "none");
 			pledgesPanel.getElement().getStyle().setProperty("display", "none");
 			countersPanel.getElement().getStyle().setProperty("display", "none");
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
@@ -147,12 +144,22 @@ public class SnipListRow extends Composite {
 			pledgesPanel.getElement().getStyle().setProperty("display", "none");
 			countersPanel.getElement().getStyle().setProperty("display", "none");
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			postsPanel.getElement().getStyle().setProperty("display", "none");
+			postsCount.getElement().getStyle().setProperty("display", "none");
 			refPanel.getElement().getStyle().setProperty("display", "none");
-			viewPanel.getElement().getStyle().setProperty("display", "none");
+			viewCount.getElement().getStyle().setProperty("display", "none");
 
 			proposalType.setText(RDL.i18n.type() + ": " + snipBean.as().getProposalType());
 			proposalState.setText(RDL.i18n.state() + ": " + snipBean.as().getProposalState());
+		}
+	}
+
+	private void displaySnipTitle(){
+		String snipTitleString = snipBean.as().getTitle();
+		if (snipTitleString.length() <= TITLE_MAX_LENGTH){
+			snipTitle.setText(snipTitleString);
+		}else {
+			snipTitle.setText(snipTitleString.substring(0,56)+"...");
+			snipTitleTooltip.setTitle(snipTitleString);
 		}
 	}
 
@@ -166,10 +173,19 @@ public class SnipListRow extends Composite {
 			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + snipBean.as().getId());
 	}
 
-//    @UiHandler("snipTitle")
-//    public void onViewBtnClicked(ClickEvent event) {
-//        GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(snipBean.as().getId()));
-//    }
+	@UiHandler("snipTitle")
+	public void snipTitleCliked (ClickEvent event) {
+		triggerViewSnip();
+	}
+
+	private void triggerViewSnip(){
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+			History.newItem(RDLConstants.Tokens.SNIP_VIEW+ ":" + snipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
+			History.newItem(RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+			History.newItem(RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
+	}
 
 	public void incrementRepCounter() {
 		rep.setText(snipBean.as().getRep() + 1 + "");

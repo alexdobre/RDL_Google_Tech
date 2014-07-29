@@ -46,6 +46,10 @@ public class ListWidget extends Composite {
 		for (int j = 0; j < beanList.size(); j++) {
 			SnipListRow snipListRow = new SnipListRow(beanList.get(j), searchView.getCurrentUserBean(), false);
 			LinkedGroupItem listItem = new LinkedGroupItem();
+			listItem.setPaddingBottom(2);
+			listItem.setPaddingTop(2);
+			listItem.setPaddingLeft(2);
+			listItem.setPaddingRight(2);
 			listItem.add(snipListRow);
 			listGroup.add(listItem);
 		}

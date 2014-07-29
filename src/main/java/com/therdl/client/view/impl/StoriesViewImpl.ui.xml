@@ -5,7 +5,7 @@
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style src="../cssbundles/searchView.css">
 		.push {
-		padding-top: 70px;
+		padding-top: 55px;
 		}
 	</ui:style>
 

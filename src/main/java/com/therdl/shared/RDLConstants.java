@@ -26,6 +26,7 @@ public interface RDLConstants {
         String SIGN_UP = "signUp";
         String PROFILE = "profile";
         String SNIP_VIEW = "snipView";
+		String ERROR = "error";
 
         String STORIES = "stories";
         String IMPROVEMENTS = "improvements";
