@@ -10,60 +10,12 @@
     <ui:style>
 
 	    .push {
-	    padding-top: 55px;
+	    padding-top: 60px;
 	    }
 
-        .snipTypeBar {
-            width: 100%;
-            border: 1px solid #000;
-        }
-
-        .editorContainer {
-            margin-top: 2px;
-            border: 1px solid #000;
-            padding: 2px;
-        }
-
-        .editorBtnContainer {
-            margin-top: 2px;
-            border: 1px solid #000;
-            height: 40px;
-            padding-top: 5px;
-            text-align: left;
-            padding-left: 20px;
-        }
-
-        @external .radioBtn;
-        .radioBtn {
-            margin-left: 10px;
-            display: inline-block;
-        }
-
-        .radioBtn label {
-            margin-left: 3px;
-            margin-bottom: 0px;
-            display: inline-block;
-        }
-
-        @external .snipTypeImg;
-        .snipTypeImg {
-            margin-left: 70px;
-            display: inline-block;
-        }
-
-        .labelText {
-            font-family: Arial, Sans-serif;
-            display: inline-block;
-            font-size: 13px;
-            text-align: left;
-            font-weight: bold;
-            margin-left: 20px;
-            margin-right: 20px;
-        }
-
-        .titleTextBox {
-            width: 400px;
-        }
+	    .noMargin{
+	        margin-bottom: 0px;
+	    }
 
     </ui:style>
 	<g:ScrollPanel>
@@ -72,39 +24,40 @@
 
 			<b:Form type="HORIZONTAL" addStyleNames="{style.push}">
 				<b:FieldSet>
-                <g:FlowPanel ui:field="snipTypeBar" styleName="{style.snipTypeBar}"/>
-				<b:FormGroup ui:field="categoryFormGroup">
-					<b:FormLabel for="formCategList" addStyleNames="col-lg-2" text="{i18n.category}:" />
-					<g:FlowPanel addStyleNames="col-lg-3" >
-						<b:ListBox b:id="formCategList" ui:field="categoryList"/>
-					</g:FlowPanel>
-				</b:FormGroup>
+					<b:Panel>
+						<b:PanelHeader>
+							<g:FlowPanel ui:field="snipTypeBar" />
+							<b:FormGroup ui:field="categoryFormGroup" addStyleNames="{style.noMargin}">
+								<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:" />
+								<g:FlowPanel addStyleNames="col-lg-6" >
+									<b:TextBox b:id="formTitle" ui:field="title" tabIndex="1"/>
+								</g:FlowPanel>
+								<b:FormLabel for="formCategList" addStyleNames="col-lg-1" text="{i18n.category}:" />
+								<g:FlowPanel addStyleNames="col-lg-2" >
+									<b:ListBox b:id="formCategList" ui:field="categoryList" tabIndex="2"/>
+								</g:FlowPanel>
+							</b:FormGroup>
 
-				<b:FormGroup ui:field="proposalFormGroup">
-					<b:FormLabel for="formPropTypeList" addStyleNames="col-lg-2" text="{i18n.type}:" />
-					<g:FlowPanel addStyleNames="col-lg-3" >
-						<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
-					</g:FlowPanel>
+							<b:FormGroup ui:field="proposalFormGroup" addStyleNames="{style.noMargin}">
+								<b:FormLabel for="formPropTypeList" addStyleNames="col-lg-2" text="{i18n.type}:" />
+								<g:FlowPanel addStyleNames="col-lg-3" >
+									<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
+								</g:FlowPanel>
 
-					<b:FormLabel for="formStateList" addStyleNames="col-lg-2" text="{i18n.state}:" />
-					<g:FlowPanel addStyleNames="col-lg-3" >
-						<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
-					</g:FlowPanel>
-				</b:FormGroup>
-
-				<b:FormGroup>
-                    <b:Label text="{i18n.title}:" styleName='{style.labelText}'/>
-                    <b:TextBox ui:field="title" styleName="{style.titleTextBox}" tabIndex="1"/>
-                </b:FormGroup>
-
-                <g:FlowPanel ui:field="editorContainer" styleName="{style.editorContainer}">
-                    <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
-                </g:FlowPanel>
-
-                <g:FlowPanel ui:field="editorBtnContainer" styleName="{style.editorBtnContainer}">
-                    <b:Button ui:field="saveSnip" text="{i18n.save}"/>
-                    <b:Button ui:field="deleteSnip" text="{i18n.delete}"/>
-                </g:FlowPanel>
+								<b:FormLabel for="formStateList" addStyleNames="col-lg-2" text="{i18n.state}:" />
+								<g:FlowPanel addStyleNames="col-lg-3" >
+									<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
+								</g:FlowPanel>
+							</b:FormGroup>
+						</b:PanelHeader>
+						<b:PanelBody>
+							<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+						</b:PanelBody>
+						<b:PanelFooter>
+							<b:Button ui:field="saveSnip" text="{i18n.save}"/>
+							<b:Button ui:field="deleteSnip" text="{i18n.delete}"/>
+						</b:PanelFooter>
+					</b:Panel>
 				</b:FieldSet>
 	        </b:Form>
 		</b:Container>

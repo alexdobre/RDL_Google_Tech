@@ -25,7 +25,7 @@ public class EditorWidget extends Composite {
         initWidget(ourUiBinder.createAndBindUi(this));
         richTextArea = new RichTextArea();
         richTextArea.setSize("100%", "300px");
-        richTextArea.setTabIndex(2);
+        richTextArea.setTabIndex(3);
 
         /**
          * do not allow to enter more than 10000 characters to textarea
