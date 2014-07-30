@@ -108,6 +108,7 @@
 				<b:PanelFooter>
 					<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
 					<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+					<b:Button ui:field="editBtn" text="{i18n.edit}"/>
 					<g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}'
 					         width="35px" height="35px"/>
 				</b:PanelFooter>

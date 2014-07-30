@@ -9,6 +9,10 @@
 
     <ui:style>
 
+	   .push {
+	        padding-top: 60px;
+	    }
+
         .socialPanel {
             padding-left: 150px;
         }
@@ -37,7 +41,7 @@
 
         <rdl:AppMenu ui:field="appMenu"/>
 
-            <b:Container>
+            <b:Container addStyleNames="{style.push}">
                 <b:Row>
                     <b:Column size="MD_4">
                         <g:AbsolutePanel styleName="{style.mainContainer}">

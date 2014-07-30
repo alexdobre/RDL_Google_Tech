@@ -44,7 +44,7 @@ public class ListWidget extends Composite {
 		this.listRange.setText(listRange);
 
 		for (int j = 0; j < beanList.size(); j++) {
-			SnipListRow snipListRow = new SnipListRow(beanList.get(j), searchView.getCurrentUserBean(), false);
+			SnipListRow snipListRow = new SnipListRow(beanList.get(j), searchView.getCurrentUserBean());
 			LinkedGroupItem listItem = new LinkedGroupItem();
 			listItem.setPaddingBottom(2);
 			listItem.setPaddingTop(2);

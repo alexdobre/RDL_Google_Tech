@@ -7,6 +7,7 @@ import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -66,6 +67,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 	private Beanery beanery = GWT.create(Beanery.class);
 
 	private AutoBean<SnipBean> currentSnipBean;
+	private boolean showEditBtn = false;
 
 	// uibinder variables
 
@@ -79,7 +81,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 	@UiField
 	EditorWidget editorWidget;
 	@UiField
-	Button showRef, leaveRef, saveRef, closeRef;
+	Button showRef, leaveRef, saveRef, closeRef, editBtn;
 	@UiField
 	RadioButton rb1, rb2, rb3, prb1, prb2;
 	@UiField
@@ -181,7 +183,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 		this.currentSnipBean = snipBean;
 
 		// this is the top widget, like in the list widget
-		snipListRow = new SnipListRow(snipBean, currentUserBean, true);
+		snipListRow = new SnipListRow(snipBean, currentUserBean);
 		snipViewCont.add(snipListRow);
 		richTextArea.setHTML(snipBean.as().getContent());
 		richTextArea.setEnabled(false);
@@ -299,6 +301,16 @@ public class SnipViewImpl extends Composite implements SnipView {
 				giveRepResponseHandler();
 			}
 		});
+	}
+
+	@UiHandler("editBtn")
+	public void onEditBtnClicked(ClickEvent event) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+			History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + currentSnipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
+			History.newItem(RDLConstants.Tokens.THREAD_EDIT + ":" + currentSnipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + currentSnipBean.as().getId());
 	}
 
 	/**

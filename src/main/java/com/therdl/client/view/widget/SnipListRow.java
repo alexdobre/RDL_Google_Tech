@@ -45,7 +45,6 @@ public class SnipListRow extends Composite {
 
 	AutoBean<SnipBean> snipBean;
 	AutoBean<CurrentUserBean> currentUserBean;
-	boolean viewButtons = false;
 
 	@UiField
 	FlowPanel colorStripe, snipImgParent;
@@ -56,19 +55,16 @@ public class SnipListRow extends Composite {
 	@UiField
 	Image snipImg;
 	@UiField
-	org.gwtbootstrap3.client.ui.Button editBtn;
-	@UiField
-	FlowPanel editBtnParent, refPanel, pledgesPanel, countersPanel;
+	FlowPanel refPanel, pledgesPanel, countersPanel;
 	@UiField
 	Anchor snipTitle;
 	@UiField
 	Tooltip snipTitleTooltip, snipImageTooltip;
 
-	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, boolean viewButtons) {
+	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean ) {
 		initWidget(ourUiBinder.createAndBindUi(this));
 		this.snipBean = snipBean;
 		this.currentUserBean = currentUserBean;
-		this.viewButtons = viewButtons;
 	}
 
 	@Override
@@ -128,13 +124,6 @@ public class SnipListRow extends Composite {
 
 		creationDate.setText(dateString);
 
-		if (viewButtons) {
-			if (currentUserBean.as().isAuth() && currentUserBean.as().getName().equals(snipBean.as().getAuthor())) {
-				editBtnParent.getElement().getStyle().setProperty("display", "block");
-			}
-			editBtn.setWidth("55px");
-		}
-
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			postsCount.getElement().getStyle().setProperty("display", "none");
 			pledgesPanel.getElement().getStyle().setProperty("display", "none");
@@ -161,16 +150,6 @@ public class SnipListRow extends Composite {
 			snipTitle.setText(snipTitleString.substring(0,56)+"...");
 			snipTitleTooltip.setTitle(snipTitleString);
 		}
-	}
-
-	@UiHandler("editBtn")
-	public void onEditBtnClicked(ClickEvent event) {
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-			History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + snipBean.as().getId());
-		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
-			History.newItem(RDLConstants.Tokens.THREAD_EDIT + ":" + snipBean.as().getId());
-		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + snipBean.as().getId());
 	}
 
 	@UiHandler("snipTitle")
