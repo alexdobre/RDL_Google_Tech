@@ -5,9 +5,9 @@
     <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
     <ui:style>
 
-        .container {
-
-        }
+	    .push {
+	    padding-top: 55px;
+	    }
 
         .labelText {
             font-family: Arial, Sans-serif;
@@ -58,7 +58,7 @@
 
 
     </ui:style>
-    <g:VerticalPanel styleName='{style.container}'>
+    <g:VerticalPanel styleName='{style.push}'>
         <g:Label text="{i18n.pleaseLogin}" styleName='{style.labelText}'/>
         <g:HorizontalPanel verticalAlignment="middle">
             <b:TextBox ui:field="email" styleName='{style.loginBox}'/>

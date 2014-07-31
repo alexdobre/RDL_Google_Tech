@@ -80,6 +80,10 @@
 	        border: 0px;
 	    }
 
+	    .repGivenIcon{
+	        color: green;
+	    }
+
     </ui:style>
 	<g:ScrollPanel>
 		<b:Container>
@@ -91,18 +95,36 @@
 				<b:PanelHeader>
 					<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
 				</b:PanelHeader>
-				<b:PanelBody>
-					<g:RichTextArea ui:field="richTextArea" addStyleNames="{style.richTextArea} "/>
-				</b:PanelBody>
+				<b:Collapse b:id="snipCollapse">
+					<b:PanelBody>
+						<g:RichTextArea ui:field="richTextArea" addStyleNames="{style.richTextArea} "/>
+					</b:PanelBody>
+				</b:Collapse>
 				<b:PanelFooter>
-					<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
-					<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
-					<b:Button ui:field="editBtn" text="{i18n.edit}"/>
-					<g:Image ui:field="repBtn" styleName="{style.repBtn}" url='{res.plusBtn.getSafeUri.asString}'
-					         width="35px" height="35px"/>
+					<b:Container fluid="true">
+						<b:Row>
+							<b:Column size="MD_3">
+								<b:ButtonGroup>
+									<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
+								</b:ButtonGroup>
+								<b:ButtonGroup>
+									<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+								</b:ButtonGroup>
+								<b:ButtonGroup>
+									<b:Button ui:field="editBtn" text="{i18n.edit}"/>
+								</b:ButtonGroup>
+							</b:Column>
+							<b:Column size="MD_5" offset="MD_3">
+								<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse" />
+							</b:Column>
+							<b:Column size="MD_1">
+								<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="repBtn" addStyleNames="{style.repBtn}"/>
+								<b:Icon type="CHECK" size="TIMES2" ui:field="repGivenIcon" addStyleNames="{style.repGivenIcon} {style.repBtn}"/>
+							</b:Column>
+						</b:Row>
+					</b:Container>
 				</b:PanelFooter>
 			</b:Panel>
-
 
             <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
                 <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">

@@ -2,8 +2,6 @@ package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -11,11 +9,9 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
@@ -26,7 +22,6 @@ import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.ReferenceListRow;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.client.view.widget.SnipListRow;
-import com.therdl.shared.Constants;
 import com.therdl.shared.Global;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.RDLConstants;
@@ -34,10 +29,10 @@ import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 
@@ -91,7 +86,9 @@ public class SnipViewImpl extends Composite implements SnipView {
 	@UiField
 	RadioButton rb1, rb2, rb3, prb1, prb2;
 	@UiField
-	Image repBtn;
+	Button repBtn;
+	@UiField
+	Icon repGivenIcon;
 	@UiField
 	LoadingWidget loadingWidget;
 	@UiField
@@ -179,7 +176,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 
 	@Override
 	protected void onUnload() {
-		referenceListCont.clear();
+		//referenceListCont.clear();
 		snipViewCont.clear();
 		refFilterParent.clear();
 		//  checkboxBtnParent.clear();
@@ -199,6 +196,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 		richTextArea.setHTML(snipBean.as().getContent());
 		richTextArea.setEnabled(false);
 		leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
+		editBtn.getElement().getStyle().setProperty("marginLeft", "10px");
 		showRef.setText(btnTextShow);
 
 		referenceCont.getElement().getStyle().setProperty("display", "none");
@@ -330,6 +328,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 	 */
 	public void giveRepResponseHandler() {
 		repBtn.getElement().getStyle().setProperty("display", "none");
+		repGivenIcon.getElement().getStyle().setProperty("display", "block");
 		snipListRow.incrementRepCounter();
 	}
 
