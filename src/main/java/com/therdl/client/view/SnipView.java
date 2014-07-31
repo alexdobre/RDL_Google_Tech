@@ -33,7 +33,7 @@ public interface SnipView extends IsWidget {
 
     public void viewSnip(AutoBean<SnipBean> snipBean);
 
-    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
+    public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
 
     public void getSnipReferences(AutoBean<SnipBean> searchOptions);
 

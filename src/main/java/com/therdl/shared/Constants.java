@@ -16,7 +16,7 @@ public class Constants {
      */
     public static final boolean DEPLOY = true;
     public static final int DEFAULT_PAGE_SIZE = 10;
-    public static final int DEFAULT_REFERENCE_PAGE_SIZE = 2;
+    public static final int DEFAULT_REFERENCE_PAGE_SIZE = 5;
 
     public static final String FACEBOOK_URL = "https://www.facebook.com/therdl";
     public static final String TWITTER_URL = "https://twitter.com/RDLSocial";

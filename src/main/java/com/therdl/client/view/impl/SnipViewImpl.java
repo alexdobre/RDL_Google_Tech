@@ -34,7 +34,12 @@ import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -73,9 +78,10 @@ public class SnipViewImpl extends Composite implements SnipView {
 
 	@UiField
 	AppMenu appMenu;
-
 	@UiField
-	FlowPanel snipViewCont, referenceCont, radioBtnParent, radioBtnParentProp, referenceListCont, bottomCont, refFilterParent, bottomPanel;
+	FlowPanel snipViewCont, referenceCont, radioBtnParent, radioBtnParentProp;
+	@UiField
+	Column refFilterParent, referenceListCont;
 	@UiField
 	RichTextArea richTextArea;
 	@UiField
@@ -88,6 +94,10 @@ public class SnipViewImpl extends Composite implements SnipView {
 	Image repBtn;
 	@UiField
 	LoadingWidget loadingWidget;
+	@UiField
+	AnchorListItem listRange, nextPage, prevPage;
+	@UiField
+	LinkedGroup listGroup;
 
 	SnipListRow snipListRow;
 	ReferenceSearchFilterWidget referenceSearchFilterWidget;
@@ -164,6 +174,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 		referenceSearchFilterWidget = new ReferenceSearchFilterWidget(this);
 		refFilterParent.add(referenceSearchFilterWidget);
 		refFilterParent.getElement().getStyle().setProperty("display", "none");
+		referenceListCont.getElement().getStyle().setProperty("display", "none");
 	}
 
 	@Override
@@ -280,7 +291,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 			getSnipReferences(searchOptionsBean);
 
 		} else {
-			bottomCont.getElement().getStyle().setProperty("display", "none");
+			referenceListCont.getElement().getStyle().setProperty("display", "none");
 			refFilterParent.getElement().getStyle().setProperty("display", "none");
 			showRef.setText(btnTextShow);
 		}
@@ -387,56 +398,38 @@ public class SnipViewImpl extends Composite implements SnipView {
 	 *
 	 * @param beanList list of references as bean objects
 	 */
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		loadingWidget.getElement().getStyle().setProperty("display", "none");
 		showRef.setText(btnTextHide);
-		referenceListCont.clear();
-		//    checkboxBtnParent.clear();
-		bottomCont.getElement().getStyle().setProperty("display", "block");
 		referenceListCont.getElement().getStyle().setProperty("display", "block");
 		refFilterParent.getElement().getStyle().setProperty("display", "block");
 
 		referenceCont.getElement().getStyle().setProperty("display", "none");
 
-		// default size of rows in one tab
-		int listRowSize = Constants.DEFAULT_REFERENCE_PAGE_SIZE;
-		int tabCount = 1;
-		if (beanList.size() != 0) {
-			tabCount = (int) Math.ceil((double) beanList.get(0).as().getCount() / listRowSize);
+		if (beanList.size() == 0) {
+			referenceListCont.add(new Label(RDL.i18n.noDataToDisplay()));
 		}
 
-		TabPanel tabPanel = new TabPanel();
-
-		// creates tabs of count tabCount
-		for (int i = 1; i <= tabCount; i++) {
-			// creates content of current tab
-			FlowPanel tabContent = new FlowPanel();
-
-			if (beanList.size() == 0) {
-				tabContent.add(new Label(RDL.i18n.noDataToDisplay()));
-			}
-			tabPanel.add(tabContent, i + "");
-
-		}
-
-		tabPanel.setWidth("100%");
 
 		for (int j = 0; j < beanList.size(); j++) {
 			ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this);
-			((FlowPanel) tabPanel.getWidget(pageIndex)).add(referenceListRow);
+			LinkedGroupItem listItem = new LinkedGroupItem();
+			listItem.setPaddingBottom(2);
+			listItem.setPaddingTop(2);
+			listItem.setPaddingLeft(2);
+			listItem.setPaddingRight(2);
+			listItem.add(referenceListRow);
+			listGroup.add(listItem);
 		}
-		tabPanel.selectTab(pageIndex);
 
-		tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-			@Override
-			public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
-				loadingWidget.getElement().getStyle().setProperty("display", "block");
-				presenter.getSnipReferences(searchOptionsBean, integerBeforeSelectionEvent.getItem());
-			}
-		});
+//		tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+//			@Override
+//			public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
+//				loadingWidget.getElement().getStyle().setProperty("display", "block");
+//				presenter.getSnipReferences(searchOptionsBean, integerBeforeSelectionEvent.getItem());
+//			}
+//		});
 
-		referenceListCont.add(tabPanel);
-
-
+		this.listRange.setText(listRange);
 	}
 }

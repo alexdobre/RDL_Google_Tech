@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
  * @ String currentSnipId  used to retrieve the users correct snip
  */
-public class SnipPresenter implements Presenter, SnipView.Presenter {
+public class SnipPresenter extends RdlAbstractPresenter implements Presenter, SnipView.Presenter {
 
     private static Logger log = Logger.getLogger("");
 
@@ -43,7 +43,8 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
     }
 
     public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
-        this.snipView = snipView;
+		super(appController);
+		this.snipView = snipView;
         this.currentSnipId = currentSnipId;
         this.controller = appController;
         this.snipView.setPresenter(this);
@@ -224,7 +225,7 @@ public class SnipPresenter implements Presenter, SnipView.Presenter {
 
                     }
 
-                    snipView.showReferences(beanList, pageIndex);
+                    snipView.showReferences(beanList, pageIndex,calculateListRange(beanList.size(),pageIndex));
                 }
 
                 @Override
