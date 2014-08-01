@@ -19,7 +19,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-
 import org.gwtbootstrap3.client.ui.Badge;
 import org.gwtbootstrap3.client.ui.Button;
 

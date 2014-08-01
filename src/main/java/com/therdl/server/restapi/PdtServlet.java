@@ -25,72 +25,72 @@ import java.util.Enumeration;
  */
 public class PdtServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 5944361005662719642L;
+	private static final long serialVersionUID = 5944361005662719642L;
 
-    static final String NotifySync = "cmd=_notify-synch";
+	static final String NotifySync = "cmd=_notify-synch";
 
-    private PaymentService paymentService;
-    private UserService userService;
+	private PaymentService paymentService;
+	private UserService userService;
 
-    private final PaypalCredentials paypalCredentials;
+	private final PaypalCredentials paypalCredentials;
 
-    public PdtServlet(UserService userService, PaymentService paymentService) {
-        this.paymentService = paymentService;
-        this.userService = userService;
+	public PdtServlet(UserService userService, PaymentService paymentService) {
+		this.paymentService = paymentService;
+		this.userService = userService;
 
-        paypalCredentials = paymentService.getPaypalCredentials("pdt");
-    }
+		paypalCredentials = paymentService.getPaypalCredentials("pdt");
+	}
 
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 
-        String str = NotifySync + "&" + paypalCredentials.getToken();
+		String str = NotifySync + "&" + paypalCredentials.getToken();
 
-        Enumeration en = request.getParameterNames();
-        while (en.hasMoreElements()) {
-            String paramName = (String) en.nextElement();
-            String paramValue = request.getParameter(paramName);
-            str = str + "&" + paramName + "=" + URLEncoder.encode(paramValue, "UTF-8");
-        }
+		Enumeration en = request.getParameterNames();
+		while (en.hasMoreElements()) {
+			String paramName = (String) en.nextElement();
+			String paramValue = request.getParameter(paramName);
+			str = str + "&" + paramName + "=" + URLEncoder.encode(paramValue, "UTF-8");
+		}
 
-        //  Post back to PayPal system to validate
-        //  NOTE: change http: to https: in the following URL to verify using SSL (for increased security).
-        //  using HTTPS requires either Java 1.4 or greater, or Java Secure Socket Extension (JSSE) and configured for older versions.
-        URL u = new URL(paypalCredentials.getUrl());
-        URLConnection uc = u.openConnection();
-        uc.setDoOutput(true);
-        uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        PrintWriter pw = new PrintWriter(uc.getOutputStream());
-        pw.println(str);
-        pw.close();
+		//  Post back to PayPal system to validate
+		//  NOTE: change http: to https: in the following URL to verify using SSL (for increased security).
+		//  using HTTPS requires either Java 1.4 or greater, or Java Secure Socket Extension (JSSE) and configured for older versions.
+		URL u = new URL(paypalCredentials.getUrl());
+		URLConnection uc = u.openConnection();
+		uc.setDoOutput(true);
+		uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		PrintWriter pw = new PrintWriter(uc.getOutputStream());
+		pw.println(str);
+		pw.close();
 
-        //Read response
-        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+		//Read response
+		BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 
-        String res = in.readLine();
-        in.close();
+		String res = in.readLine();
+		in.close();
 
-        if (res.equals("SUCCESS")) {
+		if (res.equals("SUCCESS")) {
 
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            String title = "Purchase Confirmation";
-            out.println("<Html><Head><Title>" + title + "</Title></Head>\n<Body Bgcolor=\"#FDF5E6\">\n<H1 Align=Center>" + title + "</H1>\n" +
-                    "<p>  Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you. "
-                    + "  You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			String title = "Purchase Confirmation";
+			out.println("<Html><Head><Title>" + title + "</Title></Head>\n<Body Bgcolor=\"#FDF5E6\">\n<H1 Align=Center>" + title + "</H1>\n" +
+					"<p>  Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you. "
+					+ "  You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
 
-                    + "<Table Border=1 Align=Center>\n" + "<Tr Bgcolor=\"#FFAD00\"><Th>Description</Th><Th>Value</Th></Tr>");
+					+ "<Table Border=1 Align=Center>\n" + "<Tr Bgcolor=\"#FFAD00\"><Th>Description</Th><Th>Value</Th></Tr>");
 
 
-            en = request.getParameterNames();
-            while (en.hasMoreElements()) {
-                String paramName = (String) en.nextElement();
-                String paramValue = request.getParameter(paramName);
-                out.println("<tr><td>" + paramName + "</td><td>" + URLDecoder.decode(paramValue, "UTF-8") + "</td></tr>");
+			en = request.getParameterNames();
+			while (en.hasMoreElements()) {
+				String paramName = (String) en.nextElement();
+				String paramValue = request.getParameter(paramName);
+				out.println("<tr><td>" + paramName + "</td><td>" + URLDecoder.decode(paramValue, "UTF-8") + "</td></tr>");
 
-            }
-        }
-    }
+			}
+		}
+	}
 
 }

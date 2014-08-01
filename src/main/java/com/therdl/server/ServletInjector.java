@@ -21,7 +21,10 @@ import com.therdl.server.paypal_payment.PayPalConstants;
 import com.therdl.server.paypal_payment.PayPalIPNServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionCallbackServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionServlet;
-import com.therdl.server.restapi.*;
+import com.therdl.server.restapi.SessionServlet;
+import com.therdl.server.restapi.SnipDispatcherServlet;
+import com.therdl.server.restapi.UploadServlet;
+import com.therdl.server.restapi.UserDispatcherServlet;
 
 /**
  * ServletInjector controller Guice injection. This project uses the Guice injection

@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class EroticismDescription extends Composite {
 
-    interface EroticismDescriptionUiBinder extends UiBinder<HTMLPanel, EroticismDescription> {
-    }
+	interface EroticismDescriptionUiBinder extends UiBinder<HTMLPanel, EroticismDescription> {
+	}
 
-    private static EroticismDescriptionUiBinder uiBinder = GWT.create(EroticismDescriptionUiBinder.class);
+	private static EroticismDescriptionUiBinder uiBinder = GWT.create(EroticismDescriptionUiBinder.class);
 
-    public EroticismDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public EroticismDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

@@ -1,7 +1,12 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.*;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -23,94 +28,83 @@ import com.therdl.shared.beans.CurrentUserBean;
  * calls com.therdl.server.restapi.SessionServlet class and updates the view depending on given/allowed
  * authorisation in server callback onResponseReceived(Request request, Response response)
  */
-public class RegisterPresenter extends RdlAbstractPresenter implements RegisterView.Presenter {
+public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implements RegisterView.Presenter {
+
+	public RegisterPresenter(RegisterView registerView, AppController appController) {
+		super(appController);
+		this.view = registerView;
+		registerView.setPresenter(this);
+	}
+
+	/**
+	 * standard runtime method for MVP architecture
+	 *
+	 * @param container       the view container
+	 * @param currentUserBean the user state bean, mainly used for authorisation
+	 *                   and to update the menu
+	 */
+	@Override
+	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		checkLogin(view.getAppMenu(),currentUserBean);
+		container.clear();
+		container.add(view.asWidget());
+	}
+
+	/**
+	 * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
+	 * a AutoBean<AuthUserBean> authBean from the users supplied credentials and submits it as a json serialised object
+	 * calls AppController controller and  WelcomeView  welcomeView objects
+	 * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state for a newly signed up
+	 * user for the upper menu in the WelcomeView
+	 *
+	 * @param bean) constructed from the submitted email String (unique identifier) and
+	 *                               password String password these credentilas will be used as identifiers for subsequent login
+	 */
 
 
-    private RegisterView registerView;
+	@Override
+	public void submitNewUser(AutoBean<AuthUserBean> bean) {
+		log.info(AutoBeanCodex.encode(bean).getPayload());
+		String updateUrl = GWT.getModuleBaseURL() + "getSession";
+		// handle jboss urls for deploy
+		if (!Constants.DEPLOY) {
+			updateUrl = updateUrl.replaceAll("/therdl", "");
+		}
 
+		log.info("RegisterPresenter submitNewUser with  updateUrl: " + updateUrl);
 
-    public RegisterPresenter(RegisterView registerView, AppController appController) {
-        super(appController);
-        this.registerView = registerView;
-        registerView.setPresenter(this);
-    }
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+		bean.as().setAction("signUp");
+		String json = AutoBeanCodex.encode(bean).getPayload();
 
-    @Override
-    public void go(HasWidgets container) {
-        container.clear();
-        container.add(registerView.asWidget());
-        loginCookieCheck();
-    }
+		try {
 
-    /**
-     * standard runtime method for MVP architecture
-     *
-     * @param HasWidgets container       the view container
-     * @param AutoBean   currentUserBean the user state bean, mainly used for authorisation
-     *                   and to update the menu
-     */
-    @Override
-    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-        container.clear();
-        container.add(registerView.asWidget());
-        loginCookieCheck();
-    }
+			requestBuilder.sendRequest(json, new RequestCallback() {
 
-    /**
-     * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
-     * a AutoBean<AuthUserBean> authBean from the users supplied credentials and submits it as a json serialised object
-     * calls AppController controller and  WelcomeView  welcomeView objects
-     * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state for a newly signed up
-     * user for the upper menu in the WelcomeView
-     *
-     * @param AutoBean<AuthUserBean> bean) constructed from the submitted email String (unique identifier) and
-     *                               password String password these credentilas will be used as identifiers for subsequent login
-     */
+				@Override
+				public void onResponseReceived(Request request, Response response) {
 
+					log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
+					// deserialise the bean
+					AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
+					// on success user is authorised on sign up
+					getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
+					// return to welcome page
+					History.newItem(RDLConstants.Tokens.WELCOME);
 
-    @Override
-    public void submitNewUser(AutoBean<AuthUserBean> bean) {
-        log.info(AutoBeanCodex.encode(bean).getPayload());
-        String updateUrl = GWT.getModuleBaseURL() + "getSession";
-        // handle jboss urls for deploy
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
+				}
 
-        log.info("RegisterPresenter submitNewUser with  updateUrl: " + updateUrl);
+				@Override
+				public void onError(Request request, Throwable exception) {
+					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
 
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        bean.as().setAction("signUp");
-        String json = AutoBeanCodex.encode(bean).getPayload();
+				}
 
-        try {
+			});
 
-            requestBuilder.sendRequest(json, new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-
-                    log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
-                    // deserialise the bean
-                    AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
-                    // on success user is authorised on sign up
-                    getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
-                    // return to welcome page
-                    History.newItem(RDLConstants.Tokens.WELCOME);
-
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-
-                }
-
-            });
-
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }  // end try
-    }
+		} catch (RequestException e) {
+			log.info(e.getLocalizedMessage());
+		}  // end try
+	}
 }

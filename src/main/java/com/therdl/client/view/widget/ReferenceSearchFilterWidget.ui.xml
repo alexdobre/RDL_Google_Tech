@@ -1,9 +1,8 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
-             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
              xmlns:rdl="urn:import:com.therdl.client.view.widget">
-    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:style>
 		@external .arrowImg;
 		.arrowImg {
@@ -22,7 +21,7 @@
 			<b:FormGroup>
 				<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorRep}"/>
 				<g:FlowPanel addStyleNames="col-lg-5">
-					<b:TextBox ui:field="authorRep" />
+					<b:TextBox ui:field="authorRep"/>
 				</g:FlowPanel>
 				<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorRepPanel"/>
 			</b:FormGroup>
@@ -30,7 +29,7 @@
 			<b:FormGroup>
 				<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorName}"/>
 				<g:FlowPanel addStyleNames="col-lg-5">
-					<b:TextBox ui:field="authorName" />
+					<b:TextBox ui:field="authorName"/>
 				</g:FlowPanel>
 				<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorNamePanel"/>
 			</b:FormGroup>
@@ -42,7 +41,7 @@
 			<b:FormGroup>
 				<b:FormLabel addStyleNames="col-lg-5" text="{i18n.date}"/>
 				<g:FlowPanel addStyleNames="col-lg-5">
-					<rdl:DateFilterWidget ui:field="dateFilterWidget" />
+					<rdl:DateFilterWidget ui:field="dateFilterWidget"/>
 				</g:FlowPanel>
 				<g:FlowPanel addStyleNames="col-lg-1" ui:field="datePanel"/>
 			</b:FormGroup>

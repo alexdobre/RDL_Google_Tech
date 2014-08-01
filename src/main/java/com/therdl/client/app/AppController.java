@@ -1,8 +1,5 @@
 package com.therdl.client.app;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -39,10 +36,15 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
+import com.therdl.shared.events.LogInEventEventHandler;
 import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
 import com.therdl.shared.events.SnipViewEvent;
 import com.therdl.shared.events.SnipViewEventHandler;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * While the overall application follows the Model View Presenter(MVP) design pattern
@@ -121,6 +123,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		log.info("AppController bind() addValueChangeHandler");
 
+		GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
+			@Override
+			public void onLogInEvent(LogInEvent onLoginEvent) {
+				if (welcomeView == null){
+					welcomeView = getWelcomeView();
+				}
+				welcomeView.showLoginPopUp(500, 30, null);
+			}
+		});
+
 		// logout event handler
 		GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler() {
 			@Override
@@ -167,22 +179,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 	}
 
-	/**
-	 * present the Welcome landing page for a user with a  authorised state
-	 *
-	 * @param container      the Presenter View
-	 * @param currentUserBean  a bean with  authorised state information(eg logged in or out)
-	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		this.container = container;
-		this.currentUserBean.as().setAuth(false);
-		this.currentUserBean.as().setRegistered(false);
-		if ("".equals(History.getToken())) {
-			History.newItem(RDLConstants.Tokens.WELCOME);
-		} else {
-			History.fireCurrentHistoryState();
-		}
+		this.go(container);
 	}
 
 	/**
@@ -201,10 +200,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	/**
 	 * This binds the history tokens with the different application states
 	 *
-	 * @param  event   ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
-	 *                         for ValueChangeEvent think HistoryEvent
-	 *                         String tokens are extracted from the HistoryEvents, this allows the correct view to be constructed and presented
-	 *                         this method provides the machinery
+	 * @param event ValueChangeEvent  see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
+	 *              for ValueChangeEvent think HistoryEvent
+	 *              String tokens are extracted from the HistoryEvents, this allows the correct view to be constructed and presented
+	 *              this method provides the machinery
 	 */
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
@@ -217,424 +216,357 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		log.info("AppController onValueChange token is  " + token);
-
 		if (token != null) {
+			switch (token) {
+				case RDLConstants.Tokens.WELCOME:showWelcomeView();break;
+				case RDLConstants.Tokens.SNIP_VIEW:showSnipView(tokenSplit);break;
+				case RDLConstants.Tokens.THREAD_VIEW:showThreadView(tokenSplit);break;
+				case RDLConstants.Tokens.SNIPS:showSnips(event, tokenSplit);break;
+				case RDLConstants.Tokens.STORIES:showStories(event, tokenSplit);break;
+				case RDLConstants.Tokens.THREAD_EDIT:showThreadEdit(tokenSplit);break;
+				case RDLConstants.Tokens.IMPROVEMENTS:showImprovements(event, tokenSplit);break;
+				case RDLConstants.Tokens.PROPOSAL_EDIT:showProposalEdit(tokenSplit);break;
+				case RDLConstants.Tokens.PROPOSAL_VIEW:showProposalView(tokenSplit);break;
+				case RDLConstants.Tokens.SNIP_EDIT:showSnipEdit(tokenSplit);break;
+				case RDLConstants.Tokens.SIGN_UP:showSignUp();break;
+				case RDLConstants.Tokens.PROFILE:showProfile();break;
+				case RDLConstants.Tokens.LOG_OUT:showLogOut();break;
+				default: showWelcomeView();break;
+			}
+		}
+	}
 
-			//***************************************WELCOME****************************
-			if (token.equals(RDLConstants.Tokens.WELCOME)) {
-				log.info("AppController Tokens.WELCOME");
-				if (welcomeView == null) {
-					welcomeView = new WelcomeViewImpl(currentUserBean);
-				}
-				final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
-
-					public void onSuccess() {
-
-						welcomePresenter.go(container, currentUserBean);
-
-						if (currentUserBean.as().isAuth()) {
-							welcomeView.setLoginResult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
-						}
-					}
-				});
+	private void showWelcomeView() {
+		log.info("AppController Tokens.WELCOME");
+		if (welcomeView == null) {
+			welcomeView = new WelcomeViewImpl(currentUserBean);
+		}
+		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
 			}
 
-			//***************************************SNIP_View****************************
-			else if (token.equals(RDLConstants.Tokens.SNIP_VIEW)) {
-				Global.moduleName = RDLConstants.Modules.IDEAS;
-				log.info("AppController Tokens.SNIP_VIEW");
+			public void onSuccess() {
 
-				String currentSnipId = "";
-				if (tokenSplit.length == 2) {
-					currentSnipId = tokenSplit[1];
+				welcomePresenter.go(container, currentUserBean);
+
+				if (currentUserBean.as().isAuth()) {
+					welcomeView.setLoginResult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
 				}
+			}
+		});
+	}
 
-				if (snipView == null) {
-					snipView = new SnipViewImpl(currentUserBean);
-				}
+	private void showSnipView(String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.IDEAS;
+		log.info("AppController Tokens.SNIP_VIEW");
 
-				final SnipPresenter snipPresenter = new SnipPresenter(snipView, currentSnipId, this);
+		String currentSnipId = "";
+		if (tokenSplit.length == 2) {
+			currentSnipId = tokenSplit[1];
+		}
 
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
-					}
+		if (snipView == null) {
+			snipView = new SnipViewImpl(currentUserBean);
+		}
 
-					public void onSuccess() {
-						snipPresenter.go(container, currentUserBean);
-					}
-				});
+		final SnipPresenter snipPresenter = new SnipPresenter(snipView, currentSnipId, this);
 
-			}// end else
-
-			else if (token.equals(RDLConstants.Tokens.THREAD_VIEW)) {
-				Global.moduleName = RDLConstants.Modules.STORIES;
-				log.info("AppController Tokens.THREAD_VIEW");
-
-				String currentSnipId = "";
-				if (tokenSplit.length == 2) {
-					currentSnipId = tokenSplit[1];
-				}
-
-				if (threadView == null) {
-					threadView = new SnipViewImpl(currentUserBean);
-				}
-
-				final SnipPresenter snipPresenter = new SnipPresenter(threadView, currentSnipId, this);
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
-					}
-
-					public void onSuccess() {
-						//     if (currentUserBean.as().isAuth()) {
-						snipPresenter.go(container, currentUserBean);
-						//    } else {
-						//        History.newItem(RDLConstants.Tokens.WELCOME);
-						//    }
-
-					}
-				});
-
-			}// end else
-
-			//***************************************SNIPS****************************
-			else if (token.equals(RDLConstants.Tokens.SNIPS)) {
-				Global.moduleName = RDLConstants.Modules.IDEAS;
-
-				log.info("AppController Tokens.SNIPS");
-
-				if (searchView == null) {
-					searchView = new SnipSearchViewImpl(currentUserBean);
-				}
-
-				searchView.setToken(event.getValue());
-				if (tokenSplit.length == 2)
-					searchView.setAuthorName(tokenSplit[1]);
-
-				final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(searchView, this);
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
-					}
-
-					public void onSuccess() {
-
-						snipSearchPresenter.go(container, currentUserBean);
-
-					}
-				});
-
-			}// end else
-
-			//***************************************STORIES****************************
-			else if (token.equals(RDLConstants.Tokens.STORIES)) {
-				Global.moduleName = RDLConstants.Modules.STORIES;
-
-				log.info("AppController Tokens.STORIES");
-
-				if (storiesView == null) {
-					storiesView = new StoriesViewImpl(currentUserBean);
-				}
-				storiesView.setToken(event.getValue());
-				if (tokenSplit.length == 2)
-					storiesView.setAuthorName(tokenSplit[1]);
-
-				final SnipSearchPresenter storiesPresenter = new SnipSearchPresenter(storiesView, this);
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
-					}
-
-					public void onSuccess() {
-						storiesPresenter.go(container, currentUserBean);
-					}
-				});
-
-			}// end else
-
-			else if (token.equals(RDLConstants.Tokens.THREAD_EDIT)) {
-				Global.moduleName = RDLConstants.Modules.STORIES;
-				String currentSnipId = "";
-				if (tokenSplit.length == 2) {
-					currentSnipId = tokenSplit[1];
-				}
-
-				log.info("AppController Tokens.THREAD_EDIT token=" + token + ";currentSnipId=" + currentSnipId+
-						"Current user auth: "+currentUserBean.as().isAuth() + "SnipEditViewImpl "+threadEditView);
-
-				if (threadEditView == null) {
-					threadEditView = new SnipEditViewImpl(currentUserBean);
-				}
-				final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(threadEditView, currentSnipId, this);
-				log.info("Doing async call...");
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
-					}
-
-					public void onSuccess() {
-						if (currentUserBean.as().isAuth()) {
-							log.info("Invoking snip edit presenter...");
-							snipEditPresenter.go(container, currentUserBean);
-						} else {
-							History.newItem(RDLConstants.Tokens.ERROR);
-						}
-					}
-				});
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
 			}
 
-			//***************************************IMPROVEMENTS****************************
-			else if (token.equals(RDLConstants.Tokens.IMPROVEMENTS)) {
-				Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
+			public void onSuccess() {
+				snipPresenter.go(container, currentUserBean);
+			}
+		});
+	}
 
-				log.info("AppController Tokens.IMPROVEMENTS");
+	private void showThreadView(String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.STORIES;
+		log.info("AppController Tokens.THREAD_VIEW");
 
-				if (improvementsView == null) {
-					improvementsView = new ImprovementsViewImpl(currentUserBean);
-				}
-				improvementsView.setToken(event.getValue());
-				if (tokenSplit.length == 2)
-					improvementsView.setAuthorName(tokenSplit[1]);
+		String currentSnipId = "";
+		if (tokenSplit.length == 2) {
+			currentSnipId = tokenSplit[1];
+		}
 
-				final SnipSearchPresenter improvementsPresenter = new SnipSearchPresenter(improvementsView, this);
+		if (threadView == null) {
+			threadView = new SnipViewImpl(currentUserBean);
+		}
 
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
-					}
+		final SnipPresenter snipPresenter = new SnipPresenter(threadView, currentSnipId, this);
 
-					public void onSuccess() {
-						improvementsPresenter.go(container, currentUserBean);
-					}
-				});
-
-			}// end else
-
-			else if (token.equals(RDLConstants.Tokens.PROPOSAL_EDIT)) {
-				Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
-
-				String currentSnipId = "";
-				if (tokenSplit.length == 2) {
-					currentSnipId = tokenSplit[1];
-				}
-
-				log.info("AppController Tokens.PROPOSAL_EDIT token=" + token + ";currentSnipId=" + currentSnipId);
-
-				if (proposalEditView == null) {
-					proposalEditView = new SnipEditViewImpl(currentUserBean);
-				}
-				final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(proposalEditView, currentSnipId, this);
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
-
-					public void onSuccess() {
-						if (currentUserBean.as().isAuth()) {
-							snipEditPresenter.go(container, currentUserBean);
-						} else {
-							History.newItem(RDLConstants.Tokens.WELCOME);
-						}
-					}
-				});
-			} else if (token.equals(RDLConstants.Tokens.PROPOSAL_VIEW)) {
-				Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
-				log.info("AppController Tokens.PROPOSAL_VIEW");
-
-				String currentSnipId = "";
-				if (tokenSplit.length == 2) {
-					currentSnipId = tokenSplit[1];
-				}
-
-				if (proposalView == null) {
-					proposalView = new SnipViewImpl(currentUserBean);
-				}
-
-				final SnipPresenter snipPresenter = new SnipPresenter(proposalView, currentSnipId, this);
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-						log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
-					}
-
-					public void onSuccess() {
-						//     if (currentUserBean.as().isAuth()) {
-						snipPresenter.go(container, currentUserBean);
-						//    } else {
-						//        History.newItem(RDLConstants.Tokens.WELCOME);
-						//    }
-
-					}
-				});
-
-			}// end else
-
-			//***************************************SNIP_EDIT****************************
-			// only authorised users
-			else if (token.equals(RDLConstants.Tokens.SNIP_EDIT)) {
-				Global.moduleName = RDLConstants.Modules.IDEAS;
-
-				String currentSnipId = "";
-				if (tokenSplit.length == 2) {
-					currentSnipId = tokenSplit[1];
-				}
-
-				log.info("AppController Tokens.SNIP_EDIT token=" + token + ";currentSnipId=" + currentSnipId);
-
-				if (snipEditView == null) {
-					snipEditView = new SnipEditViewImpl(currentUserBean);
-				}
-				final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
-
-					public void onSuccess() {
-						if (currentUserBean.as().isAuth()) {
-							snipEditPresenter.go(container, currentUserBean);
-						}
-					}
-				});
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
 
-			//*************************************** SIGN_UP ****************************
-			else if (token.equals(RDLConstants.Tokens.SIGN_UP)) {
-				currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
-				if (registerView == null) {
-					registerView = new RegisterViewImpl();
+			public void onSuccess() {
+				snipPresenter.go(container, currentUserBean);
+			}
+		});
+	}
 
-				}
+	private void showSnips(ValueChangeEvent<String> event, String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.IDEAS;
 
-				final RegisterPresenter registerPresenter = new RegisterPresenter(registerView, this);
-				log.info("AppController Tokens.SIGN_UP ");
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
+		log.info("AppController Tokens.SNIPS");
 
-					public void onSuccess() {
-						registerPresenter.go(container, currentUserBean);
+		if (searchView == null) {
+			searchView = new SnipSearchViewImpl(currentUserBean);
+		}
 
-					}
-				});
+		searchView.setToken(event.getValue());
+		if (tokenSplit.length == 2)
+			searchView.setAuthorName(tokenSplit[1]);
+
+		final SnipSearchPresenter snipSearchPresenter = new SnipSearchPresenter(searchView, this);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
 			}
 
-			//*************************************** PROFILE ****************************
-			else if (token.equals(RDLConstants.Tokens.PROFILE)) {
+			public void onSuccess() {
 
-				if (profileView == null) {
-					log.info("AppController profileView == null ");
-					profileView = new ProfileViewImpl(currentUserBean);
+				snipSearchPresenter.go(container, currentUserBean);
 
+			}
+		});
+	}
+
+	private void showStories(ValueChangeEvent<String> event, String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.STORIES;
+
+		log.info("AppController Tokens.STORIES");
+
+		if (storiesView == null) {
+			storiesView = new StoriesViewImpl(currentUserBean);
+		}
+		storiesView.setToken(event.getValue());
+		if (tokenSplit.length == 2)
+			storiesView.setAuthorName(tokenSplit[1]);
+
+		final SnipSearchPresenter storiesPresenter = new SnipSearchPresenter(storiesView, this);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+			}
+
+			public void onSuccess() {
+				storiesPresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showThreadEdit( String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.STORIES;
+		String currentSnipId = "";
+		if (tokenSplit.length == 2) {
+			currentSnipId = tokenSplit[1];
+		}
+
+		log.info("AppController Tokens.THREAD_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId +
+				"Current user auth: " + currentUserBean.as().isAuth() + "SnipEditViewImpl " + threadEditView);
+
+		if (threadEditView == null) {
+			threadEditView = new SnipEditViewImpl(currentUserBean);
+		}
+		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(threadEditView, currentSnipId, this);
+		log.info("Doing async call...");
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
+			}
+
+			public void onSuccess() {
+				if (currentUserBean.as().isAuth()) {
+					log.info("Invoking snip edit presenter...");
+					snipEditPresenter.go(container, currentUserBean);
 				} else {
-					log.info("AppController profileView == null else ");
-					profileView.setAvatarWhenViewIsNotNull();
+					History.newItem(RDLConstants.Tokens.ERROR);
 				}
+			}
+		});
+	}
 
-				final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
-				log.info("AppController Tokens.SERVICES ");
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
+	private void showImprovements(ValueChangeEvent<String> event, String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
 
-					public void onSuccess() {
-						profilePresenter.go(container, currentUserBean);
+		log.info("AppController Tokens.IMPROVEMENTS");
 
-					}
-				});
+		if (improvementsView == null) {
+			improvementsView = new ImprovementsViewImpl(currentUserBean);
+		}
+		improvementsView.setToken(event.getValue());
+		if (tokenSplit.length == 2)
+			improvementsView.setAuthorName(tokenSplit[1]);
+
+		final SnipSearchPresenter improvementsPresenter = new SnipSearchPresenter(improvementsView, this);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
 
-			//*************************************** LOG_OUT ****************************
-			else if (token.equals(RDLConstants.Tokens.LOG_OUT)) {
+			public void onSuccess() {
+				improvementsPresenter.go(container, currentUserBean);
+			}
+		});
+	}
 
-				log.info("AppController Tokens.LOG_OUT ");
+	private void showProposalEdit(String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
 
-				if (welcomeView == null) {
-					welcomeView = new WelcomeViewImpl(currentUserBean);
+		String currentSnipId = "";
+		if (tokenSplit.length == 2) {
+			currentSnipId = tokenSplit[1];
+		}
 
-				}
+		log.info("AppController Tokens.PROPOSAL_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId);
 
-				final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+		if (proposalEditView == null) {
+			proposalEditView = new SnipEditViewImpl(currentUserBean);
+		}
+		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(proposalEditView, currentSnipId, this);
 
-				if (welcomeView != null) {
-					welcomeView.logout();
-				}
-				if (searchView != null) {
-					searchView.setLoginResult(" ", " ", false);
-				}
-
-				if (snipEditView != null) {
-					snipEditView.setLoginResult(" ", " ", false);
-				}
-
-				if (registerView != null) {
-					registerView.setLoginResult(" ", " ", false);
-				}
-
-				if (profileView != null) {
-					profileView.getAppMenu().setAppMenu(currentUserBean);
-
-				}
-
-				GWT.runAsync(new RunAsyncCallback() {
-					public void onFailure(Throwable caught) {
-					}
-
-					public void onSuccess() {
-
-						currentUserBean.as().setAuth(false);
-						welcomePresenter.go(container, currentUserBean);
-						welcomeView.logout();
-					}
-				});
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
 			}
 
-			//*************************************** PROFILE-Caching url ****************************
-			else {
-
-				String[] temp = token.split(":");
-
-				log.info("AppController else parsing profile caching hash " + temp.length);
-
-				if (temp[0].equals(RDLConstants.Tokens.PROFILE)) {
-
-					if (profileView == null) {
-						log.info("AppController profileView == null ");
-						profileView = new ProfileViewImpl(currentUserBean);
-
-					} else {
-						log.info("AppController profileView == null else ");
-						profileView.setAvatarWhenViewIsNotNull();
-					}
-
-					final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
-					log.info("AppController Tokens.SERVICES ");
-					GWT.runAsync(new RunAsyncCallback() {
-						public void onFailure(Throwable caught) {
-						}
-
-						public void onSuccess() {
-							profilePresenter.go(container, currentUserBean);
-
-						}
-					});
-
+			public void onSuccess() {
+				if (currentUserBean.as().isAuth()) {
+					snipEditPresenter.go(container, currentUserBean);
+				} else {
+					History.newItem(RDLConstants.Tokens.WELCOME);
 				}
+			}
+		});
+	}
 
+	private void showSnipEdit(String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.IDEAS;
 
-			} // end else
+		String currentSnipId = "";
+		if (tokenSplit.length == 2) {
+			currentSnipId = tokenSplit[1];
+		}
+		log.info("AppController Tokens.SNIP_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId);
 
+		if (snipEditView == null) {
+			snipEditView = new SnipEditViewImpl(currentUserBean);
+		}
+		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 
-		} // end  if token != null
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
 
-	}// end onValueChanged
+			public void onSuccess() {
+				if (currentUserBean.as().isAuth()) {
+					snipEditPresenter.go(container, currentUserBean);
+				}
+			}
+		});
+	}
+
+	private void showSignUp() {
+		currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
+		if (registerView == null) {
+			registerView = new RegisterViewImpl();
+
+		}
+
+		final RegisterPresenter registerPresenter = new RegisterPresenter(registerView, this);
+		log.info("AppController Tokens.SIGN_UP ");
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				registerPresenter.go(container, currentUserBean);
+
+			}
+		});
+	}
+
+	private void showProfile() {
+		if (profileView == null) {
+			log.info("AppController profileView == null ");
+			profileView = new ProfileViewImpl(currentUserBean);
+
+		} else {
+			log.info("AppController profileView == null else ");
+			profileView.setAvatarWhenViewIsNotNull();
+		}
+
+		final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
+		log.info("AppController Tokens.SERVICES ");
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				profilePresenter.go(container, currentUserBean);
+
+			}
+		});
+	}
+
+	private void showLogOut() {
+		log.info("AppController Tokens.LOG_OUT ");
+
+		if (welcomeView == null) {
+			welcomeView = new WelcomeViewImpl(currentUserBean);
+		}
+
+		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+
+				currentUserBean.as().setAuth(false);
+				welcomePresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showProposalView(String[] tokenSplit) {
+		Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
+		log.info("AppController Tokens.PROPOSAL_VIEW");
+
+		String currentSnipId = "";
+		if (tokenSplit.length == 2) {
+			currentSnipId = tokenSplit[1];
+		}
+
+		if (proposalView == null) {
+			proposalView = new SnipViewImpl(currentUserBean);
+		}
+
+		final SnipPresenter snipPresenter = new SnipPresenter(proposalView, currentSnipId, this);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
+			}
+
+			public void onSuccess() {
+				//     if (currentUserBean.as().isAuth()) {
+				snipPresenter.go(container, currentUserBean);
+				//    } else {
+				//        History.newItem(RDLConstants.Tokens.WELCOME);
+				//    }
+
+			}
+		});
+	}
 
 	public AutoBean<CurrentUserBean> getCurrentUserBean() {
 		return currentUserBean;

@@ -5,17 +5,17 @@
              xmlns:rdl="urn:import:com.therdl.client.view.widget">
 
 
-    <g:HTMLPanel>
-        <rdl:AppMenu ui:field="appMenu"/>
-        <b:Container>
-            <b:Row>
-                <b:Column size="MD_4">
-                    <g:FocusPanel ui:field="profileImagePanel"></g:FocusPanel>
+	<g:HTMLPanel>
+		<rdl:AppMenu ui:field="appMenu"/>
+		<b:Container>
+			<b:Row>
+				<b:Column size="MD_4">
+					<g:FocusPanel ui:field="profileImagePanel"></g:FocusPanel>
 
-                    <g:HTMLPanel ui:field="titlePanel"></g:HTMLPanel>
-                    <g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
-                </b:Column>
-            </b:Row>
-        </b:Container>
-    </g:HTMLPanel>
+					<g:HTMLPanel ui:field="titlePanel"></g:HTMLPanel>
+					<g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
+				</b:Column>
+			</b:Row>
+		</b:Container>
+	</g:HTMLPanel>
 </ui:UiBinder>

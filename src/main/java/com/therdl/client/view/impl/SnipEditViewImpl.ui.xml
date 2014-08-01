@@ -1,23 +1,23 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder
-        xmlns:ui="urn:ui:com.google.gwt.uibinder"
-        xmlns:g="urn:import:com.google.gwt.user.client.ui"
-        xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
-        xmlns:rdl='urn:import:com.therdl.client.view.widget'>
+		xmlns:ui="urn:ui:com.google.gwt.uibinder"
+		xmlns:g="urn:import:com.google.gwt.user.client.ui"
+		xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+		xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 
-    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
-    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
-    <ui:style>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:style>
 
-	    .push {
-	    padding-top: 60px;
-	    }
+		.push {
+		padding-top: 60px;
+		}
 
-	    .noMargin{
-	        margin-bottom: 0px;
-	    }
+		.noMargin{
+		margin-bottom: 0px;
+		}
 
-    </ui:style>
+	</ui:style>
 	<g:ScrollPanel>
 		<b:Container>
 			<rdl:AppMenu ui:field="appMenu"/>
@@ -26,26 +26,26 @@
 				<b:FieldSet>
 					<b:Panel>
 						<b:PanelHeader>
-							<g:FlowPanel ui:field="snipTypeBar" />
+							<g:FlowPanel ui:field="snipTypeBar"/>
 							<b:FormGroup ui:field="categoryFormGroup" addStyleNames="{style.noMargin}">
-								<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:" />
-								<g:FlowPanel addStyleNames="col-lg-6" >
+								<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:"/>
+								<g:FlowPanel addStyleNames="col-lg-6">
 									<b:TextBox b:id="formTitle" ui:field="title" tabIndex="1"/>
 								</g:FlowPanel>
-								<b:FormLabel for="formCategList" addStyleNames="col-lg-1" text="{i18n.category}:" />
-								<g:FlowPanel addStyleNames="col-lg-2" >
+								<b:FormLabel for="formCategList" addStyleNames="col-lg-1" text="{i18n.category}:"/>
+								<g:FlowPanel addStyleNames="col-lg-2">
 									<b:ListBox b:id="formCategList" ui:field="categoryList" tabIndex="2"/>
 								</g:FlowPanel>
 							</b:FormGroup>
 
 							<b:FormGroup ui:field="proposalFormGroup" addStyleNames="{style.noMargin}">
-								<b:FormLabel for="formPropTypeList" addStyleNames="col-lg-2" text="{i18n.type}:" />
-								<g:FlowPanel addStyleNames="col-lg-3" >
+								<b:FormLabel for="formPropTypeList" addStyleNames="col-lg-2" text="{i18n.type}:"/>
+								<g:FlowPanel addStyleNames="col-lg-3">
 									<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
 								</g:FlowPanel>
 
-								<b:FormLabel for="formStateList" addStyleNames="col-lg-2" text="{i18n.state}:" />
-								<g:FlowPanel addStyleNames="col-lg-3" >
+								<b:FormLabel for="formStateList" addStyleNames="col-lg-2" text="{i18n.state}:"/>
+								<g:FlowPanel addStyleNames="col-lg-3">
 									<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
 								</g:FlowPanel>
 							</b:FormGroup>
@@ -59,7 +59,7 @@
 						</b:PanelFooter>
 					</b:Panel>
 				</b:FieldSet>
-	        </b:Form>
+			</b:Form>
 		</b:Container>
 	</g:ScrollPanel>
 

@@ -12,21 +12,21 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.therdl.shared.RDLConstants;
 
 public class LogoutPopupWidget extends PopupPanel {
-    interface LogoutPopupWidgetUiBinder extends UiBinder<HTMLPanel, LogoutPopupWidget> {
-    }
+	interface LogoutPopupWidgetUiBinder extends UiBinder<HTMLPanel, LogoutPopupWidget> {
+	}
 
-    private static LogoutPopupWidgetUiBinder ourUiBinder = GWT.create(LogoutPopupWidgetUiBinder.class);
+	private static LogoutPopupWidgetUiBinder ourUiBinder = GWT.create(LogoutPopupWidgetUiBinder.class);
 
-    @UiField
-    Button okBtn;
+	@UiField
+	Button okBtn;
 
-    public LogoutPopupWidget() {
-        add(ourUiBinder.createAndBindUi(this));
-    }
+	public LogoutPopupWidget() {
+		add(ourUiBinder.createAndBindUi(this));
+	}
 
-    @UiHandler("okBtn")
-    public void onOkBtnClicked(ClickEvent event) {
-        this.hide();
-        History.newItem(RDLConstants.Tokens.WELCOME);
-    }
+	@UiHandler("okBtn")
+	public void onOkBtnClicked(ClickEvent event) {
+		this.hide();
+		History.newItem(RDLConstants.Tokens.WELCOME);
+	}
 }

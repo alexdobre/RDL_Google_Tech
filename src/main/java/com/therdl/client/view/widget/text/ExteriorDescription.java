@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class ExteriorDescription extends Composite {
 
-    interface ExteriorDescriptionUiBinder extends UiBinder<HTMLPanel, ExteriorDescription> {
-    }
+	interface ExteriorDescriptionUiBinder extends UiBinder<HTMLPanel, ExteriorDescription> {
+	}
 
-    private static ExteriorDescriptionUiBinder uiBinder = GWT.create(ExteriorDescriptionUiBinder.class);
+	private static ExteriorDescriptionUiBinder uiBinder = GWT.create(ExteriorDescriptionUiBinder.class);
 
-    public ExteriorDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public ExteriorDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

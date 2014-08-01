@@ -31,7 +31,7 @@ public class DbFileServiceImpl implements DbFileService {
 	private static Logger log = Logger.getLogger(DbFileServiceImpl.class.getName());
 
 	@Inject
-	public DbFileServiceImpl (DbProvider dbProvider){
+	public DbFileServiceImpl(DbProvider dbProvider) {
 		this.dbProvider = dbProvider;
 	}
 

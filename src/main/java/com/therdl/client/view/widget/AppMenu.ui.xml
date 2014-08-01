@@ -1,43 +1,47 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
-        >
-    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+		>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:with field="nameTokens" type="com.therdl.client.view.common.NameTokens"/>
 
 	<b:Navbar position="FIXED_TOP">
 		<b:Container>
-	        <b:NavbarHeader>
-	            <b:NavbarBrand targetHistoryToken="{nameTokens.getWelcome}" ui:field="home">TheRDL</b:NavbarBrand>
-	            <b:NavbarCollapseButton dataTarget="#navbar-collapse"/>
-	        </b:NavbarHeader>
-	        <b:NavbarCollapse b:id="navbar-collapse">
-	            <b:NavbarNav>
-	                <b:AnchorListItem ui:field="ideas" targetHistoryToken="{nameTokens.getSnips}" text="{i18n.ideas}"/>
-	                <b:AnchorListItem ui:field="stories" targetHistoryToken="{nameTokens.getStories}" text="{i18n.stories}"/>
-	                <b:AnchorListItem ui:field="improvements" targetHistoryToken="{nameTokens.getImprovements}" text="{i18n.improvements}"/>
-	            </b:NavbarNav>
+			<b:NavbarHeader>
+				<b:NavbarBrand targetHistoryToken="{nameTokens.getWelcome}" ui:field="home">TheRDL</b:NavbarBrand>
+				<b:NavbarCollapseButton dataTarget="#navbar-collapse"/>
+			</b:NavbarHeader>
+			<b:NavbarCollapse b:id="navbar-collapse">
+				<b:NavbarNav>
+					<b:AnchorListItem ui:field="ideas" targetHistoryToken="{nameTokens.getSnips}" text="{i18n.ideas}"/>
+					<b:AnchorListItem ui:field="stories" targetHistoryToken="{nameTokens.getStories}"
+					                  text="{i18n.stories}"/>
+					<b:AnchorListItem ui:field="improvements" targetHistoryToken="{nameTokens.getImprovements}"
+					                  text="{i18n.improvements}"/>
+				</b:NavbarNav>
 
-	            <b:NavbarForm pull="LEFT">
-	                <b:TextBox ui:field="searchSiteContent" width="400px" placeholder="Search Site Content"
-	                           addStyleNames="col-lg-8"/>
-	            </b:NavbarForm>
+				<b:NavbarForm pull="LEFT">
+					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="Search Site Content"
+					           addStyleNames="col-lg-8"/>
+				</b:NavbarForm>
 
-	            <b:NavbarNav pull="RIGHT">
-	                <b:AnchorListItem ui:field="login" text="{i18n.logIn}"/>
-	                <b:AnchorListItem ui:field="signUp" targetHistoryToken="{nameTokens.getSignUp}" text="{i18n.appMenuSignUp}"/>
-	                <b:ListDropDown>
-	                    <b:Divider/>
-	                    <b:AnchorButton ui:field="userDetails" dataToggle="DROPDOWN" text="{i18n.userDetails}"></b:AnchorButton>
-	                    <b:DropDownMenu>
-	                        <b:NavbarHeader title="{i18n.userName}" ui:field="user"></b:NavbarHeader>
-	                        <b:AnchorListItem text="{i18n.email}" ui:field="email"></b:AnchorListItem>
-	                        <b:AnchorListItem text="{i18n.userProfile}" ui:field="profile"></b:AnchorListItem>
-	                        <b:AnchorListItem text="{i18n.logOut}" ui:field="out"></b:AnchorListItem>
-	                    </b:DropDownMenu>
-	                </b:ListDropDown>
-	            </b:NavbarNav>
-	        </b:NavbarCollapse>
+				<b:NavbarNav pull="RIGHT">
+					<b:AnchorListItem ui:field="login" text="{i18n.logIn}"/>
+					<b:AnchorListItem ui:field="signUp" targetHistoryToken="{nameTokens.getSignUp}"
+					                  text="{i18n.appMenuSignUp}"/>
+					<b:ListDropDown>
+						<b:Divider/>
+						<b:AnchorButton ui:field="userDetails" dataToggle="DROPDOWN"
+						                text="{i18n.userDetails}"></b:AnchorButton>
+						<b:DropDownMenu>
+							<b:NavbarHeader title="{i18n.userName}" ui:field="user"></b:NavbarHeader>
+							<b:AnchorListItem text="{i18n.email}" ui:field="email"></b:AnchorListItem>
+							<b:AnchorListItem text="{i18n.userProfile}" ui:field="profile"></b:AnchorListItem>
+							<b:AnchorListItem text="{i18n.logOut}" ui:field="out"></b:AnchorListItem>
+						</b:DropDownMenu>
+					</b:ListDropDown>
+				</b:NavbarNav>
+			</b:NavbarCollapse>
 		</b:Container>
 	</b:Navbar>
 </ui:UiBinder> 

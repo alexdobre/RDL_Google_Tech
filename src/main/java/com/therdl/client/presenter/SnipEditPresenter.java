@@ -1,7 +1,5 @@
 package com.therdl.client.presenter;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -20,7 +18,6 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
 /**
@@ -37,13 +34,9 @@ import com.therdl.shared.beans.SnipBean;
  * @ String currentSnipId  used to retrieve the users correct snip
  */
 
-public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditView.Presenter, ValueChangeHandler<String> {
+public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implements SnipEditView.Presenter, ValueChangeHandler<String> {
 
-	private final SnipEditView view;
-	//    private List<JSOModel> jSon1List;
-	private List<JSOModel> jSonList;
 	private String currentSnipId;
-
 
 	public SnipEditPresenter(SnipEditView view, String currentSnipId, AppController appController) {
 		super(appController);
@@ -54,38 +47,18 @@ public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditV
 	}
 
 	@Override
-	public void go(HasWidgets container) {
-		container.clear();
-		container.add(view.asWidget());
-
-		loadEditor();
-		loginCookieCheck();
-	}
-
-	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		log.info("SnipSearchPresenter go");
+		checkLogin(view.getAppMenu(), currentUserBean);
 		container.clear();
 		container.add(view.asWidget());
-		loginCookieCheck();
-		// user must be authorised to edit
-		if (getController().getCurrentUserBean().as().isAuth()) {
-			log.info("!controller.getCurrentUserBean().as().isAuth()  ");
-			view.getAppMenu().setLogOutVisible(true);
-			view.getAppMenu().setSignUpVisible(false);
-			view.getAppMenu().setUserInfoVisible(true);
-			view.setLoginResult(getController().getCurrentUserBean().as().getName(),
-					getController().getCurrentUserBean().as().getEmail(), true);
-		}
-
 		loadEditor();
 	}
 
-    /*
+	/*
 	 * loads snip editor for creating new snip when there is no selected snip
-     * or send request to find snip with the current snip id
-     */
-
+	 * or send request to find snip with the current snip id
+	 */
 	private void loadEditor() {
 		if (!currentSnipId.equals("")) {
 			findSnipById(currentSnipId);
@@ -94,11 +67,10 @@ public class SnipEditPresenter extends RdlAbstractPresenter implements SnipEditV
 		}
 	}
 
-    /*
-     * send request to edit selected snip
-     * @param bean snip bean to edit
-     */
-
+	/*
+	 * send request to edit selected snip
+	 * @param bean snip bean to edit
+	 */
 	@Override
 	public void submitEditedBean(AutoBean<SnipBean> bean, final String pageToRedirect) {
 		bean.as().setAction("update");

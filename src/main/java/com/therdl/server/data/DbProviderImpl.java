@@ -19,9 +19,9 @@ public class DbProviderImpl implements DbProvider {
 
 	private MongoClient mongoClient;
 
-	public DB getDb(){
+	public DB getDb() {
 		try {
-			if (mongoClient == null){
+			if (mongoClient == null) {
 				mongoClient = new MongoClient("localhost", 27017);
 			}
 

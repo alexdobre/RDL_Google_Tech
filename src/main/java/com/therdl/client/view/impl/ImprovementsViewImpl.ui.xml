@@ -2,20 +2,20 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
-    <ui:style src="../cssbundles/searchView.css"/>
+	<ui:style src="../cssbundles/searchView.css"/>
 
-    <g:HTMLPanel>
-        <rdl:AppMenu ui:field="appMenu"/>
-        <div style="width:1124px;margin:auto;">
-            <rdl:ImprovementsMenu></rdl:ImprovementsMenu>
-            <g:FlowPanel styleName="{style.mainContainer}">
-                <g:FlowPanel styleName="{style.leftPanel}">
-                    <g:FlowPanel ui:field="impSearchWidgetPanel"/>
-                    <rdl:SocialPanel styleName="{style.socialPanel}"/>
-                </g:FlowPanel>
-                <rdl:LoadingWidget ui:field="impLoadingWidget"></rdl:LoadingWidget>
-                <g:FlowPanel ui:field="impListRowContainer" />
-            </g:FlowPanel>
-        </div>
-    </g:HTMLPanel>
+	<g:HTMLPanel>
+		<rdl:AppMenu ui:field="appMenu"/>
+		<div style="width:1124px;margin:auto;">
+			<rdl:ImprovementsMenu></rdl:ImprovementsMenu>
+			<g:FlowPanel styleName="{style.mainContainer}">
+				<g:FlowPanel styleName="{style.leftPanel}">
+					<g:FlowPanel ui:field="impSearchWidgetPanel"/>
+					<rdl:SocialPanel styleName="{style.socialPanel}"/>
+				</g:FlowPanel>
+				<rdl:LoadingWidget ui:field="impLoadingWidget"></rdl:LoadingWidget>
+				<g:FlowPanel ui:field="impListRowContainer"/>
+			</g:FlowPanel>
+		</div>
+	</g:HTMLPanel>
 </ui:UiBinder>

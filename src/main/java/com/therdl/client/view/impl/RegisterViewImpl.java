@@ -6,7 +6,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.RegisterView;
@@ -33,138 +36,114 @@ import java.util.logging.Logger;
  */
 public class RegisterViewImpl extends Composite implements RegisterView {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    interface RegisterViewImplUiBinder extends UiBinder<Widget, RegisterViewImpl> {
-    }
+	interface RegisterViewImplUiBinder extends UiBinder<Widget, RegisterViewImpl> {
+	}
 
-    private static RegisterViewImplUiBinder uiBinder = GWT.create(RegisterViewImplUiBinder.class);
+	private static RegisterViewImplUiBinder uiBinder = GWT.create(RegisterViewImplUiBinder.class);
 
-    private RegisterView.Presenter presenter;
+	private RegisterView.Presenter presenter;
 
-    private Beanery beanery = GWT.create(Beanery.class);
-
-
-    @UiField
-    AppMenu appMenu;
-
-    @UiField
-    TextBox userName;
-
-    @UiField
-    TextBox email;
-
-    @UiField
-    PasswordTextBox psswd;
-
-    @UiField
-    PasswordTextBox cpsswd;
-
-    @UiField
-    org.gwtbootstrap3.client.ui.Button submitBtn;
-
-    private String username;
-    private String password;
-    private String eMail;
-
-    public RegisterViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
-        appMenu.setSignUpView();
-        appMenu.setSignUpActive();
-    }
+	private Beanery beanery = GWT.create(Beanery.class);
 
 
-    /**
-     * Handler for form submit
-     *
-     * @param event ClickEvent Standard GWT ClickEvent
-     *              FieldVerifier static class for validation
-     *              AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
-     *              presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
-     */
-    @UiHandler("submitBtn")
-    public void onSubmit(ClickEvent event) {
-        log.info("RegisterViewImpl onSubmit verifying fields");
+	@UiField
+	AppMenu appMenu;
 
-        username = userName.getText();
-        password = psswd.getText();
-        eMail = email.getText();
+	@UiField
+	TextBox userName;
 
-        log.info("RegisterViewImpl onSubmit verifying fields email.getText() " + email.getText());
-        log.info("RegisterViewImpl onSubmit verifying fields eMail " + eMail);
-        log.info("RegisterViewImpl onSubmit verifying fields password " + password);
-        log.info("RegisterViewImpl onSubmit verifying fields username " + username);
+	@UiField
+	TextBox email;
 
+	@UiField
+	PasswordTextBox psswd;
 
-        // can extend validation code here
+	@UiField
+	PasswordTextBox cpsswd;
 
-        if (username.equals("") || password.equals("") || cpsswd.equals("") || email.equals("")) {
-            Window.alert(RDL.i18n.enterRequiredData());
-            return;
-        }
+	@UiField
+	org.gwtbootstrap3.client.ui.Button submitBtn;
 
-        if (!FieldVerifier.isValidName(username)) {
-            Window.alert(RDL.i18n.enterValidUserName());
-            return;
-        }
+	private String username;
+	private String password;
+	private String eMail;
 
-        if (!FieldVerifier.isValidName(eMail)) {
-            Window.alert(RDL.i18n.enterValidEmail());
-            return;
-        }
-
-        if (!FieldVerifier.isValidName(password)) {
-            Window.alert(RDL.i18n.enterValidPass());
-            return;
-        }
+	public RegisterViewImpl() {
+		initWidget(uiBinder.createAndBindUi(this));
+		appMenu.setSignUpView();
+		appMenu.setSignUpActive();
+	}
 
 
-        if (FieldVerifier.confirmPassword(psswd.getText(), cpsswd.getText())) {
+	/**
+	 * Handler for form submit
+	 *
+	 * @param event ClickEvent Standard GWT ClickEvent
+	 *              FieldVerifier static class for validation
+	 *              AutoBean<AuthUserBean> newUserBean construct a bgean from supplied credentials
+	 *              presenter.submitNewUser(newUserBean) submits bean for sign up in com.therdl.server.restapi.SessionServlet class
+	 */
+	@UiHandler("submitBtn")
+	public void onSubmit(ClickEvent event) {
+		log.info("RegisterViewImpl onSubmit verifying fields");
 
-            AutoBean<AuthUserBean> newUserBean = beanery.authBean();
-            newUserBean.as().setAuth(false);
-            newUserBean.as().setName(username);
-            newUserBean.as().setEmail(eMail);
-            newUserBean.as().setPassword(password);
-            newUserBean.as().setIsRDLSupporter(false);
-            newUserBean.as().setRep(0);
-            presenter.submitNewUser(newUserBean);
+		username = userName.getText();
+		password = psswd.getText();
+		eMail = email.getText();
 
-        } else Window.alert(RDL.i18n.passwordsDoNotMatch());
-
-    }
-
-
-    /**
-     * Sets the upper header Menu to the correct state for supplied credentials
-     * post sign up called from presenter
-     *
-     * @param name  supplied credential
-     * @param email supplied credential
-     * @param auth  auth state from server via presenter
-     */
-    @Override
-    public void setLoginResult(String name, String email, boolean auth) {
-        if (auth) {
-            log.info("SnipSearchViewImpl setLoginResult auth true " + name);
-
-            this.appMenu.setLogOutVisible(true);
-            this.appMenu.setSignUpVisible(false);
-            this.appMenu.setUserInfoVisible(true);
-            this.appMenu.setUser(name);
-            this.appMenu.setLogInVisible(false);
-        } else {
-            this.appMenu.setLogOutVisible(false);
-            this.appMenu.setSignUpVisible(true);
-            this.appMenu.setUserInfoVisible(false);
-            this.appMenu.setLogInVisible(true);
-        }
-
-    }
+		log.info("RegisterViewImpl onSubmit verifying fields email.getText() " + email.getText());
+		log.info("RegisterViewImpl onSubmit verifying fields eMail " + eMail);
+		log.info("RegisterViewImpl onSubmit verifying fields password " + password);
+		log.info("RegisterViewImpl onSubmit verifying fields username " + username);
 
 
-    @Override
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
-    }
+		// can extend validation code here
+
+		if (username.equals("") || password.equals("") || cpsswd.equals("") || email.equals("")) {
+			Window.alert(RDL.i18n.enterRequiredData());
+			return;
+		}
+
+		if (!FieldVerifier.isValidName(username)) {
+			Window.alert(RDL.i18n.enterValidUserName());
+			return;
+		}
+
+		if (!FieldVerifier.isValidName(eMail)) {
+			Window.alert(RDL.i18n.enterValidEmail());
+			return;
+		}
+
+		if (!FieldVerifier.isValidName(password)) {
+			Window.alert(RDL.i18n.enterValidPass());
+			return;
+		}
+
+
+		if (FieldVerifier.confirmPassword(psswd.getText(), cpsswd.getText())) {
+
+			AutoBean<AuthUserBean> newUserBean = beanery.authBean();
+			newUserBean.as().setAuth(false);
+			newUserBean.as().setName(username);
+			newUserBean.as().setEmail(eMail);
+			newUserBean.as().setPassword(password);
+			newUserBean.as().setIsRDLSupporter(false);
+			newUserBean.as().setRep(0);
+			presenter.submitNewUser(newUserBean);
+
+		} else Window.alert(RDL.i18n.passwordsDoNotMatch());
+
+	}
+
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public AppMenu getAppMenu(){
+		return appMenu;
+	}
 }

@@ -1,13 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.Date;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Tooltip;
-import org.gwtbootstrap3.client.ui.constants.Trigger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -29,6 +21,12 @@ import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Tooltip;
+
+import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * gwt widget for snip list row
@@ -50,7 +48,7 @@ public class SnipListRow extends Composite {
 	@UiField
 	FlowPanel colorStripe, snipImgParent;
 	@UiField
-	Label posRef, neutRef, negRef , pledgesCount, countersCount, proposalType, proposalState;
+	Label posRef, neutRef, negRef, pledgesCount, countersCount, proposalType, proposalState;
 	@UiField
 	Badge creationDate, viewCount, postsCount, userName, rep;
 	@UiField
@@ -62,7 +60,7 @@ public class SnipListRow extends Composite {
 	@UiField
 	Tooltip snipTitleTooltip, snipImageTooltip;
 
-	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean ) {
+	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean) {
 		initWidget(ourUiBinder.createAndBindUi(this));
 		this.snipBean = snipBean;
 		this.currentUserBean = currentUserBean;
@@ -143,24 +141,24 @@ public class SnipListRow extends Composite {
 		}
 	}
 
-	private void displaySnipTitle(){
+	private void displaySnipTitle() {
 		String snipTitleString = snipBean.as().getTitle();
-		if (snipTitleString.length() <= TITLE_MAX_LENGTH){
+		if (snipTitleString.length() <= TITLE_MAX_LENGTH) {
 			snipTitle.setText(snipTitleString);
-		}else {
-			snipTitle.setText(snipTitleString.substring(0,56)+"...");
+		} else {
+			snipTitle.setText(snipTitleString.substring(0, 56) + "...");
 			snipTitleTooltip.setTitle(snipTitleString);
 		}
 	}
 
 	@UiHandler("snipTitle")
-	public void snipTitleCliked (ClickEvent event) {
+	public void snipTitleCliked(ClickEvent event) {
 		triggerViewSnip();
 	}
 
-	private void triggerViewSnip(){
+	private void triggerViewSnip() {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-			History.newItem(RDLConstants.Tokens.SNIP_VIEW+ ":" + snipBean.as().getId());
+			History.newItem(RDLConstants.Tokens.SNIP_VIEW + ":" + snipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
 			History.newItem(RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))

@@ -2,7 +2,12 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.http.client.*;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -33,104 +38,79 @@ import java.util.ArrayList;
  */
 
 
-public class SnipSearchPresenter extends RdlAbstractPresenter implements SearchView.Presenter {
+public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implements SearchView.Presenter {
 
-    private final SearchView searchView;
-    private ArrayList<JSOModel> jSonList;
-    private AutoBean<SnipBean> currentBean;
+	public SnipSearchPresenter(SearchView searchView, AppController controller) {
+		super(controller);
+		this.view = searchView;
+		this.view.setPresenter(this);
+		log.info("SnipSearchPresenter constructor");
+	}
 
+	@Override
+	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		log.info("SnipSearchPresenter go adding view");
+		checkLogin(view.getAppMenu(),currentUserBean);
+		container.clear();
+		container.add(view.asWidget());
+	}
 
-    public SnipSearchPresenter(SearchView searchView, AppController controller) {
-        super(controller);
-        this.searchView = searchView;
-        this.searchView.setPresenter(this);
-        log.info("SnipSearchPresenter constructor");
-    }
+	/**
+	 * Handles snips searching request | response
+	 *
+	 * @param searchOptionsBean : bean of the snip search options
+	 */
+	@Override
+	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
+		log.info("SnipSearchPresenter getSnipSearchResult");
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-    @Override
-    public void go(HasWidgets container) {
-        log.info("SnipSearchPresenter go adding view");
-        container.clear();
-        container.add(searchView.asWidget());
-        loginCookieCheck();
-    }
+		if (!Constants.DEPLOY) {
+			updateUrl = updateUrl.replaceAll("/therdl", "");
+		}
 
-    @Override
-    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-        log.info("SnipSearchPresenter go adding view");
-        container.clear();
-        container.add(searchView.asWidget());
-        loginCookieCheck();
-        // use auth code here to handle app menu options
-        if (getController().getCurrentUserBean().as().isAuth()) {
-            log.info("SnipSearchPresenter go !controller.getCurrentUserBean().as().isAuth()  ");
-            searchView.getAppMenu().setLogOutVisible(true);
-            searchView.getAppMenu().setSignUpVisible(false);
-            searchView.getAppMenu().setUserInfoVisible(true);
-            searchView.setLoginResult(getController().getCurrentUserBean().as().getName(),
-                    getController().getCurrentUserBean().as().getEmail(), true);
-        } else {
-            searchView.getAppMenu().setUserInfoVisible(false);
-            searchView.getAppMenu().setUserInfoVisible(false);
-        }
-    }
+		log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: " + updateUrl);
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
 
-    /**
-     * Handles snips searching request | response
-     *
-     * @param searchOptionsBean : bean of the snip search options
-     */
-    @Override
-    public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
-        log.info("SnipSearchPresenter getSnipSearchResult");
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		searchOptionsBean.as().setPageIndex(pageIndex);
+		searchOptionsBean.as().setAction("search");
 
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
+		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
+		try {
 
-        log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
+			requestBuilder.sendRequest(json, new RequestCallback() {
 
-        searchOptionsBean.as().setPageIndex(pageIndex);
-        searchOptionsBean.as().setAction("search");
+				@Override
+				public void onResponseReceived(Request request, Response response) {
 
-        String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
-        try {
+					log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
+					log.info("SnipSearchPresenter onResponseReceived json" + response.getText());
 
-            requestBuilder.sendRequest(json, new RequestCallback() {
+					JsArray<JSOModel> data =
+							JSOModel.arrayFromJson(response.getText());
 
-                @Override
-                public void onResponseReceived(Request request, Response response) {
+					ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
+					ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
-                    log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-                    log.info("SnipSearchPresenter onResponseReceived json" + response.getText());
+					for (int i = 0; i < data.length(); i++) {
+						jSonList.add(data.get(i));
+						beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
 
-                    JsArray<JSOModel> data =
-                            JSOModel.arrayFromJson(response.getText());
+					}
 
-                    ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
-                    ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
+					view.displaySnipList(beanList, pageIndex, calculateListRange(beanList.size(), pageIndex));
+				}
 
-                    for (int i = 0; i < data.length(); i++) {
-                        jSonList.add(data.get(i));
-                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
+				@Override
+				public void onError(Request request, Throwable exception) {
+					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
+				}
 
-                    }
-
-                    searchView.displaySnipList(beanList, pageIndex, calculateListRange(beanList.size(),pageIndex));
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-                }
-
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-    }
+			});
+		} catch (RequestException e) {
+			log.info(e.getLocalizedMessage());
+		}
+	}
 
 }

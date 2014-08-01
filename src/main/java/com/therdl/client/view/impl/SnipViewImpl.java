@@ -269,7 +269,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 		}
 	}
 
-	private void initSearchOptionsBean(){
+	private void initSearchOptionsBean() {
 		searchOptionsBean = beanery.snipBean();
 		searchOptionsBean.as().setSortOrder(-1);
 		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
@@ -325,18 +325,16 @@ public class SnipViewImpl extends Composite implements SnipView {
 	}
 
 	@Override
-	public void showHideEditButton(Boolean show) {
-		ViewUtils.showHide(show, editBtn);
-	}
-
-	@Override
-	public void showHideLikeButton(Boolean show) {
-		if (show) {
-			ViewUtils.show(repBtn);
-			ViewUtils.hide(repGivenIcon);
-		} else {
-			ViewUtils.hide(repBtn);
+	public void showHideLikeOrEditButton(Boolean isAuthor, Boolean repGiven) {
+		ViewUtils.hide(editBtn);
+		ViewUtils.hide(repBtn);
+		ViewUtils.hide(repGivenIcon);
+		if (isAuthor) {
+			ViewUtils.show(editBtn);
+		} else if (repGiven) {
 			ViewUtils.show(repGivenIcon);
+		} else {
+			ViewUtils.show(repBtn);
 		}
 	}
 
@@ -435,5 +433,9 @@ public class SnipViewImpl extends Composite implements SnipView {
 
 	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean) {
 		this.searchOptionsBean = searchOptionsBean;
+	}
+
+	public AppMenu getAppMenu(){
+		return appMenu;
 	}
 }

@@ -9,7 +9,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SignInView;
 import com.therdl.shared.RDLConstants;
@@ -32,169 +35,169 @@ import java.util.logging.Logger;
 
 public class SignInViewImpl extends PopupPanel implements SignInView {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    private Presenter presenter;
+	private Presenter presenter;
 
-    private boolean alreadyInit;
+	private boolean alreadyInit;
 
-    private final WelcomeViewImpl welcomeViewImpl;
+	private final WelcomeViewImpl welcomeViewImpl;
 
-    private static SignInViewImplUiBinder uiBinder = GWT.create(SignInViewImplUiBinder.class);
+	private static SignInViewImplUiBinder uiBinder = GWT.create(SignInViewImplUiBinder.class);
 
-    @UiField
-    PasswordTextBox password;
+	@UiField
+	PasswordTextBox password;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.TextBox email;
+	@UiField
+	org.gwtbootstrap3.client.ui.TextBox email;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Button submit;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button submit;
 
-    @UiField
-    CheckBox rememberMe;
-
-
-    @UiField
-    org.gwtbootstrap3.client.ui.Label loginFail;
+	@UiField
+	CheckBox rememberMe;
 
 
-    interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
-    }
-
-    public SignInViewImpl(WelcomeViewImpl welcomeView) {
-        super(true);
-        add(uiBinder.createAndBindUi(this));
-        this.welcomeViewImpl = welcomeView;
-        password.setText("password");
-        email.setText("Email");
-        this.setStyleName("signInView");
-        rememberMe.setValue(true);
-
-        // user has just successfully logged in update app menu
-        GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
-
-            @Override
-            public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
-                hide();
-            }
-        });
+	@UiField
+	org.gwtbootstrap3.client.ui.Label loginFail;
 
 
-    }
+	interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
+	}
 
-    /**
-     * get the password string
-     *
-     * @param event Standard GWT ClickEvent
-     */
-    @UiHandler("password")
-    public void onUserFocused(FocusEvent event) {
-        password.setText("");
-    }
+	public SignInViewImpl(WelcomeViewImpl welcomeView) {
+		super(true);
+		add(uiBinder.createAndBindUi(this));
+		this.welcomeViewImpl = welcomeView;
+		password.setText("password");
+		email.setText("Email");
+		this.setStyleName("signInView");
+		rememberMe.setValue(true);
 
-    /**
-     * get the email string
-     *
-     * @param event Standard GWT ClickEvent
-     */
-    @UiHandler("email")
-    public void onEmailFocused(FocusEvent event) {
-        email.setText("");
-    }
+		// user has just successfully logged in update app menu
+		GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
-    /**
-     * Handler for form submit
-     *
-     * @param event Standard GWT ClickEvent
-     *              <p/>
-     *              welcomeViewImpl.onSubmit(eMail, psswd ) submits bean for sign-in in
-     *              com.therdl.server.restapi.SessionServlet class
-     */
-    @UiHandler("submit")
-    public void onSubmit(ClickEvent event) {
-        onSubmit();
-    }
-
-    @UiHandler("password")
-    public void onPassEnter(KeyDownEvent event) {
-        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-            onSubmit();
-        }
-    }
-
-    @UiHandler("email")
-    public void onEmailEnter(KeyDownEvent event) {
-        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-            onSubmit();
-        }
-    }
-
-    private void onSubmit() {
-        log.info("SignInViewImpl onSubmit");
-
-        String eMail = email.getText();
-        String password = this.password.getText();
-        Boolean rememberMe = this.rememberMe.getValue();
-
-        log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
-
-        if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
-            welcomeViewImpl.onSubmit(eMail, password, rememberMe);
-
-        } else {
-            loginFail.setVisible(true);
-            loginFail.setText(RDL.i18n.loginFailMsg1());
-
-        }
-    }
-
-    /**
-     * click handler for sign up link, redirects to sign up view
-     *
-     * @param event
-     */
-    @UiHandler("signUpLink")
-    public void onSignUpLinkClicked(ClickEvent event) {
-        History.newItem(RDLConstants.Tokens.SIGN_UP);
-    }
-
-    /**
-     * click handler for sign up link, redirects to sign up view
-     *
-     * @param event
-     */
-    @UiHandler("forgotPassLink")
-    public void onForgotPassLinkClicked(ClickEvent event) {
-        welcomeViewImpl.showForgotPasswordPopUp();
-    }
+			@Override
+			public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
+				hide();
+			}
+		});
 
 
-    @Override
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
-    }
+	}
+
+	/**
+	 * get the password string
+	 *
+	 * @param event Standard GWT ClickEvent
+	 */
+	@UiHandler("password")
+	public void onUserFocused(FocusEvent event) {
+		password.setText("");
+	}
+
+	/**
+	 * get the email string
+	 *
+	 * @param event Standard GWT ClickEvent
+	 */
+	@UiHandler("email")
+	public void onEmailFocused(FocusEvent event) {
+		email.setText("");
+	}
+
+	/**
+	 * Handler for form submit
+	 *
+	 * @param event Standard GWT ClickEvent
+	 *              <p/>
+	 *              welcomeViewImpl.onSubmit(eMail, psswd ) submits bean for sign-in in
+	 *              com.therdl.server.restapi.SessionServlet class
+	 */
+	@UiHandler("submit")
+	public void onSubmit(ClickEvent event) {
+		onSubmit();
+	}
+
+	@UiHandler("password")
+	public void onPassEnter(KeyDownEvent event) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+			onSubmit();
+		}
+	}
+
+	@UiHandler("email")
+	public void onEmailEnter(KeyDownEvent event) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+			onSubmit();
+		}
+	}
+
+	private void onSubmit() {
+		log.info("SignInViewImpl onSubmit");
+
+		String eMail = email.getText();
+		String password = this.password.getText();
+		Boolean rememberMe = this.rememberMe.getValue();
+
+		log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
+
+		if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
+			welcomeViewImpl.onSubmit(eMail, password, rememberMe);
+
+		} else {
+			loginFail.setVisible(true);
+			loginFail.setText(RDL.i18n.loginFailMsg1());
+
+		}
+	}
+
+	/**
+	 * click handler for sign up link, redirects to sign up view
+	 *
+	 * @param event
+	 */
+	@UiHandler("signUpLink")
+	public void onSignUpLinkClicked(ClickEvent event) {
+		History.newItem(RDLConstants.Tokens.SIGN_UP);
+	}
+
+	/**
+	 * click handler for sign up link, redirects to sign up view
+	 *
+	 * @param event
+	 */
+	@UiHandler("forgotPassLink")
+	public void onForgotPassLinkClicked(ClickEvent event) {
+		welcomeViewImpl.showForgotPasswordPopUp();
+	}
 
 
-    public PasswordTextBox getPassword() {
-        return password;
-    }
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
 
-    public org.gwtbootstrap3.client.ui.TextBox getEmail() {
-        return email;
-    }
 
-    @Override
-    public org.gwtbootstrap3.client.ui.Label getLoginFail() {
-        return loginFail;
-    }
+	public PasswordTextBox getPassword() {
+		return password;
+	}
 
-    @Override
-    public void setSignIsVisible(boolean state) {
+	public org.gwtbootstrap3.client.ui.TextBox getEmail() {
+		return email;
+	}
 
-        this.setVisible(state);
+	@Override
+	public org.gwtbootstrap3.client.ui.Label getLoginFail() {
+		return loginFail;
+	}
 
-    }
+	@Override
+	public void setSignIsVisible(boolean state) {
+
+		this.setVisible(state);
+
+	}
 
 
 }

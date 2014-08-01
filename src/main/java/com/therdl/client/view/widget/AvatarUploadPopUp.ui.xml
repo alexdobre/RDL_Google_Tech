@@ -2,13 +2,13 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:style>
+	<ui:style>
 
-    </ui:style>
+	</ui:style>
 
 
-    <g:HTMLPanel ui:field="profileUpLoadFormPanel">
-        <g:FormPanel ui:field="uploadForm"/>
-    </g:HTMLPanel>
+	<g:HTMLPanel ui:field="profileUpLoadFormPanel">
+		<g:FormPanel ui:field="uploadForm"/>
+	</g:HTMLPanel>
 
 </ui:UiBinder>

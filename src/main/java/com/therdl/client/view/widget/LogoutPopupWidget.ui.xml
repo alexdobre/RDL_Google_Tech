@@ -1,25 +1,25 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
-    <ui:style>
+	<ui:style>
 
-        .labelText {
-            font-family: Arial, Sans-serif;
-            font-size: 14px;
-            margin: 20px;
-            text-align: center;
-        }
+		.labelText {
+		font-family: Arial, Sans-serif;
+		font-size: 14px;
+		margin: 20px;
+		text-align: center;
+		}
 
-        .btnPanel {
-            text-align: center;
-        }
+		.btnPanel {
+		text-align: center;
+		}
 
-    </ui:style>
-    <g:HTMLPanel>
-        <g:Label text="{i18n.successfulLogOut}" styleName='{style.labelText}'/>
-        <g:FlowPanel styleName="{style.btnPanel}">
-            <g:Button ui:field="okBtn" text="{i18n.ok}"/>
-        </g:FlowPanel>
-    </g:HTMLPanel>
+	</ui:style>
+	<g:HTMLPanel>
+		<g:Label text="{i18n.successfulLogOut}" styleName='{style.labelText}'/>
+		<g:FlowPanel styleName="{style.btnPanel}">
+			<g:Button ui:field="okBtn" text="{i18n.ok}"/>
+		</g:FlowPanel>
+	</g:HTMLPanel>
 </ui:UiBinder>

@@ -1,81 +1,81 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:style>
+	<ui:style>
 
-    </ui:style>
-    <g:HTMLPanel>
-
-
-        <div style="display: inline-block;">
-            <b>Exterior Incidences (in laws, sensibilities, parenting)</b>
-            <br/>
-        </div>
-        <hr/>
-        <span id="docs-internal-guid-57ea1dba-3e2e-cdf6-a76d-7354f670986d">
-            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">The
-                    exterior category deals with constructs formed outside the relationship in the past that are
-                    relevant in the present and with constructs outside the relationship that affect it now.
-                </span>
-            </p>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Such
-                    constructs may be growing up with parents and acquiring some of their habits, the job with the boss,
-                    the social circle and the raising of children.
-                </span>
-            </p>
-            <br/>
-            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">It
-                    is important to note that the parenting of children is in this category. This is intentional as the
-                    couple relationship may be deeply affected by children but it would be unwise to confuse couple
-                    relationships with family relationships. Neither parents of the partners nor children should be
-                    allowed to negatively affect or unbalance the couple while there is great benefit of them enriching
-                    the couple.
-                </span>
-            </p>
-            <br/>
-            <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
-            <p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
-                <span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
-                    <b>Joseph Burgo Phd - Why do I do that?</b>
-                </span>
-            </p>
-            <p dir="ltr"
-               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
-                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
-                    Generally speaking we all have sensibilities with their origins usually in our formative years all
-                    the way through adolescence or any dramatic event during our lives. We need to understand our own
-                    coping mechanisms when faced with negative emotions and endeavor to discuss them with and understand
-                    our partners.
-                </span>
-            </p>
-            <p dir="ltr"
-               style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
-                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Why
-                    Do I Do That? adapts the basic strategies of psycho-dynamic psychotherapy to a guided course in
-                    self-exploration, highlighting the universal role of defense mechanisms in warding off emotional
-                    pain. With easy-to-understand explanations, the first part teaches you about the unconscious mind
-                    and the role of psychological defenses in excluding difficult feelings from awareness. Individual
-                    chapters in the longer middle section explore the primary defense mechanisms one by one, with
-                    exercises to help you identify your own defenses at work. The final part offers guidance for how to
-                    "disarm" your defenses and cope more effectively with the unconscious feelings behind them.
-                    Psychological defense mechanisms are an inevitable and necessary part of the human experience; but
-                    when they become too pervasive or deeply entrenched, they may damage our personal relationships,
-                    restrict or distort our emotional lives and prevent us from behaving in ways that promote lasting
-                    self-esteem.
-                </span>
-            </p>
-            <div>
-                <span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
-                    <br/>
-                </span>
-            </div>
-        </span>
+	</ui:style>
+	<g:HTMLPanel>
 
 
-    </g:HTMLPanel>
+		<div style="display: inline-block;">
+			<b>Exterior Incidences (in laws, sensibilities, parenting)</b>
+			<br/>
+		</div>
+		<hr/>
+		<span id="docs-internal-guid-57ea1dba-3e2e-cdf6-a76d-7354f670986d">
+			<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+			<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+				<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">The
+					exterior category deals with constructs formed outside the relationship in the past that are
+					relevant in the present and with constructs outside the relationship that affect it now.
+				</span>
+			</p>
+			<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+				<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Such
+					constructs may be growing up with parents and acquiring some of their habits, the job with the boss,
+					the social circle and the raising of children.
+				</span>
+			</p>
+			<br/>
+			<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+			<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+				<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">It
+					is important to note that the parenting of children is in this category. This is intentional as the
+					couple relationship may be deeply affected by children but it would be unwise to confuse couple
+					relationships with family relationships. Neither parents of the partners nor children should be
+					allowed to negatively affect or unbalance the couple while there is great benefit of them enriching
+					the couple.
+				</span>
+			</p>
+			<br/>
+			<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;"></span>
+			<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;text-align: justify;">
+				<span style="font-size: 15px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+					<b>Joseph Burgo Phd - Why do I do that?</b>
+				</span>
+			</p>
+			<p dir="ltr"
+			   style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+				<span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+					Generally speaking we all have sensibilities with their origins usually in our formative years all
+					the way through adolescence or any dramatic event during our lives. We need to understand our own
+					coping mechanisms when faced with negative emotions and endeavor to discuss them with and understand
+					our partners.
+				</span>
+			</p>
+			<p dir="ltr"
+			   style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;margin-left: 36pt;text-align: justify;">
+				<span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">Why
+					Do I Do That? adapts the basic strategies of psycho-dynamic psychotherapy to a guided course in
+					self-exploration, highlighting the universal role of defense mechanisms in warding off emotional
+					pain. With easy-to-understand explanations, the first part teaches you about the unconscious mind
+					and the role of psychological defenses in excluding difficult feelings from awareness. Individual
+					chapters in the longer middle section explore the primary defense mechanisms one by one, with
+					exercises to help you identify your own defenses at work. The final part offers guidance for how to
+					"disarm" your defenses and cope more effectively with the unconscious feelings behind them.
+					Psychological defense mechanisms are an inevitable and necessary part of the human experience; but
+					when they become too pervasive or deeply entrenched, they may damage our personal relationships,
+					restrict or distort our emotional lives and prevent us from behaving in ways that promote lasting
+					self-esteem.
+				</span>
+			</p>
+			<div>
+				<span style="font-size: 11px; font-family: Arial; vertical-align: baseline; white-space: pre-wrap;">
+					<br/>
+				</span>
+			</div>
+		</span>
+
+
+	</g:HTMLPanel>
 </ui:UiBinder>

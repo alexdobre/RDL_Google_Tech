@@ -18,25 +18,23 @@ import com.therdl.shared.beans.SnipBean;
  * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav-bar
  * using the user's authorisation status
  */
-public interface SnipEditView {
+public interface SnipEditView extends RdlView {
 
-    public interface Presenter {
-        void onDeleteSnip(String id, String pageToRedirect);
+	public interface Presenter {
+		void onDeleteSnip(String id, String pageToRedirect);
 
-        void submitBean(AutoBean<SnipBean> bean, String pageToRedirect);
+		void submitBean(AutoBean<SnipBean> bean, String pageToRedirect);
 
-        void submitEditedBean(AutoBean<SnipBean> bean, String pageToRedirect);
-    }
+		void submitEditedBean(AutoBean<SnipBean> bean, String pageToRedirect);
+	}
 
-    void setPresenter(Presenter presenter);
+	void setPresenter(Presenter presenter);
 
-    public void setCurrentSnipBean(AutoBean<SnipBean> snipBean);
+	public void setCurrentSnipBean(AutoBean<SnipBean> snipBean);
 
-    void viewEditedSnip(AutoBean<SnipBean> snipBean);
+	void viewEditedSnip(AutoBean<SnipBean> snipBean);
 
-    void setLoginResult(String name, String email, boolean auth);
+	AppMenu getAppMenu();
 
-    AppMenu getAppMenu();
-
-    Widget asWidget();
+	Widget asWidget();
 }

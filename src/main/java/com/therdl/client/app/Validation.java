@@ -11,20 +11,20 @@ import com.therdl.shared.beans.CurrentUserBean;
  */
 public class Validation {
 
-    /**
-     * @param currentUserBean AutoBean see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
-     * @return
-     */
-    static AutoBean<CurrentUserBean> resetCurrentUserBeanFields(AutoBean<CurrentUserBean> currentUserBean) {
+	/**
+	 * @param currentUserBean AutoBean see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
+	 * @return
+	 */
+	static AutoBean<CurrentUserBean> resetCurrentUserBeanFields(AutoBean<CurrentUserBean> currentUserBean) {
 
-        currentUserBean.as().setAvatarUrl("");
-        currentUserBean.as().setAuth(false);
-        currentUserBean.as().setName("");
-        currentUserBean.as().setEmail("");
-        currentUserBean.as().setRegistered(false);
-        return currentUserBean;
+		currentUserBean.as().setAvatarUrl("");
+		currentUserBean.as().setAuth(false);
+		currentUserBean.as().setName("");
+		currentUserBean.as().setEmail("");
+		currentUserBean.as().setRegistered(false);
+		return currentUserBean;
 
-    }
+	}
 
 
 }

@@ -1,13 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.Legend;
-import org.gwtbootstrap3.client.ui.TextBox;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,6 +20,13 @@ import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.TextBox;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * gwt widget class for reference search filter, used in snip view page
@@ -82,7 +81,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 		}
 		if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			initProposalCheckBoxes();
-		}else {
+		} else {
 			ViewUtils.hide(proposalGroup);
 		}
 		createSortArrows();
@@ -116,8 +115,8 @@ public class ReferenceSearchFilterWidget extends Composite {
 	 * default order is descending order by creation date
 	 */
 	private void createSortArrows() {
-		FlowPanel[] flowPanels = { authorRepPanel, authorNamePanel, datePanel };
-		String[] keyNames = { RDLConstants.SnipFields.REP, RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE };
+		FlowPanel[] flowPanels = {authorRepPanel, authorNamePanel, datePanel};
+		String[] keyNames = {RDLConstants.SnipFields.REP, RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE};
 
 		for (int i = 0; i < flowPanels.length; i++) {
 			final String keyName = keyNames[i];
@@ -136,7 +135,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 					else
 						selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
 
-					selectedArrow = (Image)clickEvent.getSource();
+					selectedArrow = (Image) clickEvent.getSource();
 					sortOrder = 1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowUpGreen().getSafeUri().asString());
@@ -157,7 +156,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 					else
 						selectedArrow.setUrl(Resources.INSTANCE.arrowDownGrey().getSafeUri().asString());
 
-					selectedArrow = (Image)clickEvent.getSource();
+					selectedArrow = (Image) clickEvent.getSource();
 					sortOrder = -1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
@@ -179,7 +178,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 	@UiHandler("refFilter")
 	public void filterReferences(ClickEvent event) {
 		view.setSearchOptionsBean(formSearchOptionsBean());
-		view.getPresenter().populateReplies(view.getSearchOptionsBean(),1);
+		view.getPresenter().populateReplies(view.getSearchOptionsBean(), 1);
 	}
 
 	/**

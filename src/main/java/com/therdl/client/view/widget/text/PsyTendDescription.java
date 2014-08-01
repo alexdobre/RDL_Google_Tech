@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class PsyTendDescription extends Composite {
 
-    interface PsyTendDescriptionUiBinder extends UiBinder<HTMLPanel, PsyTendDescription> {
-    }
+	interface PsyTendDescriptionUiBinder extends UiBinder<HTMLPanel, PsyTendDescription> {
+	}
 
-    private static PsyTendDescriptionUiBinder uiBinder = GWT.create(PsyTendDescriptionUiBinder.class);
+	private static PsyTendDescriptionUiBinder uiBinder = GWT.create(PsyTendDescriptionUiBinder.class);
 
-    public PsyTendDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public PsyTendDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

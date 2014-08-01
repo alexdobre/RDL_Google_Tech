@@ -1,9 +1,5 @@
 package com.therdl.client.presenter;
 
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -12,38 +8,68 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
+import com.therdl.client.view.RdlView;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Constants;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
+
+import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * This is the super class for all presenters. It contains common logic.
  * At the time of writing I'm placing the cookie login logic here
  * Created by Alex on 11/02/14.
  */
-public abstract class RdlAbstractPresenter implements Presenter {
+public abstract class RdlAbstractPresenter<T extends RdlView> implements Presenter {
 
 	protected static Logger log = Logger.getLogger("");
 
-	private AppController controller;
+	protected AppController controller;
 
 	protected Beanery beanery = GWT.create(Beanery.class);
+
+	protected T view;
 
 	public RdlAbstractPresenter(AppController controller) {
 		this.controller = controller;
 	}
 
+	@Override
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(view.asWidget());
+	}
+
+	public void checkLogin(AppMenu appMenu, AutoBean<CurrentUserBean> currentUserBean) {
+		loginCookieCheck();
+		// user must be authorised to edit
+		if (getController().getCurrentUserBean().as().isAuth()) {
+			log.info("!controller.getCurrentUserBean().as().isAuth()  ");
+			appMenu.setLogOutVisible(true);
+			appMenu.setSignUpVisible(false);
+			appMenu.setUserInfoVisible(true);
+			appMenu.setLoginResult(getController().getCurrentUserBean().as().getName(),
+					getController().getCurrentUserBean().as().getEmail(), true);
+		}else {
+			appMenu.logOut();
+		}
+	}
+
 	/**
 	 * Checks if the SID cookie is active and logs in if it is
 	 */
-	public void loginCookieCheck() {
+	private void loginCookieCheck() {
 		if (!controller.getCurrentUserBean().as().isAuth()) {
 			log.info("RdlAbstractPresenter loginCookieCheck");
 			//check the cookie
@@ -190,16 +216,17 @@ public abstract class RdlAbstractPresenter implements Presenter {
 
 	/**
 	 * Returns the range of items in the list to be displayed based on the default page length
-	 * @param listSize the current list on the page
+	 *
+	 * @param listSize  the current list on the page
 	 * @param pageIndex the current page index starting with 1
 	 * @return the page range in the format 1-50
 	 */
-	public String calculateListRange (int listSize,int pageIndex){
+	public String calculateListRange(int listSize, int pageIndex) {
 		if (listSize == 0) return "0";
 
-		int startIndex = pageIndex*Constants.DEFAULT_PAGE_SIZE+1;
-		int stopIndex = startIndex+listSize-1;
-		return startIndex+"-"+stopIndex;
+		int startIndex = pageIndex * Constants.DEFAULT_PAGE_SIZE + 1;
+		int stopIndex = startIndex + listSize - 1;
+		return startIndex + "-" + stopIndex;
 	}
 
 	public AppController getController() {

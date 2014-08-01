@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class AbuseDescription extends Composite {
 
-    interface AbuseDescriptionUiBinder extends UiBinder<HTMLPanel, AbuseDescription> {
-    }
+	interface AbuseDescriptionUiBinder extends UiBinder<HTMLPanel, AbuseDescription> {
+	}
 
-    private static AbuseDescriptionUiBinder uiBinder = GWT.create(AbuseDescriptionUiBinder.class);
+	private static AbuseDescriptionUiBinder uiBinder = GWT.create(AbuseDescriptionUiBinder.class);
 
-    public AbuseDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public AbuseDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

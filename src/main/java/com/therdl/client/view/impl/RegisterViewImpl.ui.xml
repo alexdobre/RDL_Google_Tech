@@ -3,102 +3,102 @@
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:rdl="urn:import:com.therdl.client.view.widget">
-    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
-    <ui:style>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:style>
 
-        .outer {
-            width: 100%;
-            margin: 0 auto;
-	        padding-top: 55px;
-        }
+		.outer {
+		width: 100%;
+		margin: 0 auto;
+		padding-top: 55px;
+		}
 
-        .main table {
-            width: 48%;
-            margin: 0 auto;
-            float: left;
-        }
+		.main table {
+		width: 48%;
+		margin: 0 auto;
+		float: left;
+		}
 
-        .title {
-            text-align: left;
-            font-size: 14px;
+		.title {
+		text-align: left;
+		font-size: 14px;
 
-        }
+		}
 
-        .inputs {
-            position: relative;
-            left: 20px;
-            margin: 10px 20px 20px 10px;
-        }
+		.inputs {
+		position: relative;
+		left: 20px;
+		margin: 10px 20px 20px 10px;
+		}
 
-        .description {
-            line-height: 18px;
-            margin: 0 0 18px;
-            padding: 0;
-        }
+		.description {
+		line-height: 18px;
+		margin: 0 0 18px;
+		padding: 0;
+		}
 
-        .takeBtn input, .takeBtn button {
+		.takeBtn input, .takeBtn button {
 
-        }
+		}
 
-        .label {
-            font-size: 12px;
-            color: blue;
-            height: 18px;
-            left: 20px;
-            float: right;
-        }
+		.label {
+		font-size: 12px;
+		color: blue;
+		height: 18px;
+		left: 20px;
+		float: right;
+		}
 
-    </ui:style>
-    <g:HTMLPanel addStyleNames="{style.outer}">
-        <rdl:AppMenu ui:field="appMenu"/>
-        <g:HTMLPanel addStyleNames="{style.main}">
+	</ui:style>
+	<g:HTMLPanel addStyleNames="{style.outer}">
+		<rdl:AppMenu ui:field="appMenu"/>
+		<g:HTMLPanel addStyleNames="{style.main}">
 
-            <div class='container'>
-                <div class='brand '>
-                    <H4 class="{style.title}">Enter your User Information</H4>
-                </div>
-                <table>
-                    <tr>
-                        <td>
-                            <b:Label styleName="{style.label}" text="{i18n.userName}"/>
-                        </td>
-                        <td>
-                            <g:TextBox ui:field="userName" styleName="{style.inputs}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b:Label styleName="{style.label}" text="{i18n.email}"/>
-                        </td>
-                        <td>
-                            <g:TextBox ui:field="email" styleName="{style.inputs}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b:Label styleName="{style.label}" text="{i18n.password}"/>
-                        </td>
-                        <td>
-                            <g:PasswordTextBox ui:field="psswd" styleName="{style.inputs}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b:Label styleName="{style.label}" text="{i18n.confirmPassword}"/>
-                        </td>
-                        <td>
-                            <g:PasswordTextBox ui:field="cpsswd" styleName="{style.inputs}"></g:PasswordTextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td rowspan="3" align="right" class="{style.takeBtn}">
-                            <b:Button ui:field="submitBtn" type="DEFAULT" text="{i18n.submit}"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </g:HTMLPanel>
-    </g:HTMLPanel>
+			<div class='container'>
+				<div class='brand '>
+					<H4 class="{style.title}">Enter your User Information</H4>
+				</div>
+				<table>
+					<tr>
+						<td>
+							<b:Label styleName="{style.label}" text="{i18n.userName}"/>
+						</td>
+						<td>
+							<g:TextBox ui:field="userName" styleName="{style.inputs}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b:Label styleName="{style.label}" text="{i18n.email}"/>
+						</td>
+						<td>
+							<g:TextBox ui:field="email" styleName="{style.inputs}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b:Label styleName="{style.label}" text="{i18n.password}"/>
+						</td>
+						<td>
+							<g:PasswordTextBox ui:field="psswd" styleName="{style.inputs}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b:Label styleName="{style.label}" text="{i18n.confirmPassword}"/>
+						</td>
+						<td>
+							<g:PasswordTextBox ui:field="cpsswd" styleName="{style.inputs}"></g:PasswordTextBox>
+						</td>
+					</tr>
+					<tr>
+						<td rowspan="3" align="right" class="{style.takeBtn}">
+							<b:Button ui:field="submitBtn" type="DEFAULT" text="{i18n.submit}"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</g:HTMLPanel>
+	</g:HTMLPanel>
 
 
 </ui:UiBinder>

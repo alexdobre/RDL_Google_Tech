@@ -19,47 +19,28 @@ import com.therdl.shared.beans.CurrentUserBean;
  * authorisation in the server callback method  onResponseReceived(Request request, Response response)
  */
 
-public class WelcomePresenter extends RdlAbstractPresenter implements WelcomeView.Presenter {
+public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implements WelcomeView.Presenter {
 
+	public WelcomePresenter(WelcomeView welcomeView, AppController controller) {
+		super(controller);
+		this.view = welcomeView;
+		this.view.setPresenter(this);
+	}
 
-    private String avatarUrl = null;
+	/**
+	 * standard runtime method for MVP architecture
+	 *
+	 * @param container       the view container
+	 * @param currentUserBean the user state bean, mainly used for authorisation
+	 *                        and to update the menu
+	 */
 
-    private final WelcomeView welcomeView;
-
-
-    public WelcomePresenter(WelcomeView welcomeView, AppController controller) {
-        super(controller);
-        this.welcomeView = welcomeView;
-        this.welcomeView.setPresenter(this);
-    }
-
-    @Override
-    public void go(HasWidgets container) {
-        container.clear();
-        welcomeView.init();
-        container.add(welcomeView.asWidget());
-
-        loginCookieCheck();
-    }
-
-    /**
-     * standard runtime method for MVP architecture
-     *
-     * @param container       the view container
-     * @param currentUserBean the user state bean, mainly used for authorisation
-     *                        and to update the menu
-     */
-
-    @Override
-    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-        container.clear();
-        welcomeView.init();
-        container.add(welcomeView.asWidget());
-        welcomeView.getAppMenu().setLogOutVisible(false);
-        welcomeView.getAppMenu().setSignUpVisible(true);
-        welcomeView.getAppMenu().setUserInfoVisible(false);
-
-        loginCookieCheck();
-    }
+	@Override
+	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		checkLogin(view.getAppMenu(),currentUserBean);
+		container.clear();
+		view.init();
+		container.add(view.asWidget());
+	}
 
 }

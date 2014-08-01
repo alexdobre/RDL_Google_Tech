@@ -1,6 +1,5 @@
 package com.therdl.client.view;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.therdl.client.view.widget.AppMenu;
 
 /**
@@ -15,18 +14,18 @@ import com.therdl.client.view.widget.AppMenu;
  * this method sets the options in the header/nav bar
  * @ setAvatarWhenViewIsNotNull( ) sets the avatar image when the profile view comes into focus
  */
-public interface ProfileView extends IsWidget {
+public interface ProfileView extends RdlView {
 
 
-    public interface Presenter {
+	public interface Presenter {
 
 
-    }
+	}
 
-    void setPresenter(Presenter presenter);
+	void setPresenter(Presenter presenter);
 
-    AppMenu getAppMenu();
+	AppMenu getAppMenu();
 
-    void setAvatarWhenViewIsNotNull();
+	void setAvatarWhenViewIsNotNull();
 
 }

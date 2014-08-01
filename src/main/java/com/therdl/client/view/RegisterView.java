@@ -1,7 +1,7 @@
 package com.therdl.client.view;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.beans.AuthUserBean;
 
 /**
@@ -15,18 +15,14 @@ import com.therdl.shared.beans.AuthUserBean;
  * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav bar
  * using the user sign up result status
  */
-public interface RegisterView extends IsWidget {
+public interface RegisterView extends RdlView {
 
 
-    public interface Presenter {
+	public interface Presenter {
+		void submitNewUser(AutoBean<AuthUserBean> bean);
+	}
 
-        void submitNewUser(AutoBean<AuthUserBean> bean);
+	void setPresenter(Presenter presenter);
 
-
-    }
-
-    void setPresenter(Presenter presenter);
-
-    void setLoginResult(String name, String email, boolean auth);
-
+	AppMenu getAppMenu();
 }

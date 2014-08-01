@@ -17,31 +17,31 @@ import com.therdl.client.RDL;
  * when hover the text is shown for each module
  */
 public class StoriesMenu extends Composite {
-    interface StoriesMenuUiBinder extends UiBinder<HTMLPanel, StoriesMenu> {
-    }
+	interface StoriesMenuUiBinder extends UiBinder<HTMLPanel, StoriesMenu> {
+	}
 
-    private static StoriesMenuUiBinder ourUiBinder = GWT.create(StoriesMenuUiBinder.class);
+	private static StoriesMenuUiBinder ourUiBinder = GWT.create(StoriesMenuUiBinder.class);
 
-    @UiField
-    FocusPanel threadBtn;
+	@UiField
+	FocusPanel threadBtn;
 
-    @UiField
-    FocusPanel postBtn;
+	@UiField
+	FocusPanel postBtn;
 
-    @UiField
-    SpanElement hoverDiv;
+	@UiField
+	SpanElement hoverDiv;
 
-    public StoriesMenu() {
-        initWidget(ourUiBinder.createAndBindUi(this));
-    }
+	public StoriesMenu() {
+		initWidget(ourUiBinder.createAndBindUi(this));
+	}
 
-    @UiHandler("threadBtn")
-    public void onMouseOver2(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.threadDescription());
-    }
+	@UiHandler("threadBtn")
+	public void onMouseOver2(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.threadDescription());
+	}
 
-    @UiHandler("postBtn")
-    public void onMouseOver3(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.postDescription());
-    }
+	@UiHandler("postBtn")
+	public void onMouseOver3(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.postDescription());
+	}
 }

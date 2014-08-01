@@ -9,6 +9,7 @@ public interface DbProvider {
 
 	/**
 	 * Get a DB instance
+	 *
 	 * @return the DB or null if error occurs
 	 */
 	public DB getDb();

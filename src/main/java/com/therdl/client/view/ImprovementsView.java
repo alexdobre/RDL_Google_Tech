@@ -13,16 +13,16 @@ import com.therdl.client.view.widget.AppMenu;
  * can use a instance of its presenter
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  */
-public interface ImprovementsView {
+public interface ImprovementsView extends RdlView{
 
-    public interface Presenter {
+	public interface Presenter {
 
-    }
+	}
 
-    void setPresenter(Presenter presenter);
+	void setPresenter(Presenter presenter);
 
-    Widget asWidget();
+	Widget asWidget();
 
-    AppMenu getAppMenu();
+	AppMenu getAppMenu();
 
 }

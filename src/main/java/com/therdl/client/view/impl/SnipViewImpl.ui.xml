@@ -3,94 +3,94 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:rdl="urn:import:com.therdl.client.view.widget"
-        >
-    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
-    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+		>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
-    <ui:style>
+	<ui:style>
 
-	    .push {
-	        padding-top: 60px;
-	    }
+		.push {
+		padding-top: 60px;
+		}
 
-	    .margin-fix {
-		    margin-bottom: 0;
-		    margin-top: 0;
-		    padding-bottom: 2px;
-		    padding-top: 0;
-		    float: right;
-	    }
+		.margin-fix {
+		margin-bottom: 0;
+		margin-top: 0;
+		padding-bottom: 2px;
+		padding-top: 0;
+		float: right;
+		}
 
-        .refButtonsCont {
-            width: 100%;
-            height: 40px;
-            border-top: 1px solid #000;
-            padding-top: 5px;
-            padding-left: 10px;
-        }
+		.refButtonsCont {
+		width: 100%;
+		height: 40px;
+		border-top: 1px solid #000;
+		padding-top: 5px;
+		padding-left: 10px;
+		}
 
-        .referenceCont {
-            display: none;
-            border: 1px solid #000;
-            margin-top: 4px;
-            padding: 1px;
-            width: 60%;
-            margin-left: 20%;
-        }
+		.referenceCont {
+		display: none;
+		border: 1px solid #000;
+		margin-top: 4px;
+		padding: 1px;
+		width: 60%;
+		margin-left: 20%;
+		}
 
-        .radioBtnParent {
-            margin: 3px;
-        }
+		.radioBtnParent {
+		margin: 3px;
+		}
 
-        .radioBtn {
-            margin-left: 13px;
-        }
+		.radioBtn {
+		margin-left: 13px;
+		}
 
-        .radioBtn label, .checkBoxBtn label {
-            margin-left: 3px;
-            margin-bottom: 0px;
-            display: inline-block;
-        }
+		.radioBtn label, .checkBoxBtn label {
+		margin-left: 3px;
+		margin-bottom: 0px;
+		display: inline-block;
+		}
 
-        @external .checkBoxBtn;
-        .checkBoxBtn {
-            margin-left: 13px;
-            display: inline-block;
-        }
+		@external .checkBoxBtn;
+		.checkBoxBtn {
+		margin-left: 13px;
+		display: inline-block;
+		}
 
-        .checkboxBtnParent {
-            position: absolute;
-            right: 0;
-        }
+		.checkboxBtnParent {
+		position: absolute;
+		right: 0;
+		}
 
-        .repBtn {
-            float: right;
-            margin-right: 3px;
-            margin-top: -3px;
-        }
+		.repBtn {
+		float: right;
+		margin-right: 3px;
+		margin-top: -3px;
+		}
 
-        .loadingWidget {
-            text-align: center;
-            display: none;
-        }
+		.loadingWidget {
+		text-align: center;
+		display: none;
+		}
 
-	    .richTextArea {
-	        width: 100%;
-	        height: 300px;
-	        border: 0px;
-	    }
+		.richTextArea {
+		width: 100%;
+		height: 300px;
+		border: 0px;
+		}
 
-	    .repGivenIcon{
-	        color: green;
-	    }
-	    .snipViewPanel{
-	        margin-bottom: 5px;
-	    }
-	    .padLeft{
-	        padding-left:10px;
-	    }
+		.repGivenIcon{
+		color: green;
+		}
+		.snipViewPanel{
+		margin-bottom: 5px;
+		}
+		.padLeft{
+		padding-left:10px;
+		}
 
-    </ui:style>
+	</ui:style>
 	<g:ScrollPanel>
 		<b:Container>
 			<rdl:AppMenu ui:field="appMenu"/>
@@ -116,45 +116,46 @@
 								<b:ButtonGroup addStyleNames="{style.padLeft}">
 									<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 								</b:ButtonGroup>
-								<b:ButtonGroup addStyleNames="{style.padLeft}">
-									<b:Button ui:field="editBtn" text="{i18n.edit}"/>
-								</b:ButtonGroup>
 							</b:Column>
 							<b:Column size="MD_5" offset="MD_3">
-								<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse" />
+								<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
 							</b:Column>
 							<b:Column size="MD_1">
-								<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="repBtn" addStyleNames="{style.repBtn}"/>
-								<b:Icon type="CHECK" size="TIMES2" ui:field="repGivenIcon" addStyleNames="{style.repGivenIcon} {style.repBtn}"/>
+								<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="repBtn"
+								          addStyleNames="{style.repBtn}"/>
+								<b:Button type="PRIMARY" icon="PENCIL" ui:field="editBtn"
+								          addStyleNames="{style.repBtn}"/>
+								<b:Icon type="CHECK" size="TIMES2" ui:field="repGivenIcon"
+								        addStyleNames="{style.repGivenIcon} {style.repBtn}"/>
 							</b:Column>
 						</b:Row>
 					</b:Container>
 				</b:PanelFooter>
 			</b:Panel>
 
-            <g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
-                <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-                                   text="{i18n.positive}"></g:RadioButton>
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-                                   text="{i18n.neutral}"></g:RadioButton>
-                    <g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-                                   text="{i18n.negative}"></g:RadioButton>
-                </g:FlowPanel>
+			<g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
+				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
+					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
+					               text="{i18n.positive}"></g:RadioButton>
+					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
+					               text="{i18n.neutral}"></g:RadioButton>
+					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
+					               text="{i18n.negative}"></g:RadioButton>
+				</g:FlowPanel>
 
-                <g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
-                    <g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-                                   text="{i18n.pledge}"></g:RadioButton>
-                    <g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-                                   text="{i18n.counter}"></g:RadioButton>
-                </g:FlowPanel>
+				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
+					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
+					               text="{i18n.pledge}"></g:RadioButton>
+					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
+					               text="{i18n.counter}"></g:RadioButton>
+				</g:FlowPanel>
 
-                <rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
-                <g:FlowPanel styleName="{style.refButtonsCont}">
-                    <b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
-                    <b:Button ui:field="closeRef" text="{i18n.close}"/>
-                </g:FlowPanel>
-            </g:FlowPanel>
+				<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+				<g:FlowPanel styleName="{style.refButtonsCont}">
+					<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
+					<b:Button ui:field="closeRef" text="{i18n.close}"/>
+				</g:FlowPanel>
+			</g:FlowPanel>
 
 			<b:Container>
 				<b:Column size="MD_3" ui:field="refFilterParent"/>
@@ -165,8 +166,8 @@
 						<b:Column size="MD_3" offset="MD_9">
 							<b:Pagination addStyleNames="{style.margin-fix}">
 								<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
-									<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
-									<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
+								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
+								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
 							</b:Pagination>
 						</b:Column>
 					</b:Row>
@@ -176,7 +177,7 @@
 						</b:Column>
 					</b:Row>
 				</b:Column>
-            </b:Container>
+			</b:Container>
 
 		</b:Container>
 	</g:ScrollPanel>

@@ -17,9 +17,9 @@ import com.therdl.shared.beans.CurrentUserBean;
  */
 public abstract interface Presenter {
 
-    public abstract void go(final HasWidgets container);
+	public abstract void go(final HasWidgets container);
 
-    void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean);
+	void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean);
 }
 
 

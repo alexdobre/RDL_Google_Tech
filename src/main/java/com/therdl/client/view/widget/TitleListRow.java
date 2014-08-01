@@ -17,40 +17,40 @@ import java.util.logging.Logger;
  * Created by Alex on 07/02/14.
  */
 public class TitleListRow extends Composite {
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    interface TitleListRowUiBinder extends UiBinder<HTMLPanel, TitleListRow> {
-    }
+	interface TitleListRowUiBinder extends UiBinder<HTMLPanel, TitleListRow> {
+	}
 
-    private static TitleListRowUiBinder ourUiBinder = GWT.create(TitleListRowUiBinder.class);
+	private static TitleListRowUiBinder ourUiBinder = GWT.create(TitleListRowUiBinder.class);
 
-    AutoBean<CurrentUserBean> currentUserBean;
-    UserBean.TitleBean title;
+	AutoBean<CurrentUserBean> currentUserBean;
+	UserBean.TitleBean title;
 
-    @UiField
-    Label titleLabel;
+	@UiField
+	Label titleLabel;
 
-    /**
-     * We supply the user bean and title to display to the row
-     *
-     * @param currentUserBean
-     * @param title
-     */
-    public TitleListRow(AutoBean<CurrentUserBean> currentUserBean, UserBean.TitleBean title) {
-        initWidget(ourUiBinder.createAndBindUi(this));
-        this.title = title;
-        this.currentUserBean = currentUserBean;
-    }
+	/**
+	 * We supply the user bean and title to display to the row
+	 *
+	 * @param currentUserBean
+	 * @param title
+	 */
+	public TitleListRow(AutoBean<CurrentUserBean> currentUserBean, UserBean.TitleBean title) {
+		initWidget(ourUiBinder.createAndBindUi(this));
+		this.title = title;
+		this.currentUserBean = currentUserBean;
+	}
 
 
-    @Override
-    protected void onLoad() {
-        super.onLoad();
-        titleLabel.setText(title.getTitleName());
-    }
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		titleLabel.setText(title.getTitleName());
+	}
 
-    @Override
-    protected void onUnload() {
-        super.onUnload();
-    }
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+	}
 }

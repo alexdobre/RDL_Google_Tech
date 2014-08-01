@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class CompatibilityDescription extends Composite {
 
-    interface CompatibilityDescriptionUiBinder extends UiBinder<HTMLPanel, CompatibilityDescription> {
-    }
+	interface CompatibilityDescriptionUiBinder extends UiBinder<HTMLPanel, CompatibilityDescription> {
+	}
 
-    private static CompatibilityDescriptionUiBinder uiBinder = GWT.create(CompatibilityDescriptionUiBinder.class);
+	private static CompatibilityDescriptionUiBinder uiBinder = GWT.create(CompatibilityDescriptionUiBinder.class);
 
-    public CompatibilityDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public CompatibilityDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

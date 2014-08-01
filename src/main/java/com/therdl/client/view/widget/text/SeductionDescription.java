@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class SeductionDescription extends Composite {
 
-    interface SeductionDescriptionUiBinder extends UiBinder<HTMLPanel, SeductionDescription> {
-    }
+	interface SeductionDescriptionUiBinder extends UiBinder<HTMLPanel, SeductionDescription> {
+	}
 
-    private static SeductionDescriptionUiBinder uiBinder = GWT.create(SeductionDescriptionUiBinder.class);
+	private static SeductionDescriptionUiBinder uiBinder = GWT.create(SeductionDescriptionUiBinder.class);
 
-    public SeductionDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public SeductionDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

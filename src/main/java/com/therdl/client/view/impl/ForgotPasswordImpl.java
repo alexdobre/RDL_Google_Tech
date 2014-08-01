@@ -21,82 +21,82 @@ import com.therdl.client.view.ForgotPassword;
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  */
 public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
-    interface ForgotPasswordUiBinder extends UiBinder<Widget, ForgotPasswordImpl> {
-    }
+	interface ForgotPasswordUiBinder extends UiBinder<Widget, ForgotPasswordImpl> {
+	}
 
-    private static ForgotPasswordUiBinder ourUiBinder = GWT.create(ForgotPasswordUiBinder.class);
+	private static ForgotPasswordUiBinder ourUiBinder = GWT.create(ForgotPasswordUiBinder.class);
 
-    private Presenter presenter;
+	private Presenter presenter;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.TextBox txtBoxEmail;
+	@UiField
+	org.gwtbootstrap3.client.ui.TextBox txtBoxEmail;
 
-    @UiField
-    Label lblEmailNotFound;
+	@UiField
+	Label lblEmailNotFound;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Button btnSubmit;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button btnSubmit;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Modal modalSuccessResetPassword;
+	@UiField
+	org.gwtbootstrap3.client.ui.Modal modalSuccessResetPassword;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Modal modalFailResetPassword;
+	@UiField
+	org.gwtbootstrap3.client.ui.Modal modalFailResetPassword;
 
-    public ForgotPasswordImpl() {
-        super(true);
-        add(ourUiBinder.createAndBindUi(this));
-        lblEmailNotFound.setText("");
-    }
+	public ForgotPasswordImpl() {
+		super(true);
+		add(ourUiBinder.createAndBindUi(this));
+		lblEmailNotFound.setText("");
+	}
 
-    @Override
-    public PopupPanel getForgotPasswordPopup() {
-        return this;
-    }
+	@Override
+	public PopupPanel getForgotPasswordPopup() {
+		return this;
+	}
 
-    @Override
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
-    }
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
 
-    @Override
-    public HasText getLabelEmailNotFound() {
-        return lblEmailNotFound;
-    }
+	@Override
+	public HasText getLabelEmailNotFound() {
+		return lblEmailNotFound;
+	}
 
-    @Override
-    public org.gwtbootstrap3.client.ui.Button getSubmitButton() {
-        return btnSubmit;
-    }
+	@Override
+	public org.gwtbootstrap3.client.ui.Button getSubmitButton() {
+		return btnSubmit;
+	}
 
-    @Override
-    public org.gwtbootstrap3.client.ui.Modal getModalSuccessResetPassword() {
-        return modalSuccessResetPassword;
-    }
+	@Override
+	public org.gwtbootstrap3.client.ui.Modal getModalSuccessResetPassword() {
+		return modalSuccessResetPassword;
+	}
 
-    @Override
-    public org.gwtbootstrap3.client.ui.Modal getModalFailResetPasswprd() {
-        return modalFailResetPassword;
-    }
+	@Override
+	public org.gwtbootstrap3.client.ui.Modal getModalFailResetPasswprd() {
+		return modalFailResetPassword;
+	}
 
-    @UiHandler("btnSubmit")
-    public void onSubmitClicked(ClickEvent event) {
-        String email = txtBoxEmail.getText().trim();
-        if (!email.isEmpty()) {
-            if (presenter != null) {
-                presenter.doForgotPassword(email);
-            }
-            btnSubmit.setEnabled(false);
-        }
-    }
+	@UiHandler("btnSubmit")
+	public void onSubmitClicked(ClickEvent event) {
+		String email = txtBoxEmail.getText().trim();
+		if (!email.isEmpty()) {
+			if (presenter != null) {
+				presenter.doForgotPassword(email);
+			}
+			btnSubmit.setEnabled(false);
+		}
+	}
 
-    /**
-     * get the email string
-     *
-     * @param event Standard GWT ClickEvent
-     */
-    @UiHandler("txtBoxEmail")
-    public void onEmailFocused(FocusEvent event) {
-        lblEmailNotFound.setText("");
-    }
+	/**
+	 * get the email string
+	 *
+	 * @param event Standard GWT ClickEvent
+	 */
+	@UiHandler("txtBoxEmail")
+	public void onEmailFocused(FocusEvent event) {
+		lblEmailNotFound.setText("");
+	}
 }

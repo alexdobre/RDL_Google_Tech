@@ -1,8 +1,5 @@
 package com.therdl.client.presenter;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
@@ -16,12 +13,16 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -34,32 +35,20 @@ import com.therdl.shared.beans.SnipBean;
  * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
  * @ String currentSnipId  used to retrieve the users correct snip
  */
-public class SnipPresenter extends RdlAbstractPresenter implements Presenter, SnipView.Presenter {
+public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
 
 	private static Logger log = Logger.getLogger("");
 
-	private SnipView snipView;
 	private Beanery beanery = GWT.create(Beanery.class);
 	private String currentSnipId;
-	private AppController controller;
 	AutoBean<CurrentUserBean> currentUserBean;
-
-	public AppController getController() {
-		return controller;
-	}
 
 	public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
 		super(appController);
-		this.snipView = snipView;
+		this.view = snipView;
 		this.currentSnipId = currentSnipId;
 		this.controller = appController;
-		this.snipView.setPresenter(this);
-	}
-
-	@Override
-	public void go(HasWidgets container) {
-		container.clear();
-		container.add(snipView.asWidget());
+		this.view.setPresenter(this);
 	}
 
 	/**
@@ -71,38 +60,24 @@ public class SnipPresenter extends RdlAbstractPresenter implements Presenter, Sn
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		checkLogin(view.getAppMenu(), currentUserBean);
 		this.currentUserBean = currentUserBean;
 		container.clear();
-		container.add(snipView.asWidget());
+		container.add(view.asWidget());
 		if (controller.getCurrentUserBean().as().isAuth()) {
-			snipView.setAppMenu(currentUserBean);
+			view.setAppMenu(currentUserBean);
 		}
 		viewSnipById();
 	}
 
 	private void prepareTheView(AutoBean<SnipBean> snipBean) {
 		log.info("SnipViewPresenter preparing the view, snipBean= " + snipBean);
-		if (snipBean != null) {
-			//if the user is not logged in the edit button does not show
-			if (currentUserBean == null || !currentUserBean.as().isAuth()){
-				snipView.showHideEditButton(false);
-			}else {
-				//edit button appears when the user is the author of the snip
-				snipView.showHideEditButton(currentUserBean.as().getName().equals(snipBean.as().getAuthor()));
-			}
-
-			//if the user is not logged in like button appears and a prompt will ask the user to log in
-			if (currentUserBean == null || !currentUserBean.as().isAuth()){
-				snipView.showHideLikeButton(true);
-			}else {
-				//like button appears if the user is not the author and has not already given a like
-				snipView.showHideLikeButton(!(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) ||
-						snipBean.as().getIsRepGivenByUser() == 1));
-			}
-
-			//reply button always appears - user is prompted to log in if not already logged
-			snipView.showHideReplyButton(true);
-		}
+		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, snipBean);
+		boolean isLoggedIn = currentUserBean.as().isAuth();
+		boolean repGiven = snipBean.as().getIsRepGivenByUser() == 1;
+		view.showHideLikeOrEditButton(isAuthor, repGiven);
+		//reply button always appears - user is prompted to log in if not already logged
+		view.showHideReplyButton(true);
 	}
 
 	/**
@@ -144,7 +119,7 @@ public class SnipPresenter extends RdlAbstractPresenter implements Presenter, Sn
 
 					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
 					prepareTheView(bean);
-					snipView.viewSnip(bean);
+					view.viewSnip(bean);
 				}
 
 				@Override
@@ -191,7 +166,7 @@ public class SnipPresenter extends RdlAbstractPresenter implements Presenter, Sn
 					if (response.getStatusCode() == 200) {
 						// ok now vaildate for dropdown
 						log.info("SnipPresenter submit post ok now validating");
-						snipView.saveReferenceResponseHandler(refType, snipType);
+						view.saveReferenceResponseHandler(refType, snipType);
 					} else {
 						log.info("SnipPresenter submit post fail");
 					}
@@ -253,7 +228,7 @@ public class SnipPresenter extends RdlAbstractPresenter implements Presenter, Sn
 
 					}
 
-					snipView.showReferences(beanList, pageIndex, calculateListRange(beanList.size(), pageIndex));
+					view.showReferences(beanList, pageIndex, calculateListRange(beanList.size(), pageIndex));
 				}
 
 				@Override

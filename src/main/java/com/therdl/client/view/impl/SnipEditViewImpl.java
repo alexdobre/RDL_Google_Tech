@@ -1,15 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.ListBox;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
@@ -36,6 +26,15 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.ListBox;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 
 /**
@@ -161,9 +160,9 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 		Iterator iterator = radioBtnLabels.entrySet().iterator();
 		// init radio button and corresponding image
 		while (iterator.hasNext()) {
-			Map.Entry mEntry = (Map.Entry)iterator.next();
+			Map.Entry mEntry = (Map.Entry) iterator.next();
 
-			Image img = new Image(((ImageResource)imageResources.get(mEntry.getKey())).getSafeUri().asString());
+			Image img = new Image(((ImageResource) imageResources.get(mEntry.getKey())).getSafeUri().asString());
 			img.setWidth("40px");
 			img.setHeight("40px");
 			img.setStyleName("snipTypeImg");
@@ -386,36 +385,6 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
-
-	/**
-	 * Sets the upper header Menu to the correct state for supplied credentials
-	 * post sign up called from presenter
-	 *
-	 * @param name  String supplied credential
-	 * @param email String supplied credential
-	 * @param auth  boolean auth state from server via presenter
-	 */
-
-	@Override
-	public void setLoginResult(String name, String email, boolean auth) {
-		if (auth) {
-			log.info("SnipSearchViewImpl setLoginResult auth true " + name);
-
-			this.appMenu.setLogOutVisible(true);
-			this.appMenu.setSignUpVisible(false);
-			this.appMenu.setUserInfoVisible(true);
-			this.appMenu.setUser(name);
-			this.appMenu.setEmail(email);
-			this.appMenu.setLogInVisible(false);
-		} else {
-			this.appMenu.setLogOutVisible(false);
-			this.appMenu.setSignUpVisible(true);
-			this.appMenu.setUserInfoVisible(false);
-			this.appMenu.setLogInVisible(true);
-		}
-
-	}
-
 
 	@Override
 	public AppMenu getAppMenu() {

@@ -17,35 +17,35 @@ import com.therdl.client.RDL;
  * when hover the text is shown for each module
  */
 public class ImprovementsMenu extends Composite {
-    interface ImprovementsMenuUiBinder extends UiBinder<HTMLPanel, ImprovementsMenu> {
-    }
+	interface ImprovementsMenuUiBinder extends UiBinder<HTMLPanel, ImprovementsMenu> {
+	}
 
-    private static ImprovementsMenuUiBinder ourUiBinder = GWT.create(ImprovementsMenuUiBinder.class);
+	private static ImprovementsMenuUiBinder ourUiBinder = GWT.create(ImprovementsMenuUiBinder.class);
 
-    @UiField
-    FocusPanel proposalBtn;
+	@UiField
+	FocusPanel proposalBtn;
 
-    @UiField
-    FocusPanel pledgeBtn;
+	@UiField
+	FocusPanel pledgeBtn;
 
-    @UiField
-    SpanElement hoverDiv;
+	@UiField
+	SpanElement hoverDiv;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Button improvementsVideoButton;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button improvementsVideoButton;
 
-    public ImprovementsMenu() {
-        initWidget(ourUiBinder.createAndBindUi(this));
-    }
+	public ImprovementsMenu() {
+		initWidget(ourUiBinder.createAndBindUi(this));
+	}
 
-    @UiHandler("proposalBtn")
-    public void onMouseOver(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.proposalDescription());
-    }
+	@UiHandler("proposalBtn")
+	public void onMouseOver(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.proposalDescription());
+	}
 
 
-    @UiHandler("pledgeBtn")
-    public void onMouseOver1(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.pledgeDescription());
-    }
+	@UiHandler("pledgeBtn")
+	public void onMouseOver1(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.pledgeDescription());
+	}
 }

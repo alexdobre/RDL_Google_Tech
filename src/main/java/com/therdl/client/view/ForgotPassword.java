@@ -1,7 +1,6 @@
 package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Modal;
@@ -13,23 +12,23 @@ import org.gwtbootstrap3.client.ui.Modal;
  * can use a instance of its presenter
  * @ doForgotPassword(String email) submit user email for getting a new password if the email is valid.
  */
-public interface ForgotPassword extends IsWidget {
+public interface ForgotPassword extends RdlView {
 
-    public interface Presenter {
-        void doForgotPassword(String email);
+	public interface Presenter {
+		void doForgotPassword(String email);
 
-        void showForgotPasswordPopup();
-    }
+		void showForgotPasswordPopup();
+	}
 
-    void setPresenter(Presenter presenter);
+	void setPresenter(Presenter presenter);
 
-    PopupPanel getForgotPasswordPopup();
+	PopupPanel getForgotPasswordPopup();
 
-    HasText getLabelEmailNotFound();
+	HasText getLabelEmailNotFound();
 
-    Button getSubmitButton();
+	Button getSubmitButton();
 
-    Modal getModalSuccessResetPassword();
+	Modal getModalSuccessResetPassword();
 
-    Modal getModalFailResetPasswprd();
+	Modal getModalFailResetPasswprd();
 }

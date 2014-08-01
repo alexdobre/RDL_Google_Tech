@@ -1,11 +1,5 @@
 package com.therdl.client.view.common;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
@@ -18,7 +12,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Common methods used by views
@@ -63,7 +64,7 @@ public class ViewUtils {
 
 	private static void positionRelative(ClickEvent event, PopupPanel dialog) {
 		// Reposition the popup relative to the button
-		Widget source = (Widget)event.getSource();
+		Widget source = (Widget) event.getSource();
 		int left = source.getAbsoluteLeft() + 10;
 		int top = source.getAbsoluteTop() + 10;
 		dialog.setPopupPosition(left, top);
@@ -150,10 +151,10 @@ public class ViewUtils {
 		Iterator itHm = RDLConstants.ProposalType.proposalTypeHm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry)itHm.next();
+			Map.Entry pairs = (Map.Entry) itHm.next();
 
-			proposalTypeList.addItem((String)pairs.getValue());
-			proposalTypeList.setValue(i, (String)pairs.getKey());
+			proposalTypeList.addItem((String) pairs.getValue());
+			proposalTypeList.setValue(i, (String) pairs.getKey());
 			i++;
 		}
 	}
@@ -165,10 +166,10 @@ public class ViewUtils {
 		Iterator itHm = RDLConstants.ProposalState.proposalStateHm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry)itHm.next();
+			Map.Entry pairs = (Map.Entry) itHm.next();
 
-			proposalStateList.addItem((String)pairs.getValue());
-			proposalStateList.setValue(i, (String)pairs.getKey());
+			proposalStateList.addItem((String) pairs.getValue());
+			proposalStateList.setValue(i, (String) pairs.getKey());
 			i++;
 		}
 	}
@@ -223,11 +224,11 @@ public class ViewUtils {
 		Iterator itHm = hm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry)itHm.next();
-			CheckBox checkBox = new CheckBox((String)pairs.getValue());
+			Map.Entry pairs = (Map.Entry) itHm.next();
+			CheckBox checkBox = new CheckBox((String) pairs.getValue());
 			checkBox.setStyleName("checkBoxBtn");
 			checkBox.setValue(true);
-			checkBox.setName((String)pairs.getKey());
+			checkBox.setName((String) pairs.getKey());
 			checkBoxList.add(checkBox);
 			parentPanel.add(checkBox);
 		}
@@ -243,11 +244,18 @@ public class ViewUtils {
 		uiObj.getElement().getStyle().setProperty("display", "block");
 	}
 
-	public static void showHide(Boolean show, UIObject uiObj){
+	public static void showHide(Boolean show, UIObject uiObj) {
 		if (show) {
 			ViewUtils.show(uiObj);
 		} else {
 			ViewUtils.hide(uiObj);
 		}
+	}
+
+	public static boolean isAuthor(AutoBean<CurrentUserBean> currentUserBean, AutoBean<SnipBean> snipBean) {
+		if (snipBean != null && currentUserBean != null) {
+			return currentUserBean.as().getName().equals(snipBean.as().getAuthor());
+		}
+		return false;
 	}
 }

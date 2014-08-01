@@ -1,6 +1,11 @@
 package com.therdl.server.paypal_payment;
 
-import com.paypal.exception.*;
+import com.paypal.exception.ClientActionRequiredException;
+import com.paypal.exception.HttpErrorException;
+import com.paypal.exception.InvalidCredentialException;
+import com.paypal.exception.InvalidResponseDataException;
+import com.paypal.exception.MissingCredentialException;
+import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
 import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.GetRecurringPaymentsProfileDetailsReq;
@@ -19,55 +24,55 @@ import java.util.logging.Logger;
  */
 public class GetRecurringPaymentsProfileDetails {
 
-    public GetRecurringPaymentsProfileDetails() {
+	public GetRecurringPaymentsProfileDetails() {
 
-    }
+	}
 
-    public GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetails(String profileId) {
-        Logger logger = Logger.getLogger(this.getClass().toString());
+	public GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetails(String profileId) {
+		Logger logger = Logger.getLogger(this.getClass().toString());
 
-        // ## GetRecurringPaymentsProfileDetails
-        GetRecurringPaymentsProfileDetailsReq getRecurringPaymentsProfileDetailsReq = new GetRecurringPaymentsProfileDetailsReq();
-        GetRecurringPaymentsProfileDetailsRequestType getRecurringPaymentsProfileDetailsRequestType = new GetRecurringPaymentsProfileDetailsRequestType();
+		// ## GetRecurringPaymentsProfileDetails
+		GetRecurringPaymentsProfileDetailsReq getRecurringPaymentsProfileDetailsReq = new GetRecurringPaymentsProfileDetailsReq();
+		GetRecurringPaymentsProfileDetailsRequestType getRecurringPaymentsProfileDetailsRequestType = new GetRecurringPaymentsProfileDetailsRequestType();
 
-        getRecurringPaymentsProfileDetailsRequestType.setProfileID(profileId);
+		getRecurringPaymentsProfileDetailsRequestType.setProfileID(profileId);
 
-        getRecurringPaymentsProfileDetailsReq.setGetRecurringPaymentsProfileDetailsRequest(getRecurringPaymentsProfileDetailsRequestType);
+		getRecurringPaymentsProfileDetailsReq.setGetRecurringPaymentsProfileDetailsRequest(getRecurringPaymentsProfileDetailsRequestType);
 
-        // ## Creating service wrapper object
-        // Creating service wrapper object to make API call and loading
-        // configuration file for your credentials and endpoint
-        PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(PayPalConfiguration.getAcctAndConfig());
-        GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetailsResponseDetailsType = null;
-        try {
-            // ## Making API call
-            // Invoke the appropriate method corresponding to API in service
-            // wrapper object
-            getRecurringPaymentsProfileDetailsResponseDetailsType = service.getRecurringPaymentsProfileDetails(getRecurringPaymentsProfileDetailsReq);
-        } catch (SSLConfigurationException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (InvalidCredentialException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (HttpErrorException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (InvalidResponseDataException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (ClientActionRequiredException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (MissingCredentialException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (InterruptedException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (OAuthException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (SAXException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        } catch (IOException e) {
-            logger.severe("Error Message : " + e.getMessage());
-        }
+		// ## Creating service wrapper object
+		// Creating service wrapper object to make API call and loading
+		// configuration file for your credentials and endpoint
+		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(PayPalConfiguration.getAcctAndConfig());
+		GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetailsResponseDetailsType = null;
+		try {
+			// ## Making API call
+			// Invoke the appropriate method corresponding to API in service
+			// wrapper object
+			getRecurringPaymentsProfileDetailsResponseDetailsType = service.getRecurringPaymentsProfileDetails(getRecurringPaymentsProfileDetailsReq);
+		} catch (SSLConfigurationException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (InvalidCredentialException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (HttpErrorException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (InvalidResponseDataException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (ClientActionRequiredException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (MissingCredentialException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (InterruptedException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (OAuthException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (ParserConfigurationException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (SAXException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		} catch (IOException e) {
+			logger.severe("Error Message : " + e.getMessage());
+		}
 
-        return getRecurringPaymentsProfileDetailsResponseDetailsType;
-    }
+		return getRecurringPaymentsProfileDetailsResponseDetailsType;
+	}
 }

@@ -6,7 +6,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.ForgotPasswordPresenter;
 import com.therdl.client.view.ForgotPassword;
@@ -14,7 +17,14 @@ import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LogoutPopupWidget;
-import com.therdl.client.view.widget.text.*;
+import com.therdl.client.view.widget.text.AbuseDescription;
+import com.therdl.client.view.widget.text.AffairsDescription;
+import com.therdl.client.view.widget.text.CompatibilityDescription;
+import com.therdl.client.view.widget.text.ConnectionDescription;
+import com.therdl.client.view.widget.text.EroticismDescription;
+import com.therdl.client.view.widget.text.ExteriorDescription;
+import com.therdl.client.view.widget.text.PsyTendDescription;
+import com.therdl.client.view.widget.text.SeductionDescription;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.GuiEventBus;
@@ -41,206 +51,186 @@ import java.util.logging.Logger;
  */
 public class WelcomeViewImpl extends Composite implements WelcomeView {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
 
-    interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
-    }
+	interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
+	}
 
-    private static WelcomeViewImplUiBinder uiBinder = GWT.create(WelcomeViewImplUiBinder.class);
-
-
-    private Presenter presenter;
-
-    private SignInViewImpl signInView;
-
-    private AutoBean<CurrentUserBean> currentUser;
-
-    @UiField
-    AppMenu appMenu;
-    @UiField
-    Image logo;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button compatibilityCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button connectionCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button exteriorCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button eroticismCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button seductionCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button psyTendCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button affairsCat;
-    @UiField
-    org.gwtbootstrap3.client.ui.Button abuseCat;
-
-    @UiField
-    org.gwtbootstrap3.client.ui.Button welcomeVideoButton;
-
-    LogoutPopupWidget logoutPopup;
-
-    LoginHandler loginHandler;
-
-    public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
-        initWidget(uiBinder.createAndBindUi(this));
-        this.currentUser = currentUser;
-        //  appMenu.setUserInfoVisible(false);
-        appMenu.setLogOutVisible(false);
-        appMenu.setMainGroupVisible(true);
-        logo.setStyleName("splashLogo");
-        appMenu.setSignUpVisible(true);
-        appMenu.setHomeActive();
-
-        GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
-            @Override
-            public void onLogInEvent(LogInEvent onLoginEvent) {
-                showLoginPopUp(500, 30, null);
-            }
-        });
-
-        //core category buttons
-        compatibilityCat.addStyleName("btn-cat");
-        compatibilityCat.addStyleName("btn-cat-compat");
-        connectionCat.addStyleName("btn-cat");
-        connectionCat.addStyleName("btn-cat-conn");
-        exteriorCat.addStyleName("btn-cat");
-        exteriorCat.addStyleName("btn-cat-ext");
-        eroticismCat.addStyleName("btn-cat");
-        eroticismCat.addStyleName("btn-cat-ero");
-        seductionCat.addStyleName("btn-cat");
-        seductionCat.addStyleName("btn-cat-sed");
-        psyTendCat.addStyleName("btn-cat");
-        psyTendCat.addStyleName("btn-cat-psy");
-        affairsCat.addStyleName("btn-cat");
-        affairsCat.addStyleName("btn-cat-aff");
-        abuseCat.addStyleName("btn-cat");
-        abuseCat.addStyleName("btn-cat-abu");
-    }
-
-    /**
-     * creates and shows login popup and sets its parameters
-     *
-     * @param posLeft      left position
-     * @param posTop       top position
-     * @param loginHandler handler which is called when login is successful
-     */
-    public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler) {
-        this.loginHandler = loginHandler;
-
-        signInView = new SignInViewImpl(this);
-        signInView.setGlassEnabled(true);
-        signInView.setModal(true);
-        signInView.setPopupPosition(posLeft, posTop);
-        signInView.getElement().getStyle().setZIndex(3);
-        signInView.show();
-        signInView.getLoginFail().setVisible(false);
-
-    }
-
-    @Override
-    public void showForgotPasswordPopUp() {
-        ForgotPassword forgotPassword = new ForgotPasswordImpl();
-        ForgotPasswordPresenter forgotPasswordPresenter = new ForgotPasswordPresenter(forgotPassword);
-        forgotPasswordPresenter.showForgotPasswordPopup();
-        signInView.hide();
-    }
-
-    /**
-     * shows log out popup with message
-     */
-    public void showLogoutPopUp() {
-        if (logoutPopup == null) {
-            logoutPopup = new LogoutPopupWidget();
-            logoutPopup.setGlassEnabled(true);
-            logoutPopup.setModal(true);
-
-            logoutPopup.setWidth("200px");
-            logoutPopup.setHeight("100px");
-        }
-        logoutPopup.center();
-    }
-
-    /**
-     * show the error validation message in the signInView
-     */
-    @Override
-    public void showLoginFail() {
-
-        signInView.getLoginFail().setVisible(true);
-        signInView.getLoginFail().setText("Login Fails please check your credentials");
+	private static WelcomeViewImplUiBinder uiBinder = GWT.create(WelcomeViewImplUiBinder.class);
 
 
-    }
+	private Presenter presenter;
 
-    @Override
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
-        log.info("WelcomeViewImpl setPresenter");
-    }
+	private SignInViewImpl signInView;
+
+	private AutoBean<CurrentUserBean> currentUser;
+
+	@UiField
+	AppMenu appMenu;
+	@UiField
+	Image logo;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button compatibilityCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button connectionCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button exteriorCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button eroticismCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button seductionCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button psyTendCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button affairsCat;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button abuseCat;
+
+	@UiField
+	org.gwtbootstrap3.client.ui.Button welcomeVideoButton;
+
+	LogoutPopupWidget logoutPopup;
+
+	LoginHandler loginHandler;
+
+	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
+		initWidget(uiBinder.createAndBindUi(this));
+		this.currentUser = currentUser;
+		//  appMenu.setUserInfoVisible(false);
+		appMenu.setLogOutVisible(false);
+		appMenu.setMainGroupVisible(true);
+		logo.setStyleName("splashLogo");
+		appMenu.setSignUpVisible(true);
+		appMenu.setHomeActive();
+
+		//core category buttons
+		compatibilityCat.addStyleName("btn-cat");
+		compatibilityCat.addStyleName("btn-cat-compat");
+		connectionCat.addStyleName("btn-cat");
+		connectionCat.addStyleName("btn-cat-conn");
+		exteriorCat.addStyleName("btn-cat");
+		exteriorCat.addStyleName("btn-cat-ext");
+		eroticismCat.addStyleName("btn-cat");
+		eroticismCat.addStyleName("btn-cat-ero");
+		seductionCat.addStyleName("btn-cat");
+		seductionCat.addStyleName("btn-cat-sed");
+		psyTendCat.addStyleName("btn-cat");
+		psyTendCat.addStyleName("btn-cat-psy");
+		affairsCat.addStyleName("btn-cat");
+		affairsCat.addStyleName("btn-cat-aff");
+		abuseCat.addStyleName("btn-cat");
+		abuseCat.addStyleName("btn-cat-abu");
+	}
+
+	/**
+	 * creates and shows login popup and sets its parameters
+	 *
+	 * @param posLeft      left position
+	 * @param posTop       top position
+	 * @param loginHandler handler which is called when login is successful
+	 */
+	public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler) {
+		this.loginHandler = loginHandler;
+		if (signInView == null ){
+			signInView = new SignInViewImpl(this);
+		}
+		signInView.setGlassEnabled(true);
+		signInView.setModal(true);
+		signInView.setPopupPosition(posLeft, posTop);
+		signInView.getElement().getStyle().setZIndex(3);
+		signInView.show();
+		signInView.getLoginFail().setVisible(false);
+
+	}
+
+	@Override
+	public void showForgotPasswordPopUp() {
+		ForgotPassword forgotPassword = new ForgotPasswordImpl();
+		ForgotPasswordPresenter forgotPasswordPresenter = new ForgotPasswordPresenter(forgotPassword);
+		forgotPasswordPresenter.showForgotPasswordPopup();
+		signInView.hide();
+	}
+
+	/**
+	 * shows log out popup with message
+	 */
+	public void showLogoutPopUp() {
+		if (logoutPopup == null) {
+			logoutPopup = new LogoutPopupWidget();
+			logoutPopup.setGlassEnabled(true);
+			logoutPopup.setModal(true);
+
+			logoutPopup.setWidth("200px");
+			logoutPopup.setHeight("100px");
+		}
+		logoutPopup.center();
+	}
+
+	/**
+	 * show the error validation message in the signInView
+	 */
+	@Override
+	public void showLoginFail() {
+
+		signInView.getLoginFail().setVisible(true);
+		signInView.getLoginFail().setText("Login Fails please check your credentials");
 
 
-    /**
-     * Sets the upper header Menu to the correct state for supplied credentials
-     * post sign up called from presenter
-     *
-     * @param name  supplied credential
-     * @param email supplied credential
-     * @param auth  boolean auth state from server via presenter
-     */
-    @Override
-    public void setLoginResult(String name, String email, boolean auth) {
-        if (auth) {
-            log.info("SnipSearchViewImpl setLoginResult auth true " + name);
+	}
 
-            this.appMenu.setLogOutVisible(true);
-            this.appMenu.setSignUpVisible(false);
-            this.appMenu.setUserInfoVisible(true);
-            this.appMenu.setUser(name);
-            this.appMenu.setEmail(email);
-            this.appMenu.setLogInVisible(false);
-        } else {
-            this.appMenu.setLogOutVisible(false);
-            this.appMenu.setSignUpVisible(true);
-            this.appMenu.setUserInfoVisible(false);
-            this.appMenu.setLogInVisible(true);
-        }
-
-    }
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+		log.info("WelcomeViewImpl setPresenter");
+	}
 
 
-    /**
-     * reset app menu on log out
-     */
-    public void logout() {
+	/**
+	 * Sets the upper header Menu to the correct state for supplied credentials
+	 * post sign up called from presenter
+	 *
+	 * @param name  supplied credential
+	 * @param email supplied credential
+	 * @param auth  boolean auth state from server via presenter
+	 */
+	@Override
+	public void setLoginResult(String name, String email, boolean auth) {
+		if (auth) {
+			log.info("SnipSearchViewImpl setLoginResult auth true " + name);
 
-        appMenu.setLogOutVisible(false);
-        appMenu.setSignUpVisible(true);
-        appMenu.setUserInfoVisible(false);
-        appMenu.setLogInVisible(true);
-        showLogoutPopUp();
+			this.appMenu.setLogOutVisible(true);
+			this.appMenu.setSignUpVisible(false);
+			this.appMenu.setUserInfoVisible(true);
+			this.appMenu.setUser(name);
+			this.appMenu.setEmail(email);
+			this.appMenu.setLogInVisible(false);
+		} else {
+			this.appMenu.setLogOutVisible(false);
+			this.appMenu.setSignUpVisible(true);
+			this.appMenu.setUserInfoVisible(false);
+			this.appMenu.setLogInVisible(true);
+		}
 
-    }
+	}
 
-    /**
-     * called form signin view pop up to initiate log in flow
-     *
-     * @param emailTxt     supplied credential
-     * @param passwordText supplied credential
-     */
-    public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
-        presenter.doLogIn(emailTxt, passwordText, rememberMe, null, loginHandler);
-    }
+	/**
+	 * called form signin view pop up to initiate log in flow
+	 *
+	 * @param emailTxt     supplied credential
+	 * @param passwordText supplied credential
+	 */
+	public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
+		presenter.doLogIn(emailTxt, passwordText, rememberMe, null, loginHandler);
+	}
 
-    @Override
-    public AppMenu getAppMenu() {
-        return appMenu;
-    }
+	@Override
+	public AppMenu getAppMenu() {
+		return appMenu;
+	}
 
-    public void init() {
-    }
+	public void init() {
+	}
 
 //    /**
 //     * Loads the introduction video
@@ -263,58 +253,58 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 //    }
 
 
-    /**
-     * displays the on click popup description
-     *
-     * @param event Standard GWT hover event
-     */
-    @UiHandler("compatibilityCat")
-    public void onCompatibilityCattClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new CompatibilityDescription(), event, 800);
-        simplePopup.show();
-    }
+	/**
+	 * displays the on click popup description
+	 *
+	 * @param event Standard GWT hover event
+	 */
+	@UiHandler("compatibilityCat")
+	public void onCompatibilityCattClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new CompatibilityDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("connectionCat")
-    public void onConnectionCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ConnectionDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("connectionCat")
+	public void onConnectionCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ConnectionDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("exteriorCat")
-    public void onExteriorCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ExteriorDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("exteriorCat")
+	public void onExteriorCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ExteriorDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("eroticismCat")
-    public void onEroticismCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new EroticismDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("eroticismCat")
+	public void onEroticismCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new EroticismDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("seductionCat")
-    public void onSeductionCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new SeductionDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("seductionCat")
+	public void onSeductionCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new SeductionDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("psyTendCat")
-    public void onPsyTendCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new PsyTendDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("psyTendCat")
+	public void onPsyTendCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new PsyTendDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("affairsCat")
-    public void onAffairsCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AffairsDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("affairsCat")
+	public void onAffairsCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AffairsDescription(), event, 800);
+		simplePopup.show();
+	}
 
-    @UiHandler("abuseCat")
-    public void onAbuseCatClick(ClickEvent event) {
-        DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AbuseDescription(), event, 800);
-        simplePopup.show();
-    }
+	@UiHandler("abuseCat")
+	public void onAbuseCatClick(ClickEvent event) {
+		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AbuseDescription(), event, 800);
+		simplePopup.show();
+	}
 
 }
 

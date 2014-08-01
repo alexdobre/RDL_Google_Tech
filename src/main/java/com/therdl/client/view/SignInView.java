@@ -1,6 +1,5 @@
 package com.therdl.client.view;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 
 /**
@@ -16,20 +15,20 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
  * @ setSignIsVisible(boolean state) sets the menu/Nav-bar when user can log in
  * @ Label getLoginFail() displays the validation method when the login fails eg password incorrect
  */
-public interface SignInView extends IsWidget {
+public interface SignInView extends RdlView {
 
-    interface Presenter {
-    }
+	interface Presenter {
+	}
 
-    void setPresenter(Presenter presenter);
+	void setPresenter(Presenter presenter);
 
-    PasswordTextBox getPassword();
+	PasswordTextBox getPassword();
 
-    org.gwtbootstrap3.client.ui.TextBox getEmail();
+	org.gwtbootstrap3.client.ui.TextBox getEmail();
 
-    void setSignIsVisible(boolean state);
+	void setSignIsVisible(boolean state);
 
-    org.gwtbootstrap3.client.ui.Label getLoginFail();
+	org.gwtbootstrap3.client.ui.Label getLoginFail();
 
 
 }

@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class AffairsDescription extends Composite {
 
-    interface AffairsDescriptionUiBinder extends UiBinder<HTMLPanel, AffairsDescription> {
-    }
+	interface AffairsDescriptionUiBinder extends UiBinder<HTMLPanel, AffairsDescription> {
+	}
 
-    private static AffairsDescriptionUiBinder uiBinder = GWT.create(AffairsDescriptionUiBinder.class);
+	private static AffairsDescriptionUiBinder uiBinder = GWT.create(AffairsDescriptionUiBinder.class);
 
-    public AffairsDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public AffairsDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

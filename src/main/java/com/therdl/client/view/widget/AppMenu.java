@@ -11,9 +11,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.events.*;
-
-import org.gwtbootstrap3.client.ui.*;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
+import com.therdl.shared.events.LogInOkEvent;
+import com.therdl.shared.events.LogInOkEventEventHandler;
+import com.therdl.shared.events.LogOutEvent;
+import org.gwtbootstrap3.client.ui.AnchorButton;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.NavbarBrand;
+import org.gwtbootstrap3.client.ui.NavbarHeader;
 
 import java.util.logging.Logger;
 
@@ -235,6 +241,29 @@ public class AppMenu extends Composite {
 		log.info("AppMenu: setSignUpView ");
 		this.login.setVisible(false);
 		setUserInfoVisible(false);
+	}
+
+	public void setLoginResult(String name, String email, boolean auth) {
+		if (auth) {
+			log.info("SnipSearchViewImpl setloginresult auth true " + name);
+
+			this.setLogOutVisible(true);
+			this.setSignUpVisible(false);
+			this.setUserInfoVisible(true);
+			this.setUser(name);
+			this.setEmail(email);
+			this.setLogInVisible(false);
+		} else {
+			logOut();
+		}
+	}
+
+	public void logOut() {
+		this.setLogOutVisible(false);
+		this.setSignUpVisible(true);
+		this.setUserInfoVisible(false);
+		this.setLogInVisible(true);
+
 	}
 
 }

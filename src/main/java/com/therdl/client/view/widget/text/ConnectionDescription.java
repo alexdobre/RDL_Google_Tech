@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  */
 public class ConnectionDescription extends Composite {
 
-    interface ConnectionDescriptionUiBinder extends UiBinder<HTMLPanel, ConnectionDescription> {
-    }
+	interface ConnectionDescriptionUiBinder extends UiBinder<HTMLPanel, ConnectionDescription> {
+	}
 
-    private static ConnectionDescriptionUiBinder uiBinder = GWT.create(ConnectionDescriptionUiBinder.class);
+	private static ConnectionDescriptionUiBinder uiBinder = GWT.create(ConnectionDescriptionUiBinder.class);
 
-    public ConnectionDescription() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+	public ConnectionDescription() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 
 }

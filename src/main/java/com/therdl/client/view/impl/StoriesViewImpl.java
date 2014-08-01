@@ -17,7 +17,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.Panel;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -152,26 +151,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
 		threadListRowContainer.clear();
 		threadListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
 		ViewUtils.hide(threadLoadingWidget);
-	}
-
-	@Override
-	public void setLoginResult(String name, String email, boolean auth) {
-		if (auth) {
-			log.info("SnipSearchViewImpl setloginresult auth true " + name);
-
-			this.appMenu.setLogOutVisible(true);
-			this.appMenu.setSignUpVisible(false);
-			this.appMenu.setUserInfoVisible(true);
-			this.appMenu.setUser(name);
-			this.appMenu.setEmail(email);
-			this.appMenu.setLogInVisible(false);
-		} else {
-			this.appMenu.setLogOutVisible(false);
-			this.appMenu.setSignUpVisible(true);
-			this.appMenu.setUserInfoVisible(false);
-			this.appMenu.setLogInVisible(true);
-		}
-
 	}
 
 	@Override

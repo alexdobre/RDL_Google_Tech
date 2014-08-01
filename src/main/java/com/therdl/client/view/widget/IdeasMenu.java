@@ -17,54 +17,54 @@ import com.therdl.client.RDL;
  * when hover the text is shown for each module
  */
 public class IdeasMenu extends Composite {
-    interface IdeasMenuUiBinder extends UiBinder<HTMLPanel, IdeasMenu> {
-    }
+	interface IdeasMenuUiBinder extends UiBinder<HTMLPanel, IdeasMenu> {
+	}
 
-    private static IdeasMenuUiBinder ourUiBinder = GWT.create(IdeasMenuUiBinder.class);
+	private static IdeasMenuUiBinder ourUiBinder = GWT.create(IdeasMenuUiBinder.class);
 
-    @UiField
-    FocusPanel snipBtn;
+	@UiField
+	FocusPanel snipBtn;
 
-    @UiField
-    FocusPanel fastCapBtn;
+	@UiField
+	FocusPanel fastCapBtn;
 
-    @UiField
-    FocusPanel materialBtn;
+	@UiField
+	FocusPanel materialBtn;
 
-    @UiField
-    FocusPanel habitBtn;
+	@UiField
+	FocusPanel habitBtn;
 
-    @UiField
-    SpanElement hoverDiv;
+	@UiField
+	SpanElement hoverDiv;
 
-    @UiField
-    org.gwtbootstrap3.client.ui.Button ideasVideoButton;
+	@UiField
+	org.gwtbootstrap3.client.ui.Button ideasVideoButton;
 
-    public IdeasMenu() {
-        initWidget(ourUiBinder.createAndBindUi(this));
-    }
+	public IdeasMenu() {
+		initWidget(ourUiBinder.createAndBindUi(this));
+	}
 
-    @UiHandler("snipBtn")
-    public void onMouseOver(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.snipDescription());
-    }
-
-
-    @UiHandler("fastCapBtn")
-    public void onMouseOver1(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.fastCapDescription());
-    }
+	@UiHandler("snipBtn")
+	public void onMouseOver(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.snipDescription());
+	}
 
 
-    @UiHandler("materialBtn")
-    public void onMouseOver2(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.materialDescription());
-    }
+	@UiHandler("fastCapBtn")
+	public void onMouseOver1(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.fastCapDescription());
+	}
 
 
-    @UiHandler("habitBtn")
-    public void onMouseOver3(MouseOverEvent event) {
-        hoverDiv.setInnerHTML(RDL.i18n.habitDescription());
-    }
+	@UiHandler("materialBtn")
+	public void onMouseOver2(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.materialDescription());
+	}
+
+
+	@UiHandler("habitBtn")
+	public void onMouseOver3(MouseOverEvent event) {
+		hoverDiv.setInnerHTML(RDL.i18n.habitDescription());
+	}
 
 }

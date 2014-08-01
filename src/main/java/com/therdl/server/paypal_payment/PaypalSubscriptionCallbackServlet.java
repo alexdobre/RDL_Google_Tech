@@ -18,38 +18,38 @@ import java.util.logging.Logger;
 @Singleton
 public class PaypalSubscriptionCallbackServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Provider<HttpSession> session;
-    private UserService userService;
-    private GetExpressCheckout getExpressCheckout = new GetExpressCheckout();
-    private DoExpressCheckout doExpressCheckout = new DoExpressCheckout();
-    private CreateRecurringPaymentsProfile createRecurringPaymentsProfile = new CreateRecurringPaymentsProfile();
+	private Provider<HttpSession> session;
+	private UserService userService;
+	private GetExpressCheckout getExpressCheckout = new GetExpressCheckout();
+	private DoExpressCheckout doExpressCheckout = new DoExpressCheckout();
+	private CreateRecurringPaymentsProfile createRecurringPaymentsProfile = new CreateRecurringPaymentsProfile();
 
-    @Inject
-    public PaypalSubscriptionCallbackServlet(Provider<HttpSession> session, UserService userService) {
-        this.session = session;
-        this.userService = userService;
-    }
+	@Inject
+	public PaypalSubscriptionCallbackServlet(Provider<HttpSession> session, UserService userService) {
+		this.session = session;
+		this.userService = userService;
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        doPost(req, resp);
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doPost(req, resp);
+	}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Logger logger = Logger.getLogger(this.getClass().toString());
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Logger logger = Logger.getLogger(this.getClass().toString());
 
-        StringBuffer url = new StringBuffer();
-        url.append("http://");
-        url.append(request.getServerName());
-        url.append(":");
-        url.append(request.getServerPort());
-        url.append(request.getContextPath());
+		StringBuffer url = new StringBuffer();
+		url.append("http://");
+		url.append(request.getServerName());
+		url.append(":");
+		url.append(request.getServerPort());
+		url.append(request.getContextPath());
 
-        String token = request.getParameter("token");
+		String token = request.getParameter("token");
 
 //        GetExpressCheckoutDetailsResponseType getExpressCheckoutDetailsResponseType = getExpressCheckout.getExpressCheckout(token);
 //
@@ -58,7 +58,7 @@ public class PaypalSubscriptionCallbackServlet extends HttpServlet {
 //            response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
 //        }
 
-        //we want the user to paid immediately.
+		//we want the user to paid immediately.
 //        DoExpressCheckoutPaymentResponseType doExpressCheckoutPaymentResponseType = doExpressCheckout.doExpressCheckout(getExpressCheckoutDetailsResponseType, url.toString());
 //
 //        if (doExpressCheckoutPaymentResponseType.getAck().getValue()
@@ -66,17 +66,17 @@ public class PaypalSubscriptionCallbackServlet extends HttpServlet {
 //            response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
 //        }
 
-        CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfileResponseType = createRecurringPaymentsProfile.createRecurringPayment(token, session, userService);
+		CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfileResponseType = createRecurringPaymentsProfile.createRecurringPayment(token, session, userService);
 
-        if (createRecurringPaymentsProfileResponseType.getAck().getValue()
-                .equalsIgnoreCase("success")) {
-            response.sendRedirect(url.toString() + Constants.MAIN_PAGE);
-        } else {
-            response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
-        }
+		if (createRecurringPaymentsProfileResponseType.getAck().getValue()
+				.equalsIgnoreCase("success")) {
+			response.sendRedirect(url.toString() + Constants.MAIN_PAGE);
+		} else {
+			response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
+		}
 
 
-    }
+	}
 
 
 }

@@ -26,39 +26,37 @@ import java.util.ArrayList;
  * JSOModel objects, see com.therdl.shared.beans.JSOModel javadoc for this class
  * @ getInitialSnipList() display's the initial search result list
  */
-public interface SearchView {
+public interface SearchView extends RdlView {
 
-    public interface Presenter {
-        void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
+	public interface Presenter {
+		void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
-        //   void getInitialSnipList(int pageIndex);
+		//   void getInitialSnipList(int pageIndex);
 
-        AppController getController();
-    }
+		AppController getController();
+	}
 
-    void setToken(String token);
+	void setToken(String token);
 
-    void setPresenter(Presenter presenter);
+	void setPresenter(Presenter presenter);
 
-    Presenter getPresenter();
+	Presenter getPresenter();
 
-    AutoBean<CurrentUserBean> getCurrentUserBean();
+	AutoBean<CurrentUserBean> getCurrentUserBean();
 
-    AutoBean<SnipBean> getCurrentSearchOptionsBean();
+	AutoBean<SnipBean> getCurrentSearchOptionsBean();
 
-    AutoBean<SnipBean> initSearchOptionsBean();
+	AutoBean<SnipBean> initSearchOptionsBean();
 
-    Widget asWidget();
+	Widget asWidget();
 
-    void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
+	void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
 
-    void setLoginResult(String name, String email, boolean auth);
+	AppMenu getAppMenu();
 
-    AppMenu getAppMenu();
+	void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
-    void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
+	void getInitialSnipList(int pageIndex);
 
-    void getInitialSnipList(int pageIndex);
-
-    void setAuthorName(String authorName);
+	void setAuthorName(String authorName);
 }

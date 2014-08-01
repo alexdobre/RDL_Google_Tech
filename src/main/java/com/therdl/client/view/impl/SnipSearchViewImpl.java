@@ -1,8 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -20,6 +17,9 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * SnipSearchViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -150,26 +150,6 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 		snipListRowContainer.clear();
 		snipListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
 		ViewUtils.hide(loadingWidget);
-	}
-
-	@Override
-	public void setLoginResult(String name, String email, boolean auth) {
-		if (auth) {
-			log.info("SnipSearchViewImpl setloginresult auth true " + name);
-
-			this.appMenu.setLogOutVisible(true);
-			this.appMenu.setSignUpVisible(false);
-			this.appMenu.setUserInfoVisible(true);
-			this.appMenu.setUser(name);
-			this.appMenu.setEmail(email);
-			this.appMenu.setLogInVisible(false);
-		} else {
-			this.appMenu.setLogOutVisible(false);
-			this.appMenu.setSignUpVisible(true);
-			this.appMenu.setUserInfoVisible(false);
-			this.appMenu.setLogInVisible(true);
-		}
-
 	}
 
 	@Override

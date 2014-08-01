@@ -1,17 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import com.google.gwt.user.client.ui.*;
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.FormLabel;
-import org.gwtbootstrap3.client.ui.Legend;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,6 +8,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.InsertPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SearchView;
@@ -32,6 +27,15 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.Legend;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * GWT widget class for search filter
@@ -259,17 +263,17 @@ public class SearchFilterWidget extends Composite {
 		}
 	}
 
-	private void hideUnusedItems(){
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)){
+	private void hideUnusedItems() {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			ViewUtils.hide(postsFormGroup);
 			hideProposalItems();
 
-		}else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
 			ViewUtils.hide(typeFormGroup);
 			ViewUtils.hide(refFormGroup);
 			hideProposalItems();
 
-		}else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			ViewUtils.hide(typeFormGroup);
 			ViewUtils.hide(refFormGroup);
 			ViewUtils.hide(postsFormGroup);

@@ -15,38 +15,28 @@ import com.therdl.shared.beans.CurrentUserBean;
  * @ ProfileView  profileView this presenter GUI component
  * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
-public class ProfilePresenter extends RdlAbstractPresenter implements ProfileView.Presenter {
+public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implements ProfileView.Presenter {
 
-    private ProfileView profileView;
+	public ProfilePresenter(ProfileView servicesView, AppController controller) {
+		super(controller);
+		this.view = servicesView;
+		servicesView.setPresenter(this);
+	}
 
-    public ProfilePresenter(ProfileView servicesView, AppController controller) {
-        super(controller);
-        this.profileView = servicesView;
-        servicesView.setPresenter(this);
-    }
-
-    @Override
-    public void go(HasWidgets container) {
-        container.clear();
-        container.add(profileView.asWidget());
-        loginCookieCheck();
-    }
-
-
-    /**
-     * standard runtime method for MVP architecture
-     *
-     * @param container       the view container
-     * @param currentUserBean the user state bean, mainly used for authorisation
-     *                        and to update the menu
-     */
-    @Override
-    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-        container.clear();
-        container.add(profileView.asWidget());
-        profileView.getAppMenu().setAppMenu(currentUserBean);
-        loginCookieCheck();
-    }
+	/**
+	 * standard runtime method for MVP architecture
+	 *
+	 * @param container       the view container
+	 * @param currentUserBean the user state bean, mainly used for authorisation
+	 *                        and to update the menu
+	 */
+	@Override
+	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		checkLogin(view.getAppMenu(),currentUserBean);
+		container.clear();
+		container.add(view.asWidget());
+		view.getAppMenu().setAppMenu(currentUserBean);
+	}
 
 
 }

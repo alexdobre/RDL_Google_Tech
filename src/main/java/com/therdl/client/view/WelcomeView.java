@@ -18,28 +18,26 @@ import com.therdl.shared.LoginHandler;
  * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav bar
  * using the user sign up result status
  */
-public interface WelcomeView {
+public interface WelcomeView extends RdlView{
 
-    public interface Presenter {
-        void doLogIn(String emailTxt, String passwordText, Boolean rememberMe, String sid, LoginHandler loginHandler);
-    }
+	public interface Presenter {
+		void doLogIn(String emailTxt, String passwordText, Boolean rememberMe, String sid, LoginHandler loginHandler);
+	}
 
-    public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler);
+	public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler);
 
-    public void showForgotPasswordPopUp();
+	public void showForgotPasswordPopUp();
 
-    void logout();
+	void setPresenter(Presenter presenter);
 
-    void setPresenter(Presenter presenter);
+	Widget asWidget();
 
-    Widget asWidget();
+	void showLoginFail();
 
-    void showLoginFail();
+	void setLoginResult(String name, String email, boolean auth);
 
-    void setLoginResult(String name, String email, boolean auth);
+	AppMenu getAppMenu();
 
-    AppMenu getAppMenu();
-
-    void init();
+	void init();
 
 }
