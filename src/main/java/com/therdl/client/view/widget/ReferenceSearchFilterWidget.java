@@ -77,13 +77,13 @@ public class ReferenceSearchFilterWidget extends Composite {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			initRefTypeCheckboxes();
 		} else {
-			typeGroup.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(typeGroup);
 			filterLabel.setText(RDL.i18n.filterPosts());
 		}
 		if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			initProposalCheckBoxes();
 		}else {
-			proposalGroup.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(proposalGroup);
 		}
 		createSortArrows();
 	}
@@ -140,8 +140,6 @@ public class ReferenceSearchFilterWidget extends Composite {
 					sortOrder = 1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowUpGreen().getSafeUri().asString());
-
-					view.getSnipReferences(formSearchOptionsBean());
 				}
 			});
 
@@ -163,8 +161,6 @@ public class ReferenceSearchFilterWidget extends Composite {
 					sortOrder = -1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
-
-					view.getSnipReferences(formSearchOptionsBean());
 				}
 			});
 
@@ -178,14 +174,12 @@ public class ReferenceSearchFilterWidget extends Composite {
 
 			}
 		}
-
-
 	}
-
 
 	@UiHandler("refFilter")
 	public void filterReferences(ClickEvent event) {
-		view.getSnipReferences(formSearchOptionsBean());
+		view.setSearchOptionsBean(formSearchOptionsBean());
+		view.getPresenter().populateReplies(view.getSearchOptionsBean(),1);
 	}
 
 	/**

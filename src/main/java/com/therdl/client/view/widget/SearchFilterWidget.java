@@ -261,28 +261,28 @@ public class SearchFilterWidget extends Composite {
 
 	private void hideUnusedItems(){
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)){
-			postsFormGroup.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(postsFormGroup);
 			hideProposalItems();
 
 		}else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			typeFormGroup.getElement().getStyle().setProperty("display", "none");
-			refFormGroup.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(typeFormGroup);
+			ViewUtils.hide(refFormGroup);
 			hideProposalItems();
 
 		}else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			typeFormGroup.getElement().getStyle().setProperty("display", "none");
-			refFormGroup.getElement().getStyle().setProperty("display", "none");
-			postsFormGroup.getElement().getStyle().setProperty("display", "none");
-			categoryFormGroup.getElement().getStyle().setProperty("display", "none");
-			viewsFormGroup.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(typeFormGroup);
+			ViewUtils.hide(refFormGroup);
+			ViewUtils.hide(postsFormGroup);
+			ViewUtils.hide(categoryFormGroup);
+			ViewUtils.hide(viewsFormGroup);
 		}
 	}
 
 	private void hideProposalItems() {
-		proposalStateFormGroup.getElement().getStyle().setProperty("display", "none");
-		proposalTypeFormGroup.getElement().getStyle().setProperty("display", "none");
-		pledgesFormGroup.getElement().getStyle().setProperty("display", "none");
-		countersFormGroup.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(proposalStateFormGroup);
+		ViewUtils.hide(proposalTypeFormGroup);
+		ViewUtils.hide(pledgesFormGroup);
+		ViewUtils.hide(countersFormGroup);
 	}
 
 	/**

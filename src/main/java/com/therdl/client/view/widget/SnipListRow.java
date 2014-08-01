@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
@@ -125,17 +126,17 @@ public class SnipListRow extends Composite {
 		creationDate.setText(dateString);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			postsCount.getElement().getStyle().setProperty("display", "none");
-			pledgesPanel.getElement().getStyle().setProperty("display", "none");
-			countersPanel.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(postsCount);
+			ViewUtils.hide(pledgesPanel);
+			ViewUtils.hide(countersPanel);
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			refPanel.getElement().getStyle().setProperty("display", "none");
-			pledgesPanel.getElement().getStyle().setProperty("display", "none");
-			countersPanel.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(refPanel);
+			ViewUtils.hide(pledgesPanel);
+			ViewUtils.hide(countersPanel);
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			postsCount.getElement().getStyle().setProperty("display", "none");
-			refPanel.getElement().getStyle().setProperty("display", "none");
-			viewCount.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(postsCount);
+			ViewUtils.hide(refPanel);
+			ViewUtils.hide(viewCount);
 
 			proposalType.setText(RDL.i18n.type() + ": " + snipBean.as().getProposalType());
 			proposalState.setText(RDL.i18n.state() + ": " + snipBean.as().getProposalState());

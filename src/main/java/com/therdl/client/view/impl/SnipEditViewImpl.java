@@ -118,11 +118,12 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			initSnipTypeMenu();
-		else
-			snipTypeBar.getElement().getStyle().setProperty("display", "none");
-		deleteSnip.getElement().getStyle().setProperty("display", "none");
+		} else {
+			ViewUtils.hide(snipTypeBar);
+		}
+		ViewUtils.hide(deleteSnip);
 		title.setFocus(true);
 	}
 
@@ -132,7 +133,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
 		title.setText("");
 		editorWidget.setHTML("");
-		deleteSnip.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(deleteSnip);
 
 		categoryList.setSelectedIndex(0);
 	}
@@ -198,14 +199,14 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	 * hides category list
 	 */
 	void hideCategoryList() {
-		categoryFormGroup.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(categoryFormGroup);
 	}
 
 	/**
 	 * hides proposal type and state lists
 	 */
 	void hideProposalLists() {
-		proposalFormGroup.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(proposalFormGroup);
 	}
 
 	/**

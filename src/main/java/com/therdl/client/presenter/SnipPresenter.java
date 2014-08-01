@@ -1,8 +1,16 @@
 package com.therdl.client.presenter;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.http.client.*;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -14,9 +22,6 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -31,257 +36,280 @@ import java.util.logging.Logger;
  */
 public class SnipPresenter extends RdlAbstractPresenter implements Presenter, SnipView.Presenter {
 
-    private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("");
 
-    private SnipView snipView;
-    private Beanery beanery = GWT.create(Beanery.class);
-    private String currentSnipId;
-    private AppController controller;
+	private SnipView snipView;
+	private Beanery beanery = GWT.create(Beanery.class);
+	private String currentSnipId;
+	private AppController controller;
+	AutoBean<CurrentUserBean> currentUserBean;
 
-    public AppController getController() {
-        return controller;
-    }
+	public AppController getController() {
+		return controller;
+	}
 
-    public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
+	public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
 		super(appController);
 		this.snipView = snipView;
-        this.currentSnipId = currentSnipId;
-        this.controller = appController;
-        this.snipView.setPresenter(this);
-    }
+		this.currentSnipId = currentSnipId;
+		this.controller = appController;
+		this.snipView.setPresenter(this);
+	}
 
-    @Override
-    public void go(HasWidgets container) {
-        container.clear();
-        container.add(snipView.asWidget());
-    }
+	@Override
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(snipView.asWidget());
+	}
 
-    /**
-     * standard runtime method for MVP architecture
-     *
-     * @param container       the view container
-     * @param currentUserBean the user state bean, mainly used for authorisation
-     *                        and to update the menu
-     */
-    @Override
-    public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-        container.clear();
-        container.add(snipView.asWidget());
-        if (controller.getCurrentUserBean().as().isAuth()) {
-            snipView.setAppMenu(currentUserBean);
-        }
-        viewSnipById();
+	/**
+	 * standard runtime method for MVP architecture
+	 *
+	 * @param container       the view container
+	 * @param currentUserBean the user state bean, mainly used for authorisation
+	 *                        and to update the menu
+	 */
+	@Override
+	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		this.currentUserBean = currentUserBean;
+		container.clear();
+		container.add(snipView.asWidget());
+		if (controller.getCurrentUserBean().as().isAuth()) {
+			snipView.setAppMenu(currentUserBean);
+		}
+		viewSnipById();
+	}
 
-    }
+	private void prepareTheView(AutoBean<SnipBean> snipBean) {
+		log.info("SnipViewPresenter preparing the view, snipBean= " + snipBean);
+		if (snipBean != null) {
+			//if the user is not logged in the edit button does not show
+			if (currentUserBean == null || !currentUserBean.as().isAuth()){
+				snipView.showHideEditButton(false);
+			}else {
+				//edit button appears when the user is the author of the snip
+				snipView.showHideEditButton(currentUserBean.as().getName().equals(snipBean.as().getAuthor()));
+			}
 
+			//if the user is not logged in like button appears and a prompt will ask the user to log in
+			if (currentUserBean == null || !currentUserBean.as().isAuth()){
+				snipView.showHideLikeButton(true);
+			}else {
+				//like button appears if the user is not the author and has not already given a like
+				snipView.showHideLikeButton(!(snipBean.as().getAuthor().equals(currentUserBean.as().getName()) ||
+						snipBean.as().getIsRepGivenByUser() == 1));
+			}
 
-    /**
-     * find snip for the currentSnipId, while not a parameter the following variable
-     * requires some explanation to help new developers
-     * JSOModel data is a utility class for mapping javascript data objects and arrays
-     * and storing them as a container to be used in a GWT java context
-     * this is a home grown utility class written to encapsulate standard javascript to java
-     * boiler plate code to keep main java code cleaner and more maintainable
-     */
-    private void viewSnipById() {
-        log.info("SnipPresenter viewSnipById currentSnipId=" + currentSnipId);
+			//reply button always appears - user is prompted to log in if not already logged
+			snipView.showHideReplyButton(true);
+		}
+	}
 
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+	/**
+	 * find snip for the currentSnipId, while not a parameter the following variable
+	 * requires some explanation to help new developers
+	 * JSOModel data is a utility class for mapping javascript data objects and arrays
+	 * and storing them as a container to be used in a GWT java context
+	 * this is a home grown utility class written to encapsulate standard javascript to java
+	 * boiler plate code to keep main java code cleaner and more maintainable
+	 */
+	private void viewSnipById() {
+		log.info("SnipPresenter viewSnipById currentSnipId=" + currentSnipId);
 
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean> currentBean = beanery.snipBean();
-        currentBean.as().setAction("viewSnip");
-        currentBean.as().setId(currentSnipId);
+		if (!Constants.DEPLOY) {
+			updateUrl = updateUrl.replaceAll("/therdl", "");
+		}
 
-        if (controller.getCurrentUserBean().as().isAuth()) {
-            currentBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
-        }
+		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+		AutoBean<SnipBean> currentBean = beanery.snipBean();
+		currentBean.as().setAction("viewSnip");
+		currentBean.as().setId(currentSnipId);
 
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
-        try {
+		if (controller.getCurrentUserBean().as().isAuth()) {
+			currentBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
+		}
 
-            requestBuilder.sendRequest(json, new RequestCallback() {
+		String json = AutoBeanCodex.encode(currentBean).getPayload();
+		try {
 
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-                    log.info("getSnipResponse=" + response.getText());
+			requestBuilder.sendRequest(json, new RequestCallback() {
 
-                    AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
-                    snipView.viewSnip(bean);
-                }
+				@Override
+				public void onResponseReceived(Request request, Response response) {
+					log.info("getSnipResponse=" + response.getText());
 
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
+					prepareTheView(bean);
+					snipView.viewSnip(bean);
+				}
 
-                }
+				@Override
+				public void onError(Request request, Throwable exception) {
+					log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
 
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-    }
+				}
 
-    /**
-     * send a request to the server to save reference for current snip
-     *
-     * @param bean representing reference object
-     */
-    public void saveReference(AutoBean<SnipBean> bean) {
-        log.info("SnipPresenter submit reference to server");
-        bean.as().setAction("saveReference");
-        final String refType = bean.as().getReferenceType();
-        final String snipType = bean.as().getSnipType();
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+			});
+		} catch (RequestException e) {
+			log.info(e.getLocalizedMessage());
+		}
+	}
 
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
+	/**
+	 * send a request to the server to save reference for current snip
+	 *
+	 * @param bean representing reference object
+	 */
+	public void saveReference(AutoBean<SnipBean> bean) {
+		log.info("SnipPresenter submit reference to server");
+		bean.as().setAction("saveReference");
+		final String refType = bean.as().getReferenceType();
+		final String snipType = bean.as().getSnipType();
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        log.info("SnipPresenter submit updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
+		if (!Constants.DEPLOY) {
+			updateUrl = updateUrl.replaceAll("/therdl", "");
+		}
 
-        try {
+		log.info("SnipPresenter submit updateUrl: " + updateUrl);
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
 
-            String json = AutoBeanCodex.encode(bean).getPayload();
-            log.info("SnipPresenter submit json: " + json);
-            requestBuilder.sendRequest(json, new RequestCallback() {
+		try {
 
-                @Override
-                public void onResponseReceived(Request request, Response response) {
+			String json = AutoBeanCodex.encode(bean).getPayload();
+			log.info("SnipPresenter submit json: " + json);
+			requestBuilder.sendRequest(json, new RequestCallback() {
 
-                    if (response.getStatusCode() == 200) {
-                        // ok now vaildate for dropdown
-                        log.info("SnipPresenter submit post ok now validating");
-                        snipView.saveReferenceResponseHandler(refType, snipType);
-                    } else {
-                        log.info("SnipPresenter submit post fail");
-                    }
-                }
+				@Override
+				public void onResponseReceived(Request request, Response response) {
 
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipPresenter submit onError)" + exception.getLocalizedMessage());
-                }
+					if (response.getStatusCode() == 200) {
+						// ok now vaildate for dropdown
+						log.info("SnipPresenter submit post ok now validating");
+						snipView.saveReferenceResponseHandler(refType, snipType);
+					} else {
+						log.info("SnipPresenter submit post fail");
+					}
+				}
 
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-    }
+				@Override
+				public void onError(Request request, Throwable exception) {
+					log.info("SnipPresenter submit onError)" + exception.getLocalizedMessage());
+				}
 
-    /**
-     * get references for the current snip, creates bean objects from response json
-     */
-    public void getSnipReferences(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
-        log.info("SnipPresenter getSnipReferences currentSnipId=" + currentSnipId);
+			});
+		} catch (RequestException e) {
+			log.info(e.getLocalizedMessage());
+		}
+	}
 
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+	@Override
+	public void populateReplies(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
+		log.info("SnipPresenter populateReplies currentSnipId=" + currentSnipId);
 
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
+		if (!Constants.DEPLOY) {
+			updateUrl = updateUrl.replaceAll("/therdl", "");
+		}
 
-        searchOptionsBean.as().setAction("getReferences");
-        searchOptionsBean.as().setPageIndex(pageIndex);
-        searchOptionsBean.as().setId(currentSnipId);
+		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
 
-        if (controller.getCurrentUserBean().as().isAuth()) {
-            searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
-        }
+		searchOptionsBean.as().setAction("getReferences");
+		searchOptionsBean.as().setPageIndex(pageIndex);
+		searchOptionsBean.as().setId(currentSnipId);
 
+		if (controller.getCurrentUserBean().as().isAuth()) {
+			searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
+		}
 
-        String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
-        try {
+		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
+		try {
 
-            requestBuilder.sendRequest(json, new RequestCallback() {
+			requestBuilder.sendRequest(json, new RequestCallback() {
 
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-                    log.info("getSnipReferences=" + response.getText());
+				@Override
+				public void onResponseReceived(Request request, Response response) {
+					log.info("getSnipReferences=" + response.getText());
 
-                    JsArray<JSOModel> data =
-                            JSOModel.arrayFromJson(response.getText());
+					JsArray<JSOModel> data =
+							JSOModel.arrayFromJson(response.getText());
 
-                    //      if (data.length() == 0) return;
+					//      if (data.length() == 0) return;
 
-                    ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
-                    ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
+					ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
+					ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
-                    for (int i = 0; i < data.length(); i++) {
-                        jSonList.add(data.get(i));
-                        beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
+					for (int i = 0; i < data.length(); i++) {
+						jSonList.add(data.get(i));
+						beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
 
-                    }
+					}
 
-                    snipView.showReferences(beanList, pageIndex,calculateListRange(beanList.size(),pageIndex));
-                }
+					snipView.showReferences(beanList, pageIndex, calculateListRange(beanList.size(), pageIndex));
+				}
 
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+				@Override
+				public void onError(Request request, Throwable exception) {
+					log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
 
-                }
+				}
 
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-    }
+			});
+		} catch (RequestException e) {
+			log.info(e.getLocalizedMessage());
+		}
+	}
 
-    /**
-     * gives reputation to the current snip, increments reputation counter and saves user id to ensure giving reputation per user/snip only once
-     */
+	/**
+	 * gives reputation to the current snip, increments reputation counter and saves user id to ensure giving reputation per user/snip only once
+	 */
 
-    public void giveSnipReputation(String id, final RequestObserver observer) {
-        log.info("SnipPresenter giveSnipReputation id=" + id);
+	public void giveSnipReputation(String id, final RequestObserver observer) {
+		log.info("SnipPresenter giveSnipReputation id=" + id);
 
-        String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-        if (!Constants.DEPLOY) {
-            updateUrl = updateUrl.replaceAll("/therdl", "");
-        }
+		if (!Constants.DEPLOY) {
+			updateUrl = updateUrl.replaceAll("/therdl", "");
+		}
 
-        log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-        requestBuilder.setHeader("Content-Type", "application/json");
-        AutoBean<SnipBean> currentBean = beanery.snipBean();
-        currentBean.as().setAction("giveRep");
-        currentBean.as().setId(id);
+		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+		AutoBean<SnipBean> currentBean = beanery.snipBean();
+		currentBean.as().setAction("giveRep");
+		currentBean.as().setId(id);
 
-        String json = AutoBeanCodex.encode(currentBean).getPayload();
-        try {
+		String json = AutoBeanCodex.encode(currentBean).getPayload();
+		try {
 
-            requestBuilder.sendRequest(json, new RequestCallback() {
+			requestBuilder.sendRequest(json, new RequestCallback() {
 
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-                    log.info("giveSnipReputation=" + response.getText());
+				@Override
+				public void onResponseReceived(Request request, Response response) {
+					log.info("giveSnipReputation=" + response.getText());
 
-                    // snipView.giveRepResponseHandler();
-                    observer.onSuccess(response.getText());
-                }
+					// snipView.giveRepResponseHandler();
+					observer.onSuccess(response.getText());
+				}
 
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
+				@Override
+				public void onError(Request request, Throwable exception) {
+					log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
 
-                }
+				}
 
-            });
-        } catch (RequestException e) {
-            log.info(e.getLocalizedMessage());
-        }
-    }
+			});
+		} catch (RequestException e) {
+			log.info(e.getLocalizedMessage());
+		}
+	}
 }

@@ -13,11 +13,14 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import org.gwtbootstrap3.client.ui.Badge;
 import org.gwtbootstrap3.client.ui.Button;
 
 /**
@@ -38,7 +41,10 @@ public class ReferenceListRow extends Composite {
 	RichTextArea richTextAreaRef;
 
 	@UiField
-	Label rep, titleLabel, userName, creationDate, refFlag;
+	Badge rep, userName, creationDate;
+
+	@UiField
+	Label refFlag;
 
 	@UiField
 	Button refRepBtn;
@@ -52,9 +58,8 @@ public class ReferenceListRow extends Composite {
 		// sets values from referenceBean for UI elements from ui binder
 		richTextAreaRef.setHTML(referenceBean.as().getContent());
 		richTextAreaRef.setEnabled(false);
-		titleLabel.setText(RDL.i18n.userTitle() + " " + referenceBean.as().getAuthor());
 		userName.setText(referenceBean.as().getAuthor());
-		rep.setText(RDL.i18n.repLevel() + " " + referenceBean.as().getRep());
+		rep.setText(referenceBean.as().getRep().toString());
 		creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
@@ -67,11 +72,11 @@ public class ReferenceListRow extends Composite {
 
 			refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
 
-			refRepBtn.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(refRepBtn);
 		} else {
 
 			if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-				refFlag.getElement().getStyle().setProperty("display", "none");
+				ViewUtils.hide(refFlag);
 			} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 				if (referenceBean.as().getSnipType().equals(RDLConstants.SnipType.PLEDGE)) {
 					refFlag.setText(RDL.i18n.pledge());
@@ -84,9 +89,7 @@ public class ReferenceListRow extends Composite {
 			}
 
 			if (!currentUserBean.as().isAuth() || referenceBean.as().getAuthor().equals(currentUserBean.as().getName()) || (referenceBean.as().getIsRepGivenByUser() != null && referenceBean.as().getIsRepGivenByUser() == 1)) {
-				refRepBtn.getElement().getStyle().setProperty("display", "none");
-			} else {
-				refRepBtn.getElement().getStyle().setProperty("display", "");
+				ViewUtils.hide(refRepBtn);
 			}
 		}
 	}
@@ -96,8 +99,8 @@ public class ReferenceListRow extends Composite {
 		view.getPresenter().giveSnipReputation(referenceBean.as().getId(), new RequestObserver() {
 			@Override
 			public void onSuccess(String response) {
-				refRepBtn.getElement().getStyle().setProperty("display", "none");
-				rep.setText(RDL.i18n.repLevel() + " " + (referenceBean.as().getRep() + 1));
+				ViewUtils.hide(refRepBtn);
+				rep.setText(" " + (referenceBean.as().getRep() + 1));
 			}
 		});
 	}

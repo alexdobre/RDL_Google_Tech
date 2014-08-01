@@ -366,3 +366,18 @@ form.form-search:before {
     background-color: #E5E5E5;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
 }
+
+/*********************** RDL CUSTOM *************************************/
+
+.snipListRowBadge{
+	font-size: 15px;
+	color: grey;
+	background-color: white;
+}
+.leftIcon{
+	float: left;
+	padding-right: 3px;
+}
+.rightIcon{
+	padding-left: 3px;
+}

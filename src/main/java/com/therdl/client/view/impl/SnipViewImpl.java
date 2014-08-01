@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.EditorWidget;
 import com.therdl.client.view.widget.LoadingWidget;
@@ -82,11 +83,9 @@ public class SnipViewImpl extends Composite implements SnipView {
 	@UiField
 	EditorWidget editorWidget;
 	@UiField
-	Button showRef, leaveRef, saveRef, closeRef, editBtn;
+	Button showRef, leaveRef, saveRef, closeRef, editBtn, repBtn;
 	@UiField
 	RadioButton rb1, rb2, rb3, prb1, prb2;
-	@UiField
-	Button repBtn;
 	@UiField
 	Icon repGivenIcon;
 	@UiField
@@ -110,20 +109,20 @@ public class SnipViewImpl extends Composite implements SnipView {
 		setAppMenu(currentUserBean);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			radioBtnParentProp.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(radioBtnParentProp);
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
 			btnTextShow = RDL.i18n.showPosts();
 			btnTextHide = RDL.i18n.hidePosts();
 			snipType = RDLConstants.SnipType.POST;
 
-			radioBtnParent.getElement().getStyle().setProperty("display", "none");
-			radioBtnParentProp.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(radioBtnParent);
+			ViewUtils.hide(radioBtnParentProp);
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			btnTextShow = RDL.i18n.showPosts();
 			btnTextHide = RDL.i18n.hidePosts();
 			snipType = RDLConstants.SnipType.PLEDGE + "," + RDLConstants.SnipType.COUNTER;
 
-			radioBtnParent.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(radioBtnParent);
 		}
 
 	}
@@ -170,13 +169,14 @@ public class SnipViewImpl extends Composite implements SnipView {
 	protected void onLoad() {
 		referenceSearchFilterWidget = new ReferenceSearchFilterWidget(this);
 		refFilterParent.add(referenceSearchFilterWidget);
-		refFilterParent.getElement().getStyle().setProperty("display", "none");
-		referenceListCont.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(refFilterParent);
+		ViewUtils.hide(referenceListCont);
+		listGroup.clear();
 	}
 
 	@Override
 	protected void onUnload() {
-		//referenceListCont.clear();
+		listGroup.clear();
 		snipViewCont.clear();
 		refFilterParent.clear();
 		//  checkboxBtnParent.clear();
@@ -195,36 +195,12 @@ public class SnipViewImpl extends Composite implements SnipView {
 		snipViewCont.add(snipListRow);
 		richTextArea.setHTML(snipBean.as().getContent());
 		richTextArea.setEnabled(false);
-		leaveRef.getElement().getStyle().setProperty("marginLeft", "10px");
-		editBtn.getElement().getStyle().setProperty("marginLeft", "10px");
 		showRef.setText(btnTextShow);
-
-		referenceCont.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(referenceCont);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			leaveRef.setText(RDL.i18n.reply());
 			saveRef.setText(RDL.i18n.savePost());
-		}
-
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			if (snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1) {
-				repBtn.getElement().getStyle().setProperty("display", "none");
-			} else {
-				repBtn.getElement().getStyle().setProperty("display", "");
-			}
-
-			if ((currentUserBean.as().isAuth() && snipBean.as().getAuthor().equals(currentUserBean.as().getName())) || snipBean.as().getIsRefGivenByUser() == 1) {
-				leaveRef.getElement().getStyle().setProperty("display", "none");
-			} else {
-				leaveRef.getElement().getStyle().setProperty("display", "");
-			}
-		} else {
-			if (snipBean.as().getAuthor().equals(currentUserBean.as().getName()) || snipBean.as().getIsRepGivenByUser() == 1)
-				repBtn.getElement().getStyle().setProperty("display", "none");
-			else
-				repBtn.getElement().getStyle().setProperty("display", "");
-
-			leaveRef.getElement().getStyle().setProperty("display", "");
 		}
 
 	}
@@ -252,10 +228,10 @@ public class SnipViewImpl extends Composite implements SnipView {
 		if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter()) {
 			Window.alert(RDL.i18n.pledgeCreateMsg());
 		} else {
-			referenceCont.getElement().getStyle().setProperty("display", "block");
-			refFilterParent.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.show(referenceCont);
+			ViewUtils.hide(refFilterParent);
 			closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
-			referenceListCont.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(referenceListCont);
 			editorWidget.setHTML("");
 			showRef.setText(btnTextShow);
 		}
@@ -269,7 +245,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 	 */
 	@UiHandler("closeRef")
 	public void onCloseRefClicked(ClickEvent event) {
-		referenceCont.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(referenceCont);
 	}
 
 	/**
@@ -281,26 +257,25 @@ public class SnipViewImpl extends Composite implements SnipView {
 	@UiHandler("showRef")
 	public void onShowRefClicked(ClickEvent event) {
 		if (showRef.getText().equals(RDL.i18n.showReferences()) || showRef.getText().equals(RDL.i18n.showPosts())) {
-			searchOptionsBean = beanery.snipBean();
-			searchOptionsBean.as().setSortOrder(-1);
-			searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
-			searchOptionsBean.as().setSnipType(snipType);
+			initSearchOptionsBean();
 
-			getSnipReferences(searchOptionsBean);
+			ViewUtils.hide(loadingWidget);
+			presenter.populateReplies(searchOptionsBean, 0);
 
 		} else {
-			referenceListCont.getElement().getStyle().setProperty("display", "none");
-			refFilterParent.getElement().getStyle().setProperty("display", "none");
+			ViewUtils.hide(referenceListCont);
+			ViewUtils.hide(refFilterParent);
 			showRef.setText(btnTextShow);
 		}
 	}
 
-	public void getSnipReferences(AutoBean<SnipBean> searchOptions) {
-		this.searchOptionsBean = searchOptions;
-
-		loadingWidget.getElement().getStyle().setProperty("display", "block");
-		presenter.getSnipReferences(searchOptions, 0);
+	private void initSearchOptionsBean(){
+		searchOptionsBean = beanery.snipBean();
+		searchOptionsBean.as().setSortOrder(-1);
+		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+		searchOptionsBean.as().setSnipType(snipType);
 	}
+
 
 	@UiHandler("repBtn")
 	public void onRepBtnClicked(ClickEvent event) {
@@ -327,8 +302,8 @@ public class SnipViewImpl extends Composite implements SnipView {
 	 * in response handler call this function to hide button and also increment rep counter in the view
 	 */
 	public void giveRepResponseHandler() {
-		repBtn.getElement().getStyle().setProperty("display", "none");
-		repGivenIcon.getElement().getStyle().setProperty("display", "block");
+		ViewUtils.hide(repBtn);
+		ViewUtils.show(repGivenIcon);
 		snipListRow.incrementRepCounter();
 	}
 
@@ -341,10 +316,33 @@ public class SnipViewImpl extends Composite implements SnipView {
 	 * @param snipType saved snip type, can be reference/post/pledge/counter
 	 */
 	public void saveReferenceResponseHandler(String refType, String snipType) {
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-			leaveRef.getElement().getStyle().setProperty("display", "none");
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)
+				|| Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			ViewUtils.hide(leaveRef);
+		}
 		snipListRow.incrementRefCounterByRefType(refType, snipType);
-		referenceCont.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(referenceCont);
+	}
+
+	@Override
+	public void showHideEditButton(Boolean show) {
+		ViewUtils.showHide(show, editBtn);
+	}
+
+	@Override
+	public void showHideLikeButton(Boolean show) {
+		if (show) {
+			ViewUtils.show(repBtn);
+			ViewUtils.hide(repGivenIcon);
+		} else {
+			ViewUtils.hide(repBtn);
+			ViewUtils.show(repGivenIcon);
+		}
+	}
+
+	@Override
+	public void showHideReplyButton(Boolean show) {
+		ViewUtils.showHide(show, leaveRef);
 	}
 
 	/**
@@ -398,12 +396,11 @@ public class SnipViewImpl extends Composite implements SnipView {
 	 * @param beanList list of references as bean objects
 	 */
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
-		loadingWidget.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(loadingWidget);
 		showRef.setText(btnTextHide);
-		referenceListCont.getElement().getStyle().setProperty("display", "block");
-		refFilterParent.getElement().getStyle().setProperty("display", "block");
-
-		referenceCont.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.show(referenceListCont);
+		ViewUtils.show(refFilterParent);
+		ViewUtils.hide(referenceCont);
 
 		if (beanList.size() == 0) {
 			referenceListCont.add(new Label(RDL.i18n.noDataToDisplay()));
@@ -430,5 +427,13 @@ public class SnipViewImpl extends Composite implements SnipView {
 //		});
 
 		this.listRange.setText(listRange);
+	}
+
+	public AutoBean<SnipBean> getSearchOptionsBean() {
+		return searchOptionsBean;
+	}
+
+	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean) {
+		this.searchOptionsBean = searchOptionsBean;
 	}
 }

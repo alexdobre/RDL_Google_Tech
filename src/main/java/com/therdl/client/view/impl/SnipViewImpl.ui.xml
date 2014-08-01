@@ -83,6 +83,12 @@
 	    .repGivenIcon{
 	        color: green;
 	    }
+	    .snipViewPanel{
+	        margin-bottom: 5px;
+	    }
+	    .padLeft{
+	        padding-left:10px;
+	    }
 
     </ui:style>
 	<g:ScrollPanel>
@@ -91,7 +97,7 @@
 
 			<g:FlowPanel addStyleNames="{style.push}"/>
 
-			<b:Panel>
+			<b:Panel addStyleNames="{style.snipViewPanel}">
 				<b:PanelHeader>
 					<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
 				</b:PanelHeader>
@@ -107,10 +113,10 @@
 								<b:ButtonGroup>
 									<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
 								</b:ButtonGroup>
-								<b:ButtonGroup>
+								<b:ButtonGroup addStyleNames="{style.padLeft}">
 									<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 								</b:ButtonGroup>
-								<b:ButtonGroup>
+								<b:ButtonGroup addStyleNames="{style.padLeft}">
 									<b:Button ui:field="editBtn" text="{i18n.edit}"/>
 								</b:ButtonGroup>
 							</b:Column>
@@ -159,8 +165,8 @@
 						<b:Column size="MD_3" offset="MD_9">
 							<b:Pagination addStyleNames="{style.margin-fix}">
 								<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
-								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
-								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
+									<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
+									<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
 							</b:Pagination>
 						</b:Column>
 					</b:Row>

@@ -151,7 +151,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
 		authorName = null;
 		threadListRowContainer.clear();
 		threadListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
-		threadLoadingWidget.getElement().getStyle().setProperty("display", "none");
+		ViewUtils.hide(threadLoadingWidget);
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
 	@Override
 	public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
-		threadLoadingWidget.getElement().getStyle().setProperty("display", "block");
+		ViewUtils.show(threadLoadingWidget);
 		currentSearchOptionsBean = searchOptionsBean;
 		searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
 		presenter.searchSnips(searchOptionsBean, pageIndex);
@@ -201,7 +201,7 @@ public class StoriesViewImpl extends Composite implements SearchView {
 	public void getInitialSnipList(int pageIndex) {
 		firstTimeLoaded = true;
 		currentSearchOptionsBean = null;
-		threadLoadingWidget.getElement().getStyle().setProperty("display", "block");
+		ViewUtils.show(threadLoadingWidget);
 
 		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
 	}
