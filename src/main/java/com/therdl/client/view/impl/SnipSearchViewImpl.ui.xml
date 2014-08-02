@@ -5,25 +5,23 @@
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:style src="../cssbundles/searchView.css"/>
 
-	<g:ScrollPanel>
-		<b:Container>
-			<rdl:AppMenu ui:field="appMenu"/>
 
-			<g:SimplePanel addStyleNames="push">
+	<b:Container>
+		<g:SimplePanel addStyleNames="push">
 
-				<b:Row>
-					<b:Column size="MD_3">
-						<g:FlowPanel ui:field="snipSearchWidgetPanel"/>
-						<rdl:SocialPanel styleName="{style.socialPanel}"/>
-					</b:Column>
-					<b:Column size="MD_9">
-						<rdl:LoadingWidget ui:field="loadingWidget"/>
-						<g:FlowPanel ui:field="snipListRowContainer"/>
-					</b:Column>
-				</b:Row>
+			<b:Row>
+				<b:Column size="MD_3">
+					<g:FlowPanel ui:field="snipSearchWidgetPanel"/>
+					<rdl:SocialPanel styleName="{style.socialPanel}"/>
+				</b:Column>
+				<b:Column size="MD_9">
+					<rdl:LoadingWidget ui:field="loadingWidget"/>
+					<g:FlowPanel ui:field="snipListRowContainer"/>
+				</b:Column>
+			</b:Row>
 
-			</g:SimplePanel>
+		</g:SimplePanel>
 
-		</b:Container>
-	</g:ScrollPanel>
+	</b:Container>
+
 </ui:UiBinder> 

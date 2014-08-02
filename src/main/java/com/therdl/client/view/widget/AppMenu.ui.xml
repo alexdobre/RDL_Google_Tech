@@ -4,8 +4,12 @@
 		>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:with field="nameTokens" type="com.therdl.client.view.common.NameTokens"/>
-
-	<b:Navbar position="FIXED_TOP">
+	<ui:style>
+		.navHeight{
+			height: 50px;
+		}
+	</ui:style>
+	<b:Navbar position="FIXED_TOP" addStyleNames="{style.navHeight}">
 		<b:Container>
 			<b:NavbarHeader>
 				<b:NavbarBrand targetHistoryToken="{nameTokens.getWelcome}" ui:field="home">TheRDL</b:NavbarBrand>

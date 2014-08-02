@@ -74,12 +74,14 @@ public class AppMenu extends Composite {
 	@UiField
 	AnchorListItem out;
 
+	private static int i=0;
 
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
 	}
 
 	public AppMenu() {
 		initWidget(uiBinder.createAndBindUi(this));
+		log.info("App menu constructor i++"+i++);
 
 		// user has just sucessfully logged in update app menu
 		GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
@@ -135,10 +137,20 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
 	}
 
+	private void allInactive(){
+		home.removeStyleName("brandActive");
+		ideas.setActive(false);
+		stories.setActive(false);
+		improvements.setActive(false);
+		signUp.setActive(false);
+		login.setActive(false);
+	}
+
 	/**
 	 * Sets the signUp element as active in the menu
 	 */
 	public void setSignUpActive() {
+		allInactive();
 		signUp.setActive(true);
 	}
 
@@ -146,6 +158,7 @@ public class AppMenu extends Composite {
 	 * Sets the home element as active in the menu
 	 */
 	public void setHomeActive() {
+		allInactive();
 		home.addStyleName("brandActive");
 	}
 
@@ -153,6 +166,7 @@ public class AppMenu extends Composite {
 	 * Sets the ideas element as active in the menu
 	 */
 	public void setIdeasActive() {
+		allInactive();
 		ideas.setActive(true);
 	}
 
@@ -160,6 +174,7 @@ public class AppMenu extends Composite {
 	 * Sets the stories element as active in the menu
 	 */
 	public void setStoriesActive() {
+		allInactive();
 		stories.setActive(true);
 	}
 
@@ -167,6 +182,7 @@ public class AppMenu extends Composite {
 	 * Sets the improvements element as active in the menu
 	 */
 	public void setImprovementsActive() {
+		allInactive();
 		improvements.setActive(true);
 	}
 

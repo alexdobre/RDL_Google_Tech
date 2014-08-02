@@ -89,96 +89,93 @@
 		.padLeft{
 		padding-left:10px;
 		}
-
 	</ui:style>
-	<g:ScrollPanel>
-		<b:Container>
-			<rdl:AppMenu ui:field="appMenu"/>
 
-			<g:FlowPanel addStyleNames="{style.push}"/>
+	<b:Container>
+		<g:FlowPanel addStyleNames="{style.push}"/>
 
-			<b:Panel addStyleNames="{style.snipViewPanel}">
-				<b:PanelHeader>
-					<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
-				</b:PanelHeader>
-				<b:Collapse b:id="snipCollapse">
-					<b:PanelBody>
-						<g:RichTextArea ui:field="richTextArea" addStyleNames="{style.richTextArea} "/>
-					</b:PanelBody>
-				</b:Collapse>
-				<b:PanelFooter>
-					<b:Container fluid="true">
-						<b:Row>
-							<b:Column size="MD_4">
-								<b:ButtonGroup>
-									<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
-								</b:ButtonGroup>
-								<b:ButtonGroup addStyleNames="{style.padLeft}">
-									<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
-								</b:ButtonGroup>
-							</b:Column>
-							<b:Column size="MD_5" offset="MD_2">
-								<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
-							</b:Column>
-							<b:Column size="MD_1">
-								<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="repBtn"
-								          addStyleNames="{style.repBtn}"/>
-								<b:Button type="PRIMARY" icon="PENCIL" ui:field="editBtn"
-								          addStyleNames="{style.repBtn}"/>
-								<b:Icon type="CHECK" size="TIMES2" ui:field="repGivenIcon"
-								        addStyleNames="{style.repGivenIcon} {style.repBtn}"/>
-							</b:Column>
-						</b:Row>
-					</b:Container>
-				</b:PanelFooter>
-			</b:Panel>
+		<b:Panel addStyleNames="{style.snipViewPanel}">
+			<b:PanelHeader>
+				<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
+			</b:PanelHeader>
+			<b:Collapse b:id="snipCollapse">
+				<b:PanelBody>
+					<g:RichTextArea ui:field="richTextArea" addStyleNames="{style.richTextArea} "/>
+				</b:PanelBody>
+			</b:Collapse>
+			<b:PanelFooter>
+				<b:Container fluid="true">
+					<b:Row>
+						<b:Column size="MD_4">
+							<b:ButtonGroup>
+								<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
+							</b:ButtonGroup>
+							<b:ButtonGroup addStyleNames="{style.padLeft}">
+								<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+							</b:ButtonGroup>
+						</b:Column>
+						<b:Column size="MD_5" offset="MD_2">
+							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
+						</b:Column>
+						<b:Column size="MD_1">
+							<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="repBtn"
+							          addStyleNames="{style.repBtn}"/>
+							<b:Button type="PRIMARY" icon="PENCIL" ui:field="editBtn"
+							          addStyleNames="{style.repBtn}"/>
+							<b:Icon type="CHECK" size="TIMES2" ui:field="repGivenIcon"
+							        addStyleNames="{style.repGivenIcon} {style.repBtn}"/>
+						</b:Column>
+					</b:Row>
+				</b:Container>
+			</b:PanelFooter>
+		</b:Panel>
 
-			<g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
-				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-					               text="{i18n.positive}"></g:RadioButton>
-					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-					               text="{i18n.neutral}"></g:RadioButton>
-					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-					               text="{i18n.negative}"></g:RadioButton>
-				</g:FlowPanel>
-
-				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
-					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-					               text="{i18n.pledge}"></g:RadioButton>
-					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-					               text="{i18n.counter}"></g:RadioButton>
-				</g:FlowPanel>
-
-				<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
-				<g:FlowPanel styleName="{style.refButtonsCont}">
-					<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
-					<b:Button ui:field="closeRef" text="{i18n.close}"/>
-				</g:FlowPanel>
+		<g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
+			<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
+				<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
+				               text="{i18n.positive}"></g:RadioButton>
+				<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
+				               text="{i18n.neutral}"></g:RadioButton>
+				<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
+				               text="{i18n.negative}"></g:RadioButton>
 			</g:FlowPanel>
 
-			<b:Container>
-				<b:Column size="MD_3" ui:field="refFilterParent"/>
+			<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
+				<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
+				               text="{i18n.pledge}"></g:RadioButton>
+				<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
+				               text="{i18n.counter}"></g:RadioButton>
+			</g:FlowPanel>
 
-				<b:Column size="MD_9" ui:field="referenceListCont">
-					<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
-					<b:Row>
-						<b:Column size="MD_3" offset="MD_9">
-							<b:Pagination addStyleNames="{style.margin-fix}">
-								<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
-								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
-								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
-							</b:Pagination>
-						</b:Column>
-					</b:Row>
-					<b:Row>
-						<b:Column size="MD_12">
-							<b:LinkedGroup ui:field="listGroup"/>
-						</b:Column>
-					</b:Row>
-				</b:Column>
-			</b:Container>
+			<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+			<g:FlowPanel styleName="{style.refButtonsCont}">
+				<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
+				<b:Button ui:field="closeRef" text="{i18n.close}"/>
+			</g:FlowPanel>
+		</g:FlowPanel>
 
+		<b:Container>
+			<b:Column size="MD_3" ui:field="refFilterParent"/>
+
+			<b:Column size="MD_9" ui:field="referenceListCont">
+				<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
+				<b:Row>
+					<b:Column size="MD_3" offset="MD_9">
+						<b:Pagination addStyleNames="{style.margin-fix}">
+							<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
+							<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
+							<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
+						</b:Pagination>
+					</b:Column>
+				</b:Row>
+				<b:Row>
+					<b:Column size="MD_12">
+						<b:LinkedGroup ui:field="listGroup"/>
+					</b:Column>
+				</b:Row>
+			</b:Column>
 		</b:Container>
-	</g:ScrollPanel>
+
+	</b:Container>
+
 </ui:UiBinder>

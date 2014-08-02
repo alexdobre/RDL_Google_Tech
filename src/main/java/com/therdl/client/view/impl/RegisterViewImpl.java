@@ -7,6 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -47,8 +48,6 @@ public class RegisterViewImpl extends Composite implements RegisterView {
 
 	private Beanery beanery = GWT.create(Beanery.class);
 
-
-	@UiField
 	AppMenu appMenu;
 
 	@UiField
@@ -70,8 +69,9 @@ public class RegisterViewImpl extends Composite implements RegisterView {
 	private String password;
 	private String eMail;
 
-	public RegisterViewImpl() {
+	public RegisterViewImpl(AppMenu appMenu) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		appMenu.setSignUpView();
 		appMenu.setSignUpActive();
 	}

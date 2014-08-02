@@ -21,63 +21,60 @@
 		}
 
 	</ui:style>
-	<g:ScrollPanel>
-		<b:Container>
-			<rdl:AppMenu ui:field="appMenu"/>
 
-			<b:Form type="HORIZONTAL" addStyleNames="{style.push}">
-				<b:FieldSet>
-					<b:Panel>
-						<b:PanelHeader>
-							<b:FormGroup>
-								<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:"/>
-								<g:FlowPanel addStyleNames="col-lg-11">
-									<b:TextBox b:id="formTitle" ui:field="title"/>
-								</g:FlowPanel>
-							</b:FormGroup>
+	<b:Container>
+		<b:Form type="HORIZONTAL" addStyleNames="{style.push}">
+			<b:FieldSet>
+				<b:Panel>
+					<b:PanelHeader>
+						<b:FormGroup>
+							<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:"/>
+							<g:FlowPanel addStyleNames="col-lg-11">
+								<b:TextBox b:id="formTitle" ui:field="title"/>
+							</g:FlowPanel>
+						</b:FormGroup>
 
-							<b:FormGroup addStyleNames="{style.noMargin}">
-								<g:FlowPanel ui:field="categoryListPanel" addStyleNames="col-lg-4">
-									<b:Row>
-										<b:Column size="MD_3" addStyleNames="{style.textAlignRight}">
-											<b:FormLabel for="formCategList" text="{i18n.category}:"/>
-										</b:Column>
-										<b:Column size="MD_6">
-											<b:ListBox b:id="formCategList" ui:field="categoryList"/>
-										</b:Column>
-									</b:Row>
-								</g:FlowPanel>
-								<g:FlowPanel ui:field="snipTypeBar" addStyleNames="col-lg-5"/>
-								<g:FlowPanel ui:field="improvementsPanel" addStyleNames="col-lg-12">
-									<b:Row>
-										<b:Column size="MD_1" addStyleNames="{style.textAlignRight}">
-											<b:FormLabel for="formPropTypeList" text="{i18n.type}:"/>
-										</b:Column>
-										<b:Column size="MD_3">
-											<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
-										</b:Column>
-										<b:Column size="MD_1" addStyleNames="{style.textAlignRight}">
-											<b:FormLabel for="formStateList" text="{i18n.state}:"/>
-										</b:Column>
-										<b:Column size="MD_3">
-											<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
-										</b:Column>
-									</b:Row>
-								</g:FlowPanel>
+						<b:FormGroup addStyleNames="{style.noMargin}">
+							<g:FlowPanel ui:field="categoryListPanel" addStyleNames="col-lg-4">
+								<b:Row>
+									<b:Column size="MD_3" addStyleNames="{style.textAlignRight}">
+										<b:FormLabel for="formCategList" text="{i18n.category}:"/>
+									</b:Column>
+									<b:Column size="MD_6">
+										<b:ListBox b:id="formCategList" ui:field="categoryList"/>
+									</b:Column>
+								</b:Row>
+							</g:FlowPanel>
+							<g:FlowPanel ui:field="snipTypeBar" addStyleNames="col-lg-5"/>
+							<g:FlowPanel ui:field="improvementsPanel" addStyleNames="col-lg-12">
+								<b:Row>
+									<b:Column size="MD_1" addStyleNames="{style.textAlignRight}">
+										<b:FormLabel for="formPropTypeList" text="{i18n.type}:"/>
+									</b:Column>
+									<b:Column size="MD_3">
+										<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
+									</b:Column>
+									<b:Column size="MD_1" addStyleNames="{style.textAlignRight}">
+										<b:FormLabel for="formStateList" text="{i18n.state}:"/>
+									</b:Column>
+									<b:Column size="MD_3">
+										<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
+									</b:Column>
+								</b:Row>
+							</g:FlowPanel>
 
-							</b:FormGroup>
-						</b:PanelHeader>
-						<b:PanelBody>
-							<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
-						</b:PanelBody>
-						<b:PanelFooter>
-							<b:Button ui:field="saveSnip" text="{i18n.save}"/>
-							<b:Button ui:field="deleteSnip" text="{i18n.delete}"/>
-						</b:PanelFooter>
-					</b:Panel>
-				</b:FieldSet>
-			</b:Form>
-		</b:Container>
-	</g:ScrollPanel>
+						</b:FormGroup>
+					</b:PanelHeader>
+					<b:PanelBody>
+						<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+					</b:PanelBody>
+					<b:PanelFooter>
+						<b:Button ui:field="saveSnip" text="{i18n.save}"/>
+						<b:Button ui:field="deleteSnip" text="{i18n.delete}"/>
+					</b:PanelFooter>
+				</b:Panel>
+			</b:FieldSet>
+		</b:Form>
+	</b:Container>
 
 </ui:UiBinder> 

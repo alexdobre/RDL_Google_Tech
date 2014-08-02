@@ -40,6 +40,7 @@ public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implemen
 		checkLogin(view.getAppMenu(),currentUserBean);
 		container.clear();
 		view.init();
+		view.getAppMenu().setHomeActive();
 		container.add(view.asWidget());
 	}
 

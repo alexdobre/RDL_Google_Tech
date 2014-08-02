@@ -64,9 +64,6 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		this.currentUserBean = currentUserBean;
 		container.clear();
 		container.add(view.asWidget());
-		if (controller.getCurrentUserBean().as().isAuth()) {
-			view.setAppMenu(currentUserBean);
-		}
 		viewSnipById();
 	}
 

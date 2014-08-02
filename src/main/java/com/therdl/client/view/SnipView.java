@@ -29,8 +29,6 @@ public interface SnipView extends RdlView {
 
 	public Presenter getPresenter();
 
-	void setAppMenu(AutoBean<CurrentUserBean> currentUserBean);
-
 	public void viewSnip(AutoBean<SnipBean> snipBean);
 
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);

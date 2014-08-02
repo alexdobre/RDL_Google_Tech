@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
@@ -56,7 +57,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
 	SearchFilterWidget searchFilterWidget;
 
-	@UiField
 	AppMenu appMenu;
 
 	@UiField
@@ -79,8 +79,9 @@ public class StoriesViewImpl extends Composite implements SearchView {
 	private String authorName;
 	private boolean firstTimeLoaded = false;
 
-	public StoriesViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+	public StoriesViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		this.currentUserBean = currentUserBean;
 
 		searchFilterWidget = new SearchFilterWidget(this);
@@ -118,8 +119,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
 			snipBean.as().setSnipType(RDLConstants.SnipType.THREAD);
 			doFilterSearch(snipBean, 0);
 		}
-
-		appMenu.setSignUpVisible(true);
 		appMenu.setStoriesActive();
 
 	}

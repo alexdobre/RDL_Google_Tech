@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -66,7 +67,6 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
 	private AutoBean<CurrentUserBean> currentUser;
 
-	@UiField
 	AppMenu appMenu;
 	@UiField
 	Image logo;
@@ -94,15 +94,14 @@ public class WelcomeViewImpl extends Composite implements WelcomeView {
 
 	LoginHandler loginHandler;
 
-	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser) {
+	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser, AppMenu appMenu) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		this.currentUser = currentUser;
 		//  appMenu.setUserInfoVisible(false);
 		appMenu.setLogOutVisible(false);
 		appMenu.setMainGroupVisible(true);
 		logo.setStyleName("splashLogo");
-		appMenu.setSignUpVisible(true);
-		appMenu.setHomeActive();
 
 		//core category buttons
 		compatibilityCat.addStyleName("btn-cat");

@@ -6,7 +6,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
@@ -29,6 +31,7 @@ import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.SnipViewImpl;
 import com.therdl.client.view.impl.StoriesViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
@@ -42,6 +45,7 @@ import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
 import com.therdl.shared.events.SnipViewEvent;
 import com.therdl.shared.events.SnipViewEventHandler;
+import org.gwtbootstrap3.client.ui.Container;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -77,8 +81,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private static Logger log = Logger.getLogger("");
 
 	private HasWidgets container;
-
 	private Beanery beanery = GWT.create(Beanery.class);
+	private AppMenu appMenu = new AppMenu();
 
 	/**
 	 * Current authentication rules are anyone can view but only registered user can edit
@@ -93,11 +97,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private WelcomeView welcomeView;
 	private SnipEditView snipEditView;
+
 	private SearchView searchView;
 	private SearchView storiesView;
 	private SearchView improvementsView;
+
 	private RegisterView registerView;
 	private ProfileView profileView;
+
 	private SnipView snipView;
 	private SnipView threadView;
 
@@ -162,12 +169,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	/**
 	 * present the Welcome landing page for a unAuthorised user
 	 *
-	 * @param container the Presenter View
+	 * @param rootContainer the Presenter View
 	 */
 
 	@Override
-	public void go(final HasWidgets container) {
-		this.container = container;
+	public void go(final HasWidgets rootContainer) {
+		this.container = new HTMLPanel("<div/>");
+		rootContainer.add(appMenu);
+		rootContainer.add((Widget) this.container);
 		this.currentUserBean.as().setAuth(false);
 		this.currentUserBean.as().setRegistered(false);
 		if ("".equals(History.getToken())) {
@@ -189,7 +198,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 */
 	public WelcomeView getWelcomeView() {
 		if (welcomeView == null) {
-			welcomeView = new WelcomeViewImpl(currentUserBean);
+			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
 			WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
 		}
 		return welcomeView;
@@ -237,7 +246,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void showWelcomeView() {
 		log.info("AppController Tokens.WELCOME");
 		if (welcomeView == null) {
-			welcomeView = new WelcomeViewImpl(currentUserBean);
+			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
 		}
 		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
 		GWT.runAsync(new RunAsyncCallback() {
@@ -265,7 +274,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		if (snipView == null) {
-			snipView = new SnipViewImpl(currentUserBean);
+			snipView = new SnipViewImpl(currentUserBean, appMenu);
 		}
 
 		final SnipPresenter snipPresenter = new SnipPresenter(snipView, currentSnipId, this);
@@ -291,7 +300,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		if (threadView == null) {
-			threadView = new SnipViewImpl(currentUserBean);
+			threadView = new SnipViewImpl(currentUserBean, appMenu);
 		}
 
 		final SnipPresenter snipPresenter = new SnipPresenter(threadView, currentSnipId, this);
@@ -313,7 +322,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController Tokens.SNIPS");
 
 		if (searchView == null) {
-			searchView = new SnipSearchViewImpl(currentUserBean);
+			searchView = new SnipSearchViewImpl(currentUserBean, appMenu);
 		}
 
 		searchView.setToken(event.getValue());
@@ -341,7 +350,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController Tokens.STORIES");
 
 		if (storiesView == null) {
-			storiesView = new StoriesViewImpl(currentUserBean);
+			storiesView = new StoriesViewImpl(currentUserBean, appMenu);
 		}
 		storiesView.setToken(event.getValue());
 		if (tokenSplit.length == 2)
@@ -371,7 +380,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				"Current user auth: " + currentUserBean.as().isAuth() + "SnipEditViewImpl " + snipEditView);
 
 		if (snipEditView == null) {
-			snipEditView = new SnipEditViewImpl(currentUserBean);
+			snipEditView = new SnipEditViewImpl(currentUserBean, appMenu);
 		}
 		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 		log.info("Doing async call...");
@@ -397,7 +406,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController Tokens.IMPROVEMENTS");
 
 		if (improvementsView == null) {
-			improvementsView = new ImprovementsViewImpl(currentUserBean);
+			improvementsView = new ImprovementsViewImpl(currentUserBean, appMenu);
 		}
 		improvementsView.setToken(event.getValue());
 		if (tokenSplit.length == 2)
@@ -427,7 +436,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController Tokens.PROPOSAL_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId);
 
 		if (snipEditView == null) {
-			snipEditView = new SnipEditViewImpl(currentUserBean);
+			snipEditView = new SnipEditViewImpl(currentUserBean, appMenu);
 		}
 		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 
@@ -455,7 +464,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController Tokens.SNIP_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId);
 
 		if (snipEditView == null) {
-			snipEditView = new SnipEditViewImpl(currentUserBean);
+			snipEditView = new SnipEditViewImpl(currentUserBean, appMenu);
 		}
 		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 
@@ -474,7 +483,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void showSignUp() {
 		currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
 		if (registerView == null) {
-			registerView = new RegisterViewImpl();
+			registerView = new RegisterViewImpl(appMenu);
 
 		}
 
@@ -494,7 +503,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void showProfile() {
 		if (profileView == null) {
 			log.info("AppController profileView == null ");
-			profileView = new ProfileViewImpl(currentUserBean);
+			profileView = new ProfileViewImpl(currentUserBean, appMenu);
 
 		} else {
 			log.info("AppController profileView == null else ");
@@ -518,7 +527,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController Tokens.LOG_OUT ");
 
 		if (welcomeView == null) {
-			welcomeView = new WelcomeViewImpl(currentUserBean);
+			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
 		}
 
 		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
@@ -545,7 +554,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		if (proposalView == null) {
-			proposalView = new SnipViewImpl(currentUserBean);
+			proposalView = new SnipViewImpl(currentUserBean, appMenu);
 		}
 
 		final SnipPresenter snipPresenter = new SnipPresenter(proposalView, currentSnipId, this);

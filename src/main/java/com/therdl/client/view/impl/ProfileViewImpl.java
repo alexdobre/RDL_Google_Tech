@@ -56,7 +56,6 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
 	private AvatarUploadPopUp uploadForm;
 
-	@UiField
 	AppMenu appMenu;
 
 	@UiField
@@ -75,10 +74,10 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 	 */
 	private String tempUrl = "userAvatar/avatar-empty.jpg";
 
-	public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean) {
+	public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		this.currentUserBean = cUserBean;
-		appMenu.setAppMenu(currentUserBean);
 
 		profileImagePanel.setStyleName("profileImagePanel");
 
@@ -188,7 +187,7 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 	/**
 	 * sets the User Avatar Image if one exists
 	 *
-	 * @param String url  URI for the user image in the browser resources
+	 * @param url  URI for the user image in the browser resources
 	 */
 	public void setAvatar(String url) {
 		log.info("ProfileViewImpl setAvatarWhenViewIsNotNull" + currentUserBean.as().getAvatarUrl());

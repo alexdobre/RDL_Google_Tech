@@ -10,7 +10,6 @@ import com.therdl.client.view.widget.AppMenu;
  * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
- * @ setAppMenu(AutoBean<CurrentUserBean> currentUserBean) using the user authorisation status
  * this method sets the options in the header/nav bar
  * @ setAvatarWhenViewIsNotNull( ) sets the avatar image when the profile view comes into focus
  */

@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
@@ -56,9 +57,7 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
 	SearchFilterWidget searchFilterWidget;
 
-	@UiField
 	AppMenu appMenu;
-
 
 	@UiField
 	FlowPanel snipSearchWidgetPanel;
@@ -81,8 +80,9 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
 	private boolean firstTimeLoaded = false;
 
-	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		this.currentUserBean = currentUserBean;
 
 		searchFilterWidget = new SearchFilterWidget(this);

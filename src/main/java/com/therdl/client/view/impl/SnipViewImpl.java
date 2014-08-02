@@ -9,6 +9,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RichTextArea;
@@ -71,9 +72,6 @@ public class SnipViewImpl extends Composite implements SnipView {
 	private AutoBean<SnipBean> currentSnipBean;
 	private boolean showEditBtn = false;
 
-	// uibinder variables
-
-	@UiField
 	AppMenu appMenu;
 	@UiField
 	FlowPanel snipViewCont, referenceCont, radioBtnParent, radioBtnParentProp;
@@ -104,10 +102,10 @@ public class SnipViewImpl extends Composite implements SnipView {
 	String btnTextHide = RDL.i18n.hideReferences();
 	String snipType = RDLConstants.SnipType.REFERENCE;
 
-	public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+	public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		this.currentUserBean = currentUserBean;
-		setAppMenu(currentUserBean);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			ViewUtils.hide(radioBtnParentProp);
@@ -137,33 +135,6 @@ public class SnipViewImpl extends Composite implements SnipView {
 	@Override
 	public Presenter getPresenter() {
 		return presenter;
-	}
-
-	/**
-	 * Sets the upper header Menu to the correct state for supplied credentials
-	 * called from presenter
-	 *
-	 * @param currentUserBean AutoBean<CurrentUserBean> currentUserBean)
-	 */
-	@Override
-	public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
-
-		if (currentUserBean.as().isAuth()) {
-			log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
-
-			this.appMenu.setLogOutVisible(true);
-			this.appMenu.setSignUpVisible(false);
-			this.appMenu.setUserInfoVisible(true);
-			this.appMenu.setUser(currentUserBean.as().getName());
-			this.appMenu.setEmail(currentUserBean.as().getEmail());
-			this.appMenu.setLogInVisible(false);
-		} else {
-
-			this.appMenu.setLogOutVisible(false);
-			this.appMenu.setSignUpVisible(true);
-			this.appMenu.setUserInfoVisible(false);
-			this.appMenu.setLogInVisible(true);
-		}
 	}
 
 	@Override

@@ -35,7 +35,6 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 		checkLogin(view.getAppMenu(),currentUserBean);
 		container.clear();
 		container.add(view.asWidget());
-		view.getAppMenu().setAppMenu(currentUserBean);
 	}
 
 

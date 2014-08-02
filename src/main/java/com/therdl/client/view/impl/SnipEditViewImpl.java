@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -62,9 +63,7 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
 	private Presenter presenter;
 
-	@UiField
 	AppMenu appMenu;
-
 
 	@UiField
 	FlowPanel snipTypeBar, categoryListPanel, improvementsPanel;
@@ -91,9 +90,10 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	private AutoBean<SnipBean> currentSnipBean;
 	private String pageToRedirect;
 
-	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean) {
+	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		log.info("SnipEditViewImpl constructor");
 		initWidget(uiBinder.createAndBindUi(this));
+		this.appMenu = appMenu;
 		this.currentUserBean = currentUserBean;
 	}
 
