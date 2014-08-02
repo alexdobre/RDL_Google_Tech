@@ -12,25 +12,25 @@ import com.therdl.shared.beans.CurrentUserBean;
 public class LogInOkEvent extends GwtEvent<LogInOkEventEventHandler> {
 
 
-    private AutoBean<CurrentUserBean> currentUserBean;
+	private AutoBean<CurrentUserBean> currentUserBean;
 
-    public LogInOkEvent(AutoBean<CurrentUserBean> currentUserBean) {
-        this.currentUserBean = currentUserBean;
-    }
+	public LogInOkEvent(AutoBean<CurrentUserBean> currentUserBean) {
+		this.currentUserBean = currentUserBean;
+	}
 
-    public AutoBean<CurrentUserBean> getCurrentUserBean() {
-        return currentUserBean;
-    }
+	public AutoBean<CurrentUserBean> getCurrentUserBean() {
+		return currentUserBean;
+	}
 
-    public static Type<LogInOkEventEventHandler> TYPE = new Type<LogInOkEventEventHandler>();
+	public static Type<LogInOkEventEventHandler> TYPE = new Type<LogInOkEventEventHandler>();
 
-    @Override
-    public Type<LogInOkEventEventHandler> getAssociatedType() {
-        return TYPE;
-    }
+	@Override
+	public Type<LogInOkEventEventHandler> getAssociatedType() {
+		return TYPE;
+	}
 
-    @Override
-    protected void dispatch(LogInOkEventEventHandler logInOkEventEventHandler) {
-        logInOkEventEventHandler.onLogInOkEvent(this);
-    }
+	@Override
+	protected void dispatch(LogInOkEventEventHandler logInOkEventEventHandler) {
+		logInOkEventEventHandler.onLogInOkEvent(this);
+	}
 }

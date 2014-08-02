@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.EditorWidget;
@@ -191,7 +192,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 		this.currentSnipBean = snipBean;
 
 		// this is the top widget, like in the list widget
-		snipListRow = new SnipListRow(snipBean, currentUserBean);
+		snipListRow = new SnipListRow(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()));
 		snipViewCont.add(snipListRow);
 		richTextArea.setHTML(snipBean.as().getContent());
 		richTextArea.setEnabled(false);
@@ -401,7 +402,8 @@ public class SnipViewImpl extends Composite implements SnipView {
 		ViewUtils.hide(referenceCont);
 
 		if (beanList.size() == 0) {
-			referenceListCont.add(new Label(RDL.i18n.noDataToDisplay()));
+			listGroup.clear();
+			listGroup.add(new Label(RDL.i18n.noDataToDisplay()));
 		}
 
 

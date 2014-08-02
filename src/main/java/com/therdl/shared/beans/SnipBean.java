@@ -9,193 +9,193 @@ import java.util.List;
 
 public interface SnipBean {
 
-    /**
-     * used for implementing the command pattern in this application
-     * for actions see
-     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
-     *
-     * @return
-     */
-    String getAction();
+	/**
+	 * used for implementing the command pattern in this application
+	 * for actions see
+	 * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+	 *
+	 * @return
+	 */
+	String getAction();
 
-    void setAction(String action);
+	void setAction(String action);
 
-    /**
-     * ************************* Getters and Setters *****************************
-     */
+	/**
+	 * ************************* Getters and Setters *****************************
+	 */
 
-    String getId();
+	String getId();
 
-    void setId(String id);
+	void setId(String id);
 
-    /**
-     * AuthUserBean needs the avatar url to pass to currentuserbean
-     */
-    String getAvatarUrl();
+	/**
+	 * AuthUserBean needs the avatar url to pass to currentuserbean
+	 */
+	String getAvatarUrl();
 
-    /**
-     * AuthUserBean needs the avatar url to pass to currentuserbean
-     *
-     * @ String avatarUrl  the uri to locate the users image,
-     * used in the browser/javascript layer
-     */
-    void setAvatarUrl(String avatarUrl);
+	/**
+	 * AuthUserBean needs the avatar url to pass to currentuserbean
+	 *
+	 * @ String avatarUrl  the uri to locate the users image,
+	 * used in the browser/javascript layer
+	 */
+	void setAvatarUrl(String avatarUrl);
 
-    String getTitle();
+	String getTitle();
 
-    void setTitle(String title);
+	void setTitle(String title);
 
-    String getContent();
+	String getContent();
 
-    void setContent(String content);
+	void setContent(String content);
 
-    String getAuthor();
+	String getAuthor();
 
-    void setAuthor(String author);
+	void setAuthor(String author);
 
-    String getCreationDate();
+	String getCreationDate();
 
-    void setCreationDate(String creationDate);
+	void setCreationDate(String creationDate);
 
-    String getDateFrom();
+	String getDateFrom();
 
-    void setDateFrom(String dateFrom);
+	void setDateFrom(String dateFrom);
 
-    String getDateTo();
+	String getDateTo();
 
-    void setDateTo(String dateTo);
+	void setDateTo(String dateTo);
 
 
-    String getEditDate();
+	String getEditDate();
 
-    void setEditDate(String editDate);
+	void setEditDate(String editDate);
 
-    String getSnipType();
+	String getSnipType();
 
-    void setSnipType(String snipType);
+	void setSnipType(String snipType);
 
-    String getCoreCat();
+	String getCoreCat();
 
-    void setCoreCat(String coreCat);
+	void setCoreCat(String coreCat);
 
-    String getSubCat();
+	String getSubCat();
 
-    void setSubCat(String subCat);
+	void setSubCat(String subCat);
 
-    Integer getViews();
+	Integer getViews();
 
-    void setViews(Integer views);
+	void setViews(Integer views);
 
-    Integer getRep();
+	Integer getRep();
 
-    void setRep(Integer rep);
+	void setRep(Integer rep);
 
-    Integer getPosRef();
+	Integer getPosRef();
 
-    void setPosRef(Integer posRef);
+	void setPosRef(Integer posRef);
 
-    Integer getNeutralRef();
+	Integer getNeutralRef();
 
-    void setNeutralRef(Integer neutralRef);
+	void setNeutralRef(Integer neutralRef);
 
-    Integer getNegativeRef();
+	Integer getNegativeRef();
 
-    void setNegativeRef(Integer negativeRef);
+	void setNegativeRef(Integer negativeRef);
 
-    String getReferenceType();
+	String getReferenceType();
 
-    void setReferenceType(String referenceType);
+	void setReferenceType(String referenceType);
 
-    List<Link> getLinks();
+	List<Link> getLinks();
 
-    void setLinks(List<Link> links);
+	void setLinks(List<Link> links);
 
-    String getParentStream();
+	String getParentStream();
 
-    void setParentStream(String parentStream);
+	void setParentStream(String parentStream);
 
-    String getParentTag();
+	String getParentTag();
 
-    void setParentTag(String parentTag);
+	void setParentTag(String parentTag);
 
-    String getParentThread();
+	String getParentThread();
 
-    void setParentThread(String parentThread);
+	void setParentThread(String parentThread);
 
-    String getVotes();
+	String getVotes();
 
-    void setVotes(String votes);
+	void setVotes(String votes);
 
-    String getMoney();
+	String getMoney();
 
-    void setMoney(String money);
+	void setMoney(String money);
 
-    Integer getIsRepGivenByUser();
+	Integer getIsRepGivenByUser();
 
-    void setIsRepGivenByUser(Integer repGiven);
+	void setIsRepGivenByUser(Integer repGiven);
 
-    Integer getIsRefGivenByUser();
+	Integer getIsRefGivenByUser();
 
-    void setIsRefGivenByUser(Integer refGiven);
+	void setIsRefGivenByUser(Integer refGiven);
 
-    String getViewerId();
+	String getViewerId();
 
-    void setViewerId(String id);
+	void setViewerId(String id);
 
-    int getCount();
+	int getCount();
 
-    void setCount(int count);
+	void setCount(int count);
 
-    int getPageIndex();
+	int getPageIndex();
 
-    void setPageIndex(int pageIndex);
+	void setPageIndex(int pageIndex);
 
-    String getSortField();
+	String getSortField();
 
-    void setSortField(String sortField);
+	void setSortField(String sortField);
 
-    int getSortOrder();
+	int getSortOrder();
 
-    void setSortOrder(int sortOrder);
+	void setSortOrder(int sortOrder);
 
-    Integer getPosts();
+	Integer getPosts();
 
-    void setPosts(Integer posts);
+	void setPosts(Integer posts);
 
-    Integer getPledges();
+	Integer getPledges();
 
-    void setPledges(Integer pledges);
+	void setPledges(Integer pledges);
 
-    Integer getCounters();
+	Integer getCounters();
 
-    void setCounters(Integer counters);
+	void setCounters(Integer counters);
 
-    String getProposalType();
+	String getProposalType();
 
-    void setProposalType(String proposalType);
+	void setProposalType(String proposalType);
 
-    String getProposalState();
+	String getProposalState();
 
-    void setProposalState(String proposalState);
+	void setProposalState(String proposalState);
 
-    Integer getAuthorRep();
+	Integer getAuthorRep();
 
-    void setAuthorRep(Integer authorRep);
+	void setAuthorRep(Integer authorRep);
 
-    String getAuthorTitle();
+	String getAuthorTitle();
 
-    void setAuthorTitle(String authorTitle);
+	void setAuthorTitle(String authorTitle);
 
-    /**
-     * nested interfaces
-     */
-    interface Link {
-        String getTargetId();
+	/**
+	 * nested interfaces
+	 */
+	interface Link {
+		String getTargetId();
 
-        void setTargetId(String targetId);
+		void setTargetId(String targetId);
 
-        String getRank();
+		String getRank();
 
-        void setRank(String rank);
-    }
+		void setRank(String rank);
+	}
 }

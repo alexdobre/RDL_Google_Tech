@@ -10,27 +10,27 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class SnipViewEvent extends GwtEvent<SnipViewEventHandler> {
 
-    public static Type<SnipViewEventHandler> TYPE = new Type<SnipViewEventHandler>();
+	public static Type<SnipViewEventHandler> TYPE = new Type<SnipViewEventHandler>();
 
-    private final String snipId;
+	private final String snipId;
 
-    public SnipViewEvent(String snipId) {
-        this.snipId = snipId;
-    }
+	public SnipViewEvent(String snipId) {
+		this.snipId = snipId;
+	}
 
-    @Override
-    public Type<SnipViewEventHandler> getAssociatedType() {
-        return TYPE;
-    }
+	@Override
+	public Type<SnipViewEventHandler> getAssociatedType() {
+		return TYPE;
+	}
 
-    @Override
-    protected void dispatch(SnipViewEventHandler snipViewEventHandler) {
+	@Override
+	protected void dispatch(SnipViewEventHandler snipViewEventHandler) {
 
-        snipViewEventHandler.onSnipSelectEvent(this);
-    }
+		snipViewEventHandler.onSnipSelectEvent(this);
+	}
 
-    public String getSnipId() {
-        return snipId;
-    }
+	public String getSnipId() {
+		return snipId;
+	}
 
 }

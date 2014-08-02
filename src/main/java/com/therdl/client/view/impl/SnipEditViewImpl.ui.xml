@@ -16,6 +16,9 @@
 		.noMargin{
 		margin-bottom: 0px;
 		}
+		.textAlignRight{
+		text-align: right;
+		}
 
 	</ui:style>
 	<g:ScrollPanel>
@@ -26,28 +29,42 @@
 				<b:FieldSet>
 					<b:Panel>
 						<b:PanelHeader>
-							<g:FlowPanel ui:field="snipTypeBar"/>
-							<b:FormGroup ui:field="categoryFormGroup" addStyleNames="{style.noMargin}">
+							<b:FormGroup>
 								<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:"/>
-								<g:FlowPanel addStyleNames="col-lg-6">
-									<b:TextBox b:id="formTitle" ui:field="title" tabIndex="1"/>
-								</g:FlowPanel>
-								<b:FormLabel for="formCategList" addStyleNames="col-lg-1" text="{i18n.category}:"/>
-								<g:FlowPanel addStyleNames="col-lg-2">
-									<b:ListBox b:id="formCategList" ui:field="categoryList" tabIndex="2"/>
+								<g:FlowPanel addStyleNames="col-lg-11">
+									<b:TextBox b:id="formTitle" ui:field="title"/>
 								</g:FlowPanel>
 							</b:FormGroup>
 
-							<b:FormGroup ui:field="proposalFormGroup" addStyleNames="{style.noMargin}">
-								<b:FormLabel for="formPropTypeList" addStyleNames="col-lg-2" text="{i18n.type}:"/>
-								<g:FlowPanel addStyleNames="col-lg-3">
-									<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
+							<b:FormGroup addStyleNames="{style.noMargin}">
+								<g:FlowPanel ui:field="categoryListPanel" addStyleNames="col-lg-4">
+									<b:Row>
+										<b:Column size="MD_3" addStyleNames="{style.textAlignRight}">
+											<b:FormLabel for="formCategList" text="{i18n.category}:"/>
+										</b:Column>
+										<b:Column size="MD_6">
+											<b:ListBox b:id="formCategList" ui:field="categoryList"/>
+										</b:Column>
+									</b:Row>
+								</g:FlowPanel>
+								<g:FlowPanel ui:field="snipTypeBar" addStyleNames="col-lg-5"/>
+								<g:FlowPanel ui:field="improvementsPanel" addStyleNames="col-lg-12">
+									<b:Row>
+										<b:Column size="MD_1" addStyleNames="{style.textAlignRight}">
+											<b:FormLabel for="formPropTypeList" text="{i18n.type}:"/>
+										</b:Column>
+										<b:Column size="MD_3">
+											<b:ListBox b:id="formPropTypeList" ui:field="proposalTypeList"/>
+										</b:Column>
+										<b:Column size="MD_1" addStyleNames="{style.textAlignRight}">
+											<b:FormLabel for="formStateList" text="{i18n.state}:"/>
+										</b:Column>
+										<b:Column size="MD_3">
+											<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
+										</b:Column>
+									</b:Row>
 								</g:FlowPanel>
 
-								<b:FormLabel for="formStateList" addStyleNames="col-lg-2" text="{i18n.state}:"/>
-								<g:FlowPanel addStyleNames="col-lg-3">
-									<b:ListBox b:id="formStateList" ui:field="proposalStateList"/>
-								</g:FlowPanel>
 							</b:FormGroup>
 						</b:PanelHeader>
 						<b:PanelBody>

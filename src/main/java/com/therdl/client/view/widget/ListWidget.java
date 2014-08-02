@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
+import com.therdl.client.view.common.SnipType;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.LinkedGroup;
@@ -36,7 +37,8 @@ public class ListWidget extends Composite {
 		this.listRange.setText(listRange);
 
 		for (int j = 0; j < beanList.size(); j++) {
-			SnipListRow snipListRow = new SnipListRow(beanList.get(j), searchView.getCurrentUserBean());
+			SnipListRow snipListRow = new SnipListRow(beanList.get(j), searchView.getCurrentUserBean(),
+					SnipType.fromString(beanList.get(j).as().getSnipType()));
 			LinkedGroupItem listItem = new LinkedGroupItem();
 			listItem.setPaddingBottom(2);
 			listItem.setPaddingTop(2);

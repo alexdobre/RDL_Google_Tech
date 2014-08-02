@@ -9,35 +9,35 @@ import com.google.web.bindery.autobean.shared.AutoBeanFactory;
  */
 public interface Beanery extends AutoBeanFactory {
 
-    /**
-     * main objects
-     *
-     * @return
-     */
-    AutoBean<SnipBean> snipBean();
+	/**
+	 * main objects
+	 *
+	 * @return
+	 */
+	AutoBean<SnipBean> snipBean();
 
-    AutoBean<UserBean> userBean();
+	AutoBean<UserBean> userBean();
 
-    AutoBean<AuthUserBean> authBean();
+	AutoBean<AuthUserBean> authBean();
 
-    AutoBean<CurrentUserBean> currentUserBean();
+	AutoBean<CurrentUserBean> currentUserBean();
 
-    /**
-     * nested objects
-     *
-     * @return
-     */
-    AutoBean<SnipBean.Link> snipLinksBean();
+	/**
+	 * nested objects
+	 *
+	 * @return
+	 */
+	AutoBean<SnipBean.Link> snipLinksBean();
 
-    AutoBean<UserBean.VotesGivenBean> userVotesGivenBean();
+	AutoBean<UserBean.VotesGivenBean> userVotesGivenBean();
 
-    AutoBean<UserBean.RepGivenBean> userRepGivenBean();
+	AutoBean<UserBean.RepGivenBean> userRepGivenBean();
 
-    AutoBean<UserBean.RefGivenBean> userRefGivenBean();
+	AutoBean<UserBean.RefGivenBean> userRefGivenBean();
 
-    AutoBean<UserBean.FriendBean> userFriendBean();
+	AutoBean<UserBean.FriendBean> userFriendBean();
 
-    AutoBean<UserBean.TitleBean> userTitleBean();
+	AutoBean<UserBean.TitleBean> userTitleBean();
 
-    AutoBean<UserBean.MessageBean> userMessageBean();
+	AutoBean<UserBean.MessageBean> userMessageBean();
 }

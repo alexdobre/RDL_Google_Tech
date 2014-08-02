@@ -253,7 +253,8 @@ public class ViewUtils {
 	}
 
 	public static boolean isAuthor(AutoBean<CurrentUserBean> currentUserBean, AutoBean<SnipBean> snipBean) {
-		if (snipBean != null && currentUserBean != null) {
+		if (snipBean != null && snipBean.as() != null &&
+				currentUserBean != null && currentUserBean.as() != null && currentUserBean.as().getName() != null)  {
 			return currentUserBean.as().getName().equals(snipBean.as().getAuthor());
 		}
 		return false;

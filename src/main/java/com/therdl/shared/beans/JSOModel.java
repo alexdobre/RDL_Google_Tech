@@ -28,65 +28,65 @@ import java.util.Set;
  */
 
 public class JSOModel extends JavaScriptObject {
-    /**
-     * Overlay types always have protected, zero-arg constructors
-     */
+	/**
+	 * Overlay types always have protected, zero-arg constructors
+	 */
 
-    protected JSOModel() {
-    }
+	protected JSOModel() {
+	}
 
-    /**
-     * Create an empty instance.
-     *
-     * @return new Object
-     */
-    public static native JSOModel create() /*-{
-        return new Object();
+	/**
+	 * Create an empty instance.
+	 *
+	 * @return new Object
+	 */
+	public static native JSOModel create() /*-{
+	    return new Object();
     }-*/;
 
-    /**
-     * Convert a JSON encoded string into a JSOModel instance.
-     * <p/>
-     * Expects a JSON string structured like '{"foo":"bar","number":123}'
-     *
-     * @return a populated JSOModel object
-     */
-    public static native JSOModel fromJson(String jsonString) /*-{
+	/**
+	 * Convert a JSON encoded string into a JSOModel instance.
+	 * <p/>
+	 * Expects a JSON string structured like '{"foo":"bar","number":123}'
+	 *
+	 * @return a populated JSOModel object
+	 */
+	public static native JSOModel fromJson(String jsonString) /*-{
         return eval('(' + jsonString + ')');
     }-*/;
 
-    /**
-     * Convert a JSON encoded string into an array of JSOModel instance.
-     * <p/>
-     * Expects a JSON string structured like '[{"foo":"bar","number":123}, {...}]'
-     *
-     * @return a populated JsArray
-     */
-    public static native JsArray<JSOModel> arrayFromJson(String jsonString) /*-{
+	/**
+	 * Convert a JSON encoded string into an array of JSOModel instance.
+	 * <p/>
+	 * Expects a JSON string structured like '[{"foo":"bar","number":123}, {...}]'
+	 *
+	 * @return a populated JsArray
+	 */
+	public static native JsArray<JSOModel> arrayFromJson(String jsonString) /*-{
         return eval('(' + jsonString + ')');
     }-*/;
 
 
-    /**
-     * javascript objects are key value maps, this method tests that a key exits
-     * used before calling get("<key>")
-     *
-     * @param key
-     * @return
-     */
-    public final native boolean hasKey(String key) /*-{
+	/**
+	 * javascript objects are key value maps, this method tests that a key exits
+	 * used before calling get("<key>")
+	 *
+	 * @param key
+	 * @return
+	 */
+	public final native boolean hasKey(String key) /*-{
         return this[key] != undefined;
     }-*/;
 
-    /**
-     * javascript objects are key value maps, this method retruns all the
-     * key values as a JSNI array
-     * often used to match ona key value
-     *
-     * @param key
-     * @return
-     */
-    public final native JsArrayString keys() /*-{
+	/**
+	 * javascript objects are key value maps, this method retruns all the
+	 * key values as a JSNI array
+	 * often used to match ona key value
+	 *
+	 * @param key
+	 * @return
+	 */
+	public final native JsArrayString keys() /*-{
         var a = new Array();
         for (var p in this) {
             a.push(p);
@@ -94,49 +94,49 @@ public class JSOModel extends JavaScriptObject {
         return a;
     }-*/;
 
-    /**
-     * returns the keys for this object as a java.util.Set
-     *
-     * @return
-     */
+	/**
+	 * returns the keys for this object as a java.util.Set
+	 *
+	 * @return
+	 */
 
-    @Deprecated
-    public final Set<String> keySet() {
-        JsArrayString array = keys();
-        Set<String> set = new HashSet<String>();
-        for (int i = 0; i < array.length(); i++) {
-            set.add(array.get(i));
-        }
-        return set;
-    }
+	@Deprecated
+	public final Set<String> keySet() {
+		JsArrayString array = keys();
+		Set<String> set = new HashSet<String>();
+		for (int i = 0; i < array.length(); i++) {
+			set.add(array.get(i));
+		}
+		return set;
+	}
 
-    // only standard getters and setters below
+	// only standard getters and setters below
 
-    public final native String get(String key) /*-{
+	public final native String get(String key) /*-{
         return "" + this[key];
     }-*/;
 
-    public final native String get(String key, String defaultValue) /*-{
+	public final native String get(String key, String defaultValue) /*-{
         return this[key] ? ("" + this[key]) : defaultValue;
     }-*/;
 
-    public final native void set(String key, String value) /*-{
+	public final native void set(String key, String value) /*-{
         this[key] = value;
     }-*/;
 
-    public final int getInt(String key) {
-        return Integer.parseInt(get(key));
-    }
+	public final int getInt(String key) {
+		return Integer.parseInt(get(key));
+	}
 
-    public final boolean getBoolean(String key) {
-        return Boolean.parseBoolean(get(key));
-    }
+	public final boolean getBoolean(String key) {
+		return Boolean.parseBoolean(get(key));
+	}
 
-    public final native JSOModel getObject(String key) /*-{
+	public final native JSOModel getObject(String key) /*-{
         return this[key];
     }-*/;
 
-    public final native JsArray<JSOModel> getArray(String key) /*-{
+	public final native JsArray<JSOModel> getArray(String key) /*-{
         return this[key] ? this[key] : new Array();
     }-*/;
 

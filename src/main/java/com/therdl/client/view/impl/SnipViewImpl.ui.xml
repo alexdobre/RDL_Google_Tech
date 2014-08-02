@@ -109,7 +109,7 @@
 				<b:PanelFooter>
 					<b:Container fluid="true">
 						<b:Row>
-							<b:Column size="MD_3">
+							<b:Column size="MD_4">
 								<b:ButtonGroup>
 									<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
 								</b:ButtonGroup>
@@ -117,7 +117,7 @@
 									<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 								</b:ButtonGroup>
 							</b:Column>
-							<b:Column size="MD_5" offset="MD_3">
+							<b:Column size="MD_5" offset="MD_2">
 								<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
 							</b:Column>
 							<b:Column size="MD_1">

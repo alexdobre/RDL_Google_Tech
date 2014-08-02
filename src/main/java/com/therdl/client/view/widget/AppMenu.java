@@ -174,7 +174,6 @@ public class AppMenu extends Composite {
 	 * displays the username
 	 */
 	public void setUser(String id) {
-		log.info("AppMenu:setUser " + id);
 		user.setTitle(id);
 	}
 
@@ -182,7 +181,6 @@ public class AppMenu extends Composite {
 	 * displays the email string
 	 */
 	public void setEmail(String id) {
-		log.info("AppMenu:setEmail " + id);
 		email.setText(id);
 
 	}
@@ -191,7 +189,6 @@ public class AppMenu extends Composite {
 	 * displays the SignUp option
 	 */
 	public void setSignUpVisible(boolean state) {
-		log.info("AppMenu: setSignUpVisible " + state);
 		signUp.setVisible(state);
 	}
 
@@ -199,7 +196,6 @@ public class AppMenu extends Composite {
 	 * displays the UserInfo details in a drop down
 	 */
 	public void setUserInfoVisible(boolean state) {
-		log.info("AppMenu: setUserInfoVisible " + state);
 		userDetails.setVisible(state);
 		user.setVisible(state);
 		email.setVisible(state);
@@ -209,7 +205,6 @@ public class AppMenu extends Composite {
 	 * displays the LogOut option
 	 */
 	public void setLogOutVisible(boolean state) {
-		log.info("AppMenu: setLogOutVisible " + state);
 		this.out.setVisible(state);
 
 	}
@@ -218,7 +213,6 @@ public class AppMenu extends Composite {
 	 * displays the LogIn option
 	 */
 	public void setLogInVisible(boolean state) {
-		log.info("AppMenu: setLogInVisible " + state);
 		this.login.setVisible(state);
 
 	}
@@ -229,7 +223,6 @@ public class AppMenu extends Composite {
 	 * @param state
 	 */
 	public void setMainGroupVisible(boolean state) {
-		log.info("AppMenu: setMainGroupVisible " + state);
 		this.improvements.setVisible(state);
 	}
 
@@ -238,7 +231,6 @@ public class AppMenu extends Composite {
 	 * sets the sign up display options
 	 */
 	public void setSignUpView() {
-		log.info("AppMenu: setSignUpView ");
 		this.login.setVisible(false);
 		setUserInfoVisible(false);
 	}

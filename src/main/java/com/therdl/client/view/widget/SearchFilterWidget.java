@@ -491,9 +491,7 @@ public class SearchFilterWidget extends Composite {
 					break;
 				}
 			}
-		} //else {
-		//            categoryList.setSelectedIndex(0);
-		//        }
+		}
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			if (searchOptionsBean.as().getSnipType() != null && searchOptionsBean.as().getSnipType() != "") {

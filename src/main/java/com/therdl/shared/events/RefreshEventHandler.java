@@ -10,5 +10,5 @@ import com.google.gwt.event.shared.EventHandler;
  */
 public interface RefreshEventHandler extends EventHandler {
 
-    void onRefreshEvent(RefreshEvent e);
+	void onRefreshEvent(RefreshEvent e);
 }

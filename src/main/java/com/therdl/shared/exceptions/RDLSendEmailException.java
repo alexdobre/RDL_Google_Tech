@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class RDLSendEmailException extends Exception implements Serializable {
 
-    public RDLSendEmailException() {
-    }
+	public RDLSendEmailException() {
+	}
 
-    public RDLSendEmailException(String message) {
-        super(message);
-    }
+	public RDLSendEmailException(String message) {
+		super(message);
+	}
 }

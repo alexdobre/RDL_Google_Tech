@@ -16,158 +16,158 @@ import java.util.List;
  */
 public interface UserBean {
 
-    /**
-     * used for implementing the command pattern in this application
-     * for actions see
-     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
-     *
-     * @return
-     */
-    String getAction();
+	/**
+	 * used for implementing the command pattern in this application
+	 * for actions see
+	 * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+	 *
+	 * @return
+	 */
+	String getAction();
 
-    void setAction(String action);
+	void setAction(String action);
 
-    /**************************** Getters and Setters ******************************/
+	/**************************** Getters and Setters ******************************/
 
 
-    /**
-     * UserBean needs the avatar url to pass to currentuserbean
-     */
-    String getAvatarUrl();
+	/**
+	 * UserBean needs the avatar url to pass to currentuserbean
+	 */
+	String getAvatarUrl();
 
-    /**
-     * UserBean needs the avatar url to pass to currentuserbean
-     *
-     * @ String avatarUrl  the uri to locate the users image,
-     * used in the browser/javascript layer
-     */
-    void setAvatarUrl(String avatarUrl);
+	/**
+	 * UserBean needs the avatar url to pass to currentuserbean
+	 *
+	 * @ String avatarUrl  the uri to locate the users image,
+	 * used in the browser/javascript layer
+	 */
+	void setAvatarUrl(String avatarUrl);
 
-    /**
-     * the unique id, primary key
-     */
-    String getId();
+	/**
+	 * the unique id, primary key
+	 */
+	String getId();
 
-    void setId(String id);
+	void setId(String id);
 
-    /**
-     * methods below are for standard form based credentials submitted on the clien
-     * for user login and sign up
-     *
-     * @return
-     */
-    String getUsername();
+	/**
+	 * methods below are for standard form based credentials submitted on the clien
+	 * for user login and sign up
+	 *
+	 * @return
+	 */
+	String getUsername();
 
-    void setUsername(String username);
+	void setUsername(String username);
 
-    String getPassHash();
+	String getPassHash();
 
-    void setPassHash(String passHash);
+	void setPassHash(String passHash);
 
-    String getEmail();
+	String getEmail();
 
-    void setEmail(String email);
+	void setEmail(String email);
 
-    String getSid();
+	String getSid();
 
-    void setSid(String sid);
+	void setSid(String sid);
 
-    String getPaypalId();
+	String getPaypalId();
 
-    void setPaypalId(String paypalId);
+	void setPaypalId(String paypalId);
 
-    /**
-     * methods below are composition for the Snip rdl schema
-     */
+	/**
+	 * methods below are composition for the Snip rdl schema
+	 */
 
-    Integer getRep();
+	Integer getRep();
 
-    void setRep(Integer rep);
+	void setRep(Integer rep);
 
-    List<TitleBean> getTitles();
+	List<TitleBean> getTitles();
 
-    void setTitles(List<TitleBean> titles);
+	void setTitles(List<TitleBean> titles);
 
-    List<FriendBean> getFriends();
+	List<FriendBean> getFriends();
 
-    void setFriends(List<FriendBean> friends);
+	void setFriends(List<FriendBean> friends);
 
-    List<RepGivenBean> getRepGiven();
+	List<RepGivenBean> getRepGiven();
 
-    void setRepGiven(List<RepGivenBean> repGiven);
+	void setRepGiven(List<RepGivenBean> repGiven);
 
-    List<RefGivenBean> getRefGiven();
+	List<RefGivenBean> getRefGiven();
 
-    void setRefGiven(List<RefGivenBean> refGiven);
+	void setRefGiven(List<RefGivenBean> refGiven);
 
-    List<VotesGivenBean> getVotesGiven();
+	List<VotesGivenBean> getVotesGiven();
 
-    void setVotesGiven(List<VotesGivenBean> votesGiven);
+	void setVotesGiven(List<VotesGivenBean> votesGiven);
 
-    /**
-     * nested interfaces
-     */
-    interface TitleBean {
-        public String getTitleName();
+	/**
+	 * nested interfaces
+	 */
+	interface TitleBean {
+		public String getTitleName();
 
-        public void setTitleName(String titleName);
+		public void setTitleName(String titleName);
 
-        public String getDateGained();
+		public String getDateGained();
 
-        public void setDateGained(String dateGained);
+		public void setDateGained(String dateGained);
 
-        public String getExpires();
+		public String getExpires();
 
-        public void setExpires(String expires);
-    }
+		public void setExpires(String expires);
+	}
 
-    interface FriendBean {
-        public String getUsername();
+	interface FriendBean {
+		public String getUsername();
 
-        public void setUsername(String username);
+		public void setUsername(String username);
 
-        public List<MessageBean> getMessages();
+		public List<MessageBean> getMessages();
 
-        public void setMessages(List<MessageBean> messages);
-    }
+		public void setMessages(List<MessageBean> messages);
+	}
 
-    interface RepGivenBean {
-        public String getSnipId();
+	interface RepGivenBean {
+		public String getSnipId();
 
-        public void setSnipId(String snipId);
+		public void setSnipId(String snipId);
 
-        public String getDate();
+		public String getDate();
 
-        public void setDate(String date);
-    }
+		public void setDate(String date);
+	}
 
-    interface RefGivenBean {
-        public String getSnipId();
+	interface RefGivenBean {
+		public String getSnipId();
 
-        public void setSnipId(String snipId);
+		public void setSnipId(String snipId);
 
-        public String getDate();
+		public String getDate();
 
-        public void setDate(String date);
-    }
+		public void setDate(String date);
+	}
 
-    interface VotesGivenBean {
-        public String getProposalId();
+	interface VotesGivenBean {
+		public String getProposalId();
 
-        public void setProposalId(String proposalId);
+		public void setProposalId(String proposalId);
 
-        public String getDate();
+		public String getDate();
 
-        public void setDate(String date);
-    }
+		public void setDate(String date);
+	}
 
-    interface MessageBean {
-        public String getMessageId();
+	interface MessageBean {
+		public String getMessageId();
 
-        public void setMessageId(String messageId);
+		public void setMessageId(String messageId);
 
-        public String getDate();
+		public String getDate();
 
-        public void setDate(String date);
-    }
+		public void setDate(String date);
+	}
 }

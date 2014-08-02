@@ -16,6 +16,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Constants;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -51,8 +52,32 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		log.info("SnipSearchPresenter go");
 		checkLogin(view.getAppMenu(), currentUserBean);
 		container.clear();
-		container.add(view.asWidget());
 		loadEditor();
+		showHide();
+		container.add(view.asWidget());
+	}
+
+
+	private void showHide(){
+		view.showHideCategories(false);
+		view.showHideIdeaTypes(false);
+
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+			//idea edit has categories and idea types
+			view.showHideCategories(true);
+			view.showHideIdeaTypes(true);
+			view.showHideImprovementPanels(false);
+		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+			//story edit has only categories
+			view.showHideCategories(true);
+			view.showHideIdeaTypes(false);
+			view.showHideImprovementPanels(false);
+		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			//improvements edit has only improvements panels
+			view.showHideCategories(false);
+			view.showHideIdeaTypes(false);
+			view.showHideImprovementPanels(true);
+		}
 	}
 
 	/*
@@ -63,7 +88,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		if (!currentSnipId.equals("")) {
 			findSnipById(currentSnipId);
 		} else {
-			view.setCurrentSnipBean(null);
+			view.populate(null);
 		}
 	}
 
@@ -244,7 +269,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 				public void onResponseReceived(Request request, Response response) {
 					log.info("getSnipResponse=" + response.getText());
 					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
-					view.viewEditedSnip(bean);
+					view.populate(bean);
 				}
 
 				@Override

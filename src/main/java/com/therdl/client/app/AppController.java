@@ -99,10 +99,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private RegisterView registerView;
 	private ProfileView profileView;
 	private SnipView snipView;
-	private SnipEditView threadEditView;
 	private SnipView threadView;
 
-	private SnipEditView proposalEditView;
 	private SnipView proposalView;
 
 	public AppController() {
@@ -370,12 +368,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		log.info("AppController Tokens.THREAD_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId +
-				"Current user auth: " + currentUserBean.as().isAuth() + "SnipEditViewImpl " + threadEditView);
+				"Current user auth: " + currentUserBean.as().isAuth() + "SnipEditViewImpl " + snipEditView);
 
-		if (threadEditView == null) {
-			threadEditView = new SnipEditViewImpl(currentUserBean);
+		if (snipEditView == null) {
+			snipEditView = new SnipEditViewImpl(currentUserBean);
 		}
-		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(threadEditView, currentSnipId, this);
+		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 		log.info("Doing async call...");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
@@ -428,10 +426,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		log.info("AppController Tokens.PROPOSAL_EDIT token=" + tokenSplit[0] + ";currentSnipId=" + currentSnipId);
 
-		if (proposalEditView == null) {
-			proposalEditView = new SnipEditViewImpl(currentUserBean);
+		if (snipEditView == null) {
+			snipEditView = new SnipEditViewImpl(currentUserBean);
 		}
-		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(proposalEditView, currentSnipId, this);
+		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, currentSnipId, this);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {

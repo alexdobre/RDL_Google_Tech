@@ -67,19 +67,20 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 
 
 	@UiField
-	FlowPanel snipTypeBar;
+	FlowPanel snipTypeBar, categoryListPanel, improvementsPanel;
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
+
+	private boolean isCategoryListInit = false;
+	private boolean isProposalListInit = false;
+	private boolean isSnipTypeBarInit = false;
 
 	@UiField
 	org.gwtbootstrap3.client.ui.TextBox title;
 
 	@UiField
 	org.gwtbootstrap3.client.ui.Button saveSnip, deleteSnip;
-
-	@UiField
-	FormGroup categoryFormGroup, proposalFormGroup;
 
 	@UiField
 	EditorWidget editorWidget;
@@ -94,34 +95,45 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 		log.info("SnipEditViewImpl constructor");
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
+	}
 
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			pageToRedirect = RDLConstants.Tokens.SNIPS;
-			createSnipTypeBar();
-			createCategoryList();
-			hideProposalLists();
-		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			pageToRedirect = RDLConstants.Tokens.STORIES;
-			createCategoryList();
-			hideProposalLists();
-		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			pageToRedirect = RDLConstants.Tokens.IMPROVEMENTS;
+	private void configureForImprovement() {
+		pageToRedirect = RDLConstants.Tokens.IMPROVEMENTS;
+		if (! isProposalListInit){
 			ViewUtils.createProposalTypeList(proposalTypeList);
 			ViewUtils.createProposalStateList(proposalStateList);
-			hideCategoryList();
-
+			isProposalListInit = true;
 		}
+		selectProposalTypeList();
+		selectProposalStateList();
+	}
 
+	private void configureForStory() {
+		pageToRedirect = RDLConstants.Tokens.STORIES;
+		if (!isCategoryListInit){
+			createCategoryList();
+			isCategoryListInit = true;
+		}
+		selectCategory();
+	}
+
+	private void configureForIdea() {
+		pageToRedirect = RDLConstants.Tokens.SNIPS;
+		if (!isSnipTypeBarInit){
+			createSnipTypeBar();
+			isSnipTypeBarInit = true;
+		}
+		if (!isCategoryListInit){
+			createCategoryList();
+			isCategoryListInit = true;
+		}
+		selectCategory();
+		selectSnipTypeRadio();
 	}
 
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			initSnipTypeMenu();
-		} else {
-			ViewUtils.hide(snipTypeBar);
-		}
 		ViewUtils.hide(deleteSnip);
 		title.setFocus(true);
 	}
@@ -195,84 +207,91 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	}
 
 	/**
-	 * hides category list
-	 */
-	void hideCategoryList() {
-		ViewUtils.hide(categoryFormGroup);
-	}
-
-	/**
-	 * hides proposal type and state lists
-	 */
-	void hideProposalLists() {
-		ViewUtils.hide(proposalFormGroup);
-	}
-
-	/**
-	 * sets currentSnipBean
-	 *
-	 * @param snipBean
-	 */
-	public void setCurrentSnipBean(AutoBean<SnipBean> snipBean) {
-		this.currentSnipBean = snipBean;
-	}
-
-	/**
 	 * view edited snip, set title, content, snip type, category and subcategory values
 	 *
 	 * @param snipBean
 	 */
-	public void viewEditedSnip(AutoBean<SnipBean> snipBean) {
+	public void populate(AutoBean<SnipBean> snipBean) {
+		if (snipBean == null ){
+			this.currentSnipBean = beanery.snipBean();
+			currentSnipBean.as().setTitle("");
+			currentSnipBean.as().setAuthor(currentUserBean.as().getName());
+			currentSnipBean.as().setContent("");
+		}else {
+			this.currentSnipBean = snipBean;
+		}
+		configureForModule();
+
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
-		currentSnipBean = snipBean;
-		title.setText(snipBean.as().getTitle());
-		editorWidget.setHTML(snipBean.as().getContent());
+		title.setText(currentSnipBean.as().getTitle());
+		editorWidget.setHTML(currentSnipBean.as().getContent());
+	}
 
-		if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			for (int i = 0; i < categoryList.getItemCount(); i++) {
-				if (categoryList.getItemText(i).equals(snipBean.as().getCoreCat())) {
-					categoryList.setSelectedIndex(i);
-					break;
-				}
-			}
-		} else {
-			for (int i = 0; i < proposalTypeList.getItemCount(); i++) {
-				if (proposalTypeList.getValue(i).equals(snipBean.as().getProposalType())) {
-					proposalTypeList.setSelectedIndex(i);
-					break;
-				}
-			}
-
-			for (int i = 0; i < proposalStateList.getItemCount(); i++) {
-				if (proposalStateList.getValue(i).equals(snipBean.as().getProposalState())) {
-					proposalStateList.setSelectedIndex(i);
-					break;
-				}
-			}
-		}
-
+	private void configureForModule() {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+			configureForIdea();
+		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+			configureForStory();
+		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			configureForImprovement();
+		}
+	}
+
+	private void selectSnipTypeRadio() {
+		if (currentSnipBean == null || currentSnipBean.as().getSnipType() == null ||
+				currentSnipBean.as().getSnipType().equals("")){
+			//select first radio button
+			snipTypeRadioBtnList.get(0).setValue(true);
+		}else {
 			for (RadioButton radioBtn : snipTypeRadioBtnList) {
 				radioBtn.setEnabled(false);
-				if (snipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
+				if (currentSnipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
 					radioBtn.setValue(true);
-
 			}
 		}
 	}
 
-	/**
-	 * snip type menu initial state
-	 */
-	private void initSnipTypeMenu() {
-		for (int i = 0; i < snipTypeRadioBtnList.size(); i++) {
-			snipTypeRadioBtnList.get(i).setEnabled(true);
-
-			if (i == 0) {
-				snipTypeRadioBtnList.get(i).setValue(true);
+	private void selectProposalStateList() {
+		for (int i = 0; i < proposalStateList.getItemCount(); i++) {
+			if (proposalStateList.getValue(i).equals(currentSnipBean.as().getProposalState())) {
+				proposalStateList.setSelectedIndex(i);
+				break;
 			}
 		}
+	}
+
+	private void selectProposalTypeList() {
+		for (int i = 0; i < proposalTypeList.getItemCount(); i++) {
+			if (proposalTypeList.getValue(i).equals(currentSnipBean.as().getProposalType())) {
+				proposalTypeList.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+
+	private void selectCategory() {
+		for (int i = 0; i < categoryList.getItemCount(); i++) {
+			if (categoryList.getItemText(i).equals(currentSnipBean.as().getCoreCat())) {
+				categoryList.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void showHideCategories(Boolean show) {
+		ViewUtils.showHide(show,categoryListPanel);
+	}
+
+	@Override
+	public void showHideIdeaTypes(Boolean show) {
+		ViewUtils.showHide(show,snipTypeBar);
+	}
+
+	@Override
+	public void showHideImprovementPanels(Boolean show) {
+		ViewUtils.showHide(show,improvementsPanel);
 	}
 
 	/**

@@ -28,13 +28,17 @@ public interface SnipEditView extends RdlView {
 		void submitEditedBean(AutoBean<SnipBean> bean, String pageToRedirect);
 	}
 
-	void setPresenter(Presenter presenter);
+	public void setPresenter(Presenter presenter);
 
-	public void setCurrentSnipBean(AutoBean<SnipBean> snipBean);
+	public void populate(AutoBean<SnipBean> snipBean);
 
-	void viewEditedSnip(AutoBean<SnipBean> snipBean);
+	public void showHideCategories(Boolean show);
 
-	AppMenu getAppMenu();
+	public void showHideIdeaTypes(Boolean show);
 
-	Widget asWidget();
+	public void showHideImprovementPanels(Boolean show);
+
+	public AppMenu getAppMenu();
+
+	public Widget asWidget();
 }

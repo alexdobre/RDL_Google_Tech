@@ -11,7 +11,7 @@ import com.google.gwt.event.shared.EventHandler;
 public interface LogOutEventEventHandler extends EventHandler {
 
 
-    void onLogOutEvent(LogOutEvent onLogOutEvent);
+	void onLogOutEvent(LogOutEvent onLogOutEvent);
 
 
 }

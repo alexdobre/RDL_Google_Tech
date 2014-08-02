@@ -9,7 +9,7 @@ import com.google.gwt.event.shared.EventHandler;
  */
 public interface SnipViewEventHandler extends EventHandler {
 
-    void onSnipSelectEvent(SnipViewEvent event);
+	void onSnipSelectEvent(SnipViewEvent event);
 
 
 }

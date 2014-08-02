@@ -14,88 +14,88 @@ import java.util.List;
  */
 public interface AuthUserBean {
 
-    /**
-     * AuthUserBean needs the avatar url to pass to currentuserbean
-     */
-    String getAvatarUrl();
+	/**
+	 * AuthUserBean needs the avatar url to pass to currentuserbean
+	 */
+	String getAvatarUrl();
 
-    /**
-     * AuthUserBean needs the avatar url to pass to currentuserbean
-     *
-     * @ String avatarUrl  the uri to locate the users image,
-     * used in the browser/javascript layer
-     */
-    void setAvatarUrl(String avatarUrl);
+	/**
+	 * AuthUserBean needs the avatar url to pass to currentuserbean
+	 *
+	 * @ String avatarUrl  the uri to locate the users image,
+	 * used in the browser/javascript layer
+	 */
+	void setAvatarUrl(String avatarUrl);
 
 
-    /**
-     * methods below are for standard form based credentials submitted on the clien
-     * for user login and sign up
-     *
-     * @return
-     */
-    String getName();
+	/**
+	 * methods below are for standard form based credentials submitted on the clien
+	 * for user login and sign up
+	 *
+	 * @return
+	 */
+	String getName();
 
-    void setName(String name);
+	void setName(String name);
 
-    String getEmail();
+	String getEmail();
 
-    void setEmail(String email);
+	void setEmail(String email);
 
-    String getSid();
+	String getSid();
 
-    void setSid(String sid);
+	void setSid(String sid);
 
-    String getPaypalId();
+	String getPaypalId();
 
-    void setPaypalId(String paypalId);
+	void setPaypalId(String paypalId);
 
-    Boolean getRememberMe();
+	Boolean getRememberMe();
 
-    void setRememberMe(Boolean rememberMe);
+	void setRememberMe(Boolean rememberMe);
 
-    String getPassword();
+	String getPassword();
 
-    void setPassword(String password);
+	void setPassword(String password);
 
-    /**
-     * this method is used to encapsulate the users authorisation status
-     * goal is to minimise password transport
-     *
-     * @return
-     */
-    boolean isAuth();
+	/**
+	 * this method is used to encapsulate the users authorisation status
+	 * goal is to minimise password transport
+	 *
+	 * @return
+	 */
+	boolean isAuth();
 
-    /**
-     * this method is used to encapsulate the users authorisation status
-     * goal is to minimise password transport
-     * boolean auth set after login and sign up, true is logged in
-     *
-     * @return
-     */
-    void setAuth(boolean auth);
+	/**
+	 * this method is used to encapsulate the users authorisation status
+	 * goal is to minimise password transport
+	 * boolean auth set after login and sign up, true is logged in
+	 *
+	 * @return
+	 */
+	void setAuth(boolean auth);
 
-    /**
-     * used for implementing the command pattern in this application
-     * for actions see
-     * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
-     *
-     * @return
-     */
-    String getAction();
+	/**
+	 * used for implementing the command pattern in this application
+	 * for actions see
+	 * http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
+	 *
+	 * @return
+	 */
+	String getAction();
 
-    void setAction(String action);
+	void setAction(String action);
 
-    List<UserBean.TitleBean> getTitles();
+	List<UserBean.TitleBean> getTitles();
 
-    void setTitles(List<UserBean.TitleBean> titles);
+	void setTitles(List<UserBean.TitleBean> titles);
 
-    boolean getIsRDLSupporter();
+	boolean getIsRDLSupporter();
 
-    void setIsRDLSupporter(boolean isRDLSupporter);
+	void setIsRDLSupporter(boolean isRDLSupporter);
 
-    Integer getRep();
+	Integer getRep();
 
-    void setRep(Integer rep);
+	void setRep(Integer rep);
 
 }

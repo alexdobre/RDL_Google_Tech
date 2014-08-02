@@ -12,6 +12,6 @@ import com.google.gwt.event.shared.EventHandler;
 
 public interface LogInEventEventHandler extends EventHandler {
 
-    void onLogInEvent(LogInEvent onLogInEvent);
+	void onLogInEvent(LogInEvent onLogInEvent);
 
 }

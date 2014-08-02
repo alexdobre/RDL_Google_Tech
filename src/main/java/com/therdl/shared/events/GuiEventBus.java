@@ -16,6 +16,6 @@ import com.google.gwt.event.shared.SimpleEventBus;
 public class GuiEventBus {
 
 
-    public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
+	public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
 
 }

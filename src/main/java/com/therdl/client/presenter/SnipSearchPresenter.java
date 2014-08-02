@@ -85,7 +85,6 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 				public void onResponseReceived(Request request, Response response) {
 
 					log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-					log.info("SnipSearchPresenter onResponseReceived json" + response.getText());
 
 					JsArray<JSOModel> data =
 							JSOModel.arrayFromJson(response.getText());

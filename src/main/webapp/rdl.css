@@ -374,10 +374,19 @@ form.form-search:before {
 	color: grey;
 	background-color: white;
 }
+.posRefBadge{
+	color: green;
+}
+.negRefPadge{
+	color: red;
+}
 .leftIcon{
 	float: left;
 	padding-right: 3px;
 }
 .rightIcon{
 	padding-left: 3px;
+}
+.push {
+	padding-top: 55px;
 }
