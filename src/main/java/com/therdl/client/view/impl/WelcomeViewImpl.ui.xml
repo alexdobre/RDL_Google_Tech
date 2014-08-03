@@ -36,8 +36,9 @@
 
 	</ui:style>
 
-	<b:Container addStyleNames="{style.push}">
-		<b:Row>
+	<b:Container>
+		<g:SimplePanel ui:field="appMenuPanel"/>
+		<b:Row addStyleNames="{style.push}">
 			<b:Column size="MD_4">
 				<g:AbsolutePanel styleName="{style.mainContainer}">
 					<b:Button ui:field="compatibilityCat" text="Compatibility"/>

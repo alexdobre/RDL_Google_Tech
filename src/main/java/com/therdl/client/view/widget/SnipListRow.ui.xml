@@ -62,18 +62,14 @@
 			<b:Column size="MD_1">
 				<g:FlowPanel ui:field="snipImgParent" styleName="{style.snipImgParent}" width="40px"
 				             addStyleNames="img-circle">
-					<b:Tooltip ui:field="snipImageTooltip" trigger="HOVER">
-						<g:Image ui:field="snipImg" width="40px"/>
-					</b:Tooltip>
+					<g:Image ui:field="snipImg" width="40px"/>
 				</g:FlowPanel>
 			</b:Column>
 			<b:Column size="MD_11">
 				<b:Row>
-					<b:Column size="MD_8">
+					<b:Column size="MD_12">
 						<b:Heading size="H4" addStyleNames="{style.snipTitle}">
-							<b:Tooltip ui:field="snipTitleTooltip" trigger="HOVER">
-								<b:Anchor ui:field="snipTitle"/>
-							</b:Tooltip>
+							<b:Anchor ui:field="snipTitle"/>
 						</b:Heading>
 					</b:Column>
 				</b:Row>

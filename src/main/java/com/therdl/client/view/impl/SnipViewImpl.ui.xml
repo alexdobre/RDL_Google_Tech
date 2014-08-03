@@ -92,6 +92,7 @@
 	</ui:style>
 
 	<b:Container>
+		<g:SimplePanel ui:field="appMenuPanel"/>
 		<g:FlowPanel addStyleNames="{style.push}"/>
 
 		<b:Panel addStyleNames="{style.snipViewPanel}">

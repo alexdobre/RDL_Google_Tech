@@ -8,9 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,7 +25,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.ListBox;
 
 import java.util.ArrayList;
@@ -40,17 +37,14 @@ import java.util.logging.Logger;
 
 /**
  * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- * @ AppMenu appMenu the upper menu view
  * @ AutoBean<CurrentUserBean> currentUserBean contains user parameters like auth state
  * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
- * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
- * this method sets the options in the header/nav bar AppMenu widget
  * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav-bar
  * using the user's authorisation status
  */
-public class SnipEditViewImpl extends Composite implements SnipEditView {
+public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	private static Logger log = Logger.getLogger("");
 	private Beanery beanery = GWT.create(Beanery.class);
@@ -62,8 +56,6 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	private static SnipEditViewUiBinder uiBinder = GWT.create(SnipEditViewUiBinder.class);
 
 	private Presenter presenter;
-
-	AppMenu appMenu;
 
 	@UiField
 	FlowPanel snipTypeBar, categoryListPanel, improvementsPanel;
@@ -91,9 +83,10 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	private String pageToRedirect;
 
 	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
+		super(appMenu);
 		log.info("SnipEditViewImpl constructor");
 		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 	}
 
@@ -403,11 +396,6 @@ public class SnipEditViewImpl extends Composite implements SnipEditView {
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-	}
-
-	@Override
-	public AppMenu getAppMenu() {
-		return this.appMenu;
 	}
 
 }

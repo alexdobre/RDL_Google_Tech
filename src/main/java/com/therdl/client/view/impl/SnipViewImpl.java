@@ -7,9 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RichTextArea;
@@ -55,7 +53,7 @@ import java.util.logging.Logger;
  * used to call the backend to retrieve the full snip for this view, under construction
  * @ AppMenu appMenu the upper menu view
  */
-public class SnipViewImpl extends Composite implements SnipView {
+public class SnipViewImpl extends AppMenuView implements SnipView {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -72,7 +70,6 @@ public class SnipViewImpl extends Composite implements SnipView {
 	private AutoBean<SnipBean> currentSnipBean;
 	private boolean showEditBtn = false;
 
-	AppMenu appMenu;
 	@UiField
 	FlowPanel snipViewCont, referenceCont, radioBtnParent, radioBtnParentProp;
 	@UiField
@@ -103,8 +100,9 @@ public class SnipViewImpl extends Composite implements SnipView {
 	String snipType = RDLConstants.SnipType.REFERENCE;
 
 	public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
+		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
@@ -163,7 +161,7 @@ public class SnipViewImpl extends Composite implements SnipView {
 		this.currentSnipBean = snipBean;
 
 		// this is the top widget, like in the list widget
-		snipListRow = new SnipListRow(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()));
+		snipListRow = new SnipListRow(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()), snipViewCont);
 		snipViewCont.add(snipListRow);
 		richTextArea.setHTML(snipBean.as().getContent());
 		richTextArea.setEnabled(false);
@@ -406,9 +404,5 @@ public class SnipViewImpl extends Composite implements SnipView {
 
 	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean) {
 		this.searchOptionsBean = searchOptionsBean;
-	}
-
-	public AppMenu getAppMenu(){
-		return appMenu;
 	}
 }

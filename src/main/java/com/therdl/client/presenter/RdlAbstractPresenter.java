@@ -52,17 +52,8 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 	}
 
 	public void checkLogin(AppMenu appMenu, AutoBean<CurrentUserBean> currentUserBean) {
-		loginCookieCheck();
-		// user must be authorised to edit
-		if (getController().getCurrentUserBean().as().isAuth()) {
-			log.info("!controller.getCurrentUserBean().as().isAuth()  ");
-			appMenu.setLogOutVisible(true);
-			appMenu.setSignUpVisible(false);
-			appMenu.setUserInfoVisible(true);
-			appMenu.setLoginResult(getController().getCurrentUserBean().as().getName(),
-					getController().getCurrentUserBean().as().getEmail(), true);
-		}else {
-			appMenu.logOut();
+		if (!getController().getCurrentUserBean().as().isAuth()) {
+			loginCookieCheck();
 		}
 	}
 
@@ -86,12 +77,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 	 * Processing done if login fails
 	 */
 	private void loginFail() {
-	}
-
-	/**
-	 * Processing done at login success
-	 */
-	private void loginSuccess() {
 	}
 
 	/**
@@ -192,7 +177,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 							// try and update any open view
 							controller.getCurrentUserBean().as().setAuth(true);
 							GuiEventBus.EVENT_BUS.fireEvent(new LogInOkEvent(controller.getCurrentUserBean()));
-							loginSuccess();
 
 							if (loginHandler != null) {
 								log.info("loginHandler != null");

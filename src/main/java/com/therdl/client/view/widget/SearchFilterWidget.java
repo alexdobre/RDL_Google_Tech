@@ -27,6 +27,7 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.Legend;
 
@@ -51,13 +52,7 @@ public class SearchFilterWidget extends Composite {
 	private static Logger log = Logger.getLogger("");
 
 	@UiField
-	org.gwtbootstrap3.client.ui.Button submit;
-
-	@UiField
-	org.gwtbootstrap3.client.ui.Button getLinkBtn;
-
-	@UiField
-	org.gwtbootstrap3.client.ui.Button createNewButton;
+	Button submit, getLinkBtn, createNewButton;
 
 	@UiField
 	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep, author;

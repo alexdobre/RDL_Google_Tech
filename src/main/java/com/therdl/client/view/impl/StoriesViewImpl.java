@@ -3,9 +3,7 @@ package com.therdl.client.view.impl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
@@ -29,14 +27,13 @@ import java.util.logging.Logger;
  *
  * @ Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- * @ AppMenu appMenu the upper menu view
  * fields below are standard GWT UIBinder display elements
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
  */
-public class StoriesViewImpl extends Composite implements SearchView {
+public class StoriesViewImpl extends AppMenuView implements SearchView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger("StoriesViewImpl");
 
 	private static StoriesViewImplUiBinder uiBinder = GWT.create(StoriesViewImplUiBinder.class);
 
@@ -57,8 +54,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
 	SearchFilterWidget searchFilterWidget;
 
-	AppMenu appMenu;
-
 	@UiField
 	FlowPanel threadSearchWidgetPanel;
 
@@ -67,6 +62,8 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
 	@UiField
 	LoadingWidget threadLoadingWidget;
+
+	ListWidget storiesList;
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 
@@ -80,13 +77,13 @@ public class StoriesViewImpl extends Composite implements SearchView {
 	private boolean firstTimeLoaded = false;
 
 	public StoriesViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
-		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		super(appMenu);
 		this.currentUserBean = currentUserBean;
-
 		searchFilterWidget = new SearchFilterWidget(this);
-		threadSearchWidgetPanel.add(searchFilterWidget);
 
+		initWidget(uiBinder.createAndBindUi(this));
+		appMenuPanel.add(appMenu);
+		threadSearchWidgetPanel.add(searchFilterWidget);
 	}
 
 	public void setToken(String token) {
@@ -146,15 +143,14 @@ public class StoriesViewImpl extends Composite implements SearchView {
 
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
-		authorName = null;
-		threadListRowContainer.clear();
-		threadListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
+		log.info("On display snip list storiesList="+storiesList);
+		if (storiesList == null) {
+			storiesList = new ListWidget(this, beanList, pageIndex, listRange);
+			threadListRowContainer.add(storiesList);
+		}else {
+			storiesList.populateList(this, beanList, listRange);
+		}
 		ViewUtils.hide(threadLoadingWidget);
-	}
-
-	@Override
-	public AppMenu getAppMenu() {
-		return this.appMenu;
 	}
 
 	/**
@@ -163,7 +159,6 @@ public class StoriesViewImpl extends Composite implements SearchView {
 	 * @param searchOptionsBean bean for the search options
 	 * @param pageIndex
 	 */
-
 	@Override
 	public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
 		ViewUtils.show(threadLoadingWidget);
@@ -182,5 +177,10 @@ public class StoriesViewImpl extends Composite implements SearchView {
 		ViewUtils.show(threadLoadingWidget);
 
 		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
+	}
+
+	@Override
+	public ListWidget getListWidget(){
+		return storiesList;
 	}
 }

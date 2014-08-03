@@ -6,8 +6,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,13 +27,12 @@ import java.util.logging.Logger;
  * @ RegisterView.Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
- * @ AppMenu appMenu the upper menu view
  * fields below are standard GWT form fields for user sign-up
  * @ TextBox userName, email
  * @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
  * @ Button submitBtn
  */
-public class RegisterViewImpl extends Composite implements RegisterView {
+public class RegisterViewImpl extends AppMenuView implements RegisterView {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -47,8 +44,6 @@ public class RegisterViewImpl extends Composite implements RegisterView {
 	private RegisterView.Presenter presenter;
 
 	private Beanery beanery = GWT.create(Beanery.class);
-
-	AppMenu appMenu;
 
 	@UiField
 	TextBox userName;
@@ -70,8 +65,9 @@ public class RegisterViewImpl extends Composite implements RegisterView {
 	private String eMail;
 
 	public RegisterViewImpl(AppMenu appMenu) {
+		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		appMenuPanel.add(appMenu);
 		appMenu.setSignUpView();
 		appMenu.setSignUpActive();
 	}
@@ -142,8 +138,4 @@ public class RegisterViewImpl extends Composite implements RegisterView {
 		this.presenter = presenter;
 	}
 
-	@Override
-	public AppMenu getAppMenu(){
-		return appMenu;
-	}
 }

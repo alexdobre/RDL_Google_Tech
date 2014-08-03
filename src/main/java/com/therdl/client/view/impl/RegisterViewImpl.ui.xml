@@ -49,6 +49,7 @@
 
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.outer}">
+		<g:SimplePanel ui:field="appMenuPanel"/>
 		<g:HTMLPanel addStyleNames="{style.main}">
 
 			<div class='container'>

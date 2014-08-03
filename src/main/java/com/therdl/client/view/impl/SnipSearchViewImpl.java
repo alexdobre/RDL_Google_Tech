@@ -3,9 +3,7 @@ package com.therdl.client.view.impl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
@@ -28,13 +26,12 @@ import java.util.logging.Logger;
  * this class provides GUI so user can search and view a list of snips
  *
  * @ SearchFilterWidget searchFilterWidget, a filter widget for the search
- * @ AppMenu appMenu the upper menu view
  * @ Beanery  beanery the bean factory see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * @ String token, a GWT History token see http://www.gwtproject.org/doc/latest/DevGuideCodingBasicsHistory.html
  * @ AutoBean<CurrentUserBean> currentUserBean manages user state
  * @ AutoBean<SnipBean> currentSearchOptionsBean for autobeans see see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
-public class SnipSearchViewImpl extends Composite implements SearchView {
+public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -57,13 +54,12 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 
 	SearchFilterWidget searchFilterWidget;
 
-	AppMenu appMenu;
-
 	@UiField
 	FlowPanel snipSearchWidgetPanel;
 
 	@UiField
 	FlowPanel snipListRowContainer;
+	ListWidget snipList;
 
 	@UiField
 	LoadingWidget loadingWidget;
@@ -81,8 +77,9 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 	private boolean firstTimeLoaded = false;
 
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
+		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 
 		searchFilterWidget = new SearchFilterWidget(this);
@@ -147,14 +144,14 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		authorName = null;
-		snipListRowContainer.clear();
-		snipListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
-		ViewUtils.hide(loadingWidget);
-	}
+		if (snipList == null){
+			snipList = new ListWidget(this, beanList, pageIndex, listRange);
+			snipListRowContainer.add(snipList);
+		}else{
+			snipList.populateList(this,beanList,listRange);
+		}
 
-	@Override
-	public AppMenu getAppMenu() {
-		return this.appMenu;
+		ViewUtils.hide(loadingWidget);
 	}
 
 	/**
@@ -182,5 +179,10 @@ public class SnipSearchViewImpl extends Composite implements SearchView {
 		ViewUtils.show(loadingWidget);
 
 		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
+	}
+
+	@Override
+	public ListWidget getListWidget(){
+		return snipList;
 	}
 }

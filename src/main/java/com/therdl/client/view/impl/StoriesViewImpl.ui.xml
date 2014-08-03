@@ -6,6 +6,7 @@
 	<ui:style src="../cssbundles/searchView.css"/>
 
 	<b:Container>
+		<g:SimplePanel ui:field="appMenuPanel"/>
 		<g:SimplePanel addStyleNames="push">
 			<b:Row>
 				<b:Column size="MD_3">

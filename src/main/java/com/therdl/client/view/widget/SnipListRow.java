@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.common.SnipType;
@@ -24,8 +25,8 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Popover;
 import org.gwtbootstrap3.client.ui.Row;
-import org.gwtbootstrap3.client.ui.Tooltip;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -48,8 +49,10 @@ public class SnipListRow extends Composite {
 	private AutoBean<CurrentUserBean> currentUserBean;
 	private SnipType snipType;
 
+	private UIObject parent;
+
 	@UiField
-	FlowPanel colorStripe, snipImgParent;
+	FlowPanel snipImgParent;
 	@UiField
 	Label pledgesCount, countersCount, proposalType, proposalState;
 	@UiField
@@ -59,20 +62,21 @@ public class SnipListRow extends Composite {
 	@UiField
 	Anchor snipTitle;
 	@UiField
-	Tooltip snipTitleTooltip, snipImageTooltip;
-	@UiField
 	Row likesRepliesPanel, referencesPanel, pledgeCounterPanel;
 
-	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType) {
+	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType,
+	                   UIObject parent) {
+		this.parent = parent;
 		initWidget(ourUiBinder.createAndBindUi(this));
+		populate(snipBean, currentUserBean, snipType);
+	}
+
+	public void populate(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType) {
+		log.info("SnipListRow populate with title: " + snipBean.as().getTitle());
 		this.snipBean = snipBean;
 		this.currentUserBean = currentUserBean;
 		this.snipType = snipType;
-	}
 
-	@Override
-	protected void onLoad() {
-		super.onLoad();
 		doBackgroundColor();
 		doTexts();
 		doImages();
@@ -84,11 +88,11 @@ public class SnipListRow extends Composite {
 		ViewUtils.hide(referencesPanel);
 		ViewUtils.hide(pledgeCounterPanel);
 
-		if (snipType.isIdea()){
+		if (snipType.isIdea()) {
 			ViewUtils.show(referencesPanel);
-		}else if (snipType.isStory()){
+		} else if (snipType.isStory()) {
 			ViewUtils.show(likesRepliesPanel);
-		}else if (snipType.isImprovement()){
+		} else if (snipType.isImprovement()) {
 			ViewUtils.show(pledgeCounterPanel);
 		}
 	}
@@ -110,17 +114,8 @@ public class SnipListRow extends Composite {
 
 	private void doTexts() {
 		userName.setText(snipBean.as().getAuthor());
-
-		// set tooltip on the snip img and top color stripe
-
-		String toolTip = snipBean.as().getSnipType() + " / " + snipBean.as().getCoreCat();
-
-		// sets snip data
-		snipImageTooltip.setTitle(toolTip);
-		colorStripe.setTitle(toolTip);
-
 		rep.setText(snipBean.as().getRep() + "");
-		displaySnipTitle();
+		snipTitle.setText(snipBean.as().getTitle());
 
 		posRef.setText(snipBean.as().getPosRef().toString());
 		neutRef.setText(snipBean.as().getNeutralRef().toString());
@@ -143,23 +138,11 @@ public class SnipListRow extends Composite {
 		if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			for (CoreCategory item : CoreCategory.values()) {
 				if (item.getShortName().equals(snipBean.as().getCoreCat())) {
-					colorStripe.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
 					snipImgParent.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
 				}
 			}
 		} else {
-			colorStripe.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
 			snipImgParent.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
-		}
-	}
-
-	private void displaySnipTitle() {
-		String snipTitleString = snipBean.as().getTitle();
-		if (snipTitleString.length() <= TITLE_MAX_LENGTH) {
-			snipTitle.setText(snipTitleString);
-		} else {
-			snipTitle.setText(snipTitleString.substring(0, 56) + "...");
-			snipTitleTooltip.setTitle(snipTitleString);
 		}
 	}
 
@@ -199,8 +182,7 @@ public class SnipListRow extends Composite {
 		}
 	}
 
-	@Override
-	protected void onUnload() {
-		super.onUnload();
+	public UIObject getParentObject() {
+		return parent;
 	}
 }

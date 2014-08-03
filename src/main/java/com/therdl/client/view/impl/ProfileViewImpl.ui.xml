@@ -4,6 +4,7 @@
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui">
 
 	<b:Container>
+		<g:SimplePanel ui:field="appMenuPanel"/>
 		<b:Row>
 			<b:Column size="MD_4">
 				<g:FocusPanel ui:field="profileImagePanel"></g:FocusPanel>

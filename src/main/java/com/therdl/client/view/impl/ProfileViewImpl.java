@@ -6,7 +6,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -33,14 +32,13 @@ import java.util.logging.Logger;
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * @ AutoBean<CurrentUserBean> currentUserBean contains user parameters like auth state
  * @ AvatarUploadPopUp uploadForm the upload form widget
- * @ AppMenu appMenu the upper menu view
  * @ FocusPanel profileImagePanel   GWT FocusPanel allows events for a image container
  * see http://www.gwtproject.org/javadoc/latest/com/google/gwt/user/client/ui/FocusPanel.html
  * @ Image pic  the users avatar image
  * @ String tempUrl displays a empty avatar image to indicate where a user Avatar would appear if it was uploded,
  * also to prompt the uses to click to initiate the upload
  */
-public class ProfileViewImpl extends Composite implements ProfileView {
+public class ProfileViewImpl extends AppMenuView implements ProfileView {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -55,8 +53,6 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 
 
 	private AvatarUploadPopUp uploadForm;
-
-	AppMenu appMenu;
 
 	@UiField
 	FocusPanel profileImagePanel;
@@ -75,8 +71,9 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 	private String tempUrl = "userAvatar/avatar-empty.jpg";
 
 	public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
+		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		appMenuPanel.add(appMenu);
 		this.currentUserBean = cUserBean;
 
 		profileImagePanel.setStyleName("profileImagePanel");
@@ -172,12 +169,6 @@ public class ProfileViewImpl extends Composite implements ProfileView {
 		uploadForm.setStyleName("uploadPopUp");
 
 	}
-
-	@Override
-	public AppMenu getAppMenu() {
-		return appMenu;
-	}
-
 
 	@Override
 	public void setPresenter(Presenter presenter) {

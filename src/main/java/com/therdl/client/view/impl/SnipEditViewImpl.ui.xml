@@ -23,6 +23,7 @@
 	</ui:style>
 
 	<b:Container>
+		<g:SimplePanel ui:field="appMenuPanel"/>
 		<b:Form type="HORIZONTAL" addStyleNames="{style.push}">
 			<b:FieldSet>
 				<b:Panel>

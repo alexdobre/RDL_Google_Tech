@@ -6,9 +6,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
@@ -45,7 +43,6 @@ import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
 import com.therdl.shared.events.SnipViewEvent;
 import com.therdl.shared.events.SnipViewEventHandler;
-import org.gwtbootstrap3.client.ui.Container;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -174,9 +171,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	@Override
 	public void go(final HasWidgets rootContainer) {
-		this.container = new HTMLPanel("<div/>");
-		rootContainer.add(appMenu);
-		rootContainer.add((Widget) this.container);
+		this.container = rootContainer;
 		this.currentUserBean.as().setAuth(false);
 		this.currentUserBean.as().setRegistered(false);
 		if ("".equals(History.getToken())) {

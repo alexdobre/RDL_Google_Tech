@@ -3,9 +3,7 @@ package com.therdl.client.view.impl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
@@ -29,12 +27,12 @@ import java.util.logging.Logger;
  *
  * @ Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- * @ AppMenu appMenu the upper menu view
+
  * fields below are standard GWT UIBinder display elements
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
  */
-public class ImprovementsViewImpl extends Composite implements SearchView {
+public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -57,13 +55,13 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 
 	SearchFilterWidget searchFilterWidget;
 
-	AppMenu appMenu;
-
 	@UiField
 	FlowPanel impSearchWidgetPanel;
 
 	@UiField
 	FlowPanel impListRowContainer;
+
+	ListWidget improvementsList;
 
 	@UiField
 	LoadingWidget impLoadingWidget;
@@ -80,13 +78,13 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 	private boolean firstTimeLoaded = false;
 
 	public ImprovementsViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
+		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		this.appMenu = appMenu;
+		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 
 		searchFilterWidget = new SearchFilterWidget(this);
 		impSearchWidgetPanel.add(searchFilterWidget);
-
 	}
 
 	public void setToken(String token) {
@@ -148,14 +146,14 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		authorName = null;
-		impListRowContainer.clear();
-		impListRowContainer.add(new ListWidget(this, beanList, pageIndex, listRange));
-		ViewUtils.hide(impLoadingWidget);
-	}
+		if (improvementsList == null) {
+			improvementsList = new ListWidget(this, beanList, pageIndex, listRange);
+			impListRowContainer.add(improvementsList);
+		} else {
+			improvementsList.populateList(this, beanList, listRange);
+		}
 
-	@Override
-	public AppMenu getAppMenu() {
-		return this.appMenu;
+		ViewUtils.hide(impLoadingWidget);
 	}
 
 	/**
@@ -164,7 +162,6 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 	 * @param searchOptionsBean bean for the search options
 	 * @param pageIndex
 	 */
-
 	@Override
 	public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
 		ViewUtils.show(impLoadingWidget);
@@ -183,5 +180,10 @@ public class ImprovementsViewImpl extends Composite implements SearchView {
 		ViewUtils.show(impLoadingWidget);
 
 		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
+	}
+
+	@Override
+	public ListWidget getListWidget(){
+		return improvementsList;
 	}
 }
