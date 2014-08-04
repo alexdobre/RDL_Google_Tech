@@ -12,8 +12,6 @@ import com.therdl.shared.beans.AuthUserBean;
  * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
- * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav bar
- * using the user sign up result status
  */
 public interface RegisterView extends RdlView {
 

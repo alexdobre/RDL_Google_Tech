@@ -102,7 +102,6 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {

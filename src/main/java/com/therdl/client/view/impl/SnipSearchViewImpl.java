@@ -79,7 +79,6 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 
 		searchFilterWidget = new SearchFilterWidget(this);

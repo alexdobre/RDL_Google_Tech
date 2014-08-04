@@ -73,7 +73,6 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		this.currentUserBean = cUserBean;
 
 		profileImagePanel.setStyleName("profileImagePanel");

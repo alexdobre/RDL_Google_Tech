@@ -41,8 +41,6 @@ import java.util.logging.Logger;
  * @ void setPresenter(Presenter presenter)  sets the presenter for the view,
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
- * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav-bar
- * using the user's authorisation status
  */
 public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
@@ -86,7 +84,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 		super(appMenu);
 		log.info("SnipEditViewImpl constructor");
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 	}
 

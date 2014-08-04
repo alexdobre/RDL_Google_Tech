@@ -80,7 +80,6 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 	public ImprovementsViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		this.currentUserBean = currentUserBean;
 
 		searchFilterWidget = new SearchFilterWidget(this);

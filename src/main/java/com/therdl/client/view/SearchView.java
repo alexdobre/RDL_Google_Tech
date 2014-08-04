@@ -21,8 +21,6 @@ import java.util.ArrayList;
  * can use a instance of its presenter
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  * this method sets the options in the header/nav bar AppMenu widget
- * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav-bar
- * using the user's authorisation status
  * @ void showSnipList(JsArray<JSOModel> snips)  display's the search result list as a JSON Array of
  * JSOModel objects, see com.therdl.shared.beans.JSOModel javadoc for this class
  * @ getInitialSnipList() display's the initial search result list

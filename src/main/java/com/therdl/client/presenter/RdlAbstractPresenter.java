@@ -85,8 +85,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 	 * calls AppController controller and  WelcomeView  welcomeView objects
 	 * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state based on
 	 * authorise user from database result
-	 * welcomeView.setloginresult(name, email, auth):: updatses the view with credentials mainly for the
-	 * upper menu
 	 *
 	 * @param emailTxt     String unique identifier for login and subsequent granted state information
 	 * @param passwordText String password identifier for login

@@ -90,7 +90,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		this.currentUser = currentUser;
 		logo.setStyleName("splashLogo");
 

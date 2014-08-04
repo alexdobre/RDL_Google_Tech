@@ -67,7 +67,6 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	public RegisterViewImpl(AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		appMenu.setSignUpView();
 		appMenu.setSignUpActive();
 	}

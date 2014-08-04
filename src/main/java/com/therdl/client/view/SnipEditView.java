@@ -15,8 +15,6 @@ import com.therdl.shared.beans.SnipBean;
  * can use a instance of its presenter
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  * this method sets the options in the header/nav bar AppMenu widget
- * @ setloginresult(String name, String email, boolean auth) sets the options in the header/nav-bar
- * using the user's authorisation status
  */
 public interface SnipEditView extends RdlView {
 

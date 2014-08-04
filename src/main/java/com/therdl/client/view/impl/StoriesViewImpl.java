@@ -82,7 +82,6 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 		searchFilterWidget = new SearchFilterWidget(this);
 
 		initWidget(uiBinder.createAndBindUi(this));
-		appMenuPanel.add(appMenu);
 		threadSearchWidgetPanel.add(searchFilterWidget);
 	}
 
