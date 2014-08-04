@@ -13,6 +13,9 @@
 		.push {
 		padding-top: 60px;
 		}
+		.noPadding{
+		padding: 0px;
+		}
 
 		.margin-fix {
 		margin-bottom: 0;
@@ -20,23 +23,6 @@
 		padding-bottom: 2px;
 		padding-top: 0;
 		float: right;
-		}
-
-		.refButtonsCont {
-		width: 100%;
-		height: 40px;
-		border-top: 1px solid #000;
-		padding-top: 5px;
-		padding-left: 10px;
-		}
-
-		.referenceCont {
-		display: none;
-		border: 1px solid #000;
-		margin-top: 4px;
-		padding: 1px;
-		width: 60%;
-		margin-left: 20%;
 		}
 
 		.radioBtnParent {
@@ -130,29 +116,32 @@
 			</b:PanelFooter>
 		</b:Panel>
 
-		<g:FlowPanel ui:field="referenceCont" styleName="{style.referenceCont}">
-			<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-				<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-				               text="{i18n.positive}"></g:RadioButton>
-				<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-				               text="{i18n.neutral}"></g:RadioButton>
-				<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-				               text="{i18n.negative}"></g:RadioButton>
-			</g:FlowPanel>
 
-			<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
-				<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-				               text="{i18n.pledge}"></g:RadioButton>
-				<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-				               text="{i18n.counter}"></g:RadioButton>
-			</g:FlowPanel>
+		<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
+			<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
+			               text="{i18n.positive}"></g:RadioButton>
+			<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
+			               text="{i18n.neutral}"></g:RadioButton>
+			<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
+			               text="{i18n.negative}"></g:RadioButton>
+		</g:FlowPanel>
 
-			<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
-			<g:FlowPanel styleName="{style.refButtonsCont}">
+		<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
+			<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
+			               text="{i18n.pledge}"></g:RadioButton>
+			<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
+			               text="{i18n.counter}"></g:RadioButton>
+		</g:FlowPanel>
+		<b:Panel ui:field="referenceCont">
+			<b:PanelBody addStyleNames="{style.noPadding}">
+				<summer:Summernote ui:field="editorWidget"/>
+			</b:PanelBody>
+			<b:PanelFooter>
 				<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
 				<b:Button ui:field="closeRef" text="{i18n.close}"/>
-			</g:FlowPanel>
-		</g:FlowPanel>
+			</b:PanelFooter>
+		</b:Panel>
+
 
 		<b:Container>
 			<b:Column size="MD_3" ui:field="refFilterParent"/>

@@ -44,7 +44,7 @@ public class ListWidget extends Composite {
 	}
 
 	public void populateList(SearchView searchView, ArrayList<AutoBean<SnipBean>> beanList, String listRange) {
-		log.info("ListWidget populate list itemList: "+itemList+" size: "+(itemList==null?"null":itemList.size()));
+		log.info("ListWidget populate list itemList:");
 		this.listRange.setText(listRange);
 
 		for (int j = 0; j < beanList.size(); j++) {

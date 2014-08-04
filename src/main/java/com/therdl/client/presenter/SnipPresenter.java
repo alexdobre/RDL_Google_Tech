@@ -42,6 +42,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	private Beanery beanery = GWT.create(Beanery.class);
 	private String currentSnipId;
 	AutoBean<CurrentUserBean> currentUserBean;
+	private HasWidgets container;
 
 	public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
 		super(appController);
@@ -60,10 +61,10 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+		this.container = container;
 		checkLogin(view.getAppMenu(), currentUserBean);
 		this.currentUserBean = currentUserBean;
 		container.clear();
-		container.add(view.asWidget());
 		viewSnipById();
 	}
 
@@ -117,6 +118,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
 					prepareTheView(bean);
 					view.viewSnip(bean);
+					container.add(view.asWidget());
 				}
 
 				@Override

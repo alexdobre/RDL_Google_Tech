@@ -1,16 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Icon;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.PanelBody;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -28,11 +17,11 @@ import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.EditorWidget;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.ReferenceListRow;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.client.view.widget.SnipListRow;
+import com.therdl.shared.Constants;
 import com.therdl.shared.Global;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.RDLConstants;
@@ -40,6 +29,18 @@ import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Icon;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -72,13 +73,15 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	private boolean showEditBtn = false;
 
 	@UiField
-	FlowPanel snipViewCont, referenceCont, radioBtnParent, radioBtnParentProp;
+	FlowPanel snipViewCont , radioBtnParent, radioBtnParentProp;
+	@UiField
+	Panel referenceCont;
 	@UiField
 	Column refFilterParent, referenceListCont;
 	@UiField
 	PanelBody richTextArea;
 	@UiField
-	EditorWidget editorWidget;
+	Summernote editorWidget;
 	@UiField
 	Button showRef, leaveRef, saveRef, closeRef, editBtn, repBtn;
 	@UiField
@@ -92,7 +95,8 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	@UiField
 	LinkedGroup listGroup;
 
-	SnipListRow snipListRow;
+	private SnipListRow snipListRow;
+	private ArrayList<ReferenceListRow> itemList;
 	ReferenceSearchFilterWidget referenceSearchFilterWidget;
 
 	AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
@@ -104,6 +108,7 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
+		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			ViewUtils.hide(radioBtnParentProp);
@@ -137,7 +142,9 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 
 	@Override
 	protected void onLoad() {
-		referenceSearchFilterWidget = new ReferenceSearchFilterWidget(this);
+		if (referenceSearchFilterWidget == null) {
+			referenceSearchFilterWidget = new ReferenceSearchFilterWidget(this);
+		}
 		refFilterParent.add(referenceSearchFilterWidget);
 		ViewUtils.hide(refFilterParent);
 		ViewUtils.hide(referenceListCont);
@@ -206,7 +213,7 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 			ViewUtils.hide(refFilterParent);
 			closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
 			ViewUtils.hide(referenceListCont);
-			editorWidget.setHTML("");
+			editorWidget.setCode("");
 			showRef.setText(btnTextShow);
 		}
 	}
@@ -325,7 +332,7 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	 */
 	@UiHandler("saveRef")
 	public void onSaveRefClicked(ClickEvent event) {
-		if (editorWidget.getHTML().equals("")) {
+		if (editorWidget.getCode().trim().equals("")) {
 			Window.alert("Reference content cannot be empty.");
 			return;
 		}
@@ -352,8 +359,9 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 		}
 		// set data for reference object
 
-		newBean.as().setContent(editorWidget.getHTML());
+		newBean.as().setContent(editorWidget.getCode());
 		newBean.as().setAuthor(currentUserBean.as().getName());
+		newBean.as().setParentSnip(currentSnipBean.as().getId());
 		newBean.as().setRep(0);
 
 		// this is parent snip id
@@ -368,8 +376,10 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	 * @param beanList list of references as bean objects
 	 */
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
+		log.info("Showing references: "+beanList);
 		ViewUtils.hide(loadingWidget);
 		showRef.setText(btnTextHide);
+		this.listRange.setText(listRange);
 		ViewUtils.show(referenceListCont);
 		ViewUtils.show(refFilterParent);
 		ViewUtils.hide(referenceCont);
@@ -379,27 +389,39 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 			listGroup.add(new Label(RDL.i18n.noDataToDisplay()));
 		}
 
-
 		for (int j = 0; j < beanList.size(); j++) {
-			ReferenceListRow referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this);
-			LinkedGroupItem listItem = new LinkedGroupItem();
-			listItem.setPaddingBottom(2);
-			listItem.setPaddingTop(2);
-			listItem.setPaddingLeft(2);
-			listItem.setPaddingRight(2);
-			listItem.add(referenceListRow);
-			listGroup.add(listItem);
+			//we first see is we already have an item created
+			ReferenceListRow referenceListRow;
+			if (itemList.size()>=j+1){
+				//if yes we just populate the existing item
+				referenceListRow = itemList.get(j);
+				referenceListRow.populate(beanList.get(j), this.currentUserBean,this);
+				ViewUtils.show(referenceListRow.getParentObject());
+			}else {
+				//otherwise we create a new item
+				LinkedGroupItem listItem = new LinkedGroupItem();
+				referenceListRow  = new ReferenceListRow(beanList.get(j), currentUserBean,this,listItem);
+				itemList.add(referenceListRow);
+				listItem.setPaddingBottom(2);
+				listItem.setPaddingTop(2);
+				listItem.setPaddingLeft(2);
+				listItem.setPaddingRight(2);
+				listItem.add(referenceListRow);
+				listGroup.add(listItem);
+			}
 		}
+		//finally we hide unused items
+		hideUnusedItems(beanList);
+	}
 
-//		tabPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-//			@Override
-//			public void onBeforeSelection(BeforeSelectionEvent<Integer> integerBeforeSelectionEvent) {
-//				loadingWidget.getElement().getStyle().setProperty("display", "block");
-//				presenter.getSnipReferences(searchOptionsBean, integerBeforeSelectionEvent.getItem());
-//			}
-//		});
-
-		this.listRange.setText(listRange);
+	public void hideUnusedItems(ArrayList<AutoBean<SnipBean>> beanList) {
+		if (beanList.size() < Constants.DEFAULT_REFERENCE_PAGE_SIZE){
+			if (itemList.size() > beanList.size()){
+				for (int i = 0; i< itemList.size()-beanList.size(); i++){
+					ViewUtils.hide(itemList.get(beanList.size()+i).getParentObject());
+				}
+			}
+		}
 	}
 
 	public AutoBean<SnipBean> getSearchOptionsBean() {

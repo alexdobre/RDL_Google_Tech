@@ -1,5 +1,6 @@
 package com.therdl.client.view.widget;
 
+import com.google.gwt.user.client.ui.UIObject;
 import org.gwtbootstrap3.client.ui.Badge;
 import org.gwtbootstrap3.client.ui.Button;
 
@@ -49,8 +50,16 @@ public class ReferenceListRow extends Composite {
 	Button refRepBtn;
 	SnipView view;
 
-	public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view) {
+	private UIObject parent;
+
+	public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view,
+	                        UIObject parent) {
+		this.parent = parent;
 		initWidget(ourUiBinder.createAndBindUi(this));
+		populate(referenceBean, currentUserBean, view);
+	}
+
+	public void populate(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view) {
 		this.referenceBean = referenceBean;
 		this.view = view;
 
@@ -90,6 +99,10 @@ public class ReferenceListRow extends Composite {
 				ViewUtils.hide(refRepBtn);
 			}
 		}
+	}
+
+	public UIObject getParentObject(){
+		return parent;
 	}
 
 	@UiHandler("refRepBtn")

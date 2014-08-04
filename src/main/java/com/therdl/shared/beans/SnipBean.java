@@ -110,17 +110,9 @@ public interface SnipBean {
 
 	void setLinks(List<Link> links);
 
-	String getParentStream();
+	String getParentSnip();
 
-	void setParentStream(String parentStream);
-
-	String getParentTag();
-
-	void setParentTag(String parentTag);
-
-	String getParentThread();
-
-	void setParentThread(String parentThread);
+	void setParentSnip(String parentSnip);
 
 	String getVotes();
 

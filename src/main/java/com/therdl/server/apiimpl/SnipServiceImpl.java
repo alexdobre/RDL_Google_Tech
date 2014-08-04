@@ -294,27 +294,21 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return references as a list of SnipBean object
 	 */
 	public List<SnipBean> getReferences(SnipBean searchOptions, int pageIndex) {
+		log.info("Snip Service getReferences - BEGIN");
 		DB db = getMongo();
 		DBCollection coll = db.getCollection("rdlSnipData");
 
 		List<SnipBean> beans = new ArrayList<SnipBean>();
 
-		// first find a snip with the given id
-		SnipBean snipBean = getSnip(searchOptions.getId());
-
-		// retrieve reference ids from the links nested array of the snip json
-		List<ObjectId> referenceIds = new ArrayList<ObjectId>();
-		for (int i = 0; i < snipBean.getLinks().size(); i++) {
-			referenceIds.add(new ObjectId(snipBean.getLinks().get(i).getTargetId()));
-		}
-
-		// query to get references from snip collection for the retrieved ids
 		BasicDBObject query = new BasicDBObject();
-		query.put("_id", new BasicDBObject("$in", referenceIds));
 
 		// filter references
-		if (searchOptions.getReferenceType() != null)
+		if (searchOptions.getId() != null){
+			query.put("parentSnip", searchOptions.getId());
+		}
+		if (searchOptions.getReferenceType() != null){
 			query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
+		}
 		//   if(searchOptions.getRep() != null)
 		//      query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
 		if (searchOptions.getAuthor() != null)
@@ -322,24 +316,18 @@ public class SnipServiceImpl implements SnipsService {
 		if (searchOptions.getSnipType() != null)
 			query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
 
-		// if ti
-		if (searchOptions.getAuthorTitle() == null && searchOptions.getAuthorRep() == null) {
-			DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
-			int collCount = coll.find(query).count();
+		log.info("Executing query author title and rep null: "+query);
+		DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+		int collCount = coll.find(query).count();
 
-			while (collDocs.hasNext()) {
-				DBObject doc = collDocs.next();
-				SnipBean snip = buildBeanObject(doc);
-				snip.setCount(collCount);
-				beans.add(snip);
-			}
-		} else {
-			DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()));
-
-			beans = filterReferencesByUser(collDocs, searchOptions, query, pageIndex);
+		while (collDocs.hasNext()) {
+			DBObject doc = collDocs.next();
+			SnipBean snip = buildBeanObject(doc);
+			snip.setCount(collCount);
+			beans.add(snip);
 		}
 
-
+		log.info("Returning result list size: "+beans.size());
 		return beans;
 	}
 
@@ -476,9 +464,7 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("neutralRef", snip.getNeutralRef());
 		doc.append("negativeRef", snip.getNegativeRef());
 		doc.append("referenceType", snip.getReferenceType());
-		doc.append("parentStream", snip.getParentStream());
-		doc.append("parentTag", snip.getParentTag());
-		doc.append("parentThread", snip.getParentThread());
+		doc.append("parentSnip", snip.getParentSnip());
 		doc.append("votes", snip.getVotes());
 		doc.append("money", snip.getMoney());
 		doc.append("posts", snip.getPosts());
@@ -529,16 +515,14 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setMoney((String) doc.get("money"));
 		snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef")));
 		snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef")));
-		snip.setParentStream((String) doc.get("parentStream"));
 		snip.setSnipType((String) doc.get("snipType"));
 		snip.setViews(RDLUtils.parseInt(doc.get("views")));
 		snip.setTitle((String) doc.get("title"));
 		snip.setReferenceType((String) doc.get("referenceType"));
 		snip.setPosRef(RDLUtils.parseInt(doc.get("posRef")));
 		snip.setSubCat((String) doc.get("subCat"));
-		snip.setParentTag((String) doc.get("parentTag"));
 		snip.setVotes((String) doc.get("votes"));
-		snip.setParentThread((String) doc.get("parentThread"));
+		snip.setParentSnip((String) doc.get("parentSnip"));
 		snip.setPosts(RDLUtils.parseInt(doc.get("posts")));
 
 		snip.setPledges(RDLUtils.parseInt(doc.get("pledges")));
