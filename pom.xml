@@ -169,6 +169,13 @@
             <scope>provided</scope>
         </dependency>
 
+	    <dependency>
+		    <groupId>org.gwtbootstrap3</groupId>
+		    <artifactId>gwtbootstrap3-extras</artifactId>
+		    <version>0.8-SNAPSHOT</version>
+		    <scope>provided</scope>
+	    </dependency>
+
         <!--PayPal Merchant SDK -->
         <dependency>
             <groupId>com.paypal.sdk</groupId>

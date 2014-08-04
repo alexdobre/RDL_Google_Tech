@@ -38,6 +38,7 @@ import com.therdl.shared.beans.SnipBean;
 public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implements SnipEditView.Presenter, ValueChangeHandler<String> {
 
 	private String currentSnipId;
+	private HasWidgets container;
 
 	public SnipEditPresenter(SnipEditView view, String currentSnipId, AppController appController) {
 		super(appController);
@@ -50,11 +51,11 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		log.info("SnipSearchPresenter go");
+		this.container = container;
 		checkLogin(view.getAppMenu(), currentUserBean);
 		container.clear();
 		loadEditor();
 		showHide();
-		container.add(view.asWidget());
 	}
 
 
@@ -89,6 +90,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			findSnipById(currentSnipId);
 		} else {
 			view.populate(null);
+			container.add(view.asWidget());
 		}
 	}
 
@@ -270,12 +272,12 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 					log.info("getSnipResponse=" + response.getText());
 					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
 					view.populate(bean);
+					container.add(view.asWidget());
 				}
 
 				@Override
 				public void onError(Request request, Throwable exception) {
 					log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-
 				}
 
 			});

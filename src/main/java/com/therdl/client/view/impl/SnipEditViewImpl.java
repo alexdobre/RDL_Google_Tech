@@ -1,5 +1,16 @@
 package com.therdl.client.view.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
@@ -18,21 +29,12 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.EditorWidget;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.ListBox;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 
 /**
@@ -69,10 +71,10 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	org.gwtbootstrap3.client.ui.TextBox title;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.Button saveSnip, deleteSnip;
+	Button saveSnip, deleteSnip;
 
 	@UiField
-	EditorWidget editorWidget;
+	Summernote richTextEditor;
 
 	private List<RadioButton> snipTypeRadioBtnList;
 
@@ -133,7 +135,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 		super.onUnload();
 
 		title.setText("");
-		editorWidget.setHTML("");
 		ViewUtils.hide(deleteSnip);
 
 		categoryList.setSelectedIndex(0);
@@ -202,6 +203,7 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	 * @param snipBean
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
+		log.info("******************************* Snip Editor - populate with : "+snipBean);
 		if (snipBean == null ){
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
@@ -211,11 +213,11 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 			this.currentSnipBean = snipBean;
 		}
 		configureForModule();
-
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
+		log.info("Setting content: **************** : "+currentSnipBean.as().getContent());
 		title.setText(currentSnipBean.as().getTitle());
-		editorWidget.setHTML(currentSnipBean.as().getContent());
+		richTextEditor.setCode(currentSnipBean.as().getContent());
 	}
 
 	private void configureForModule() {
@@ -309,7 +311,7 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 		}
 		// put snip data into the bean
 		newBean.as().setTitle(title.getText());
-		newBean.as().setContent(editorWidget.getHTML());
+		newBean.as().setContent(richTextEditor.getCode());
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			// check which snip type is sets
@@ -329,7 +331,7 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 			newBean.as().setProposalState(proposalStateList.getValue(proposalStateList.getSelectedIndex()));
 		}
 
-		if (currentSnipBean == null) {
+		if (currentSnipBean == null || currentSnipBean.as().getId() == null || currentSnipBean.as().getId().equals("")) {
 			// sets counters to 0
 			newBean.as().setAuthor(currentUserBean.as().getName());
 			newBean.as().setViews(0);

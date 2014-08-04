@@ -1,5 +1,8 @@
 package com.therdl.client.view.widget;
 
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Button;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,7 +12,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
@@ -19,8 +21,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Button;
 
 /**
  * gwt widget class for reference row in snip view page
@@ -37,7 +37,7 @@ public class ReferenceListRow extends Composite {
 	FlowPanel rightPanel;
 
 	@UiField
-	RichTextArea richTextAreaRef;
+	HTMLPanel richTextAreaRef;
 
 	@UiField
 	Badge rep, userName, creationDate;
@@ -55,8 +55,7 @@ public class ReferenceListRow extends Composite {
 		this.view = view;
 
 		// sets values from referenceBean for UI elements from ui binder
-		richTextAreaRef.setHTML(referenceBean.as().getContent());
-		richTextAreaRef.setEnabled(false);
+		richTextAreaRef.getElement().setInnerHTML(referenceBean.as().getContent());
 		userName.setText(referenceBean.as().getAuthor());
 		rep.setText(referenceBean.as().getRep().toString());
 		creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));

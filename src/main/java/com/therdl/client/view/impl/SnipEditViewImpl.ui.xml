@@ -3,7 +3,8 @@
 		xmlns:ui="urn:ui:com.google.gwt.uibinder"
 		xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
-		xmlns:rdl='urn:import:com.therdl.client.view.widget'>
+		xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
+		>
 
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
@@ -18,6 +19,9 @@
 		}
 		.textAlignRight{
 		text-align: right;
+		}
+		.noPadding{
+		padding: 0px;
 		}
 
 	</ui:style>
@@ -66,8 +70,8 @@
 
 						</b:FormGroup>
 					</b:PanelHeader>
-					<b:PanelBody>
-						<rdl:EditorWidget ui:field="editorWidget"></rdl:EditorWidget>
+					<b:PanelBody addStyleNames="{style.noPadding}">
+						<summer:Summernote ui:field="richTextEditor"/>
 					</b:PanelBody>
 					<b:PanelFooter>
 						<b:Button ui:field="saveSnip" text="{i18n.save}"/>

@@ -17,7 +17,8 @@
 
 		.richTextArea {
 		width: 100%;
-		height: 300px;
+		padding-top: 5px;
+		padding-bottom: 5px;
 		border: 0;
 		}
 
@@ -78,7 +79,7 @@
 					<g:Label ui:field="refFlag" styleName="{style.refFlag}"></g:Label>
 
 					<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="refRepBtn" addStyleNames="{style.refRepBtn}"/>
-					<g:RichTextArea ui:field="richTextAreaRef" styleName="{style.richTextArea}"></g:RichTextArea>
+					<g:HTMLPanel ui:field="richTextAreaRef" styleName="{style.richTextArea}"/>
 				</g:FlowPanel>
 			</b:Column>
 		</b:Row>

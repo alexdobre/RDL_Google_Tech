@@ -24,19 +24,12 @@ public class RDL implements EntryPoint {
 	public static final I18NConstants i18n = GWT.create(I18NConstants.class);
 
 	public void onModuleLoad() {
-
-		sLogger.info("Refactoring to a loosley coupled web application");
-		sLogger.info("http://en.wikipedia.org/wiki/Loose_coupling");
-		sLogger.info("Ajax logging window enabled");
-
-		//OK so what will happen on our model load
 		//Initialize logging
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
 			public void onUncaughtException(Throwable e) {
 				sLogger.log(Level.INFO, e.getMessage(), e);
 			}
 		});
-
 		AppController appController = new AppController();
 		RootLayoutPanel rp = RootLayoutPanel.get();
 		rp.setSize("100%", "3500px");

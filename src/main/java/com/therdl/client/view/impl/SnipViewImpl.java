@@ -1,5 +1,16 @@
 package com.therdl.client.view.impl;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Icon;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.PanelBody;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,7 +21,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
@@ -30,15 +40,6 @@ import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Icon;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -75,7 +76,7 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	@UiField
 	Column refFilterParent, referenceListCont;
 	@UiField
-	RichTextArea richTextArea;
+	PanelBody richTextArea;
 	@UiField
 	EditorWidget editorWidget;
 	@UiField
@@ -158,16 +159,20 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	 */
 	public void viewSnip(AutoBean<SnipBean> snipBean) {
 		this.currentSnipBean = snipBean;
-
 		// this is the top widget, like in the list widget
-		snipListRow = new SnipListRow(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()), snipViewCont);
+		if (snipListRow == null){
+			snipListRow = new SnipListRow(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()),
+					snipViewCont);
+		}else {
+			snipListRow.populate(snipBean,currentUserBean,SnipType.fromString(snipBean.as().getSnipType()));
+		}
 		snipViewCont.add(snipListRow);
-		richTextArea.setHTML(snipBean.as().getContent());
-		richTextArea.setEnabled(false);
+		richTextArea.getElement().setInnerHTML(snipBean.as().getContent());
 		showRef.setText(btnTextShow);
 		ViewUtils.hide(referenceCont);
 
-		if (Global.moduleName.equals(RDLConstants.Modules.STORIES) || Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.STORIES) ||
+				Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			leaveRef.setText(RDL.i18n.reply());
 			saveRef.setText(RDL.i18n.savePost());
 		}

@@ -74,15 +74,11 @@ public class AppMenu extends Composite {
 	@UiField
 	AnchorListItem out;
 
-	private static int i=0;
-
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
 	}
 
 	public AppMenu() {
 		initWidget(uiBinder.createAndBindUi(this));
-		log.info("App menu constructor i++"+i++);
-
 		// user has just sucessfully logged in update app menu
 		GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
