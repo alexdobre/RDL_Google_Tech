@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
+import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SearchView;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -40,10 +41,13 @@ import java.util.ArrayList;
 
 public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implements SearchView.Presenter {
 
+	private PaginationPresenter paginationPresenter;
+
 	public SnipSearchPresenter(SearchView searchView, AppController controller) {
 		super(controller);
 		this.view = searchView;
 		this.view.setPresenter(this);
+		this.paginationPresenter = new PaginationPresenter(view.getListWidget(), view.getFilterWidget());
 		log.info("SnipSearchPresenter constructor");
 	}
 
@@ -98,7 +102,8 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 
 					}
 
-					view.displaySnipList(beanList, pageIndex, calculateListRange(beanList.size(), pageIndex));
+					view.displaySnipList(beanList, pageIndex,
+							paginationPresenter.calculateListRange(beanList.size(), pageIndex));
 				}
 
 				@Override
@@ -110,6 +115,11 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
 		}
+	}
+
+	@Override
+	public PaginatedView.Presenter getPaginationPresenter() {
+		return paginationPresenter;
 	}
 
 }

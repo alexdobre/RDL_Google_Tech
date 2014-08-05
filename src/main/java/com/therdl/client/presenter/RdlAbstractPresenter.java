@@ -211,23 +211,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 		}
 	}
 
-	/**
-	 * Returns the range of items in the list to be displayed based on the default page length
-	 *
-	 * @param listSize  the current list on the page
-	 * @param pageIndex the current page index starting with 1
-	 * @return the page range in the format 1-50
-	 */
-	public String calculateListRange(int listSize, int pageIndex) {
-		if (listSize == 0) return "0";
-
-		int startIndex = pageIndex * Constants.DEFAULT_PAGE_SIZE + 1;
-		int stopIndex = startIndex + listSize - 1;
-		return startIndex + "-" + stopIndex;
-	}
-
 	public AppController getController() {
 		return controller;
 	}
-
 }

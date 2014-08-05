@@ -1,27 +1,33 @@
 package com.therdl.client.view.widget;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.SearchView;
-import com.therdl.client.view.common.SnipType;
-import com.therdl.client.view.common.ViewUtils;
-import com.therdl.shared.Constants;
-import com.therdl.shared.beans.SnipBean;
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.presenter.PaginationPresenter;
+import com.therdl.client.view.PaginatedView;
+import com.therdl.client.view.SearchView;
+import com.therdl.client.view.common.SnipType;
+import com.therdl.client.view.common.ViewUtils;
+import com.therdl.shared.Constants;
+import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.SnipBean;
 
 /**
  * ListWidget class creates list of SnipListRow widgets with tabs for the given list of snips
  */
-public class ListWidget extends Composite {
+public class ListWidget extends Composite implements PaginatedView {
 	interface ListWidgetUiBinder extends UiBinder<HTMLPanel, ListWidget> {
 	}
 	private static Logger log = Logger.getLogger("ListWidget");
@@ -33,12 +39,18 @@ public class ListWidget extends Composite {
 	@UiField
 	LinkedGroup listGroup;
 
+	private int pageIndex;
+	private SearchView searchView;
 	ArrayList<SnipListRow> itemList;
+	private PaginatedView.Presenter paginationPresenter;
 
 	public ListWidget(final SearchView searchView, ArrayList<AutoBean<SnipBean>> beanList, int pageIndex,
-	                  String listRange) {
+	                  String listRange, PaginatedView.Presenter paginationPresenter) {
+		this.pageIndex = pageIndex;
+		this.paginationPresenter = paginationPresenter;
 		initWidget(ourUiBinder.createAndBindUi(this));
 		itemList = new ArrayList<SnipListRow>(Constants.DEFAULT_PAGE_SIZE);
+		this.searchView = searchView;
 
 		populateList(searchView, beanList, listRange);
 	}
@@ -74,14 +86,25 @@ public class ListWidget extends Composite {
 		hideUnusedItems(beanList);
 	}
 
+	@Override
 	public void nextPageActive(Boolean active) {
 		nextPage.setActive(active);
 	}
 
+	@Override
 	public void prevPageActive(Boolean active) {
 		prevPage.setActive(active);
 	}
 
+	@UiHandler("nextPage")
+	public void nextPageClicked(ClickEvent event) {
+		paginationPresenter.nextPage();
+	}
+
+	@UiHandler("prevPage")
+	public void prevPageClicked(ClickEvent event) {
+		paginationPresenter.prevPage();
+	}
 	public void hideUnusedItems(ArrayList<AutoBean<SnipBean>> beanList) {
 		if (beanList.size() < Constants.DEFAULT_PAGE_SIZE){
 			if (itemList.size() > beanList.size()){
@@ -92,4 +115,19 @@ public class ListWidget extends Composite {
 		}
 	}
 
+	public AnchorListItem getListRange() {
+		return listRange;
+	}
+
+	public int getPageIndex() {
+		return pageIndex;
+	}
+
+	public ArrayList<SnipListRow> getItemList() {
+		return itemList;
+	}
+
+	public SearchView getSearchView() {
+		return searchView;
+	}
 }

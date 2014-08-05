@@ -144,7 +144,7 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		log.info("On display snip list storiesList="+storiesList);
 		if (storiesList == null) {
-			storiesList = new ListWidget(this, beanList, pageIndex, listRange);
+			storiesList = new ListWidget(this, beanList, pageIndex, listRange, presenter.getPaginationPresenter());
 			threadListRowContainer.add(storiesList);
 		}else {
 			storiesList.populateList(this, beanList, listRange);
@@ -181,5 +181,10 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 	@Override
 	public ListWidget getListWidget(){
 		return storiesList;
+	}
+
+	@Override
+	public SearchFilterWidget getFilterWidget(){
+		return searchFilterWidget;
 	}
 }

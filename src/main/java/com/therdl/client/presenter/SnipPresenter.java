@@ -1,5 +1,8 @@
 package com.therdl.client.presenter;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
@@ -21,9 +24,6 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 /**
  * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
@@ -43,6 +43,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	private String currentSnipId;
 	AutoBean<CurrentUserBean> currentUserBean;
 	private HasWidgets container;
+	private PaginationPresenter paginationPresenter;
 
 	public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
 		super(appController);
@@ -50,6 +51,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		this.currentSnipId = currentSnipId;
 		this.controller = appController;
 		this.view.setPresenter(this);
+		this.paginationPresenter = new PaginationPresenter(snipView, snipView);
 	}
 
 	/**
@@ -216,18 +218,16 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 					JsArray<JSOModel> data =
 							JSOModel.arrayFromJson(response.getText());
 
-					//      if (data.length() == 0) return;
-
 					ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
 					ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
 
 					for (int i = 0; i < data.length(); i++) {
 						jSonList.add(data.get(i));
 						beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
-
 					}
 
-					view.showReferences(beanList, pageIndex, calculateListRange(beanList.size(), pageIndex));
+					view.showReferences(beanList, pageIndex,
+							paginationPresenter.calculateListRange(beanList.size(), pageIndex));
 				}
 
 				@Override

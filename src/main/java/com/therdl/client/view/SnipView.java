@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * snip view triggered when snip row list widget is selected
  */
-public interface SnipView extends RdlView {
+public interface SnipView extends RdlView, PaginatedView {
 
 	public interface Presenter {
 		public void saveReference(AutoBean<SnipBean> bean);

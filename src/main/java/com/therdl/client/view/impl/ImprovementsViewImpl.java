@@ -146,7 +146,7 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		authorName = null;
 		if (improvementsList == null) {
-			improvementsList = new ListWidget(this, beanList, pageIndex, listRange);
+			improvementsList = new ListWidget(this, beanList, pageIndex, listRange, presenter.getPaginationPresenter());
 			impListRowContainer.add(improvementsList);
 		} else {
 			improvementsList.populateList(this, beanList, listRange);
@@ -184,5 +184,10 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 	@Override
 	public ListWidget getListWidget(){
 		return improvementsList;
+	}
+
+	@Override
+	public SearchFilterWidget getFilterWidget(){
+		return searchFilterWidget;
 	}
 }

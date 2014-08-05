@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.presenter.PaginationFilter;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
@@ -43,7 +44,7 @@ import java.util.logging.Logger;
  * creates GUI elements and handlers for them
  */
 
-public class SearchFilterWidget extends Composite {
+public class SearchFilterWidget extends Composite implements PaginationFilter {
 	interface SearchFilterWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> {
 	}
 
@@ -59,9 +60,6 @@ public class SearchFilterWidget extends Composite {
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
-
-	//   @UiField
-	//   ListBox subCategoryList;
 
 	@UiField
 	DateFilterWidget dateFilterWidget;
@@ -310,6 +308,11 @@ public class SearchFilterWidget extends Composite {
 	@UiHandler("submit")
 	public void onSubmit(ClickEvent event) {
 		view.doFilterSearch(formSearchOptionBean(), 0);
+	}
+
+	@Override
+	public void doFilterSearch (int pageIndex){
+		view.doFilterSearch(formSearchOptionBean(), pageIndex);
 	}
 
 	/**

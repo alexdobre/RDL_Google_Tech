@@ -144,7 +144,7 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
 		authorName = null;
 		if (snipList == null){
-			snipList = new ListWidget(this, beanList, pageIndex, listRange);
+			snipList = new ListWidget(this, beanList, pageIndex, listRange, presenter.getPaginationPresenter());
 			snipListRowContainer.add(snipList);
 		}else{
 			snipList.populateList(this,beanList,listRange);
@@ -183,5 +183,10 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 	@Override
 	public ListWidget getListWidget(){
 		return snipList;
+	}
+
+	@Override
+	public SearchFilterWidget getFilterWidget(){
+		return searchFilterWidget;
 	}
 }
