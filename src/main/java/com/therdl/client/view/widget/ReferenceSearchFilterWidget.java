@@ -20,6 +20,9 @@ import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.PaginationSnipsEvent;
+import com.therdl.shared.events.PaginationSnipsEventHandler;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.Legend;
 import org.gwtbootstrap3.client.ui.TextBox;
@@ -65,11 +68,11 @@ public class ReferenceSearchFilterWidget extends Composite {
 	private LinkedHashMap<String, String> referenceTypeHm = new LinkedHashMap();
 
 	private Beanery beanery = GWT.create(Beanery.class);
-	private SnipViewImpl view;
+	private final SnipViewImpl view;
 
-	public ReferenceSearchFilterWidget(SnipViewImpl view) {
+	public ReferenceSearchFilterWidget(SnipViewImpl viewArg) {
 		initWidget(ourUiBinder.createAndBindUi(this));
-		this.view = view;
+		this.view = viewArg;
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			initRefTypeCheckboxes();
@@ -83,6 +86,16 @@ public class ReferenceSearchFilterWidget extends Composite {
 			ViewUtils.hide(proposalGroup);
 		}
 		createSortArrows();
+
+		GuiEventBus.EVENT_BUS.addHandler(PaginationSnipsEvent.TYPE, new PaginationSnipsEventHandler() {
+			@Override
+			public void onPagination(PaginationSnipsEvent event) {
+				int newPageIndex = event.isNextPage() ? (event.getPageIndex() + 1) : (event.getPageIndex() - 1);
+				view.setPageIndex(newPageIndex);
+				view.setSearchOptionsBean(formSearchOptionsBean());
+				view.getPresenter().populateReplies(view.getSearchOptionsBean(), newPageIndex);
+			}
+		});
 	}
 
 	/**

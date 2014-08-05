@@ -1,7 +1,10 @@
 package com.therdl.client.view.common;
 
 import com.therdl.client.view.PaginatedView;
+import com.therdl.client.view.widget.ListWidget;
 import com.therdl.shared.Constants;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.PaginationSnipsEvent;
 
 import java.util.logging.Logger;
 
@@ -10,6 +13,22 @@ import java.util.logging.Logger;
  */
 public class PaginationHelper {
 	protected static Logger log = Logger.getLogger(PaginationHelper.class.getName());
+
+	public static void fireNextPageEvent (int pageIndex, String listRange, int currentListSize, int maxListSize){
+		//do nothing if upper limit was reached
+		if (currentListSize < maxListSize){
+			return;
+		}else if (listRange.startsWith("Limit")){
+			return;
+		}
+		GuiEventBus.EVENT_BUS.fireEvent(new PaginationSnipsEvent(true, pageIndex));
+	}
+
+	public static void firePrevPageEvent (int pageIndex){
+		//do nothing if lower limit was reached
+		if (pageIndex == 0 ) return;
+		GuiEventBus.EVENT_BUS.fireEvent(new PaginationSnipsEvent(false, pageIndex));
+	}
 
 	public static void showPaginationOnView(int pageIndex, int listSize, PaginatedView view) {
 		view.setListRange(calculateListRange(listSize, pageIndex));
@@ -37,8 +56,14 @@ public class PaginationHelper {
 
 	public static void calculatePrevNextVisibility(int pageIndex, int listSize, PaginatedView view){
 		log.info("Pagination helper calculatePrevNextVisibility pageIndex: "+pageIndex+" listSize: "+listSize);
+		int defaultPageSize;
+		if (view instanceof ListWidget) {
+			defaultPageSize = Constants.DEFAULT_PAGE_SIZE;
+		}else {
+			defaultPageSize = Constants.DEFAULT_REFERENCE_PAGE_SIZE;
+		}
 
-		if (listSize < Constants.DEFAULT_PAGE_SIZE) {
+		if (listSize < defaultPageSize) {
 			view.nextPageActive(false);
 		}else {
 			view.nextPageActive(true);

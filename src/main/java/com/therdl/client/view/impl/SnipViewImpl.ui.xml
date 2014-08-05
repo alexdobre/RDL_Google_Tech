@@ -149,7 +149,7 @@
 			<b:Column size="MD_9" ui:field="referenceListCont">
 				<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
 				<b:Row>
-					<b:Column size="MD_3" offset="MD_9">
+					<b:Column size="MD_6" offset="MD_6">
 						<b:Pagination addStyleNames="{style.margin-fix}">
 							<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
 							<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>

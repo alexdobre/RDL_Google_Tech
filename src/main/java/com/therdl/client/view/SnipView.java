@@ -2,10 +2,8 @@ package com.therdl.client.view;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
-import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.shared.RequestObserver;
-import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;

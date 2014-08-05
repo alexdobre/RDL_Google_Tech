@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.PaginatedView;
-import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
@@ -31,6 +31,8 @@ import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.PaginationSnipsEvent;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
@@ -70,10 +72,10 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 
 	private SnipView.Presenter presenter;
 	private Beanery beanery = GWT.create(Beanery.class);
-	private int pageIndex;
 
 	private AutoBean<SnipBean> currentSnipBean;
 	private boolean showEditBtn = false;
+	private int pageIndex;
 
 	@UiField
 	FlowPanel snipViewCont , radioBtnParent, radioBtnParentProp;
@@ -387,11 +389,6 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 		ViewUtils.show(refFilterParent);
 		ViewUtils.hide(referenceCont);
 
-		if (beanList.size() == 0) {
-			listGroup.clear();
-			listGroup.add(new Label(RDL.i18n.noDataToDisplay()));
-		}
-
 		for (int j = 0; j < beanList.size(); j++) {
 			//we first see is we already have an item created
 			ReferenceListRow referenceListRow;
@@ -425,6 +422,19 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 				}
 			}
 		}
+	}
+
+	@UiHandler("nextPage")
+	public void nextPageClicked(ClickEvent event) {
+		log.info("Firing next page event from pageIndex: "+pageIndex);
+		PaginationHelper.fireNextPageEvent(pageIndex, listRange.getText(), itemList.size(),
+				Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+	}
+
+	@UiHandler("prevPage")
+	public void prevPageClicked(ClickEvent event) {
+		log.info("Firing previous page event from pageIndex: "+pageIndex);
+		PaginationHelper.firePrevPageEvent(pageIndex);
 	}
 
 	@Override
@@ -461,5 +471,13 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 
 	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean) {
 		this.searchOptionsBean = searchOptionsBean;
+	}
+
+	public int getPageIndex() {
+		return pageIndex;
+	}
+
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
 	}
 }
