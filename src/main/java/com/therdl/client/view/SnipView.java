@@ -3,6 +3,7 @@ package com.therdl.client.view;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -31,11 +32,13 @@ public interface SnipView extends RdlView, PaginatedView {
 
 	public void viewSnip(AutoBean<SnipBean> snipBean);
 
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 
 	public void giveRepResponseHandler();
 
 	public void saveReferenceResponseHandler(String refType, String snipType);
+
+	public ReferenceSearchFilterWidget getFilter();
 
 	/**
 	 * In the bottom right corner of the view snip panel we can have one of three options

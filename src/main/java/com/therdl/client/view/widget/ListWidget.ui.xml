@@ -14,7 +14,7 @@
 
 	<g:HTMLPanel>
 		<b:Row>
-			<b:Column size="MD_3" offset="MD_9">
+			<b:Column size="MD_5" offset="MD_7">
 				<b:Pagination addStyleNames="{style.margin-fix}">
 					<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
 					<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>

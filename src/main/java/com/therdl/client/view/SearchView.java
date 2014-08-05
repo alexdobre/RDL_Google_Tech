@@ -3,10 +3,7 @@ package com.therdl.client.view;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
-import com.therdl.client.presenter.PaginationPresenter;
-import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.ListWidget;
-import com.therdl.client.view.widget.SearchFilterWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -32,8 +29,6 @@ public interface SearchView extends RdlView {
 	public interface Presenter   {
 		void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 
-		public PaginatedView.Presenter getPaginationPresenter();
-
 		AppController getController();
 	}
 
@@ -51,11 +46,9 @@ public interface SearchView extends RdlView {
 
 	Widget asWidget();
 
-	void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
+	void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 
 	ListWidget getListWidget();
-
-	SearchFilterWidget getFilterWidget();
 
 	void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
 

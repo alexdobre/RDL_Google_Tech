@@ -1,12 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,19 +8,26 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.presenter.PaginationPresenter;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Constants;
-import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.PaginationSnipsEvent;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * ListWidget class creates list of SnipListRow widgets with tabs for the given list of snips
  */
-public class ListWidget extends Composite implements PaginatedView {
+public class ListWidget extends Composite  implements  PaginatedView{
+
 	interface ListWidgetUiBinder extends UiBinder<HTMLPanel, ListWidget> {
 	}
 	private static Logger log = Logger.getLogger("ListWidget");
@@ -40,24 +40,17 @@ public class ListWidget extends Composite implements PaginatedView {
 	LinkedGroup listGroup;
 
 	private int pageIndex;
-	private SearchView searchView;
 	ArrayList<SnipListRow> itemList;
-	private PaginatedView.Presenter paginationPresenter;
 
-	public ListWidget(final SearchView searchView, ArrayList<AutoBean<SnipBean>> beanList, int pageIndex,
-	                  String listRange, PaginatedView.Presenter paginationPresenter) {
+	public ListWidget(final SearchView searchView, ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		this.pageIndex = pageIndex;
-		this.paginationPresenter = paginationPresenter;
 		initWidget(ourUiBinder.createAndBindUi(this));
 		itemList = new ArrayList<SnipListRow>(Constants.DEFAULT_PAGE_SIZE);
-		this.searchView = searchView;
-
-		populateList(searchView, beanList, listRange);
+		populateList(searchView, beanList);
 	}
 
-	public void populateList(SearchView searchView, ArrayList<AutoBean<SnipBean>> beanList, String listRange) {
+	public void populateList(SearchView searchView, ArrayList<AutoBean<SnipBean>> beanList) {
 		log.info("ListWidget populate list itemList:");
-		this.listRange.setText(listRange);
 
 		for (int j = 0; j < beanList.size(); j++) {
 			//we first see is we already have an item created
@@ -87,24 +80,40 @@ public class ListWidget extends Composite implements PaginatedView {
 	}
 
 	@Override
-	public void nextPageActive(Boolean active) {
-		nextPage.setActive(active);
+	public void nextPageActive(boolean active) {
+		if (active){
+			nextPage.removeStyleName("disabled");
+		}else {
+			nextPage.addStyleName("disabled");
+		}
 	}
 
 	@Override
-	public void prevPageActive(Boolean active) {
-		prevPage.setActive(active);
+	public void prevPageActive(boolean active) {
+		if (active){
+			prevPage.removeStyleName("disabled");
+		}else {
+			prevPage.addStyleName("disabled");
+		}
+	}
+
+	@Override
+	public void setListRange(String listRange) {
+		this.listRange.setText(listRange);
 	}
 
 	@UiHandler("nextPage")
 	public void nextPageClicked(ClickEvent event) {
-		paginationPresenter.nextPage();
+		log.info("Firing next page event from pageIndex: "+pageIndex);
+		GuiEventBus.EVENT_BUS.fireEvent(new PaginationSnipsEvent(true, pageIndex));
 	}
 
 	@UiHandler("prevPage")
 	public void prevPageClicked(ClickEvent event) {
-		paginationPresenter.prevPage();
+		log.info("Firing previous page event from pageIndex: "+pageIndex);
+		GuiEventBus.EVENT_BUS.fireEvent(new PaginationSnipsEvent(false, pageIndex));
 	}
+
 	public void hideUnusedItems(ArrayList<AutoBean<SnipBean>> beanList) {
 		if (beanList.size() < Constants.DEFAULT_PAGE_SIZE){
 			if (itemList.size() > beanList.size()){
@@ -115,19 +124,8 @@ public class ListWidget extends Composite implements PaginatedView {
 		}
 	}
 
-	public AnchorListItem getListRange() {
-		return listRange;
-	}
-
-	public int getPageIndex() {
-		return pageIndex;
-	}
-
-	public ArrayList<SnipListRow> getItemList() {
-		return itemList;
-	}
-
-	public SearchView getSearchView() {
-		return searchView;
+	public void setPageIndex(int pageIndex) {
+		log.info("************************* Setting page index in list widget to: "+pageIndex);
+		this.pageIndex = pageIndex;
 	}
 }

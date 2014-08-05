@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @ Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
-
+ * <p/>
  * fields below are standard GWT UIBinder display elements
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
@@ -143,15 +143,15 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 	}
 
 	@Override
-	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
+	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		authorName = null;
 		if (improvementsList == null) {
-			improvementsList = new ListWidget(this, beanList, pageIndex, listRange, presenter.getPaginationPresenter());
+			improvementsList = new ListWidget(this, beanList, pageIndex);
 			impListRowContainer.add(improvementsList);
 		} else {
-			improvementsList.populateList(this, beanList, listRange);
+			improvementsList.populateList(this, beanList);
 		}
-
+		this.getListWidget().setPageIndex(pageIndex);
 		ViewUtils.hide(impLoadingWidget);
 	}
 
@@ -159,13 +159,14 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 	 * call presenter function to search snips for the given search options
 	 *
 	 * @param searchOptionsBean bean for the search options
-	 * @param pageIndex
+	 * @param pageIndex the current page index
 	 */
 	@Override
 	public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
 		ViewUtils.show(impLoadingWidget);
 		currentSearchOptionsBean = searchOptionsBean;
 		searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
+		this.getListWidget().setPageIndex(pageIndex);
 		presenter.searchSnips(searchOptionsBean, pageIndex);
 	}
 
@@ -177,17 +178,13 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 		firstTimeLoaded = true;
 		currentSearchOptionsBean = null;
 		ViewUtils.show(impLoadingWidget);
-
+		this.getListWidget().setPageIndex(pageIndex);
 		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
 	}
 
 	@Override
-	public ListWidget getListWidget(){
+	public ListWidget getListWidget() {
 		return improvementsList;
 	}
 
-	@Override
-	public SearchFilterWidget getFilterWidget(){
-		return searchFilterWidget;
-	}
 }

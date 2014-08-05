@@ -1,8 +1,5 @@
 package com.therdl.client.presenter;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
@@ -16,6 +13,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RequestObserver;
@@ -23,6 +21,9 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -43,7 +44,6 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	private String currentSnipId;
 	AutoBean<CurrentUserBean> currentUserBean;
 	private HasWidgets container;
-	private PaginationPresenter paginationPresenter;
 
 	public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
 		super(appController);
@@ -51,7 +51,6 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		this.currentSnipId = currentSnipId;
 		this.controller = appController;
 		this.view.setPresenter(this);
-		this.paginationPresenter = new PaginationPresenter(snipView, snipView);
 	}
 
 	/**
@@ -226,8 +225,8 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 						beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
 					}
 
-					view.showReferences(beanList, pageIndex,
-							paginationPresenter.calculateListRange(beanList.size(), pageIndex));
+					view.showReferences(beanList, pageIndex);
+					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
 				}
 
 				@Override

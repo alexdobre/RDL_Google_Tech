@@ -26,13 +26,11 @@ import org.gwtbootstrap3.client.ui.TextBox;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * gwt widget class for reference search filter, used in snip view page
  */
 public class ReferenceSearchFilterWidget extends Composite {
-	private static Logger log = Logger.getLogger("");
 
 	interface ReferenceSearchFilterWidgetUiBinder extends UiBinder<Widget, ReferenceSearchFilterWidget> {
 	}

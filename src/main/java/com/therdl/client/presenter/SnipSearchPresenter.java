@@ -14,10 +14,16 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SearchView;
+import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
+import com.therdl.shared.events.LogInEventEventHandler;
+import com.therdl.shared.events.PaginationSnipsEvent;
+import com.therdl.shared.events.PaginationSnipsEventHandler;
 
 import java.util.ArrayList;
 
@@ -41,14 +47,10 @@ import java.util.ArrayList;
 
 public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implements SearchView.Presenter {
 
-	private PaginationPresenter paginationPresenter;
-
 	public SnipSearchPresenter(SearchView searchView, AppController controller) {
 		super(controller);
 		this.view = searchView;
 		this.view.setPresenter(this);
-		this.paginationPresenter = new PaginationPresenter(view.getListWidget(), view.getFilterWidget());
-		log.info("SnipSearchPresenter constructor");
 	}
 
 	@Override
@@ -102,8 +104,8 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 
 					}
 
-					view.displaySnipList(beanList, pageIndex,
-							paginationPresenter.calculateListRange(beanList.size(), pageIndex));
+					view.displaySnipList(beanList, pageIndex);
+					PaginationHelper.showPaginationOnView(pageIndex,beanList.size(),view.getListWidget());
 				}
 
 				@Override
@@ -116,10 +118,4 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 			log.info(e.getLocalizedMessage());
 		}
 	}
-
-	@Override
-	public PaginatedView.Presenter getPaginationPresenter() {
-		return paginationPresenter;
-	}
-
 }

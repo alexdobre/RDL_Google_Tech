@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.SnipType;
@@ -56,7 +57,7 @@ import java.util.logging.Logger;
  * used to call the backend to retrieve the full snip for this view, under construction
  * @ AppMenu appMenu the upper menu view
  */
-public class SnipViewImpl extends AppMenuView implements SnipView {
+public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -377,12 +378,11 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	 *
 	 * @param beanList list of references as bean objects
 	 */
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange) {
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		log.info("Showing references: "+beanList);
 		this.pageIndex = pageIndex;
 		ViewUtils.hide(loadingWidget);
 		showRef.setText(btnTextHide);
-		this.listRange.setText(listRange);
 		ViewUtils.show(referenceListCont);
 		ViewUtils.show(refFilterParent);
 		ViewUtils.hide(referenceCont);
@@ -428,33 +428,31 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 	}
 
 	@Override
-	public void nextPageActive(Boolean active) {
-
+	public void setListRange(String listRange) {
+		this.listRange.setText(listRange);
 	}
 
 	@Override
-	public void prevPageActive(Boolean active) {
-
+	public void nextPageActive(boolean active) {
+		if (active){
+			nextPage.removeStyleName("disabled");
+		}else {
+			nextPage.addStyleName("disabled");
+		}
 	}
 
 	@Override
-	public AnchorListItem getListRange() {
-		return listRange;
+	public void prevPageActive(boolean active) {
+		if (active){
+			prevPage.removeStyleName("disabled");
+		}else {
+			prevPage.addStyleName("disabled");
+		}
 	}
 
 	@Override
-	public int getPageIndex() {
-		return pageIndex;
-	}
-
-	@Override
-	public ArrayList<SnipListRow> getItemList() {
-		return null;
-	}
-
-	@Override
-	public SearchView getSearchView() {
-		return null;
+	public ReferenceSearchFilterWidget getFilter(){
+		return referenceSearchFilterWidget;
 	}
 
 	public AutoBean<SnipBean> getSearchOptionsBean() {

@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.presenter.PaginationFilter;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
@@ -28,6 +27,9 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.PaginationSnipsEvent;
+import com.therdl.shared.events.PaginationSnipsEventHandler;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.Legend;
@@ -44,7 +46,7 @@ import java.util.logging.Logger;
  * creates GUI elements and handlers for them
  */
 
-public class SearchFilterWidget extends Composite implements PaginationFilter {
+public class SearchFilterWidget extends Composite {
 	interface SearchFilterWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> {
 	}
 
@@ -138,6 +140,15 @@ public class SearchFilterWidget extends Composite implements PaginationFilter {
 
 		createSortArrows();
 
+		GuiEventBus.EVENT_BUS.addHandler(PaginationSnipsEvent.TYPE, new PaginationSnipsEventHandler() {
+			@Override
+			public void onPagination(PaginationSnipsEvent event) {
+				int newPageIndex = event.isNextPage() ? (event.getPageIndex() + 1) : (event.getPageIndex() - 1);
+				view.getListWidget().setPageIndex(newPageIndex);
+				view.doFilterSearch(formSearchOptionBean(),newPageIndex);
+			}
+		});
+
 	}
 
 	/**
@@ -201,8 +212,6 @@ public class SearchFilterWidget extends Composite implements PaginationFilter {
 					sortOrder = 1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowUpGreen().getSafeUri().asString());
-
-					view.doFilterSearch(formSearchOptionBean(), 0);
 				}
 			});
 
@@ -224,8 +233,6 @@ public class SearchFilterWidget extends Composite implements PaginationFilter {
 					sortOrder = -1;
 					sortField = keyName;
 					selectedArrow.setUrl(Resources.INSTANCE.arrowDownGreen().getSafeUri().asString());
-
-					view.doFilterSearch(formSearchOptionBean(), 0);
 				}
 			});
 
@@ -308,11 +315,6 @@ public class SearchFilterWidget extends Composite implements PaginationFilter {
 	@UiHandler("submit")
 	public void onSubmit(ClickEvent event) {
 		view.doFilterSearch(formSearchOptionBean(), 0);
-	}
-
-	@Override
-	public void doFilterSearch (int pageIndex){
-		view.doFilterSearch(formSearchOptionBean(), pageIndex);
 	}
 
 	/**
@@ -443,7 +445,7 @@ public class SearchFilterWidget extends Composite implements PaginationFilter {
 			createNewBtnHandler(editPageToken, view.getCurrentUserBean());
 		} else {
 			final String pageToRedirect = editPageToken;
-			view.getAppMenu().showLoginPopUp(createNewButton.getAbsoluteLeft() + 90,					createNewButton.getAbsoluteTop() - 120, new LoginHandler() {
+			view.getAppMenu().showLoginPopUp(createNewButton.getAbsoluteLeft() + 90, createNewButton.getAbsoluteTop() - 120, new LoginHandler() {
 
 				@Override
 				public void onSuccess(AutoBean<CurrentUserBean> currentUserBean) {
