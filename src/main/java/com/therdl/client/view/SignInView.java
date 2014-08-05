@@ -27,6 +27,4 @@ public interface SignInView extends RdlView {
 	void setSignIsVisible(boolean state);
 
 	org.gwtbootstrap3.client.ui.Label getLoginFail();
-
-
 }

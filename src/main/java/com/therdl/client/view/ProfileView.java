@@ -23,8 +23,6 @@ public interface ProfileView extends RdlView {
 
 	void setPresenter(Presenter presenter);
 
-	AppMenu getAppMenu();
-
 	void setAvatarWhenViewIsNotNull();
 
 }

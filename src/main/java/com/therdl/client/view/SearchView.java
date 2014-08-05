@@ -51,8 +51,6 @@ public interface SearchView extends RdlView {
 
 	void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, String listRange);
 
-	AppMenu getAppMenu();
-
 	ListWidget getListWidget();
 
 	void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex);

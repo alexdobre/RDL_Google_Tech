@@ -62,7 +62,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		this.container = container;
-		checkLogin(view.getAppMenu(), currentUserBean);
+		checkLogin();
 		this.currentUserBean = currentUserBean;
 		container.clear();
 		viewSnipById();

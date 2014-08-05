@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SignInView;
+import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
@@ -41,7 +42,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
 	private boolean alreadyInit;
 
-	private final WelcomeViewImpl welcomeViewImpl;
+	private final AppMenu appMenu;
 
 	private static SignInViewImplUiBinder uiBinder = GWT.create(SignInViewImplUiBinder.class);
 
@@ -65,10 +66,10 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 	interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
 	}
 
-	public SignInViewImpl(WelcomeViewImpl welcomeView) {
+	public SignInViewImpl(AppMenu appMenu) {
 		super(true);
 		add(uiBinder.createAndBindUi(this));
-		this.welcomeViewImpl = welcomeView;
+		this.appMenu = appMenu;
 		password.setText("password");
 		email.setText("Email");
 		this.setStyleName("signInView");
@@ -143,7 +144,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 		log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
 
 		if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
-			welcomeViewImpl.onSubmit(eMail, password, rememberMe);
+			appMenu.onSubmit(eMail, password, rememberMe);
 
 		} else {
 			loginFail.setVisible(true);
@@ -169,7 +170,7 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 	 */
 	@UiHandler("forgotPassLink")
 	public void onForgotPassLinkClicked(ClickEvent event) {
-		welcomeViewImpl.showForgotPasswordPopUp();
+		appMenu.showForgotPasswordPopUp();
 	}
 
 
@@ -194,10 +195,12 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
 	@Override
 	public void setSignIsVisible(boolean state) {
-
 		this.setVisible(state);
-
 	}
 
+	@Override
+	public AppMenu getAppMenu() {
+		return appMenu;
+	}
 
 }

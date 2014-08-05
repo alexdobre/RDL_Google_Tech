@@ -440,7 +440,7 @@ public class SearchFilterWidget extends Composite {
 			createNewBtnHandler(editPageToken, view.getCurrentUserBean());
 		} else {
 			final String pageToRedirect = editPageToken;
-			view.getPresenter().getController().getWelcomeView().showLoginPopUp(createNewButton.getAbsoluteLeft() + 90, createNewButton.getAbsoluteTop() - 120, new LoginHandler() {
+			view.getAppMenu().showLoginPopUp(createNewButton.getAbsoluteLeft() + 90,					createNewButton.getAbsoluteTop() - 120, new LoginHandler() {
 
 				@Override
 				public void onSuccess(AutoBean<CurrentUserBean> currentUserBean) {

@@ -178,7 +178,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 	@UiHandler("refFilter")
 	public void filterReferences(ClickEvent event) {
 		view.setSearchOptionsBean(formSearchOptionsBean());
-		view.getPresenter().populateReplies(view.getSearchOptionsBean(), 1);
+		view.getPresenter().populateReplies(view.getSearchOptionsBean(), 0);
 	}
 
 	/**

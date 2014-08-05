@@ -21,6 +21,4 @@ public interface RegisterView extends RdlView {
 	}
 
 	void setPresenter(Presenter presenter);
-
-	AppMenu getAppMenu();
 }

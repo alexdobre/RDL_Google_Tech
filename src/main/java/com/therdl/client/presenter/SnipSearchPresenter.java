@@ -50,7 +50,7 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		log.info("SnipSearchPresenter go adding view");
-		checkLogin(view.getAppMenu(),currentUserBean);
+		checkLogin();
 		container.clear();
 		container.add(view.asWidget());
 	}

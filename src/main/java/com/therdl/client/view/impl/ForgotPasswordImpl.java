@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.ForgotPassword;
+import com.therdl.client.view.widget.AppMenu;
 
 /**
  * ForgotPasswordImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -98,5 +99,10 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
 	@UiHandler("txtBoxEmail")
 	public void onEmailFocused(FocusEvent event) {
 		lblEmailNotFound.setText("");
+	}
+
+	@Override
+	public AppMenu getAppMenu(){
+		return null;
 	}
 }

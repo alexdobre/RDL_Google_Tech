@@ -36,7 +36,5 @@ public interface SnipEditView extends RdlView {
 
 	public void showHideImprovementPanels(Boolean show);
 
-	public AppMenu getAppMenu();
-
 	public Widget asWidget();
 }

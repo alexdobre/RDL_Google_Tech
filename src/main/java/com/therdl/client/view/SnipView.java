@@ -50,5 +50,4 @@ public interface SnipView extends RdlView {
 
 	public void showHideReplyButton(Boolean show);
 
-	AppMenu getAppMenu();
 }

@@ -57,8 +57,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
 	private Presenter presenter;
 
-	private SignInViewImpl signInView;
-
 	private AutoBean<CurrentUserBean> currentUser;
 
 	@UiField
@@ -84,8 +82,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	org.gwtbootstrap3.client.ui.Button welcomeVideoButton;
 
 	LogoutPopupWidget logoutPopup;
-
-	LoginHandler loginHandler;
 
 	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser, AppMenu appMenu) {
 		super(appMenu);
@@ -113,35 +109,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	}
 
 	/**
-	 * creates and shows login popup and sets its parameters
-	 *
-	 * @param posLeft      left position
-	 * @param posTop       top position
-	 * @param loginHandler handler which is called when login is successful
-	 */
-	public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler) {
-		this.loginHandler = loginHandler;
-		if (signInView == null ){
-			signInView = new SignInViewImpl(this);
-		}
-		signInView.setGlassEnabled(true);
-		signInView.setModal(true);
-		signInView.setPopupPosition(posLeft, posTop);
-		signInView.getElement().getStyle().setZIndex(3);
-		signInView.show();
-		signInView.getLoginFail().setVisible(false);
-
-	}
-
-	@Override
-	public void showForgotPasswordPopUp() {
-		ForgotPassword forgotPassword = new ForgotPasswordImpl();
-		ForgotPasswordPresenter forgotPasswordPresenter = new ForgotPasswordPresenter(forgotPassword);
-		forgotPasswordPresenter.showForgotPasswordPopup();
-		signInView.hide();
-	}
-
-	/**
 	 * shows log out popup with message
 	 */
 	public void showLogoutPopUp() {
@@ -156,57 +123,11 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		logoutPopup.center();
 	}
 
-	/**
-	 * show the error validation message in the signInView
-	 */
-	@Override
-	public void showLoginFail() {
-
-		signInView.getLoginFail().setVisible(true);
-		signInView.getLoginFail().setText("Login Fails please check your credentials");
-
-
-	}
-
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 		log.info("WelcomeViewImpl setPresenter");
 	}
-
-	/**
-	 * called form signin view pop up to initiate log in flow
-	 *
-	 * @param emailTxt     supplied credential
-	 * @param passwordText supplied credential
-	 */
-	public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
-		presenter.doLogIn(emailTxt, passwordText, rememberMe, null, loginHandler);
-	}
-
-	public void init() {
-	}
-
-//    /**
-//     * Loads the introduction video
-//     */
-//    @UiHandler("welcomeVideoButton")
-//    public void onClickVideoIntro(ClickEvent event) {
-//        //we initialize the welcome video player
-//        AbstractMediaPlayer player = null;
-//        try {
-//            // create the player, specifying URL of media
-//            player = new YouTubePlayer("wEJ40eqFBeo", "100%", "350px");
-//            DialogBox dialog = ViewUtils.constructDialogBox(player, event, 450);
-//            dialog.show();
-//        } catch (PluginVersionException e) {
-//            ViewUtils.constructPopup(new HTML(".. please download the necessary plugin.."), event, 450).show();
-//        } catch (PluginNotFoundException e) {
-//            // catch PluginNotFoundException and display a friendly notice.
-//            ViewUtils.constructPopup(new HTML(".. plugin not found, please download the necessary plugin to run YouTube .."), event, 450).show();
-//        }
-//    }
-
 
 	/**
 	 * displays the on click popup description

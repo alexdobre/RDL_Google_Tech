@@ -45,7 +45,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin(view.getAppMenu(),currentUserBean);
+		checkLogin();
 		container.clear();
 		container.add(view.asWidget());
 	}

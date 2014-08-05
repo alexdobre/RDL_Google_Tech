@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
+import com.therdl.client.presenter.RdlAbstractPresenter;
 import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipPresenter;
@@ -36,6 +37,8 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.events.CredentialsSubmitEvent;
+import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInEvent;
 import com.therdl.shared.events.LogInEventEventHandler;
@@ -131,7 +134,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				if (welcomeView == null){
 					welcomeView = getWelcomeView();
 				}
-				welcomeView.showLoginPopUp(500, 30, null);
+				appMenu.showLoginPopUp(500, 30, null);
 			}
 		});
 
@@ -249,12 +252,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			}
 
 			public void onSuccess() {
-
 				welcomePresenter.go(container, currentUserBean);
-
-				if (currentUserBean.as().isAuth()) {
-					welcomeView.setLoginResult(currentUserBean.as().getName(), currentUserBean.as().getEmail(), true);
-				}
 			}
 		});
 	}

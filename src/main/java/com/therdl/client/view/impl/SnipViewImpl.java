@@ -196,7 +196,7 @@ public class SnipViewImpl extends AppMenuView implements SnipView {
 		if (currentUserBean.as().isAuth()) {
 			leaveRefHandler(currentUserBean);
 		} else {
-			presenter.getController().getWelcomeView().showLoginPopUp(leaveRef.getAbsoluteLeft() + 120, leaveRef.getAbsoluteTop() - 120, new LoginHandler() {
+			appMenu.showLoginPopUp(leaveRef.getAbsoluteLeft() + 120, leaveRef.getAbsoluteTop() - 120, new LoginHandler() {
 				@Override
 				public void onSuccess(AutoBean<CurrentUserBean> userBean) {
 					leaveRefHandler(userBean);

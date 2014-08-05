@@ -24,20 +24,7 @@ public interface WelcomeView extends RdlView{
 		void doLogIn(String emailTxt, String passwordText, Boolean rememberMe, String sid, LoginHandler loginHandler);
 	}
 
-	public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler);
-
-	public void showForgotPasswordPopUp();
-
 	void setPresenter(Presenter presenter);
 
 	Widget asWidget();
-
-	void showLoginFail();
-
-	void setLoginResult(String name, String email, boolean auth);
-
-	AppMenu getAppMenu();
-
-	void init();
-
 }

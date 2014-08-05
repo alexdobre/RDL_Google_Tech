@@ -32,7 +32,7 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin(view.getAppMenu(),currentUserBean);
+		checkLogin();
 		container.clear();
 		container.add(view.asWidget());
 	}

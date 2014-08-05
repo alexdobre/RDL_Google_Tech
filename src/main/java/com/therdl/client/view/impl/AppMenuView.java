@@ -29,29 +29,4 @@ public abstract class AppMenuView extends Composite {
 	public AppMenu getAppMenu() {
 		return this.appMenu;
 	}
-
-	/**
-	 * Sets the upper header Menu to the correct state for supplied credentials
-	 * post sign up called from presenter
-	 *
-	 * @param name  supplied credential
-	 * @param email supplied credential
-	 * @param auth  boolean auth state from server via presenter
-	 */
-	public void setLoginResult(String name, String email, boolean auth) {
-		if (auth) {
-			this.appMenu.setLogOutVisible(true);
-			this.appMenu.setSignUpVisible(false);
-			this.appMenu.setUserInfoVisible(true);
-			this.appMenu.setUser(name);
-			this.appMenu.setEmail(email);
-			this.appMenu.setLogInVisible(false);
-		} else {
-			this.appMenu.setLogOutVisible(false);
-			this.appMenu.setSignUpVisible(true);
-			this.appMenu.setUserInfoVisible(false);
-			this.appMenu.setLogInVisible(true);
-		}
-	}
-
 }
