@@ -26,6 +26,7 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.CredentialsSubmitEvent;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInEvent;
+import com.therdl.shared.events.LogInEventEventHandler;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LogInOkEventEventHandler;
 import com.therdl.shared.events.LogOutEvent;
@@ -76,6 +77,12 @@ public class AppMenu extends Composite {
 	public AppMenu() {
 		initWidget(uiBinder.createAndBindUi(this));
 		logOut();
+		GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
+			@Override
+			public void onLogInEvent(LogInEvent onLoginEvent) {
+				showLoginPopUp(500, 30, null);
+			}
+		});
 		// user has just sucessfully logged in update app menu
 		GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
 
@@ -255,10 +262,6 @@ public class AppMenu extends Composite {
 		if (signInView == null ){
 			signInView = new SignInViewImpl(this);
 		}
-		signInView.setGlassEnabled(true);
-		signInView.setModal(true);
-		signInView.setPopupPosition(posLeft, posTop);
-		signInView.getElement().getStyle().setZIndex(3);
 		signInView.show();
 		signInView.getLoginFail().setVisible(false);
 

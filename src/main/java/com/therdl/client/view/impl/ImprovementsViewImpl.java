@@ -178,7 +178,7 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 		firstTimeLoaded = true;
 		currentSearchOptionsBean = null;
 		ViewUtils.show(impLoadingWidget);
-		this.getListWidget().setPageIndex(pageIndex);
+
 		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
 	}
 

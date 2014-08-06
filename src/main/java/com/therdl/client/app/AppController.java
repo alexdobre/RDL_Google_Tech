@@ -128,16 +128,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		log.info("AppController bind() addValueChangeHandler");
 
-		GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
-			@Override
-			public void onLogInEvent(LogInEvent onLoginEvent) {
-				if (welcomeView == null){
-					welcomeView = getWelcomeView();
-				}
-				appMenu.showLoginPopUp(500, 30, null);
-			}
-		});
-
 		// logout event handler
 		GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler() {
 			@Override

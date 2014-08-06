@@ -34,15 +34,6 @@
 		margin: 10px;
 		}
 
-		.signUpLink {
-		padding-left: 260px;
-		cursor: pointer;
-		}
-
-		.forgotPasswordLink {
-		cursor: pointer;
-		}
-
 		.validate {
 
 		position: absolute;
@@ -55,27 +46,40 @@
 		font-size: 10px;
 
 		}
-
-
 	</ui:style>
-	<g:VerticalPanel styleName='{style.push}'>
-		<g:Label text="{i18n.pleaseLogin}" styleName='{style.labelText}'/>
-		<g:HorizontalPanel verticalAlignment="middle">
-			<b:TextBox ui:field="email" styleName='{style.loginBox}'/>
-			<b:Label styleName='{style.labelText}' text="{i18n.password}"/>
-			<g:PasswordTextBox ui:field="password" styleName='{style.pswwdBox}'></g:PasswordTextBox>
-		</g:HorizontalPanel>
-		<g:HorizontalPanel verticalAlignment="middle">
-			<b:Label styleName='{style.labelText}' text="{i18n.rememberMe}"/>
-			<g:CheckBox ui:field="rememberMe"></g:CheckBox>
-		</g:HorizontalPanel>
-		<g:HorizontalPanel verticalAlignment="middle">
-			<b:Button ui:field="submit" text="{i18n.submit}"/>
-			<b:Label ui:field="loginFail" text="{i18n.loginFailMsg}" styleName='{style.validate}'/>
-			<b:Anchor ui:field="signUpLink" text="{i18n.signUp}" styleName="{style.signUpLink}"/>
-		</g:HorizontalPanel>
-		<g:HorizontalPanel horizontalAlignment="left">
-			<b:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}" styleName="{style.forgotPasswordLink}"/>
-		</g:HorizontalPanel>
-	</g:VerticalPanel>
+	<b:Container>
+	<b:Modal title="{i18n.pleaseLogin}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true" b:id="signInModal"
+			ui:field="modal">
+		<b:ModalBody>
+			<b:Row>
+				<b:Column size="MD_6">
+					<b:TextBox ui:field="email" placeholder="{i18n.email}"/>
+				</b:Column>
+				<b:Column size="MD_6">
+					<b:Input ui:field="password"  type="PASSWORD" placeholder="{i18n.password}"/>
+				</b:Column>
+			</b:Row>
+			<b:Row>
+				<b:Column size="MD_6" >
+					<b:Label styleName='{style.labelText}' text="{i18n.rememberMe}"/>
+					<g:CheckBox ui:field="rememberMe"></g:CheckBox>
+					<b:Label ui:field="loginFail" text="{i18n.loginFailMsg}" styleName='{style.validate}'/>
+				</b:Column>
+				<b:Column size="MD_6">
+					<b:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}" />
+				</b:Column>
+			</b:Row>
+		</b:ModalBody>
+		<b:ModalFooter>
+			<b:Row>
+				<b:Column size="MD_4">
+					<b:Button ui:field="submit" text="{i18n.submit}"/>
+				</b:Column>
+				<b:Column size="MD_4" offset="MD_4">
+					<b:Anchor ui:field="signUpLink" text="{i18n.signUp}"/>
+				</b:Column>
+			</b:Row>
+		</b:ModalFooter>
+	</b:Modal>
+	</b:Container>
 </ui:UiBinder> 

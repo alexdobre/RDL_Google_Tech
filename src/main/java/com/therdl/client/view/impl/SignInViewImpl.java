@@ -1,5 +1,12 @@
 package com.therdl.client.view.impl;
 
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.TextBox;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -10,8 +17,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SignInView;
@@ -20,8 +26,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LogInOkEventEventHandler;
-
-import java.util.logging.Logger;
 
 
 /**
@@ -34,41 +38,37 @@ import java.util.logging.Logger;
  * @ Label loginFail  GWT Label widget validation callback for login fails
  */
 
-public class SignInViewImpl extends PopupPanel implements SignInView {
+public class SignInViewImpl extends Composite implements SignInView {
 
 	private static Logger log = Logger.getLogger("");
-
-	private Presenter presenter;
-
-	private boolean alreadyInit;
 
 	private final AppMenu appMenu;
 
 	private static SignInViewImplUiBinder uiBinder = GWT.create(SignInViewImplUiBinder.class);
 
 	@UiField
-	PasswordTextBox password;
+	Modal modal;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.TextBox email;
+	Input password;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.Button submit;
+	TextBox email;
+
+	@UiField
+	Button submit;
 
 	@UiField
 	CheckBox rememberMe;
 
-
 	@UiField
 	org.gwtbootstrap3.client.ui.Label loginFail;
-
 
 	interface SignInViewImplUiBinder extends UiBinder<Widget, SignInViewImpl> {
 	}
 
 	public SignInViewImpl(AppMenu appMenu) {
-		super(true);
-		add(uiBinder.createAndBindUi(this));
+		initWidget(uiBinder.createAndBindUi(this));
 		this.appMenu = appMenu;
 		password.setText("password");
 		email.setText("Email");
@@ -80,11 +80,17 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 
 			@Override
 			public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
-				hide();
+				modal.hide();
 			}
 		});
+	}
 
+	public void show(){
+		modal.show();
+	}
 
+	public void hide(){
+		modal.hide();
 	}
 
 	/**
@@ -160,28 +166,22 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 	 */
 	@UiHandler("signUpLink")
 	public void onSignUpLinkClicked(ClickEvent event) {
+		modal.hide();
 		History.newItem(RDLConstants.Tokens.SIGN_UP);
 	}
 
-	/**
-	 * click handler for sign up link, redirects to sign up view
+	/*** click handler for sign up link, redirects to sign up view
 	 *
 	 * @param event
 	 */
 	@UiHandler("forgotPassLink")
 	public void onForgotPassLinkClicked(ClickEvent event) {
+		modal.hide();
 		appMenu.showForgotPasswordPopUp();
 	}
 
-
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
-	}
-
-
-	public PasswordTextBox getPassword() {
-		return password;
+	public String getPassword() {
+		return password.getText();
 	}
 
 	public org.gwtbootstrap3.client.ui.TextBox getEmail() {
@@ -191,11 +191,6 @@ public class SignInViewImpl extends PopupPanel implements SignInView {
 	@Override
 	public org.gwtbootstrap3.client.ui.Label getLoginFail() {
 		return loginFail;
-	}
-
-	@Override
-	public void setSignIsVisible(boolean state) {
-		this.setVisible(state);
 	}
 
 	@Override

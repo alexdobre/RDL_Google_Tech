@@ -15,16 +15,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
  */
 public interface SignInView extends RdlView {
 
-	interface Presenter {
-	}
-
-	void setPresenter(Presenter presenter);
-
-	PasswordTextBox getPassword();
+	String getPassword();
 
 	org.gwtbootstrap3.client.ui.TextBox getEmail();
-
-	void setSignIsVisible(boolean state);
 
 	org.gwtbootstrap3.client.ui.Label getLoginFail();
 }
