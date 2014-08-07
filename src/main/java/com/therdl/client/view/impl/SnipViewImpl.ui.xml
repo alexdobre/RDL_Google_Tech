@@ -10,9 +10,6 @@
 
 	<ui:style>
 
-		.push {
-		padding-top: 60px;
-		}
 		.noPadding{
 		padding: 0px;
 		}
@@ -80,7 +77,7 @@
 
 	<b:Container>
 		<g:SimplePanel ui:field="appMenuPanel"/>
-		<g:FlowPanel addStyleNames="{style.push}"/>
+		<g:FlowPanel addStyleNames="push"/>
 
 		<b:Panel addStyleNames="{style.snipViewPanel}">
 			<b:PanelHeader>
@@ -116,24 +113,23 @@
 			</b:PanelFooter>
 		</b:Panel>
 
-
-		<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-			<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-			               text="{i18n.positive}"></g:RadioButton>
-			<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-			               text="{i18n.neutral}"></g:RadioButton>
-			<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-			               text="{i18n.negative}"></g:RadioButton>
-		</g:FlowPanel>
-
-		<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
-			<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-			               text="{i18n.pledge}"></g:RadioButton>
-			<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-			               text="{i18n.counter}"></g:RadioButton>
-		</g:FlowPanel>
 		<b:Panel ui:field="referenceCont">
 			<b:PanelBody addStyleNames="{style.noPadding}">
+				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
+					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
+					               text="{i18n.positive}"></g:RadioButton>
+					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
+					               text="{i18n.neutral}"></g:RadioButton>
+					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
+					               text="{i18n.negative}"></g:RadioButton>
+				</g:FlowPanel>
+
+				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
+					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
+					               text="{i18n.pledge}"></g:RadioButton>
+					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
+					               text="{i18n.counter}"></g:RadioButton>
+				</g:FlowPanel>
 				<summer:Summernote ui:field="editorWidget"/>
 			</b:PanelBody>
 			<b:PanelFooter>
@@ -142,10 +138,8 @@
 			</b:PanelFooter>
 		</b:Panel>
 
-
 		<b:Container>
 			<b:Column size="MD_3" ui:field="refFilterParent"/>
-
 			<b:Column size="MD_9" ui:field="referenceListCont">
 				<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
 				<b:Row>
@@ -164,7 +158,6 @@
 				</b:Row>
 			</b:Column>
 		</b:Container>
-
 	</b:Container>
 
 </ui:UiBinder>

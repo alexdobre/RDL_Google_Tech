@@ -21,8 +21,7 @@
 				</b:NavbarNav>
 
 				<b:NavbarForm pull="LEFT">
-					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="Search Site Content"
-					           addStyleNames="col-lg-8"/>
+					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="Search Site Content"/>
 				</b:NavbarForm>
 
 				<b:NavbarNav pull="RIGHT">

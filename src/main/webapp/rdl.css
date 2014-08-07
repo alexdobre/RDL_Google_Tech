@@ -377,7 +377,7 @@ form.form-search:before {
 .posRefBadge{
 	color: green;
 }
-.negRefPadge{
+.negRefBadge{
 	color: red;
 }
 .leftIcon{
@@ -389,4 +389,10 @@ form.form-search:before {
 }
 .push {
 	padding-top: 55px;
+}
+
+@media (max-width: 1199px ) and (min-width: 768px ) {
+	.push {
+		padding-top: 110px;
+	}
 }

@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
@@ -16,6 +15,8 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.FieldVerifier;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 import java.util.logging.Logger;
 
@@ -52,10 +53,10 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	TextBox email;
 
 	@UiField
-	PasswordTextBox psswd;
+	Input psswd;
 
 	@UiField
-	PasswordTextBox cpsswd;
+	Input cpsswd;
 
 	@UiField
 	org.gwtbootstrap3.client.ui.Button submitBtn;

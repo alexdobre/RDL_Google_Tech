@@ -4,33 +4,11 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:style>
-
-		.push {
-		padding-top: 55px;
-		}
-
 		.labelText {
 		font-family: Arial, Sans-serif;
 		display: inline-block;
 		font-size: 14px;
 		text-align: left;
-		margin: 10px;
-		}
-
-		.loginBox {
-		border: 1px solid #AACCEE;
-		display: inline-block;
-		padding: 3px;
-		width: 160px;
-		margin: 10px;
-		}
-
-		.pswwdBox {
-		border: 1px solid #AACCEE;
-		display: inline-block;
-		font-size: 12px;
-		padding: 3px;
-		width: 80px;
 		margin: 10px;
 		}
 

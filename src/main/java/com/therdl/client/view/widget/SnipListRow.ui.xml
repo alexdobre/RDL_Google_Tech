@@ -104,18 +104,22 @@
 								</b:Badge>
 							</b:Column>
 							<b:Column size="MD_4">
-								<b:Badge ui:field="negRef" addStyleNames="snipListRowBadge negRefPadge">
+								<b:Badge ui:field="negRef" addStyleNames="snipListRowBadge negRefBadge">
 									<b:Icon type="MINUS" addStyleNames="{style.leftIcon}"/>
 								</b:Badge>
 							</b:Column>
 						</b:Row>
 						<b:Row ui:field="pledgeCounterPanel">
-							<g:FlowPanel>
-								<g:Label ui:field="pledgesCount" styleName="{style.label}"/>
-							</g:FlowPanel>
-							<g:FlowPanel>
-								<g:Label ui:field="countersCount" styleName="{style.label}"/>
-							</g:FlowPanel>
+							<b:Column size="MD_6">
+								<b:Badge ui:field="pledgesCount" addStyleNames="snipListRowBadge posRefBadge">
+									<b:Icon type="ARROW_UP" addStyleNames="{style.leftIcon}"/>
+								</b:Badge>
+							</b:Column>
+							<b:Column size="MD_6">
+								<b:Badge ui:field="countersCount" addStyleNames="snipListRowBadge negRefBadge">
+									<b:Icon type="ARROW_DOWN" addStyleNames="{style.leftIcon}"/>
+								</b:Badge>
+							</b:Column>
 						</b:Row>
 					</b:Column>
 					<b:Column size="MD_2">

@@ -22,8 +22,6 @@ public interface ForgotPassword extends RdlView {
 
 	void setPresenter(Presenter presenter);
 
-	PopupPanel getForgotPasswordPopup();
-
 	HasText getLabelEmailNotFound();
 
 	Button getSubmitButton();
@@ -31,4 +29,6 @@ public interface ForgotPassword extends RdlView {
 	Modal getModalSuccessResetPassword();
 
 	Modal getModalFailResetPasswprd();
+
+	Modal getForgotPassModal();
 }

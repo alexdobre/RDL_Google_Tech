@@ -54,9 +54,9 @@ public class SnipListRow extends Composite {
 	@UiField
 	FlowPanel snipImgParent;
 	@UiField
-	Label pledgesCount, countersCount, proposalType, proposalState;
+	Label proposalType, proposalState;
 	@UiField
-	Badge creationDate, viewCount, postsCount, userName, rep, posRef, neutRef, negRef;
+	Badge creationDate, viewCount, postsCount, userName, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
 	@UiField
 	Image snipImg;
 	@UiField
@@ -87,6 +87,11 @@ public class SnipListRow extends Composite {
 		ViewUtils.hide(likesRepliesPanel);
 		ViewUtils.hide(referencesPanel);
 		ViewUtils.hide(pledgeCounterPanel);
+
+		//TODO remove
+		if (snipType == null){
+			snipType = SnipType.IMPROVEMENT;
+		}
 
 		if (snipType.isIdea()) {
 			ViewUtils.show(referencesPanel);
@@ -120,10 +125,10 @@ public class SnipListRow extends Composite {
 		posRef.setText(snipBean.as().getPosRef().toString());
 		neutRef.setText(snipBean.as().getNeutralRef().toString());
 		negRef.setText(snipBean.as().getNegativeRef().toString());
-		viewCount.setText(snipBean.as().getViews() + " ");
-		postsCount.setText(snipBean.as().getPosts() + " ");
-		pledgesCount.setText(snipBean.as().getPledges() + " " + RDL.i18n.pledges());
-		countersCount.setText(snipBean.as().getCounters() + " " + RDL.i18n.counters());
+		viewCount.setText(snipBean.as().getViews().toString());
+		postsCount.setText(snipBean.as().getPosts().toString());
+		pledgesCount.setText(snipBean.as().getPledges().toString());
+		countersCount.setText(snipBean.as().getCounters().toString());
 
 		Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
 		String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
@@ -167,18 +172,18 @@ public class SnipListRow extends Composite {
 	public void incrementRefCounterByRefType(String refType, String snipType) {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			if (refType.equals(RDLConstants.ReferenceType.POSITIVE))
-				posRef.setText(snipBean.as().getPosRef() + 1 + " " + RDL.i18n.positiveRef());
+				posRef.setText(snipBean.as().getPosRef() + 1 + "");
 			else if (refType.equals(RDLConstants.ReferenceType.NEUTRAL))
-				neutRef.setText(snipBean.as().getNeutralRef() + 1 + " " + RDL.i18n.neutralRef());
+				neutRef.setText(snipBean.as().getNeutralRef() + 1 + "");
 			else if (refType.equals(RDLConstants.ReferenceType.NEGATIVE))
-				negRef.setText(snipBean.as().getNegativeRef() + 1 + " " + RDL.i18n.negativeRef());
+				negRef.setText(snipBean.as().getNegativeRef() + 1 + "");
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			postsCount.setText(snipBean.as().getPosts() + 1 + " " + RDL.i18n.posts());
+			postsCount.setText(snipBean.as().getPosts() + 1 +  "");
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			if (snipType.equals(RDLConstants.SnipType.PLEDGE))
-				pledgesCount.setText(snipBean.as().getPledges() + 1 + " " + RDL.i18n.pledges());
+				pledgesCount.setText(snipBean.as().getPledges() + 1 + "");
 			else if (snipType.equals(RDLConstants.SnipType.COUNTER))
-				countersCount.setText(snipBean.as().getCounters() + 1 + " " + RDL.i18n.counters());
+				countersCount.setText(snipBean.as().getCounters() + 1 + "");
 		}
 	}
 

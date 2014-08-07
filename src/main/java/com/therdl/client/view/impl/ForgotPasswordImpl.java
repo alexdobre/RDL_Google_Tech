@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.widget.AppMenu;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
 
 /**
  * ForgotPasswordImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -36,23 +38,15 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
 	Label lblEmailNotFound;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.Button btnSubmit;
+	Button btnSubmit;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.Modal modalSuccessResetPassword;
-
-	@UiField
-	org.gwtbootstrap3.client.ui.Modal modalFailResetPassword;
+	Modal modalSuccessResetPassword, modalFailResetPassword, forgotPassModal;
 
 	public ForgotPasswordImpl() {
 		super(true);
 		add(ourUiBinder.createAndBindUi(this));
 		lblEmailNotFound.setText("");
-	}
-
-	@Override
-	public PopupPanel getForgotPasswordPopup() {
-		return this;
 	}
 
 	@Override
@@ -66,18 +60,23 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
 	}
 
 	@Override
-	public org.gwtbootstrap3.client.ui.Button getSubmitButton() {
+	public Button getSubmitButton() {
 		return btnSubmit;
 	}
 
 	@Override
-	public org.gwtbootstrap3.client.ui.Modal getModalSuccessResetPassword() {
+	public Modal getModalSuccessResetPassword() {
 		return modalSuccessResetPassword;
 	}
 
 	@Override
-	public org.gwtbootstrap3.client.ui.Modal getModalFailResetPasswprd() {
+	public Modal getModalFailResetPasswprd() {
 		return modalFailResetPassword;
+	}
+
+	@Override
+	public Modal getForgotPassModal() {
+		return forgotPassModal;
 	}
 
 	@UiHandler("btnSubmit")
@@ -102,7 +101,7 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
 	}
 
 	@Override
-	public AppMenu getAppMenu(){
+	public AppMenu getAppMenu() {
 		return null;
 	}
 }

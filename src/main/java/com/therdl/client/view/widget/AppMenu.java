@@ -43,6 +43,7 @@ public class AppMenu extends Composite {
 	private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
 
 	private SignInViewImpl signInView;
+	private ForgotPassword forgotPassword;
 	LoginHandler loginHandler;
 
 	@UiField
@@ -268,7 +269,9 @@ public class AppMenu extends Composite {
 	}
 
 	public void showForgotPasswordPopUp() {
-		ForgotPassword forgotPassword = new ForgotPasswordImpl();
+		if (forgotPassword == null ){
+			forgotPassword = new ForgotPasswordImpl();
+		}
 		ForgotPasswordPresenter forgotPasswordPresenter = new ForgotPasswordPresenter(forgotPassword);
 		forgotPasswordPresenter.showForgotPasswordPopup();
 		signInView.hide();

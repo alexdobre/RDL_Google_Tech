@@ -9,11 +9,6 @@
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:style>
-
-		.push {
-		padding-top: 60px;
-		}
-
 		.noMargin{
 		margin-bottom: 0px;
 		}
@@ -28,7 +23,7 @@
 
 	<b:Container>
 		<g:SimplePanel ui:field="appMenuPanel"/>
-		<b:Form type="HORIZONTAL" addStyleNames="{style.push}">
+		<b:Form type="HORIZONTAL" addStyleNames="push">
 			<b:FieldSet>
 				<b:Panel>
 					<b:PanelHeader>

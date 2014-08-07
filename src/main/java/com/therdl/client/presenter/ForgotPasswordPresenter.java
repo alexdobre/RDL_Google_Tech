@@ -66,12 +66,12 @@ public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 						if (!authUserBean.as().getEmail().equals(Global.ERROR)) {
 							log.info(RDL.i18n.newPasswordSentToEmail());
 
-							view.getForgotPasswordPopup().hide();
+							view.getForgotPassModal().hide();
 							view.getModalSuccessResetPassword().show();
 						} else if (authUserBean.as().getEmail().equals(Global.ERROR)) { //resetting the password failed
 							log.info(RDL.i18n.newPasswordSentToEmail());
 
-							view.getForgotPasswordPopup().hide();
+							view.getForgotPassModal().hide();
 							view.getModalFailResetPasswprd().show();
 						}
 					} else {
@@ -99,15 +99,7 @@ public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 
 	@Override
 	public void showForgotPasswordPopup() {
-		view.getForgotPasswordPopup().setPopupPositionAndShow(new PopupPanel.PositionCallback() {
-			@Override
-			public void setPosition(int offsetWidth, int offsetHeight) {
-				int left = (Window.getClientWidth() - offsetWidth) >> 1;
-				int top = (Window.getClientHeight() - offsetHeight) >> 4;
-				view.getForgotPasswordPopup().setPopupPosition(Math.max(Window.getScrollLeft() + left, 0), Math.max(Window.getScrollTop() + top, 0));
-			}
-		});
-
+		view.getForgotPassModal().show();
 	}
 
 }
