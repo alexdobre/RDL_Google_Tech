@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui">
 
-	<b:Container>
+	<b:Container addStyleNames="push">
 		<g:SimplePanel ui:field="appMenuPanel"/>
 		<b:Row>
 			<b:Column size="MD_4">

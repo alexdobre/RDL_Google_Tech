@@ -21,6 +21,11 @@ public class RDL implements EntryPoint {
 
 
 	private static Logger sLogger = Logger.getLogger("");
+
+	public static I18NConstants getI18n() {
+		return i18n;
+	}
+
 	public static final I18NConstants i18n = GWT.create(I18NConstants.class);
 
 	public void onModuleLoad() {

@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 public class ServerUtils {
 
-	private static Logger log = Logger.getLogger(EmailSender.class.getName());
+	private static Logger log = Logger.getLogger(ServerUtils.class.getName());
 
 	/**
 	 * Encrypts a string - used for storing passwords

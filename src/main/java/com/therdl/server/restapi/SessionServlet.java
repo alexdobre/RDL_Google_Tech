@@ -117,11 +117,9 @@ public class SessionServlet extends HttpServlet {
 			authBean.as().setAuth(true);
 			authBean.as().setAction("newUserOk");
 			authBean.as().setName(authBean.as().getName());
-			String avatarUrl = avatarDirUrl + File.separator + "avatar-empty.jpg";
+			setSessionAttributes(authBean);
+			String avatarUrl = avatarDirUrl + File.separator + authBean.as().getName()+".jpg";
 			authBean.as().setAvatarUrl(avatarUrl);
-			session.get().setAttribute("userid", newUserBean.as().getEmail());
-			session.get().setAttribute("sid", newUserBean.as().getSid());
-			session.get().setAttribute("username", newUserBean.as().getUsername());
 			log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
 			PrintWriter out = resp.getWriter();
 			out.write(AutoBeanCodex.encode(authBean).getPayload());
@@ -137,6 +135,7 @@ public class SessionServlet extends HttpServlet {
 
 			processCheckedUser(avatarDirUrl, authBean, checkedUser);
 			sidLogic(authBean, checkedUser);
+			setSessionAttributes(checkedUser);
 
 			PrintWriter out = resp.getWriter();
 			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
@@ -146,7 +145,7 @@ public class SessionServlet extends HttpServlet {
 			AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
 
 			processCheckedUser(avatarDirUrl, authBean, checkedUser);
-
+			setSessionAttributes(checkedUser);
 			PrintWriter out = resp.getWriter();
 			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
 			out.write(AutoBeanCodex.encode(checkedUser).getPayload());
@@ -185,6 +184,12 @@ public class SessionServlet extends HttpServlet {
 		}
 
 	} // end doPost
+
+	private void setSessionAttributes(AutoBean<AuthUserBean> userBean) {
+		session.get().setAttribute("userid", userBean.as().getEmail());
+		session.get().setAttribute("sid", userBean.as().getSid());
+		session.get().setAttribute("username", userBean.as().getName());
+	}
 
 	private void processCheckedUser(String avatarDirUrl, AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
 		log.info("processCheckedUser " + checkedUser.as().toString());

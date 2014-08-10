@@ -5,18 +5,12 @@
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
-	<ui:style>
+	<b:Container>
+		<b:Row>
+			<b:Column size="MD_4">
+				<g:Label ui:field="titleLabel"/>
+			</b:Column>
+		</b:Row>
+	</b:Container>
 
-	</ui:style>
-
-	<g:HTMLPanel>
-		<b:Container>
-			<b:Row>
-				<b:Column size="MD_4">
-					<g:Label ui:field="titleLabel"/>
-				</b:Column>
-			</b:Row>
-		</b:Container>
-
-	</g:HTMLPanel>
 </ui:UiBinder>

@@ -20,6 +20,8 @@ import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.RefreshEvent;
 
 import java.util.logging.Logger;
 
@@ -116,32 +118,27 @@ public class AvatarUploadPopUp extends PopupPanel {
 		uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
 
-				// rawResult =<pre style="word-wrap: break-word; white-space: pre-wrap;">{"action":"ok"}</pre>
-				String rawResult = event.getResults();
-				String jsonResult = rawResult.substring(rawResult.indexOf("{"), rawResult.indexOf("}") + 1);
-
-				sLogger.info("ProfileViewImpl addSubmitCompleteHandler parsed resutls" + jsonResult);
-
-				AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, jsonResult);
-
-				sLogger.info("ProfileViewImpl addSubmitCompleteHandlerbean.as().getAction()" + bean.as().getAction());
-				if (bean.as().getAction().equals("ok")) {
-
-					mainView.setAvatar(bean.as().getAvatarUrl());
-					// go to the home page for now so refresh event is initiated
-					// GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
-				} else Window.alert(bean.as().getAction());
+//				// rawResult =<pre style="word-wrap: break-word; white-space: pre-wrap;">{"action":"ok"}</pre>
+//				String rawResult = event.getResults();
+//				String jsonResult = rawResult.substring(rawResult.indexOf("{"), rawResult.indexOf("}") + 1);
+//
+//				sLogger.info("ProfileViewImpl addSubmitCompleteHandler parsed resutls" + jsonResult);
+//
+//				AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, jsonResult);
+//
+//				sLogger.info("ProfileViewImpl addSubmitCompleteHandlerbean.as().getAction()" + bean.as().getAction());
+//				if (bean.as().getAction().equals("ok")) {
+//
+//					mainView.setAvatar(bean.as().getAvatarUrl());
+//					// go to the home page for now so refresh event is initiated
+//					// GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
+//				} else Window.alert(bean.as().getAction());
+				sLogger.info("Apparently file uploaded successfully");
+				GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
 			}
 		});
 
 		uploadForm.setStyleName("uploadForm");
-	}
-
-
-	@Override
-	protected void onDetach() {
-		mainView.getProfileImagePanel().setVisible(true);
-
 	}
 
 

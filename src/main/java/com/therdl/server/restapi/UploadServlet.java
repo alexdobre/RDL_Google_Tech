@@ -75,8 +75,8 @@ public class UploadServlet extends HttpServlet {
 	 * When code is running in the JBoss Application server (deployment) the uri for this method will be
 	 * 'http://localhost:8080/therdl/rdl/avatarUpload' URL
 	 *
-	 * @param HttpServletRequest  req  Standard Http ServletRequest
-	 * @param HttpServletResponse resp  Standard Http ServletResponse
+	 * @param req  Standard Http ServletRequest
+	 * @param resp  Standard Http ServletResponse
 	 * @throws ServletException
 	 * @throws IOException      String userId users user id unique identifier
 	 *                          ServletFileUpload upload  apache commons file upload

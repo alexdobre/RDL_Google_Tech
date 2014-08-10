@@ -21,6 +21,7 @@ import com.therdl.server.paypal_payment.PayPalConstants;
 import com.therdl.server.paypal_payment.PayPalIPNServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionCallbackServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionServlet;
+import com.therdl.server.restapi.AmazonS3UploadServlet;
 import com.therdl.server.restapi.SessionServlet;
 import com.therdl.server.restapi.SnipDispatcherServlet;
 import com.therdl.server.restapi.UploadServlet;
@@ -64,7 +65,7 @@ public class ServletInjector extends GuiceServletContextListener {
 				serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
 				serve("/rdl/getUsers").with(UserDispatcherServlet.class);
 				serve("/rdl/getSession").with(SessionServlet.class);
-				serve("/rdl/avatarUpload").with(UploadServlet.class);
+				serve("/rdl/avatarUpload").with(AmazonS3UploadServlet.class);
 				serve(PayPalConstants.PAYPAL_IPN_NOTIFY_URL).with(PayPalIPNServlet.class);
 				serve(PayPalConstants.PAYPAL_CHECKOUT_URL).with(PaypalSubscriptionServlet.class);
 				serve(PayPalConstants.PAYPAL_RETURN_URL).with(PaypalSubscriptionCallbackServlet.class);

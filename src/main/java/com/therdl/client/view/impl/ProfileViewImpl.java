@@ -83,10 +83,7 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			log.info("ProfileViewImpl getAvatarUrl()== null: ");
 			// can set the parameters for the avatar place holder here
 
-			pic = new Image(tempUrl);
-			profileImagePanel.clear();
-			profileImagePanel.add(pic);
-			profileImagePanel.setVisible(true);
+			displayUserImage(tempUrl);
 			pic.setStyleName("profileImage");
 			pic.setVisible(true);
 			if (uploadForm != null) {
@@ -109,6 +106,11 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		}
 
 	}
+	@Override
+	public Widget asWidget(){
+		displayUserImage("https://s3.amazonaws.com/RDL_Avatars/"+currentUserBean.as().getName()+".jpg");
+		return super.asWidget();
+	}
 
 
 	/**
@@ -123,10 +125,7 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			log.info("ProfileViewImpl getAvatarUrl()== null: ");
 			// can set the parameters for the avatar place holder here
 
-			pic = new Image(tempUrl);
-			profileImagePanel.clear();
-			profileImagePanel.add(pic);
-			profileImagePanel.setVisible(true);
+			displayUserImage(tempUrl);
 			pic.setStyleName("profileImage");
 			pic.setVisible(true);
 			if (uploadForm != null) {
@@ -140,6 +139,13 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		}
 
 
+	}
+
+	public void displayUserImage(String url) {
+		pic = new Image(url);
+		profileImagePanel.clear();
+		profileImagePanel.add(pic);
+		profileImagePanel.setVisible(true);
 	}
 
 
@@ -192,10 +198,4 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			uploadForm.hide();
 		}
 	}
-
-	public FocusPanel getProfileImagePanel() {
-		return profileImagePanel;
-	}
-
-
 }
