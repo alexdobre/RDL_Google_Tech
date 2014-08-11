@@ -28,19 +28,6 @@ public interface SnipBean {
 
 	void setId(String id);
 
-	/**
-	 * AuthUserBean needs the avatar url to pass to currentuserbean
-	 */
-	String getAvatarUrl();
-
-	/**
-	 * AuthUserBean needs the avatar url to pass to currentuserbean
-	 *
-	 * @ String avatarUrl  the uri to locate the users image,
-	 * used in the browser/javascript layer
-	 */
-	void setAvatarUrl(String avatarUrl);
-
 	String getTitle();
 
 	void setTitle(String title);

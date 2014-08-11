@@ -448,8 +448,6 @@ public class SnipServiceImpl implements SnipsService {
 		if (snip.getId() != null) {
 			doc.append("_id", snip.getId());
 		}
-		//new appended field  avatarUrl
-		doc.append("avatarUrl", snip.getAvatarUrl());
 		doc.append("title", snip.getTitle());
 		doc.append("content", snip.getContent());
 		doc.append("author", snip.getAuthor());
@@ -501,8 +499,6 @@ public class SnipServiceImpl implements SnipsService {
 
 		if (beanery == null) beanery = AutoBeanFactorySource.create(Beanery.class);
 		SnipBean snip = beanery.snipBean().as();
-		//new appended field  avatarUrl
-		snip.setAvatarUrl((String) doc.get("avatarUrl"));
 		// set the fields
 		snip.setId(doc.get("_id").toString());
 

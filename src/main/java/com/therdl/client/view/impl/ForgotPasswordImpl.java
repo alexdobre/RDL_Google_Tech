@@ -1,19 +1,20 @@
 package com.therdl.client.view.impl;
 
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.widget.AppMenu;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Modal;
 
 /**
  * ForgotPasswordImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -23,7 +24,7 @@ import org.gwtbootstrap3.client.ui.Modal;
  * @ Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  */
-public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
+public class ForgotPasswordImpl extends Composite implements ForgotPassword {
 	interface ForgotPasswordUiBinder extends UiBinder<Widget, ForgotPasswordImpl> {
 	}
 
@@ -44,8 +45,7 @@ public class ForgotPasswordImpl extends PopupPanel implements ForgotPassword {
 	Modal modalSuccessResetPassword, modalFailResetPassword, forgotPassModal;
 
 	public ForgotPasswordImpl() {
-		super(true);
-		add(ourUiBinder.createAndBindUi(this));
+		ourUiBinder.createAndBindUi(this);
 		lblEmailNotFound.setText("");
 	}
 

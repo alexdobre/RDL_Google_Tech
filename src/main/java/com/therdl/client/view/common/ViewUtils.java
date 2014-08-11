@@ -44,24 +44,6 @@ public class ViewUtils {
 		return simplePopup;
 	}
 
-	/**
-	 * Constructs a dialog box at the place of the event
-	 *
-	 * @param widget
-	 * @param event
-	 * @param width
-	 * @return
-	 */
-	public static DialogBox constructDialogBox(Widget widget, ClickEvent event, int width) {
-		DialogBox dialog = new DialogBox(true, false);
-		dialog.ensureDebugId("cwBasicPopup-simplePopup");
-		dialog.setAnimationEnabled(true);
-		dialog.setWidth("" + width + "px");
-		dialog.setWidget(widget);
-		positionRelative(event, dialog);
-		return dialog;
-	}
-
 	private static void positionRelative(ClickEvent event, PopupPanel dialog) {
 		// Reposition the popup relative to the button
 		Widget source = (Widget) event.getSource();
@@ -258,5 +240,14 @@ public class ViewUtils {
 			return currentUserBean.as().getName().equals(snipBean.as().getAuthor());
 		}
 		return false;
+	}
+
+	/**
+	 *
+	 * @param userName a correctly formatted user Name which is alphanumeric with spaces, must not be null
+	 * @return the avatar name replacing spaces with underscores
+	 */
+	public static String createAvatarName (String userName){
+		return userName.replace(" ","_");
 	}
 }

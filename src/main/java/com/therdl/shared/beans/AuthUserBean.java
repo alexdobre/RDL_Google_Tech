@@ -15,20 +15,6 @@ import java.util.List;
 public interface AuthUserBean {
 
 	/**
-	 * AuthUserBean needs the avatar url to pass to currentuserbean
-	 */
-	String getAvatarUrl();
-
-	/**
-	 * AuthUserBean needs the avatar url to pass to currentuserbean
-	 *
-	 * @ String avatarUrl  the uri to locate the users image,
-	 * used in the browser/javascript layer
-	 */
-	void setAvatarUrl(String avatarUrl);
-
-
-	/**
 	 * methods below are for standard form based credentials submitted on the clien
 	 * for user login and sign up
 	 *

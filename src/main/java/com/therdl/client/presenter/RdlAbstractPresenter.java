@@ -98,7 +98,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 	 * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
 	 * a AutoBean<AuthUserBean> authBean from the users credentials and submits it as a json serialised object
 	 * calls AppController controller and  WelcomeView  welcomeView objects
-	 * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state based on
+	 * controller.setCurrentUserBean(name, email,  auth)::  sets the authorisation state based on
 	 * authorise user from database result
 	 *
 	 * @param emailTxt     String unique identifier for login and subsequent granted state information
@@ -154,7 +154,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 						boolean isRDLSupporter = data.getBoolean("isRDLSupporter");
 
 						boolean auth = data.getBoolean("auth");
-						String avatarUrl = null;
 						if (!auth) {
 							log.info("RdlAbstractPresenter onResponseReceived  LoginFail!  ");
 							loginFail();
@@ -162,13 +161,9 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 								log.info("SID login fail -> cleaning up cookie");
 								Cookies.removeCookie("sid");
 							}
-							controller.setCurrentUserBean("", "", avatarUrl, auth, null, isRDLSupporter);
+							controller.setCurrentUserBean("", "", auth, null, isRDLSupporter);
 						} else {
-							if (data.get("name") != null) {
-								log.info("RdlAbstractPresenter  avatarUrl exists" + data.get("avatarUrl"));
-								avatarUrl = data.get("avatarUrl");
-							}
-							controller.setCurrentUserBean(name, email, avatarUrl, auth, authUserBean.as().getTitles(), isRDLSupporter);
+							controller.setCurrentUserBean(name, email, auth, authUserBean.as().getTitles(), isRDLSupporter);
 
 							//if this was not a cookie login we do logic to change the cookie if necessary
 							if (!innerIsCookieLogin) {

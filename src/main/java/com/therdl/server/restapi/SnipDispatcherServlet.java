@@ -179,8 +179,6 @@ public class SnipDispatcherServlet extends HttpServlet {
 			log.info("SnipDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getTitle());
 			// check that user id has been set for this bean
 			String id = (String) sessions.get().getAttribute("userid");
-			String userAvatarUrl = "userAvatar/" + id + "small.jpg";
-			actionBean.as().setAvatarUrl(userAvatarUrl);
 			actionBean.as().setCreationDate(snipsService.makeTimeStamp());
 			snipsService.createSnip(actionBean.as());
 		} else if (actionBean.as().getAction().equals("update")) {

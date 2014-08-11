@@ -29,20 +29,6 @@ public interface UserBean {
 
 	/**************************** Getters and Setters ******************************/
 
-
-	/**
-	 * UserBean needs the avatar url to pass to currentuserbean
-	 */
-	String getAvatarUrl();
-
-	/**
-	 * UserBean needs the avatar url to pass to currentuserbean
-	 *
-	 * @ String avatarUrl  the uri to locate the users image,
-	 * used in the browser/javascript layer
-	 */
-	void setAvatarUrl(String avatarUrl);
-
 	/**
 	 * the unique id, primary key
 	 */

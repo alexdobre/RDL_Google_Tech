@@ -54,7 +54,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	 * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
 	 * a AutoBean<AuthUserBean> authBean from the users supplied credentials and submits it as a json serialised object
 	 * calls AppController controller and  WelcomeView  welcomeView objects
-	 * controller.setCurrentUserBean(name, email, avatarUrl,  auth)::  sets the authorisation state for a newly signed up
+	 * controller.setCurrentUserBean(name, email,  auth)::  sets the authorisation state for a newly signed up
 	 * user for the upper menu in the WelcomeView
 	 *
 	 * @param bean) constructed from the submitted email String (unique identifier) and

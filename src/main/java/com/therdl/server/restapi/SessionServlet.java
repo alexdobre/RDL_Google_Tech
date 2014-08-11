@@ -1,19 +1,9 @@
 package com.therdl.server.restapi;
 
-import com.google.inject.Singleton;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
-import com.therdl.server.api.UserService;
-import com.therdl.server.data.DbProvider;
-import com.therdl.server.data.FileStorage;
-import com.therdl.server.util.EmailSender;
-import com.therdl.server.util.ServerUtils;
-import com.therdl.shared.Global;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.exceptions.RDLSendEmailException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -22,17 +12,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Logger;
+
+import com.google.inject.Singleton;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
+import com.therdl.server.api.UserService;
+import com.therdl.server.data.DbProvider;
+import com.therdl.server.util.EmailSender;
+import com.therdl.server.util.ServerUtils;
+import com.therdl.shared.Global;
+import com.therdl.shared.beans.AuthUserBean;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.exceptions.RDLSendEmailException;
 
 /**
  * Session controller for simple user authentication. This project uses the Guice injection
  * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
  * if you are from the Spring framework space
- * <p/>
  * This class handles user authentication and session runtime data
  *
  * @ HttpSession sessions, Servlet 3 api session object, use this for the current user id
@@ -51,13 +49,12 @@ public class SessionServlet extends HttpServlet {
 	private Beanery beanery;
 	private DbProvider dbProvider;
 	private UserService userService;
-	private FileStorage mongoFileStorage;
 
 	@Inject
-	public SessionServlet(Provider<HttpSession> sessions, UserService userService, FileStorage mongoFileStorage) {
+	public SessionServlet(Provider<HttpSession> sessions, UserService userService, DbProvider dbProvider) {
 		this.session = sessions;
-		this.mongoFileStorage = mongoFileStorage;
 		this.userService = userService;
+		this.dbProvider = dbProvider;
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 
 
@@ -80,7 +77,6 @@ public class SessionServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		// we need the path to the avatar file wherever it is deployed by jboss or wherever the application is running
 		String contextRoot = getServletContext().getRealPath("/");
-		String avatarDirUrl = contextRoot + File.separator + "userAvatar";
 
 		// get the json
 		StringBuilder sb = new StringBuilder();
@@ -97,7 +93,6 @@ public class SessionServlet extends HttpServlet {
 
 		String action = authBean.as().getAction();
 		log.info("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
-
 
 		if (action.equals("signUp")) {
 
@@ -118,14 +113,11 @@ public class SessionServlet extends HttpServlet {
 			authBean.as().setAction("newUserOk");
 			authBean.as().setName(authBean.as().getName());
 			setSessionAttributes(authBean);
-			String avatarUrl = avatarDirUrl + File.separator + authBean.as().getName()+".jpg";
-			authBean.as().setAvatarUrl(avatarUrl);
 			log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
 			PrintWriter out = resp.getWriter();
 			out.write(AutoBeanCodex.encode(authBean).getPayload());
 
 		} // end sign up
-
 
 		else if (action.equals("auth")) {
 
@@ -133,7 +125,7 @@ public class SessionServlet extends HttpServlet {
 			// get the user from the database if exists
 			AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
 
-			processCheckedUser(avatarDirUrl, authBean, checkedUser);
+			processCheckedUser(checkedUser);
 			sidLogic(authBean, checkedUser);
 			setSessionAttributes(checkedUser);
 
@@ -144,7 +136,7 @@ public class SessionServlet extends HttpServlet {
 		} else if (action.equals("sidAuth")) {
 			AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
 
-			processCheckedUser(avatarDirUrl, authBean, checkedUser);
+			processCheckedUser(checkedUser);
 			setSessionAttributes(checkedUser);
 			PrintWriter out = resp.getWriter();
 			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
@@ -191,7 +183,7 @@ public class SessionServlet extends HttpServlet {
 		session.get().setAttribute("username", userBean.as().getName());
 	}
 
-	private void processCheckedUser(String avatarDirUrl, AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
+	private void processCheckedUser(AutoBean<AuthUserBean> checkedUser) {
 		log.info("processCheckedUser " + checkedUser.as().toString());
 		if (checkedUser.as().getAction().equals("OkUser")) {
 
@@ -199,23 +191,8 @@ public class SessionServlet extends HttpServlet {
 			// we can use this server side to obtain userId from session
 			session.get().setAttribute("userid", checkedUser.as().getEmail());
 			session.get().setAttribute("name", checkedUser.as().getName());
-
-			// need to check if file exists and write to filesystem
-			boolean avatarExists = mongoFileStorage.setAvatarForUserFromDb(avatarDirUrl, checkedUser.as().getName());
-			if (avatarExists) {
-				// javascript from modulle base in target/war
-				String avatarUrl = "userAvatar" + File.separator + checkedUser.as().getName() + "small.jpg";
-				checkedUser.as().setAvatarUrl(avatarUrl);
-			} else {
-				// javascript from modulle base in target/war
-				String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
-				checkedUser.as().setAvatarUrl(avatarUrl);
-			}
 		} else {
 			checkedUser.as().setAuth(false);
-			// javascript from modulle base in target/war
-			String avatarUrl = "userAvatar" + File.separator + "avatar-empty.jpg";
-			checkedUser.as().setAvatarUrl(avatarUrl);
 		}
 	}
 

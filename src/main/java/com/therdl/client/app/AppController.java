@@ -487,10 +487,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (profileView == null) {
 			log.info("AppController profileView == null ");
 			profileView = new ProfileViewImpl(currentUserBean, appMenu);
-
-		} else {
-			log.info("AppController profileView == null else ");
-			profileView.setAvatarWhenViewIsNotNull();
 		}
 
 		final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
@@ -569,15 +565,13 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 *
 	 * @param name       String  for user name
 	 * @param email      String  for user email
-	 * @param avatarUrl  String for user image location acts as a url for mongo/filesystem
 	 * @param state      boolean for state information
 	 * @param titleBeans user titles
 	 */
-	public void setCurrentUserBean(String name, String email, String avatarUrl, boolean state, List<UserBean.TitleBean> titleBeans, boolean isRDLSupporter) {
+	public void setCurrentUserBean(String name, String email, boolean state, List<UserBean.TitleBean> titleBeans, boolean isRDLSupporter) {
 		this.currentUserBean.as().setAuth(state);
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
-		this.currentUserBean.as().setAvatarUrl(avatarUrl);
 		this.currentUserBean.as().setTitles(titleBeans);
 		this.currentUserBean.as().setIsRDLSupporter(isRDLSupporter);
 	}

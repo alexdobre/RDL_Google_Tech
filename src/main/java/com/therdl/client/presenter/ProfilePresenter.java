@@ -34,6 +34,7 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		checkLogin();
 		container.clear();
+		view.populateView(currentUserBean);
 		container.add(view.asWidget());
 	}
 

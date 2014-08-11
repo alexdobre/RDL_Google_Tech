@@ -36,13 +36,12 @@ public class IpnServletOld extends HttpServlet {
 	 * When code is running in the JBoss Application server (deployment) the uri for this method will be
 	 * 'http://localhost:8080/therdl/rdl/ipn' URL
 	 *
-	 * @param HttpServletRequest  req  Standard Http ServletRequest
-	 * @param HttpServletResponse resp  Standard Http ServletResponse
+	 * @param req  Standard Http ServletRequest
+	 * @param resp  Standard Http ServletResponse
 	 * @throws javax.servlet.ServletException
 	 * @throws java.io.IOException            String userId users user id unique identifier
 	 *                                        ServletFileUpload upload  apache commons file upload
 	 *                                        String userName users user name
-	 *                                        String avatarUrl relative uri to the image
 	 *                                        AutoBean<AuthUserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
 	 *                                        http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
 	 *                                        here the actionBean relates the users requested action

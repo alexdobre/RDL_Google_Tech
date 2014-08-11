@@ -16,14 +16,11 @@ public class Validation {
 	 * @return
 	 */
 	static AutoBean<CurrentUserBean> resetCurrentUserBeanFields(AutoBean<CurrentUserBean> currentUserBean) {
-
-		currentUserBean.as().setAvatarUrl("");
 		currentUserBean.as().setAuth(false);
 		currentUserBean.as().setName("");
 		currentUserBean.as().setEmail("");
 		currentUserBean.as().setRegistered(false);
 		return currentUserBean;
-
 	}
 
 

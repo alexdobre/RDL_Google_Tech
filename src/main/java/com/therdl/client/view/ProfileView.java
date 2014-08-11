@@ -1,6 +1,8 @@
 package com.therdl.client.view;
 
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.beans.CurrentUserBean;
 
 /**
  * see com.therdl.client.view.impl.ProfileViewImpl javadoc for the
@@ -18,11 +20,9 @@ public interface ProfileView extends RdlView {
 
 	public interface Presenter {
 
-
 	}
 
 	void setPresenter(Presenter presenter);
 
-	void setAvatarWhenViewIsNotNull();
-
+	public void populateView(AutoBean<CurrentUserBean> currentUserBean);
 }

@@ -131,9 +131,6 @@ public class UserServiceImpl implements UserService {
 				break;
 			}
 		}
-
-		// always check for null
-		if (ub.getAvatarUrl() != null) checkedUserBean.as().setAvatarUrl(ub.getAvatarUrl());
 		log.info("Find user END OK: " + checkedUserBean.as().getEmail());
 		return checkedUserBean;
 	}
@@ -481,8 +478,6 @@ public class UserServiceImpl implements UserService {
 		UserBean user = beanery.userBean().as();
 
 		user.setId(doc.get("_id").toString());
-		// avatar code
-		user.setAvatarUrl((String) doc.get("avatarUrl"));
 		user.setUsername((String) doc.get("username"));
 		user.setPassHash((String) doc.get("passHash"));
 		user.setEmail((String) doc.get("email"));
@@ -579,9 +574,6 @@ public class UserServiceImpl implements UserService {
 			doc.append("_id", user.getId());
 		}
 
-		// avatar code
-		String avatarUrl = "userAvatar" + File.separator + user.getUsername() + "small.jpg";
-		doc.append("avatarUrl", avatarUrl);
 		doc.append("username", user.getUsername());
 		doc.append("passHash", user.getPassHash());
 		doc.append("email", user.getEmail());

@@ -1,34 +1,27 @@
 package com.therdl.client.view.widget;
 
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.shared.Constants;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.RefreshEvent;
-
-import java.util.logging.Logger;
+import com.therdl.shared.beans.CurrentUserBean;
 
 /**
  * this class will handle the file upload as a pop up
  * triggered by clicking on the avatar image place holder
- * <p/>
  * this class extends PopupPanel to implement a custom GWT widget
  *
  * @ HTMLPanel profileUpLoadFormPanel, the container for the upload form upload
@@ -38,9 +31,9 @@ import java.util.logging.Logger;
  * @ ProfileViewImpl mainView, the parent container,
  * as this class is a pop up it needs a reference to its parent container to call back to
  */
-public class AvatarUploadPopUp extends PopupPanel {
+public class AvatarUploadPopUp extends Composite {
 
-	private static Logger sLogger = Logger.getLogger("");
+	private static Logger sLogger = Logger.getLogger("AvatarUploadPopUp");
 
 	interface AvatarUploadPopUpUiBinder extends UiBinder<Widget, AvatarUploadPopUp> {
 	}
@@ -48,24 +41,28 @@ public class AvatarUploadPopUp extends PopupPanel {
 	private static AvatarUploadPopUpUiBinder uiBinder = GWT.create(AvatarUploadPopUpUiBinder.class);
 
 	@UiField
-	HTMLPanel profileUpLoadFormPanel;
+	Modal profileUpLoadFormPanel;
 
 	@UiField
 	FormPanel uploadForm;
 
+	@UiField
+	FileUpload fileUpload;
+
+	@UiField
+	Button submitBtn;
+
 	// to handle data view and events for this pop up
 	ProfileViewImpl mainView;
 
-	private Beanery beanery = GWT.create(Beanery.class);
-
-	public AvatarUploadPopUp(ProfileViewImpl mainView) {
-		super(true);
+	public AvatarUploadPopUp(AutoBean<CurrentUserBean> cUserBean, ProfileViewImpl mainView) {
 		this.mainView = mainView;
-		add(uiBinder.createAndBindUi(this));
+		uiBinder.createAndBindUi(this);
 		setUploadForm();
-		profileUpLoadFormPanel.setStyleName("profileUpLoadFormPanel");
+	}
 
-		sLogger.info("AvatarUploadPopUp");
+	public void show() {
+		profileUpLoadFormPanel.show();
 	}
 
 
@@ -82,32 +79,8 @@ public class AvatarUploadPopUp extends PopupPanel {
 		uploadForm.setAction(uploadUrl);
 		uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		uploadForm.setMethod(FormPanel.METHOD_POST);
-		// Create a panel to hold all of the form widgets.
-		VerticalPanel panel = new VerticalPanel();
 
-		HTML shtml = new HTML("AVATAR UPLOAD only jpeg image 200*200px supported");
-		shtml.setStyleName("uploadHeader");
-		panel.add(shtml);
-
-		uploadForm.setWidget(panel);
-
-
-		// Create a FileUpload widget.
-		//
-		FileUpload upload = new FileUpload();
-		upload.setName("fileElement");
-		upload.setStylePrimaryName("uploadFormElement");
-		panel.add(upload);
-
-		Button submit = new Button("Submit", new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				uploadForm.submit();
-			}
-		});
-		submit.setStylePrimaryName("uploadSubmit");
-
-		// Add a 'submit' button.
-		panel.add(submit);
+		fileUpload.setName("fileElement");
 
 		// Add an event handler to the form.
 		uploadForm.addSubmitHandler(new FormPanel.SubmitHandler() {
@@ -117,34 +90,18 @@ public class AvatarUploadPopUp extends PopupPanel {
 		});
 		uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-
-//				// rawResult =<pre style="word-wrap: break-word; white-space: pre-wrap;">{"action":"ok"}</pre>
-//				String rawResult = event.getResults();
-//				String jsonResult = rawResult.substring(rawResult.indexOf("{"), rawResult.indexOf("}") + 1);
-//
-//				sLogger.info("ProfileViewImpl addSubmitCompleteHandler parsed resutls" + jsonResult);
-//
-//				AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, jsonResult);
-//
-//				sLogger.info("ProfileViewImpl addSubmitCompleteHandlerbean.as().getAction()" + bean.as().getAction());
-//				if (bean.as().getAction().equals("ok")) {
-//
-//					mainView.setAvatar(bean.as().getAvatarUrl());
-//					// go to the home page for now so refresh event is initiated
-//					// GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
-//				} else Window.alert(bean.as().getAction());
 				sLogger.info("Apparently file uploaded successfully");
-				GuiEventBus.EVENT_BUS.fireEvent(new RefreshEvent());
+				profileUpLoadFormPanel.hide();
+				mainView.refreshImage();
 			}
 		});
 
 		uploadForm.setStyleName("uploadForm");
 	}
 
-
-	public HTMLPanel getProfileUpLoadFormPanel() {
-		return profileUpLoadFormPanel;
+	@UiHandler("submitBtn")
+	void handleSubmit(ClickEvent e) {
+		uploadForm.submit();
 	}
-
 
 }

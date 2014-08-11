@@ -1,5 +1,11 @@
 package com.therdl.client.view.impl;
 
+import java.util.Date;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Image;
+import org.gwtbootstrap3.client.ui.base.AbstractTextWidget;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -8,18 +14,16 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.ProfileView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.AvatarUploadPopUp;
 import com.therdl.client.view.widget.TitleListRow;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
-
-import java.util.logging.Logger;
 
 
 /**
@@ -40,9 +44,7 @@ import java.util.logging.Logger;
  */
 public class ProfileViewImpl extends AppMenuView implements ProfileView {
 
-	private static Logger log = Logger.getLogger("");
-
-	private final AutoBean<CurrentUserBean> currentUserBean;
+	private AutoBean<CurrentUserBean> currentUserBean;
 
 	interface ProfileViewImplUiBinder extends UiBinder<Widget, ProfileViewImpl> {
 	}
@@ -63,89 +65,55 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	@UiField
 	Anchor ancBeAMember;
 
-	private Image pic;
+	@UiField
+	AbstractTextWidget email, username;
 
-	/**
-	 * URI for the empty pace holder image, used when user has not yet uploaded a avatar image
-	 */
-	private String tempUrl = "userAvatar/avatar-empty.jpg";
+	@UiField
+	Button changePassBtn;
 
-	public ProfileViewImpl(final AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
+	@UiField
+	Image avatarImage;
+
+	public ProfileViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = cUserBean;
 
-		profileImagePanel.setStyleName("profileImagePanel");
-
-		// check if user has an avatar set to default
-		log.info("ProfileViewImpl check if user has an avatar ");
-		if (currentUserBean.as().getAvatarUrl() == null) {
-			log.info("ProfileViewImpl getAvatarUrl()== null: ");
-			// can set the parameters for the avatar place holder here
-
-			displayUserImage(tempUrl);
-			pic.setStyleName("profileImage");
-			pic.setVisible(true);
-			if (uploadForm != null) {
-				uploadForm.clear();
-				uploadForm.hide();
-			}
-
-		} else {
-
-			setAvatar(currentUserBean.as().getAvatarUrl());
-		}
-
-		ancBeAMember.setVisible(true);
-		for (UserBean.TitleBean titleBean : cUserBean.as().getTitles()) {
-			titlePanel.add(new TitleListRow(currentUserBean, titleBean).asWidget());
-
-			if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-				ancBeAMember.setVisible(false);
-			}
-		}
-
+		populateView(currentUserBean);
 	}
+
+	public void populateView(AutoBean<CurrentUserBean> currentUserBean) {
+		if (currentUserBean != null && currentUserBean.as() != null) {
+			this.currentUserBean = currentUserBean;
+			email.setText(currentUserBean.as().getEmail());
+			username.setText(currentUserBean.as().getName());
+			ancBeAMember.setVisible(true);
+
+			//populate avatar
+			displayUserImage(getImageUrl());
+			//populate titles
+			for (UserBean.TitleBean titleBean : currentUserBean.as().getTitles()) {
+				titlePanel.add(new TitleListRow(currentUserBean, titleBean).asWidget());
+
+				if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+					ancBeAMember.setVisible(false);
+				}
+			}
+		}
+	}
+
+	public void refreshImage() {
+		displayUserImage(getImageUrl());
+	}
+
 	@Override
-	public Widget asWidget(){
-		displayUserImage("https://s3.amazonaws.com/RDL_Avatars/"+currentUserBean.as().getName()+".jpg");
+	public Widget asWidget() {
+		displayUserImage(getImageUrl());
 		return super.asWidget();
 	}
 
-
-	/**
-	 * sets the Avatar for a User when a valid  avatar url exists in the currentUserBean
-	 */
-	@Override
-	public void setAvatarWhenViewIsNotNull() {
-		log.info("ProfileViewImpl setAvatarWhenViewIsNotNull" + currentUserBean.as().getAvatarUrl());
-
-
-		if (currentUserBean.as().getAvatarUrl() == null) {
-			log.info("ProfileViewImpl getAvatarUrl()== null: ");
-			// can set the parameters for the avatar place holder here
-
-			displayUserImage(tempUrl);
-			pic.setStyleName("profileImage");
-			pic.setVisible(true);
-			if (uploadForm != null) {
-				uploadForm.clear();
-				uploadForm.hide();
-			}
-
-		} else {
-
-			setAvatar(currentUserBean.as().getAvatarUrl());
-		}
-
-
-	}
-
 	public void displayUserImage(String url) {
-		pic = new Image(url);
-		profileImagePanel.clear();
-		profileImagePanel.add(pic);
-		profileImagePanel.setVisible(true);
+		avatarImage.setUrl(url + "?" + new Date().getTime());
 	}
 
 
@@ -156,23 +124,10 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	 */
 	@UiHandler("profileImagePanel")
 	void handleClick(ClickEvent e) {
-		showUploadPopUp();
-	}
-
-
-	/**
-	 * as above public as may need to be called as a refresh at some point
-	 */
-	public void showUploadPopUp() {
-
-		uploadForm = new AvatarUploadPopUp(this);
-		uploadForm.setGlassEnabled(false);
-		uploadForm.setModal(true);
-		uploadForm.setPopupPosition(20, 30);
+		if (uploadForm == null) {
+			uploadForm = new AvatarUploadPopUp(currentUserBean, this);
+		}
 		uploadForm.show();
-		profileImagePanel.setVisible(false);
-		uploadForm.setStyleName("uploadPopUp");
-
 	}
 
 	@Override
@@ -180,22 +135,8 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		this.presenter = presenter;
 	}
 
-	/**
-	 * sets the User Avatar Image if one exists
-	 *
-	 * @param url  URI for the user image in the browser resources
-	 */
-	public void setAvatar(String url) {
-		log.info("ProfileViewImpl setAvatarWhenViewIsNotNull" + currentUserBean.as().getAvatarUrl());
-		pic = new Image(url);
-		profileImagePanel.clear();
-		profileImagePanel.add(pic);
-		profileImagePanel.setVisible(true);
-		pic.setStyleName("profileImage");
-		pic.setVisible(true);
-		if (uploadForm != null) {
-			uploadForm.clear();
-			uploadForm.hide();
-		}
+	private String getImageUrl() {
+		return "https://s3.amazonaws.com/RDL_Avatars/" +
+				ViewUtils.createAvatarName(currentUserBean.as().getName()) + ".jpg";
 	}
 }
