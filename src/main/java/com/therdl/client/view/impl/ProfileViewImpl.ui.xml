@@ -25,11 +25,11 @@
 						<b:Legend text="{i18n.yourProfile}"/>
 						<b:FormGroup>
 							<b:FormLabel for="formEmail" text="{i18n.email}"/>
-							<b:FormStatic b:id="formEmail" ui:field="email"/>
+							<b:FormControlStatic b:id="formEmail" ui:field="email"/>
 						</b:FormGroup>
 						<b:FormGroup>
 							<b:FormLabel for="formUsername" text="{i18n.userName}"/>
-							<b:FormStatic b:id="formUsername" ui:field="username"/>
+							<b:FormControlStatic b:id="formUsername" ui:field="username"/>
 						</b:FormGroup>
 						<b:Button text="{i18n.changePassword}" ui:field="changePassBtn"/>
 					</b:FieldSet>

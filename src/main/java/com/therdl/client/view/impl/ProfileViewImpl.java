@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import java.util.Date;
 
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.FormControlStatic;
 import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.base.AbstractTextWidget;
 
@@ -66,7 +67,7 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	Anchor ancBeAMember;
 
 	@UiField
-	AbstractTextWidget email, username;
+	FormControlStatic email, username;
 
 	@UiField
 	Button changePassBtn;
