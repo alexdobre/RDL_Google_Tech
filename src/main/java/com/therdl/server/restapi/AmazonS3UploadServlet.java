@@ -13,7 +13,7 @@ import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.UserService;
 import com.therdl.server.apiimpl.CredentialsService;
 import com.therdl.server.data.AwsS3Credentials;
-import com.therdl.server.validation.AvatarFileValidation;
+import com.therdl.server.validator.impl.AvatarFileValidatorImpl;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.exceptions.AvatarInvalidException;
 import org.apache.commons.fileupload.FileItem;
@@ -91,7 +91,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 			log.info("Retrieved item file of size: "+itemFile.getSize()+" and type: "+itemFile.getContentType());
 			if (itemFile != null) {
 				//validate file item
-				if (!AvatarFileValidation.isImageValid(itemFile)){
+				if (!AvatarFileValidatorImpl.isImageValid(itemFile)){
 					throw new AvatarInvalidException();
 				}
 				itemFile.setFieldName(userName);

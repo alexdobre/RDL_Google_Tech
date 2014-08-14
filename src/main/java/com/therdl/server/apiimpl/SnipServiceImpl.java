@@ -12,6 +12,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.data.DbProvider;
+import com.therdl.server.validator.TokenValidator;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
@@ -43,51 +44,14 @@ public class SnipServiceImpl implements SnipsService {
 
 	private DbProvider dbProvider;
 	private Beanery beanery;
+	private TokenValidator tokenValidator;
 
 	private static Logger log = Logger.getLogger(SnipServiceImpl.class.getName());
 
 	@Inject
-	public SnipServiceImpl(DbProvider dbProvider) {
+	public SnipServiceImpl(DbProvider dbProvider, TokenValidator tokenValidator) {
 		this.dbProvider = dbProvider;
-	}
-
-	/**
-	 * drops the collection
-	 */
-	@Override
-	public void dropSnipCollection() {
-		DB db = getMongo();
-		db.getCollection("rdlSnipData").drop();
-	}
-
-
-	/**
-	 * crud get
-	 * returns all snips ===  jpa findAll
-	 *
-	 * @param pageIndex
-	 * @return
-	 */
-	@Override
-	public List<SnipBean> getAllSnips(int pageIndex) {
-		DB db = getMongo();
-		List<SnipBean> beans = new ArrayList<SnipBean>();
-
-		DBCollection coll = db.getCollection("rdlSnipData");
-
-		BasicDBObject query = new BasicDBObject();
-		query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
-		int collCount = coll.find(query).count();
-		DBCursor collDocs = coll.find(query).sort(new BasicDBObject("creationDate", -1)).skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE).limit(Constants.DEFAULT_PAGE_SIZE);
-
-		while (collDocs.hasNext()) {
-			DBObject doc = collDocs.next();
-			SnipBean snip = buildBeanObject(doc);
-			snip.setCount(collCount);
-			beans.add(snip);
-		}
-
-		return beans;
+		this.tokenValidator = tokenValidator;
 	}
 
 	/**
@@ -414,11 +378,6 @@ public class SnipServiceImpl implements SnipsService {
 			DBObject item = cursor.next();
 			coll.remove(item);
 		}
-	}
-
-	@Override
-	public String getDebugString() {
-		return "Snip Service wired up for guice injection ok";
 	}
 
 	/**

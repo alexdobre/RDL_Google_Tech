@@ -14,7 +14,7 @@ import java.util.List;
  * the server and the javascript layer in the browser(recall GWT java code runs as javascript)
  * UserBean is used on the client as a java class for the Mongo persistence layer
  */
-public interface UserBean {
+public interface UserBean extends TokenizedBean{
 
 	/**
 	 * used for implementing the command pattern in this application

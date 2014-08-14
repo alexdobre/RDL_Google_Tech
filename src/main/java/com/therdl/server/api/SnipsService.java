@@ -13,19 +13,6 @@ import java.util.List;
 public interface SnipsService {
 
 	/**
-	 * for testing the crud
-	 * drops the snip collection
-	 */
-	public void dropSnipCollection();
-
-	/**
-	 * testing and development methods debug string
-	 *
-	 * @return
-	 */
-	String getDebugString();
-
-	/**
 	 * gets the snip
 	 *
 	 * @param id
@@ -40,15 +27,6 @@ public interface SnipsService {
 	 * @return returns id of the inserted record
 	 */
 	String createSnip(SnipBean snip);
-
-	/**
-	 * get all snips for a user
-	 *
-	 * @param pageIndex
-	 * @return
-	 */
-	List<SnipBean> getAllSnips(int pageIndex);
-
 
 	/**
 	 * deletes the snip

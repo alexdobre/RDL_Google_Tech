@@ -1,5 +1,8 @@
 package com.therdl.client.app;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -10,7 +13,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
-import com.therdl.client.presenter.RdlAbstractPresenter;
 import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipPresenter;
@@ -37,18 +39,11 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.events.CredentialsSubmitEvent;
-import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInEvent;
-import com.therdl.shared.events.LogInEventEventHandler;
 import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
 import com.therdl.shared.events.SnipViewEvent;
 import com.therdl.shared.events.SnipViewEventHandler;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * While the overall application follows the Model View Presenter(MVP) design pattern
@@ -213,20 +208,48 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("AppController onValueChange token is  " + token);
 		if (token != null) {
 			switch (token) {
-				case RDLConstants.Tokens.WELCOME:showWelcomeView();break;
-				case RDLConstants.Tokens.SNIP_VIEW:showSnipView(tokenSplit);break;
-				case RDLConstants.Tokens.THREAD_VIEW:showThreadView(tokenSplit);break;
-				case RDLConstants.Tokens.SNIPS:showSnips(event, tokenSplit);break;
-				case RDLConstants.Tokens.STORIES:showStories(event, tokenSplit);break;
-				case RDLConstants.Tokens.THREAD_EDIT:showThreadEdit(tokenSplit);break;
-				case RDLConstants.Tokens.IMPROVEMENTS:showImprovements(event, tokenSplit);break;
-				case RDLConstants.Tokens.PROPOSAL_EDIT:showProposalEdit(tokenSplit);break;
-				case RDLConstants.Tokens.PROPOSAL_VIEW:showProposalView(tokenSplit);break;
-				case RDLConstants.Tokens.SNIP_EDIT:showSnipEdit(tokenSplit);break;
-				case RDLConstants.Tokens.SIGN_UP:showSignUp();break;
-				case RDLConstants.Tokens.PROFILE:showProfile();break;
-				case RDLConstants.Tokens.LOG_OUT:showLogOut();break;
-				default: showWelcomeView();break;
+			case RDLConstants.Tokens.WELCOME:
+				showWelcomeView();
+				break;
+			case RDLConstants.Tokens.SNIP_VIEW:
+				showSnipView(tokenSplit);
+				break;
+			case RDLConstants.Tokens.THREAD_VIEW:
+				showThreadView(tokenSplit);
+				break;
+			case RDLConstants.Tokens.SNIPS:
+				showSnips(event, tokenSplit);
+				break;
+			case RDLConstants.Tokens.STORIES:
+				showStories(event, tokenSplit);
+				break;
+			case RDLConstants.Tokens.THREAD_EDIT:
+				showThreadEdit(tokenSplit);
+				break;
+			case RDLConstants.Tokens.IMPROVEMENTS:
+				showImprovements(event, tokenSplit);
+				break;
+			case RDLConstants.Tokens.PROPOSAL_EDIT:
+				showProposalEdit(tokenSplit);
+				break;
+			case RDLConstants.Tokens.PROPOSAL_VIEW:
+				showProposalView(tokenSplit);
+				break;
+			case RDLConstants.Tokens.SNIP_EDIT:
+				showSnipEdit(tokenSplit);
+				break;
+			case RDLConstants.Tokens.SIGN_UP:
+				showSignUp();
+				break;
+			case RDLConstants.Tokens.PROFILE:
+				showProfile();
+				break;
+			case RDLConstants.Tokens.LOG_OUT:
+				showLogOut();
+				break;
+			default:
+				showWelcomeView();
+				break;
 			}
 		}
 	}
@@ -352,7 +375,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		});
 	}
 
-	private void showThreadEdit( String[] tokenSplit) {
+	private void showThreadEdit(String[] tokenSplit) {
 		Global.moduleName = RDLConstants.Modules.STORIES;
 		String currentSnipId = "";
 		if (tokenSplit.length == 2) {

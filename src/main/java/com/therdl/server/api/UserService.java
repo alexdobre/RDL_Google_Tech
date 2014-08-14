@@ -4,6 +4,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.exceptions.TokenInvalidException;
 
 import java.util.List;
 
@@ -14,27 +15,12 @@ import java.util.List;
 public interface UserService {
 
 	/**
-	 * for testing the crud
-	 * drops the User collection
-	 */
-	public void dropUserCollection();
-
-	/**
-	 * testing and development methods debug string
-	 *
-	 * @return
-	 */
-	String getDebugString();
-
-	UserBean getLastUser(String id);
-
-	/**
 	 * gets the user Bean
 	 *
-	 * @param id
+	 * @param username
 	 * @return
 	 */
-	UserBean getUser(String id);
+	UserBean getUserByUsername(String username);
 
 	/**
 	 * gets the user Bean
@@ -43,6 +29,14 @@ public interface UserService {
 	 * @return UserBean
 	 */
 	UserBean getUserByEmail(String email);
+
+	/**
+	 * gets the user Bean
+	 *
+	 * @param id
+	 * @return UserBean
+	 */
+	UserBean getUserById(String id);
 
 	/**
 	 * gets the user Bean
@@ -58,21 +52,6 @@ public interface UserService {
 	 * @param user
 	 */
 	void createUser(UserBean user);
-
-	/**
-	 * get all users (List<UserBean>)
-	 *
-	 * @param id
-	 * @return
-	 */
-	List<UserBean> getAllUsers();
-
-	/**
-	 * deletes the user
-	 *
-	 * @param id
-	 */
-	void deleteUser(String id);
 
 	/**
 	 * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
@@ -143,7 +122,7 @@ public interface UserService {
 	 * @param hash
 	 * @return UserBean
 	 */
-	public AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash);
+	public AutoBean<AuthUserBean> authUser(AuthUserBean bean, String hash);
 
 	/**
 	 * Finds a user by SID
@@ -158,6 +137,6 @@ public interface UserService {
 	 *
 	 * @param email
 	 */
-	public void recoverPassword(String email);
+	public void recoverPassword(String email, String token) throws TokenInvalidException;
 
 }

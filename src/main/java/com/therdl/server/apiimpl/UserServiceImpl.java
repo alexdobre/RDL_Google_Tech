@@ -13,6 +13,7 @@ import com.therdl.server.api.UserService;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
+import com.therdl.server.validator.TokenValidator;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
@@ -20,6 +21,8 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.RDLSendEmailException;
+import com.therdl.shared.exceptions.TokenInvalidException;
+
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -44,48 +47,12 @@ public class UserServiceImpl implements UserService {
 
 	private DbProvider dbProvider;
 	private Beanery beanery;
+	private TokenValidator tokenValidator;
 
 	@Inject
-	public UserServiceImpl(DbProvider dbProvider) {
+	public UserServiceImpl(DbProvider dbProvider, TokenValidator tokenValidator) {
 		this.dbProvider = dbProvider;
-	}
-
-	/**
-	 * for testing
-	 * drops the User collection
-	 */
-	@Override
-	public void dropUserCollection() {
-		DB db = getMongo();
-		db.getCollection("rdlUserData").drop();
-	}
-
-
-	/**
-	 * crud get
-	 * returns all Users ===  jpa findAll
-	 *
-	 * @return
-	 */
-	@Override
-	public List<UserBean> getAllUsers() {
-		DB db = getMongo();
-		List<UserBean> beans = new ArrayList<UserBean>();
-
-		Set<String> colls = db.getCollectionNames();
-		for (String s : colls) {
-			log.info(s);
-		}
-		DBCollection coll = db.getCollection("rdlUserData");
-
-		DBCursor collDocs = coll.find();
-
-		while (collDocs.hasNext()) {
-			DBObject doc = collDocs.next();
-			UserBean user = buildBeanObject(doc);
-			beans.add(user);
-		}
-		return beans;
+		this.tokenValidator = tokenValidator;
 	}
 
 	/**
@@ -93,18 +60,20 @@ public class UserServiceImpl implements UserService {
 	 * returns a User ===  jpa find
 	 *
 	 * @param bean AutoBean User Details Bean  to find
-	 * @param hash String User password Hash
+	 * @param pass String User password string
 	 * @return
 	 */
 	@Override
-	public AutoBean<AuthUserBean> findUser(AuthUserBean bean, String hash) {
+	public AutoBean<AuthUserBean> authUser(AuthUserBean bean, String pass) {
 		log.info("Find user Begin: " + bean.getEmail());
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 		AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
 		UserBean ub = getUserByEmail(bean.getEmail());
 
 		if (ub != null) {
-			if (BCrypt.checkpw(hash, ub.getPassHash())) {
+			if (BCrypt.checkpw(pass, ub.getPassHash())) {
+				ub.setToken(tokenValidator.createToken());
+				updateUser(ub);
 				return transformUserBeanInAuthUserBean(checkedUserBean, ub);
 			}  // end hash if
 		}  // end email if
@@ -124,6 +93,7 @@ public class UserServiceImpl implements UserService {
 		checkedUserBean.as().setAction("OkUser");
 		checkedUserBean.as().setTitles(ub.getTitles());
 		checkedUserBean.as().setIsRDLSupporter(false);
+		checkedUserBean.as().setToken(ub.getToken());
 
 		for (UserBean.TitleBean titleBean : ub.getTitles()) {
 			if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
@@ -135,31 +105,8 @@ public class UserServiceImpl implements UserService {
 		return checkedUserBean;
 	}
 
-
-	/**
-	 * crud get
-	 * returns all Last User
-	 *
-	 * @param match String match string
-	 * @return
-	 */
 	@Override
-	public UserBean getLastUser(String match) {
-		List<UserBean> beans = getAllUsers();
-
-		UserBean lastBean = Iterables.getLast(beans);
-
-		return lastBean;
-	}
-
-	/**
-	 * crud get === jpa find
-	 *
-	 * @param id User primary key
-	 * @return
-	 */
-	@Override
-	public UserBean getUser(String id) {
+	public UserBean getUserById (String id) {
 		log.info("UserServiceImpl getUser  id: " + id);
 
 		beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -173,6 +120,27 @@ public class UserServiceImpl implements UserService {
 		UserBean user = buildBeanObject(doc);
 
 		return user;
+	}
+
+	@Override
+	public UserBean getUserByUsername(String username){
+		log.info("UserServiceImpl getUserByUsername BEGIN email: " + username);
+
+		beanery = AutoBeanFactorySource.create(Beanery.class);
+		DB db = getMongo();
+		BasicDBObject query = new BasicDBObject();
+		query.put("username", username);
+		DBCollection coll = db.getCollection("rdlUserData");
+		DBCursor cursor = coll.find(query);
+		if (cursor.hasNext()) {
+			DBObject doc = cursor.next();
+			UserBean user = buildBeanObject(doc);
+			log.info("UserServiceImpl getUserByUsername END FOUND: " + username);
+			return user;
+		}
+
+		log.info("UserServiceImpl getUserByUsername END NOT FOUND: " + username);
+		return null;
 	}
 
 	/**
@@ -317,24 +285,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * crud delete === jpa remove
-	 *
-	 * @param id String User primary key
-	 */
-	@Override
-	public void deleteUser(String id) {
-		DB db = getMongo();
-		DBCollection coll = db.getCollection("rdlUserData");
-		BasicDBObject deleteDocument = new BasicDBObject();
-		deleteDocument.append("_id", new ObjectId(id));
-		DBCursor cursor = coll.find(deleteDocument);
-		while (cursor.hasNext()) {
-			DBObject item = cursor.next();
-			coll.remove(item);
-		}
-	}
-
-	/**
 	 * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
 	 * the function adds a reputation given object to the list. Finds user by email.
 	 *
@@ -438,7 +388,8 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void recoverPassword(String email) {
+	public void recoverPassword(String email, String token) throws TokenInvalidException {
+		tokenValidator.validateTokenViaEmail(email,token);
 		String newPass = ServerUtils.generatePassword();
 		String newPassHash = ServerUtils.encryptString(newPass);
 
@@ -455,17 +406,6 @@ public class UserServiceImpl implements UserService {
 		} catch (RDLSendEmailException e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	/**
-	 * testing method to check bean wire up
-	 *
-	 * @return
-	 */
-	@Override
-	public String getDebugString() {
-		return "User Service wired up for guice injection ok";
 	}
 
 	/**

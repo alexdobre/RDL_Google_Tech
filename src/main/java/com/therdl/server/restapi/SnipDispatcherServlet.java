@@ -101,9 +101,6 @@ public class SnipDispatcherServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json");
 
-		String debugString = snipsService.getDebugString();
-		log.info("SnipDispatcherServlet:  " + debugString);
-
 		// get the json
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = req.getReader();
@@ -118,22 +115,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 		AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
 		sb.setLength(0);
 
-		if (actionBean.as().getAction().equals("getall")) {
-			List<SnipBean> beans = snipsService.getAllSnips(actionBean.as().getPageIndex());
-			log.info("SnipDispatcherServlet: beans.size() " + beans.size());
-			log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
-
-			ArrayList<HashMap<String, String>> beanList = getBeanList(beans);
-
-			log.info("SnipDispatcherServlet: beanList.size() " + beanList.size());
-
-			Gson gson = new Gson();
-			log.info(gson.toJson(beanList));
-			PrintWriter out = resp.getWriter();
-			out.write(gson.toJson(beanList));
-			beanList.clear();
-			actionBean.as().setAction("dump");
-		} else if (actionBean.as().getAction().equals("search")) {
+		 if (actionBean.as().getAction().equals("search")) {
 			List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(), actionBean.as().getPageIndex());
 			log.info("SnipDispatcherServlet: beans.size() " + beans.size());
 			log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());

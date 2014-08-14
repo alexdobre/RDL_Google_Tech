@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 /**
  * Contains business logic common utility methods to be used on the server side
- * Created by Alex on 03/02/14.
  */
 public class ServerUtils {
 

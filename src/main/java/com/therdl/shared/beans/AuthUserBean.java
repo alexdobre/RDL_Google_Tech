@@ -12,7 +12,7 @@ import java.util.List;
  * to maintain state use the current user bean
  * pass auth state to current user bean
  */
-public interface AuthUserBean {
+public interface AuthUserBean extends TokenizedBean{
 
 	/**
 	 * methods below are for standard form based credentials submitted on the clien

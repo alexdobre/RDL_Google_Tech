@@ -18,9 +18,11 @@ import com.therdl.server.paypal_payment.PayPalIPNServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionCallbackServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionServlet;
 import com.therdl.server.restapi.AmazonS3UploadServlet;
-import com.therdl.server.restapi.SessionServlet;
+import com.therdl.server.restapi.AuthServlet;
 import com.therdl.server.restapi.SnipDispatcherServlet;
 import com.therdl.server.restapi.UserDispatcherServlet;
+import com.therdl.server.validator.TokenValidator;
+import com.therdl.server.validator.impl.TokenValidatorImpl;
 
 /**
  * ServletInjector controller Guice injection. This project uses the Guice injection
@@ -51,10 +53,11 @@ public class ServletInjector extends GuiceServletContextListener {
 				bind(SnipsService.class).to(SnipServiceImpl.class);
 				bind(UserService.class).to(UserServiceImpl.class);
 				bind(PaymentService.class).to(PaymentServiceImpl.class);
+				bind(TokenValidator.class).to(TokenValidatorImpl.class);
 
 				serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
 				serve("/rdl/getUsers").with(UserDispatcherServlet.class);
-				serve("/rdl/getSession").with(SessionServlet.class);
+				serve("/rdl/getSession").with(AuthServlet.class);
 				serve("/rdl/avatarUpload").with(AmazonS3UploadServlet.class);
 				serve(PayPalConstants.PAYPAL_IPN_NOTIFY_URL).with(PayPalIPNServlet.class);
 				serve(PayPalConstants.PAYPAL_CHECKOUT_URL).with(PaypalSubscriptionServlet.class);

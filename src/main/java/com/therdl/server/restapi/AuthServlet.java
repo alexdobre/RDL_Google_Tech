@@ -21,6 +21,7 @@ import com.therdl.server.api.UserService;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
+import com.therdl.server.validator.TokenValidator;
 import com.therdl.shared.Global;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -41,7 +42,7 @@ import com.therdl.shared.exceptions.RDLSendEmailException;
  */
 
 @Singleton
-public class SessionServlet extends HttpServlet {
+public class AuthServlet extends HttpServlet {
 
 	private static Logger log = Logger.getLogger("");
 
@@ -51,13 +52,11 @@ public class SessionServlet extends HttpServlet {
 	private UserService userService;
 
 	@Inject
-	public SessionServlet(Provider<HttpSession> sessions, UserService userService, DbProvider dbProvider) {
+	public AuthServlet(Provider<HttpSession> sessions, UserService userService, DbProvider dbProvider) {
 		this.session = sessions;
 		this.userService = userService;
 		this.dbProvider = dbProvider;
 		beanery = AutoBeanFactorySource.create(Beanery.class);
-
-
 	}
 
 	/**
@@ -97,9 +96,7 @@ public class SessionServlet extends HttpServlet {
 		if (action.equals("signUp")) {
 
 			AutoBean<UserBean> newUserBean = beanery.userBean();
-			log.info("SessionServlet password hash = " + authBean.as().getEmail());
 			newUserBean.as().setEmail(authBean.as().getEmail());
-			log.info("SessionServlet password hash = " + authBean.as().getName());
 			//generate a unique session ID
 			newUserBean.as().setSid(ServerUtils.generateUUID());
 			newUserBean.as().setUsername(authBean.as().getName());
@@ -111,7 +108,6 @@ public class SessionServlet extends HttpServlet {
 			userService.createUser(newUserBean.as());
 			authBean.as().setAuth(true);
 			authBean.as().setAction("newUserOk");
-			authBean.as().setName(authBean.as().getName());
 			setSessionAttributes(authBean);
 			log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
 			PrintWriter out = resp.getWriter();
@@ -123,7 +119,7 @@ public class SessionServlet extends HttpServlet {
 
 			String password = authBean.as().getPassword();
 			// get the user from the database if exists
-			AutoBean<AuthUserBean> checkedUser = userService.findUser(authBean.as(), password);
+			AutoBean<AuthUserBean> checkedUser = userService.authUser(authBean.as(), password);
 
 			processCheckedUser(checkedUser);
 			sidLogic(authBean, checkedUser);
@@ -204,14 +200,12 @@ public class SessionServlet extends HttpServlet {
 
 				checkedUser.as().setSid(ServerUtils.generateUUID());
 				log.info("Update new SID");
-				userService.updateSid(checkedUser.as());
-
 			} else {
 				//remember me not checked
 				checkedUser.as().setSid(null);
 				log.info("Setting SID as null");
-				userService.updateSid(checkedUser.as());
 			}
+			userService.updateSid(checkedUser.as());
 		}
 	}
 
