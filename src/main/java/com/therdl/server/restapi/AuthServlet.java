@@ -1,18 +1,5 @@
 package com.therdl.server.restapi;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Logger;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -21,12 +8,24 @@ import com.therdl.server.api.UserService;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
-import com.therdl.server.validator.TokenValidator;
+import com.therdl.server.validator.UserValidator;
 import com.therdl.shared.Global;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.RDLSendEmailException;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * Session controller for simple user authentication. This project uses the Guice injection
@@ -50,12 +49,15 @@ public class AuthServlet extends HttpServlet {
 	private Beanery beanery;
 	private DbProvider dbProvider;
 	private UserService userService;
+	private UserValidator userValidator;
 
 	@Inject
-	public AuthServlet(Provider<HttpSession> sessions, UserService userService, DbProvider dbProvider) {
+	public AuthServlet(Provider<HttpSession> sessions, UserService userService, DbProvider dbProvider,
+	                   UserValidator userValidator) {
 		this.session = sessions;
 		this.userService = userService;
 		this.dbProvider = dbProvider;
+		this.userValidator = userValidator;
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 	}
 
@@ -94,84 +96,103 @@ public class AuthServlet extends HttpServlet {
 		log.info("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
 
 		if (action.equals("signUp")) {
-
-			AutoBean<UserBean> newUserBean = beanery.userBean();
-			newUserBean.as().setEmail(authBean.as().getEmail());
-			//generate a unique session ID
-			newUserBean.as().setSid(ServerUtils.generateUUID());
-			newUserBean.as().setUsername(authBean.as().getName());
-			String password = authBean.as().getPassword();
-			String hash = ServerUtils.encryptString(password);
-			log.info("SessionServlet password hash = " + hash);
-			newUserBean.as().setPassHash(hash);
-			newUserBean.as().setRep(authBean.as().getRep());
-			userService.createUser(newUserBean.as());
-			authBean.as().setAuth(true);
-			authBean.as().setAction("newUserOk");
-			setSessionAttributes(authBean);
-			log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
-			PrintWriter out = resp.getWriter();
-			out.write(AutoBeanCodex.encode(authBean).getPayload());
-
-		} // end sign up
-
-		else if (action.equals("auth")) {
-
-			String password = authBean.as().getPassword();
-			// get the user from the database if exists
-			AutoBean<AuthUserBean> checkedUser = userService.authUser(authBean.as(), password);
-
-			processCheckedUser(checkedUser);
-			sidLogic(authBean, checkedUser);
-			setSessionAttributes(checkedUser);
-
-			PrintWriter out = resp.getWriter();
-			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
-			out.write(AutoBeanCodex.encode(checkedUser).getPayload());
-
+			doSignUp(resp, authBean);
+		} else if (action.equals("auth")) {
+			doAuth(resp, authBean);
 		} else if (action.equals("sidAuth")) {
-			AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
-
-			processCheckedUser(checkedUser);
-			setSessionAttributes(checkedUser);
-			PrintWriter out = resp.getWriter();
-			log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
-			out.write(AutoBeanCodex.encode(checkedUser).getPayload());
+			doSidAuth(resp, authBean);
 		} else if (action.equals("forgotPass")) {
-			String email = authBean.as().getEmail();
-			//checked if the email is a registered user.
-			UserBean userBean = userService.getUserByEmail(email);
-			if (userBean != null) {
-				String newPass = ServerUtils.generatePassword();
-				String newPassHash = ServerUtils.encryptString(newPass);
-
-				try {
-					//send the new password to the user's registered email
-					EmailSender.sendNewPassEmail(newPass, email, dbProvider.getDb());
-
-					//update user hash password
-					userBean.setPassHash(newPassHash);
-					//update the user
-					userService.updateUser(userBean);
-
-					//return an email since it is registered
-					authBean.as().setEmail(userBean.getEmail());
-				} catch (RDLSendEmailException e) {
-					//return a "error" value because there was an error in sending an email to the registered email address.
-					authBean.as().setEmail(Global.ERROR);
-				}
-
-			} else {
-				//return a "null" email value because the email is not a registered user.
-				authBean.as().setEmail(null);
-			}
-
-			PrintWriter out = resp.getWriter();
-			log.info("Writing output: " + AutoBeanCodex.encode(authBean).getPayload());
-			out.write(AutoBeanCodex.encode(authBean).getPayload());
+			doForgotPass(resp, authBean);
+		} else if (action.equals("changePass")) {
+			doChangePass(resp, authBean);
 		}
 
 	} // end doPost
+
+	private void doChangePass(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) {
+			log.info("Session servlet - doChangePass");
+			//userValidator.validateCanChangePass(authBean);
+			//userService.changePass(authBean.as().getName(), authBean.as().getPassword());
+	}
+
+
+	private void doForgotPass(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+		String email = authBean.as().getEmail();
+		//checked if the email is a registered user.
+		UserBean userBean = userService.getUserByEmail(email);
+		if (userBean != null) {
+			String newPass = ServerUtils.generatePassword();
+			String newPassHash = ServerUtils.encryptString(newPass);
+
+			try {
+				//send the new password to the user's registered email
+				EmailSender.sendNewPassEmail(newPass, email, dbProvider.getDb());
+
+				//update user hash password
+				userBean.setPassHash(newPassHash);
+				//update the user
+				userService.updateUser(userBean);
+
+				//return an email since it is registered
+				authBean.as().setEmail(userBean.getEmail());
+			} catch (RDLSendEmailException e) {
+				//return a "error" value because there was an error in sending an email to the registered email address.
+				authBean.as().setEmail(Global.ERROR);
+			}
+
+		} else {
+			//return a "null" email value because the email is not a registered user.
+			authBean.as().setEmail(null);
+		}
+
+		PrintWriter out = resp.getWriter();
+		log.info("Writing output: " + AutoBeanCodex.encode(authBean).getPayload());
+		out.write(AutoBeanCodex.encode(authBean).getPayload());
+	}
+
+	private void doSignUp(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+		AutoBean<UserBean> newUserBean = beanery.userBean();
+		newUserBean.as().setEmail(authBean.as().getEmail());
+		//generate a unique session ID
+		newUserBean.as().setSid(ServerUtils.generateUUID());
+		newUserBean.as().setUsername(authBean.as().getName());
+		String password = authBean.as().getPassword();
+		String hash = ServerUtils.encryptString(password);
+		log.info("SessionServlet password hash = " + hash);
+		newUserBean.as().setPassHash(hash);
+		newUserBean.as().setRep(authBean.as().getRep());
+		userService.createUser(newUserBean.as());
+		authBean.as().setAuth(true);
+		authBean.as().setAction("newUserOk");
+		setSessionAttributes(authBean);
+		log.info("SessionServlet signUp authBean" + AutoBeanCodex.encode(authBean).getPayload());
+		PrintWriter out = resp.getWriter();
+		out.write(AutoBeanCodex.encode(authBean).getPayload());
+	}
+
+	private void doAuth(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+		String password = authBean.as().getPassword();
+		// get the user from the database if exists
+		AutoBean<AuthUserBean> checkedUser = userService.authUser(authBean.as(), password);
+
+		processCheckedUser(checkedUser);
+		sidLogic(authBean, checkedUser);
+		setSessionAttributes(checkedUser);
+
+		PrintWriter out = resp.getWriter();
+		log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
+		out.write(AutoBeanCodex.encode(checkedUser).getPayload());
+	}
+
+	private void doSidAuth(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+		AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
+
+		processCheckedUser(checkedUser);
+		setSessionAttributes(checkedUser);
+		PrintWriter out = resp.getWriter();
+		log.info("Writing output: " + AutoBeanCodex.encode(checkedUser).getPayload());
+		out.write(AutoBeanCodex.encode(checkedUser).getPayload());
+	}
 
 	private void setSessionAttributes(AutoBean<AuthUserBean> userBean) {
 		session.get().setAttribute("userid", userBean.as().getEmail());

@@ -2,9 +2,15 @@ package com.therdl.client.view.impl;
 
 import java.util.Date;
 
+import com.therdl.client.RDL;
+import com.therdl.client.view.widget.FormErrors;
+import com.therdl.client.view.widget.FormSuccess;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormControlStatic;
 import org.gwtbootstrap3.client.ui.Image;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.base.AbstractTextWidget;
 
 import com.google.gwt.core.client.GWT;
@@ -70,10 +76,22 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	FormControlStatic email, username;
 
 	@UiField
-	Button changePassBtn;
+	Button changePassBtn, submitChangePassBtn;
 
 	@UiField
 	Image avatarImage;
+
+	@UiField
+	Modal changePassModal;
+
+	@UiField
+	Input oldPassword, newPassword, confirmNewPassword;
+
+	@UiField
+	FormErrors formErrors;
+
+	@UiField
+	FormSuccess formSuccess;
 
 	public ProfileViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
@@ -89,6 +107,8 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			email.setText(currentUserBean.as().getEmail());
 			username.setText(currentUserBean.as().getName());
 			ancBeAMember.setVisible(true);
+			ViewUtils.showHide(false,formErrors);
+			ViewUtils.showHide(false, formSuccess);
 
 			//populate avatar
 			displayUserImage(getImageUrl());
@@ -130,6 +150,26 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		}
 		uploadForm.show();
 	}
+
+	@UiHandler("submitChangePassBtn")
+	void handleSubmitNewPass(ClickEvent e) {
+		String msg = presenter.changePassword(currentUserBean,
+				oldPassword.getText(), newPassword.getText(), confirmNewPassword.getText());
+		if (msg != null){
+			formErrors.setErrorMessage(msg);
+		}else {
+			formSuccess.setSuccessMessage(RDL.getI18n().formSuccessPassChange());
+			changePassModal.hide();
+		}
+	}
+
+	@UiHandler("changePassBtn")
+	void handleChangePass(ClickEvent e) {
+		ViewUtils.showHide(false,formErrors);
+		changePassModal.show();
+	}
+
+
 
 	@Override
 	public void setPresenter(Presenter presenter) {

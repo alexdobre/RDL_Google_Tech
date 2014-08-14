@@ -1,7 +1,12 @@
 package com.therdl.server.validator.impl;
 
+import com.google.inject.Singleton;
+import com.therdl.server.validator.SnipsValidator;
+
 /**
  * Holds snips validation
  */
-public class SnipsValidatorImpl {
+
+@Singleton
+public class SnipsValidatorImpl implements SnipsValidator {
 }

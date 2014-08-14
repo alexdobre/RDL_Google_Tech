@@ -19,7 +19,15 @@ public interface ProfileView extends RdlView {
 
 
 	public interface Presenter {
-
+		/**
+		 * Validates and saves a new password
+		 * @param oldPass the old password to be checked
+		 * @param newPass the new password
+		 * @param newPassConfirm must match the new password
+		 * @return null if save OK, error message otherwise
+		 */
+		public String changePassword(AutoBean<CurrentUserBean> currentUserBean,
+		                             String oldPass, String newPass, String newPassConfirm);
 	}
 
 	void setPresenter(Presenter presenter);

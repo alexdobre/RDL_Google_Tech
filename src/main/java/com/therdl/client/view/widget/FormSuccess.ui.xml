@@ -1,0 +1,6 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html">
+	<b.html:Span>
+		<b.html:Paragraph emphasis="SUCCESS" ui:field="successMessage"/>
+	</b.html:Span>
+</ui:UiBinder>

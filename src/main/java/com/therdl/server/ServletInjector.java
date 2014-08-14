@@ -21,8 +21,12 @@ import com.therdl.server.restapi.AmazonS3UploadServlet;
 import com.therdl.server.restapi.AuthServlet;
 import com.therdl.server.restapi.SnipDispatcherServlet;
 import com.therdl.server.restapi.UserDispatcherServlet;
+import com.therdl.server.validator.SnipsValidator;
 import com.therdl.server.validator.TokenValidator;
+import com.therdl.server.validator.UserValidator;
+import com.therdl.server.validator.impl.SnipsValidatorImpl;
 import com.therdl.server.validator.impl.TokenValidatorImpl;
+import com.therdl.server.validator.impl.UserValidatorImpl;
 
 /**
  * ServletInjector controller Guice injection. This project uses the Guice injection
@@ -53,7 +57,9 @@ public class ServletInjector extends GuiceServletContextListener {
 				bind(SnipsService.class).to(SnipServiceImpl.class);
 				bind(UserService.class).to(UserServiceImpl.class);
 				bind(PaymentService.class).to(PaymentServiceImpl.class);
+				bind(SnipsValidator.class).to(SnipsValidatorImpl.class);
 				bind(TokenValidator.class).to(TokenValidatorImpl.class);
+				bind(UserValidator.class).to(UserValidatorImpl.class);
 
 				serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
 				serve("/rdl/getUsers").with(UserDispatcherServlet.class);
