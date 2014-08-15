@@ -67,10 +67,7 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	FocusPanel profileImagePanel;
 
 	@UiField
-	HTMLPanel titlePanel;
-
-	@UiField
-	Anchor ancBeAMember;
+	Button supporterBtn;
 
 	@UiField
 	FormControlStatic email, username;
@@ -106,20 +103,21 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			this.currentUserBean = currentUserBean;
 			email.setText(currentUserBean.as().getEmail());
 			username.setText(currentUserBean.as().getName());
-			ancBeAMember.setVisible(true);
+			supporterBtn.setVisible(true);
 			ViewUtils.showHide(false,formErrors);
 			ViewUtils.showHide(false, formSuccess);
 
 			//populate avatar
 			displayUserImage(getImageUrl());
 			//populate titles
-			for (UserBean.TitleBean titleBean : currentUserBean.as().getTitles()) {
-				titlePanel.add(new TitleListRow(currentUserBean, titleBean).asWidget());
-
-				if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-					ancBeAMember.setVisible(false);
-				}
-			}
+			//<g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
+//			for (UserBean.TitleBean titleBean : currentUserBean.as().getTitles()) {
+//				titlePanel.add(new TitleListRow(currentUserBean, titleBean).asWidget());
+//
+//				if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
+//					ancBeAMember.setVisible(false);
+//				}
+//			}
 		}
 	}
 

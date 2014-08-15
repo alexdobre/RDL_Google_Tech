@@ -5,6 +5,13 @@
              xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+
+	<ui:style>
+		.checkIcon{
+		color: green;
+		}
+	</ui:style>
 
 	<b:Container addStyleNames="push">
 		<g:SimplePanel ui:field="appMenuPanel"/>
@@ -38,12 +45,27 @@
 				</b:Form>
 			</b:Column>
 		</b:Row>
-		<b:Row>
-			<b:Column size="MD_12">
-				<g:HTMLPanel ui:field="titlePanel"></g:HTMLPanel>
-				<g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
-			</b:Column>
-		</b:Row>
+		<b:Panel>
+			<b:PanelBody>
+				<b:Row>
+					<b:Column size="MD_1">
+						<b:Icon type="CHECK" size="TIMES2" addStyleNames="{style.checkIcon}"/>
+					</b:Column>
+					<b:Column size="MD_1">
+						<b:Image type="CIRCLE" url='{res.rdlSupporter.getSafeUri.asString}'/>
+					</b:Column>
+					<b:Column size="MD_2">
+						<b:Lead text="{i18n.userTitleRdlSupporter}"/>
+					</b:Column>
+					<b:Column size="MD_6">
+						<b.html:Paragraph text="{i18n.userTitleDescRdlSupporter1} {i18n.userTitleDescRdlSupporter2}"/>
+					</b:Column>
+					<b:Column size="MD_2">
+						<b:Button ui:field="supporterBtn" text="Gain Title"/>
+					</b:Column>
+				</b:Row>
+			</b:PanelBody>
+		</b:Panel>
 
 		<b:Modal title="{i18n.changePassword}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
 		         b:id="changePassModal" ui:field="changePassModal">

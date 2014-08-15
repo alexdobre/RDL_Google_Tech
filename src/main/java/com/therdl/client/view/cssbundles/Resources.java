@@ -37,10 +37,6 @@ public interface Resources extends ClientBundle {
 	@Source("imagebund/Pledge.jpg")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
 	ImageResource PledgeImage();
-  /*
-    @Source("imagebund/Tag.jpg")
-    @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
-    ImageResource TagImage();        */
 
 	@Source("imagebund/Post.jpg")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
@@ -118,4 +114,8 @@ public interface Resources extends ClientBundle {
 	@Source("imagebund/arrow-up-grey.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
 	ImageResource arrowUpGrey();
+
+	@Source("imagebund/titles/globe.png")
+	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+	ImageResource rdlSupporter();
 }
