@@ -140,4 +140,8 @@ public interface RDLConstants {
 		String RDL_DEV = "RDL Dev";
 		String RDL_USER = "RDL User";
 	}
+
+	public interface ErrorCodes {
+		String C001 = "c001";
+	}
 }

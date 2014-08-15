@@ -156,10 +156,7 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		String msg = presenter.changePassword(currentUserBean,
 				oldPassword.getText(), newPassword.getText(), confirmNewPassword.getText());
 		if (msg != null){
-			formErrors.setErrorMessage(msg);
-		}else {
-			formSuccess.setSuccessMessage(RDL.getI18n().formSuccessPassChange());
-			changePassModal.hide();
+			setChangePassErrorMsg(msg);
 		}
 	}
 
@@ -169,7 +166,17 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		changePassModal.show();
 	}
 
+	public void setFormSuccessMsg (String msg){
+		formSuccess.setSuccessMessage(msg);
+		changePassModal.hide();
+	}
 
+	public void setChangePassErrorMsg (String msg){
+		if (!changePassModal.isVisible()){
+			changePassModal.show();
+		}
+		formErrors.setErrorMessage(msg);
+	}
 
 	@Override
 	public void setPresenter(Presenter presenter) {

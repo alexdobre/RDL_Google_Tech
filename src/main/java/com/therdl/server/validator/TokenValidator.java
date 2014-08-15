@@ -1,5 +1,6 @@
 package com.therdl.server.validator;
 
+import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.TokenInvalidException;
 
 /**
@@ -12,9 +13,9 @@ public interface TokenValidator {
 	 */
 	public String createToken();
 
-	public void validateTokenViaUsername (String username, String token) throws TokenInvalidException;
+	public UserBean validateTokenViaUsername (String username, String token) throws TokenInvalidException;
 
-	public void validateTokenViaEmail (String email, String token) throws TokenInvalidException;
+	public UserBean validateTokenViaEmail (String email, String token) throws TokenInvalidException;
 
-	public void validateTokenViaId (String id, String token) throws TokenInvalidException;
+	public UserBean validateTokenViaId (String id, String token) throws TokenInvalidException;
 }

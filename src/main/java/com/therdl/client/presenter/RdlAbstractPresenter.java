@@ -161,9 +161,10 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 								log.info("SID login fail -> cleaning up cookie");
 								Cookies.removeCookie("sid");
 							}
-							controller.setCurrentUserBean("", "", auth, null, isRDLSupporter);
+							controller.setCurrentUserBean("", "", auth, null, isRDLSupporter, null);
 						} else {
-							controller.setCurrentUserBean(name, email, auth, authUserBean.as().getTitles(), isRDLSupporter);
+							controller.setCurrentUserBean(name, email, auth, authUserBean.as().getTitles(),
+									isRDLSupporter, authUserBean.as().getToken());
 
 							//if this was not a cookie login we do logic to change the cookie if necessary
 							if (!innerIsCookieLogin) {

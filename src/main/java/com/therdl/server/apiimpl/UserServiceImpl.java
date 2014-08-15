@@ -1,6 +1,15 @@
 package com.therdl.server.apiimpl;
 
-import com.google.common.collect.Iterables;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.bson.types.ObjectId;
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.BasicDBList;
@@ -22,17 +31,6 @@ import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.RDLSendEmailException;
 import com.therdl.shared.exceptions.TokenInvalidException;
-
-import org.bson.types.ObjectId;
-import org.mindrot.jbcrypt.BCrypt;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * A User Service implementation with basic crud methods for managing
@@ -78,7 +76,6 @@ public class UserServiceImpl implements UserService {
 			}  // end hash if
 		}  // end email if
 
-
 		checkedUserBean.as().setAction("NotOkUser");
 		log.info("Find user END NOK: " + bean.getEmail());
 		return checkedUserBean;
@@ -106,7 +103,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserBean getUserById (String id) {
+	public UserBean getUserById(String id) {
 		log.info("UserServiceImpl getUser  id: " + id);
 
 		beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -123,7 +120,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserBean getUserByUsername(String username){
+	public UserBean getUserByUsername(String username) {
 		log.info("UserServiceImpl getUserByUsername BEGIN email: " + username);
 
 		beanery = AutoBeanFactorySource.create(Beanery.class);
@@ -208,6 +205,8 @@ public class UserServiceImpl implements UserService {
 			DBObject doc = cursor.next();
 			UserBean user = buildBeanObject(doc);
 			log.info("UserServiceImpl findUserBySid END FOUND: " + sid);
+			user.setToken(tokenValidator.createToken());
+			updateUser(user);
 			return transformUserBeanInAuthUserBean(checkedUserBean, user);
 		}
 
@@ -215,7 +214,6 @@ public class UserServiceImpl implements UserService {
 		checkedUserBean.as().setAction("NotOkUser");
 		return checkedUserBean;
 	}
-
 
 	// poor code design, this should return a UserObject, programmer was told to do this
 	// quickest to deal with this is session servlet for now, however this solution should
@@ -236,6 +234,12 @@ public class UserServiceImpl implements UserService {
 			BasicDBObject doc = buildDbObject(user);
 			coll.insert(doc);
 		}
+	}
+
+	@Override
+	public void changePass(UserBean userBean, String pass) {
+		userBean.setPassHash(ServerUtils.encryptString(pass));
+		updateUser(userBean);
 	}
 
 	/**
@@ -389,7 +393,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void recoverPassword(String email, String token) throws TokenInvalidException {
-		tokenValidator.validateTokenViaEmail(email,token);
+		tokenValidator.validateTokenViaEmail(email, token);
 		String newPass = ServerUtils.generatePassword();
 		String newPassHash = ServerUtils.encryptString(newPass);
 
@@ -418,28 +422,28 @@ public class UserServiceImpl implements UserService {
 		UserBean user = beanery.userBean().as();
 
 		user.setId(doc.get("_id").toString());
-		user.setUsername((String) doc.get("username"));
-		user.setPassHash((String) doc.get("passHash"));
-		user.setEmail((String) doc.get("email"));
-		user.setSid((String) doc.get("sid"));
-		user.setPaypalId((String) doc.get("paypalId"));
+		user.setUsername((String)doc.get("username"));
+		user.setPassHash((String)doc.get("passHash"));
+		user.setEmail((String)doc.get("email"));
+		user.setToken((String)doc.get("token"));
+		user.setSid((String)doc.get("sid"));
+		user.setPaypalId((String)doc.get("paypalId"));
 		user.setRep(RDLUtils.parseInt(doc.get("rep")));
-		BasicDBList titles = (BasicDBList) doc.get("titles");
-		BasicDBList friends = (BasicDBList) doc.get("friends");
-		BasicDBList repGiven = (BasicDBList) doc.get("repGiven");
-		BasicDBList refGiven = (BasicDBList) doc.get("refGiven");
-		BasicDBList votesGiven = (BasicDBList) doc.get("votesGiven");
+		BasicDBList titles = (BasicDBList)doc.get("titles");
+		BasicDBList friends = (BasicDBList)doc.get("friends");
+		BasicDBList repGiven = (BasicDBList)doc.get("repGiven");
+		BasicDBList refGiven = (BasicDBList)doc.get("refGiven");
+		BasicDBList votesGiven = (BasicDBList)doc.get("votesGiven");
 
 		List<UserBean.TitleBean> titleList = new ArrayList<UserBean.TitleBean>();
 		for (Object obj : titles) {
 			UserBean.TitleBean titlesBean = beanery.userTitleBean().as();
-			titlesBean.setTitleName((String) ((BasicDBObject) obj).get("titleName"));
-			titlesBean.setDateGained((String) ((BasicDBObject) obj).get("dateGained"));
-			titlesBean.setExpires((String) ((BasicDBObject) obj).get("expires"));
+			titlesBean.setTitleName((String)((BasicDBObject)obj).get("titleName"));
+			titlesBean.setDateGained((String)((BasicDBObject)obj).get("dateGained"));
+			titlesBean.setExpires((String)((BasicDBObject)obj).get("expires"));
 			titleList.add(titlesBean);
 		}
 		user.setTitles(titleList);
-
 
 		List<UserBean.FriendBean> friendList = new ArrayList<UserBean.FriendBean>();
 
@@ -447,30 +451,29 @@ public class UserServiceImpl implements UserService {
 			UserBean.FriendBean friendsBean = beanery.userFriendBean().as();
 
 			// set the messages
-			BasicDBList messages = (BasicDBList) ((BasicDBObject) obj).get("messages");
+			BasicDBList messages = (BasicDBList)((BasicDBObject)obj).get("messages");
 
 			List<UserBean.MessageBean> messageList = new ArrayList<UserBean.MessageBean>();
 
 			for (Object _obj : messages) {
 				UserBean.MessageBean messageBean = beanery.userMessageBean().as();
-				messageBean.setMessageId((String) ((BasicDBObject) _obj).get("messageId"));
-				messageBean.setDate((String) ((BasicDBObject) _obj).get("date"));
+				messageBean.setMessageId((String)((BasicDBObject)_obj).get("messageId"));
+				messageBean.setDate((String)((BasicDBObject)_obj).get("date"));
 				messageList.add(messageBean);
 			}
 
 			friendsBean.setMessages(messageList);
-			friendsBean.setUsername((String) ((BasicDBObject) obj).get("username"));
+			friendsBean.setUsername((String)((BasicDBObject)obj).get("username"));
 			friendList.add(friendsBean);
 		}
 		user.setFriends(friendList);
-
 
 		List<UserBean.RepGivenBean> repGivenList = new ArrayList<UserBean.RepGivenBean>();
 
 		for (Object obj : repGiven) {
 			UserBean.RepGivenBean repGivenBean = beanery.userRepGivenBean().as();
-			repGivenBean.setSnipId((String) ((BasicDBObject) obj).get("snipId"));
-			repGivenBean.setDate((String) ((BasicDBObject) obj).get("date"));
+			repGivenBean.setSnipId((String)((BasicDBObject)obj).get("snipId"));
+			repGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
 			repGivenList.add(repGivenBean);
 		}
 		user.setRepGiven(repGivenList);
@@ -480,8 +483,8 @@ public class UserServiceImpl implements UserService {
 		if (refGiven != null) {
 			for (Object obj : refGiven) {
 				UserBean.RefGivenBean refGivenBean = beanery.userRefGivenBean().as();
-				refGivenBean.setSnipId((String) ((BasicDBObject) obj).get("snipId"));
-				refGivenBean.setDate((String) ((BasicDBObject) obj).get("date"));
+				refGivenBean.setSnipId((String)((BasicDBObject)obj).get("snipId"));
+				refGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
 				refGivenList.add(refGivenBean);
 			}
 		}
@@ -491,8 +494,8 @@ public class UserServiceImpl implements UserService {
 
 		for (Object obj : votesGiven) {
 			UserBean.VotesGivenBean votesGivenBean = beanery.userVotesGivenBean().as();
-			votesGivenBean.setProposalId((String) ((BasicDBObject) obj).get("proposalId"));
-			votesGivenBean.setDate((String) ((BasicDBObject) obj).get("date"));
+			votesGivenBean.setProposalId((String)((BasicDBObject)obj).get("proposalId"));
+			votesGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
 			votesGivenList.add(votesGivenBean);
 		}
 		user.setVotesGiven(votesGivenList);
@@ -520,6 +523,7 @@ public class UserServiceImpl implements UserService {
 		doc.append("sid", user.getSid());
 		doc.append("paypalId", user.getPaypalId());
 		doc.append("rep", user.getRep());
+		doc.append("token", user.getToken());
 
 		BasicDBList titlesList = new BasicDBList();
 
@@ -533,7 +537,6 @@ public class UserServiceImpl implements UserService {
 			}
 
 		}
-
 
 		BasicDBList friendsList = new BasicDBList();
 

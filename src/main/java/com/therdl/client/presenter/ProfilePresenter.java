@@ -14,12 +14,15 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.ProfileView;
+import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.exceptions.AvatarInvalidException;
+import com.therdl.shared.exceptions.ServerSideException;
 
 /**
  * ProfilePresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -60,7 +63,6 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 	public String changePassword(AutoBean<CurrentUserBean> currentUserBean, String oldPass, String newPass, String newPassConfirm) {
 		String validRes = validateChangePassInput(oldPass, newPass, newPassConfirm);
 		if (validRes != null ) return validRes;
-
 		submitChangePass(currentUserBean.as().getName(), currentUserBean.as().getToken(), oldPass, newPass, newPassConfirm);
 		return null;
 	}
@@ -98,25 +100,29 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 		requestBuilder.setHeader("Content-Type", "application/json");
 		userBean.as().setAction("changePass");
 		String json = AutoBeanCodex.encode(userBean).getPayload();
-
 		try {
 
 			requestBuilder.sendRequest(json, new RequestCallback() {
 
 				@Override
 				public void onResponseReceived(Request request, Response response) {
-					log.info("ProfilePresenter submitChangePass onResponseReceived json" + response.getText());
+					log.info("ProfilePresenter submitChangePass onResponseReceived: " + response.getText());
+					if (response.getText().equals("success")){
+						view.setFormSuccessMsg(RDL.getI18n().formSuccessPassChange());
+					}else {
+						view.setChangePassErrorMsg(ErrorCodeMapper.getI18nMessage(response.getText()));
+					}
 				}
 
 				@Override
 				public void onError(Request request, Throwable exception) {
 					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
+					view.setChangePassErrorMsg(RDL.getI18n().technicalError());
 				}
-
 			});
 
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
-		}  // end try
+		}
 	}
 }

@@ -89,7 +89,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 					// deserialise the bean
 					AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
 					// on success user is authorised on sign up
-					getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true);
+					getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true, bean.as().getToken());
 					// return to welcome page
 					History.newItem(RDLConstants.Tokens.WELCOME);
 

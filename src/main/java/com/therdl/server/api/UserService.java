@@ -53,6 +53,14 @@ public interface UserService {
 	 */
 	void createUser(UserBean user);
 
+
+	/**
+	 * Changes the pass
+	 * @param userBean the existing user bean
+	 * @param pass the new pass
+	 */
+	void changePass(UserBean userBean, String pass);
+
 	/**
 	 * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
 	 * the function adds a reputation given object to the list. Finds user by email.

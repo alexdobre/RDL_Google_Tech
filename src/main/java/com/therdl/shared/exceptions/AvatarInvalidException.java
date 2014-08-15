@@ -1,6 +1,5 @@
 package com.therdl.shared.exceptions;
 
-import com.therdl.client.RDL;
 import java.io.Serializable;
 
 /**
@@ -10,7 +9,7 @@ import java.io.Serializable;
 public class AvatarInvalidException extends Exception implements Serializable {
 
 	public AvatarInvalidException() {
-		super (RDL.getI18n().errorAvatarUpload());
+		super ("AvatarInvalidException");
 	}
 
 	public AvatarInvalidException(String message) {

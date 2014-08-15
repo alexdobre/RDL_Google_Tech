@@ -591,12 +591,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 * @param state      boolean for state information
 	 * @param titleBeans user titles
 	 */
-	public void setCurrentUserBean(String name, String email, boolean state, List<UserBean.TitleBean> titleBeans, boolean isRDLSupporter) {
+	public void setCurrentUserBean(String name, String email, boolean state, List<UserBean.TitleBean> titleBeans,
+			boolean isRDLSupporter, String token) {
 		this.currentUserBean.as().setAuth(state);
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
 		this.currentUserBean.as().setTitles(titleBeans);
 		this.currentUserBean.as().setIsRDLSupporter(isRDLSupporter);
+		this.currentUserBean.as().setToken(token);
 	}
 
 
@@ -608,10 +610,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 * @param email String for user email
 	 * @param state booleam for state information
 	 */
-	public void setCurrentUserBean(String name, String email, boolean state) {
+	public void setCurrentUserBean(String name, String email, boolean state, String token) {
 		this.currentUserBean.as().setAuth(state);
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
+		this.currentUserBean.as().setToken(token);
 
 	}
 

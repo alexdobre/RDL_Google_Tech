@@ -33,4 +33,8 @@ public interface ProfileView extends RdlView {
 	void setPresenter(Presenter presenter);
 
 	public void populateView(AutoBean<CurrentUserBean> currentUserBean);
+
+	public void setFormSuccessMsg (String msg);
+
+	public void setChangePassErrorMsg (String msg);
 }

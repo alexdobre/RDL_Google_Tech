@@ -14,6 +14,8 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.RDLSendEmailException;
+import com.therdl.shared.exceptions.TokenInvalidException;
+import com.therdl.shared.exceptions.UserValidationException;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -94,25 +97,34 @@ public class AuthServlet extends HttpServlet {
 
 		String action = authBean.as().getAction();
 		log.info("SessionServlet signUp authBean.as().getAction() " + authBean.as().getAction());
-
-		if (action.equals("signUp")) {
-			doSignUp(resp, authBean);
-		} else if (action.equals("auth")) {
-			doAuth(resp, authBean);
-		} else if (action.equals("sidAuth")) {
-			doSidAuth(resp, authBean);
-		} else if (action.equals("forgotPass")) {
-			doForgotPass(resp, authBean);
-		} else if (action.equals("changePass")) {
-			doChangePass(resp, authBean);
+		try {
+			if (action.equals("signUp")) {
+				doSignUp(resp, authBean);
+			} else if (action.equals("auth")) {
+				doAuth(resp, authBean);
+			} else if (action.equals("sidAuth")) {
+				doSidAuth(resp, authBean);
+			} else if (action.equals("forgotPass")) {
+				doForgotPass(resp, authBean);
+			} else if (action.equals("changePass")) {
+				doChangePass(resp, authBean);
+			}
+		}catch (Exception e){
+			log.log(Level.SEVERE,e.getMessage(),e);
+			PrintWriter out = resp.getWriter();
+			out.write(e.getMessage());
 		}
 
 	} // end doPost
 
-	private void doChangePass(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) {
-			log.info("Session servlet - doChangePass");
-			//userValidator.validateCanChangePass(authBean);
-			//userService.changePass(authBean.as().getName(), authBean.as().getPassword());
+	private void doChangePass(HttpServletResponse resp, AutoBean<AuthUserBean> authBean)
+			throws IOException, UserValidationException, TokenInvalidException {
+		log.info("Session servlet - doChangePass");
+		UserBean userBean = userValidator.validateCanChangePass(authBean);
+		userService.changePass(userBean, authBean.as().getPassword());
+
+		PrintWriter out = resp.getWriter();
+		out.write("success");
 	}
 
 
