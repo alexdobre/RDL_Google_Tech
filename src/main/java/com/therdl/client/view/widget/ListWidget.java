@@ -15,8 +15,6 @@ import com.therdl.client.view.common.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.PaginationSnipsEvent;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
@@ -127,7 +125,6 @@ public class ListWidget extends Composite  implements  PaginatedView{
 	}
 
 	public void setPageIndex(int pageIndex) {
-		log.info("************************* Setting page index in list widget to: "+pageIndex);
 		this.pageIndex = pageIndex;
 	}
 }

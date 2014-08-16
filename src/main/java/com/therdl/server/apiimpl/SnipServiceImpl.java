@@ -112,18 +112,17 @@ public class SnipServiceImpl implements SnipsService {
 			query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
 		}
 
-
+		log.info("Search snips with query: "+query);
 		DBCollection coll = db.getCollection("rdlSnipData");
-		int collCount = coll.find(query).count();
 		DBCursor cursor = coll.find(query)
 				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
 				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
 				.limit(Constants.DEFAULT_PAGE_SIZE);
+		log.info("cursor after: "+cursor);
 
 		while (cursor.hasNext()) {
 			DBObject doc = cursor.next();
 			SnipBean snip = buildBeanObject(doc);
-			snip.setCount(collCount);
 			beans.add(snip);
 		}
 		return beans;
@@ -147,7 +146,7 @@ public class SnipServiceImpl implements SnipsService {
 		DBObject doc = cursor.next();
 
 		SnipBean snip = buildBeanObject(doc);
-
+		log.info("Found snip: "+snip);
 		return snip;
 	}
 
@@ -282,12 +281,10 @@ public class SnipServiceImpl implements SnipsService {
 
 		log.info("Executing query author title and rep null: "+query);
 		DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
-		int collCount = coll.find(query).count();
 
 		while (collDocs.hasNext()) {
 			DBObject doc = collDocs.next();
 			SnipBean snip = buildBeanObject(doc);
-			snip.setCount(collCount);
 			beans.add(snip);
 		}
 
@@ -346,13 +343,13 @@ public class SnipServiceImpl implements SnipsService {
 		query.put("author", new BasicDBObject("$in", filteredAuthors.toArray(new String[filteredAuthors.size()])));
 
 		// query to get snips for only filtered authors
-		DBCursor collDocs1 = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
-		int collCount = coll.find(query).count();
+		DBCursor collDocs1 = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(),
+				searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).
+				limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 
 		while (collDocs1.hasNext()) {
 			DBObject doc = collDocs1.next();
 			SnipBean snip1 = buildBeanObject(doc);
-			snip1.setCount(collCount);
 			beans.add(snip1);
 		}
 

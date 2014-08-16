@@ -66,10 +66,6 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	public void submitNewUser(AutoBean<AuthUserBean> bean) {
 		log.info(AutoBeanCodex.encode(bean).getPayload());
 		String updateUrl = GWT.getModuleBaseURL() + "getSession";
-		// handle jboss urls for deploy
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
 
 		log.info("RegisterPresenter submitNewUser with  updateUrl: " + updateUrl);
 

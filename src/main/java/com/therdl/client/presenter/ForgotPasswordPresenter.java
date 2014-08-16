@@ -41,10 +41,6 @@ public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 		AutoBean<AuthUserBean> bean = beanery.authBean();
 		String forgotUrl = GWT.getModuleBaseURL() + "getSession";
 
-		if (!Constants.DEPLOY) {
-			forgotUrl = forgotUrl.replaceAll("/therdl", "");
-		}
-
 		bean.as().setEmail(email);
 		bean.as().setAction("forgotPass");
 

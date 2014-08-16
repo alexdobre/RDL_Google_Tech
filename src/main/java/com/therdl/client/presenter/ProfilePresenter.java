@@ -82,10 +82,6 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 
 	public void submitChangePass (String username, String token, String oldPass, String newPass, String newPassConfirm) {
 		String submitUrl = GWT.getModuleBaseURL() + "getSession";
-		// handle jboss urls for deploy
-		if (!Constants.DEPLOY) {
-			submitUrl = submitUrl.replaceAll("/therdl", "");
-		}
 		log.info("RegisterPresenter submitNewUser with  updateUrl: " + submitUrl);
 
 		//populate the bean to send to server

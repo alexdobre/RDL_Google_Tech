@@ -14,6 +14,10 @@ public enum SnipType {
 		this.snipType = snipType;
 	}
 
+	public String getSnipType(){
+		return snipType;
+	}
+
 	public static SnipType fromString(String str) {
 		if (str != null) {
 			for (SnipType s : SnipType.values()) {

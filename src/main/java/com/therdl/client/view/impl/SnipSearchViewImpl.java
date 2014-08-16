@@ -114,7 +114,7 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 			}
 		} else {
 			AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
-			doFilterSearch(snipBean, 0);
+			doFilterSearch(snipBean, snipBean.as().getPageIndex());
 		}
 
 	}
@@ -138,6 +138,10 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 
 	public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
 		return currentSearchOptionsBean;
+	}
+
+	public void setCurrentSearchOptionsBean (AutoBean<SnipBean> snipBean){
+		this.currentSearchOptionsBean=snipBean;
 	}
 
 	@Override

@@ -6,9 +6,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.SnipBean;
 
 /**
  * Bookmark search popup, extends gwt PopupPanel panel
@@ -23,6 +25,7 @@ public class BookmarkSearchPopup extends PopupPanel {
 	@UiField
 	TextBox getLinkTextBox;
 	SearchFilterWidget searchFilterWidget;
+	private AutoBean<SnipBean> currentSearchOptionsBean;
 
 	/**
 	 * constructor BookmarkSearchPopup
@@ -31,18 +34,20 @@ public class BookmarkSearchPopup extends PopupPanel {
 	 *
 	 * @param searchFilterWidget
 	 */
-	public BookmarkSearchPopup(SearchFilterWidget searchFilterWidget) {
+	public BookmarkSearchPopup(SearchFilterWidget searchFilterWidget,AutoBean<SnipBean> currentSearchOptionsBean) {
 		super(true);
 		add(ourUiBinder.createAndBindUi(this));
 		this.setStyleName("bookmarkSearchPopup");
 		setModal(true);
 
 		this.searchFilterWidget = searchFilterWidget;
+		this.currentSearchOptionsBean = currentSearchOptionsBean;
 
-		String url = "";
+		StringBuilder url = new StringBuilder() ;
 
 		if (formURl().length() != 0) {
-			url = ":" + formURl().toString().replace(" ", "+");
+			url.append(':').append(formURl().toString().replace(" ", "+")).append("page=").
+					append(currentSearchOptionsBean.as().getPageIndex());
 		}
 
 		String moduleToken = "";
@@ -128,4 +133,19 @@ public class BookmarkSearchPopup extends PopupPanel {
 		return stringBuilder;
 	}
 
+	public SearchFilterWidget getSearchFilterWidget() {
+		return searchFilterWidget;
+	}
+
+	public void setSearchFilterWidget(SearchFilterWidget searchFilterWidget) {
+		this.searchFilterWidget = searchFilterWidget;
+	}
+
+	public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
+		return currentSearchOptionsBean;
+	}
+
+	public void setCurrentSearchOptionsBean(AutoBean<SnipBean> currentSearchOptionsBean) {
+		this.currentSearchOptionsBean = currentSearchOptionsBean;
+	}
 }

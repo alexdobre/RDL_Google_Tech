@@ -1,9 +1,5 @@
 package com.therdl.client.view.widget;
 
-import com.google.gwt.user.client.ui.UIObject;
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Button;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
@@ -22,6 +19,8 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Button;
 
 /**
  * gwt widget class for reference row in snip view page

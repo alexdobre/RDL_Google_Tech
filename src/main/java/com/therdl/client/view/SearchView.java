@@ -42,6 +42,8 @@ public interface SearchView extends RdlView {
 
 	AutoBean<SnipBean> getCurrentSearchOptionsBean();
 
+	void setCurrentSearchOptionsBean (AutoBean<SnipBean> snipBean);
+
 	AutoBean<SnipBean> initSearchOptionsBean();
 
 	Widget asWidget();

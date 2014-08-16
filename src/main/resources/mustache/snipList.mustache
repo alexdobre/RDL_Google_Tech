@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The Relationship Driving License</title>
+</head>
+<body>
+	<a href="/#{{moduleName}}:snipType=snip,fastCap,material,habit:sortField=creationDate:sortOrder=-1:page={{nextPage}}">NextPage</a>
+	{{#snipsList}}
+	<p>
+		<a href="/#!snipView:{{id}}">{{title}}</a>
+	</p>
+	<p>
+		<span>Author: {{author}}</span>
+		<span>Date: {{creationDate}}</span>
+	</p>
+	{{/snipsList}}
+</body>
+</html>

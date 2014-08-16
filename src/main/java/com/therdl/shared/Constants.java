@@ -14,7 +14,6 @@ public class Constants {
 	 * true  : will optimize the paths for jboss this is the deployed mode
 	 * false : will optimize the paths for jetty this is the development mode
 	 */
-	public static final boolean DEPLOY = true;
 	public static final int DEFAULT_PAGE_SIZE = 5;
 	public static final int DEFAULT_REFERENCE_PAGE_SIZE = 5;
 

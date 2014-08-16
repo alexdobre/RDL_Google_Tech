@@ -70,17 +70,12 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
 		log.info("SnipSearchPresenter getSnipSearchResult");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
-
-		log.info("SnipSearchPresenter getSnipDemoResult  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
 		searchOptionsBean.as().setPageIndex(pageIndex);
 		searchOptionsBean.as().setAction("search");
+		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
 
 		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
 		try {

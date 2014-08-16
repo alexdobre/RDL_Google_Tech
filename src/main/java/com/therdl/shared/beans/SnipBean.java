@@ -121,10 +121,6 @@ public interface SnipBean extends TokenizedBean{
 
 	void setViewerId(String id);
 
-	int getCount();
-
-	void setCount(int count);
-
 	int getPageIndex();
 
 	void setPageIndex(int pageIndex);

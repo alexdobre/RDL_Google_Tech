@@ -11,6 +11,7 @@ import com.therdl.server.api.UserService;
 import com.therdl.server.apiimpl.PaymentServiceImpl;
 import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
+import com.therdl.server.crawler.CrawlFilter;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.DbProviderImpl;
 import com.therdl.server.paypal_payment.PayPalConstants;
@@ -60,6 +61,8 @@ public class ServletInjector extends GuiceServletContextListener {
 				bind(SnipsValidator.class).to(SnipsValidatorImpl.class);
 				bind(TokenValidator.class).to(TokenValidatorImpl.class);
 				bind(UserValidator.class).to(UserValidatorImpl.class);
+
+				filter("/*").through(CrawlFilter.class);
 
 				serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
 				serve("/rdl/getUsers").with(UserDispatcherServlet.class);

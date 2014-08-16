@@ -95,7 +95,6 @@ public class SearchFilterWidget extends Composite {
 	SearchView view;
 
 	private String editPageToken;
-
 	private Beanery beanery = GWT.create(Beanery.class);
 
 
@@ -298,7 +297,10 @@ public class SearchFilterWidget extends Composite {
 
 	@UiHandler("getLinkBtn")
 	public void onLinkBtnClicked(ClickEvent event) {
-		BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this);
+		if (view.getCurrentSearchOptionsBean() == null){
+			view.setCurrentSearchOptionsBean(formSearchOptionBean());
+		}
+		BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this, view.getCurrentSearchOptionsBean());
 		int x = getLinkBtn.getAbsoluteLeft();
 		int y = getLinkBtn.getAbsoluteTop();
 		bookmarkSearchPopup.setPopupPosition(x + getLinkBtn.getOffsetWidth(), y);
@@ -403,6 +405,7 @@ public class SearchFilterWidget extends Composite {
 
 		searchOptionsBean.as().setSortOrder(sortOrder);
 		searchOptionsBean.as().setSortField(sortField);
+		searchOptionsBean.as().setPageIndex(0);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
 			searchOptionsBean.as().setSnipType(getCheckedSnipTypes());

@@ -114,10 +114,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 
 		String authUrl = GWT.getModuleBaseURL() + "getSession";
 
-		if (!Constants.DEPLOY) {
-			authUrl = authUrl.replaceAll("/therdl", "");
-		}
-
 		log.info("RdlAbstractPresenter submit updateUrl: " + authUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");

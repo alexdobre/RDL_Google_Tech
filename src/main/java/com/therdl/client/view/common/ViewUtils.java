@@ -121,6 +121,14 @@ public class ViewUtils {
 			if (keyVal[0].equals(RDLConstants.BookmarkSearch.PROPOSAL_STATE)) {
 				searchOptionsBean.as().setProposalState(keyVal[1]);
 			}
+
+			try{
+				if (keyVal[0].equals(RDLConstants.BookmarkSearch.PAGE)) {
+					searchOptionsBean.as().setPageIndex(Integer.parseInt(keyVal[1]));
+				}
+			}catch (Exception e){
+				searchOptionsBean.as().setPageIndex(0);
+			}
 		}
 
 		return searchOptionsBean;

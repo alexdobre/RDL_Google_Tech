@@ -19,29 +19,28 @@ import java.util.HashMap;
 public interface RDLConstants {
 
 	public interface Tokens {
-		String WELCOME = "welcome";
-		String SNIPS = "snips";
+		String WELCOME = "!welcome";
+		String SNIPS = "!snips";
 		String SNIP_EDIT = "snipEdit";
 		String LOG_OUT = "logOut";
 		String SIGN_UP = "signUp";
 		String PROFILE = "profile";
-		String SNIP_VIEW = "snipView";
+		String SNIP_VIEW = "!snipView";
 		String ERROR = "error";
 
-		String STORIES = "stories";
-		String IMPROVEMENTS = "improvements";
+		String STORIES = "!stories";
+		String IMPROVEMENTS = "!improvements";
 		String THREAD_EDIT = "threadEdit";
-		String THREAD_VIEW = "threadView";
+		String THREAD_VIEW = "!threadView";
 
 		String PROPOSAL_EDIT = "proposalEdit";
-		String PROPOSAL_VIEW = "proposalView";
+		String PROPOSAL_VIEW = "!proposalView";
 
 	}
 
 	public interface BookmarkSearch {
 		String TITLE = "title";
 		String CORE_CAT = "coreCat";
-		String SUB_CAT = "subCat";
 		String POS_REF = "posRef";
 		String NEUTRAL_REF = "neutralRef";
 		String NEGATIVE_REF = "negativeRef";
@@ -52,6 +51,7 @@ public interface RDLConstants {
 		String DATE_TO = "dateTo";
 		String POSTS = "posts";
 		String SNIP_TYPE = "snipType";
+		String PAGE="page";
 
 		String PROPOSAL_TYPE = "proposalType";
 		String PROPOSAL_STATE = "proposalState";

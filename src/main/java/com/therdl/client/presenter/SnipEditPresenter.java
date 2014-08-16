@@ -105,10 +105,6 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		log.info("SnipEditPresenter submit to server");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
-
 		log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -149,13 +145,8 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 
 	@Override
 	public void onDeleteSnip(String id, final String pageToRedirect) {
-
 		log.info("SnipEditPresenter onDelete: snip id " + id);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
 
 		log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -210,10 +201,6 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		log.info("SnipEditPresenter submit to server");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
-
 		log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -248,12 +235,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 
 	private void findSnipById(String snipId) {
 		log.info("SnipEditPresenter findSnipById");
-
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
 
 		log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));

@@ -114,7 +114,7 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 		} else {
 			AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
 			snipBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
-			doFilterSearch(snipBean, 0);
+			doFilterSearch(snipBean, snipBean.as().getPageIndex());
 		}
 
 		appMenu.setImprovementsActive();
@@ -140,6 +140,10 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 
 	public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
 		return currentSearchOptionsBean;
+	}
+
+	public void setCurrentSearchOptionsBean (AutoBean<SnipBean> snipBean){
+		this.currentSearchOptionsBean=snipBean;
 	}
 
 	@Override

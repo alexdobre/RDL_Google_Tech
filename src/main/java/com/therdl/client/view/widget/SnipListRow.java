@@ -25,7 +25,6 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Popover;
 import org.gwtbootstrap3.client.ui.Row;
 
 import java.util.Date;

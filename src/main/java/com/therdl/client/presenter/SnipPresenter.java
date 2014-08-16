@@ -89,12 +89,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	 */
 	private void viewSnipById() {
 		log.info("SnipPresenter viewSnipById currentSnipId=" + currentSnipId);
-
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
 
 		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -146,10 +141,6 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		final String snipType = bean.as().getSnipType();
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
-
 		log.info("SnipPresenter submit updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -186,12 +177,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	@Override
 	public void populateReplies(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
 		log.info("SnipPresenter populateReplies currentSnipId=" + currentSnipId);
-
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
 
 		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -247,12 +233,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 
 	public void giveSnipReputation(String id, final RequestObserver observer) {
 		log.info("SnipPresenter giveSnipReputation id=" + id);
-
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		if (!Constants.DEPLOY) {
-			updateUrl = updateUrl.replaceAll("/therdl", "");
-		}
 
 		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));

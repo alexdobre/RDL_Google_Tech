@@ -113,7 +113,7 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 		} else {
 			AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
 			snipBean.as().setSnipType(RDLConstants.SnipType.THREAD);
-			doFilterSearch(snipBean, 0);
+			doFilterSearch(snipBean, snipBean.as().getPageIndex());
 		}
 		appMenu.setStoriesActive();
 
@@ -138,6 +138,10 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 
 	public AutoBean<SnipBean> getCurrentSearchOptionsBean() {
 		return currentSearchOptionsBean;
+	}
+
+	public void setCurrentSearchOptionsBean (AutoBean<SnipBean> snipBean){
+		this.currentSearchOptionsBean=snipBean;
 	}
 
 	@Override

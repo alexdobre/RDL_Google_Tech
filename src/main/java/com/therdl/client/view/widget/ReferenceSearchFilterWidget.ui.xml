@@ -10,51 +10,48 @@
 		}
 	</ui:style>
 	<b:Form type="HORIZONTAL">
-		<b:FieldSet>
-			<b:Legend ui:field="filterLabel" text="{i18n.filterReferences}"/>
+		<b:Legend ui:field="filterLabel" text="{i18n.filterReferences}"/>
 
-			<b:FormGroup ui:field="typeGroup">
-				<b:FormLabel for="searchType" addStyleNames="col-lg-3" text="{i18n.type}"/>
-				<g:FlowPanel addStyleNames="col-lg-9" ui:field="refTypePanel"/>
-			</b:FormGroup>
+		<b:FormGroup ui:field="typeGroup">
+			<b:FormLabel for="searchType" addStyleNames="col-lg-3" text="{i18n.type}"/>
+			<g:FlowPanel addStyleNames="col-lg-9" ui:field="refTypePanel"/>
+		</b:FormGroup>
 
-			<b:FormGroup>
-				<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorRep}"/>
-				<g:FlowPanel addStyleNames="col-lg-5">
-					<b:TextBox ui:field="authorRep"/>
-				</g:FlowPanel>
-				<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorRepPanel"/>
-			</b:FormGroup>
+		<b:FormGroup>
+			<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorRep}"/>
+			<g:FlowPanel addStyleNames="col-lg-5">
+				<b:TextBox ui:field="authorRep"/>
+			</g:FlowPanel>
+			<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorRepPanel"/>
+		</b:FormGroup>
 
-			<b:FormGroup>
-				<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorName}"/>
-				<g:FlowPanel addStyleNames="col-lg-5">
-					<b:TextBox ui:field="authorName"/>
-				</g:FlowPanel>
-				<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorNamePanel"/>
-			</b:FormGroup>
+		<b:FormGroup>
+			<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorName}"/>
+			<g:FlowPanel addStyleNames="col-lg-5">
+				<b:TextBox ui:field="authorName"/>
+			</g:FlowPanel>
+			<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorNamePanel"/>
+		</b:FormGroup>
 
-			<b:FormGroup ui:field="proposalGroup">
-				<g:FlowPanel ui:field="proposalCheckboxPanel" addStyleNames="col-lg-12"/>
-			</b:FormGroup>
+		<b:FormGroup ui:field="proposalGroup">
+			<g:FlowPanel ui:field="proposalCheckboxPanel" addStyleNames="col-lg-12"/>
+		</b:FormGroup>
 
-			<b:FormGroup>
-				<b:FormLabel addStyleNames="col-lg-5" text="{i18n.date}"/>
-				<g:FlowPanel addStyleNames="col-lg-5">
-					<rdl:DateFilterWidget ui:field="dateFilterWidget"/>
-				</g:FlowPanel>
-				<g:FlowPanel addStyleNames="col-lg-1" ui:field="datePanel"/>
-			</b:FormGroup>
+		<b:FormGroup>
+			<b:FormLabel addStyleNames="col-lg-5" text="{i18n.date}"/>
+			<g:FlowPanel addStyleNames="col-lg-5">
+				<rdl:DateFilterWidget ui:field="dateFilterWidget"/>
+			</g:FlowPanel>
+			<g:FlowPanel addStyleNames="col-lg-1" ui:field="datePanel"/>
+		</b:FormGroup>
 
-			<b:Container>
-				<b:ButtonToolBar>
-					<b:ButtonGroup>
-						<b:Button ui:field="refFilter" text="{i18n.filter}"/>
-					</b:ButtonGroup>
-				</b:ButtonToolBar>
-			</b:Container>
-
-		</b:FieldSet>
+		<b:Container>
+			<b:ButtonToolBar>
+				<b:ButtonGroup>
+					<b:Button ui:field="refFilter" text="{i18n.filter}"/>
+				</b:ButtonGroup>
+			</b:ButtonToolBar>
+		</b:Container>
 	</b:Form>
 
 </ui:UiBinder>
