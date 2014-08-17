@@ -15,7 +15,7 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.shared.Constants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -38,19 +38,23 @@ import java.util.logging.Logger;
  */
 public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(SnipPresenter.class.getName());
 
 	private Beanery beanery = GWT.create(Beanery.class);
 	private String currentSnipId;
-	AutoBean<CurrentUserBean> currentUserBean;
+	private AutoBean<CurrentUserBean> currentUserBean;
+	private AutoBean<SnipBean> searchOptionsBean;
 	private HasWidgets container;
 
-	public SnipPresenter(SnipView snipView, String currentSnipId, AppController appController) {
+	public SnipPresenter(SnipView snipView, AppController appController, String token) {
 		super(appController);
 		this.view = snipView;
-		this.currentSnipId = currentSnipId;
+		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
+		log.info("currentSnipId at constructor time: "+currentSnipId+" from token: "+token);
 		this.controller = appController;
 		this.view.setPresenter(this);
+		this.searchOptionsBean = RDLUtils.parseSearchToken(beanery, token, currentSnipId);
+		snipView.setSearchOptionsBean(searchOptionsBean);
 	}
 
 	/**
@@ -175,17 +179,15 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	}
 
 	@Override
-	public void populateReplies(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
+	public void populateReplies(AutoBean<SnipBean> searchOptionsBean) {
 		log.info("SnipPresenter populateReplies currentSnipId=" + currentSnipId);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
 		searchOptionsBean.as().setAction("getReferences");
-		searchOptionsBean.as().setPageIndex(pageIndex);
 		searchOptionsBean.as().setId(currentSnipId);
+		final int pageIndex = searchOptionsBean.as().getPageIndex();
 
 		if (controller.getCurrentUserBean().as().isAuth()) {
 			searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());

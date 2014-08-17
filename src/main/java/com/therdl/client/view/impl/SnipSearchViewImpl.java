@@ -13,6 +13,7 @@ import com.therdl.client.view.widget.ListWidget;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.SearchFilterWidget;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -70,12 +71,6 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 
 	private Beanery beanery = GWT.create(Beanery.class);
 
-	private String token;
-
-	private String authorName;
-
-	private boolean firstTimeLoaded = false;
-
 	public SnipSearchViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -83,53 +78,6 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 
 		searchFilterWidget = new SearchFilterWidget(this);
 		snipSearchWidgetPanel.add(searchFilterWidget);
-	}
-
-	public void setToken(String token) {
-
-		String[] tokenSplit = token.split(":");
-		if (tokenSplit.length == 2) {
-			this.token = tokenSplit[0];
-			this.authorName = tokenSplit[1];
-		} else {
-			this.token = token;
-			this.authorName = null;
-		}
-		appMenu.setIdeasActive();
-	}
-
-	@Override
-	protected void onLoad() {
-		super.onLoad();
-
-		if (token.equals(RDLConstants.Tokens.SNIPS)) {
-			if (authorName != null) {
-				AutoBean<SnipBean> searchOptionsBean = initSearchOptionsBean();
-				searchOptionsBean.as().setAuthor(authorName);
-
-				doFilterSearch(searchOptionsBean, 0);
-			} else {
-				if (!firstTimeLoaded)
-					getInitialSnipList(0);
-			}
-		} else {
-			AutoBean<SnipBean> snipBean = ViewUtils.parseToken(beanery, token);
-			doFilterSearch(snipBean, snipBean.as().getPageIndex());
-		}
-
-	}
-
-	public AutoBean<SnipBean> initSearchOptionsBean() {
-		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
-		searchOptionsBean.as().setSortOrder(-1);
-		searchOptionsBean.as().setSnipType(RDLConstants.SnipType.SNIP + "," + RDLConstants.SnipType.HABIT + "," + RDLConstants.SnipType.FAST_CAP + "," + RDLConstants.SnipType.MATERIAL);
-
-		return searchOptionsBean;
-	}
-
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
 	}
 
 	public AutoBean<CurrentUserBean> getCurrentUserBean() {
@@ -140,52 +88,35 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 		return currentSearchOptionsBean;
 	}
 
-	public void setCurrentSearchOptionsBean (AutoBean<SnipBean> snipBean){
-		this.currentSearchOptionsBean=snipBean;
+	public void setCurrentSearchOptionsBean(AutoBean<SnipBean> snipBean) {
+		this.currentSearchOptionsBean = snipBean;
 	}
 
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		authorName = null;
-		if (snipList == null){
+		if (snipList == null) {
 			snipList = new ListWidget(this, beanList, pageIndex);
 			snipListRowContainer.add(snipList);
-		}else{
-			snipList.populateList(this,beanList);
+		} else {
+			snipList.populateList(this, beanList);
 		}
-
+		this.currentSearchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
 	}
 
 	/**
 	 * call presenter function to search snips for the given search options
-	 *
-	 * @param searchOptionsBean bean for the search options
-	 * @param pageIndex
 	 */
 
 	@Override
-	public void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex) {
+	public void doFilterSearch() {
 		ViewUtils.show(loadingWidget);
-		currentSearchOptionsBean = searchOptionsBean;
 		searchFilterWidget.setSearchFilterFields(currentSearchOptionsBean);
-		presenter.searchSnips(searchOptionsBean, pageIndex);
-	}
-
-	/**
-	 * call presenter function to retrieve initial list for snips
-	 */
-	@Override
-	public void getInitialSnipList(int pageIndex) {
-		firstTimeLoaded = true;
-		currentSearchOptionsBean = null;
-		ViewUtils.show(loadingWidget);
-
-		presenter.searchSnips(initSearchOptionsBean(), pageIndex);
+		presenter.searchSnips(currentSearchOptionsBean);
 	}
 
 	@Override
-	public ListWidget getListWidget(){
+	public ListWidget getListWidget() {
 		return snipList;
 	}
 }

@@ -13,18 +13,14 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.RdlView;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.shared.Constants;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.events.CredentialsSubmitEvent;
 import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
-import sun.management.resources.agent;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -62,10 +58,10 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 	}
 
 	public void checkLogin() {
-		log.info("RDL abstract presenter check login is auth: "+getController().getCurrentUserBean().as().isAuth());
-		if (getController().getCurrentUserBean().as().isAuth()){
+		log.info("RDL abstract presenter check login is auth: " + getController().getCurrentUserBean().as().isAuth());
+		if (getController().getCurrentUserBean().as().isAuth()) {
 			//do nothing
-		}else {
+		} else {
 			loginCookieCheck();
 		}
 	}
@@ -82,7 +78,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 				log.info("Found cookie with SID " + sessionID);
 				//check if the SID is found and authenticate the user
 				doLogIn(null, null, true, sessionID, null);
-			}else {
+			} else {
 				view.getAppMenu().logOut();
 			}
 		}

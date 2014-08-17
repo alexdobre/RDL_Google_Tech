@@ -26,38 +26,39 @@
 		}
 	</ui:style>
 	<b:Container>
-	<b:Modal title="{i18n.pleaseLogin}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true" b:id="signInModal"
-			ui:field="modal">
-		<b:ModalBody>
-			<b:Row>
-				<b:Column size="MD_6">
-					<b:TextBox ui:field="email" placeholder="{i18n.email}"/>
-				</b:Column>
-				<b:Column size="MD_6">
-					<b:Input ui:field="password"  type="PASSWORD" placeholder="{i18n.password}"/>
-				</b:Column>
-			</b:Row>
-			<b:Row>
-				<b:Column size="MD_6" >
-					<b:Label styleName='{style.labelText}' text="{i18n.rememberMe}"/>
-					<g:CheckBox ui:field="rememberMe"></g:CheckBox>
-					<b:Label ui:field="loginFail" text="{i18n.loginFailMsg}" styleName='{style.validate}'/>
-				</b:Column>
-				<b:Column size="MD_6">
-					<b:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}" />
-				</b:Column>
-			</b:Row>
-		</b:ModalBody>
-		<b:ModalFooter>
-			<b:Row>
-				<b:Column size="MD_4">
-					<b:Button ui:field="submit" text="{i18n.submit}"/>
-				</b:Column>
-				<b:Column size="MD_4" offset="MD_4">
-					<b:Anchor ui:field="signUpLink" text="{i18n.signUp}"/>
-				</b:Column>
-			</b:Row>
-		</b:ModalFooter>
-	</b:Modal>
+		<b:Modal title="{i18n.pleaseLogin}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="signInModal"
+		         ui:field="modal">
+			<b:ModalBody>
+				<b:Row>
+					<b:Column size="MD_6">
+						<b:TextBox ui:field="email" placeholder="{i18n.email}"/>
+					</b:Column>
+					<b:Column size="MD_6">
+						<b:Input ui:field="password" type="PASSWORD" placeholder="{i18n.password}"/>
+					</b:Column>
+				</b:Row>
+				<b:Row>
+					<b:Column size="MD_6">
+						<b:Label styleName='{style.labelText}' text="{i18n.rememberMe}"/>
+						<g:CheckBox ui:field="rememberMe"></g:CheckBox>
+						<b:Label ui:field="loginFail" text="{i18n.loginFailMsg}" styleName='{style.validate}'/>
+					</b:Column>
+					<b:Column size="MD_6">
+						<b:Anchor ui:field="forgotPassLink" text="{i18n.forgotPassword}"/>
+					</b:Column>
+				</b:Row>
+			</b:ModalBody>
+			<b:ModalFooter>
+				<b:Row>
+					<b:Column size="MD_4">
+						<b:Button ui:field="submit" text="{i18n.submit}"/>
+					</b:Column>
+					<b:Column size="MD_4" offset="MD_4">
+						<b:Anchor ui:field="signUpLink" text="{i18n.signUp}"/>
+					</b:Column>
+				</b:Row>
+			</b:ModalFooter>
+		</b:Modal>
 	</b:Container>
 </ui:UiBinder> 

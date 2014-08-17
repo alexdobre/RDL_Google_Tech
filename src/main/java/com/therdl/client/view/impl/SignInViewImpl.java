@@ -1,12 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.TextBox;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -26,6 +19,12 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LogInOkEventEventHandler;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.TextBox;
+
+import java.util.logging.Logger;
 
 
 /**
@@ -85,11 +84,11 @@ public class SignInViewImpl extends Composite implements SignInView {
 		});
 	}
 
-	public void show(){
+	public void show() {
 		modal.show();
 	}
 
-	public void hide(){
+	public void hide() {
 		modal.hide();
 	}
 
@@ -170,7 +169,8 @@ public class SignInViewImpl extends Composite implements SignInView {
 		History.newItem(RDLConstants.Tokens.SIGN_UP);
 	}
 
-	/*** click handler for sign up link, redirects to sign up view
+	/**
+	 * click handler for sign up link, redirects to sign up view
 	 *
 	 * @param event
 	 */

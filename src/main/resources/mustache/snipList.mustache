@@ -5,8 +5,11 @@
     <title>The Relationship Driving License</title>
 </head>
 <body>
-	<a href="/#{{moduleName}}:snipType=snip,fastCap,material,habit:sortField=creationDate:sortOrder=-1:page={{nextPage}}">NextPage</a>
-	{{#snipsList}}
+{{#renderNextPage}}
+	<a href="/#{{nextPageLink}}">NextPage</a>
+{{/renderNextPage}}
+
+{{#snipsList}}
 	<p>
 		<a href="/#!snipView:{{id}}">{{title}}</a>
 	</p>
@@ -14,6 +17,6 @@
 		<span>Author: {{author}}</span>
 		<span>Date: {{creationDate}}</span>
 	</p>
-	{{/snipsList}}
+{{/snipsList}}
 </body>
 </html>

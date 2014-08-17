@@ -12,18 +12,12 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
-import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.PaginationHelper;
-import com.therdl.shared.Constants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInEvent;
-import com.therdl.shared.events.LogInEventEventHandler;
-import com.therdl.shared.events.PaginationSnipsEvent;
-import com.therdl.shared.events.PaginationSnipsEventHandler;
 
 import java.util.ArrayList;
 
@@ -47,10 +41,11 @@ import java.util.ArrayList;
 
 public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implements SearchView.Presenter {
 
-	public SnipSearchPresenter(SearchView searchView, AppController controller) {
+	public SnipSearchPresenter(SearchView searchView, AppController controller, String token) {
 		super(controller);
 		this.view = searchView;
 		this.view.setPresenter(this);
+		this.view.setCurrentSearchOptionsBean(RDLUtils.parseSearchToken(beanery, token, null));
 	}
 
 	@Override
@@ -58,6 +53,8 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 		log.info("SnipSearchPresenter go adding view");
 		checkLogin();
 		container.clear();
+		view.getAppMenu().setActive();
+		searchSnips(view.getCurrentSearchOptionsBean());
 		container.add(view.asWidget());
 	}
 
@@ -67,13 +64,12 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 	 * @param searchOptionsBean : bean of the snip search options
 	 */
 	@Override
-	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, final int pageIndex) {
+	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean) {
 		log.info("SnipSearchPresenter getSnipSearchResult");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
-		searchOptionsBean.as().setPageIndex(pageIndex);
 		searchOptionsBean.as().setAction("search");
 		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
 
@@ -99,8 +95,9 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 
 					}
 
-					view.displaySnipList(beanList, pageIndex);
-					PaginationHelper.showPaginationOnView(pageIndex,beanList.size(),view.getListWidget());
+					view.displaySnipList(beanList, searchOptionsBean.as().getPageIndex());
+					PaginationHelper.showPaginationOnView(searchOptionsBean.as().getPageIndex(),
+							beanList.size(), view.getListWidget());
 				}
 
 				@Override

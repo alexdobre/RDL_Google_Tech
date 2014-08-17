@@ -20,7 +20,7 @@ public abstract class AppMenuView extends Composite {
 	}
 
 	@Override
-	public Widget asWidget(){
+	public Widget asWidget() {
 		this.appMenuPanel.clear();
 		this.appMenuPanel.add(appMenu);
 		return super.asWidget();

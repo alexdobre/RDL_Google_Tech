@@ -16,7 +16,7 @@ public interface SnipView extends RdlView, PaginatedView {
 	public interface Presenter {
 		public void saveReference(AutoBean<SnipBean> bean);
 
-		public void populateReplies(AutoBean<SnipBean> searchOptionsBean, final int pageIndex);
+		public void populateReplies(AutoBean<SnipBean> searchOptionsBean);
 
 		public void giveSnipReputation(String id, final RequestObserver observer);
 
@@ -50,5 +50,9 @@ public interface SnipView extends RdlView, PaginatedView {
 	public void showHideLikeOrEditButton(Boolean isAuthor, Boolean repGiven);
 
 	public void showHideReplyButton(Boolean show);
+
+	public AutoBean<SnipBean> getSearchOptionsBean();
+
+	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean);
 
 }

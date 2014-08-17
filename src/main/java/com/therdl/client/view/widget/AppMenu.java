@@ -13,6 +13,7 @@ import com.therdl.client.presenter.ForgotPasswordPresenter;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.impl.ForgotPasswordImpl;
 import com.therdl.client.view.impl.SignInViewImpl;
+import com.therdl.shared.Global;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -176,6 +177,12 @@ public class AppMenu extends Composite {
 	public void setStoriesActive() {
 		allInactive();
 		stories.setActive(true);
+	}
+
+	public void setActive (){
+		if (Global.moduleName == RDLConstants.Modules.STORIES) setStoriesActive();
+		if (Global.moduleName == RDLConstants.Modules.IDEAS) setIdeasActive();
+		if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
 	}
 
 	/**

@@ -1,8 +1,5 @@
 package com.therdl.client.view.impl;
 
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Modal;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -15,6 +12,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.widget.AppMenu;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
 
 /**
  * ForgotPasswordImpl class ia a view in the Model View Presenter Design Pattern (MVP)

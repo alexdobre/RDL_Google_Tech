@@ -45,12 +45,12 @@ public interface RDLConstants {
 		String NEUTRAL_REF = "neutralRef";
 		String NEGATIVE_REF = "negativeRef";
 		String REP = "rep";
-		String CONTENT = "content";
 		String AUTHOR = "author";
 		String DATE_FROM = "dateFrom";
 		String DATE_TO = "dateTo";
 		String POSTS = "posts";
 		String SNIP_TYPE = "snipType";
+		String PARENT="parent";
 		String PAGE="page";
 
 		String PROPOSAL_TYPE = "proposalType";

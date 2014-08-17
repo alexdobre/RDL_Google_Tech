@@ -58,25 +58,23 @@ public class SnipServiceImpl implements SnipsService {
 	 * search snips for the given search options
 	 *
 	 * @param searchOptions search option data
-	 * @param pageIndex
 	 * @return list of SnipBean
 	 */
 	@Override
-	public List<SnipBean> searchSnipsWith(SnipBean searchOptions, int pageIndex) {
+	public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
 		BasicDBObject query = new BasicDBObject();
+		int pageIndex = searchOptions.getPageIndex();
 
+		if (searchOptions.getParentSnip() != null)
+			query.put("parentSnip",searchOptions.getParentSnip());
 		if (searchOptions.getTitle() != null)
 			query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle(), java.util.regex.Pattern.CASE_INSENSITIVE));
 		if (searchOptions.getAuthor() != null)
 			query.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
-		if (searchOptions.getContent() != null)
-			query.put("content", java.util.regex.Pattern.compile(searchOptions.getContent(), java.util.regex.Pattern.CASE_INSENSITIVE));
 		if (searchOptions.getCoreCat() != null)
 			query.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
-		if (searchOptions.getSubCat() != null)
-			query.put("subCat", searchOptions.getSubCat());
 		if (searchOptions.getPosRef() != null)
 			query.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
 		if (searchOptions.getNeutralRef() != null)
@@ -91,8 +89,6 @@ public class SnipServiceImpl implements SnipsService {
 			query.put("posts", new BasicDBObject("$gte", searchOptions.getPosts()));
 		if (searchOptions.getSnipType() != null) {
 			query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
-		} else {
-			query.put("snipType", new BasicDBObject("$ne", RDLConstants.SnipType.REFERENCE));
 		}
 		if (searchOptions.getProposalType() != null)
 			query.put("proposalType", new BasicDBObject("$in", searchOptions.getProposalType().split(",")));
@@ -411,7 +407,7 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("editDate", snip.getEditDate());
 		doc.append("snipType", snip.getSnipType());
 		doc.append("coreCat", snip.getCoreCat());
-		doc.append("subCat", snip.getSubCat());
+		doc.append("parentSnip", snip.getParentSnip());
 		doc.append("views", snip.getViews());
 		doc.append("rep", snip.getRep());
 		doc.append("posRef", snip.getPosRef());
@@ -472,7 +468,7 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setTitle((String) doc.get("title"));
 		snip.setReferenceType((String) doc.get("referenceType"));
 		snip.setPosRef(RDLUtils.parseInt(doc.get("posRef")));
-		snip.setSubCat((String) doc.get("subCat"));
+		snip.setParentSnip((String) doc.get("parentSnip"));
 		snip.setVotes((String) doc.get("votes"));
 		snip.setParentSnip((String) doc.get("parentSnip"));
 		snip.setPosts(RDLUtils.parseInt(doc.get("posts")));

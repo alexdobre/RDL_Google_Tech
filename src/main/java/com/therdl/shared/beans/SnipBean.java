@@ -65,10 +65,6 @@ public interface SnipBean extends TokenizedBean{
 
 	void setCoreCat(String coreCat);
 
-	String getSubCat();
-
-	void setSubCat(String subCat);
-
 	Integer getViews();
 
 	void setViews(Integer views);

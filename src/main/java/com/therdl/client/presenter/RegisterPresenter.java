@@ -13,7 +13,6 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.RegisterView;
-import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -41,7 +40,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	 *
 	 * @param container       the view container
 	 * @param currentUserBean the user state bean, mainly used for authorisation
-	 *                   and to update the menu
+	 *                        and to update the menu
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
@@ -58,7 +57,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	 * user for the upper menu in the WelcomeView
 	 *
 	 * @param bean) constructed from the submitted email String (unique identifier) and
-	 *                               password String password these credentilas will be used as identifiers for subsequent login
+	 *              password String password these credentilas will be used as identifiers for subsequent login
 	 */
 
 

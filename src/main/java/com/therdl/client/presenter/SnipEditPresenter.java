@@ -15,9 +15,9 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.SnipEditView;
-import com.therdl.shared.Constants;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -40,12 +40,12 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	private String currentSnipId;
 	private HasWidgets container;
 
-	public SnipEditPresenter(SnipEditView view, String currentSnipId, AppController appController) {
+	public SnipEditPresenter(SnipEditView view, AppController appController, String token) {
 		super(appController);
 		this.view = view;
 		this.view.setPresenter(this);
-
-		this.currentSnipId = currentSnipId;
+		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
+		log.info("currentSnipId at constructor time: "+currentSnipId+" from token: "+token);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	}
 
 
-	private void showHide(){
+	private void showHide() {
 		view.showHideCategories(false);
 		view.showHideIdeaTypes(false);
 
@@ -86,7 +86,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	 * or send request to find snip with the current snip id
 	 */
 	private void loadEditor() {
-		if (!currentSnipId.equals("")) {
+		if (currentSnipId != null && !currentSnipId.equals("")) {
 			findSnipById(currentSnipId);
 		} else {
 			view.populate(null);

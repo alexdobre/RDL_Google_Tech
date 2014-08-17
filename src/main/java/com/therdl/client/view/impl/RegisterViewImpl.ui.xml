@@ -24,17 +24,17 @@
 				<b:FormGroup>
 					<b:FormLabel addStyleNames="col-lg-2" text="{i18n.password}"/>
 					<g:FlowPanel addStyleNames="col-lg-4">
-						<b:Input type="PASSWORD" ui:field="psswd" />
+						<b:Input type="PASSWORD" ui:field="psswd"/>
 					</g:FlowPanel>
 				</b:FormGroup>
 				<b:FormGroup>
 					<b:FormLabel addStyleNames="col-lg-2" text="{i18n.confirmPassword}"/>
 					<g:FlowPanel addStyleNames="col-lg-4">
-						<b:Input type="PASSWORD" ui:field="cpsswd" />
+						<b:Input type="PASSWORD" ui:field="cpsswd"/>
 					</g:FlowPanel>
 				</b:FormGroup>
 				<b:FormGroup>
-					<g:FlowPanel addStyleNames="col-lg-4 col-lg-offset-2" >
+					<g:FlowPanel addStyleNames="col-lg-4 col-lg-offset-2">
 						<b:Button ui:field="submitBtn" type="DEFAULT" text="{i18n.submit}"/>
 					</g:FlowPanel>
 				</b:FormGroup>

@@ -5,13 +5,17 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.SnipsService;
+import com.therdl.shared.Constants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -32,16 +36,31 @@ public class SnipViewTemplateProcessor {
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 	}
 
-	public void doProcess(final PrintWriter out, String query) throws IOException {
+	public void doProcess(final PrintWriter out, String query, String moduleName) throws IOException {
 		log.info("SnipViewTemplateProcessor - doProcess - BEGIN - query: " + query);
 		SnipBean snipBean = snipsService.getSnip(extractId(query));
+		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, snipBean.getId());
+		List<SnipBean> repliesList = snipsService.searchSnipsWith(queryBean.as());
+
+		queryBean.as().setPageIndex(queryBean.as().getPageIndex()+1);
+		SnipViewTemplate template = new SnipViewTemplate(snipBean, repliesList,
+				RDLUtils.builtTokenFromBean(queryBean,moduleName, extractId(query)), shouldRenderNextPage(repliesList));
 
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mustache = mf.compile("mustache/snipView.mustache");
-		mustache.execute(out, new SnipViewTemplate(snipBean)).flush();
+		mustache.execute(out, template).flush();
 	}
 
+	//the ID must always be the second item on the split
 	private String extractId(String query) {
-		return query.substring(query.lastIndexOf(':') + 1, query.length());
+		String[] querySplit = query.split(":");
+		return querySplit[1];
+	}
+
+	private boolean shouldRenderNextPage (List<SnipBean> snipList){
+		if (snipList == null || snipList.size() < Constants.DEFAULT_REFERENCE_PAGE_SIZE){
+			return false;
+		}
+		return true;
 	}
 }

@@ -2,11 +2,24 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>The Relationship Driving License</title>
+    <title>{{snipBean.title}}</title>
 </head>
 <body>
-	<p>Snip: {{snipBean}}</p>
 	<p>Title: {{snipBean.title}}</p>
-	<div>{{snipBean.content}}</div>
+	<p>
+		<span>Author: {{snipBean.author}}</span>
+		<span>Date: {{snipBean.creationDate}}</span>
+	</p>
+	<div>{{{snipBean.content}}}</div>
+{{#renderNextPage}}
+	<a href="/#{{nextPageLink}}">NextPage</a>
+{{/renderNextPage}}
+{{#repliesList}}
+	<p>
+		<span>Author: {{author}}</span>
+		<span>Date: {{creationDate}}</span>
+	</p>
+	<div>{{{content}}}</div>
+{{/repliesList}}
 </body>
 </html>

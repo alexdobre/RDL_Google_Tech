@@ -91,9 +91,8 @@ public class ReferenceSearchFilterWidget extends Composite {
 			@Override
 			public void onPagination(PaginationSnipsEvent event) {
 				int newPageIndex = event.isNextPage() ? (event.getPageIndex() + 1) : (event.getPageIndex() - 1);
-				view.setPageIndex(newPageIndex);
-				view.setSearchOptionsBean(formSearchOptionsBean());
-				view.getPresenter().populateReplies(view.getSearchOptionsBean(), newPageIndex);
+				view.getSearchOptionsBean().as().setPageIndex(newPageIndex);
+				view.getPresenter().populateReplies(view.getSearchOptionsBean());
 			}
 		});
 	}
@@ -189,7 +188,8 @@ public class ReferenceSearchFilterWidget extends Composite {
 	@UiHandler("refFilter")
 	public void filterReferences(ClickEvent event) {
 		view.setSearchOptionsBean(formSearchOptionsBean());
-		view.getPresenter().populateReplies(view.getSearchOptionsBean(), 0);
+		view.getSearchOptionsBean().as().setPageIndex(0);
+		view.getPresenter().populateReplies(view.getSearchOptionsBean());
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 	 * @return search option bean as SnipBean object
 	 */
 	private AutoBean<SnipBean> formSearchOptionsBean() {
-		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+		AutoBean<SnipBean> searchOptionsBean = view.getSearchOptionsBean();
 
 		if (!authorRep.getText().equals(""))
 			searchOptionsBean.as().setAuthorRep(Integer.parseInt(authorRep.getText()));

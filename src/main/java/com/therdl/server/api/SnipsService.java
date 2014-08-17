@@ -56,10 +56,9 @@ public interface SnipsService {
 	 * search snips for the given search options
 	 *
 	 * @param snip      search option data
-	 * @param pageIndex index of page
 	 * @return list of SnipBean
 	 */
-	List<SnipBean> searchSnipsWith(SnipBean snip, int pageIndex);
+	List<SnipBean> searchSnipsWith(SnipBean snip);
 
 	/**
 	 * makes current timestamp

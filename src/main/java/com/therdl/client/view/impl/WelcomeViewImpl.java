@@ -10,8 +10,6 @@ import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.presenter.ForgotPasswordPresenter;
-import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
@@ -24,7 +22,6 @@ import com.therdl.client.view.widget.text.EroticismDescription;
 import com.therdl.client.view.widget.text.ExteriorDescription;
 import com.therdl.client.view.widget.text.PsyTendDescription;
 import com.therdl.client.view.widget.text.SeductionDescription;
-import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.CurrentUserBean;
 
 import java.util.logging.Logger;

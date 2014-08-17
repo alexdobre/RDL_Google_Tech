@@ -8,7 +8,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -31,8 +30,6 @@ import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.PaginationSnipsEvent;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
@@ -61,7 +58,7 @@ import java.util.logging.Logger;
  */
 public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(SnipViewImpl.class.getName());
 
 	private final AutoBean<CurrentUserBean> currentUserBean;
 
@@ -74,11 +71,9 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 	private Beanery beanery = GWT.create(Beanery.class);
 
 	private AutoBean<SnipBean> currentSnipBean;
-	private boolean showEditBtn = false;
-	private int pageIndex;
 
 	@UiField
-	FlowPanel snipViewCont , radioBtnParent, radioBtnParentProp;
+	FlowPanel snipViewCont, radioBtnParent, radioBtnParentProp;
 	@UiField
 	Panel referenceCont;
 	@UiField
@@ -104,7 +99,7 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 	private ArrayList<ReferenceListRow> itemList;
 	ReferenceSearchFilterWidget referenceSearchFilterWidget;
 
-	AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+	private AutoBean<SnipBean> searchOptionsBean;
 	String btnTextShow = RDL.i18n.showReferences();
 	String btnTextHide = RDL.i18n.hideReferences();
 	String snipType = RDLConstants.SnipType.REFERENCE;
@@ -172,11 +167,11 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 	public void viewSnip(AutoBean<SnipBean> snipBean) {
 		this.currentSnipBean = snipBean;
 		// this is the top widget, like in the list widget
-		if (snipListRow == null){
+		if (snipListRow == null) {
 			snipListRow = new SnipListRow(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()),
 					snipViewCont);
-		}else {
-			snipListRow.populate(snipBean,currentUserBean,SnipType.fromString(snipBean.as().getSnipType()));
+		} else {
+			snipListRow.populate(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()));
 		}
 		snipViewCont.add(snipListRow);
 		richTextArea.getElement().setInnerHTML(snipBean.as().getContent());
@@ -243,10 +238,8 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 	@UiHandler("showRef")
 	public void onShowRefClicked(ClickEvent event) {
 		if (showRef.getText().equals(RDL.i18n.showReferences()) || showRef.getText().equals(RDL.i18n.showPosts())) {
-			initSearchOptionsBean();
-
 			ViewUtils.hide(loadingWidget);
-			presenter.populateReplies(searchOptionsBean, 0);
+			presenter.populateReplies(searchOptionsBean);
 
 		} else {
 			ViewUtils.hide(referenceListCont);
@@ -254,14 +247,6 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 			showRef.setText(btnTextShow);
 		}
 	}
-
-	private void initSearchOptionsBean() {
-		searchOptionsBean = beanery.snipBean();
-		searchOptionsBean.as().setSortOrder(-1);
-		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
-		searchOptionsBean.as().setSnipType(snipType);
-	}
-
 
 	@UiHandler("repBtn")
 	public void onRepBtnClicked(ClickEvent event) {
@@ -381,8 +366,8 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 	 * @param beanList list of references as bean objects
 	 */
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		log.info("Showing references: "+beanList);
-		this.pageIndex = pageIndex;
+		log.info("Showing references: " + beanList);
+		this.searchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
 		showRef.setText(btnTextHide);
 		ViewUtils.show(referenceListCont);
@@ -392,15 +377,15 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 		for (int j = 0; j < beanList.size(); j++) {
 			//we first see is we already have an item created
 			ReferenceListRow referenceListRow;
-			if (itemList.size()>=j+1){
+			if (itemList.size() >= j + 1) {
 				//if yes we just populate the existing item
 				referenceListRow = itemList.get(j);
-				referenceListRow.populate(beanList.get(j), this.currentUserBean,this);
+				referenceListRow.populate(beanList.get(j), this.currentUserBean, this);
 				ViewUtils.show(referenceListRow.getParentObject());
-			}else {
+			} else {
 				//otherwise we create a new item
 				LinkedGroupItem listItem = new LinkedGroupItem();
-				referenceListRow  = new ReferenceListRow(beanList.get(j), currentUserBean,this,listItem);
+				referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this, listItem);
 				itemList.add(referenceListRow);
 				listItem.setPaddingBottom(2);
 				listItem.setPaddingTop(2);
@@ -415,10 +400,10 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 	}
 
 	public void hideUnusedItems(ArrayList<AutoBean<SnipBean>> beanList) {
-		if (beanList.size() < Constants.DEFAULT_REFERENCE_PAGE_SIZE){
-			if (itemList.size() > beanList.size()){
-				for (int i = 0; i< itemList.size()-beanList.size(); i++){
-					ViewUtils.hide(itemList.get(beanList.size()+i).getParentObject());
+		if (beanList.size() < Constants.DEFAULT_REFERENCE_PAGE_SIZE) {
+			if (itemList.size() > beanList.size()) {
+				for (int i = 0; i < itemList.size() - beanList.size(); i++) {
+					ViewUtils.hide(itemList.get(beanList.size() + i).getParentObject());
 				}
 			}
 		}
@@ -426,15 +411,15 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 
 	@UiHandler("nextPage")
 	public void nextPageClicked(ClickEvent event) {
-		log.info("Firing next page event from pageIndex: "+pageIndex);
-		PaginationHelper.fireNextPageEvent(pageIndex, listRange.getText(), itemList.size(),
+		log.info("Firing next page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
+		PaginationHelper.fireNextPageEvent(searchOptionsBean.as().getPageIndex(), listRange.getText(), itemList.size(),
 				Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 	}
 
 	@UiHandler("prevPage")
 	public void prevPageClicked(ClickEvent event) {
-		log.info("Firing previous page event from pageIndex: "+pageIndex);
-		PaginationHelper.firePrevPageEvent(pageIndex);
+		log.info("Firing previous page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
+		PaginationHelper.firePrevPageEvent(searchOptionsBean.as().getPageIndex());
 	}
 
 	@Override
@@ -444,40 +429,34 @@ public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView
 
 	@Override
 	public void nextPageActive(boolean active) {
-		if (active){
+		if (active) {
 			nextPage.removeStyleName("disabled");
-		}else {
+		} else {
 			nextPage.addStyleName("disabled");
 		}
 	}
 
 	@Override
 	public void prevPageActive(boolean active) {
-		if (active){
+		if (active) {
 			prevPage.removeStyleName("disabled");
-		}else {
+		} else {
 			prevPage.addStyleName("disabled");
 		}
 	}
 
 	@Override
-	public ReferenceSearchFilterWidget getFilter(){
+	public ReferenceSearchFilterWidget getFilter() {
 		return referenceSearchFilterWidget;
 	}
 
+	@Override
 	public AutoBean<SnipBean> getSearchOptionsBean() {
 		return searchOptionsBean;
 	}
 
+	@Override
 	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean) {
 		this.searchOptionsBean = searchOptionsBean;
-	}
-
-	public int getPageIndex() {
-		return pageIndex;
-	}
-
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
 	}
 }

@@ -34,10 +34,6 @@ public class CrawlFilter implements Filter {
 		final HttpServletResponse httpResponse = (HttpServletResponse) response;
 		final String queryString = httpRequest.getQueryString();
 
-		log.info("Crawl servlet doFilter - BEGIN queryString: " + queryString);
-		log.info("URI " + httpRequest.getRequestURI());
-		log.info("URL " + httpRequest.getRequestURL());
-
 		if ((queryString != null) && queryString.contains("_escaped_fragment_")) {
 			final PrintWriter out = httpResponse.getWriter();
 			httpResponse.setCharacterEncoding(StandardCharsets.UTF_8.displayName());

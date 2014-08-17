@@ -20,7 +20,7 @@
 				<g:FocusPanel ui:field="profileImagePanel">
 					<b:BlockQuote addStyleNames="noBorder">
 						<b.html:Paragraph>
-							<b:Image type="THUMBNAIL"  ui:field="avatarImage"/>
+							<b:Image type="THUMBNAIL" ui:field="avatarImage"/>
 						</b.html:Paragraph>
 						<b.html:Paragraph text="{i18n.avatarImgAlt}"/>
 						<b.html:Paragraph text="{i18n.clickToUpload}"/>
@@ -75,19 +75,19 @@
 						<b:FormGroup>
 							<b:FormLabel text="{i18n.oldPassword}"/>
 							<g:FlowPanel>
-								<b:Input type="PASSWORD" ui:field="oldPassword" />
+								<b:Input type="PASSWORD" ui:field="oldPassword"/>
 							</g:FlowPanel>
 						</b:FormGroup>
 						<b:FormGroup>
 							<b:FormLabel text="{i18n.newPassword}"/>
 							<g:FlowPanel>
-								<b:Input type="PASSWORD" ui:field="newPassword" />
+								<b:Input type="PASSWORD" ui:field="newPassword"/>
 							</g:FlowPanel>
 						</b:FormGroup>
 						<b:FormGroup>
 							<b:FormLabel text="{i18n.confirmNewPassword}"/>
 							<g:FlowPanel>
-								<b:Input type="PASSWORD" ui:field="confirmNewPassword" />
+								<b:Input type="PASSWORD" ui:field="confirmNewPassword"/>
 							</g:FlowPanel>
 						</b:FormGroup>
 						<rdl:FormErrors ui:field="formErrors"/>

@@ -116,7 +116,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 		sb.setLength(0);
 
 		 if (actionBean.as().getAction().equals("search")) {
-			List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(), actionBean.as().getPageIndex());
+			List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as());
 			log.info("SnipDispatcherServlet: beans.size() " + beans.size());
 			log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
 

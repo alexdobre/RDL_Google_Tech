@@ -1,36 +1,27 @@
 package com.therdl.client.view.impl;
 
-import java.util.Date;
-
-import com.therdl.client.RDL;
-import com.therdl.client.view.widget.FormErrors;
-import com.therdl.client.view.widget.FormSuccess;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.FormControlStatic;
-import org.gwtbootstrap3.client.ui.Image;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.TextBox;
-import org.gwtbootstrap3.client.ui.base.AbstractTextWidget;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.AvatarUploadPopUp;
-import com.therdl.client.view.widget.TitleListRow;
-import com.therdl.shared.RDLConstants;
+import com.therdl.client.view.widget.FormErrors;
+import com.therdl.client.view.widget.FormSuccess;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.UserBean;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.FormControlStatic;
+import org.gwtbootstrap3.client.ui.Image;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+
+import java.util.Date;
 
 
 /**
@@ -104,7 +95,7 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			email.setText(currentUserBean.as().getEmail());
 			username.setText(currentUserBean.as().getName());
 			supporterBtn.setVisible(true);
-			ViewUtils.showHide(false,formErrors);
+			ViewUtils.showHide(false, formErrors);
 			ViewUtils.showHide(false, formSuccess);
 
 			//populate avatar
@@ -153,24 +144,24 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	void handleSubmitNewPass(ClickEvent e) {
 		String msg = presenter.changePassword(currentUserBean,
 				oldPassword.getText(), newPassword.getText(), confirmNewPassword.getText());
-		if (msg != null){
+		if (msg != null) {
 			setChangePassErrorMsg(msg);
 		}
 	}
 
 	@UiHandler("changePassBtn")
 	void handleChangePass(ClickEvent e) {
-		ViewUtils.showHide(false,formErrors);
+		ViewUtils.showHide(false, formErrors);
 		changePassModal.show();
 	}
 
-	public void setFormSuccessMsg (String msg){
+	public void setFormSuccessMsg(String msg) {
 		formSuccess.setSuccessMessage(msg);
 		changePassModal.hide();
 	}
 
-	public void setChangePassErrorMsg (String msg){
-		if (!changePassModal.isVisible()){
+	public void setChangePassErrorMsg(String msg) {
+		if (!changePassModal.isVisible()) {
 			changePassModal.show();
 		}
 		formErrors.setErrorMessage(msg);

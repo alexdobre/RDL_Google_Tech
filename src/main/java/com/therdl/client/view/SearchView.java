@@ -27,12 +27,10 @@ import java.util.ArrayList;
 public interface SearchView extends RdlView {
 
 	public interface Presenter   {
-		void searchSnips(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
+		void searchSnips(AutoBean<SnipBean> searchOptionsBean);
 
 		AppController getController();
 	}
-
-	void setToken(String token);
 
 	void setPresenter(Presenter presenter);
 
@@ -44,17 +42,11 @@ public interface SearchView extends RdlView {
 
 	void setCurrentSearchOptionsBean (AutoBean<SnipBean> snipBean);
 
-	AutoBean<SnipBean> initSearchOptionsBean();
-
 	Widget asWidget();
 
 	void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 
 	ListWidget getListWidget();
 
-	void doFilterSearch(AutoBean<SnipBean> searchOptionsBean, int pageIndex);
-
-	void getInitialSnipList(int pageIndex);
-
-	void setAuthorName(String authorName);
+	void doFilterSearch();
 }

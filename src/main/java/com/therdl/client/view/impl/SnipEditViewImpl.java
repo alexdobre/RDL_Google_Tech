@@ -1,16 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.ListBox;
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
@@ -35,6 +24,16 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 
 /**
@@ -91,7 +90,7 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	private void configureForImprovement() {
 		pageToRedirect = RDLConstants.Tokens.IMPROVEMENTS;
-		if (! isProposalListInit){
+		if (!isProposalListInit) {
 			ViewUtils.createProposalTypeList(proposalTypeList);
 			ViewUtils.createProposalStateList(proposalStateList);
 			isProposalListInit = true;
@@ -102,7 +101,7 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	private void configureForStory() {
 		pageToRedirect = RDLConstants.Tokens.STORIES;
-		if (!isCategoryListInit){
+		if (!isCategoryListInit) {
 			createCategoryList();
 			isCategoryListInit = true;
 		}
@@ -111,11 +110,11 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	private void configureForIdea() {
 		pageToRedirect = RDLConstants.Tokens.SNIPS;
-		if (!isSnipTypeBarInit){
+		if (!isSnipTypeBarInit) {
 			createSnipTypeBar();
 			isSnipTypeBarInit = true;
 		}
-		if (!isCategoryListInit){
+		if (!isCategoryListInit) {
 			createCategoryList();
 			isCategoryListInit = true;
 		}
@@ -203,19 +202,19 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	 * @param snipBean
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
-		log.info("******************************* Snip Editor - populate with : "+snipBean);
-		if (snipBean == null ){
+		log.info("******************************* Snip Editor - populate with : " + snipBean);
+		if (snipBean == null) {
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
 			currentSnipBean.as().setAuthor(currentUserBean.as().getName());
 			currentSnipBean.as().setContent("");
-		}else {
+		} else {
 			this.currentSnipBean = snipBean;
 		}
 		configureForModule();
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
-		log.info("Setting content: **************** : "+currentSnipBean.as().getContent());
+		log.info("Setting content: **************** : " + currentSnipBean.as().getContent());
 		title.setText(currentSnipBean.as().getTitle());
 		richTextEditor.setCode(currentSnipBean.as().getContent());
 	}
@@ -232,10 +231,10 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	private void selectSnipTypeRadio() {
 		if (currentSnipBean == null || currentSnipBean.as().getSnipType() == null ||
-				currentSnipBean.as().getSnipType().equals("")){
+				currentSnipBean.as().getSnipType().equals("")) {
 			//select first radio button
 			snipTypeRadioBtnList.get(0).setValue(true);
-		}else {
+		} else {
 			for (RadioButton radioBtn : snipTypeRadioBtnList) {
 				radioBtn.setEnabled(false);
 				if (currentSnipBean.as().getSnipType().equals(radioBtn.getElement().getAttribute("name")))
@@ -273,17 +272,17 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	@Override
 	public void showHideCategories(Boolean show) {
-		ViewUtils.showHide(show,categoryListPanel);
+		ViewUtils.showHide(show, categoryListPanel);
 	}
 
 	@Override
 	public void showHideIdeaTypes(Boolean show) {
-		ViewUtils.showHide(show,snipTypeBar);
+		ViewUtils.showHide(show, snipTypeBar);
 	}
 
 	@Override
 	public void showHideImprovementPanels(Boolean show) {
-		ViewUtils.showHide(show,improvementsPanel);
+		ViewUtils.showHide(show, improvementsPanel);
 	}
 
 	/**

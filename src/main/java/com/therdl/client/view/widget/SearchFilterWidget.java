@@ -144,7 +144,8 @@ public class SearchFilterWidget extends Composite {
 			public void onPagination(PaginationSnipsEvent event) {
 				int newPageIndex = event.isNextPage() ? (event.getPageIndex() + 1) : (event.getPageIndex() - 1);
 				view.getListWidget().setPageIndex(newPageIndex);
-				view.doFilterSearch(formSearchOptionBean(),newPageIndex);
+				view.getCurrentSearchOptionsBean().as().setPageIndex(newPageIndex);
+				view.doFilterSearch();
 			}
 		});
 
@@ -316,7 +317,8 @@ public class SearchFilterWidget extends Composite {
 
 	@UiHandler("submit")
 	public void onSubmit(ClickEvent event) {
-		view.doFilterSearch(formSearchOptionBean(), 0);
+		formSearchOptionBean();
+		view.doFilterSearch();
 	}
 
 	/**
@@ -325,7 +327,7 @@ public class SearchFilterWidget extends Composite {
 	 * @return search option bean as SnipBean object
 	 */
 	private AutoBean<SnipBean> formSearchOptionBean() {
-		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+		AutoBean<SnipBean> searchOptionsBean = view.getCurrentSearchOptionsBean();
 		String titleText = title.getText();
 		if (!titleText.equals("")) {
 			searchOptionsBean.as().setTitle(titleText);
@@ -405,7 +407,6 @@ public class SearchFilterWidget extends Composite {
 
 		searchOptionsBean.as().setSortOrder(sortOrder);
 		searchOptionsBean.as().setSortField(sortField);
-		searchOptionsBean.as().setPageIndex(0);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
 			searchOptionsBean.as().setSnipType(getCheckedSnipTypes());
