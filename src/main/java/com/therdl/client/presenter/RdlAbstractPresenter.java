@@ -17,12 +17,14 @@ import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
+import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.CredentialsSubmitEvent;
 import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -32,7 +34,7 @@ import java.util.logging.Logger;
  */
 public abstract class RdlAbstractPresenter<T extends RdlView> implements Presenter {
 
-	protected static Logger log = Logger.getLogger("");
+	protected static Logger log = Logger.getLogger(RdlAbstractPresenter.class.getName());
 
 	protected AppController controller;
 
@@ -196,6 +198,23 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
+		}
+	}
+
+	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, RequestCallback callback) {
+		log.info("SnipSearchPresenter getSnipSearchResult");
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+
+		searchOptionsBean.as().setAction("search");
+		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
+
+		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
+		try {
+			requestBuilder.sendRequest(json, callback);
+		} catch (RequestException e) {
+			log.log(Level.SEVERE,e.getMessage(),e);
 		}
 	}
 

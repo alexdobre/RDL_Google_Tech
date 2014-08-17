@@ -299,7 +299,7 @@ public class SearchFilterWidget extends Composite {
 	@UiHandler("getLinkBtn")
 	public void onLinkBtnClicked(ClickEvent event) {
 		if (view.getCurrentSearchOptionsBean() == null){
-			view.setCurrentSearchOptionsBean(formSearchOptionBean());
+			formSearchOptionBean();
 		}
 		BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this, view.getCurrentSearchOptionsBean());
 		int x = getLinkBtn.getAbsoluteLeft();

@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
+import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.shared.RDLUtils;
@@ -65,49 +66,16 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 	 */
 	@Override
 	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean) {
-		log.info("SnipSearchPresenter getSnipSearchResult");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		log.info("grabWelcomeSnip searchSnips: " + searchOptionsBean.as());
 
-		searchOptionsBean.as().setAction("search");
-		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
+		super.searchSnips(searchOptionsBean, new SnipListCallback() {
 
-		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
-		try {
+			public  void onBeanListReturned (ArrayList<AutoBean<SnipBean>> beanList){
+				view.displaySnipList(beanList, searchOptionsBean.as().getPageIndex());
+				PaginationHelper.showPaginationOnView(searchOptionsBean.as().getPageIndex(),
+				beanList.size(), view.getListWidget());
+			}
 
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
-				@Override
-				public void onResponseReceived(Request request, Response response) {
-
-					log.info("SnipSearchPresenter  onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-
-					JsArray<JSOModel> data =
-							JSOModel.arrayFromJson(response.getText());
-
-					ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
-					ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
-
-					for (int i = 0; i < data.length(); i++) {
-						jSonList.add(data.get(i));
-						beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
-
-					}
-
-					view.displaySnipList(beanList, searchOptionsBean.as().getPageIndex());
-					PaginationHelper.showPaginationOnView(searchOptionsBean.as().getPageIndex(),
-							beanList.size(), view.getListWidget());
-				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-				}
-
-			});
-		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
-		}
+		});
 	}
 }

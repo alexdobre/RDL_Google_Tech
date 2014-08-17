@@ -62,6 +62,7 @@ public class SnipServiceImpl implements SnipsService {
 	 */
 	@Override
 	public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
+		log.info("Searching snips with options: "+searchOptions);
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
 		BasicDBObject query = new BasicDBObject();
@@ -71,10 +72,20 @@ public class SnipServiceImpl implements SnipsService {
 			query.put("parentSnip",searchOptions.getParentSnip());
 		if (searchOptions.getTitle() != null)
 			query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle(), java.util.regex.Pattern.CASE_INSENSITIVE));
-		if (searchOptions.getAuthor() != null)
-			query.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
-		if (searchOptions.getCoreCat() != null)
-			query.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
+		if (searchOptions.getAuthor() != null) {
+			if (!searchOptions.getAuthor().contains(",")){
+				query.put("author", searchOptions.getAuthor());
+			} else {
+				query.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
+			}
+		}
+		if (searchOptions.getCoreCat() != null){
+			if (!searchOptions.getCoreCat().contains(",")){
+				query.put("coreCat", searchOptions.getCoreCat());
+			} else {
+				query.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
+			}
+		}
 		if (searchOptions.getPosRef() != null)
 			query.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
 		if (searchOptions.getNeutralRef() != null)
@@ -110,17 +121,16 @@ public class SnipServiceImpl implements SnipsService {
 
 		log.info("Search snips with query: "+query);
 		DBCollection coll = db.getCollection("rdlSnipData");
-		DBCursor cursor = coll.find(query)
+		List<DBObject> objList = coll.find(query)
 				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
 				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
-				.limit(Constants.DEFAULT_PAGE_SIZE);
-		log.info("cursor after: "+cursor);
+				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
 
-		while (cursor.hasNext()) {
-			DBObject doc = cursor.next();
+		for ( DBObject doc : objList){
 			SnipBean snip = buildBeanObject(doc);
 			beans.add(snip);
 		}
+		log.info("Found list size: "+beans.size());
 		return beans;
 	}
 

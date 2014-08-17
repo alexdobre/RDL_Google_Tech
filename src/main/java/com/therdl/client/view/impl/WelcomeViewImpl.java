@@ -13,7 +13,6 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.LogoutPopupWidget;
 import com.therdl.client.view.widget.text.AbuseDescription;
 import com.therdl.client.view.widget.text.AffairsDescription;
 import com.therdl.client.view.widget.text.CompatibilityDescription;
@@ -22,8 +21,16 @@ import com.therdl.client.view.widget.text.EroticismDescription;
 import com.therdl.client.view.widget.text.ExteriorDescription;
 import com.therdl.client.view.widget.text.PsyTendDescription;
 import com.therdl.client.view.widget.text.SeductionDescription;
+import com.therdl.shared.CoreCategory;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+import org.gwtbootstrap3.client.ui.PanelBody;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -45,40 +52,25 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
 	private static Logger log = Logger.getLogger("");
 
-
 	interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
 	}
 
 	private static WelcomeViewImplUiBinder uiBinder = GWT.create(WelcomeViewImplUiBinder.class);
 
-
 	private Presenter presenter;
-
 	private AutoBean<CurrentUserBean> currentUser;
+	private Map<CoreCategory,AutoBean<SnipBean>> snipMap = new HashMap<CoreCategory,AutoBean<SnipBean>>();
 
 	@UiField
 	Image logo;
 	@UiField
-	org.gwtbootstrap3.client.ui.Button compatibilityCat;
+	Button compatibilityCat, connectionCat, exteriorCat, eroticismCat, seductionCat, psyTendCat, affairsCat, abuseCat, welcomeVideoButton;
 	@UiField
-	org.gwtbootstrap3.client.ui.Button connectionCat;
+	Modal compatibilityModal;
 	@UiField
-	org.gwtbootstrap3.client.ui.Button exteriorCat;
+	ModalBody compatibilityModalBody;
 	@UiField
-	org.gwtbootstrap3.client.ui.Button eroticismCat;
-	@UiField
-	org.gwtbootstrap3.client.ui.Button seductionCat;
-	@UiField
-	org.gwtbootstrap3.client.ui.Button psyTendCat;
-	@UiField
-	org.gwtbootstrap3.client.ui.Button affairsCat;
-	@UiField
-	org.gwtbootstrap3.client.ui.Button abuseCat;
-
-	@UiField
-	org.gwtbootstrap3.client.ui.Button welcomeVideoButton;
-
-	LogoutPopupWidget logoutPopup;
+	PanelBody welcomeMessage;
 
 	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser, AppMenu appMenu) {
 		super(appMenu);
@@ -105,25 +97,22 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		abuseCat.addStyleName("btn-cat-abu");
 	}
 
-	/**
-	 * shows log out popup with message
-	 */
-	public void showLogoutPopUp() {
-		if (logoutPopup == null) {
-			logoutPopup = new LogoutPopupWidget();
-			logoutPopup.setGlassEnabled(true);
-			logoutPopup.setModal(true);
-
-			logoutPopup.setWidth("200px");
-			logoutPopup.setHeight("100px");
-		}
-		logoutPopup.center();
-	}
-
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 		log.info("WelcomeViewImpl setPresenter");
+	}
+
+	@Override
+	public void showWelcomeSnip(AutoBean<SnipBean> welcomeSnip, CoreCategory coreCat) {
+		snipMap.put(coreCat,welcomeSnip);
+		if (coreCat.equals(CoreCategory.GENERAL)) {
+			welcomeMessage.getElement().setInnerHTML(welcomeSnip.as().getContent());
+		} else if (coreCat.equals(CoreCategory.COMPATIBILITY)){
+			compatibilityModal.setTitle(welcomeSnip.as().getTitle());
+			compatibilityModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			compatibilityModal.show();
+		}
 	}
 
 	/**
@@ -133,14 +122,12 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	 */
 	@UiHandler("compatibilityCat")
 	public void onCompatibilityCattClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new CompatibilityDescription(), event, 800);
-		simplePopup.show();
+		presenter.grabWelcomeSnip(CoreCategory.COMPATIBILITY);
 	}
 
 	@UiHandler("connectionCat")
 	public void onConnectionCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ConnectionDescription(), event, 800);
-		simplePopup.show();
+		presenter.grabWelcomeSnip(CoreCategory.CONNECTION);
 	}
 
 	@UiHandler("exteriorCat")
@@ -179,5 +166,8 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		simplePopup.show();
 	}
 
+	public Map<CoreCategory, AutoBean<SnipBean>> getSnipMap() {
+		return snipMap;
+	}
 }
 
