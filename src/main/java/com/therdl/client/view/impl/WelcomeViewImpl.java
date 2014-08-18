@@ -1,6 +1,15 @@
 package com.therdl.client.view.impl;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,8 +24,6 @@ import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.text.AbuseDescription;
 import com.therdl.client.view.widget.text.AffairsDescription;
-import com.therdl.client.view.widget.text.CompatibilityDescription;
-import com.therdl.client.view.widget.text.ConnectionDescription;
 import com.therdl.client.view.widget.text.EroticismDescription;
 import com.therdl.client.view.widget.text.ExteriorDescription;
 import com.therdl.client.view.widget.text.PsyTendDescription;
@@ -24,14 +31,6 @@ import com.therdl.client.view.widget.text.SeductionDescription;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.ModalBody;
-import org.gwtbootstrap3.client.ui.PanelBody;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * WelcomeViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -64,13 +63,13 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	@UiField
 	Image logo;
 	@UiField
-	Button compatibilityCat, connectionCat, exteriorCat, eroticismCat, seductionCat, psyTendCat, affairsCat, abuseCat, welcomeVideoButton;
+	Button compatibilityCat, connectionCat, exteriorCat, eroticismCat, seductionCat, psyTendCat, affairsCat, abuseCat;
 	@UiField
-	Modal compatibilityModal;
+	Modal compatibilityModal, connectionModal, exteriorModal, eroticismModal, seductionModal, psyTendModal, affairsModal, abuseModal;
 	@UiField
-	ModalBody compatibilityModalBody;
+	ModalBody compatibilityModalBody, connectionModalBody, exteriorModalBody, eroticismModalBody, seductionModalBody, psyTendModalBody, affairsModalBody, abuseModalBody;
 	@UiField
-	PanelBody welcomeMessage;
+	Column welcomeMessage;
 
 	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser, AppMenu appMenu) {
 		super(appMenu);
@@ -112,6 +111,34 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 			compatibilityModal.setTitle(welcomeSnip.as().getTitle());
 			compatibilityModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			compatibilityModal.show();
+		} else if (coreCat.equals(CoreCategory.CONNECTION)){
+			connectionModal.setTitle(welcomeSnip.as().getTitle());
+			connectionModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			connectionModal.show();
+		} else if (coreCat.equals(CoreCategory.EXTERIOR)){
+			exteriorModal.setTitle(welcomeSnip.as().getTitle());
+			exteriorModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			exteriorModal.show();
+		} else if (coreCat.equals(CoreCategory.EROTICISM)){
+			eroticismModal.setTitle(welcomeSnip.as().getTitle());
+			eroticismModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			eroticismModal.show();
+		} else if (coreCat.equals(CoreCategory.SEDUCTION)){
+			seductionModal.setTitle(welcomeSnip.as().getTitle());
+			seductionModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			seductionModal.show();
+		} else if (coreCat.equals(CoreCategory.PSY_TEND)){
+			psyTendModal.setTitle(welcomeSnip.as().getTitle());
+			psyTendModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			psyTendModal.show();
+		} else if (coreCat.equals(CoreCategory.AFFAIRS)){
+			affairsModal.setTitle(welcomeSnip.as().getTitle());
+			affairsModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			affairsModal.show();
+		} else if (coreCat.equals(CoreCategory.ABUSE)){
+			abuseModal.setTitle(welcomeSnip.as().getTitle());
+			abuseModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
+			abuseModal.show();
 		}
 	}
 
@@ -122,48 +149,74 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	 */
 	@UiHandler("compatibilityCat")
 	public void onCompatibilityCattClick(ClickEvent event) {
-		presenter.grabWelcomeSnip(CoreCategory.COMPATIBILITY);
+		if (snipMap.keySet().contains(CoreCategory.COMPATIBILITY)){
+			compatibilityModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.COMPATIBILITY);
+		}
 	}
 
 	@UiHandler("connectionCat")
 	public void onConnectionCatClick(ClickEvent event) {
-		presenter.grabWelcomeSnip(CoreCategory.CONNECTION);
+		if (snipMap.keySet().contains(CoreCategory.CONNECTION)){
+			connectionModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.CONNECTION);
+		}
 	}
 
 	@UiHandler("exteriorCat")
 	public void onExteriorCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new ExteriorDescription(), event, 800);
-		simplePopup.show();
+		if (snipMap.keySet().contains(CoreCategory.EXTERIOR)){
+			exteriorModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.EXTERIOR);
+		}
 	}
 
 	@UiHandler("eroticismCat")
 	public void onEroticismCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new EroticismDescription(), event, 800);
-		simplePopup.show();
+		if (snipMap.keySet().contains(CoreCategory.EROTICISM)){
+			eroticismModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.EROTICISM);
+		}
 	}
 
 	@UiHandler("seductionCat")
 	public void onSeductionCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new SeductionDescription(), event, 800);
-		simplePopup.show();
+		if (snipMap.keySet().contains(CoreCategory.SEDUCTION)){
+			seductionModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.SEDUCTION);
+		}
 	}
 
 	@UiHandler("psyTendCat")
 	public void onPsyTendCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new PsyTendDescription(), event, 800);
-		simplePopup.show();
+		if (snipMap.keySet().contains(CoreCategory.PSY_TEND)){
+			psyTendModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.PSY_TEND);
+		}
 	}
 
 	@UiHandler("affairsCat")
 	public void onAffairsCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AffairsDescription(), event, 800);
-		simplePopup.show();
+		if (snipMap.keySet().contains(CoreCategory.AFFAIRS)){
+			affairsModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.AFFAIRS);
+		}
 	}
 
 	@UiHandler("abuseCat")
 	public void onAbuseCatClick(ClickEvent event) {
-		DecoratedPopupPanel simplePopup = ViewUtils.constructPopup(new AbuseDescription(), event, 800);
-		simplePopup.show();
+		if (snipMap.keySet().contains(CoreCategory.ABUSE)){
+			abuseModal.show();
+		}else {
+			presenter.grabWelcomeSnip(CoreCategory.ABUSE);
+		}
 	}
 
 	public Map<CoreCategory, AutoBean<SnipBean>> getSnipMap() {

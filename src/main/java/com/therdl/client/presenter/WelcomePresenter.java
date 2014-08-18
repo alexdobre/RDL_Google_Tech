@@ -75,13 +75,9 @@ public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implemen
 
 	private AutoBean<SnipBean> prepareSearchOptions (CoreCategory coreCategory ){
 		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
-		searchOptionsBean.as().setAuthor("RDL");
+		RDLUtils.buildDefaultWelcomeBean(searchOptionsBean);
 		searchOptionsBean.as().setCoreCat(coreCategory.getShortName());
-		searchOptionsBean.as().setAction("search");
-		searchOptionsBean.as().setPageIndex(0);
-		searchOptionsBean.as().setSortField("creationDate");
-		searchOptionsBean.as().setSortOrder(-1);
-		searchOptionsBean.as().setSnipType("snip");
+
 		return searchOptionsBean;
 	}
 }

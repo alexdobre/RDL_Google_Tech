@@ -54,10 +54,6 @@
 						</g:AbsolutePanel>
 					</g:at>
 
-					<g:at left='85' top='205'>
-						<b:Button ui:field="welcomeVideoButton">Load introduction video</b:Button>
-					</g:at>
-
 					<g:at left='70' top='280'>
 						<g:VerticalPanel>
 							<rdl:SocialPanel ui:field="socialPanel"/>
@@ -66,17 +62,40 @@
 					</g:at>
 				</g:AbsolutePanel>
 			</b:Column>
-			<b:Column size="MD_8">
-				<b:Panel>
-					<b:PanelBody ui:field="welcomeMessage">
-					</b:PanelBody>
-				</b:Panel>
-			</b:Column>
+			<b:Column size="MD_8" ui:field="welcomeMessage"/>
 		</b:Row>
 
 		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
 		         b:id="compatibilityModal" ui:field="compatibilityModal">
 			<b:ModalBody ui:field="compatibilityModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="connectionModal" ui:field="connectionModal">
+			<b:ModalBody ui:field="connectionModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="exteriorModal" ui:field="exteriorModal">
+			<b:ModalBody ui:field="exteriorModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="eroticismModal" ui:field="eroticismModal">
+			<b:ModalBody ui:field="eroticismModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="seductionModal" ui:field="seductionModal">
+			<b:ModalBody ui:field="seductionModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="psyTendModal" ui:field="psyTendModal">
+			<b:ModalBody ui:field="psyTendModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="affairsModal" ui:field="affairsModal">
+			<b:ModalBody ui:field="affairsModalBody"/>
+		</b:Modal>
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="abuseModal" ui:field="abuseModal">
+		<b:ModalBody ui:field="abuseModalBody"/>
 		</b:Modal>
 
 	</b:Container>

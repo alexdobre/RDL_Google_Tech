@@ -6,16 +6,11 @@ package com.therdl.shared;
  * @DEPLOY boolean determine url for deployment mode
  */
 public class Constants {
-
-	/**
-	 * Please change the DEPLOY constant to configure the paths of the
-	 * projects for jetty and jboss
-	 * <p/>
-	 * true  : will optimize the paths for jboss this is the deployed mode
-	 * false : will optimize the paths for jetty this is the development mode
-	 */
-	public static final int DEFAULT_PAGE_SIZE = 5;
-	public static final int DEFAULT_REFERENCE_PAGE_SIZE = 5;
+	//WARNING - DEFAULT_PAGE_SIZE must not be changed to below 10, we search for welcome snips which are 9 in number
+	// if this limit was below 10 the google crawler will not be able to see all the welcome snips
+	// please see com/therdl/server/crawler/SnipListTemplateProcessor.java -> doProcessWelcome
+	public static final int DEFAULT_PAGE_SIZE = 10;
+	public static final int DEFAULT_REFERENCE_PAGE_SIZE = 10;
 
 	public static final String FACEBOOK_URL = "https://www.facebook.com/therdl";
 	public static final String TWITTER_URL = "https://twitter.com/RDLSocial";

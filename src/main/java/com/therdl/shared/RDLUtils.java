@@ -72,9 +72,6 @@ public class RDLUtils {
 				case RDLConstants.Tokens.PROPOSAL_VIEW:
 					buildDefaultViewBean(searchOptionsBean);
 					break;
-//				default:
-//					showWelcomeView();
-//					break;
 			}
 		}
 	}
@@ -90,6 +87,15 @@ public class RDLUtils {
 		if (tokenSplit.length > 1)
 			return tokenSplit[1];
 		return null;
+	}
+
+	public static void buildDefaultWelcomeBean(AutoBean<SnipBean> searchOptionsBean){
+		searchOptionsBean.as().setAuthor("RDL");
+		searchOptionsBean.as().setAction("search");
+		searchOptionsBean.as().setPageIndex(0);
+		searchOptionsBean.as().setSortField("creationDate");
+		searchOptionsBean.as().setSortOrder(-1);
+		searchOptionsBean.as().setSnipType("snip");
 	}
 
 	public static void buildDefaultViewBean (AutoBean<SnipBean> searchOptionsBean){

@@ -43,6 +43,8 @@ public class CrawlerDispatcher {
 		} else if (query.contains("proposalView")) {
 			moduleName = RDLConstants.Tokens.PROPOSAL_VIEW;
 			isView = true;
+		} else if (query.contains("welcome")) {
+			moduleName = RDLConstants.Tokens.WELCOME;
 		}
 
 		if (moduleName != null) {
