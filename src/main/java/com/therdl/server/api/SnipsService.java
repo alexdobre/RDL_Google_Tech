@@ -83,5 +83,5 @@ public interface SnipsService {
 	 * @param searchOptions to filter references
 	 * @return references as a list of SnipBean object
 	 */
-	public List<SnipBean> getReferences(SnipBean searchOptions, int pageIndex);
+	public List<SnipBean> getReferences(SnipBean searchOptions);
 }

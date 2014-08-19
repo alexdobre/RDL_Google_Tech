@@ -1,7 +1,10 @@
 package com.therdl.client.view.widget;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -66,7 +69,9 @@ public class ReferenceListRow extends Composite {
 		richTextAreaRef.getElement().setInnerHTML(referenceBean.as().getContent());
 		userName.setText(referenceBean.as().getAuthor());
 		rep.setText(referenceBean.as().getRep().toString());
-		creationDate.setText(referenceBean.as().getCreationDate().substring(0, referenceBean.as().getCreationDate().indexOf(" ")));
+		Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(referenceBean.as().getCreationDate());
+		String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
+		creationDate.setText(dateString);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			if (referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.POSITIVE))

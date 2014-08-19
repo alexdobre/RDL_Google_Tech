@@ -18,11 +18,11 @@
 		</b:FormGroup>
 
 		<b:FormGroup>
-			<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorRep}"/>
+			<b:FormLabel addStyleNames="col-lg-5" text="{i18n.reputation}"/>
 			<g:FlowPanel addStyleNames="col-lg-5">
-				<b:TextBox ui:field="authorRep"/>
+				<b:TextBox ui:field="rep"/>
 			</g:FlowPanel>
-			<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorRepPanel"/>
+			<g:FlowPanel addStyleNames="col-lg-1" ui:field="repPanel"/>
 		</b:FormGroup>
 
 		<b:FormGroup>

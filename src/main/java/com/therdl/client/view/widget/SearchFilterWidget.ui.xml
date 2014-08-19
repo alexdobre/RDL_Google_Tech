@@ -135,13 +135,6 @@
 							</g:HorizontalPanel>
 						</b:FormGroup>
 
-						<b:FormGroup ui:field="viewsFormGroup">
-							<b:FormLabel for="searchViews" addStyleNames="col-lg-3" text="{i18n.views}"/>
-							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="viewPanel">
-								<b:TextBox ui:field="viewCount" b:id="searchViews"/>
-							</g:HorizontalPanel>
-						</b:FormGroup>
-
 						<b:FormGroup ui:field="repFormGroup">
 							<b:FormLabel for="searchRep" addStyleNames="col-lg-3" text="{i18n.reputation}"/>
 							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="repPanel">

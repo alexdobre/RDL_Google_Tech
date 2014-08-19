@@ -103,6 +103,8 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 			storiesList.populateList(this, beanList);
 		}
 		this.currentSearchOptionsBean.as().setPageIndex(pageIndex);
+
+		searchFilterWidget.populateSearchOptions();
 		ViewUtils.hide(threadLoadingWidget);
 	}
 

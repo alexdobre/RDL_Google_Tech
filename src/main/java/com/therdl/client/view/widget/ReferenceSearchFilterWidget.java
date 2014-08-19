@@ -41,10 +41,10 @@ public class ReferenceSearchFilterWidget extends Composite {
 	private static ReferenceSearchFilterWidgetUiBinder ourUiBinder = GWT.create(ReferenceSearchFilterWidgetUiBinder.class);
 
 	@UiField
-	FlowPanel refTypePanel, authorRepPanel, authorNamePanel, datePanel, proposalCheckboxPanel;
+	FlowPanel refTypePanel, repPanel, authorNamePanel, datePanel, proposalCheckboxPanel;
 
 	@UiField
-	TextBox authorRep, authorName;
+	TextBox rep, authorName;
 
 	@UiField
 	DateFilterWidget dateFilterWidget;
@@ -125,7 +125,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 	 * default order is descending order by creation date
 	 */
 	private void createSortArrows() {
-		FlowPanel[] flowPanels = {authorRepPanel, authorNamePanel, datePanel};
+		FlowPanel[] flowPanels = {repPanel, authorNamePanel, datePanel};
 		String[] keyNames = {RDLConstants.SnipFields.REP, RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE};
 
 		for (int i = 0; i < flowPanels.length; i++) {
@@ -192,6 +192,25 @@ public class ReferenceSearchFilterWidget extends Composite {
 		view.getPresenter().populateReplies(view.getSearchOptionsBean());
 	}
 
+	public void populateSearchOptions(){
+		AutoBean<SnipBean> searchOptionsBean = view.getSearchOptionsBean();
+		if (searchOptionsBean.as().getRep() != null ) rep.setText(searchOptionsBean.as().getRep().toString());
+		authorName.setText(searchOptionsBean.as().getAuthor());
+		dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom());
+		dateFilterWidget.setDateTo(searchOptionsBean.as().getDateTo());
+
+
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+			searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxList));
+			//TODO populate reference types
+		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			//TODO populate check boxes
+		}
+		//TODO populate sort order
+		//		searchOptionsBean.as().setSortOrder(sortOrder);
+		//		searchOptionsBean.as().setSortField(sortField);
+	}
+
 	/**
 	 * forms search option bean from filter form elements
 	 *
@@ -200,17 +219,21 @@ public class ReferenceSearchFilterWidget extends Composite {
 	private AutoBean<SnipBean> formSearchOptionsBean() {
 		AutoBean<SnipBean> searchOptionsBean = view.getSearchOptionsBean();
 
-		if (!authorRep.getText().equals(""))
-			searchOptionsBean.as().setAuthorRep(Integer.parseInt(authorRep.getText()));
+		if (!rep.getText().equals(""))
+			searchOptionsBean.as().setRep(Integer.parseInt(rep.getText()));
+		else searchOptionsBean.as().setRep(null);
 
 		if (!authorName.getText().equals(""))
 			searchOptionsBean.as().setAuthor(authorName.getText());
+		else searchOptionsBean.as().setAuthor(null);
 
 		if (!dateFilterWidget.getDateFrom().equals(""))
 			searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateFrom());
+		else searchOptionsBean.as().setDateFrom(null);
 
 		if (!dateFilterWidget.getDateTo().equals(""))
-			searchOptionsBean.as().setDateFrom(dateFilterWidget.getDateTo());
+			searchOptionsBean.as().setDateTo(dateFilterWidget.getDateTo());
+		else searchOptionsBean.as().setDateTo(null);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxList));

@@ -101,6 +101,7 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 			improvementsList.populateList(this, beanList);
 		}
 		this.currentSearchOptionsBean.as().setPageIndex(pageIndex);
+		searchFilterWidget.populateSearchOptions();
 		this.getListWidget().setPageIndex(pageIndex);
 		ViewUtils.hide(impLoadingWidget);
 	}

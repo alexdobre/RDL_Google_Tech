@@ -16,12 +16,19 @@ public interface SnipBean extends TokenizedBean{
 	 *
 	 * @return
 	 */
+	/**
+	 * ************************* Search Metadata *****************************
+	 */
 	String getAction();
 
 	void setAction(String action);
 
+	boolean getReturnSnipContent();
+
+	void setReturnSnipContent(boolean isReturnContent);
+
 	/**
-	 * ************************* Getters and Setters *****************************
+	 * ************************* Snip items *****************************
 	 */
 
 	String getId();
@@ -148,10 +155,6 @@ public interface SnipBean extends TokenizedBean{
 	String getProposalState();
 
 	void setProposalState(String proposalState);
-
-	Integer getAuthorRep();
-
-	void setAuthorRep(Integer authorRep);
 
 	String getAuthorTitle();
 

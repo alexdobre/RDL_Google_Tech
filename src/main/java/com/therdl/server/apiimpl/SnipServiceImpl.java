@@ -10,6 +10,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.validator.TokenValidator;
@@ -65,63 +66,67 @@ public class SnipServiceImpl implements SnipsService {
 		log.info("Searching snips with options: "+searchOptions);
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
-		BasicDBObject query = new BasicDBObject();
+		BasicDBObject dbObject = new BasicDBObject();
 		int pageIndex = searchOptions.getPageIndex();
 
 		if (searchOptions.getParentSnip() != null)
-			query.put("parentSnip",searchOptions.getParentSnip());
+			dbObject.put("parentSnip",searchOptions.getParentSnip());
 		if (searchOptions.getTitle() != null)
-			query.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle(), java.util.regex.Pattern.CASE_INSENSITIVE));
+			dbObject.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle(), java.util.regex.Pattern.CASE_INSENSITIVE));
 		if (searchOptions.getAuthor() != null) {
 			if (!searchOptions.getAuthor().contains(",")){
-				query.put("author", searchOptions.getAuthor());
+				dbObject.put("author", searchOptions.getAuthor());
 			} else {
-				query.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
+				dbObject.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
 			}
 		}
 		if (searchOptions.getCoreCat() != null){
 			if (!searchOptions.getCoreCat().contains(",")){
-				query.put("coreCat", searchOptions.getCoreCat());
+				dbObject.put("coreCat", searchOptions.getCoreCat());
 			} else {
-				query.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
+				dbObject.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
 			}
 		}
 		if (searchOptions.getPosRef() != null)
-			query.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
+			dbObject.put("posRef", new BasicDBObject("$gte", searchOptions.getPosRef()));
 		if (searchOptions.getNeutralRef() != null)
-			query.put("neutralRef", new BasicDBObject("$gte", searchOptions.getNeutralRef()));
+			dbObject.put("neutralRef", new BasicDBObject("$gte", searchOptions.getNeutralRef()));
 		if (searchOptions.getNegativeRef() != null)
-			query.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
+			dbObject.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
 		if (searchOptions.getRep() != null)
-			query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+			dbObject.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
 		if (searchOptions.getViews() != null)
-			query.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
+			dbObject.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
 		if (searchOptions.getPosts() != null)
-			query.put("posts", new BasicDBObject("$gte", searchOptions.getPosts()));
+			dbObject.put("posts", new BasicDBObject("$gte", searchOptions.getPosts()));
 		if (searchOptions.getSnipType() != null) {
-			query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
+			dbObject.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
 		}
 		if (searchOptions.getProposalType() != null)
-			query.put("proposalType", new BasicDBObject("$in", searchOptions.getProposalType().split(",")));
+			dbObject.put("proposalType", new BasicDBObject("$in", searchOptions.getProposalType().split(",")));
 		if (searchOptions.getProposalState() != null)
-			query.put("proposalState", new BasicDBObject("$in", searchOptions.getProposalState().split(",")));
+			dbObject.put("proposalState", new BasicDBObject("$in", searchOptions.getProposalState().split(",")));
 		if (searchOptions.getPledges() != null)
-			query.put("pledges", new BasicDBObject("$gte", searchOptions.getPledges()));
+			dbObject.put("pledges", new BasicDBObject("$gte", searchOptions.getPledges()));
 		if (searchOptions.getCounters() != null)
-			query.put("counters", new BasicDBObject("$gte", searchOptions.getCounters()));
+			dbObject.put("counters", new BasicDBObject("$gte", searchOptions.getCounters()));
 
 		if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
-			query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
+			dbObject.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
 					.add("$lte", searchOptions.getDateTo() + " 23:59:59").get());
 		} else if (searchOptions.getDateFrom() != null) {
-			query.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
+			dbObject.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
 		} else if (searchOptions.getDateTo() != null) {
-			query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
+			dbObject.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
 		}
 
-		log.info("Search snips with query: "+query);
+		log.info("Search snips with query: "+dbObject);
+		BasicDBObject projection = new BasicDBObject();
+		if (!searchOptions.getReturnSnipContent()){
+			projection.put("content", 0);
+		}
 		DBCollection coll = db.getCollection("rdlSnipData");
-		List<DBObject> objList = coll.find(query)
+		List<DBObject> objList = coll.find(dbObject,projection)
 				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
 				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
 				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
@@ -262,7 +267,8 @@ public class SnipServiceImpl implements SnipsService {
 	 * @param searchOptions to filter references
 	 * @return references as a list of SnipBean object
 	 */
-	public List<SnipBean> getReferences(SnipBean searchOptions, int pageIndex) {
+	@Override
+	public List<SnipBean> getReferences(SnipBean searchOptions) {
 		log.info("Snip Service getReferences - BEGIN");
 		DB db = getMongo();
 		DBCollection coll = db.getCollection("rdlSnipData");
@@ -278,15 +284,25 @@ public class SnipServiceImpl implements SnipsService {
 		if (searchOptions.getReferenceType() != null){
 			query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
 		}
-		//   if(searchOptions.getRep() != null)
-		//      query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
+		if(searchOptions.getRep() != null)
+			query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
 		if (searchOptions.getAuthor() != null)
 			query.put("author", searchOptions.getAuthor());
 		if (searchOptions.getSnipType() != null)
 			query.put("snipType", new BasicDBObject("$in", searchOptions.getSnipType().split(",")));
 
+		if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
+			query.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
+					.add("$lte", searchOptions.getDateTo() + " 23:59:59").get());
+		} else if (searchOptions.getDateFrom() != null) {
+			query.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
+		} else if (searchOptions.getDateTo() != null) {
+			query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
+		}
+
 		log.info("Executing query author title and rep null: "+query);
-		DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+		DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(),searchOptions.getSortOrder())).
+				skip((searchOptions.getPageIndex()) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 
 		while (collDocs.hasNext()) {
 			DBObject doc = collDocs.next();
@@ -327,9 +343,6 @@ public class SnipServiceImpl implements SnipsService {
 		BasicDBObject queryUser = new BasicDBObject();
 		queryUser.put("username", new BasicDBObject("$in", authors.toArray(new String[authors.size()])));
 
-		// filter users by rep/title
-		if (searchOptions.getAuthorRep() != null)
-			queryUser.put("rep", new BasicDBObject("$gte", searchOptions.getAuthorRep()));
 		if (searchOptions.getAuthorTitle() != null) {
 			if (searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_DEV))
 				queryUser.put("titles.titleName", RDLConstants.UserTitle.RDL_DEV);

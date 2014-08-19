@@ -101,6 +101,7 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 			snipList.populateList(this, beanList);
 		}
 		this.currentSearchOptionsBean.as().setPageIndex(pageIndex);
+		searchFilterWidget.populateSearchOptions();
 		ViewUtils.hide(loadingWidget);
 	}
 

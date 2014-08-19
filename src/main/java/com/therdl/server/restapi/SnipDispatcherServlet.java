@@ -219,7 +219,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 			PrintWriter out = resp.getWriter();
 			out.write(AutoBeanCodex.encode(autoBean).getPayload());
 		} else if (actionBean.as().getAction().equals("getReferences")) {
-			List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as(), actionBean.as().getPageIndex());
+			List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as());
 			String viewerId = actionBean.as().getViewerId();
 			if (viewerId != null) {
 				userService.setRepGivenForSnips(viewerId, beanReferences);

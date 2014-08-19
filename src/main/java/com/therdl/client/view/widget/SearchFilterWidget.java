@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.swing.text.View;
+
 /**
  * GWT widget class for search filter
  * creates GUI elements and handlers for them
@@ -58,7 +60,7 @@ public class SearchFilterWidget extends Composite {
 	Button submit, getLinkBtn, createNewButton;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, viewCount, snipRep, author;
+	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, snipRep, author;
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
@@ -67,13 +69,13 @@ public class SearchFilterWidget extends Composite {
 	DateFilterWidget dateFilterWidget;
 
 	@UiField
-	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup, postsFormGroup, viewsFormGroup;
+	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup, postsFormGroup, repFormGroup;
 
 	@UiField
 	Legend filterLabel;
 
 	@UiField
-	InsertPanel.ForIsWidget viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel, typePanel, refPanel;
+	InsertPanel.ForIsWidget repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel, typePanel, refPanel;
 
 	Image selectedArrow;
 
@@ -183,8 +185,8 @@ public class SearchFilterWidget extends Composite {
 	 * default order is descending order by creation date
 	 */
 	private void createSortArrows() {
-		InsertPanel.ForIsWidget[] flowPanels = {viewPanel, repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel};
-		String[] keyNames = {RDLConstants.SnipFields.VIEWS, RDLConstants.SnipFields.REP,
+		InsertPanel.ForIsWidget[] flowPanels = {repPanel, authorPanel, datePanel, posRefPanel, neutralRefPanel, negativeRefPanel, postPanel, pledgesPanel, countersPanel};
+		String[] keyNames = {RDLConstants.SnipFields.REP,
 				RDLConstants.SnipFields.AUTHOR, RDLConstants.SnipFields.CREATION_DATE,
 				RDLConstants.SnipFields.POS_REF, RDLConstants.SnipFields.NEUTRAL_REF,
 				RDLConstants.SnipFields.NEGATIVE_REF, RDLConstants.SnipFields.POSTS,
@@ -266,6 +268,7 @@ public class SearchFilterWidget extends Composite {
 	private void hideUnusedItems() {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 			ViewUtils.hide(postsFormGroup);
+			ViewUtils.hide(repFormGroup);
 			hideProposalItems();
 
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
@@ -276,9 +279,9 @@ public class SearchFilterWidget extends Composite {
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			ViewUtils.hide(typeFormGroup);
 			ViewUtils.hide(refFormGroup);
+			ViewUtils.hide(repFormGroup);
 			ViewUtils.hide(postsFormGroup);
 			ViewUtils.hide(categoryFormGroup);
-			ViewUtils.hide(viewsFormGroup);
 		}
 	}
 
@@ -321,6 +324,35 @@ public class SearchFilterWidget extends Composite {
 		view.doFilterSearch();
 	}
 
+	public void populateSearchOptions(){
+		AutoBean<SnipBean> searchOptionsBean = view.getCurrentSearchOptionsBean();
+		title.setText(searchOptionsBean.as().getTitle());
+		author.setText(searchOptionsBean.as().getAuthor());
+		dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom());
+		dateFilterWidget.setDateTo(searchOptionsBean.as().getDateTo());
+
+		if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			//String categories = ViewUtils.getSelectedItems(categoryList);
+			//TODO populate categories list
+		} else {
+			//String proposalTypes = ViewUtils.getSelectedItems(proposalTypeList);
+			//TODO populate proposalTypeList
+
+			String proposalStates = ViewUtils.getSelectedItems(proposalStateList);
+			//TODO populate proposalStateList
+		}
+		if (searchOptionsBean.as().getPosRef() != null ) posRef.setText(searchOptionsBean.as().getPosRef().toString());
+		if (searchOptionsBean.as().getNeutralRef() != null ) neutralRef.setText(searchOptionsBean.as().getNeutralRef().toString());
+		if (searchOptionsBean.as().getNegativeRef() != null ) negativeRef.setText(searchOptionsBean.as().getNegativeRef().toString());
+		if (searchOptionsBean.as().getPosts() != null ) postCount.setText(searchOptionsBean.as().getPosts().toString());
+		if (searchOptionsBean.as().getPledges() != null ) pledgesCount.setText(searchOptionsBean.as().getPledges().toString());
+		if (searchOptionsBean.as().getCounters() != null ) countersCount.setText(searchOptionsBean.as().getCounters().toString());
+		if (searchOptionsBean.as().getRep() != null ) snipRep.setText(searchOptionsBean.as().getRep().toString());
+
+		//TODO populate sort order
+//		searchOptionsBean.as().setSortOrder(sortOrder);
+//		searchOptionsBean.as().setSortField(sortField);
+	}
 	/**
 	 * forms search option bean from filter form elements
 	 *
@@ -331,78 +363,101 @@ public class SearchFilterWidget extends Composite {
 		String titleText = title.getText();
 		if (!titleText.equals("")) {
 			searchOptionsBean.as().setTitle(titleText);
+		} else {
+			searchOptionsBean.as().setTitle(null);
 		}
 
 		String authorText = author.getText();
 		if (!authorText.equals("")) {
 			searchOptionsBean.as().setAuthor(authorText);
+		}  else {
+			searchOptionsBean.as().setAuthor(null);
 		}
 
 		String dateFromText = dateFilterWidget.getDateFrom();
 		if (!dateFromText.equals("")) {
 			searchOptionsBean.as().setDateFrom(dateFromText);
+		} else {
+			searchOptionsBean.as().setDateFrom(null);
 		}
 
 		String dateToText = dateFilterWidget.getDateTo();
 		if (!dateToText.equals("")) {
 			searchOptionsBean.as().setDateTo(dateToText);
+		} else {
+			searchOptionsBean.as().setDateTo(null);
 		}
 
 		if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			String categories = ViewUtils.getSelectedItems(categoryList);
 			if (!categories.equals("")) {
 				searchOptionsBean.as().setCoreCat(categories);
+			} else {
+				searchOptionsBean.as().setCoreCat(null);
 			}
 		} else {
 			String proposalTypes = ViewUtils.getSelectedItems(proposalTypeList);
 			if (!proposalTypes.equals("")) {
 				searchOptionsBean.as().setProposalType(proposalTypes);
+			}else {
+				searchOptionsBean.as().setProposalType(null);
 			}
 
 			String proposalStates = ViewUtils.getSelectedItems(proposalStateList);
 			if (!proposalStates.equals("")) {
 				searchOptionsBean.as().setProposalState(proposalStates);
+			} else {
+				searchOptionsBean.as().setProposalState(null);
 			}
 		}
 
 		String posRefText = posRef.getText();
 		if (!posRefText.equals("")) {
 			searchOptionsBean.as().setPosRef(Integer.parseInt(posRefText));
+		} else {
+			searchOptionsBean.as().setPosRef(null);
 		}
 
 		String neutralRefText = neutralRef.getText();
 		if (!neutralRefText.equals("")) {
 			searchOptionsBean.as().setNeutralRef(Integer.parseInt(neutralRefText));
+		} else {
+			searchOptionsBean.as().setNeutralRef(null);
 		}
 
 		String negativeRefText = negativeRef.getText();
 		if (!negativeRefText.equals("")) {
 			searchOptionsBean.as().setNegativeRef(Integer.parseInt(negativeRefText));
-		}
-
-		String viewsText = viewCount.getText();
-		if (!viewsText.equals("")) {
-			searchOptionsBean.as().setViews(Integer.parseInt(viewsText));
+		} else {
+			searchOptionsBean.as().setNegativeRef(null);
 		}
 
 		String postsText = postCount.getText();
 		if (!postsText.equals("")) {
 			searchOptionsBean.as().setPosts(Integer.parseInt(postsText));
+		} else {
+			searchOptionsBean.as().setPosts(null);
 		}
 
 		String pledgesText = pledgesCount.getText();
 		if (!pledgesText.equals("")) {
 			searchOptionsBean.as().setPledges(Integer.parseInt(pledgesText));
+		} else {
+			searchOptionsBean.as().setPledges(null);
 		}
 
 		String countersText = countersCount.getText();
 		if (!countersText.equals("")) {
 			searchOptionsBean.as().setCounters(Integer.parseInt(countersText));
+		} else {
+			searchOptionsBean.as().setCounters(null);
 		}
 
 		String snipRepText = snipRep.getText();
 		if (!snipRepText.equals("")) {
 			searchOptionsBean.as().setRep(Integer.parseInt(snipRepText));
+		} else {
+			searchOptionsBean.as().setRep(null);
 		}
 
 		searchOptionsBean.as().setSortOrder(sortOrder);
@@ -480,7 +535,6 @@ public class SearchFilterWidget extends Composite {
 		neutralRef.setText(searchOptionsBean.as().getNeutralRef() != null ? searchOptionsBean.as().getNeutralRef() + "" : "");
 		negativeRef.setText(searchOptionsBean.as().getNegativeRef() != null ? searchOptionsBean.as().getNegativeRef() + "" : "");
 		postCount.setText(searchOptionsBean.as().getPosts() != null ? searchOptionsBean.as().getPosts() + "" : "");
-		viewCount.setText(searchOptionsBean.as().getViews() != null ? searchOptionsBean.as().getViews() + "" : "");
 		pledgesCount.setText(searchOptionsBean.as().getPledges() != null ? searchOptionsBean.as().getPledges() + "" : "");
 		countersCount.setText(searchOptionsBean.as().getCounters() != null ? searchOptionsBean.as().getCounters() + "" : "");
 		snipRep.setText(searchOptionsBean.as().getRep() != null ? searchOptionsBean.as().getRep() + "" : "");

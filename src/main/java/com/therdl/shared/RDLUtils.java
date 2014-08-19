@@ -96,6 +96,7 @@ public class RDLUtils {
 		searchOptionsBean.as().setSortField("creationDate");
 		searchOptionsBean.as().setSortOrder(-1);
 		searchOptionsBean.as().setSnipType("snip");
+		searchOptionsBean.as().setReturnSnipContent(true);
 	}
 
 	public static void buildDefaultViewBean (AutoBean<SnipBean> searchOptionsBean){
