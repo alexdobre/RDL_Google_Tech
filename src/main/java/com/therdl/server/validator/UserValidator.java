@@ -18,4 +18,7 @@ public interface UserValidator {
 	 * @throws UserValidationException if validation failed
 	 */
 	public UserBean validateCanChangePass (AutoBean<AuthUserBean> authBean) throws UserValidationException, TokenInvalidException;
+
+
+	public void validateAuthUserBean (AutoBean<AuthUserBean> authBean)throws UserValidationException;
 }

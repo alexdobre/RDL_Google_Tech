@@ -7,6 +7,10 @@
     <inherits name="com.google.gwt.i18n.I18N"/>
     <inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
 	<inherits name="org.gwtbootstrap3.extras.summernote.Summernote"/>
+	<inherits name="org.hibernate.validator.HibernateValidator" />
+	<replace-with class="com.therdl.shared.validation.ValidatorFactory">
+		<when-type-is class="javax.validation.ValidatorFactory" />
+	</replace-with>
 
     <!--inherits name='com.google.gwt.user.theme.chrome.Chrome'/-->
 

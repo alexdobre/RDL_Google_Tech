@@ -112,7 +112,7 @@ public class AuthServlet extends HttpServlet {
 		}catch (Exception e){
 			log.log(Level.SEVERE,e.getMessage(),e);
 			PrintWriter out = resp.getWriter();
-			out.write(e.getMessage());
+			out.write("error");
 		}
 
 	} // end doPost
@@ -162,7 +162,8 @@ public class AuthServlet extends HttpServlet {
 		out.write(AutoBeanCodex.encode(authBean).getPayload());
 	}
 
-	private void doSignUp(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+	private void doSignUp(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException, UserValidationException {
+		userValidator.validateAuthUserBean(authBean);
 		AutoBean<UserBean> newUserBean = beanery.userBean();
 		newUserBean.as().setEmail(authBean.as().getEmail());
 		//generate a unique session ID

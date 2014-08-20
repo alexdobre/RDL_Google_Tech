@@ -11,7 +11,9 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
+import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.RegisterView;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
@@ -62,12 +64,11 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 
 
 	@Override
-	public void submitNewUser(AutoBean<AuthUserBean> bean) {
-		log.info(AutoBeanCodex.encode(bean).getPayload());
+	public String submitNewUser(AutoBean<AuthUserBean> bean) {
+		String validationResult = UserViewValidator.validateAuthUserBean(bean);
+		if (validationResult != null ) return validationResult;
+
 		String updateUrl = GWT.getModuleBaseURL() + "getSession";
-
-		log.info("RegisterPresenter submitNewUser with  updateUrl: " + updateUrl);
-
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		bean.as().setAction("signUp");
@@ -81,13 +82,16 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 				public void onResponseReceived(Request request, Response response) {
 
 					log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
+					if (response.getText().equals(RDLConstants.ErrorCodes.GENERIC)){
+						view.setErrorMessage(RDL.getI18n().technicalError());
+						return;
+					}
 					// deserialise the bean
 					AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
 					// on success user is authorised on sign up
 					getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true, bean.as().getToken());
 					// return to welcome page
 					History.newItem(RDLConstants.Tokens.WELCOME);
-
 				}
 
 				@Override
@@ -101,5 +105,6 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
 		}  // end try
+		return null;
 	}
 }

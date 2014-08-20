@@ -10,10 +10,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.RegisterView;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
-import com.therdl.shared.FieldVerifier;
+import com.therdl.client.view.widget.FormErrors;
+import com.therdl.client.view.widget.FormSuccess;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+
+import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Input;
 import org.gwtbootstrap3.client.ui.TextBox;
 
@@ -34,7 +38,7 @@ import java.util.logging.Logger;
  */
 public class RegisterViewImpl extends AppMenuView implements RegisterView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(RegisterViewImpl.class.getName());
 
 	interface RegisterViewImplUiBinder extends UiBinder<Widget, RegisterViewImpl> {
 	}
@@ -58,7 +62,13 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	Input cpsswd;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.Button submitBtn;
+	Button submitBtn;
+
+	@UiField
+	FormErrors formErrors;
+
+	@UiField
+	FormSuccess formSuccess;
 
 	private String username;
 	private String password;
@@ -83,53 +93,40 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	@UiHandler("submitBtn")
 	public void onSubmit(ClickEvent event) {
 		log.info("RegisterViewImpl onSubmit verifying fields");
+		AutoBean<AuthUserBean> newUserBean = formAuthUserBean();
+		String resultMess= presenter.submitNewUser(newUserBean);
+		if (resultMess != null){
+			formErrors.setErrorMessage(resultMess);
+		}else {
+			formSuccess.setSuccessMessage(RDL.getI18n().formSuccessGeneric());
+		}
+	}
 
+	private AutoBean<AuthUserBean> formAuthUserBean() {
 		username = userName.getText();
 		password = psswd.getText();
 		eMail = email.getText();
 
-		log.info("RegisterViewImpl onSubmit verifying fields email.getText() " + email.getText());
-		log.info("RegisterViewImpl onSubmit verifying fields eMail " + eMail);
-		log.info("RegisterViewImpl onSubmit verifying fields password " + password);
-		log.info("RegisterViewImpl onSubmit verifying fields username " + username);
 
+		AutoBean<AuthUserBean> newUserBean = beanery.authBean();
+		newUserBean.as().setAuth(false);
+		newUserBean.as().setName(username);
+		newUserBean.as().setEmail(eMail);
+		newUserBean.as().setPassword(password);
+		newUserBean.as().setIsRDLSupporter(false);
+		newUserBean.as().setRep(0);
+		return newUserBean;
+	}
 
-		// can extend validation code here
+	@Override
+	public void setErrorMessage(String errorMessage){
+		formErrors.setErrorMessage(errorMessage);
+		ViewUtils.showHide(false, formSuccess);
+	}
 
-		if (username.equals("") || password.equals("") || cpsswd.equals("") || email.equals("")) {
-			Window.alert(RDL.i18n.enterRequiredData());
-			return;
-		}
-
-		if (!FieldVerifier.isValidName(username)) {
-			Window.alert(RDL.i18n.enterValidUserName());
-			return;
-		}
-
-		if (!FieldVerifier.isValidName(eMail)) {
-			Window.alert(RDL.i18n.enterValidEmail());
-			return;
-		}
-
-		if (!FieldVerifier.isValidName(password)) {
-			Window.alert(RDL.i18n.enterValidPass());
-			return;
-		}
-
-
-		if (FieldVerifier.confirmPassword(psswd.getText(), cpsswd.getText())) {
-
-			AutoBean<AuthUserBean> newUserBean = beanery.authBean();
-			newUserBean.as().setAuth(false);
-			newUserBean.as().setName(username);
-			newUserBean.as().setEmail(eMail);
-			newUserBean.as().setPassword(password);
-			newUserBean.as().setIsRDLSupporter(false);
-			newUserBean.as().setRep(0);
-			presenter.submitNewUser(newUserBean);
-
-		} else Window.alert(RDL.i18n.passwordsDoNotMatch());
-
+	public void setSuccessMessage (String successMessage){
+		formSuccess.setSuccessMessage(successMessage);
+		ViewUtils.showHide(false,formErrors);
 	}
 
 	@Override

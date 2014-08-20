@@ -12,9 +12,9 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
+import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.common.ErrorCodeMapper;
-import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -56,22 +56,9 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 
 	@Override
 	public String changePassword(AutoBean<CurrentUserBean> currentUserBean, String oldPass, String newPass, String newPassConfirm) {
-		String validRes = validateChangePassInput(oldPass, newPass, newPassConfirm);
+		String validRes = UserViewValidator.validateChangePassInput(oldPass, newPass, newPassConfirm);
 		if (validRes != null) return validRes;
 		submitChangePass(currentUserBean.as().getName(), currentUserBean.as().getToken(), oldPass, newPass, newPassConfirm);
-		return null;
-	}
-
-	private String validateChangePassInput(String oldPass, String newPass, String newPassConfirm) {
-		//user input cannot be empty
-		if (RDLUtils.isEmpty(oldPass) || RDLUtils.isEmpty(newPass) || RDLUtils.isEmpty(newPassConfirm)) {
-			return RDL.getI18n().formErrorPleaseProvideInput();
-		}
-
-		if (!newPass.equals(newPassConfirm)) {
-			return RDL.getI18n().formErrorPassEqual();
-		}
-
 		return null;
 	}
 

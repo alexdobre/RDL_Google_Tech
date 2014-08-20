@@ -88,7 +88,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 * and any time for client side security
 	 */
 
-	private AutoBean<AuthUserBean> authnBean = beanery.authBean();
 	private AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
 	private WelcomeView welcomeView;
@@ -127,7 +126,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler() {
 			@Override
 			public void onLogOutEvent(LogOutEvent onLogOutEvent) {
-				currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
+				currentUserBean = RDLUtils.resetCurrentUserBeanFields(currentUserBean);
 				Cookies.removeCookie("sid");
 				History.newItem(RDLConstants.Tokens.LOG_OUT);
 				History.fireCurrentHistoryState();
@@ -417,7 +416,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	}
 
 	private void showSignUp() {
-		currentUserBean = Validation.resetCurrentUserBeanFields(currentUserBean);
+		currentUserBean = RDLUtils.resetCurrentUserBeanFields(currentUserBean);
 		if (registerView == null) {
 			registerView = new RegisterViewImpl(appMenu);
 

@@ -2,6 +2,7 @@ package com.therdl.shared;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.logging.Logger;
@@ -74,6 +75,14 @@ public class RDLUtils {
 					break;
 			}
 		}
+	}
+
+	public static AutoBean<CurrentUserBean> resetCurrentUserBeanFields(AutoBean<CurrentUserBean> currentUserBean) {
+		currentUserBean.as().setAuth(false);
+		currentUserBean.as().setName("");
+		currentUserBean.as().setEmail("");
+		currentUserBean.as().setRegistered(false);
+		return currentUserBean;
 	}
 
 	/**

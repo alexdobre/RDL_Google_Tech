@@ -17,8 +17,12 @@ public interface RegisterView extends RdlView {
 
 
 	public interface Presenter {
-		void submitNewUser(AutoBean<AuthUserBean> bean);
+		String submitNewUser(AutoBean<AuthUserBean> bean);
 	}
 
 	void setPresenter(Presenter presenter);
+
+	public void setErrorMessage(String errorMessage);
+
+	public void setSuccessMessage (String successMessage);
 }

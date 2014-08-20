@@ -2,6 +2,10 @@ package com.therdl.shared.beans;
 
 import java.util.List;
 
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * A bean to pass  the current authorised use;s credentials to the sever
  * for login and sign up
@@ -14,16 +18,16 @@ import java.util.List;
  */
 public interface AuthUserBean extends TokenizedBean {
 
-	/**
-	 * methods below are for standard form based credentials submitted on the client
-	 * for user login and sign up
-	 *
-	 * @return
-	 */
+
+	@NotNull
+	@Size(min=3)
+	@Pattern(regexp="^[a-zA-Z0-9_]*$")
 	String getName();
 
 	void setName(String name);
 
+	@NotNull
+	@Pattern(regexp="\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b")
 	String getEmail();
 
 	void setEmail(String email);
@@ -40,6 +44,8 @@ public interface AuthUserBean extends TokenizedBean {
 
 	void setRememberMe(Boolean rememberMe);
 
+	@NotNull
+	@Size(min=8)
 	String getPassword();
 
 	void setPassword(String password);

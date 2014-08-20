@@ -1,5 +1,11 @@
 package com.therdl.server.validator.impl;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.inject.Inject;
@@ -34,5 +40,22 @@ public class UserValidatorImpl implements UserValidator {
 			throw new UserValidationException(RDLConstants.ErrorCodes.C001);
 		}
 		return userBean;
+	}
+
+	public void validateAuthUserBean (AutoBean<AuthUserBean> authBean)throws UserValidationException{
+		boolean isValid = true;
+		if (authBean != null && authBean.as() != null ) {
+			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+			Set<ConstraintViolation<AuthUserBean>> violations = validator.validate(authBean.as());
+			if (!violations.isEmpty()) {
+				isValid = false;
+			}
+		} else {
+			isValid = false;
+		}
+		throw  new UserValidationException();
+//		if (!isValid){
+//			throw  new UserValidationException();
+//		}
 	}
 }
