@@ -6,6 +6,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.therdl.server.api.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.inject.Inject;
@@ -26,10 +27,12 @@ import com.therdl.shared.exceptions.UserValidationException;
 public class UserValidatorImpl implements UserValidator {
 
 	private TokenValidator tokenValidator;
+	private UserService userService;
 
 	@Inject
-	public UserValidatorImpl(TokenValidator tokenValidator) {
+	public UserValidatorImpl(TokenValidator tokenValidator, UserService userService) {
 		this.tokenValidator = tokenValidator;
+		this.userService = userService;
 	}
 
 	public UserBean validateCanChangePass(AutoBean<AuthUserBean> authBean)
@@ -49,13 +52,17 @@ public class UserValidatorImpl implements UserValidator {
 			Set<ConstraintViolation<AuthUserBean>> violations = validator.validate(authBean.as());
 			if (!violations.isEmpty()) {
 				isValid = false;
+			}else {
+				//username must be unique
+				if (userService.getUserByUsername(authBean.as().getName()) != null){
+					throw new UserValidationException(RDLConstants.ErrorCodes.C002);
+				}
 			}
 		} else {
 			isValid = false;
 		}
-		throw  new UserValidationException();
-//		if (!isValid){
-//			throw  new UserValidationException();
-//		}
+		if (!isValid){
+			throw  new UserValidationException(RDLConstants.ErrorCodes.GENERIC);
+		}
 	}
 }

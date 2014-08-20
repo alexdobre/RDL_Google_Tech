@@ -95,7 +95,7 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 				@Override
 				public void onError(Request request, Throwable exception) {
 					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-					view.setChangePassErrorMsg(RDL.getI18n().technicalError());
+					view.setChangePassErrorMsg(RDL.getI18n().serverErrorC000());
 				}
 			});
 

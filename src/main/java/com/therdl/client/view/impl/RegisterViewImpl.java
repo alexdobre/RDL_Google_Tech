@@ -70,9 +70,6 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	@UiField
 	FormSuccess formSuccess;
 
-	private String username;
-	private String password;
-	private String eMail;
 
 	public RegisterViewImpl(AppMenu appMenu) {
 		super(appMenu);
@@ -103,16 +100,12 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	}
 
 	private AutoBean<AuthUserBean> formAuthUserBean() {
-		username = userName.getText();
-		password = psswd.getText();
-		eMail = email.getText();
-
-
 		AutoBean<AuthUserBean> newUserBean = beanery.authBean();
 		newUserBean.as().setAuth(false);
-		newUserBean.as().setName(username);
-		newUserBean.as().setEmail(eMail);
-		newUserBean.as().setPassword(password);
+		newUserBean.as().setName(userName.getText());
+		newUserBean.as().setEmail(email.getText());
+		newUserBean.as().setPassword(psswd.getText());
+		newUserBean.as().setPasswordConfirm(cpsswd.getText());
 		newUserBean.as().setIsRDLSupporter(false);
 		newUserBean.as().setRep(0);
 		return newUserBean;

@@ -141,7 +141,8 @@ public interface RDLConstants {
 	}
 
 	public interface ErrorCodes {
-		String GENERIC = "error";
+		String GENERIC = "c000";
 		String C001 = "c001";
+		String C002 = "c002";
 	}
 }

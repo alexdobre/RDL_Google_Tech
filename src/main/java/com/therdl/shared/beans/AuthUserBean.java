@@ -1,5 +1,8 @@
 package com.therdl.shared.beans;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.util.List;
 
 import javax.validation.constraints.Size;
@@ -19,14 +22,13 @@ import javax.validation.constraints.Pattern;
 public interface AuthUserBean extends TokenizedBean {
 
 
-	@NotNull
-	@Size(min=3)
+	@NotEmpty
 	@Pattern(regexp="^[a-zA-Z0-9_]*$")
 	String getName();
 
 	void setName(String name);
 
-	@NotNull
+	@NotEmpty
 	@Pattern(regexp="\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b")
 	String getEmail();
 
@@ -44,8 +46,8 @@ public interface AuthUserBean extends TokenizedBean {
 
 	void setRememberMe(Boolean rememberMe);
 
-	@NotNull
-	@Size(min=8)
+	@NotEmpty
+	@Pattern(regexp = ".{8,}")
 	String getPassword();
 
 	void setPassword(String password);

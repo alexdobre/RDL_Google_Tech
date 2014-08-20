@@ -15,6 +15,7 @@ import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
 import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.RegisterView;
+import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -81,9 +82,9 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 				@Override
 				public void onResponseReceived(Request request, Response response) {
 
-					log.info("RegisterPresenter submitNewUser onResponseReceived json" + response.getText());
-					if (response.getText().equals(RDLConstants.ErrorCodes.GENERIC)){
-						view.setErrorMessage(RDL.getI18n().technicalError());
+					log.info("RegisterPresenter submitNewUser onResponseReceived: " + response.getText());
+					if (!response.getText().startsWith("{")){
+						view.setErrorMessage(ErrorCodeMapper.getI18nMessage(response.getText()));
 						return;
 					}
 					// deserialise the bean

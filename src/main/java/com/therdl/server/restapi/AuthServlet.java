@@ -10,10 +10,12 @@ import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.server.validator.UserValidator;
 import com.therdl.shared.Global;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.RDLSendEmailException;
+import com.therdl.shared.exceptions.RdlCodedException;
 import com.therdl.shared.exceptions.TokenInvalidException;
 import com.therdl.shared.exceptions.UserValidationException;
 
@@ -109,10 +111,13 @@ public class AuthServlet extends HttpServlet {
 			} else if (action.equals("changePass")) {
 				doChangePass(resp, authBean);
 			}
-		}catch (Exception e){
+		} catch (RdlCodedException e){
+			PrintWriter out = resp.getWriter();
+			out.write(e.getCode());
+		} catch (Exception e){
 			log.log(Level.SEVERE,e.getMessage(),e);
 			PrintWriter out = resp.getWriter();
-			out.write("error");
+			out.write(RDLConstants.ErrorCodes.GENERIC);
 		}
 
 	} // end doPost
