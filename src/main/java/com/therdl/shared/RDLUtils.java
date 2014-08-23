@@ -34,14 +34,15 @@ public class RDLUtils {
 	}
 
 	private static boolean isExpired (UserBean.TitleBean titleBean){
-		SimpleDateFormat dateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
 		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires())) return false;
-		try {
-			return dateFormat.parse(titleBean.getExpires()).after(new Date());
-		} catch (Exception e){
-			log.log(Level.SEVERE, e.getMessage(), e);
-			return true;
-		}
+		//TODO implement title expires logic
+//		try {
+//			return dateFormat.parse(titleBean.getExpires()).after(new Date());
+//		} catch (Exception e){
+//			log.log(Level.SEVERE, e.getMessage(), e);
+//			return true;
+//		}
+		return false;
 	}
 
 	/**
