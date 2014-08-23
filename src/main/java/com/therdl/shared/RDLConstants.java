@@ -18,6 +18,8 @@ import java.util.HashMap;
  */
 public interface RDLConstants {
 
+	String DATE_PATTERN = "yyyy-MM-dd";
+
 	public interface Tokens {
 		String WELCOME = "!welcome";
 		String SNIPS = "!snips";
@@ -138,6 +140,7 @@ public interface RDLConstants {
 		String RDL_SUPPORTER = "RDL Supporter";
 		String RDL_DEV = "RDL Dev";
 		String RDL_USER = "RDL User";
+		String NEVER_EXPIRES = "never";
 	}
 
 	public interface ErrorCodes {

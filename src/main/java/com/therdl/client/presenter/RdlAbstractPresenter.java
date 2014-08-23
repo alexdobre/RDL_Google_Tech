@@ -16,6 +16,7 @@ import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.shared.LoginHandler;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
@@ -130,7 +131,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 
 				@Override
 				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean){
-					boolean isRDLSupporter = false; //TODO implement RDL supporter logic
+					boolean isRDLSupporter = RDLUtils.isRdlSupporter(returnedBean);
 					controller.setCurrentUserBean(returnedBean.as().getName(), returnedBean.as().getEmail(),
 							true, returnedBean.as().getTitles(), isRDLSupporter, returnedBean.as().getToken());
 

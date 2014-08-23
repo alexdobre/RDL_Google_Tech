@@ -91,14 +91,14 @@
 							</g:FlowPanel>
 						</b:FormGroup>
 						<rdl:FormErrors ui:field="formErrors"/>
-						<b:FormGroup>
-							<g:FlowPanel>
-								<b:Button ui:field="submitChangePassBtn" type="DEFAULT" text="{i18n.submit}"/>
-							</g:FlowPanel>
-						</b:FormGroup>
 					</b:FieldSet>
 				</b:Form>
 			</b:ModalBody>
+			<b:ModalFooter>
+				<g:FlowPanel>
+					<b:Button ui:field="submitChangePassBtn" type="DEFAULT" text="{i18n.submit}"/>
+				</g:FlowPanel>
+			</b:ModalFooter>
 		</b:Modal>
 	</b:Container>
 

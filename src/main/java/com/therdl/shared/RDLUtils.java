@@ -1,10 +1,16 @@
 package com.therdl.shared;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -14,6 +20,29 @@ import java.util.logging.Logger;
 public class RDLUtils {
 
 	private static Logger log = Logger.getLogger(RDLUtils.class.getName());
+
+	public static boolean isRdlSupporter (AutoBean<AuthUserBean> authUserBean){
+		List<UserBean.TitleBean> titles = authUserBean.as().getTitles();
+		if (titles != null && !titles.isEmpty()){
+			for (UserBean.TitleBean titleBean : titles){
+				if ( RDLConstants.UserTitle.RDL_SUPPORTER.equals(titleBean.getTitleName())){
+					return !isExpired(titleBean);
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean isExpired (UserBean.TitleBean titleBean){
+		SimpleDateFormat dateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
+		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires())) return false;
+		try {
+			return dateFormat.parse(titleBean.getExpires()).after(new Date());
+		} catch (Exception e){
+			log.log(Level.SEVERE, e.getMessage(), e);
+			return true;
+		}
+	}
 
 	/**
 	 * This method is an enhanced parseInt checking for null and empty strings

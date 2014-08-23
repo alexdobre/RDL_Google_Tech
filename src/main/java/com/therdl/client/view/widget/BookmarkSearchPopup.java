@@ -46,7 +46,7 @@ public class BookmarkSearchPopup extends PopupPanel {
 		StringBuilder url = new StringBuilder() ;
 
 		if (formURl().length() != 0) {
-			url.append(':').append(formURl().toString().replace(" ", "+")).append("page=").
+			url.append(':').append(formURl().toString().replace(" ", "+")).append(":page=").
 					append(currentSearchOptionsBean.as().getPageIndex());
 		}
 
