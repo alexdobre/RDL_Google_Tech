@@ -41,8 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.swing.text.View;
-
 /**
  * GWT widget class for search filter
  * creates GUI elements and handlers for them
@@ -301,7 +299,7 @@ public class SearchFilterWidget extends Composite {
 
 	@UiHandler("getLinkBtn")
 	public void onLinkBtnClicked(ClickEvent event) {
-		if (view.getCurrentSearchOptionsBean() == null){
+		if (view.getCurrentSearchOptionsBean() == null) {
 			formSearchOptionBean();
 		}
 		BookmarkSearchPopup bookmarkSearchPopup = new BookmarkSearchPopup(this, view.getCurrentSearchOptionsBean());
@@ -324,7 +322,7 @@ public class SearchFilterWidget extends Composite {
 		view.doFilterSearch();
 	}
 
-	public void populateSearchOptions(){
+	public void populateSearchOptions() {
 		AutoBean<SnipBean> searchOptionsBean = view.getCurrentSearchOptionsBean();
 		title.setText(searchOptionsBean.as().getTitle());
 		author.setText(searchOptionsBean.as().getAuthor());
@@ -341,18 +339,23 @@ public class SearchFilterWidget extends Composite {
 			String proposalStates = ViewUtils.getSelectedItems(proposalStateList);
 			//TODO populate proposalStateList
 		}
-		if (searchOptionsBean.as().getPosRef() != null ) posRef.setText(searchOptionsBean.as().getPosRef().toString());
-		if (searchOptionsBean.as().getNeutralRef() != null ) neutralRef.setText(searchOptionsBean.as().getNeutralRef().toString());
-		if (searchOptionsBean.as().getNegativeRef() != null ) negativeRef.setText(searchOptionsBean.as().getNegativeRef().toString());
-		if (searchOptionsBean.as().getPosts() != null ) postCount.setText(searchOptionsBean.as().getPosts().toString());
-		if (searchOptionsBean.as().getPledges() != null ) pledgesCount.setText(searchOptionsBean.as().getPledges().toString());
-		if (searchOptionsBean.as().getCounters() != null ) countersCount.setText(searchOptionsBean.as().getCounters().toString());
-		if (searchOptionsBean.as().getRep() != null ) snipRep.setText(searchOptionsBean.as().getRep().toString());
+		if (searchOptionsBean.as().getPosRef() != null) posRef.setText(searchOptionsBean.as().getPosRef().toString());
+		if (searchOptionsBean.as().getNeutralRef() != null)
+			neutralRef.setText(searchOptionsBean.as().getNeutralRef().toString());
+		if (searchOptionsBean.as().getNegativeRef() != null)
+			negativeRef.setText(searchOptionsBean.as().getNegativeRef().toString());
+		if (searchOptionsBean.as().getPosts() != null) postCount.setText(searchOptionsBean.as().getPosts().toString());
+		if (searchOptionsBean.as().getPledges() != null)
+			pledgesCount.setText(searchOptionsBean.as().getPledges().toString());
+		if (searchOptionsBean.as().getCounters() != null)
+			countersCount.setText(searchOptionsBean.as().getCounters().toString());
+		if (searchOptionsBean.as().getRep() != null) snipRep.setText(searchOptionsBean.as().getRep().toString());
 
 		//TODO populate sort order
 //		searchOptionsBean.as().setSortOrder(sortOrder);
 //		searchOptionsBean.as().setSortField(sortField);
 	}
+
 	/**
 	 * forms search option bean from filter form elements
 	 *
@@ -370,7 +373,7 @@ public class SearchFilterWidget extends Composite {
 		String authorText = author.getText();
 		if (!authorText.equals("")) {
 			searchOptionsBean.as().setAuthor(authorText);
-		}  else {
+		} else {
 			searchOptionsBean.as().setAuthor(null);
 		}
 
@@ -399,7 +402,7 @@ public class SearchFilterWidget extends Composite {
 			String proposalTypes = ViewUtils.getSelectedItems(proposalTypeList);
 			if (!proposalTypes.equals("")) {
 				searchOptionsBean.as().setProposalType(proposalTypes);
-			}else {
+			} else {
 				searchOptionsBean.as().setProposalType(null);
 			}
 
@@ -504,7 +507,7 @@ public class SearchFilterWidget extends Composite {
 			createNewBtnHandler(editPageToken, view.getCurrentUserBean());
 		} else {
 			final String pageToRedirect = editPageToken;
-			view.getAppMenu().showLoginPopUp(createNewButton.getAbsoluteLeft() + 90, createNewButton.getAbsoluteTop() - 120, new LoginHandler() {
+			view.getAppMenu().showLoginPopUp(new LoginHandler() {
 
 				@Override
 				public void onSuccess(AutoBean<CurrentUserBean> currentUserBean) {

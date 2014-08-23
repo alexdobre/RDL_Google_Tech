@@ -112,6 +112,7 @@ public class AuthServlet extends HttpServlet {
 				doChangePass(resp, authBean);
 			}
 		} catch (RdlCodedException e){
+			log.info("Coded exception thrown: "+e.getClass().getName() +" code: "+e.getCode());
 			PrintWriter out = resp.getWriter();
 			out.write(e.getCode());
 		} catch (Exception e){
@@ -184,13 +185,13 @@ public class AuthServlet extends HttpServlet {
 		out.write(AutoBeanCodex.encode(authBean).getPayload());
 	}
 
-	private void doAuth(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+	private void doAuth(HttpServletResponse resp, AutoBean<AuthUserBean> authBean)
+			throws IOException, UserValidationException {
 		String password = authBean.as().getPassword();
 		// get the user from the database if exists
 		AutoBean<AuthUserBean> checkedUser = userService.authUser(authBean.as(), password);
 
 		processCheckedUser(checkedUser);
-		sidLogic(authBean, checkedUser);
 		setSessionAttributes(checkedUser);
 
 		PrintWriter out = resp.getWriter();
@@ -198,7 +199,8 @@ public class AuthServlet extends HttpServlet {
 		out.write(AutoBeanCodex.encode(checkedUser).getPayload());
 	}
 
-	private void doSidAuth(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+	private void doSidAuth(HttpServletResponse resp, AutoBean<AuthUserBean> authBean)
+			throws IOException, UserValidationException {
 		AutoBean<AuthUserBean> checkedUser = userService.findUserBySid(authBean.as().getSid());
 
 		processCheckedUser(checkedUser);
@@ -214,7 +216,7 @@ public class AuthServlet extends HttpServlet {
 		session.get().setAttribute("username", userBean.as().getName());
 	}
 
-	private void processCheckedUser(AutoBean<AuthUserBean> checkedUser) {
+	private void processCheckedUser(AutoBean<AuthUserBean> checkedUser) throws UserValidationException {
 		log.info("processCheckedUser " + checkedUser.as().toString());
 		if (checkedUser.as().getAction().equals("OkUser")) {
 
@@ -223,24 +225,7 @@ public class AuthServlet extends HttpServlet {
 			session.get().setAttribute("userid", checkedUser.as().getEmail());
 			session.get().setAttribute("name", checkedUser.as().getName());
 		} else {
-			checkedUser.as().setAuth(false);
-		}
-	}
-
-	private void sidLogic(AutoBean<AuthUserBean> authBean, AutoBean<AuthUserBean> checkedUser) {
-		if (checkedUser.as().getAction().equals("OkUser")) {
-			//SID logic - if user did not set RememberMe then SID is set to null, otherwise an SID is generated if it does not exist
-			if (checkedUser.as().getSid() == null && authBean.as().getRememberMe()) {
-				//remember me was checked - if SID is null we set it
-
-				checkedUser.as().setSid(ServerUtils.generateUUID());
-				log.info("Update new SID");
-			} else {
-				//remember me not checked
-				checkedUser.as().setSid(null);
-				log.info("Setting SID as null");
-			}
-			userService.updateSid(checkedUser.as());
+			throw new UserValidationException(RDLConstants.ErrorCodes.C006);
 		}
 	}
 

@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 
 /**
  * Application menu often referred  to as a 'NavBar' in a TwitterBootstrap scheme for example
- *
  */
 public class AppMenu extends Composite {
 
@@ -81,7 +80,7 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
 			@Override
 			public void onLogInEvent(LogInEvent onLoginEvent) {
-				showLoginPopUp(500, 30, null);
+				showLoginPopUp(null);
 			}
 		});
 		// user has just sucessfully logged in update app menu
@@ -111,7 +110,7 @@ public class AppMenu extends Composite {
 	}
 
 	public void logIn(AutoBean<CurrentUserBean> currentUserBean) {
-		log.info("AppMenu logIn: "+currentUserBean);
+		log.info("AppMenu logIn: " + currentUserBean);
 		setLogOutVisible(true);
 		setSignUpVisible(false);
 		setUserInfoVisible(true);
@@ -138,7 +137,7 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
 	}
 
-	private void allInactive(){
+	private void allInactive() {
 		home.removeStyleName("brandActive");
 		ideas.setActive(false);
 		stories.setActive(false);
@@ -179,7 +178,7 @@ public class AppMenu extends Composite {
 		stories.setActive(true);
 	}
 
-	public void setActive (){
+	public void setActive() {
 		if (Global.moduleName == RDLConstants.Modules.STORIES) setStoriesActive();
 		if (Global.moduleName == RDLConstants.Modules.IDEAS) setIdeasActive();
 		if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
@@ -260,36 +259,23 @@ public class AppMenu extends Composite {
 	/**
 	 * creates and shows login popup and sets its parameters
 	 *
-	 * @param posLeft      left position
-	 * @param posTop       top position
 	 * @param loginHandler handler which is called when login is successful
 	 */
-	public void showLoginPopUp(int posLeft, int posTop, LoginHandler loginHandler) {
+	public void showLoginPopUp(LoginHandler loginHandler) {
 		this.loginHandler = loginHandler;
-		if (signInView == null ){
+		if (signInView == null) {
 			signInView = new SignInViewImpl(this);
 		}
 		signInView.show();
-		signInView.getLoginFail().setVisible(false);
-
 	}
 
 	public void showForgotPasswordPopUp() {
-		if (forgotPassword == null ){
+		if (forgotPassword == null) {
 			forgotPassword = new ForgotPasswordImpl();
 		}
 		ForgotPasswordPresenter forgotPasswordPresenter = new ForgotPasswordPresenter(forgotPassword);
 		forgotPasswordPresenter.showForgotPasswordPopup();
 		signInView.hide();
-	}
-
-	/**
-	 * show the error validation message in the signInView
-	 */
-	public void showLoginFail() {
-
-		signInView.getLoginFail().setVisible(true);
-		signInView.getLoginFail().setText("Login Fails please check your credentials");
 	}
 
 	/**

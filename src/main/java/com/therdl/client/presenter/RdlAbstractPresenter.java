@@ -12,7 +12,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
+import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.view.RdlView;
+import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -22,6 +24,7 @@ import com.therdl.shared.events.CredentialsSubmitEvent;
 import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
+import com.therdl.shared.events.LoginFailEvent;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -87,12 +90,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 	}
 
 	/**
-	 * Processing done if login fails
-	 */
-	private void loginFail() {
-	}
-
-	/**
 	 * calls com.therdl.server.restapi.SessionServlet class to authorise user from database, creates
 	 * a AutoBean<AuthUserBean> authBean from the users credentials and submits it as a json serialised object
 	 * calls AppController controller and  WelcomeView  welcomeView objects
@@ -129,70 +126,50 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 			String json = AutoBeanCodex.encode(authBean).getPayload();
 
 			log.info("RdlAbstractPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new RequestCallback() {
+			requestBuilder.sendRequest(json, new BeanCallback<AuthUserBean>(AuthUserBean.class,null) {
 
 				@Override
-				public void onResponseReceived(Request request, Response response) {
+				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean){
+					boolean isRDLSupporter = false; //TODO implement RDL supporter logic
+					controller.setCurrentUserBean(returnedBean.as().getName(), returnedBean.as().getEmail(),
+							true, returnedBean.as().getTitles(), isRDLSupporter, returnedBean.as().getToken());
 
-					if (response.getStatusCode() == 200) {
-						// ok move forward
-						log.info("RdlAbstractPresenter onSubmit post ok");
-						log.info("RdlAbstractPresenter onSubmit onResponseReceived response.getHeadersAsString)" + response.getHeadersAsString());
-						log.info("RdlAbstractPresenter onSubmit onResponseReceived json" + response.getText());
-						JSOModel data = JSOModel.fromJson(response.getText());
+					sidLogic(returnedBean);
 
-						AutoBean<AuthUserBean> authUserBean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
+					// try and update any open view
+					controller.getCurrentUserBean().as().setAuth(true);
+					GuiEventBus.EVENT_BUS.fireEvent(new LogInOkEvent(controller.getCurrentUserBean()));
 
-						String email = data.get("email");
-						String name = data.get("name");
-						boolean isRDLSupporter = data.getBoolean("isRDLSupporter");
+					if (loginHandler != null) {
+						log.info("loginHandler != null");
+						loginHandler.onSuccess(controller.getCurrentUserBean());
+					}
+				}
 
-						boolean auth = data.getBoolean("auth");
-						if (!auth) {
-							log.info("RdlAbstractPresenter onResponseReceived  LoginFail!  ");
-							loginFail();
-							if (innerIsCookieLogin) {
-								log.info("SID login fail -> cleaning up cookie");
-								Cookies.removeCookie("sid");
-							}
-							controller.setCurrentUserBean("", "", auth, null, isRDLSupporter, null);
-						} else {
-							controller.setCurrentUserBean(name, email, auth, authUserBean.as().getTitles(),
-									isRDLSupporter, authUserBean.as().getToken());
-
-							//if this was not a cookie login we do logic to change the cookie if necessary
-							if (!innerIsCookieLogin) {
-								//if there is no cookie and remember me was set we create a new cookie
-								if (innerRememberMe && Cookies.getCookie("sid") == null) {
-									log.info("RememberMe = true and SID cookie null -> setting new cookie with sid: " + data.get("sid"));
-									//set session cookie for 14 day expiry.
-									String sessionID = data.get("sid");
-									final long DURATION = 1000 * 60 * 60 * 24 * 14;
-									Date expires = new Date(System.currentTimeMillis() + DURATION);
-									Cookies.setCookie("sid", sessionID, expires, null, "/", false);
-								}//if the user unchecks the RememberMe box then we remove the cookie
-								else if (!innerRememberMe) {
-									log.info("RememberMe = false -> removing cookie");
-									Cookies.removeCookie("sid");
-								}
-							}
-
-							// try and update any open view
-							controller.getCurrentUserBean().as().setAuth(true);
-							GuiEventBus.EVENT_BUS.fireEvent(new LogInOkEvent(controller.getCurrentUserBean()));
-
-							if (loginHandler != null) {
-								log.info("loginHandler != null");
-								loginHandler.onSuccess(controller.getCurrentUserBean());
-
-							}
+				private void sidLogic(AutoBean<AuthUserBean> returnedBean) {
+					//if this was not a cookie login we do logic to change the cookie if necessary
+					if (!innerIsCookieLogin) {
+						//if there is no cookie and remember me was set we create a new cookie
+						if (innerRememberMe && Cookies.getCookie("sid") == null) {
+							log.info("RememberMe = true and SID cookie null -> setting new cookie with sid: " + returnedBean.as().getSid());
+							//set session cookie for 14 day expiry.
+							String sessionID = returnedBean.as().getSid();
+							final long DURATION = 1000 * 60 * 60 * 24 * 14;
+							Date expires = new Date(System.currentTimeMillis() + DURATION);
+							Cookies.setCookie("sid", sessionID, expires, null, "/", false);
+						}//if the user unchecks the RememberMe box then we remove the cookie
+						else if (!innerRememberMe) {
+							log.info("RememberMe = false -> removing cookie");
+							Cookies.removeCookie("sid");
 						}
 					}
 				}
 
 				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SignInViewImpl onSubmit onError)" + exception.getLocalizedMessage());
+				public void onErrorCodeReturned(String errorCode) {
+					log.info("Login failed - firing event with code: "+errorCode);
+					Cookies.removeCookie("sid");
+					GuiEventBus.EVENT_BUS.fireEvent(new LoginFailEvent(errorCode));
 				}
 
 			});

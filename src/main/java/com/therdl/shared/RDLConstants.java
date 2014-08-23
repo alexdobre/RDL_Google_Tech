@@ -147,5 +147,6 @@ public interface RDLConstants {
 		String C003 = "c003";
 		String C004 = "c004";
 		String C005 = "c005";
+		String C006 = "c006";
 	}
 }

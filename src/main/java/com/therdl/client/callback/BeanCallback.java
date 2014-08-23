@@ -31,7 +31,7 @@ public abstract class BeanCallback<T> implements RequestCallback {
 
 	@Override
 	public void onResponseReceived(Request request, Response response) {
-		log.info("BeanCallback onResponseReceived json" + response.getText());
+		log.info("BeanCallback onResponseReceived: " + response.getText());
 		if (!response.getText().startsWith("{")) {
 			//means we have an error code
 			onErrorCodeReturned(response.getText());
@@ -43,6 +43,7 @@ public abstract class BeanCallback<T> implements RequestCallback {
 	}
 
 	public void onErrorCodeReturned(String errorCode) {
+		log.info("Error code returned "+errorCode);
 		validatedView.setErrorMessage(ErrorCodeMapper.getI18nMessage(errorCode));
 	}
 

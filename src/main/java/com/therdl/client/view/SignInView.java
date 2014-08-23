@@ -1,6 +1,7 @@
 package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 /**
  * see com.therdl.client.view.impl.SignInViewImpl javadoc for the
@@ -13,11 +14,10 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
  * @ setSignIsVisible(boolean state) sets the menu/Nav-bar when user can log in
  * @ Label getLoginFail() displays the validation method when the login fails eg password incorrect
  */
-public interface SignInView extends RdlView {
+public interface SignInView extends RdlView, ValidatedView {
 
 	String getPassword();
 
-	org.gwtbootstrap3.client.ui.TextBox getEmail();
+	TextBox getEmail();
 
-	org.gwtbootstrap3.client.ui.Label getLoginFail();
 }

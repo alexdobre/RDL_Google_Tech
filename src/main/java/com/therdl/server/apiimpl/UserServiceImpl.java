@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService {
 		if (ub != null) {
 			if (BCrypt.checkpw(pass, ub.getPassHash())) {
 				ub.setToken(tokenValidator.createToken());
+				if (bean.getRememberMe()){
+					ub.setSid(ServerUtils.generateUUID());
+				}else {
+					ub.setSid(null);
+				}
 				updateUser(ub);
 				return transformUserBeanInAuthUserBean(checkedUserBean, ub);
 			}  // end hash if
