@@ -40,6 +40,7 @@ public class SnipViewTemplateProcessor {
 		log.info("SnipViewTemplateProcessor - doProcess - BEGIN - query: " + query);
 		SnipBean snipBean = snipsService.getSnip(extractId(query));
 		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, snipBean.getId());
+		queryBean.as().setReturnSnipContent(true);
 		List<SnipBean> repliesList = snipsService.searchSnipsWith(queryBean.as());
 
 		queryBean.as().setPageIndex(queryBean.as().getPageIndex()+1);

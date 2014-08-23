@@ -82,7 +82,7 @@ public class RDLUtils {
 	}
 
 	private static void buildDefaultBean (AutoBean<SnipBean> searchOptionsBean, String token) {
-		if (token.contains("_escaped_fragment_")) token = token.replace("_escaped_fragment_","!");
+		if (token.contains("_escaped_fragment_")) token = token.replace("_escaped_fragment_=","!");
 		if (token != null) {
 			switch (token) {
 				case RDLConstants.Tokens.SNIPS:
