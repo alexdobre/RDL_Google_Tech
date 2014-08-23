@@ -13,6 +13,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
+import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.common.ErrorCodeMapper;
@@ -49,6 +50,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		checkLogin();
 		container.clear();
+		view.hideMessages();
 		container.add(view.asWidget());
 	}
 
@@ -65,9 +67,12 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 
 
 	@Override
-	public String submitNewUser(AutoBean<AuthUserBean> bean) {
+	public void submitNewUser(AutoBean<AuthUserBean> bean) {
 		String validationResult = UserViewValidator.validateAuthUserBean(bean);
-		if (validationResult != null ) return validationResult;
+		if (validationResult != null ) {
+			view.setErrorMessage(validationResult);
+			return;
+		}
 
 		String updateUrl = GWT.getModuleBaseURL() + "getSession";
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -76,36 +81,20 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 		String json = AutoBeanCodex.encode(bean).getPayload();
 
 		try {
-
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new BeanCallback<AuthUserBean>(AuthUserBean.class,view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-
-					log.info("RegisterPresenter submitNewUser onResponseReceived: " + response.getText());
-					if (!response.getText().startsWith("{")){
-						view.setErrorMessage(ErrorCodeMapper.getI18nMessage(response.getText()));
-						return;
-					}
-					// deserialise the bean
-					AutoBean<AuthUserBean> bean = AutoBeanCodex.decode(beanery, AuthUserBean.class, response.getText());
+				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean){
 					// on success user is authorised on sign up
-					getController().setCurrentUserBean(bean.as().getName(), bean.as().getEmail(), true, bean.as().getToken());
+					getController().setCurrentUserBean(returnedBean.as().getName(), returnedBean.as().getEmail(),
+							true, returnedBean.as().getToken());
+					view.setSuccessMessage(RDL.getI18n().formSuccessGeneric());
 					// return to welcome page
 					History.newItem(RDLConstants.Tokens.WELCOME);
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
-
-				}
-
 			});
 
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
-		}  // end try
-		return null;
+		}
 	}
 }

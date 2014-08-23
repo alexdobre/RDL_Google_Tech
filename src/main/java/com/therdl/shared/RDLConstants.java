@@ -144,5 +144,8 @@ public interface RDLConstants {
 		String GENERIC = "c000";
 		String C001 = "c001";
 		String C002 = "c002";
+		String C003 = "c003";
+		String C004 = "c004";
+		String C005 = "c005";
 	}
 }

@@ -12,23 +12,15 @@ import org.gwtbootstrap3.client.ui.Modal;
  * can use a instance of its presenter
  * @ doForgotPassword(String email) submit user email for getting a new password if the email is valid.
  */
-public interface ForgotPassword extends RdlView {
+public interface ForgotPassword extends RdlView, ValidatedView {
 
 	public interface Presenter {
-		void doForgotPassword(String email);
+		String doForgotPassword(String email, String username);
 
 		void showForgotPasswordPopup();
 	}
 
 	void setPresenter(Presenter presenter);
-
-	HasText getLabelEmailNotFound();
-
-	Button getSubmitButton();
-
-	Modal getModalSuccessResetPassword();
-
-	Modal getModalFailResetPasswprd();
 
 	Modal getForgotPassModal();
 }

@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * @ PasswordTextBox psswd , cpsswd =='check password abbreviation for clarity'
  * @ Button submitBtn
  */
-public class RegisterViewImpl extends AppMenuView implements RegisterView {
+public class RegisterViewImpl extends AbstractValidatedAppMenuView implements RegisterView {
 
 	private static Logger log = Logger.getLogger(RegisterViewImpl.class.getName());
 
@@ -64,13 +64,6 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	@UiField
 	Button submitBtn;
 
-	@UiField
-	FormErrors formErrors;
-
-	@UiField
-	FormSuccess formSuccess;
-
-
 	public RegisterViewImpl(AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -91,12 +84,7 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 	public void onSubmit(ClickEvent event) {
 		log.info("RegisterViewImpl onSubmit verifying fields");
 		AutoBean<AuthUserBean> newUserBean = formAuthUserBean();
-		String resultMess= presenter.submitNewUser(newUserBean);
-		if (resultMess != null){
-			formErrors.setErrorMessage(resultMess);
-		}else {
-			formSuccess.setSuccessMessage(RDL.getI18n().formSuccessGeneric());
-		}
+		presenter.submitNewUser(newUserBean);
 	}
 
 	private AutoBean<AuthUserBean> formAuthUserBean() {
@@ -109,17 +97,6 @@ public class RegisterViewImpl extends AppMenuView implements RegisterView {
 		newUserBean.as().setIsRDLSupporter(false);
 		newUserBean.as().setRep(0);
 		return newUserBean;
-	}
-
-	@Override
-	public void setErrorMessage(String errorMessage){
-		formErrors.setErrorMessage(errorMessage);
-		ViewUtils.showHide(false, formSuccess);
-	}
-
-	public void setSuccessMessage (String successMessage){
-		formSuccess.setSuccessMessage(successMessage);
-		ViewUtils.showHide(false,formErrors);
 	}
 
 	@Override

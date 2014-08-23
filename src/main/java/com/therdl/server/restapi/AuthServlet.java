@@ -9,11 +9,11 @@ import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.server.validator.UserValidator;
-import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.exceptions.InvalidInputException;
 import com.therdl.shared.exceptions.RDLSendEmailException;
 import com.therdl.shared.exceptions.RdlCodedException;
 import com.therdl.shared.exceptions.TokenInvalidException;
@@ -133,34 +133,30 @@ public class AuthServlet extends HttpServlet {
 	}
 
 
-	private void doForgotPass(HttpServletResponse resp, AutoBean<AuthUserBean> authBean) throws IOException {
+	private void doForgotPass(HttpServletResponse resp, AutoBean<AuthUserBean> authBean)
+			throws IOException, InvalidInputException, RDLSendEmailException {
 		String email = authBean.as().getEmail();
 		//checked if the email is a registered user.
 		UserBean userBean = userService.getUserByEmail(email);
-		if (userBean != null) {
-			String newPass = ServerUtils.generatePassword();
-			String newPassHash = ServerUtils.encryptString(newPass);
+		//if user not found
+		if (userBean == null) throw new InvalidInputException();
+		//if username not correct
+		if (!userBean.getUsername().equals(authBean.as().getName())) throw new InvalidInputException();
 
-			try {
-				//send the new password to the user's registered email
-				EmailSender.sendNewPassEmail(newPass, email, dbProvider.getDb());
+		//generate new pass
+		String newPass = ServerUtils.generatePassword();
+		String newPassHash = ServerUtils.encryptString(newPass);
 
-				//update user hash password
-				userBean.setPassHash(newPassHash);
-				//update the user
-				userService.updateUser(userBean);
+		//send the new password to the user's registered email
+		EmailSender.sendNewPassEmail(newPass, email, dbProvider.getDb());
 
-				//return an email since it is registered
-				authBean.as().setEmail(userBean.getEmail());
-			} catch (RDLSendEmailException e) {
-				//return a "error" value because there was an error in sending an email to the registered email address.
-				authBean.as().setEmail(Global.ERROR);
-			}
+		//update user hash password
+		userBean.setPassHash(newPassHash);
+		//update the user
+		userService.updateUser(userBean);
 
-		} else {
-			//return a "null" email value because the email is not a registered user.
-			authBean.as().setEmail(null);
-		}
+		//return an email since it is registered
+		authBean.as().setEmail(userBean.getEmail());
 
 		PrintWriter out = resp.getWriter();
 		log.info("Writing output: " + AutoBeanCodex.encode(authBean).getPayload());

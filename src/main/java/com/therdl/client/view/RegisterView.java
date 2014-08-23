@@ -13,16 +13,12 @@ import com.therdl.shared.beans.AuthUserBean;
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
  */
-public interface RegisterView extends RdlView {
+public interface RegisterView extends RdlView, ValidatedView {
 
 
 	public interface Presenter {
-		String submitNewUser(AutoBean<AuthUserBean> bean);
+		void submitNewUser(AutoBean<AuthUserBean> bean);
 	}
 
 	void setPresenter(Presenter presenter);
-
-	public void setErrorMessage(String errorMessage);
-
-	public void setSuccessMessage (String successMessage);
 }

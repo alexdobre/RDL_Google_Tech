@@ -57,6 +57,10 @@ public class UserValidatorImpl implements UserValidator {
 				if (userService.getUserByUsername(authBean.as().getName()) != null){
 					throw new UserValidationException(RDLConstants.ErrorCodes.C002);
 				}
+				//email must be unique
+				if (userService.getUserByEmail(authBean.as().getEmail()) != null){
+					throw new UserValidationException(RDLConstants.ErrorCodes.C005);
+				}
 			}
 		} else {
 			isValid = false;

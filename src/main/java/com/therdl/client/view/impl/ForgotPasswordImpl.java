@@ -11,9 +11,11 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.ForgotPassword;
+import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.widget.AppMenu;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 /**
  * ForgotPasswordImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -23,7 +25,8 @@ import org.gwtbootstrap3.client.ui.Modal;
  * @ Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  */
-public class ForgotPasswordImpl extends Composite implements ForgotPassword {
+public class ForgotPasswordImpl extends AbstractValidatedView implements ForgotPassword {
+
 	interface ForgotPasswordUiBinder extends UiBinder<Widget, ForgotPasswordImpl> {
 	}
 
@@ -32,45 +35,21 @@ public class ForgotPasswordImpl extends Composite implements ForgotPassword {
 	private Presenter presenter;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.TextBox txtBoxEmail;
-
-	@UiField
-	Label lblEmailNotFound;
+	TextBox txtBoxEmail, txtUserName;
 
 	@UiField
 	Button btnSubmit;
 
 	@UiField
-	Modal modalSuccessResetPassword, modalFailResetPassword, forgotPassModal;
+	Modal forgotPassModal;
 
 	public ForgotPasswordImpl() {
 		ourUiBinder.createAndBindUi(this);
-		lblEmailNotFound.setText("");
 	}
 
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-	}
-
-	@Override
-	public HasText getLabelEmailNotFound() {
-		return lblEmailNotFound;
-	}
-
-	@Override
-	public Button getSubmitButton() {
-		return btnSubmit;
-	}
-
-	@Override
-	public Modal getModalSuccessResetPassword() {
-		return modalSuccessResetPassword;
-	}
-
-	@Override
-	public Modal getModalFailResetPasswprd() {
-		return modalFailResetPassword;
 	}
 
 	@Override
@@ -80,23 +59,11 @@ public class ForgotPasswordImpl extends Composite implements ForgotPassword {
 
 	@UiHandler("btnSubmit")
 	public void onSubmitClicked(ClickEvent event) {
-		String email = txtBoxEmail.getText().trim();
-		if (!email.isEmpty()) {
-			if (presenter != null) {
-				presenter.doForgotPassword(email);
-			}
-			btnSubmit.setEnabled(false);
+		hideMessages();
+		String result = presenter.doForgotPassword(txtBoxEmail.getText(), txtUserName.getText());
+		if (result != null){
+			setErrorMessage(result);
 		}
-	}
-
-	/**
-	 * get the email string
-	 *
-	 * @param event Standard GWT ClickEvent
-	 */
-	@UiHandler("txtBoxEmail")
-	public void onEmailFocused(FocusEvent event) {
-		lblEmailNotFound.setText("");
 	}
 
 	@Override
