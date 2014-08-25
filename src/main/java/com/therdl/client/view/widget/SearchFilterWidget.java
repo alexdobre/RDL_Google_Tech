@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -27,12 +26,14 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.PaginationSnipsEvent;
 import com.therdl.shared.events.PaginationSnipsEventHandler;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class SearchFilterWidget extends Composite {
 	Button submit, getLinkBtn, createNewButton;
 
 	@UiField
-	org.gwtbootstrap3.client.ui.TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, snipRep, author;
+	TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, snipRep, author;
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
@@ -519,10 +520,13 @@ public class SearchFilterWidget extends Composite {
 	}
 
 	private void createNewBtnHandler(String editPageToken, AutoBean<CurrentUserBean> userBean) {
-		if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter())
-			Window.alert(RDL.i18n.proposalCreateMsg());
-		else
+		if ((Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) ||
+				Global.moduleName.equals(RDLConstants.Modules.IDEAS)) && !userBean.as().getIsRDLSupporter()) {
+			//Window.alert(RDL.i18n.proposalCreateMsg());
+			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
+		} else {
 			History.newItem(editPageToken);
+		}
 	}
 
 	/**

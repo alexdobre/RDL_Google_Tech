@@ -14,9 +14,9 @@ public class PayPalConfiguration {
 		configMap.putAll(getConfig());
 
 		// Account Credential
-		configMap.put("acct1.UserName", "markdiesta-facilitator_api1.gmail.com");
-		configMap.put("acct1.Password", "1395032487");
-		configMap.put("acct1.Signature", "AiPC9BjkCyDFQXbSkoZcgqH3hpacAAhctPJ0aZ9W2usWo1JAF1t0lOGb");
+		configMap.put("acct1.UserName", "alx.dobre-facilitator_api1.gmail.com");
+		configMap.put("acct1.Password", "1391261545");
+		configMap.put("acct1.Signature", "AFcWxV21C7fd0v3bYYYRCpSSRl31AEscdkibbPRCjDi.-Im-Qv3Kc5uQ");
 
 //        configMap.put("acct1.Binding", "SOAP");
 //        configMap.put("acct1.EndPoint", "https://api-3t.sandbox.paypal.com/2.0");

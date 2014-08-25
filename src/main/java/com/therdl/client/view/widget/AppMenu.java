@@ -17,6 +17,8 @@ import com.therdl.shared.Global;
 import com.therdl.shared.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.events.BecomeRdlSupporterEvent;
+import com.therdl.shared.events.BecomeRdlSupporterEventHandler;
 import com.therdl.shared.events.CredentialsSubmitEvent;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInEvent;
@@ -43,6 +45,7 @@ public class AppMenu extends Composite {
 
 	private SignInViewImpl signInView;
 	private ForgotPassword forgotPassword;
+	private SupportRdlPopup supportRdlPopup;
 	LoginHandler loginHandler;
 
 	@UiField
@@ -83,12 +86,20 @@ public class AppMenu extends Composite {
 				showLoginPopUp(null);
 			}
 		});
-		// user has just sucessfully logged in update app menu
+		// user has just successfully logged in update app menu
 		GuiEventBus.EVENT_BUS.addHandler(LogInOkEvent.TYPE, new LogInOkEventEventHandler() {
-
 			@Override
 			public void onLogInOkEvent(LogInOkEvent onLoginOkEvent) {
 				setAppMenu(onLoginOkEvent.getCurrentUserBean());
+			}
+		});
+		GuiEventBus.EVENT_BUS.addHandler(BecomeRdlSupporterEvent.TYPE, new BecomeRdlSupporterEventHandler() {
+			@Override
+			public void onSupporterEvent(BecomeRdlSupporterEvent event) {
+				if (supportRdlPopup == null){
+					supportRdlPopup = new SupportRdlPopup();
+					supportRdlPopup.show();
+				}
 			}
 		});
 	}

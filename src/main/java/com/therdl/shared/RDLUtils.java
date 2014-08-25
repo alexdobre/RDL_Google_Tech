@@ -21,30 +21,6 @@ public class RDLUtils {
 
 	private static Logger log = Logger.getLogger(RDLUtils.class.getName());
 
-	public static boolean isRdlSupporter (AutoBean<AuthUserBean> authUserBean){
-		List<UserBean.TitleBean> titles = authUserBean.as().getTitles();
-		if (titles != null && !titles.isEmpty()){
-			for (UserBean.TitleBean titleBean : titles){
-				if ( RDLConstants.UserTitle.RDL_SUPPORTER.equals(titleBean.getTitleName())){
-					return !isExpired(titleBean);
-				}
-			}
-		}
-		return false;
-	}
-
-	private static boolean isExpired (UserBean.TitleBean titleBean){
-		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires())) return false;
-		//TODO implement title expires logic
-//		try {
-//			return dateFormat.parse(titleBean.getExpires()).after(new Date());
-//		} catch (Exception e){
-//			log.log(Level.SEVERE, e.getMessage(), e);
-//			return true;
-//		}
-		return false;
-	}
-
 	/**
 	 * This method is an enhanced parseInt checking for null and empty strings
 	 * Please note this still throws an exception if the string is malformed

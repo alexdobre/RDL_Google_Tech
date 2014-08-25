@@ -9,6 +9,9 @@ import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
 import com.therdl.server.api.UserService;
+import com.therdl.server.util.ServerUtils;
+import com.therdl.shared.RDLConstants;
+import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
 import org.xml.sax.SAXException;
@@ -256,6 +259,7 @@ public class CreateRecurringPaymentsProfile {
 			//update the paypal Id for querying when IPN was established
 			UserBean userBean = userService.getUserByEmail(userId);
 			userBean.setPaypalId(paypalProfileId);
+			ServerUtils.extendTitle(userBean, RDLConstants.UserTitle.RDL_SUPPORTER, beanery);
 
 			userService.updateUser(userBean);
 

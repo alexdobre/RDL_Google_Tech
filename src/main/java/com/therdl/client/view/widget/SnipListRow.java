@@ -35,9 +35,7 @@ import java.util.logging.Logger;
  * constructor gets snipBean and logged userBean
  */
 public class SnipListRow extends Composite {
-	private static Logger log = Logger.getLogger("");
-
-	private static final int TITLE_MAX_LENGTH = 60;
+	private static Logger log = Logger.getLogger(SnipListRow.class.getName());
 
 	interface SnipListRowUiBinder extends UiBinder<HTMLPanel, SnipListRow> {
 	}

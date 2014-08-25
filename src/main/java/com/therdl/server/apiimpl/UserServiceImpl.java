@@ -89,20 +89,14 @@ public class UserServiceImpl implements UserService {
 	private AutoBean<AuthUserBean> transformUserBeanInAuthUserBean(AutoBean<AuthUserBean> checkedUserBean, UserBean ub) {
 		checkedUserBean.as().setName(ub.getUsername());
 		checkedUserBean.as().setEmail(ub.getEmail());
-		log.info("SID for user: " + ub.getSid());
 		checkedUserBean.as().setSid(ub.getSid());
 		checkedUserBean.as().setPaypalId(ub.getPaypalId());
 		checkedUserBean.as().setAction("OkUser");
 		checkedUserBean.as().setTitles(ub.getTitles());
-		checkedUserBean.as().setIsRDLSupporter(false);
 		checkedUserBean.as().setToken(ub.getToken());
+		checkedUserBean.as().setIsRDLSupporter(ServerUtils.isRdlSupporter(ub));
+		log.info("User is RDL supporter?: "+checkedUserBean.as().getIsRDLSupporter());
 
-		for (UserBean.TitleBean titleBean : ub.getTitles()) {
-			if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-				checkedUserBean.as().setIsRDLSupporter(true);
-				break;
-			}
-		}
 		log.info("Find user END OK: " + checkedUserBean.as().getEmail());
 		return checkedUserBean;
 	}

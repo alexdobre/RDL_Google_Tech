@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.paypal.ipn.IPNMessage;
 import com.therdl.server.api.UserService;
+import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
@@ -95,10 +96,6 @@ public class PayPalIPNServlet extends HttpServlet {
 
 	}
 
-	private void logRecurringTransactions() {
-
-	}
-
 	private void processRecurringPaymentProfileCancel(String profileId) {
 		UserBean userBean = userService.getUserByPayPalId(profileId);
 
@@ -109,17 +106,8 @@ public class PayPalIPNServlet extends HttpServlet {
 	}
 
 	private void processRecurringPaymentProfileCreated(String profileId, String timeCreated, String nextPaymentDate) {
-
 		UserBean userBean = userService.getUserByPayPalId(profileId);
-
-		List<UserBean.TitleBean> titleBeans = new ArrayList<>();
-		UserBean.TitleBean titleBean = beanery.userTitleBean().as();
-		titleBean.setTitleName(RDLConstants.UserTitle.RDL_SUPPORTER);
-		titleBean.setDateGained(timeCreated);
-		titleBean.setExpires(nextPaymentDate);
-		titleBeans.add(titleBean);
-
-		userBean.setTitles(titleBeans);
+		ServerUtils.extendTitle(timeCreated, nextPaymentDate, userBean, RDLConstants.UserTitle.RDL_SUPPORTER, beanery);
 		userService.updateUser(userBean);
 	}
 

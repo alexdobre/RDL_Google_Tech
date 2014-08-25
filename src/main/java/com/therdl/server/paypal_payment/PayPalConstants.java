@@ -4,7 +4,7 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 public class PayPalConstants {
 
-	public static final String CHARGE_AMOUNT = "1.00";
+	public static final String CHARGE_AMOUNT = "7.00";
 	public static final String BILLING_AGREEMENT_DESCRIPTION = "Buyer is billed at \"" + CurrencyCodeType.USD + PayPalConstants.CHARGE_AMOUNT + "\" per month";
 	public static final String PAYPAL_RETURN_URL = "/rdl/GetExpressCheckout";
 	public static final String PAYPAL_CANCEL_URL = "/rdl.html";
