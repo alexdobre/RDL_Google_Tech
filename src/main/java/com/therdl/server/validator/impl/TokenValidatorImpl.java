@@ -2,7 +2,9 @@ package com.therdl.server.validator.impl;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -16,7 +18,7 @@ import com.therdl.shared.exceptions.TokenInvalidException;
  */
 @Singleton
 public class TokenValidatorImpl implements TokenValidator {
-	private static Logger log = Logger.getLogger(TokenValidatorImpl.class.getName());
+	final Logger log = LoggerFactory.getLogger(TokenValidatorImpl.class);
 
 	private SecureRandom random = new SecureRandom();
 	private UserService userService;
@@ -31,10 +33,10 @@ public class TokenValidatorImpl implements TokenValidator {
 	}
 
 	public UserBean validateTokenViaUsername(String username, String token) throws TokenInvalidException {
-		log.info("validateTokenViaUsername "+username+" token: "+token);
+		log.info("validateTokenViaUsername " + username + " token: " + token);
 		UserBean userBean = userService.getUserByUsername(username);
-		log.info("retrieved user bean with token: "+token);
-		if (!token.equals(userBean.getToken())){
+		log.info("retrieved user bean with token: " + token);
+		if (!token.equals(userBean.getToken())) {
 			throw new TokenInvalidException();
 		}
 		return userBean;
@@ -42,7 +44,7 @@ public class TokenValidatorImpl implements TokenValidator {
 
 	public UserBean validateTokenViaEmail(String email, String token) throws TokenInvalidException {
 		UserBean userBean = userService.getUserByEmail(email);
-		if (!token.equals(userBean.getToken())){
+		if (!token.equals(userBean.getToken())) {
 			throw new TokenInvalidException();
 		}
 		return userBean;
@@ -50,7 +52,7 @@ public class TokenValidatorImpl implements TokenValidator {
 
 	public UserBean validateTokenViaId(String id, String token) throws TokenInvalidException {
 		UserBean userBean = userService.getUserById(id);
-		if (!token.equals(userBean.getToken())){
+		if (!token.equals(userBean.getToken())) {
 			throw new TokenInvalidException();
 		}
 		return userBean;

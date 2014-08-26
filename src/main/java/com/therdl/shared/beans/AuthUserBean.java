@@ -1,13 +1,10 @@
 package com.therdl.shared.beans;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.List;
 
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * A bean to pass  the current authorised use;s credentials to the sever
@@ -23,13 +20,13 @@ public interface AuthUserBean extends TokenizedBean {
 
 
 	@NotEmpty
-	@Pattern(regexp="^[a-zA-Z0-9_]*$")
+	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
 	String getName();
 
 	void setName(String name);
 
 	@NotEmpty
-	@Pattern(regexp="\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b")
+	@Pattern(regexp = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b")
 	String getEmail();
 
 	void setEmail(String email);

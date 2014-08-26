@@ -1,12 +1,12 @@
 package com.therdl.client.view.common;
 
+import java.util.logging.Logger;
+
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.shared.Constants;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.PaginationSnipsEvent;
-
-import java.util.logging.Logger;
 
 /**
  * Common methods used in pagination

@@ -3,7 +3,9 @@ package com.therdl.server.crawler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -25,7 +27,7 @@ import com.therdl.shared.beans.SnipBean;
 @Singleton
 public class SnipListTemplateProcessor {
 
-	private static Logger log = Logger.getLogger(SnipListTemplateProcessor.class.getName());
+	final Logger log = LoggerFactory.getLogger(SnipListTemplateProcessor.class);
 
 	private SnipsService snipsService;
 	private Beanery beanery;

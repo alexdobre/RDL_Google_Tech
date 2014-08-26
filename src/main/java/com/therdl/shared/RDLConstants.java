@@ -1,9 +1,9 @@
 package com.therdl.shared;
 
 
-import com.therdl.client.RDL;
-
 import java.util.HashMap;
+
+import com.therdl.client.RDL;
 
 /**
  * Standard Model View Presenter History tokens
@@ -52,8 +52,8 @@ public interface RDLConstants {
 		String DATE_TO = "dateTo";
 		String POSTS = "posts";
 		String SNIP_TYPE = "snipType";
-		String PARENT="parent";
-		String PAGE="page";
+		String PARENT = "parent";
+		String PAGE = "page";
 
 		String PROPOSAL_TYPE = "proposalType";
 		String PROPOSAL_STATE = "proposalState";

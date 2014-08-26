@@ -1,5 +1,9 @@
 package com.therdl.client.view.widget;
 
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Container;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -8,9 +12,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
-import org.gwtbootstrap3.client.ui.Container;
-
-import java.util.logging.Logger;
 
 /**
  * This widget is a row in the titles list in the user's profile

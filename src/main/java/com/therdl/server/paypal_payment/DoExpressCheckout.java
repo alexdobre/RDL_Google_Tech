@@ -1,5 +1,16 @@
 package com.therdl.server.paypal_payment;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -7,7 +18,6 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
-import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentReq;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentRequestType;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentResponseType;
@@ -21,13 +31,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
 import urn.ebay.apis.eBLBaseComponents.PaymentInfoType;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
-
 //# DoExpressCheckout API
 // The DoExpressCheckoutPayment API operation completes an Express Checkout
 // transaction. If you set up a billing agreement in your SetExpressCheckout
@@ -37,13 +40,13 @@ import java.util.logging.Logger;
 // download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 public class DoExpressCheckout {
 
+	final Logger logger = LoggerFactory.getLogger(DoExpressCheckout.class);
+
 	public DoExpressCheckout() {
 
 	}
 
 	public DoExpressCheckoutPaymentResponseType doExpressCheckout(GetExpressCheckoutDetailsResponseType getExpressCheckoutDetailsResponseType, String url) {
-
-		Logger logger = Logger.getLogger(this.getClass().toString());
 
 		String token = getExpressCheckoutDetailsResponseType.getGetExpressCheckoutDetailsResponseDetails().getToken();
 		String payerId = getExpressCheckoutDetailsResponseType.getGetExpressCheckoutDetailsResponseDetails().getPayerInfo().getPayerID();
@@ -111,13 +114,13 @@ public class DoExpressCheckout {
 		// Unique identifier for the merchant. For parallel payments, this field
 		// is required and must contain the Payer Id or the email address of the
 		// merchant.
-//		SellerDetailsType sellerDetails1 = new SellerDetailsType();
-//		sellerDetails1.setPayPalAccountID(PayPalConstants.PAYPAL_ACCOUNT_ID);
-//		paymentDetails1.setSellerDetails(sellerDetails1);
+		//		SellerDetailsType sellerDetails1 = new SellerDetailsType();
+		//		sellerDetails1.setPayPalAccountID(PayPalConstants.PAYPAL_ACCOUNT_ID);
+		//		paymentDetails1.setSellerDetails(sellerDetails1);
 
 		// A unique identifier of the specific payment request, which is
 		// required for parallel payments.
-//        paymentDetails1.setPaymentRequestID(PayPalConstants.PAYMENT_REQUEST_ID);
+		//        paymentDetails1.setPaymentRequestID(PayPalConstants.PAYMENT_REQUEST_ID);
 
 		// Your URL for receiving Instant Payment Notification (IPN) about this transaction. If you do not specify this value in the request, the notification URL from your Merchant Profile is used, if one exists.
 		paymentDetails1.setNotifyURL(url + PayPalConstants.PAYPAL_IPN_NOTIFY_URL);
@@ -143,27 +146,27 @@ public class DoExpressCheckout {
 			doExpressCheckoutPaymentResponse = service
 					.doExpressCheckoutPayment(doExpressCheckoutPaymentReq);
 		} catch (SSLConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (HttpErrorException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidResponseDataException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ClientActionRequiredException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (MissingCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InterruptedException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (OAuthException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ParserConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (SAXException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (IOException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		}
 
 		// ## Accessing response parameters
@@ -196,7 +199,7 @@ public class DoExpressCheckout {
 		else {
 			List<ErrorType> errorList = doExpressCheckoutPaymentResponse
 					.getErrors();
-			logger.severe("API Error Message : "
+			logger.error("API Error Message : "
 					+ errorList.get(0).getLongMessage());
 		}
 		return doExpressCheckoutPaymentResponse;

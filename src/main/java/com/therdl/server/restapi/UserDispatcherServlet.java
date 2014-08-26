@@ -3,7 +3,6 @@ package com.therdl.server.restapi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -12,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -26,7 +28,6 @@ import com.therdl.shared.beans.UserBean;
  * UserDispatcherServlet controller. This project uses the Guice injection
  * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
  * if you are from the Spring framework space
- * <p/>
  * UserDispatcherServlet uses Guice to implement  the command pattern re Gang of 4 design patterns
  * see http://java.dzone.com/articles/design-patterns-command
  *
@@ -40,8 +41,8 @@ import com.therdl.shared.beans.UserBean;
 
 @Singleton
 public class UserDispatcherServlet extends HttpServlet {
+	final Logger log = LoggerFactory.getLogger(UserDispatcherServlet.class);
 
-	private static Logger log = Logger.getLogger(UserDispatcherServlet.class.getName());
 	private final Provider<HttpSession> sessions;
 
 	/**
@@ -70,19 +71,17 @@ public class UserDispatcherServlet extends HttpServlet {
 	/**
 	 * When code is running in the Maven Jetty plugin (development) the uri for this method will be
 	 * 'http://localhost:8080/rdl/getUsers' URL
-	 * <p/>
 	 * When code is running in the JBoss Application server (deployment) the uri for this method will be
 	 * 'http://localhost:8080/therdl/rdl/getUsers' URL
 	 *
 	 * @param req  Standard Http ServletRequest
-	 * @param resp  Standard Http ServletResponse
+	 * @param resp Standard Http ServletResponse
 	 * @throws ServletException
 	 * @throws IOException      AutoBean<UserBean> actionBean see this video for a great explanation of 'actions' in the command pattern
 	 *                          http://www.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html
 	 *                          here the actionBean relates the users requested action
 	 *                          see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex for serverside
 	 *                          autobean serialisation
-	 *                          <p/>
 	 *                          Gson gson see http://code.google.com/p/google-gson/ for Gson serialaisation
 	 */
 	@Override

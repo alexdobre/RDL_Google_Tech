@@ -1,5 +1,19 @@
 package com.therdl.server.paypal_payment;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Provider;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
@@ -10,24 +24,9 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
 
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
 @Singleton
 public class PayPalIPNServlet extends HttpServlet {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private GetRecurringPaymentsProfileDetails getRecurringPaymentsProfileDetails = new GetRecurringPaymentsProfileDetails();
@@ -35,7 +34,7 @@ public class PayPalIPNServlet extends HttpServlet {
 	private Provider<HttpSession> session;
 	private Beanery beanery = AutoBeanFactorySource.create(Beanery.class);
 
-	Logger log = Logger.getLogger(this.getClass().toString());
+	final Logger log = LoggerFactory.getLogger(PayPalIPNServlet.class);
 
 	@Inject
 	public PayPalIPNServlet(Provider<HttpSession> session, UserService userService) {
@@ -48,10 +47,9 @@ public class PayPalIPNServlet extends HttpServlet {
 	 * receiver for PayPal ipn call back.
 	 */
 	protected void doPost(HttpServletRequest request,
-	                      HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response) throws ServletException, IOException {
 
 		log.info("PayPalIPNServlet - START!");
-
 
 		// For a full list of configuration parameters refer in wiki page.
 		// (https://github.com/paypal/sdk-core-java/wiki/SDK-PayPalConfiguration-Parameters)
@@ -77,7 +75,6 @@ public class PayPalIPNServlet extends HttpServlet {
 			String nextPaymentDate = map.get(PayPalIPNVariables.NEXT_PAYMENT_DATE);
 			log.info("NEXT_PAYMENT_DATE: " + nextPaymentDate);
 
-
 			if (transactionType.equals(PayPalIPNVariables.RECURRING_PAYMENT)) {
 				processRecurringPayment(profileId, nextPaymentDate);
 
@@ -97,12 +94,7 @@ public class PayPalIPNServlet extends HttpServlet {
 	}
 
 	private void processRecurringPaymentProfileCancel(String profileId) {
-		UserBean userBean = userService.getUserByPayPalId(profileId);
-
-		//remove the title/s of the canceled/suspended/expired subscriber
-		List<UserBean.TitleBean> titleBeans = userBean.getTitles();
-		titleBeans.clear();
-		userService.updateUser(userBean);
+		//do nothing as the title will expire by itself
 	}
 
 	private void processRecurringPaymentProfileCreated(String profileId, String timeCreated, String nextPaymentDate) {

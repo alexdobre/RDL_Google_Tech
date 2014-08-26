@@ -1,5 +1,20 @@
 package com.therdl.server.restapi;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -19,19 +34,6 @@ import com.therdl.shared.exceptions.RdlCodedException;
 import com.therdl.shared.exceptions.TokenInvalidException;
 import com.therdl.shared.exceptions.UserValidationException;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Session controller for simple user authentication. This project uses the Guice injection
  * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
@@ -48,7 +50,7 @@ import java.util.logging.Logger;
 @Singleton
 public class AuthServlet extends HttpServlet {
 
-	private static Logger log = Logger.getLogger("");
+	final Logger log = LoggerFactory.getLogger(AuthServlet.class);
 
 	private final Provider<HttpSession> session;
 	private Beanery beanery;
@@ -58,7 +60,7 @@ public class AuthServlet extends HttpServlet {
 
 	@Inject
 	public AuthServlet(Provider<HttpSession> sessions, UserService userService, DbProvider dbProvider,
-	                   UserValidator userValidator) {
+			UserValidator userValidator) {
 		this.session = sessions;
 		this.userService = userService;
 		this.dbProvider = dbProvider;
@@ -111,12 +113,12 @@ public class AuthServlet extends HttpServlet {
 			} else if (action.equals("changePass")) {
 				doChangePass(resp, authBean);
 			}
-		} catch (RdlCodedException e){
-			log.info("Coded exception thrown: "+e.getClass().getName() +" code: "+e.getCode());
+		} catch (RdlCodedException e) {
+			log.info("Coded exception thrown: " + e.getClass().getName() + " code: " + e.getCode());
 			PrintWriter out = resp.getWriter();
 			out.write(e.getCode());
-		} catch (Exception e){
-			log.log(Level.SEVERE,e.getMessage(),e);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 			PrintWriter out = resp.getWriter();
 			out.write(RDLConstants.ErrorCodes.GENERIC);
 		}
@@ -140,9 +142,11 @@ public class AuthServlet extends HttpServlet {
 		//checked if the email is a registered user.
 		UserBean userBean = userService.getUserByEmail(email);
 		//if user not found
-		if (userBean == null) throw new InvalidInputException();
+		if (userBean == null)
+			throw new InvalidInputException();
 		//if username not correct
-		if (!userBean.getUsername().equals(authBean.as().getName())) throw new InvalidInputException();
+		if (!userBean.getUsername().equals(authBean.as().getName()))
+			throw new InvalidInputException();
 
 		//generate new pass
 		String newPass = ServerUtils.generatePassword();

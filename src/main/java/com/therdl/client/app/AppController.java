@@ -36,7 +36,6 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
-import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
@@ -74,7 +73,7 @@ import com.therdl.shared.events.SnipViewEventHandler;
  */
 public class AppController implements Presenter, ValueChangeHandler<String> {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(AppController.class.getName());
 
 	private HasWidgets container;
 	private Beanery beanery = GWT.create(Beanery.class);
@@ -189,7 +188,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (tokenSplit.length != 0) {
 			moduleName = tokenSplit[0];
 		}
-		log.info("App controller module name: "+moduleName);
+		log.info("App controller module name: " + moduleName);
 		if (moduleName != null) {
 			switch (moduleName) {
 			case RDLConstants.Tokens.WELCOME:
@@ -275,7 +274,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showThreadView(String token) {
 		Global.moduleName = RDLConstants.Modules.STORIES;
-		log.info("AppController Tokens.THREAD_VIEW token: "+token);
+		log.info("AppController Tokens.THREAD_VIEW token: " + token);
 		if (threadView == null) {
 			threadView = new SnipViewImpl(currentUserBean, appMenu);
 		}

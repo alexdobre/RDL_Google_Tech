@@ -11,7 +11,7 @@ public class PaginationSnipsEvent extends GwtEvent<PaginationSnipsEventHandler> 
 	private boolean nextPage;
 	private int pageIndex;
 
-	public PaginationSnipsEvent (boolean nextPage, int pageIndex){
+	public PaginationSnipsEvent(boolean nextPage, int pageIndex) {
 		this.nextPage = nextPage;
 		this.pageIndex = pageIndex;
 	}

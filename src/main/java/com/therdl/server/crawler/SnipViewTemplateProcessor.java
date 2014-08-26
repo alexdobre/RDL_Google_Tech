@@ -1,5 +1,12 @@
 package com.therdl.server.crawler;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -13,19 +20,13 @@ import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.logging.Logger;
-
 /**
  * Handles a crawl request for viewing a snip
  */
 @Singleton
 public class SnipViewTemplateProcessor {
 
-
-	private static Logger log = Logger.getLogger(SnipViewTemplateProcessor.class.getName());
+	final Logger log = LoggerFactory.getLogger(SnipViewTemplateProcessor.class);
 
 	private SnipsService snipsService;
 	private Beanery beanery;
@@ -43,9 +44,9 @@ public class SnipViewTemplateProcessor {
 		queryBean.as().setReturnSnipContent(true);
 		List<SnipBean> repliesList = snipsService.searchSnipsWith(queryBean.as());
 
-		queryBean.as().setPageIndex(queryBean.as().getPageIndex()+1);
+		queryBean.as().setPageIndex(queryBean.as().getPageIndex() + 1);
 		SnipViewTemplate template = new SnipViewTemplate(snipBean, repliesList,
-				RDLUtils.builtTokenFromBean(queryBean,moduleName, extractId(query)), shouldRenderNextPage(repliesList));
+				RDLUtils.builtTokenFromBean(queryBean, moduleName, extractId(query)), shouldRenderNextPage(repliesList));
 
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mustache = mf.compile("mustache/snipView.mustache");
@@ -58,8 +59,8 @@ public class SnipViewTemplateProcessor {
 		return querySplit[1];
 	}
 
-	private boolean shouldRenderNextPage (List<SnipBean> snipList){
-		if (snipList == null || snipList.size() < Constants.DEFAULT_REFERENCE_PAGE_SIZE){
+	private boolean shouldRenderNextPage(List<SnipBean> snipList) {
+		if (snipList == null || snipList.size() < Constants.DEFAULT_REFERENCE_PAGE_SIZE) {
 			return false;
 		}
 		return true;

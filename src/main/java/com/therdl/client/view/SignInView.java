@@ -1,6 +1,5 @@
 package com.therdl.client.view;
 
-import com.google.gwt.user.client.ui.PasswordTextBox;
 import org.gwtbootstrap3.client.ui.TextBox;
 
 /**

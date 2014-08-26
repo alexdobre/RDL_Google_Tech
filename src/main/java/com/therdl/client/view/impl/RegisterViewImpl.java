@@ -1,27 +1,22 @@
 package com.therdl.client.view.impl;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.RDL;
-import com.therdl.client.view.RegisterView;
-import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.FormErrors;
-import com.therdl.client.view.widget.FormSuccess;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
+import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Input;
 import org.gwtbootstrap3.client.ui.TextBox;
 
-import java.util.logging.Logger;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.RegisterView;
+import com.therdl.client.view.widget.AppMenu;
+import com.therdl.shared.beans.AuthUserBean;
+import com.therdl.shared.beans.Beanery;
 
 /**
  * RegisterViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)

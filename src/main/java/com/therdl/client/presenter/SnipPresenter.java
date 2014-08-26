@@ -1,5 +1,8 @@
 package com.therdl.client.presenter;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
@@ -21,9 +24,6 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -50,7 +50,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		super(appController);
 		this.view = snipView;
 		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
-		log.info("currentSnipId at constructor time: "+currentSnipId+" from token: "+token);
+		log.info("currentSnipId at constructor time: " + currentSnipId + " from token: " + token);
 		this.controller = appController;
 		this.view.setPresenter(this);
 		this.searchOptionsBean = RDLUtils.parseSearchToken(beanery, token, currentSnipId);

@@ -1,13 +1,14 @@
 package com.therdl.client.view.widget;
 
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import org.gwtbootstrap3.client.ui.Modal;
-
-import java.util.logging.Logger;
 
 /**
  * Popup shown to the user to become an RDL supporter

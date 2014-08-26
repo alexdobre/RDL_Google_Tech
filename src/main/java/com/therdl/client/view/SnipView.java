@@ -1,12 +1,12 @@
 package com.therdl.client.view;
 
+import java.util.ArrayList;
+
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
 
 /**
  * snip view triggered when snip row list widget is selected

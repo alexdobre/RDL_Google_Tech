@@ -7,7 +7,7 @@ import java.util.List;
  * A bean that encapsulates content data
  */
 
-public interface SnipBean extends TokenizedBean{
+public interface SnipBean extends TokenizedBean {
 
 	/**
 	 * used for implementing the command pattern in this application

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class AvatarInvalidException extends Exception implements Serializable {
 
 	public AvatarInvalidException() {
-		super ("AvatarInvalidException");
+		super("AvatarInvalidException");
 	}
 
 	public AvatarInvalidException(String message) {

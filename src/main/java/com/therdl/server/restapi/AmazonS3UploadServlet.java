@@ -1,5 +1,26 @@
 package com.therdl.server.restapi;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -16,32 +37,13 @@ import com.therdl.server.data.AwsS3Credentials;
 import com.therdl.server.validator.impl.AvatarFileValidatorImpl;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.exceptions.AvatarInvalidException;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FilenameUtils;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Uploads an image to the amazon S3 service
  */
 @Singleton
 public class AmazonS3UploadServlet extends HttpServlet {
-	private static Logger log = Logger.getLogger(AmazonS3UploadServlet.class.getName());
+	final Logger log = LoggerFactory.getLogger(AmazonS3UploadServlet.class);
 	/**
 	 * Upload servlet to AWS S3 bucket
 	 */
@@ -60,7 +62,6 @@ public class AmazonS3UploadServlet extends HttpServlet {
 	private UserService userService;
 
 
-
 	@Inject
 	public AmazonS3UploadServlet(Provider<HttpSession> session, UserService userService, CredentialsService credentialsService) {
 		super();
@@ -77,21 +78,22 @@ public class AmazonS3UploadServlet extends HttpServlet {
 	 * handles file upload via HTTP POST method.
 	 */
 	protected void doPost(final HttpServletRequest request,
-	                      final HttpServletResponse response) throws ServletException, IOException {
-		String userName = (String) session.get().getAttribute("username");
-		log.info("Amazon S3 servlet doPost BEGIN for username "+userName);
+			final HttpServletResponse response) throws ServletException, IOException {
+		String userName = (String)session.get().getAttribute("username");
+		log.info("Amazon S3 servlet doPost BEGIN for username " + userName);
 
 		ServletFileUpload upload = setupFileUpload(request, response);
-		if (upload == null) return;
+		if (upload == null)
+			return;
 
 		String uuidValue = userName;
 
 		try {
 			FileItem itemFile = getFileItem(request, upload);
-			log.info("Retrieved item file of size: "+itemFile.getSize()+" and type: "+itemFile.getContentType());
+			log.info("Retrieved item file of size: " + itemFile.getSize() + " and type: " + itemFile.getContentType());
 			if (itemFile != null) {
 				//validate file item
-				if (!AvatarFileValidatorImpl.isImageValid(itemFile)){
+				if (!AvatarFileValidatorImpl.isImageValid(itemFile)) {
 					throw new AvatarInvalidException();
 				}
 				itemFile.setFieldName(userName);
@@ -103,7 +105,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 			}
 
 		} catch (Exception ex) {
-			log.log(Level.SEVERE,ex.getMessage(),ex);
+			log.error(ex.getMessage(), ex);
 		}
 		log.info(uuidValue + ":Upload done");
 	}
@@ -125,10 +127,10 @@ public class AmazonS3UploadServlet extends HttpServlet {
 			s3client.setObjectAcl(S3_BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
 
 		} catch (AmazonServiceException ase) {
-			log.log(Level.SEVERE,ase.getMessage(),ase);
+			log.error(ase.getMessage(), ase);
 
 		} catch (AmazonClientException ace) {
-			log.log(Level.SEVERE, ace.getMessage(), ace);
+			log.error(ace.getMessage(), ace);
 		}
 
 		log.info("S3 servlet uploadFile END");
@@ -169,7 +171,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 
 		// iterates over form's fields to get UUID Value
 		while (iter.hasNext()) {
-			FileItem item = (FileItem) iter.next();
+			FileItem item = (FileItem)iter.next();
 			// processes only fields that are not form fields
 			if (item.getFieldName().equals("fileElement")) {
 				result = item;

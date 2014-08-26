@@ -1,13 +1,11 @@
 package com.therdl.client.view;
 
+import java.util.Map;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.CoreCategory;
-import com.therdl.shared.LoginHandler;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.Map;
 
 /**
  * see com.therdl.client.view.impl.WelcomeViewImpl javadoc for the

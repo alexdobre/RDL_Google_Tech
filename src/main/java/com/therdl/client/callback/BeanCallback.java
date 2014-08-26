@@ -1,5 +1,7 @@
 package com.therdl.client.callback;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
@@ -10,8 +12,6 @@ import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
-
-import java.util.logging.Logger;
 
 /**
  * A call back containing one bean
@@ -43,7 +43,7 @@ public abstract class BeanCallback<T> implements RequestCallback {
 	}
 
 	public void onErrorCodeReturned(String errorCode) {
-		log.info("Error code returned "+errorCode);
+		log.info("Error code returned " + errorCode);
 		validatedView.setErrorMessage(ErrorCodeMapper.getI18nMessage(errorCode));
 	}
 

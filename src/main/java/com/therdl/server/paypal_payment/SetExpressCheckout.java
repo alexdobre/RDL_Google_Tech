@@ -1,5 +1,17 @@
 package com.therdl.server.paypal_payment;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -7,7 +19,6 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
-import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutReq;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutRequestType;
@@ -20,30 +31,21 @@ import urn.ebay.apis.eBLBaseComponents.ErrorType;
 import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
 import urn.ebay.apis.eBLBaseComponents.SetExpressCheckoutRequestDetailsType;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
 //# SetExpressCheckout API
 // The SetExpressCheckout API operation initiates an Express Checkout
 // transaction.
 // This sample code uses Merchant Java SDK to make API call. You can
 // download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 public class SetExpressCheckout {
+	final Logger logger = LoggerFactory.getLogger(SetExpressCheckout.class);
 
 	public SetExpressCheckout() {
 	}
 
 	public SetExpressCheckoutResponseType setExpressCheckout(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
-		Logger logger = Logger.getLogger(this.getClass().toString());
 
 		String returnURL = url + PayPalConstants.PAYPAL_RETURN_URL;
 		String cancelURL = url + PayPalConstants.PAYPAL_CANCEL_URL;
-
 
 		// ## SetExpressCheckoutReq
 		SetExpressCheckoutRequestDetailsType setExpressCheckoutRequestDetails = new SetExpressCheckoutRequestDetailsType();
@@ -63,7 +65,6 @@ public class SetExpressCheckout {
 		// PayPal recommends that the value be the original page on which the
 		// buyer chose to pay with PayPal or establish a billing agreement.`
 		setExpressCheckoutRequestDetails.setCancelURL(cancelURL);
-
 
 		// ### Payment Information
 		// list of information about the payment
@@ -110,18 +111,18 @@ public class SetExpressCheckout {
 		// DoExpressCheckoutPayment request. If you set the field to
 		// Authorization or Order in SetExpressCheckout, you may set the field
 		// to Sale.`
-//        paymentDetails1.setPaymentAction(PaymentActionCodeType.SALE);
+		//        paymentDetails1.setPaymentAction(PaymentActionCodeType.SALE);
 
 		// Unique identifier for the merchant. For parallel payments, this field
 		// is required and must contain the Payer Id or the email address of the
 		// merchant.
-//        SellerDetailsType sellerDetails1 = new SellerDetailsType();
-//        sellerDetails1.setPayPalAccountID(PayPalConstants.PAYPAL_ACCOUNT_ID);
-//        paymentDetails1.setSellerDetails(sellerDetails1);
+		//        SellerDetailsType sellerDetails1 = new SellerDetailsType();
+		//        sellerDetails1.setPayPalAccountID(PayPalConstants.PAYPAL_ACCOUNT_ID);
+		//        paymentDetails1.setSellerDetails(sellerDetails1);
 
 		// A unique identifier of the specific payment request, which is
 		// required for parallel payments.
-//        paymentDetails1.setPaymentRequestID(PayPalConstants.PAYMENT_REQUEST_ID);
+		//        paymentDetails1.setPaymentRequestID(PayPalConstants.PAYMENT_REQUEST_ID);
 
 		// Your URL for receiving Instant Payment Notification (IPN) about this
 		// transaction. If you do not specify this value in the request, the
@@ -130,7 +131,7 @@ public class SetExpressCheckout {
 		paymentDetailsList.add(paymentDetails1);
 
        	/*
-       	      *  (Required) Type of billing agreement. For recurring payments,
+	   	      *  (Required) Type of billing agreement. For recurring payments,
 				 *   this field must be set to RecurringPayments.
 				 *   In this case, you can specify up to ten billing agreements.
 				 *   Other defined values are not valid.
@@ -161,7 +162,6 @@ public class SetExpressCheckout {
 		billList.add(billingAgreement);
 		setExpressCheckoutRequestDetails.setBillingAgreementDetails(billList);
 
-
 		setExpressCheckoutRequestDetails.setPaymentDetails(paymentDetailsList);
 
 		SetExpressCheckoutReq setExpressCheckoutReq = new SetExpressCheckoutReq();
@@ -180,27 +180,27 @@ public class SetExpressCheckout {
 			// wrapper object
 			setExpressCheckoutResponse = service.setExpressCheckout(setExpressCheckoutReq);
 		} catch (SSLConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (HttpErrorException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidResponseDataException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ClientActionRequiredException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (MissingCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InterruptedException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (OAuthException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ParserConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (SAXException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (IOException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		}
 
 		// ## Accessing response parameters
@@ -223,7 +223,7 @@ public class SetExpressCheckout {
 		// Access error values from error list using getter methods
 		else {
 			List<ErrorType> errorList = setExpressCheckoutResponse.getErrors();
-			logger.severe("API Error Message : "
+			logger.error("API Error Message : "
 					+ errorList.get(0).getLongMessage());
 
 

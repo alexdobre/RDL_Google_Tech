@@ -1,6 +1,24 @@
 package com.therdl.server.restapi;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -14,26 +32,10 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Logger;
-
 /**
  * SnipDispatcherServlet controller. This project uses the Guice injection
  * schema for beans, see http://code.google.com/p/google-guice/wiki/SpringComparison
  * if you are from the Spring framework space
- * <p/>
  * SnipDispatcherServlet uses Guice to implement  the command pattern re Gang of 4 design patterns
  * see http://java.dzone.com/articles/design-patterns-command
  *
@@ -47,7 +49,7 @@ import java.util.logging.Logger;
 @Singleton
 public class SnipDispatcherServlet extends HttpServlet {
 
-	private static Logger log = Logger.getLogger(SnipDispatcherServlet.class.getName());
+	final Logger log = LoggerFactory.getLogger(SnipDispatcherServlet.class);
 	private final Provider<HttpSession> sessions;
 
 	/**
@@ -81,7 +83,6 @@ public class SnipDispatcherServlet extends HttpServlet {
 	/**
 	 * When code is running in the Maven Jetty plugin (development) the uri for this method will be
 	 * 'http://localhost:8080/rdl/getSnips' URL
-	 * <p/>
 	 * When code is running in the JBoss Application server (deployment) the uri for this method will be
 	 * 'http://localhost:8080/therdl/rdl/getSnips' URL
 	 *
@@ -94,7 +95,6 @@ public class SnipDispatcherServlet extends HttpServlet {
 	 *                          here the actionBean relates the users requested action
 	 *                          see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex for serverside
 	 *                          autobean serialisation
-	 *                          <p/>
 	 *                          Gson gson see http://code.google.com/p/google-gson/ for Gson serialaisation
 	 */
 	@Override
@@ -115,7 +115,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 		AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
 		sb.setLength(0);
 
-		 if (actionBean.as().getAction().equals("search")) {
+		if (actionBean.as().getAction().equals("search")) {
 			List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as());
 			log.info("SnipDispatcherServlet: beans.size() " + beans.size());
 			log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
@@ -160,7 +160,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 			// action bean is actually a bean to be submitted for saving
 			log.info("SnipDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getTitle());
 			// check that user id has been set for this bean
-			String id = (String) sessions.get().getAttribute("userid");
+			String id = (String)sessions.get().getAttribute("userid");
 			actionBean.as().setCreationDate(snipsService.makeTimeStamp());
 			snipsService.createSnip(actionBean.as());
 		} else if (actionBean.as().getAction().equals("update")) {
@@ -208,7 +208,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 
 			// in the case of post a user can reply the save thread more than one time, so no need to save this information
 			if (!actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
-				String email = (String) sessions.get().getAttribute("userid");
+				String email = (String)sessions.get().getAttribute("userid");
 				AutoBean<UserBean.RefGivenBean> refGivenBean = beanery.userRefGivenBean();
 				refGivenBean.as().setSnipId(parentSnipId);
 				refGivenBean.as().setDate(snipsService.makeTimeStamp());
@@ -234,7 +234,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 			beanList.clear();
 			actionBean.as().setAction("dump");
 		} else if (actionBean.as().getAction().equals("giveRep")) {
-			String email = (String) sessions.get().getAttribute("userid");
+			String email = (String)sessions.get().getAttribute("userid");
 
 			AutoBean<UserBean.RepGivenBean> repGivenBean = beanery.userRepGivenBean();
 			repGivenBean.as().setSnipId(actionBean.as().getId());

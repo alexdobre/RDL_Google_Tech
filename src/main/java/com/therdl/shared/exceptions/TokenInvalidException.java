@@ -2,8 +2,6 @@ package com.therdl.shared.exceptions;
 
 import com.therdl.shared.RDLConstants;
 
-import java.io.Serializable;
-
 /**
  * Thrown when a tokenized operation did not supply the correct token
  */

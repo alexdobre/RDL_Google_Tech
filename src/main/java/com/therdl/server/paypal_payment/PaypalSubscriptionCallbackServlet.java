@@ -1,10 +1,6 @@
 package com.therdl.server.paypal_payment;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.therdl.server.api.UserService;
-import com.therdl.shared.Constants;
-import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileResponseType;
+import java.io.IOException;
 
 import javax.inject.Provider;
 import javax.servlet.ServletException;
@@ -12,18 +8,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.therdl.server.api.UserService;
+import com.therdl.shared.Constants;
+import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileResponseType;
 
 @Singleton
 public class PaypalSubscriptionCallbackServlet extends HttpServlet {
+	final Logger log = LoggerFactory.getLogger(PaypalSubscriptionCallbackServlet.class);
 
 	private static final long serialVersionUID = 1L;
 
 	private Provider<HttpSession> session;
 	private UserService userService;
-	private GetExpressCheckout getExpressCheckout = new GetExpressCheckout();
-	private DoExpressCheckout doExpressCheckout = new DoExpressCheckout();
 	private CreateRecurringPaymentsProfile createRecurringPaymentsProfile = new CreateRecurringPaymentsProfile();
 
 	@Inject
@@ -40,7 +42,6 @@ public class PaypalSubscriptionCallbackServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Logger logger = Logger.getLogger(this.getClass().toString());
 
 		StringBuffer url = new StringBuffer();
 		url.append("http://");
@@ -51,21 +52,6 @@ public class PaypalSubscriptionCallbackServlet extends HttpServlet {
 
 		String token = request.getParameter("token");
 
-//        GetExpressCheckoutDetailsResponseType getExpressCheckoutDetailsResponseType = getExpressCheckout.getExpressCheckout(token);
-//
-//        if (getExpressCheckoutDetailsResponseType.getAck().getValue()
-//                .equalsIgnoreCase("failure")) {
-//            response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
-//        }
-
-		//we want the user to paid immediately.
-//        DoExpressCheckoutPaymentResponseType doExpressCheckoutPaymentResponseType = doExpressCheckout.doExpressCheckout(getExpressCheckoutDetailsResponseType, url.toString());
-//
-//        if (doExpressCheckoutPaymentResponseType.getAck().getValue()
-//                .equalsIgnoreCase("failure")) {
-//            response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
-//        }
-
 		CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfileResponseType = createRecurringPaymentsProfile.createRecurringPayment(token, session, userService);
 
 		if (createRecurringPaymentsProfileResponseType.getAck().getValue()
@@ -74,9 +60,5 @@ public class PaypalSubscriptionCallbackServlet extends HttpServlet {
 		} else {
 			response.sendRedirect(url.toString() + Constants.ERROR_PAGE);
 		}
-
-
 	}
-
-
 }

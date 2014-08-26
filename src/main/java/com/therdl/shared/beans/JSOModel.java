@@ -1,11 +1,11 @@
 package com.therdl.shared.beans;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -13,7 +13,6 @@ import java.util.Set;
  * allows map like get and set operations in GWT on the JSNI layer
  * encapsulates the boilerplate JSNI to keep the java layer
  * cleaner and more readable
- * <p/>
  * this class extends the GWT JavaScriptObject, the basic rational for this class is the
  * limitation of the JavaScriptObject class, that is that the GWT JavaScriptObject cannot be created
  * directly and should be declared as the return type of a JSNI method. This  JSOModel class
@@ -21,7 +20,6 @@ import java.util.Set;
  * 1. JavaScriptObject
  * 2. JsonObject
  * 3. JsonArray
- * <p/>
  * so it is a better fit for a
  * model view design pattern, for example anywhere where you need a grid display
  * backed up by json data
@@ -41,12 +39,11 @@ public class JSOModel extends JavaScriptObject {
 	 * @return new Object
 	 */
 	public static native JSOModel create() /*-{
-	    return new Object();
+		return new Object();
     }-*/;
 
 	/**
 	 * Convert a JSON encoded string into a JSOModel instance.
-	 * <p/>
 	 * Expects a JSON string structured like '{"foo":"bar","number":123}'
 	 *
 	 * @return a populated JSOModel object
@@ -57,7 +54,6 @@ public class JSOModel extends JavaScriptObject {
 
 	/**
 	 * Convert a JSON encoded string into an array of JSOModel instance.
-	 * <p/>
 	 * Expects a JSON string structured like '[{"foo":"bar","number":123}, {...}]'
 	 *
 	 * @return a populated JsArray

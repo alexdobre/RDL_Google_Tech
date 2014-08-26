@@ -1,5 +1,10 @@
 package com.therdl.client.view.widget;
 
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -12,10 +17,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.shared.beans.CurrentUserBean;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Modal;
-
-import java.util.logging.Logger;
 
 /**
  * this class will handle the file upload as a pop up

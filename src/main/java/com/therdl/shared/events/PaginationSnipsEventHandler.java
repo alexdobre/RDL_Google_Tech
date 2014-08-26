@@ -7,5 +7,5 @@ import com.google.gwt.event.shared.EventHandler;
  */
 public interface PaginationSnipsEventHandler extends EventHandler {
 
-	void onPagination (PaginationSnipsEvent event);
+	void onPagination(PaginationSnipsEvent event);
 }

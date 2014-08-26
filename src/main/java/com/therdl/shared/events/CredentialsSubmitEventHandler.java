@@ -7,5 +7,5 @@ import com.google.gwt.event.shared.EventHandler;
  */
 public interface CredentialsSubmitEventHandler extends EventHandler {
 
-	void onCredentialsSubmitEvent (CredentialsSubmitEvent event);
+	void onCredentialsSubmitEvent(CredentialsSubmitEvent event);
 }

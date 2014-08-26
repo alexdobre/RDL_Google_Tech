@@ -1,11 +1,13 @@
 package com.therdl.client.presenter;
 
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -14,22 +16,15 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.view.RdlView;
-import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.shared.LoginHandler;
-import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.CredentialsSubmitEvent;
 import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LoginFailEvent;
-
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This is the super class for all presenters. It contains common logic.
@@ -168,7 +163,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 
 				@Override
 				public void onErrorCodeReturned(String errorCode) {
-					log.info("Login failed - firing event with code: "+errorCode);
+					log.info("Login failed - firing event with code: " + errorCode);
 					Cookies.removeCookie("sid");
 					GuiEventBus.EVENT_BUS.fireEvent(new LoginFailEvent(errorCode));
 				}
@@ -192,7 +187,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 		try {
 			requestBuilder.sendRequest(json, callback);
 		} catch (RequestException e) {
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 

@@ -8,7 +8,7 @@ import java.util.List;
  * temp solution until Internet Explorer is discontinued or improved
  * once IE7 is no longer used move to HTML5 session for success
  */
-public interface CurrentUserBean extends TokenizedBean{
+public interface CurrentUserBean extends TokenizedBean {
 
 	/**
 	 * methods below are for standard form based credentials submitted on the clien

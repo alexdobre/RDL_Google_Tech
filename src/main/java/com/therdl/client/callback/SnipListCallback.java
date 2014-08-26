@@ -1,5 +1,8 @@
 package com.therdl.client.callback;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
@@ -10,9 +13,6 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * A call back containing a list of snips

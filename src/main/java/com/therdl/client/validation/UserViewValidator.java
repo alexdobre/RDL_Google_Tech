@@ -1,18 +1,19 @@
 package com.therdl.client.validation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
-
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Validation methods to for the user
@@ -30,12 +31,12 @@ public class UserViewValidator {
 	}
 
 	public static String validateAuthUserBean (AutoBean<AuthUserBean> bean){
-		log.info("Validating AuthUserBean: "+AutoBeanCodex.encode(bean).getPayload());
+		log.info("Validating AuthUserBean: " + AutoBeanCodex.encode(bean).getPayload());
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		Set<ConstraintViolation<AuthUserBean>> violations = validator.validate(bean.as());
 		if (violations.iterator().hasNext()){
 			ConstraintViolation violation = violations.iterator().next();
-			log.info("Bean invalid: "+violation.getPropertyPath()+" "+violation.getMessage());
+			log.info("Bean invalid: " + violation.getPropertyPath() + " " + violation.getMessage());
 			return errorMessageMap.get(violation.getPropertyPath().toString());
 		}
 		if (!bean.as().getPassword().equals(bean.as().getPasswordConfirm())){

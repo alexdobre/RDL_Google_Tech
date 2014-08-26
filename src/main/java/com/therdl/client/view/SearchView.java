@@ -1,13 +1,13 @@
 package com.therdl.client.view;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
 
 
 /**

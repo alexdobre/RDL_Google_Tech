@@ -1,5 +1,14 @@
 package com.therdl.server.paypal_payment;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
 import com.google.inject.Singleton;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -8,17 +17,11 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
-import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsReq;
 import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsRequestType;
 import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsResponseType;
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Logger;
 
 //# GetExpressCheckout API
 // The GetExpressCheckoutDetails API operation obtains information about
@@ -27,15 +30,13 @@ import java.util.logging.Logger;
 // download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 @Singleton
 public class GetExpressCheckout {
+	final Logger logger = LoggerFactory.getLogger(GetExpressCheckout.class);
 
 	public GetExpressCheckout() {
 
 	}
 
 	public GetExpressCheckoutDetailsResponseType getExpressCheckout(String token) {
-
-		Logger logger = Logger.getLogger(this.getClass().toString());
-
 		// ## GetExpressCheckoutDetailsReq
 		GetExpressCheckoutDetailsReq getExpressCheckoutDetailsReq = new GetExpressCheckoutDetailsReq();
 
@@ -57,27 +58,27 @@ public class GetExpressCheckout {
 			getExpressCheckoutDetailsResponse = service
 					.getExpressCheckoutDetails(getExpressCheckoutDetailsReq);
 		} catch (SSLConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (HttpErrorException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidResponseDataException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ClientActionRequiredException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (MissingCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InterruptedException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (OAuthException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ParserConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (SAXException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (IOException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		}
 
 		// ## Accessing response parameters
@@ -101,7 +102,7 @@ public class GetExpressCheckout {
 		else {
 			List<ErrorType> errorList = getExpressCheckoutDetailsResponse
 					.getErrors();
-			logger.severe("API Error Message : "
+			logger.error("API Error Message : "
 					+ errorList.get(0).getLongMessage());
 		}
 		return getExpressCheckoutDetailsResponse;

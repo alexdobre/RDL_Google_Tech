@@ -1,7 +1,5 @@
 package com.therdl.shared;
 
-import java.util.EnumSet;
-
 /**
  * These are the colour coded eight categories for RDL
  * they form the core of the business and together aim to cover most if not all

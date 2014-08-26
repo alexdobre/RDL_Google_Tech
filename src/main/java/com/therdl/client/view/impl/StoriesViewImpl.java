@@ -1,5 +1,8 @@
 package com.therdl.client.view.impl;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -12,14 +15,9 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.SearchFilterWidget;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * StoriesViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)

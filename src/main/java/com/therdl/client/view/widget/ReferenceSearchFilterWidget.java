@@ -1,5 +1,12 @@
 package com.therdl.client.view.widget;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.TextBox;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,12 +30,6 @@ import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.PaginationSnipsEvent;
 import com.therdl.shared.events.PaginationSnipsEventHandler;
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.Legend;
-import org.gwtbootstrap3.client.ui.TextBox;
-
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * gwt widget class for reference search filter, used in snip view page

@@ -1,28 +1,16 @@
 package com.therdl.client.presenter;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.view.WelcomeView;
-import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
-
-import java.util.ArrayList;
 
 
 /**

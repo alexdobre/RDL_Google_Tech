@@ -1,5 +1,18 @@
 package com.therdl.server.paypal_payment;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.inject.Provider;
+import javax.servlet.http.HttpSession;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -11,10 +24,8 @@ import com.paypal.sdk.exceptions.OAuthException;
 import com.therdl.server.api.UserService;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
-import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileReq;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileRequestType;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileResponseType;
@@ -28,15 +39,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 import urn.ebay.apis.eBLBaseComponents.RecurringPaymentsProfileDetailsType;
 import urn.ebay.apis.eBLBaseComponents.ScheduleDetailsType;
-
-import javax.inject.Provider;
-import javax.servlet.http.HttpSession;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
 
 // # CreateRecurringPaymentsProfile API
 // The CreateRecurringPaymentsProfile API operation creates a recurring
@@ -55,6 +57,8 @@ import java.util.logging.Logger;
 // download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 public class CreateRecurringPaymentsProfile {
 
+	final Logger logger = LoggerFactory.getLogger(CreateRecurringPaymentsProfile.class);
+
 	private GetRecurringPaymentsProfileDetails getRecurringPaymentsProfileDetails = new GetRecurringPaymentsProfileDetails();
 	public static final long MINUTE = 60 * 1000; // in milli-seconds.
 	private Date oldDate = new Date();
@@ -68,12 +72,11 @@ public class CreateRecurringPaymentsProfile {
 	}
 
 	public CreateRecurringPaymentsProfileResponseType createRecurringPayment(String token, Provider<HttpSession> session, UserService userService) {
-		Logger logger = Logger.getLogger(this.getClass().toString());
 
 		// ## CreateRecurringPaymentsProfileReq
 		CreateRecurringPaymentsProfileReq createRecurringPaymentsProfileReq = new CreateRecurringPaymentsProfileReq();
 		CreateRecurringPaymentsProfileRequestType createRecurringPaymentsProfileRequest = new CreateRecurringPaymentsProfileRequestType();
-//        createRecurringPaymentsProfileRequest.setVersion(PayPalConstants.PAYPAL_API_VERSION);
+		//        createRecurringPaymentsProfileRequest.setVersion(PayPalConstants.PAYPAL_API_VERSION);
 		// You can include up to 10 recurring payments profiles per request. The
 		// order of the profile details must match the order of the billing
 		// agreement details specified in the SetExpressCheckout request which
@@ -122,13 +125,12 @@ public class CreateRecurringPaymentsProfile {
 		BillingPeriodDetailsType paymentPeriod = new BillingPeriodDetailsType(
 				BillingPeriodType.MONTH, frequency, billingAmount); //monthly payment
 
-
 		//(Optional) Information about activating a profile, such as whether there is an initial non-recurring payment amount
 		// immediately due upon profile creation and how to override a pending profile PayPal suspends when the initial
 		// payment amount fails.
-//        ActivationDetailsType activationDetailsType = new ActivationDetailsType();
-//        activationDetailsType.setInitialAmount(billingAmount);
-//        activationDetailsType.setFailedInitialAmountAction(FailedPaymentActionType.CONTINUEONFAILURE);
+		//        ActivationDetailsType activationDetailsType = new ActivationDetailsType();
+		//        activationDetailsType.setInitialAmount(billingAmount);
+		//        activationDetailsType.setFailedInitialAmountAction(FailedPaymentActionType.CONTINUEONFAILURE);
 
 		// Describes the recurring payments schedule, including the regular
 		// payment period, whether there is a trial period, and the number of
@@ -145,8 +147,7 @@ public class CreateRecurringPaymentsProfile {
 		scheduleDetails.setPaymentPeriod(paymentPeriod);
 		scheduleDetails.setAutoBillOutstandingAmount(AutoBillType.ADDTONEXTBILLING);
 		scheduleDetails.setMaxFailedPayments(failedBillingAttempts);
-//        scheduleDetails.setActivationDetails(activationDetailsType);
-
+		//        scheduleDetails.setActivationDetails(activationDetailsType);
 
 		// `CreateRecurringPaymentsProfileRequestDetailsType` which takes
 		// mandatory params:
@@ -172,7 +173,7 @@ public class CreateRecurringPaymentsProfile {
 		createRecurringPaymentsProfileRequestDetails.setToken(token);
 
 		// Credit card information for recurring payments using direct payments.
-//		CreditCardDetailsType creditCard = new CreditCardDetailsType();
+		//		CreditCardDetailsType creditCard = new CreditCardDetailsType();
 
 		// Type of credit card. For UK, only Maestro, MasterCard, Discover, and
 		// Visa are allowable. For Canada, only MasterCard and Visa are
@@ -190,21 +191,20 @@ public class CreateRecurringPaymentsProfile {
 		// If the credit card type is Maestro, you must set currencyId to GBP.
 		// In addition, you must specify either StartMonth and StartYear or
 		// IssueNumber.`
-//		creditCard.setCreditCardType(CreditCardTypeType.VISA);
+		//		creditCard.setCreditCardType(CreditCardTypeType.VISA);
 
 		// Credit Card Number
-//		creditCard.setCreditCardNumber("4442662639546634");
+		//		creditCard.setCreditCardNumber("4442662639546634");
 
 		// Credit Card Expiration Month
-//		creditCard.setExpMonth(Integer.parseInt("12"));
+		//		creditCard.setExpMonth(Integer.parseInt("12"));
 
 		// Credit Card Expiration Year
-//		creditCard.setExpYear(Integer.parseInt("2016"));
-//		createRecurringPaymentsProfileRequestDetails.setCreditCard(creditCard);
-//
+		//		creditCard.setExpYear(Integer.parseInt("2016"));
+		//		createRecurringPaymentsProfileRequestDetails.setCreditCard(creditCard);
+		//
 		createRecurringPaymentsProfileRequest.setCreateRecurringPaymentsProfileRequestDetails(createRecurringPaymentsProfileRequestDetails);
 		createRecurringPaymentsProfileReq.setCreateRecurringPaymentsProfileRequest(createRecurringPaymentsProfileRequest);
-
 
 		// ## Creating service wrapper object
 		// Creating service wrapper object to make API call and loading
@@ -218,27 +218,27 @@ public class CreateRecurringPaymentsProfile {
 			createRecurringPaymentsProfileResponse = service
 					.createRecurringPaymentsProfile(createRecurringPaymentsProfileReq);
 		} catch (SSLConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (HttpErrorException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InvalidResponseDataException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ClientActionRequiredException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (MissingCredentialException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (InterruptedException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (OAuthException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (ParserConfigurationException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (SAXException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		} catch (IOException e) {
-			logger.severe("Error Message : " + e.getMessage());
+			logger.error("Error Message : " + e.getMessage());
 		}
 
 		// ## Accessing response parameters
@@ -254,8 +254,7 @@ public class CreateRecurringPaymentsProfile {
 			String paypalProfileId = createRecurringPaymentsProfileResponse.getCreateRecurringPaymentsProfileResponseDetails().getProfileID();
 			logger.info("Profile ID:" + paypalProfileId);
 
-
-			String userId = (String) session.get().getAttribute("userid");
+			String userId = (String)session.get().getAttribute("userid");
 			//update the paypal Id for querying when IPN was established
 			UserBean userBean = userService.getUserByEmail(userId);
 			userBean.setPaypalId(paypalProfileId);
@@ -269,7 +268,7 @@ public class CreateRecurringPaymentsProfile {
 		else {
 			List<ErrorType> errorList = createRecurringPaymentsProfileResponse
 					.getErrors();
-			logger.severe("API Error Message : "
+			logger.error("API Error Message : "
 					+ errorList.get(0).getLongMessage());
 		}
 		return createRecurringPaymentsProfileResponse;

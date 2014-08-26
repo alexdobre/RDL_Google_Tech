@@ -1,11 +1,13 @@
 package com.therdl.server.data;
 
+import java.net.UnknownHostException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Singleton;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
-
-import java.net.UnknownHostException;
-import java.util.logging.Logger;
 
 /**
  * The class holds a single instance of the mongo client to be used across the app
@@ -13,7 +15,7 @@ import java.util.logging.Logger;
 @Singleton
 public class DbProviderImpl implements DbProvider {
 
-	private static Logger log = Logger.getLogger(DbProviderImpl.class.getName());
+	final Logger log = LoggerFactory.getLogger(DbProviderImpl.class);
 
 	private static final String DEFAULT_DB_NAME = "rdl";
 
@@ -29,7 +31,7 @@ public class DbProviderImpl implements DbProvider {
 			return db;
 
 		} catch (UnknownHostException e) {
-			log.severe(e.getMessage());
+			log.error(e.getMessage());
 			return null;
 		}
 	}

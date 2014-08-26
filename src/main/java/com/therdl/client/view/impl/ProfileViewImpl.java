@@ -1,5 +1,13 @@
 package com.therdl.client.view.impl;
 
+import java.util.Date;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.FormControlStatic;
+import org.gwtbootstrap3.client.ui.Image;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,13 +23,6 @@ import com.therdl.client.view.widget.AvatarUploadPopUp;
 import com.therdl.client.view.widget.FormErrors;
 import com.therdl.client.view.widget.FormSuccess;
 import com.therdl.shared.beans.CurrentUserBean;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.FormControlStatic;
-import org.gwtbootstrap3.client.ui.Image;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.Modal;
-
-import java.util.Date;
 
 
 /**

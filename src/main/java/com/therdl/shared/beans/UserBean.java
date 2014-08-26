@@ -9,12 +9,11 @@ import java.util.List;
  * for new developers important to understand GWT AutoBean client/server architecture
  * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanCodex
  * see http://code.google.com/p/google-web-toolkit/wiki/AutoBean#AutoBeanFactory
- * <p/>
  * the AutoBean design pattern allows us to use the same beans in the java layer on
  * the server and the javascript layer in the browser(recall GWT java code runs as javascript)
  * UserBean is used on the client as a java class for the Mongo persistence layer
  */
-public interface UserBean extends TokenizedBean{
+public interface UserBean extends TokenizedBean {
 
 	/**
 	 * used for implementing the command pattern in this application

@@ -1,7 +1,5 @@
 package com.therdl.shared.exceptions;
 
-import java.io.Serializable;
-
 /**
  * Thrown when an operation with snips was invalid
  */

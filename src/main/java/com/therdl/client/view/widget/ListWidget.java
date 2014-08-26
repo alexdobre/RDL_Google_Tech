@@ -1,5 +1,12 @@
 package com.therdl.client.view.widget;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,12 +22,6 @@ import com.therdl.client.view.common.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * ListWidget class creates list of SnipListRow widgets with tabs for the given list of snips

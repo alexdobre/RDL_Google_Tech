@@ -1,6 +1,18 @@
 package com.therdl.server.apiimpl;
 
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.BasicDBList;
@@ -10,7 +22,6 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.validator.TokenValidator;
@@ -19,15 +30,6 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
-import org.bson.types.ObjectId;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
 
 
 /**
@@ -43,11 +45,11 @@ import java.util.logging.Logger;
 @Singleton
 public class SnipServiceImpl implements SnipsService {
 
+	final Logger log = LoggerFactory.getLogger(SnipServiceImpl.class);
+
 	private DbProvider dbProvider;
 	private Beanery beanery;
 	private TokenValidator tokenValidator;
-
-	private static Logger log = Logger.getLogger(SnipServiceImpl.class.getName());
 
 	@Inject
 	public SnipServiceImpl(DbProvider dbProvider, TokenValidator tokenValidator) {
@@ -63,25 +65,25 @@ public class SnipServiceImpl implements SnipsService {
 	 */
 	@Override
 	public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
-		log.info("Searching snips with options: "+searchOptions);
+		log.info("Searching snips with options: " + searchOptions);
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
 		BasicDBObject dbObject = new BasicDBObject();
 		int pageIndex = searchOptions.getPageIndex();
 
 		if (searchOptions.getParentSnip() != null)
-			dbObject.put("parentSnip",searchOptions.getParentSnip());
+			dbObject.put("parentSnip", searchOptions.getParentSnip());
 		if (searchOptions.getTitle() != null)
 			dbObject.put("title", java.util.regex.Pattern.compile(searchOptions.getTitle(), java.util.regex.Pattern.CASE_INSENSITIVE));
 		if (searchOptions.getAuthor() != null) {
-			if (!searchOptions.getAuthor().contains(",")){
+			if (!searchOptions.getAuthor().contains(",")) {
 				dbObject.put("author", searchOptions.getAuthor());
 			} else {
 				dbObject.put("author", new BasicDBObject("$in", searchOptions.getAuthor().split(",")));
 			}
 		}
-		if (searchOptions.getCoreCat() != null){
-			if (!searchOptions.getCoreCat().contains(",")){
+		if (searchOptions.getCoreCat() != null) {
+			if (!searchOptions.getCoreCat().contains(",")) {
 				dbObject.put("coreCat", searchOptions.getCoreCat());
 			} else {
 				dbObject.put("coreCat", new BasicDBObject("$in", searchOptions.getCoreCat().split(",")));
@@ -120,22 +122,22 @@ public class SnipServiceImpl implements SnipsService {
 			dbObject.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
 		}
 
-		log.info("Search snips with query: "+dbObject);
+		log.info("Search snips with query: " + dbObject);
 		BasicDBObject projection = new BasicDBObject();
-		if (!searchOptions.getReturnSnipContent()){
+		if (!searchOptions.getReturnSnipContent()) {
 			projection.put("content", 0);
 		}
 		DBCollection coll = db.getCollection("rdlSnipData");
-		List<DBObject> objList = coll.find(dbObject,projection)
+		List<DBObject> objList = coll.find(dbObject, projection)
 				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
 				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
 				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
 
-		for ( DBObject doc : objList){
+		for (DBObject doc : objList) {
 			SnipBean snip = buildBeanObject(doc);
 			beans.add(snip);
 		}
-		log.info("Found list size: "+beans.size());
+		log.info("Found list size: " + beans.size());
 		return beans;
 	}
 
@@ -157,7 +159,7 @@ public class SnipServiceImpl implements SnipsService {
 		DBObject doc = cursor.next();
 
 		SnipBean snip = buildBeanObject(doc);
-		log.info("Found snip: "+snip);
+		log.info("Found snip: " + snip);
 		return snip;
 	}
 
@@ -278,13 +280,13 @@ public class SnipServiceImpl implements SnipsService {
 		BasicDBObject query = new BasicDBObject();
 
 		// filter references
-		if (searchOptions.getId() != null){
+		if (searchOptions.getId() != null) {
 			query.put("parentSnip", searchOptions.getId());
 		}
-		if (searchOptions.getReferenceType() != null){
+		if (searchOptions.getReferenceType() != null) {
 			query.put("referenceType", new BasicDBObject("$in", searchOptions.getReferenceType().split(",")));
 		}
-		if(searchOptions.getRep() != null)
+		if (searchOptions.getRep() != null)
 			query.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
 		if (searchOptions.getAuthor() != null)
 			query.put("author", searchOptions.getAuthor());
@@ -300,8 +302,8 @@ public class SnipServiceImpl implements SnipsService {
 			query.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
 		}
 
-		log.info("Executing query author title and rep null: "+query);
-		DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(),searchOptions.getSortOrder())).
+		log.info("Executing query author title and rep null: " + query);
+		DBCursor collDocs = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).
 				skip((searchOptions.getPageIndex()) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 
 		while (collDocs.hasNext()) {
@@ -310,7 +312,7 @@ public class SnipServiceImpl implements SnipsService {
 			beans.add(snip);
 		}
 
-		log.info("Returning result list size: "+beans.size());
+		log.info("Returning result list size: " + beans.size());
 		return beans;
 	}
 
@@ -333,7 +335,7 @@ public class SnipServiceImpl implements SnipsService {
 		while (collDocs.hasNext()) {
 			DBObject doc = collDocs.next();
 			if (!authors.contains(doc.get("author")))
-				authors.add((String) doc.get("author"));
+				authors.add((String)doc.get("author"));
 
 		}
 
@@ -356,7 +358,7 @@ public class SnipServiceImpl implements SnipsService {
 		List<String> filteredAuthors = new ArrayList<String>();
 		while (collUsers.hasNext()) {
 			DBObject doc = collUsers.next();
-			filteredAuthors.add((String) doc.get("username"));
+			filteredAuthors.add((String)doc.get("username"));
 		}
 		// add filtered authors in snip query
 		query.put("author", new BasicDBObject("$in", filteredAuthors.toArray(new String[filteredAuthors.size()])));
@@ -472,44 +474,45 @@ public class SnipServiceImpl implements SnipsService {
 	 */
 	private SnipBean buildBeanObject(DBObject doc) {
 
-		if (beanery == null) beanery = AutoBeanFactorySource.create(Beanery.class);
+		if (beanery == null)
+			beanery = AutoBeanFactorySource.create(Beanery.class);
 		SnipBean snip = beanery.snipBean().as();
 		// set the fields
 		snip.setId(doc.get("_id").toString());
 
 		snip.setRep(RDLUtils.parseInt(doc.get("rep")));
-		snip.setAuthor((String) doc.get("author"));
-		snip.setContent((String) doc.get("content"));
-		snip.setCoreCat((String) doc.get("coreCat"));
-		snip.setCreationDate((String) doc.get("creationDate"));
-		snip.setEditDate((String) doc.get("editDate"));
-		snip.setMoney((String) doc.get("money"));
+		snip.setAuthor((String)doc.get("author"));
+		snip.setContent((String)doc.get("content"));
+		snip.setCoreCat((String)doc.get("coreCat"));
+		snip.setCreationDate((String)doc.get("creationDate"));
+		snip.setEditDate((String)doc.get("editDate"));
+		snip.setMoney((String)doc.get("money"));
 		snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef")));
 		snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef")));
-		snip.setSnipType((String) doc.get("snipType"));
+		snip.setSnipType((String)doc.get("snipType"));
 		snip.setViews(RDLUtils.parseInt(doc.get("views")));
-		snip.setTitle((String) doc.get("title"));
-		snip.setReferenceType((String) doc.get("referenceType"));
+		snip.setTitle((String)doc.get("title"));
+		snip.setReferenceType((String)doc.get("referenceType"));
 		snip.setPosRef(RDLUtils.parseInt(doc.get("posRef")));
-		snip.setParentSnip((String) doc.get("parentSnip"));
-		snip.setVotes((String) doc.get("votes"));
-		snip.setParentSnip((String) doc.get("parentSnip"));
+		snip.setParentSnip((String)doc.get("parentSnip"));
+		snip.setVotes((String)doc.get("votes"));
+		snip.setParentSnip((String)doc.get("parentSnip"));
 		snip.setPosts(RDLUtils.parseInt(doc.get("posts")));
 
 		snip.setPledges(RDLUtils.parseInt(doc.get("pledges")));
 		snip.setCounters(RDLUtils.parseInt(doc.get("counters")));
-		snip.setProposalType((String) doc.get("proposalType"));
-		snip.setProposalState((String) doc.get("proposalState"));
+		snip.setProposalType((String)doc.get("proposalType"));
+		snip.setProposalState((String)doc.get("proposalState"));
 
 		List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
 
 		// set the List<SnipBean.Links>
-		BasicDBList links = (BasicDBList) doc.get("links");
+		BasicDBList links = (BasicDBList)doc.get("links");
 
 		for (Object obj : links) {
 			SnipBean.Link titlesBean = beanery.snipLinksBean().as();
-			titlesBean.setTargetId((String) ((BasicDBObject) obj).get("targetId"));
-			titlesBean.setRank((String) ((BasicDBObject) obj).get("rank"));
+			titlesBean.setTargetId((String)((BasicDBObject)obj).get("targetId"));
+			titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
 			linkList.add(titlesBean);
 		}
 

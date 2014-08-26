@@ -1,5 +1,7 @@
 package com.therdl.client.view.widget;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -13,8 +15,6 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DatePicker;
-
-import java.util.Date;
 
 /**
  * DateFilterWidget contains 2 TextBox to select dates (from, to). When clicking to TextBox, opens datePicker, to choose dates.

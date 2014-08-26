@@ -1,13 +1,13 @@
 package com.therdl.client;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.i18n.I18NConstants;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -19,8 +19,7 @@ import java.util.logging.Logger;
  */
 public class RDL implements EntryPoint {
 
-
-	private static Logger sLogger = Logger.getLogger("");
+	private static Logger sLogger = Logger.getLogger(RDL.class.getName());
 
 	public static I18NConstants getI18n() {
 		return i18n;

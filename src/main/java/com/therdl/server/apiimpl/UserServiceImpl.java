@@ -2,13 +2,14 @@ package com.therdl.server.apiimpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
@@ -23,7 +24,6 @@ import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.server.validator.TokenValidator;
-import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -41,7 +41,7 @@ import com.therdl.shared.exceptions.TokenInvalidException;
  */
 @Singleton
 public class UserServiceImpl implements UserService {
-	private static Logger log = Logger.getLogger(UserServiceImpl.class.getName());
+	final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	private DbProvider dbProvider;
 	private Beanery beanery;
@@ -71,9 +71,9 @@ public class UserServiceImpl implements UserService {
 		if (ub != null) {
 			if (BCrypt.checkpw(pass, ub.getPassHash())) {
 				ub.setToken(tokenValidator.createToken());
-				if (bean.getRememberMe()){
+				if (bean.getRememberMe()) {
 					ub.setSid(ServerUtils.generateUUID());
-				}else {
+				} else {
 					ub.setSid(null);
 				}
 				updateUser(ub);
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 		checkedUserBean.as().setTitles(ub.getTitles());
 		checkedUserBean.as().setToken(ub.getToken());
 		checkedUserBean.as().setIsRDLSupporter(ServerUtils.isRdlSupporter(ub));
-		log.info("User is RDL supporter?: "+checkedUserBean.as().getIsRDLSupporter());
+		log.info("User is RDL supporter?: " + checkedUserBean.as().getIsRDLSupporter());
 
 		log.info("Find user END OK: " + checkedUserBean.as().getEmail());
 		return checkedUserBean;

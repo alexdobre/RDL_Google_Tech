@@ -1,11 +1,10 @@
 package com.therdl.client.presenter;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -13,11 +12,8 @@ import com.therdl.client.RDL;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.ForgotPassword;
-import com.therdl.shared.Global;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
-
-import java.util.logging.Logger;
 
 /**
  * ForgotPasswordPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)

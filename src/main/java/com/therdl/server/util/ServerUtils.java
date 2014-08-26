@@ -1,12 +1,5 @@
 package com.therdl.server.util;
 
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.UserBean;
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,15 +7,21 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.UserBean;
 
 /**
  * Contains business logic common utility methods to be used on the server side
  */
 public class ServerUtils {
 
-	private static Logger log = Logger.getLogger(ServerUtils.class.getName());
+	static final Logger log = LoggerFactory.getLogger(ServerUtils.class);
 
 	/**
 	 * Extends the title specified by a month starting from the current date, creates a new title if one does not exist
@@ -48,7 +47,7 @@ public class ServerUtils {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
 		foundTitle.setDateGained(simpleDateFormat.format(new Date()));
 		Calendar cal = new GregorianCalendar();
-		cal.add(Calendar.MONTH,1);
+		cal.add(Calendar.MONTH, 1);
 		foundTitle.setExpires(simpleDateFormat.format(cal.getTime()));
 		userBean.setTitles(titleBeans);
 	}
@@ -95,13 +94,14 @@ public class ServerUtils {
 	}
 
 	private static boolean isExpired(UserBean.TitleBean titleBean) {
-		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires())) return false;
+		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires()))
+			return false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
 		try {
 			//if the expiry date is before the current date then the title is expired
 			return dateFormat.parse(titleBean.getExpires()).before(new Date());
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return true;
 		}
 	}
@@ -129,7 +129,7 @@ public class ServerUtils {
 		//we generate a random sequence of 6 numbers
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < 6; i++) {
-			sb.append((int) (Math.random() * 10));
+			sb.append((int)(Math.random() * 10));
 		}
 
 		return sb.toString();

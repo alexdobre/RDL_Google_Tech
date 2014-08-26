@@ -15,7 +15,7 @@ import com.therdl.shared.beans.SnipBean;
  */
 public class ValidatorFactory extends AbstractGwtValidatorFactory {
 
-	@GwtValidation({AuthUserBean.class, SnipBean.class})
+	@GwtValidation({ AuthUserBean.class, SnipBean.class })
 	public interface GwtValidator extends Validator {
 	}
 
