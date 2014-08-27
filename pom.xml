@@ -195,6 +195,7 @@
 		    <classifier>sources</classifier>
 	    </dependency>
 
+	    <!-- Logging -->
 	    <dependency>
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-api</artifactId>
@@ -208,11 +209,10 @@
 	    </dependency>
 
 	    <dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>log4j-over-slf4j</artifactId>
-		    <version>1.7.7</version>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>1.2.17</version>
 	    </dependency>
-
 
 	    <!--PayPal Merchant SDK -->
         <dependency>
@@ -252,6 +252,12 @@
                     <port>8080</port>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <i18nMessagesBundle>com.therdl.client.view.i18n.I18NConstants</i18nMessagesBundle>
+	                <systemProperties>
+		                <systemProperty>
+			                <name>log4j.ignoreTCL</name>
+			                <value>true</value>
+		                </systemProperty>
+	                </systemProperties>
                 </configuration>
             </plugin>
 
@@ -300,5 +306,68 @@
         </plugins>
 
     </build>
-
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<property>
+					<name>environment</name>
+					<value>dev</value>
+				</property>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<logging.enabled>ENABLED</logging.enabled>
+				<server.log.level>INFO</server.log.level>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>**/*rdl.gwt.xml</include>
+							<include>**/*log4j.properties</include>
+							<include>**/*.mustache</include>
+						</includes>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+				<defaultGoal>process-resources</defaultGoal>
+			</build>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<activation>
+				<property>
+					<name>environment</name>
+					<value>prod</value>
+				</property>
+			</activation>
+			<properties>
+				<logging.enabled>DISABLED</logging.enabled>
+				<server.log.level>ERROR</server.log.level>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+					<version>1.7.7</version>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>**/*rdl.gwt.xml</include>
+							<include>**/*log4j.properties</include>
+							<include>**/*.mustache</include>
+						</includes>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+				<defaultGoal>process-resources</defaultGoal>
+			</build>
+		</profile>
+	</profiles>
 </project>
