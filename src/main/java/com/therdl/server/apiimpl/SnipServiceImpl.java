@@ -520,6 +520,8 @@ public class SnipServiceImpl implements SnipsService {
 		}
 		snip.setLinks(linkList);
 		snip.setAuthorSupporter(userService.isSupporter(snip.getAuthor()));
+		log.info("Set author supporter: "+snip.getAuthorSupporter()+" for snip with title: "+
+				snip.getTitle()+"/author: "+snip.getAuthor() );
 
 		return snip;
 	}

@@ -152,5 +152,5 @@ public interface UserService {
 	 * @param username
 	 * @return
 	 */
-	public boolean isSupporter (String username);
+	public Boolean isSupporter (String username);
 }

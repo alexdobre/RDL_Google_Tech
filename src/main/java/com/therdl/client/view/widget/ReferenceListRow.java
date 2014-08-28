@@ -108,7 +108,7 @@ public class ReferenceListRow extends Composite {
 				ViewUtils.hide(refRepBtn);
 			}
 		}
-		if (referenceBean.as().isAuthorSupporter()){
+		if (referenceBean.as().getAuthorSupporter()){
 			ViewUtils.showHide(true,avatarImg);
 			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(referenceBean.as().getAuthor()));
 		}else {

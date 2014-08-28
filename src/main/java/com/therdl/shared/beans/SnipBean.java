@@ -47,9 +47,9 @@ public interface SnipBean extends TokenizedBean {
 
 	void setAuthor(String author);
 
-	boolean isAuthorSupporter();
+	Boolean getAuthorSupporter();
 
-	void setAuthorSupporter( boolean isSupporter);
+	void setAuthorSupporter( Boolean isSupporter);
 
 	String getCreationDate();
 

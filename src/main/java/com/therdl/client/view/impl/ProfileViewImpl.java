@@ -1,13 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.Date;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.FormControlStatic;
-import org.gwtbootstrap3.client.ui.Image;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.Modal;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,13 +8,23 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.AvatarUploadPopUp;
-import com.therdl.client.view.widget.FormErrors;
-import com.therdl.client.view.widget.FormSuccess;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.events.BecomeRdlSupporterEvent;
+import com.therdl.shared.events.GuiEventBus;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.FormControlStatic;
+import org.gwtbootstrap3.client.ui.Image;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.html.Paragraph;
+
+import java.util.Date;
 
 
 /**
@@ -41,7 +43,7 @@ import com.therdl.shared.beans.CurrentUserBean;
  * @ String tempUrl displays a empty avatar image to indicate where a user Avatar would appear if it was uploded,
  * also to prompt the uses to click to initiate the upload
  */
-public class ProfileViewImpl extends AppMenuView implements ProfileView {
+public class ProfileViewImpl extends AbstractValidatedAppMenuView implements ProfileView {
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 
@@ -74,13 +76,10 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	Modal changePassModal;
 
 	@UiField
+	Paragraph titleExpiresParagraph;
+
+	@UiField
 	Input oldPassword, newPassword, confirmNewPassword;
-
-	@UiField
-	FormErrors formErrors;
-
-	@UiField
-	FormSuccess formSuccess;
 
 	public ProfileViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
@@ -101,6 +100,17 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 
 			//populate avatar
 			displayUserImage(ViewUtils.getAvatarImageUrl(currentUserBean.as().getName()));
+
+			//title expires logic
+			if (currentUserBean.as().getIsRDLSupporter()) {
+				ViewUtils.showHide(false, supporterBtn);
+				ViewUtils.showHide(true, titleExpiresParagraph);
+				titleExpiresParagraph.setText(RDL.getI18n().userTitleExpires() + " " +
+						ViewUtils.getTitleExpiryDate(currentUserBean, RDLConstants.UserTitle.RDL_SUPPORTER));
+			} else {
+				ViewUtils.showHide(false, titleExpiresParagraph);
+				ViewUtils.showHide(true, supporterBtn);
+			}
 		}
 	}
 
@@ -126,10 +136,14 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	 */
 	@UiHandler("profileImagePanel")
 	void handleClick(ClickEvent e) {
-		if (uploadForm == null) {
-			uploadForm = new AvatarUploadPopUp(currentUserBean, this);
+		if (currentUserBean.as().getIsRDLSupporter()) {
+			if (uploadForm == null) {
+				uploadForm = new AvatarUploadPopUp(currentUserBean, this);
+			}
+			uploadForm.show();
+		} else {
+			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
 		}
-		uploadForm.show();
 	}
 
 	@UiHandler("submitChangePassBtn")
@@ -145,6 +159,11 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 	void handleChangePass(ClickEvent e) {
 		ViewUtils.showHide(false, formErrors);
 		changePassModal.show();
+	}
+
+	@UiHandler("supporterBtn")
+	void supporterBtnClick(ClickEvent e) {
+		GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
 	}
 
 	public void setFormSuccessMsg(String msg) {

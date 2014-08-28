@@ -99,8 +99,8 @@ public class AppMenu extends Composite {
 			public void onSupporterEvent(BecomeRdlSupporterEvent event) {
 				if (supportRdlPopup == null){
 					supportRdlPopup = new SupportRdlPopup();
-					supportRdlPopup.show();
 				}
+				supportRdlPopup.show();
 			}
 		});
 	}

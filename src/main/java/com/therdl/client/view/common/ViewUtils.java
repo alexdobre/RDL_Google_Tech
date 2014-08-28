@@ -18,11 +18,27 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
 
 /**
  * Common methods used by views
  */
 public class ViewUtils {
+
+	/**
+	 * Gets the expires date string from the title
+	 * @param currentUserBean the current user bean
+	 * @param titleName the title name to search for
+	 * @return the date string or null if not found
+	 */
+	public static String getTitleExpiryDate (AutoBean<CurrentUserBean> currentUserBean, String titleName){
+		for (UserBean.TitleBean titleBean: currentUserBean.as().getTitles()){
+			if (titleName.equals(titleBean.getTitleName())){
+				return titleBean.getExpires();
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Constructs a popup at the place of the event

@@ -94,6 +94,7 @@ public class ServerUtils {
 	}
 
 	public static boolean isExpired(UserBean.TitleBean titleBean) {
+		log.info("Checking is expired on title date: "+titleBean.getExpires());
 		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires()))
 			return false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);

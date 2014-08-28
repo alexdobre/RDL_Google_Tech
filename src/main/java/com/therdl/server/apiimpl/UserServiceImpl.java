@@ -413,25 +413,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean isSupporter (String username){
-		//first search for the user bringing back only the titles
-		DB db = getMongo();
-		DBCollection coll = db.getCollection("rdlUserData");
-
-		BasicDBObject searchQuery = new BasicDBObject().append("username", username);
-		BasicDBObject projection = new BasicDBObject().append("titles", 1);
-
-		DBCursor cursor = coll.find(searchQuery,projection);
-
-		if (cursor.hasNext()) {
-			DBObject doc = cursor.next();
-			BasicDBList titles = (BasicDBList)doc.get("titles");
-			for (Object obj : titles) {
-				UserBean.TitleBean titleBean = buildTitleBean((BasicDBObject)obj);
-				return !ServerUtils.isExpired(titleBean);
-			}
-		}
-		return false;
+	public Boolean isSupporter (String username){
+		UserBean ub = getUserByUsername(username);
+		return ServerUtils.isRdlSupporter(ub);
 	}
 
 	/**

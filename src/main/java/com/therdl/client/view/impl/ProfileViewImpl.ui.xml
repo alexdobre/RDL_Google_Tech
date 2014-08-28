@@ -62,6 +62,7 @@
 					</b:Column>
 					<b:Column size="MD_2">
 						<b:Button ui:field="supporterBtn" text="Gain Title"/>
+						<b.html:Paragraph ui:field="titleExpiresParagraph"/>
 					</b:Column>
 				</b:Row>
 			</b:PanelBody>

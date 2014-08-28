@@ -112,7 +112,7 @@ public class SnipListRow extends Composite {
 			snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
 		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.PROPOSAL))
 			snipImg.setUrl(Resources.INSTANCE.ProposalImageGif().getSafeUri().asString());
-		if (snipBean.as().isAuthorSupporter()){
+		if (snipBean.as().getAuthorSupporter()){
 			ViewUtils.showHide(true,avatarImg);
 			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(snipBean.as().getAuthor()));
 		}else {
