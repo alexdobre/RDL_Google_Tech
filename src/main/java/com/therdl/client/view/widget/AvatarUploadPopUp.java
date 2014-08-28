@@ -15,6 +15,9 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
+import com.therdl.client.view.ValidatedView;
+import com.therdl.client.view.impl.AbstractValidatedView;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.shared.beans.CurrentUserBean;
 
@@ -30,7 +33,7 @@ import com.therdl.shared.beans.CurrentUserBean;
  * @ ProfileViewImpl mainView, the parent container,
  * as this class is a pop up it needs a reference to its parent container to call back to
  */
-public class AvatarUploadPopUp extends Composite {
+public class AvatarUploadPopUp extends AbstractValidatedView {
 
 	private static Logger sLogger = Logger.getLogger("AvatarUploadPopUp");
 
@@ -87,9 +90,13 @@ public class AvatarUploadPopUp extends Composite {
 		});
 		uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-				sLogger.info("Apparently file uploaded successfully");
-				profileUpLoadFormPanel.hide();
-				mainView.refreshImage();
+				sLogger.info("Apparently file uploaded successfully"+event.getResults());
+				if (event.getResults().contains("ERROR")){
+					setErrorMessage(RDL.getI18n().imageUploadError());
+				}else {
+					profileUpLoadFormPanel.hide();
+					mainView.refreshImage();
+				}
 			}
 		});
 

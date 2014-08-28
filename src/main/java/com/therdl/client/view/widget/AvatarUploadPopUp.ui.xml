@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
-             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html">
+             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
+             xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
 	<ui:style>
@@ -19,6 +20,8 @@
 				<b:BlockQuote addStyleNames="noBorder">
 					<b.html:Paragraph text="{i18n.avatarValidDesc}"/>
 					<g:FileUpload ui:field="fileUpload" addStyleNames="btn btn-default {style.marginBot}"/>
+					<rdl:FormSuccess ui:field="formSuccess"/>
+					<rdl:FormErrors ui:field="formErrors"/>
 					<b:Button text="{i18n.submit}" ui:field="submitBtn"/>
 				</b:BlockQuote>
 			</g:FormPanel>

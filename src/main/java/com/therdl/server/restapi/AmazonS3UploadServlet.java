@@ -48,9 +48,9 @@ public class AmazonS3UploadServlet extends HttpServlet {
 	 * Upload servlet to AWS S3 bucket
 	 */
 	private static final long serialVersionUID = -7720246048637220075L;
-	private static final int THRESHOLD_SIZE = 1024 * 1024 * 3;  // 3MB
-	private static final int MAX_FILE_SIZE = 1024 * 1024 * 140; // 140MB
-	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 150; // 150MB
+	private static final int THRESHOLD_SIZE = 1024 * 10;  // 10kB
+	private static final int MAX_FILE_SIZE = 1024 * 10; // 10kB
+	private static final int MAX_REQUEST_SIZE = 1024 * 50; // 50kb
 	private static String AMAZON_ACCESS_KEY;
 	private static String AMAZON_SECRET_KEY;
 	private static final String S3_BUCKET_NAME = "RDL_Avatars";
@@ -80,6 +80,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 	protected void doPost(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException, IOException {
 		String userName = (String)session.get().getAttribute("username");
+		if (userName == null || userName.equals("")) return;
 		log.info("Amazon S3 servlet doPost BEGIN for username " + userName);
 
 		ServletFileUpload upload = setupFileUpload(request, response);
@@ -106,6 +107,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 
 		} catch (Exception ex) {
 			log.error(ex.getMessage(), ex);
+			throw new ServletException();
 		}
 		log.info(uuidValue + ":Upload done");
 	}
@@ -120,8 +122,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 
 			ObjectMetadata om = new ObjectMetadata();
 			om.setContentLength(itemFile.getSize());
-			String ext = FilenameUtils.getExtension(itemFile.getName());
-			String keyName = uuidValue + '.' + ext;
+			String keyName = uuidValue + ".jpg";
 
 			s3client.putObject(new PutObjectRequest(S3_BUCKET_NAME, keyName, itemFile.getInputStream(), om));
 			s3client.setObjectAcl(S3_BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);

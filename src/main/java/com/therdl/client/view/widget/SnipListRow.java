@@ -56,7 +56,7 @@ public class SnipListRow extends Composite {
 	@UiField
 	Badge creationDate, viewCount, postsCount, userName, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
 	@UiField
-	Image snipImg;
+	Image snipImg, avatarImg;
 	@UiField
 	Anchor snipTitle;
 	@UiField
@@ -86,7 +86,6 @@ public class SnipListRow extends Composite {
 		ViewUtils.hide(referencesPanel);
 		ViewUtils.hide(pledgeCounterPanel);
 
-		//TODO remove
 		if (snipType == null){
 			snipType = SnipType.IMPROVEMENT;
 		}
@@ -113,6 +112,12 @@ public class SnipListRow extends Composite {
 			snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
 		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.PROPOSAL))
 			snipImg.setUrl(Resources.INSTANCE.ProposalImageGif().getSafeUri().asString());
+		if (snipBean.as().isAuthorSupporter()){
+			ViewUtils.showHide(true,avatarImg);
+			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(snipBean.as().getAuthor()));
+		}else {
+			ViewUtils.showHide(false,avatarImg);
+		}
 	}
 
 	private void doTexts() {

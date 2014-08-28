@@ -93,7 +93,7 @@ public class ServerUtils {
 		return false;
 	}
 
-	private static boolean isExpired(UserBean.TitleBean titleBean) {
+	public static boolean isExpired(UserBean.TitleBean titleBean) {
 		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires()))
 			return false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);

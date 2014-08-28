@@ -100,26 +100,17 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 			ViewUtils.showHide(false, formSuccess);
 
 			//populate avatar
-			displayUserImage(getImageUrl());
-			//populate titles
-			//<g:Anchor ui:field="ancBeAMember" text="Be a Member!" href="/rdl/paypalCheckout"/>
-//			for (UserBean.TitleBean titleBean : currentUserBean.as().getTitles()) {
-//				titlePanel.add(new TitleListRow(currentUserBean, titleBean).asWidget());
-//
-//				if (titleBean.getTitleName().equals(RDLConstants.UserTitle.RDL_SUPPORTER)) {
-//					ancBeAMember.setVisible(false);
-//				}
-//			}
+			displayUserImage(ViewUtils.getAvatarImageUrl(currentUserBean.as().getName()));
 		}
 	}
 
 	public void refreshImage() {
-		displayUserImage(getImageUrl());
+		displayUserImage(ViewUtils.getAvatarImageUrl(currentUserBean.as().getName()));
 	}
 
 	@Override
 	public Widget asWidget() {
-		displayUserImage(getImageUrl());
+		displayUserImage(ViewUtils.getAvatarImageUrl(currentUserBean.as().getName()));
 		return super.asWidget();
 	}
 
@@ -173,8 +164,4 @@ public class ProfileViewImpl extends AppMenuView implements ProfileView {
 		this.presenter = presenter;
 	}
 
-	private String getImageUrl() {
-		return "https://s3.amazonaws.com/RDL_Avatars/" +
-				ViewUtils.createAvatarName(currentUserBean.as().getName()) + ".jpg";
-	}
 }

@@ -13,10 +13,10 @@ import com.therdl.client.view.widget.FormSuccess;
 public abstract class AbstractValidatedView extends Composite implements ValidatedView {
 
 	@UiField
-	FormErrors formErrors;
+	public FormErrors formErrors;
 
 	@UiField
-	FormSuccess formSuccess;
+	public FormSuccess formSuccess;
 
 	@Override
 	public void setErrorMessage(String errorMessage){

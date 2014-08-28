@@ -13,10 +13,10 @@ import com.therdl.client.view.widget.FormSuccess;
 public abstract class AbstractValidatedAppMenuView extends AppMenuView implements ValidatedView{
 
 	@UiField
-	FormErrors formErrors;
+	protected FormErrors formErrors;
 
 	@UiField
-	FormSuccess formSuccess;
+	protected FormSuccess formSuccess;
 
 	public AbstractValidatedAppMenuView (AppMenu appMenu){
 		super(appMenu);

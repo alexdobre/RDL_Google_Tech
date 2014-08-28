@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -48,6 +49,9 @@ public class ReferenceListRow extends Composite {
 
 	@UiField
 	Label refFlag;
+
+	@UiField
+	Image avatarImg;
 
 	@UiField
 	Button refRepBtn;
@@ -103,6 +107,12 @@ public class ReferenceListRow extends Composite {
 			if (!currentUserBean.as().isAuth() || referenceBean.as().getAuthor().equals(currentUserBean.as().getName()) || (referenceBean.as().getIsRepGivenByUser() != null && referenceBean.as().getIsRepGivenByUser() == 1)) {
 				ViewUtils.hide(refRepBtn);
 			}
+		}
+		if (referenceBean.as().isAuthorSupporter()){
+			ViewUtils.showHide(true,avatarImg);
+			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(referenceBean.as().getAuthor()));
+		}else {
+			ViewUtils.showHide(false,avatarImg);
 		}
 	}
 

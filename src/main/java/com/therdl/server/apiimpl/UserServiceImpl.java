@@ -24,6 +24,7 @@ import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.server.validator.TokenValidator;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
@@ -411,6 +412,28 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public boolean isSupporter (String username){
+		//first search for the user bringing back only the titles
+		DB db = getMongo();
+		DBCollection coll = db.getCollection("rdlUserData");
+
+		BasicDBObject searchQuery = new BasicDBObject().append("username", username);
+		BasicDBObject projection = new BasicDBObject().append("titles", 1);
+
+		DBCursor cursor = coll.find(searchQuery,projection);
+
+		if (cursor.hasNext()) {
+			DBObject doc = cursor.next();
+			BasicDBList titles = (BasicDBList)doc.get("titles");
+			for (Object obj : titles) {
+				UserBean.TitleBean titleBean = buildTitleBean((BasicDBObject)obj);
+				return !ServerUtils.isExpired(titleBean);
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * builds the UserBean from he db object
 	 *
@@ -436,10 +459,7 @@ public class UserServiceImpl implements UserService {
 
 		List<UserBean.TitleBean> titleList = new ArrayList<UserBean.TitleBean>();
 		for (Object obj : titles) {
-			UserBean.TitleBean titlesBean = beanery.userTitleBean().as();
-			titlesBean.setTitleName((String)((BasicDBObject)obj).get("titleName"));
-			titlesBean.setDateGained((String)((BasicDBObject)obj).get("dateGained"));
-			titlesBean.setExpires((String)((BasicDBObject)obj).get("expires"));
+			UserBean.TitleBean titlesBean = buildTitleBean((BasicDBObject)obj);
 			titleList.add(titlesBean);
 		}
 		user.setTitles(titleList);
@@ -500,6 +520,14 @@ public class UserServiceImpl implements UserService {
 		user.setVotesGiven(votesGivenList);
 
 		return user;
+	}
+
+	private UserBean.TitleBean buildTitleBean(BasicDBObject obj) {
+		UserBean.TitleBean titlesBean = beanery.userTitleBean().as();
+		titlesBean.setTitleName((String)((BasicDBObject)obj).get("titleName"));
+		titlesBean.setDateGained((String)((BasicDBObject)obj).get("dateGained"));
+		titlesBean.setExpires((String)((BasicDBObject)obj).get("expires"));
+		return titlesBean;
 	}
 
 	/**

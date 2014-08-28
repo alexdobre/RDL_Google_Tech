@@ -42,10 +42,10 @@
 
 		.leftIcon{
 		float: left;
-		padding-right: 3px;
+		padding-right: 5px;
 		}
 		.rightIcon{
-		padding-left: 3px;
+		padding-left: 5px;
 		}
 		.snipTitle{
 		margin-top: 0px;
@@ -60,12 +60,9 @@
 	<g:HTMLPanel>
 		<b:Row>
 			<b:Column size="MD_1">
-				<g:FlowPanel ui:field="snipImgParent" styleName="{style.snipImgParent}" width="40px"
-				             addStyleNames="img-circle">
-					<g:Image ui:field="snipImg" width="40px"/>
-				</g:FlowPanel>
+				<g:Image ui:field="avatarImg" width="50px" height="50px"/>
 			</b:Column>
-			<b:Column size="MD_11">
+			<b:Column size="MD_10">
 				<b:Row>
 					<b:Column size="MD_12">
 						<b:Heading size="H4" addStyleNames="{style.snipTitle}">
@@ -131,6 +128,12 @@
 						<b:Badge ui:field="creationDate" addStyleNames="snipListRowBadge"/>
 					</b:Column>
 				</b:Row>
+			</b:Column>
+			<b:Column size="MD_1">
+				<g:FlowPanel ui:field="snipImgParent" styleName="{style.snipImgParent}" width="40px"
+				             addStyleNames="img-circle">
+					<g:Image ui:field="snipImg" width="40px"/>
+				</g:FlowPanel>
 			</b:Column>
 
 		</b:Row>

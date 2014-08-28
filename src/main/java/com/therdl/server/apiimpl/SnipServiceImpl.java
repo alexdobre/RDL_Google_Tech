@@ -23,6 +23,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.therdl.server.api.SnipsService;
+import com.therdl.server.api.UserService;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.validator.TokenValidator;
 import com.therdl.shared.Constants;
@@ -49,12 +50,14 @@ public class SnipServiceImpl implements SnipsService {
 
 	private DbProvider dbProvider;
 	private Beanery beanery;
+	private UserService userService;
 	private TokenValidator tokenValidator;
 
 	@Inject
-	public SnipServiceImpl(DbProvider dbProvider, TokenValidator tokenValidator) {
+	public SnipServiceImpl(DbProvider dbProvider, UserService userService, TokenValidator tokenValidator) {
 		this.dbProvider = dbProvider;
 		this.tokenValidator = tokenValidator;
+		this.userService = userService;
 	}
 
 	/**
@@ -515,8 +518,8 @@ public class SnipServiceImpl implements SnipsService {
 			titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
 			linkList.add(titlesBean);
 		}
-
 		snip.setLinks(linkList);
+		snip.setAuthorSupporter(userService.isSupporter(snip.getAuthor()));
 
 		return snip;
 	}

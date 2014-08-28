@@ -147,4 +147,10 @@ public interface UserService {
 	 */
 	public void recoverPassword(String email, String token) throws TokenInvalidException;
 
+	/**
+	 * Checks if a user is an RDL supporter
+	 * @param username
+	 * @return
+	 */
+	public boolean isSupporter (String username);
 }
