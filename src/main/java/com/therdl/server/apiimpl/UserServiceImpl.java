@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserBean getUserByUsername(String username) {
-		log.info("UserServiceImpl getUserByUsername BEGIN email: " + username);
+		log.info("UserServiceImpl getUserByUsername BEGIN: " + username);
 
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 		DB db = getMongo();
@@ -413,8 +413,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Boolean isSupporter (String username){
+	public Boolean isSupporter(String username) {
 		UserBean ub = getUserByUsername(username);
+		if (ub == null)
+			return false;
 		return ServerUtils.isRdlSupporter(ub);
 	}
 
