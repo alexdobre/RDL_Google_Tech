@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.therdl.client.view.ValidatedView;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
@@ -28,7 +29,7 @@ import com.therdl.client.RDL;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
-import com.therdl.client.view.common.SnipType;
+import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LoadingWidget;
@@ -57,7 +58,7 @@ import com.therdl.shared.beans.SnipBean;
  * used to call the backend to retrieve the full snip for this view, under construction
  * @ AppMenu appMenu the upper menu view
  */
-public class SnipViewImpl extends AppMenuView implements SnipView, PaginatedView {
+public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipView, PaginatedView, ValidatedView {
 
 	private static Logger log = Logger.getLogger(SnipViewImpl.class.getName());
 

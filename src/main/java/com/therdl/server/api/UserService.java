@@ -62,33 +62,6 @@ public interface UserService {
 	void changePass(UserBean userBean, String pass);
 
 	/**
-	 * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
-	 * the function adds a reputation given object to the list. Finds user by email.
-	 *
-	 * @param repGivenBean repGivenBean
-	 * @param userEmail    email
-	 * @return modified UserBean
-	 */
-	public UserBean addRepGiven(AutoBean<UserBean.RepGivenBean> repGivenBean, String userEmail);
-
-	/**
-	 * checks if user gave a reputation to the snip with the given snipId
-	 *
-	 * @param email  user email
-	 * @param snipId snipId
-	 * @return Integer 1 or 0
-	 */
-	public Integer isRepGivenForSnip(String email, String snipId);
-
-	/**
-	 * sets isRepGivenByUser flag for input snip beans
-	 *
-	 * @param email     current user
-	 * @param snipBeans snip beans as list
-	 */
-	public void setRepGivenForSnips(String email, List<SnipBean> snipBeans);
-
-	/**
 	 * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
 	 * the function adds a reference given object to the list. Finds user by email.
 	 *
@@ -116,14 +89,6 @@ public interface UserService {
 	public void updateUser(UserBean user);
 
 	/**
-	 * updates the SID of the user only
-	 *
-	 * @param bean
-	 */
-	public void updateSid(AuthUserBean bean);
-
-
-	/**
 	 * finds a user on email
 	 *
 	 * @param bean
@@ -139,13 +104,6 @@ public interface UserService {
 	 * @return
 	 */
 	public AutoBean<AuthUserBean> findUserBySid(String sid);
-
-	/**
-	 * Resets a user password and sends an e-mail to the user with it
-	 *
-	 * @param email
-	 */
-	public void recoverPassword(String email, String token) throws TokenInvalidException;
 
 	/**
 	 * Checks if a user is an RDL supporter

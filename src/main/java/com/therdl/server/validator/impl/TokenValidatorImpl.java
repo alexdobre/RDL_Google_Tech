@@ -36,7 +36,7 @@ public class TokenValidatorImpl implements TokenValidator {
 		log.info("validateTokenViaUsername " + username + " token: " + token);
 		UserBean userBean = userService.getUserByUsername(username);
 		log.info("retrieved user bean with token: " + token);
-		if (!token.equals(userBean.getToken())) {
+		if (token == null || !token.equals(userBean.getToken())) {
 			throw new TokenInvalidException();
 		}
 		return userBean;

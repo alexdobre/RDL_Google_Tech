@@ -35,6 +35,21 @@ public enum CoreCategory {
 		this.colCode = colCode;
 	}
 
+	/**
+	 * Tests if the given string is the title of a category
+	 * @param toTest the string to test
+	 * @return true if the string is a core category title
+	 */
+	public static boolean stringIsCateg (String toTest){
+		try {
+			CoreCategory coreCat =  CoreCategory.valueOf(toTest.toUpperCase());
+			if (coreCat != null) return true;
+			else return false;
+		} catch (Exception e){
+			return false;
+		}
+	}
+
 	public String getShortName() {
 		return shortName;
 	}

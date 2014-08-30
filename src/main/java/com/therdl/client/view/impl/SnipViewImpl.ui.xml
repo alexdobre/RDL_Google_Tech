@@ -142,6 +142,8 @@
 			<b:Column size="MD_3" ui:field="refFilterParent"/>
 			<b:Column size="MD_9" ui:field="referenceListCont">
 				<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
+				<rdl:FormErrors ui:field="formErrors"/>
+				<rdl:FormSuccess ui:field="formSuccess"/>
 				<b:Row>
 					<b:Column size="MD_6" offset="MD_6">
 						<b:Pagination addStyleNames="{style.margin-fix}">

@@ -9,6 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.therdl.server.api.RepService;
+import com.therdl.shared.beans.CurrentUserBean;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,13 +53,14 @@ public class SnipServiceImpl implements SnipsService {
 	private DbProvider dbProvider;
 	private Beanery beanery;
 	private UserService userService;
-	private TokenValidator tokenValidator;
+	private RepService repService;
 
 	@Inject
-	public SnipServiceImpl(DbProvider dbProvider, UserService userService, TokenValidator tokenValidator) {
+	public SnipServiceImpl(DbProvider dbProvider, UserService userService, RepService repService) {
 		this.dbProvider = dbProvider;
-		this.tokenValidator = tokenValidator;
+		this.repService = repService;
 		this.userService = userService;
+		beanery = AutoBeanFactorySource.create(Beanery.class);
 	}
 
 	/**
@@ -67,7 +70,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return list of SnipBean
 	 */
 	@Override
-	public List<SnipBean> searchSnipsWith(SnipBean searchOptions) {
+	public List<SnipBean> searchSnipsWith(SnipBean searchOptions, String currentUserEmail) {
 		log.info("Searching snips with options: " + searchOptions);
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
@@ -137,7 +140,7 @@ public class SnipServiceImpl implements SnipsService {
 				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
 
 		for (DBObject doc : objList) {
-			SnipBean snip = buildBeanObject(doc);
+			SnipBean snip = buildBeanObject(doc, currentUserEmail);
 			beans.add(snip);
 		}
 		log.info("Found list size: " + beans.size());
@@ -151,19 +154,28 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return
 	 */
 	@Override
-	public SnipBean getSnip(String id) {
+	public SnipBean getSnip(String id, String currentUserEmail) {
 		log.info("SnipServiceImpl getSnip  id: " + id);
 
-		DB db = getMongo();
-		BasicDBObject query = new BasicDBObject();
-		query.put("_id", new ObjectId(id));
-		DBCollection coll = db.getCollection("rdlSnipData");
-		DBCursor cursor = coll.find(query);
-		DBObject doc = cursor.next();
-
-		SnipBean snip = buildBeanObject(doc);
-		log.info("Found snip: " + snip);
-		return snip;
+		try {
+			DB db = getMongo();
+			BasicDBObject query = new BasicDBObject();
+			query.put("_id", new ObjectId(id));
+			DBCollection coll = db.getCollection("rdlSnipData");
+			DBCursor cursor = coll.find(query);
+			if (cursor.hasNext()){
+				DBObject doc = cursor.next();
+				SnipBean snip = buildBeanObject(doc, currentUserEmail);
+				log.info("Found snip: " + snip);
+				return snip;
+			}else {
+				log.warn("Snip not found! for ID: "+id);
+				return null;
+			}
+		} catch (IllegalArgumentException e){
+			log.error(e.getMessage(),e);
+			return null;
+		}
 	}
 
 	/**
@@ -198,7 +210,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return
 	 */
 	@Override
-	public void updateSnip(SnipBean snip) {
+	public String updateSnip(SnipBean snip) {
 
 		log.info("SnipServiceImpl updateSnip  updateSnip id: " + snip.getId());
 		System.out.println("SnipServiceImpl updateSnip  updateSnip content " + snip.getId());
@@ -209,6 +221,7 @@ public class SnipServiceImpl implements SnipsService {
 
 		// build the search query
 		BasicDBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(snip.getId()));
+		String toReturn = snip.getId();
 
 		// set thee id to null to avoid exception from the driver (the id could not be updated)
 		snip.setId(null);
@@ -222,6 +235,8 @@ public class SnipServiceImpl implements SnipsService {
 
 		// make update
 		coll.findAndModify(searchQuery, updateDocument);
+
+		return toReturn;
 	}
 
 	/**
@@ -232,7 +247,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return
 	 */
 	@Override
-	public SnipBean incrementCounter(String id, String field) {
+	public SnipBean incrementCounter(String id, String field, String currentUserEmail) {
 		DB db = getMongo();
 		DBCollection coll = db.getCollection("rdlSnipData");
 
@@ -242,7 +257,7 @@ public class SnipServiceImpl implements SnipsService {
 		DBObject incQuery = new BasicDBObject("$inc", modifier);
 		// make update
 		DBObject dbObj = coll.findAndModify(searchQuery, incQuery);
-		SnipBean snip = buildBeanObject(dbObj);
+		SnipBean snip = buildBeanObject(dbObj, currentUserEmail);
 		return snip;
 	}
 
@@ -262,7 +277,7 @@ public class SnipServiceImpl implements SnipsService {
 		DBObject listItem = new BasicDBObject("links", new BasicDBObject("targetId", linkAutoBean.as().getTargetId()).append("rank", linkAutoBean.as().getRank()));
 		DBObject updateQuery = new BasicDBObject("$push", listItem);
 		DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
-		SnipBean snip = buildBeanObject(dbObj);
+		SnipBean snip = buildBeanObject(dbObj, null);
 		return snip;
 	}
 
@@ -273,7 +288,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return references as a list of SnipBean object
 	 */
 	@Override
-	public List<SnipBean> getReferences(SnipBean searchOptions) {
+	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail) {
 		log.info("Snip Service getReferences - BEGIN");
 		DB db = getMongo();
 		DBCollection coll = db.getCollection("rdlSnipData");
@@ -311,75 +326,13 @@ public class SnipServiceImpl implements SnipsService {
 
 		while (collDocs.hasNext()) {
 			DBObject doc = collDocs.next();
-			SnipBean snip = buildBeanObject(doc);
+			SnipBean snip = buildBeanObject(doc, currentUserEmail);
 			beans.add(snip);
 		}
 
 		log.info("Returning result list size: " + beans.size());
 		return beans;
 	}
-
-	/**
-	 * this function is used when searching references/posts/pledges by author reputation or author title
-	 *
-	 * @param collDocs      DBCursor for the references
-	 * @param searchOptions searchOptions
-	 * @param query         query for snips
-	 * @param pageIndex     index of page
-	 * @return SnipBean list
-	 */
-	private List<SnipBean> filterReferencesByUser(DBCursor collDocs, SnipBean searchOptions, BasicDBObject query, int pageIndex) {
-		DB db = getMongo();
-
-		List<SnipBean> beans = new ArrayList<SnipBean>();
-
-		// retrieve author names for the given snip list
-		List<String> authors = new ArrayList<String>();
-		while (collDocs.hasNext()) {
-			DBObject doc = collDocs.next();
-			if (!authors.contains(doc.get("author")))
-				authors.add((String)doc.get("author"));
-
-		}
-
-		DBCollection collUser = db.getCollection("rdlUserData");
-		DBCollection coll = db.getCollection("rdlSnipData");
-
-		BasicDBObject queryUser = new BasicDBObject();
-		queryUser.put("username", new BasicDBObject("$in", authors.toArray(new String[authors.size()])));
-
-		if (searchOptions.getAuthorTitle() != null) {
-			if (searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_DEV))
-				queryUser.put("titles.titleName", RDLConstants.UserTitle.RDL_DEV);
-			else if (searchOptions.getAuthorTitle().equals(RDLConstants.UserTitle.RDL_USER))
-				queryUser.put("titles.titleName", new BasicDBObject("$ne", RDLConstants.UserTitle.RDL_DEV));
-		}
-		// query on user collection
-		DBCursor collUsers = collUser.find(queryUser);
-
-		// retrieve author names from result
-		List<String> filteredAuthors = new ArrayList<String>();
-		while (collUsers.hasNext()) {
-			DBObject doc = collUsers.next();
-			filteredAuthors.add((String)doc.get("username"));
-		}
-		// add filtered authors in snip query
-		query.put("author", new BasicDBObject("$in", filteredAuthors.toArray(new String[filteredAuthors.size()])));
-
-		// query to get snips for only filtered authors
-		DBCursor collDocs1 = coll.find(query).sort(new BasicDBObject(searchOptions.getSortField(),
-				searchOptions.getSortOrder())).skip((pageIndex) * Constants.DEFAULT_REFERENCE_PAGE_SIZE).
-				limit(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
-
-		while (collDocs1.hasNext()) {
-			DBObject doc = collDocs1.next();
-			SnipBean snip1 = buildBeanObject(doc);
-			beans.add(snip1);
-		}
-
-		return beans;
-	}
-
 
 	/**
 	 * crud delete
@@ -475,10 +428,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @param : DBObject doc
 	 * @return : SnipBean
 	 */
-	private SnipBean buildBeanObject(DBObject doc) {
-
-		if (beanery == null)
-			beanery = AutoBeanFactorySource.create(Beanery.class);
+	private SnipBean buildBeanObject(DBObject doc, String currentUserEmail) {
 		SnipBean snip = beanery.snipBean().as();
 		// set the fields
 		snip.setId(doc.get("_id").toString());
@@ -506,6 +456,12 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setCounters(RDLUtils.parseInt(doc.get("counters")));
 		snip.setProposalType((String)doc.get("proposalType"));
 		snip.setProposalState((String)doc.get("proposalState"));
+		//see if current user already gave rep
+		if (currentUserEmail!= null && repService.getRep(snip.getId(),currentUserEmail) != null){
+			snip.setIsRepGivenByUser(1);
+		}else {
+			snip.setIsRepGivenByUser(0);
+		}
 
 		List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
 

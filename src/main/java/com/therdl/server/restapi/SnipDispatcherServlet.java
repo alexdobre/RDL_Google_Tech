@@ -1,12 +1,25 @@
 package com.therdl.server.restapi;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.google.gson.Gson;
+import com.google.inject.Singleton;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
+import com.therdl.server.api.RepService;
+import com.therdl.server.api.SnipsService;
+import com.therdl.server.api.UserService;
+import com.therdl.server.validator.SnipValidator;
+import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
+import com.therdl.shared.exceptions.RdlCodedException;
+import com.therdl.shared.exceptions.SnipValidationException;
+import com.therdl.shared.exceptions.TokenInvalidException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -15,22 +28,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-import com.google.inject.Singleton;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.google.web.bindery.autobean.shared.AutoBeanUtils;
-import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
-import com.therdl.server.api.SnipsService;
-import com.therdl.server.api.UserService;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.beans.UserBean;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * SnipDispatcherServlet controller. This project uses the Guice injection
@@ -52,12 +55,11 @@ public class SnipDispatcherServlet extends HttpServlet {
 	final Logger log = LoggerFactory.getLogger(SnipDispatcherServlet.class);
 	private final Provider<HttpSession> sessions;
 
-	/**
-	 * the service , which handles the db queries
-	 */
-	SnipsService snipsService;
+	private SnipsService snipsService;
+	private UserService userService;
+	private SnipValidator snipValidator;
+	private RepService repService;
 
-	UserService userService;
 
 	/**
 	 * for message beans
@@ -72,10 +74,13 @@ public class SnipDispatcherServlet extends HttpServlet {
 	 * @param snipsService
 	 */
 	@Inject
-	public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService, UserService userService) {
+	public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService, UserService userService,
+	                             SnipValidator snipValidator, RepService repService) {
 		this.sessions = sessions;
 		this.snipsService = snipsService;
 		this.userService = userService;
+		this.snipValidator = snipValidator;
+		this.repService = repService;
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 
 	}
@@ -110,143 +115,195 @@ public class SnipDispatcherServlet extends HttpServlet {
 		}
 		br.close();
 		log.info("SnipDispatcherServlet: sb.toString()  " + sb.toString());
-
+		PrintWriter out = resp.getWriter();
 		// action bean as not all fields may have been set
 		AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
 		sb.setLength(0);
-
-		if (actionBean.as().getAction().equals("search")) {
-			List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as());
-			log.info("SnipDispatcherServlet: beans.size() " + beans.size());
-			log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
-
-			ArrayList<HashMap<String, String>> beanList = getBeanList(beans);
-
-			log.info("SnipDispatcherServlet: beanList.size() " + beanList.size());
-
-			Gson gson = new Gson();
-			log.info(gson.toJson(beanList));
-			PrintWriter out = resp.getWriter();
-			out.write(gson.toJson(beanList));
-			beanList.clear();
-			actionBean.as().setAction("dump");
-		} else if (actionBean.as().getAction().equals("getSnip")) {
-			SnipBean bean = snipsService.getSnip(actionBean.as().getId());
-			log.info("SnipDispatcherServlet: actionBean.id " + actionBean.as().getId());
-			log.info("SnipDispatcherServlet: bean.id " + bean.getId());
-			AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-			PrintWriter out = resp.getWriter();
-			out.write(AutoBeanCodex.encode(autoBean).getPayload());
-		} else if (actionBean.as().getAction().equals("viewSnip")) {
-			SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.VIEWS);
-			log.info("SnipDispatcherServlet: actionBean.id " + actionBean.as().getId());
-			log.info("SnipDispatcherServlet: bean.id " + bean.getId());
-
-			String viewerId = actionBean.as().getViewerId();
-			if (viewerId != null) {
-				bean.setIsRepGivenByUser(userService.isRepGivenForSnip(viewerId, actionBean.as().getId()));
-				bean.setIsRefGivenByUser(userService.isRefGivenForSnip(viewerId, actionBean.as().getId()));
-			} else {
-				// none logged users can't give a reputation and leave a reference
-				bean.setIsRepGivenByUser(1);
-				bean.setIsRefGivenByUser(1);
+		try {
+			if (actionBean.as().getAction().equals("search")) {
+				doSearch(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("getSnip")) {
+				doGetSnip(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("viewSnip")) {
+				doViewSnip(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("save")) {
+				out.write(doSave(actionBean));
+			} else if (actionBean.as().getAction().equals("update")) {
+				out.write(doUpdate(actionBean));
+			} else if (actionBean.as().getAction().equals("delete")) {
+				out.write(doDelete(actionBean));
+			} else if (actionBean.as().getAction().equals("saveReference")) {
+				doSaveRef(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("getReferences")) {
+				doGetRefList(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("giveRep")) {
+				doGiveRep(resp, actionBean);
 			}
-
-			AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-			PrintWriter out = resp.getWriter();
-			out.write(AutoBeanCodex.encode(autoBean).getPayload());
-		} else if (actionBean.as().getAction().equals("save")) {
-			log.info("SnipDispatcherServlet: actionBean.as().getAction() save " + actionBean.as().getAction());
-			// action bean is actually a bean to be submitted for saving
-			log.info("SnipDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getTitle());
-			// check that user id has been set for this bean
-			String id = (String)sessions.get().getAttribute("userid");
-			actionBean.as().setCreationDate(snipsService.makeTimeStamp());
-			snipsService.createSnip(actionBean.as());
-		} else if (actionBean.as().getAction().equals("update")) {
-			log.info("SnipDispatcherServlet: actionBean.as().getAction() update " + actionBean.as().getAction());
-			log.info("SnipDispatcherServlet:submitted bean for update recieved  " + actionBean.as().getTitle());
-			actionBean.as().setEditDate(snipsService.makeTimeStamp());
-			snipsService.updateSnip(actionBean.as());
-		} else if (actionBean.as().getAction().equals("delete")) {
-			log.info("SnipDispatcherServlet: actionBean.as().getAction() delete " + actionBean.as().getAction());
-			log.info("SnipDispatcherServlet:submitted bean for update recieved  " + actionBean.as().getId());
-			snipsService.deleteSnip(actionBean.as().getId());
-		} else if (actionBean.as().getAction().equals("saveReference")) {
-			log.info("SnipDispatcherServlet: saveReference");
-
-			// increments reference counter of parent snip for reference type (positive/neutral/negative)
-			String parentSnipId = actionBean.as().getId();
-
-			String counterField = RDLConstants.SnipFields.POS_REF;
-			if (actionBean.as().getReferenceType() != null) {
-				if (actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
-					counterField = RDLConstants.SnipFields.NEUTRAL_REF;
-				else if (actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
-					counterField = RDLConstants.SnipFields.NEGATIVE_REF;
-
-			} else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.PLEDGE)) {
-				counterField = RDLConstants.SnipFields.PLEDGES;
-			} else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.COUNTER)) {
-				counterField = RDLConstants.SnipFields.COUNTERS;
-			} else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
-				counterField = RDLConstants.SnipFields.POSTS;
-			}
-
-			snipsService.incrementCounter(parentSnipId, counterField);
-
-			// reset snip id and call create snip to save reference object as separate entity in the snip collection
-			actionBean.as().setId(null);
-			actionBean.as().setCreationDate(snipsService.makeTimeStamp());
-			String referenceId = snipsService.createSnip(actionBean.as());
-
-			// add reference as Link object into the parent snip
-			AutoBean<SnipBean.Link> linkAutoBean = beanery.snipLinksBean();
-			linkAutoBean.as().setRank("0");
-			linkAutoBean.as().setTargetId(referenceId);
-			SnipBean bean = snipsService.addReference(linkAutoBean, parentSnipId);
-
-			// in the case of post a user can reply the save thread more than one time, so no need to save this information
-			if (!actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
-				String email = (String)sessions.get().getAttribute("userid");
-				AutoBean<UserBean.RefGivenBean> refGivenBean = beanery.userRefGivenBean();
-				refGivenBean.as().setSnipId(parentSnipId);
-				refGivenBean.as().setDate(snipsService.makeTimeStamp());
-				userService.addRefGiven(refGivenBean, email);
-			}
-			// send modified parent snip as json
-			AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-			PrintWriter out = resp.getWriter();
-			out.write(AutoBeanCodex.encode(autoBean).getPayload());
-		} else if (actionBean.as().getAction().equals("getReferences")) {
-			List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as());
-			String viewerId = actionBean.as().getViewerId();
-			if (viewerId != null) {
-				userService.setRepGivenForSnips(viewerId, beanReferences);
-			}
-
-			ArrayList<HashMap<String, String>> beanList = getBeanList(beanReferences);
-
-			Gson gson = new Gson();
-			log.info(gson.toJson(beanList));
-			PrintWriter out = resp.getWriter();
-			out.write(gson.toJson(beanList));
-			beanList.clear();
-			actionBean.as().setAction("dump");
-		} else if (actionBean.as().getAction().equals("giveRep")) {
-			String email = (String)sessions.get().getAttribute("userid");
-
-			AutoBean<UserBean.RepGivenBean> repGivenBean = beanery.userRepGivenBean();
-			repGivenBean.as().setSnipId(actionBean.as().getId());
-			repGivenBean.as().setDate(snipsService.makeTimeStamp());
-			UserBean userBean = userService.addRepGiven(repGivenBean, email);
-
-			SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.REP);
-
-			AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
-			PrintWriter out = resp.getWriter();
-			out.write(AutoBeanCodex.encode(autoBean).getPayload());
+		} catch (RdlCodedException e) {
+			log.info("Coded exception thrown: " + e.getClass().getName() + " code: " + e.getCode());
+			out.write(e.getCode());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			out.write(RDLConstants.ErrorCodes.GENERIC);
 		}
+	}
+
+	private void doGiveRep(HttpServletResponse resp, AutoBean<SnipBean> actionBean)
+			throws IOException, TokenInvalidException, SnipValidationException {
+		snipValidator.validateCanGiveRep(actionBean);
+		String email = getCurrentUserEmail();
+
+		AutoBean<UserBean.RepGivenBean> repGivenBean = beanery.userRepGivenBean();
+		repGivenBean.as().setSnipId(actionBean.as().getId());
+		repGivenBean.as().setDate(snipsService.makeTimeStamp());
+		repService.addRep(repGivenBean.as().getSnipId(), email);
+
+		SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.REP, email);
+
+		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+		PrintWriter out = resp.getWriter();
+		out.write(AutoBeanCodex.encode(autoBean).getPayload());
+	}
+
+	private void doGetRefList(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
+		String email = getCurrentUserEmail();
+		List<SnipBean> beanReferences = snipsService.getReferences(actionBean.as(), email);
+
+		ArrayList<HashMap<String, String>> beanList = getBeanList(beanReferences);
+
+		Gson gson = new Gson();
+		log.info(gson.toJson(beanList));
+		PrintWriter out = resp.getWriter();
+		out.write(gson.toJson(beanList));
+		beanList.clear();
+		actionBean.as().setAction("dump");
+	}
+
+	private void doSaveRef(HttpServletResponse resp, AutoBean<SnipBean> actionBean)
+			throws IOException, TokenInvalidException, SnipValidationException {
+		log.info("SnipDispatcherServlet: saveReference");
+		snipValidator.validateCanSaveRef(actionBean);
+		String email = getCurrentUserEmail();
+		// increments reference counter of parent snip for reference type (positive/neutral/negative)
+		String parentSnipId = actionBean.as().getId();
+
+		String counterField = RDLConstants.SnipFields.POS_REF;
+		if (actionBean.as().getReferenceType() != null) {
+			if (actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))
+				counterField = RDLConstants.SnipFields.NEUTRAL_REF;
+			else if (actionBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEGATIVE))
+				counterField = RDLConstants.SnipFields.NEGATIVE_REF;
+
+		} else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.PLEDGE)) {
+			counterField = RDLConstants.SnipFields.PLEDGES;
+		} else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.COUNTER)) {
+			counterField = RDLConstants.SnipFields.COUNTERS;
+		} else if (actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
+			counterField = RDLConstants.SnipFields.POSTS;
+		}
+
+		snipsService.incrementCounter(parentSnipId, counterField, email);
+
+		// reset snip id and call create snip to save reference object as separate entity in the snip collection
+		actionBean.as().setId(null);
+		actionBean.as().setCreationDate(snipsService.makeTimeStamp());
+		String referenceId = snipsService.createSnip(actionBean.as());
+
+		// add reference as Link object into the parent snip
+		AutoBean<SnipBean.Link> linkAutoBean = beanery.snipLinksBean();
+		linkAutoBean.as().setRank("0");
+		linkAutoBean.as().setTargetId(referenceId);
+		SnipBean bean = snipsService.addReference(linkAutoBean, parentSnipId);
+
+		// in the case of post a user can reply the save thread more than one time, so no need to save this information
+		if (!actionBean.as().getSnipType().equals(RDLConstants.SnipType.POST)) {
+			AutoBean<UserBean.RefGivenBean> refGivenBean = beanery.userRefGivenBean();
+			refGivenBean.as().setSnipId(parentSnipId);
+			refGivenBean.as().setDate(snipsService.makeTimeStamp());
+			userService.addRefGiven(refGivenBean, email);
+		}
+		// send modified parent snip as json
+		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+		PrintWriter out = resp.getWriter();
+		out.write(AutoBeanCodex.encode(autoBean).getPayload());
+	}
+
+	private String doDelete(AutoBean<SnipBean> actionBean) throws TokenInvalidException, SnipValidationException {
+		log.info("SnipDispatcherServlet: actionBean.as().getAction() delete " + actionBean.as().getAction());
+		log.info("SnipDispatcherServlet:submitted bean for update recieved  " + actionBean.as().getId());
+		snipValidator.validateCanDelete(actionBean);
+		snipsService.deleteSnip(actionBean.as().getId());
+		String toReturn =  actionBean.as().getId();
+		log.info("Delete snip returning with ID: "+toReturn);
+		return toReturn;
+	}
+
+	private String doUpdate(AutoBean<SnipBean> actionBean) throws TokenInvalidException, SnipValidationException {
+		log.info("SnipDispatcherServlet: actionBean.as().getAction() update " + actionBean.as().getAction());
+		log.info("SnipDispatcherServlet:submitted bean for update recieved  " + actionBean.as().getTitle());
+		snipValidator.validateSnipBean(actionBean);
+		actionBean.as().setEditDate(snipsService.makeTimeStamp());
+		String toReturn = snipsService.updateSnip(actionBean.as());
+		log.info("Update snip returning with ID: "+toReturn);
+		return toReturn;
+	}
+
+	private String doSave(AutoBean<SnipBean> actionBean) throws TokenInvalidException, SnipValidationException {
+		log.info("SnipDispatcherServlet: actionBean.as().getAction() save " + actionBean.as().getAction());
+		// action bean is actually a bean to be submitted for saving
+		log.info("SnipDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getTitle());
+		snipValidator.validateSnipBean(actionBean);
+		actionBean.as().setCreationDate(snipsService.makeTimeStamp());
+		String toReturn = snipsService.createSnip(actionBean.as());
+		log.info("Delete snip returning with ID: "+toReturn);
+		return toReturn;
+	}
+
+	private void doViewSnip(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
+		String email = getCurrentUserEmail();
+		log.info("SnipDispatcherServlet: actionBean.id " + actionBean.as().getId());
+		SnipBean bean = snipsService.getSnip(actionBean.as().getId(), email);
+		if (bean == null) return;
+
+		String viewerId = actionBean.as().getViewerId();
+		if (viewerId != null) {
+			bean.setIsRefGivenByUser(userService.isRefGivenForSnip(viewerId, actionBean.as().getId()));
+		} else {
+			// none logged users can't give a reputation and leave a reference
+			bean.setIsRepGivenByUser(1);
+			bean.setIsRefGivenByUser(1);
+		}
+
+		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+		PrintWriter out = resp.getWriter();
+		out.write(AutoBeanCodex.encode(autoBean).getPayload());
+	}
+
+	private void doGetSnip(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
+		SnipBean bean = snipsService.getSnip(actionBean.as().getId(), getCurrentUserEmail());
+		log.info("SnipDispatcherServlet: actionBean.id " + actionBean.as().getId());
+		log.info("SnipDispatcherServlet: bean.id " + bean.getId());
+		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
+		PrintWriter out = resp.getWriter();
+		out.write(AutoBeanCodex.encode(autoBean).getPayload());
+	}
+
+	private void doSearch(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
+		String email = getCurrentUserEmail();
+		List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(), email);
+		log.info("SnipDispatcherServlet: beans.size() " + beans.size());
+		log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
+
+		ArrayList<HashMap<String, String>> beanList = getBeanList(beans);
+
+		log.info("SnipDispatcherServlet: beanList.size() " + beanList.size());
+
+		Gson gson = new Gson();
+		log.info(gson.toJson(beanList));
+		PrintWriter out = resp.getWriter();
+		out.write(gson.toJson(beanList));
+		beanList.clear();
+		actionBean.as().setAction("dump");
 	}
 
 	/**
@@ -268,6 +325,10 @@ public class SnipDispatcherServlet extends HttpServlet {
 		}
 
 		return beanList;
+	}
+
+	private String getCurrentUserEmail(){
+		return (String) sessions.get().getAttribute("userid");
 	}
 
 }

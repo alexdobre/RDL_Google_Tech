@@ -16,7 +16,7 @@ import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
 
 /**
- * Validation methods to for the user
+ * Validation methods for the user
  */
 public class UserViewValidator {
 	private static Logger log = Logger.getLogger(UserViewValidator.class.getName());

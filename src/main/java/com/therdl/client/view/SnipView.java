@@ -11,7 +11,7 @@ import com.therdl.shared.beans.SnipBean;
 /**
  * snip view triggered when snip row list widget is selected
  */
-public interface SnipView extends RdlView, PaginatedView {
+public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 
 	public interface Presenter {
 		public void saveReference(AutoBean<SnipBean> bean);

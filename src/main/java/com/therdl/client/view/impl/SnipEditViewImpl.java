@@ -44,9 +44,9 @@ import com.therdl.shared.beans.SnipBean;
  * as the presenter handles all the strictly non view related code (server calls for instance) a view
  * can use a instance of its presenter
  */
-public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
+public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements SnipEditView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(SnipEditViewImpl.class.getName());
 	private Beanery beanery = GWT.create(Beanery.class);
 
 	@UiTemplate("SnipEditViewImpl.ui.xml")
@@ -80,7 +80,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 	private AutoBean<SnipBean> currentSnipBean;
-	private String pageToRedirect;
 
 	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
@@ -90,7 +89,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	}
 
 	private void configureForImprovement() {
-		pageToRedirect = RDLConstants.Tokens.IMPROVEMENTS;
 		if (!isProposalListInit) {
 			ViewUtils.createProposalTypeList(proposalTypeList);
 			ViewUtils.createProposalStateList(proposalStateList);
@@ -101,7 +99,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	}
 
 	private void configureForStory() {
-		pageToRedirect = RDLConstants.Tokens.STORIES;
 		if (!isCategoryListInit) {
 			createCategoryList();
 			isCategoryListInit = true;
@@ -110,7 +107,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	}
 
 	private void configureForIdea() {
-		pageToRedirect = RDLConstants.Tokens.SNIPS;
 		if (!isSnipTypeBarInit) {
 			createSnipTypeBar();
 			isSnipTypeBarInit = true;
@@ -203,7 +199,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 	 * @param snipBean
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
-		log.info("******************************* Snip Editor - populate with : " + snipBean);
 		if (snipBean == null) {
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
@@ -215,7 +210,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 		configureForModule();
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
-		log.info("Setting content: **************** : " + currentSnipBean.as().getContent());
 		title.setText(currentSnipBean.as().getTitle());
 		richTextEditor.setCode(currentSnipBean.as().getContent());
 	}
@@ -295,16 +289,6 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 
 	@UiHandler("saveSnip")
 	void onSaveSnip(ClickEvent event) {
-		if (title.getText().equals("")) {
-			Window.alert(RDL.i18n.titleWarningText());
-			return;
-		}
-
-		if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && categoryList.getSelectedIndex() == 0) {
-			Window.alert(RDL.i18n.categoryWarningText());
-			return;
-		}
-
 		AutoBean<SnipBean> newBean = beanery.snipBean();
 		if (currentSnipBean != null) {
 			newBean = currentSnipBean;
@@ -343,10 +327,10 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 			newBean.as().setPledges(0);
 			newBean.as().setCounters(0);
 
-			presenter.submitBean(newBean, pageToRedirect);
+			presenter.submitBean(newBean, currentUserBean);
 		} else {
 			newBean.as().setId(currentSnipBean.as().getId());
-			presenter.submitEditedBean(newBean, pageToRedirect);
+			presenter.submitEditedBean(newBean,currentUserBean);
 		}
 
 	}
@@ -371,7 +355,7 @@ public class SnipEditViewImpl extends AppMenuView implements SnipEditView {
 					Window.alert(RDL.i18n.deleteThreadMsg());
 
 			} else {
-				presenter.onDeleteSnip(currentSnipBean.as().getId(), pageToRedirect);
+				presenter.onDeleteSnip(currentSnipBean, currentUserBean);
 			}
 		}
 	}

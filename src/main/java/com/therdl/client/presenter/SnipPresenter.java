@@ -11,13 +11,18 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
+import com.therdl.client.callback.BeanCallback;
+import com.therdl.client.callback.SnipListCallback;
+import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
@@ -108,25 +113,17 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 
 		String json = AutoBeanCodex.encode(currentBean).getPayload();
 		try {
-
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new BeanCallback<SnipBean>(SnipBean.class, view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-					log.info("getSnipResponse=" + response.getText());
-
-					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
-					prepareTheView(bean);
-					view.viewSnip(bean);
-					container.add(view.asWidget());
+				public void onBeanReturned(AutoBean<SnipBean> returnedBean){
+					if (returnedBean == null) {
+						History.newItem(RDLConstants.Tokens.ERROR);
+					}else {
+						prepareTheView(returnedBean);
+						view.viewSnip(returnedBean);
+						container.add(view.asWidget());
+					}
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
@@ -150,28 +147,13 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		requestBuilder.setHeader("Content-Type", "application/json");
 
 		try {
-
 			String json = AutoBeanCodex.encode(bean).getPayload();
 			log.info("SnipPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-
-					if (response.getStatusCode() == 200) {
-						// ok now vaildate for dropdown
-						log.info("SnipPresenter submit post ok now validating");
-						view.saveReferenceResponseHandler(refType, snipType);
-					} else {
-						log.info("SnipPresenter submit post fail");
-					}
+				public void onSuccess(Request request, Response response){
+					view.saveReferenceResponseHandler(refType, snipType);
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipPresenter submit onError)" + exception.getLocalizedMessage());
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
@@ -195,34 +177,12 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 
 		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
 		try {
-
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new SnipListCallback() {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-					log.info("getSnipReferences=" + response.getText());
-
-					JsArray<JSOModel> data =
-							JSOModel.arrayFromJson(response.getText());
-
-					ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
-					ArrayList<AutoBean<SnipBean>> beanList = new ArrayList<AutoBean<SnipBean>>();
-
-					for (int i = 0; i < data.length(); i++) {
-						jSonList.add(data.get(i));
-						beanList.add(AutoBeanCodex.decode(beanery, SnipBean.class, jSonList.get(i).get(i + "")));
-					}
-
+				public void onBeanListReturned (ArrayList<AutoBean<SnipBean>> beanList){
 					view.showReferences(beanList, pageIndex);
 					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
@@ -246,23 +206,11 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 
 		String json = AutoBeanCodex.encode(currentBean).getPayload();
 		try {
-
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-					log.info("giveSnipReputation=" + response.getText());
-
-					// snipView.giveRepResponseHandler();
+				public void onSuccess(Request request, Response response){
 					observer.onSuccess(response.getText());
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());

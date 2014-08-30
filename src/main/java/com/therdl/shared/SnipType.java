@@ -1,4 +1,4 @@
-package com.therdl.client.view.common;
+package com.therdl.shared;
 
 /**
  * Holds all the possible snip types
@@ -14,7 +14,7 @@ public enum SnipType {
 		this.snipType = snipType;
 	}
 
-	public String getSnipType(){
+	public String getSnipType() {
 		return snipType;
 	}
 
@@ -27,6 +27,35 @@ public enum SnipType {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Determines if the snip type is part of the RDL supporter modules of the app
+	 * at the time of writing these are the Snips module and the Improvements module
+	 *
+	 * @param typeName
+	 * @return
+	 */
+	public static Boolean isSpecialAccess(String typeName) {
+		if (THREAD.getSnipType().equals(typeName) || POST.getSnipType().equals(typeName)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Tests if the given string is the title of a snip type
+	 * @param toTest the string to test
+	 * @return true if the string is a core category title
+	 */
+	public static boolean stringIsType (String toTest){
+		try {
+			SnipType snipType =  SnipType.fromString(toTest);
+			if (snipType != null) return true;
+			else return false;
+		} catch (Exception e){
+			return false;
+		}
 	}
 
 	public boolean isIdea() {

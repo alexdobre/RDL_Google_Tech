@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.presenter.ContentNotFoundPresenter;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
 import com.therdl.client.presenter.RegisterPresenter;
@@ -18,12 +19,14 @@ import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
+import com.therdl.client.view.ContentNotFound;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.WelcomeView;
+import com.therdl.client.view.impl.ContentNotFoundImpl;
 import com.therdl.client.view.impl.ImprovementsViewImpl;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
@@ -90,6 +93,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
 	private WelcomeView welcomeView;
+	private ContentNotFound contentNotFound;
 	private SnipEditView snipEditView;
 
 	private SearchView searchView;
@@ -226,6 +230,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				break;
 			case RDLConstants.Tokens.PROFILE:
 				showProfile();
+				break;
+			case RDLConstants.Tokens.ERROR:
+				showContentNotFound();
 				break;
 			case RDLConstants.Tokens.LOG_OUT:
 				showLogOut();
@@ -453,6 +460,22 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		});
 	}
 
+	private void showContentNotFound(){
+		log.info("AppController Tokens.ERROR ");
+		if (contentNotFound == null) {
+			contentNotFound = new ContentNotFoundImpl(appMenu);
+		}
+		final ContentNotFoundPresenter contentNotFoundPresenter = new ContentNotFoundPresenter(contentNotFound, this);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				contentNotFoundPresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
 	private void showLogOut() {
 		log.info("AppController Tokens.LOG_OUT ");
 
@@ -467,8 +490,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			}
 
 			public void onSuccess() {
-
-				currentUserBean.as().setAuth(false);
 				welcomePresenter.go(container, currentUserBean);
 			}
 		});

@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.view.common.SnipType;
+import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;

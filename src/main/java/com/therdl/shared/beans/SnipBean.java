@@ -1,5 +1,8 @@
 package com.therdl.shared.beans;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 
@@ -35,10 +38,14 @@ public interface SnipBean extends TokenizedBean {
 
 	void setId(String id);
 
+	@NotEmpty
+	@Pattern(regexp = "^[a-zA-Z0-9_!,\"'-.].{0,200}")
 	String getTitle();
 
 	void setTitle(String title);
 
+	@NotEmpty
+	@Pattern(regexp = ".{0,200000}")
 	String getContent();
 
 	void setContent(String content);
@@ -72,6 +79,7 @@ public interface SnipBean extends TokenizedBean {
 
 	void setSnipType(String snipType);
 
+	@NotEmpty
 	String getCoreCat();
 
 	void setCoreCat(String coreCat);

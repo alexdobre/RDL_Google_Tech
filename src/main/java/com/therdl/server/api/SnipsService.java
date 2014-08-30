@@ -2,6 +2,7 @@ package com.therdl.server.api;
 
 
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface SnipsService {
 	 * @param id
 	 * @return
 	 */
-	SnipBean getSnip(String id);
+	SnipBean getSnip(String id, String currentUserEmail);
 
 	/**
 	 * creates the new snip
@@ -41,7 +42,7 @@ public interface SnipsService {
 	 * @param snip
 	 * @return
 	 */
-	void updateSnip(SnipBean snip);
+	String updateSnip(SnipBean snip);
 
 	/**
 	 * increments counter for the given snip id
@@ -50,7 +51,7 @@ public interface SnipsService {
 	 * @param field to increment. This can be viewCount, rep or positive/neutral/negative reference count
 	 * @return
 	 */
-	SnipBean incrementCounter(String id, String field);
+	SnipBean incrementCounter(String id, String field, String currentUserEmail);
 
 	/**
 	 * search snips for the given search options
@@ -58,7 +59,7 @@ public interface SnipsService {
 	 * @param snip      search option data
 	 * @return list of SnipBean
 	 */
-	List<SnipBean> searchSnipsWith(SnipBean snip);
+	List<SnipBean> searchSnipsWith(SnipBean snip, String currentUserEmail);
 
 	/**
 	 * makes current timestamp
@@ -83,5 +84,5 @@ public interface SnipsService {
 	 * @param searchOptions to filter references
 	 * @return references as a list of SnipBean object
 	 */
-	public List<SnipBean> getReferences(SnipBean searchOptions);
+	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail);
 }

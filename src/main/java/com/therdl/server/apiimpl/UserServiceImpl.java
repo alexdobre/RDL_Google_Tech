@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
 	public UserServiceImpl(DbProvider dbProvider, TokenValidator tokenValidator) {
 		this.dbProvider = dbProvider;
 		this.tokenValidator = tokenValidator;
+		beanery = AutoBeanFactorySource.create(Beanery.class);
 	}
 
 	/**
@@ -65,7 +66,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public AutoBean<AuthUserBean> authUser(AuthUserBean bean, String pass) {
 		log.info("Find user Begin: " + bean.getEmail());
-		beanery = AutoBeanFactorySource.create(Beanery.class);
 		AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
 		UserBean ub = getUserByEmail(bean.getEmail());
 
@@ -105,8 +105,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserBean getUserById(String id) {
 		log.info("UserServiceImpl getUser  id: " + id);
-
-		beanery = AutoBeanFactorySource.create(Beanery.class);
 		DB db = getMongo();
 		BasicDBObject query = new BasicDBObject();
 		query.put("_id", new ObjectId(id));
@@ -122,8 +120,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserBean getUserByUsername(String username) {
 		log.info("UserServiceImpl getUserByUsername BEGIN: " + username);
-
-		beanery = AutoBeanFactorySource.create(Beanery.class);
 		DB db = getMongo();
 		BasicDBObject query = new BasicDBObject();
 		query.put("username", username);
@@ -149,8 +145,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserBean getUserByEmail(String email) {
 		log.info("UserServiceImpl getUserByEmail BEGIN email: " + email);
-
-		beanery = AutoBeanFactorySource.create(Beanery.class);
 		DB db = getMongo();
 		BasicDBObject query = new BasicDBObject();
 		query.put("email", email);
@@ -170,8 +164,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserBean getUserByPayPalId(String paypalId) {
 		log.info("UserServiceImpl getUserByPayPalId BEGIN paypalId: " + paypalId);
-
-		beanery = AutoBeanFactorySource.create(Beanery.class);
 		DB db = getMongo();
 		BasicDBObject query = new BasicDBObject();
 		query.put("paypalId", paypalId);
@@ -191,8 +183,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public AutoBean<AuthUserBean> findUserBySid(String sid) {
 		log.info("UserServiceImpl findUserBySid BEGIN sid: " + sid);
-
-		beanery = AutoBeanFactorySource.create(Beanery.class);
 		DB db = getMongo();
 		BasicDBObject query = new BasicDBObject();
 		query.put("sid", sid);
@@ -274,82 +264,6 @@ public class UserServiceImpl implements UserService {
 		coll.findAndModify(searchQuery, updateDocument);
 	}
 
-	@Override
-	public void updateSid(AuthUserBean bean) {
-		log.info("UserServiceImpl updateSid BEGIN email: " + bean.getEmail());
-		DB db = getMongo();
-		DBCollection coll = db.getCollection("rdlUserData");
-
-		BasicDBObject newDocument = new BasicDBObject();
-		newDocument.append("$set", new BasicDBObject().append("sid", bean.getSid()));
-		BasicDBObject searchQuery = new BasicDBObject().append("email", bean.getEmail());
-		coll.update(searchQuery, newDocument);
-
-		log.info("UserServiceImpl updateSid END email: " + bean.getEmail());
-	}
-
-	/**
-	 * user json contains a list of reputation given objects, which stores the snip ids and date that user gave a reputation
-	 * the function adds a reputation given object to the list. Finds user by email.
-	 *
-	 * @param repGivenBean repGivenBean
-	 * @param userEmail    email
-	 * @return modified UserBean
-	 */
-	public UserBean addRepGiven(AutoBean<UserBean.RepGivenBean> repGivenBean, String userEmail) {
-		DB db = getMongo();
-		DBCollection coll = db.getCollection("rdlUserData");
-
-		BasicDBObject searchQuery = new BasicDBObject().append("email", userEmail);
-		DBObject listItem = new BasicDBObject("repGiven", new BasicDBObject("snipId", repGivenBean.as().getSnipId()).append("date", repGivenBean.as().getDate()));
-		DBObject updateQuery = new BasicDBObject("$push", listItem);
-		DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
-		UserBean user = buildBeanObject(dbObj);
-		return user;
-	}
-
-	/**
-	 * checks if user gave a reputation to the snip with the given snipId
-	 *
-	 * @param email  user email
-	 * @param snipId snipId
-	 * @return Integer 1 or 0
-	 */
-	public Integer isRepGivenForSnip(String email, String snipId) {
-		UserBean userBean = getUserByEmail(email);
-
-		if (userBean.getRepGiven() != null) {
-			for (UserBean.RepGivenBean repGiven : userBean.getRepGiven()) {
-				if (repGiven.getSnipId().equals(snipId))
-					return 1;
-			}
-		}
-
-		return 0;
-	}
-
-	/**
-	 * sets isRepGivenByUser flag for input snip beans
-	 *
-	 * @param email     current user
-	 * @param snipBeans snip beans as list
-	 */
-	public void setRepGivenForSnips(String email, List<SnipBean> snipBeans) {
-		UserBean userBean = getUserByEmail(email);
-		if (userBean.getRepGiven() != null) {
-			for (SnipBean snipBean : snipBeans) {
-				snipBean.setIsRepGivenByUser(0);
-				for (UserBean.RepGivenBean repGiven : userBean.getRepGiven()) {
-					if (repGiven.getSnipId().equals(snipBean.getId())) {
-						snipBean.setIsRepGivenByUser(1);
-						break;
-					}
-				}
-			}
-		}
-
-	}
-
 	/**
 	 * user json contains a list of reference given objects, which stores the snip ids and date that user wrote a reference
 	 * the function adds a reference given object to the list. Finds user by email.
@@ -388,28 +302,6 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return 0;
-	}
-
-
-	@Override
-	public void recoverPassword(String email, String token) throws TokenInvalidException {
-		tokenValidator.validateTokenViaEmail(email, token);
-		String newPass = ServerUtils.generatePassword();
-		String newPassHash = ServerUtils.encryptString(newPass);
-
-		//get the user
-		UserBean userBean = getUserByEmail(email);
-		//reset the pass
-		userBean.setPassHash(newPassHash);
-		//update the user
-		updateUser(userBean);
-
-		//send the e-mail
-		try {
-			EmailSender.sendNewPassEmail(newPass, email, getMongo());
-		} catch (RDLSendEmailException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

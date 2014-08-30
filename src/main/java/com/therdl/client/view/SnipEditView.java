@@ -2,6 +2,7 @@ package com.therdl.client.view;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 /**
@@ -15,14 +16,14 @@ import com.therdl.shared.beans.SnipBean;
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  * this method sets the options in the header/nav bar AppMenu widget
  */
-public interface SnipEditView extends RdlView {
+public interface SnipEditView extends RdlView, ValidatedView {
 
 	public interface Presenter {
-		void onDeleteSnip(String id, String pageToRedirect);
+		void onDeleteSnip(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean);
 
-		void submitBean(AutoBean<SnipBean> bean, String pageToRedirect);
+		void submitBean(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean);
 
-		void submitEditedBean(AutoBean<SnipBean> bean, String pageToRedirect);
+		void submitEditedBean(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean);
 	}
 
 	public void setPresenter(Presenter presenter);

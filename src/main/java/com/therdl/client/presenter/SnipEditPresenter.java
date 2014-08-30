@@ -5,7 +5,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
@@ -13,13 +12,20 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
+import com.therdl.client.callback.BeanCallback;
+import com.therdl.client.callback.StatusCallback;
+import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.PaginationSnipsEvent;
+import com.therdl.shared.events.SnipViewEvent;
 
 /**
  * SnipEditPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -99,8 +105,14 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	 * @param bean snip bean to edit
 	 */
 	@Override
-	public void submitEditedBean(AutoBean<SnipBean> bean, final String pageToRedirect) {
+	public void submitEditedBean(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
+		String validationResult = SnipViewValidator.validateSnipBean(bean);
+		if (validationResult != null ) {
+			view.setErrorMessage(validationResult);
+			return;
+		}
 		bean.as().setAction("update");
+		bean.as().setToken(currentUserBean.as().getToken());
 		log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle() + ";snipType=" + bean.as().getSnipType());
 		log.info("SnipEditPresenter submit to server");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
@@ -113,39 +125,27 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 
 			String json = AutoBeanCodex.encode(bean).getPayload();
 			log.info("SnipEditPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-
-					if (response.getStatusCode() == 200) {
-						log.info("SnipEditPresenter submit post ok now validating");
-						History.newItem(pageToRedirect + ":" + getController().getCurrentUserBean().as().getName());
-
-					} else {
-						log.info("SnipEditPresenter submit post fail");
-
-					}
+				public void onSuccess(Request request, Response response){
+					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipEditPresenter submit onError)" + exception.getLocalizedMessage());
-
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
 		}
-
 	}
 
-	// delete
 
 	@Override
-	public void onDeleteSnip(String id, final String pageToRedirect) {
+	public void onDeleteSnip(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
+		String id = bean.as().getId();
 		log.info("SnipEditPresenter onDelete: snip id " + id);
+		String validationResult = SnipViewValidator.validateCanDelete(bean,currentUserBean.as().getName());
+		if (validationResult != null ) {
+			view.setErrorMessage(validationResult);
+			return;
+		}
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
 		log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
@@ -154,37 +154,20 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		try {
 			AutoBean<SnipBean> actionBean = beanery.snipBean();
 			actionBean.as().setAction("delete");
+			bean.as().setToken(currentUserBean.as().getToken());
 			actionBean.as().setId(id);
 			String json = AutoBeanCodex.encode(actionBean).getPayload();
 
 			log.info("SnipEditPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-
-					if (response.getStatusCode() == 200) {
-						log.info("SnipEditPresenter onDeleteSnip ok now validating");
-						History.newItem(pageToRedirect + ":" + getController().getCurrentUserBean().as().getName());
-
-					} else {
-						log.info("SnipEditPresenter onDeleteSnip fail");
-
-					}
+				public void onSuccess(Request request, Response response){
+					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipEditPresenter onDeleteSnip onError)" + exception.getLocalizedMessage());
-
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
 		}
-
-
 	}
 
 	/*
@@ -192,8 +175,14 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	 * @param bean new snip bean
 	 */
 	@Override
-	public void submitBean(AutoBean<SnipBean> bean, final String pageToRedirect) {
+	public void submitBean(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
+		String validationResult = SnipViewValidator.validateSnipBean(bean);
+		if (validationResult != null ) {
+			view.setErrorMessage(validationResult);
+			return;
+		}
 		bean.as().setAction("save");
+		bean.as().setToken(currentUserBean.as().getToken());
 
 		log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
 
@@ -206,27 +195,13 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		requestBuilder.setHeader("Content-Type", "application/json");
 
 		try {
-
 			String json = AutoBeanCodex.encode(bean).getPayload();
 			log.info("SnipEditPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-
-					if (response.getStatusCode() == 200) {
-						log.info("SnipEditPresenter submit post ok now validating");
-						History.newItem(pageToRedirect + ":" + getController().getCurrentUserBean().as().getName());
-					} else {
-						log.info("SnipEditPresenter submit post fail");
-					}
+				public void onSuccess(Request request, Response response){
+					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipEditPresenter submit onError)" + exception.getLocalizedMessage());
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
@@ -246,22 +221,12 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 
 		String json = AutoBeanCodex.encode(currentBean).getPayload();
 		try {
-
-			requestBuilder.sendRequest(json, new RequestCallback() {
-
+			requestBuilder.sendRequest(json, new BeanCallback<SnipBean>(SnipBean.class,view) {
 				@Override
-				public void onResponseReceived(Request request, Response response) {
-					log.info("getSnipResponse=" + response.getText());
-					AutoBean<SnipBean> bean = AutoBeanCodex.decode(beanery, SnipBean.class, response.getText());
-					view.populate(bean);
+				public void onBeanReturned(AutoBean<SnipBean> returnedBean){
+					view.populate(returnedBean);
 					container.add(view.asWidget());
 				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					log.info("SnipEditPresenter initialUpdate onError)" + exception.getLocalizedMessage());
-				}
-
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());

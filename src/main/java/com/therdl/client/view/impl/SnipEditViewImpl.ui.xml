@@ -4,6 +4,7 @@
 		xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
 		xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
+		xmlns:rdl='urn:import:com.therdl.client.view.widget'
 		>
 
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
@@ -33,7 +34,8 @@
 								<b:TextBox b:id="formTitle" ui:field="title"/>
 							</g:FlowPanel>
 						</b:FormGroup>
-
+						<rdl:FormSuccess ui:field="formSuccess"/>
+						<rdl:FormErrors ui:field="formErrors"/>
 						<b:FormGroup addStyleNames="{style.noMargin}">
 							<g:FlowPanel ui:field="categoryListPanel" addStyleNames="col-lg-4">
 								<b:Row>

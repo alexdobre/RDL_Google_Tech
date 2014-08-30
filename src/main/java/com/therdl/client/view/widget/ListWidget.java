@@ -18,7 +18,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.PaginationHelper;
-import com.therdl.client.view.common.SnipType;
+import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Constants;
 import com.therdl.shared.beans.SnipBean;
