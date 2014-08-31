@@ -103,8 +103,6 @@ public class SnipServiceImpl implements SnipsService {
 			dbObject.put("negativeRef", new BasicDBObject("$gte", searchOptions.getNegativeRef()));
 		if (searchOptions.getRep() != null)
 			dbObject.put("rep", new BasicDBObject("$gte", searchOptions.getRep()));
-		if (searchOptions.getViews() != null)
-			dbObject.put("views", new BasicDBObject("$gte", searchOptions.getViews()));
 		if (searchOptions.getPosts() != null)
 			dbObject.put("posts", new BasicDBObject("$gte", searchOptions.getPosts()));
 		if (searchOptions.getSnipType() != null) {
@@ -389,7 +387,6 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("snipType", snip.getSnipType());
 		doc.append("coreCat", snip.getCoreCat());
 		doc.append("parentSnip", snip.getParentSnip());
-		doc.append("views", snip.getViews());
 		doc.append("rep", snip.getRep());
 		doc.append("posRef", snip.getPosRef());
 		doc.append("neutralRef", snip.getNeutralRef());
@@ -397,7 +394,6 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("referenceType", snip.getReferenceType());
 		doc.append("parentSnip", snip.getParentSnip());
 		doc.append("votes", snip.getVotes());
-		doc.append("money", snip.getMoney());
 		doc.append("posts", snip.getPosts());
 
 		doc.append("pledges", snip.getPledges());
@@ -439,11 +435,9 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setCoreCat((String)doc.get("coreCat"));
 		snip.setCreationDate((String)doc.get("creationDate"));
 		snip.setEditDate((String)doc.get("editDate"));
-		snip.setMoney((String)doc.get("money"));
 		snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef")));
 		snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef")));
 		snip.setSnipType((String)doc.get("snipType"));
-		snip.setViews(RDLUtils.parseInt(doc.get("views")));
 		snip.setTitle((String)doc.get("title"));
 		snip.setReferenceType((String)doc.get("referenceType"));
 		snip.setPosRef(RDLUtils.parseInt(doc.get("posRef")));

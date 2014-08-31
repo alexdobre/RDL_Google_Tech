@@ -54,7 +54,7 @@ public class SnipListRow extends Composite {
 	@UiField
 	Label proposalType, proposalState;
 	@UiField
-	Badge creationDate, viewCount, postsCount, userName, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
+	Badge creationDate, postsCount, userName, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
 	@UiField
 	Image snipImg, avatarImg;
 	@UiField
@@ -128,7 +128,6 @@ public class SnipListRow extends Composite {
 		posRef.setText(snipBean.as().getPosRef().toString());
 		neutRef.setText(snipBean.as().getNeutralRef().toString());
 		negRef.setText(snipBean.as().getNegativeRef().toString());
-		viewCount.setText(snipBean.as().getViews().toString());
 		postsCount.setText(snipBean.as().getPosts().toString());
 		pledgesCount.setText(snipBean.as().getPledges().toString());
 		countersCount.setText(snipBean.as().getCounters().toString());

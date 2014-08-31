@@ -292,15 +292,8 @@ public class UserServiceImpl implements UserService {
 	 * @return Integer 1 or 0
 	 */
 	public Integer isRefGivenForSnip(String email, String snipId) {
-		UserBean userBean = getUserByEmail(email);
 
-		if (userBean.getRefGiven() != null) {
-			for (UserBean.RefGivenBean refGiven : userBean.getRefGiven()) {
-				if (refGiven.getSnipId().equals(snipId))
-					return 1;
-			}
-		}
-
+		//TODO remove or change UserServiceImpl.isRefGivenForSnip
 		return 0;
 	}
 
@@ -364,38 +357,6 @@ public class UserServiceImpl implements UserService {
 			friendList.add(friendsBean);
 		}
 		user.setFriends(friendList);
-
-		List<UserBean.RepGivenBean> repGivenList = new ArrayList<UserBean.RepGivenBean>();
-
-		for (Object obj : repGiven) {
-			UserBean.RepGivenBean repGivenBean = beanery.userRepGivenBean().as();
-			repGivenBean.setSnipId((String)((BasicDBObject)obj).get("snipId"));
-			repGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
-			repGivenList.add(repGivenBean);
-		}
-		user.setRepGiven(repGivenList);
-
-		List<UserBean.RefGivenBean> refGivenList = new ArrayList<UserBean.RefGivenBean>();
-
-		if (refGiven != null) {
-			for (Object obj : refGiven) {
-				UserBean.RefGivenBean refGivenBean = beanery.userRefGivenBean().as();
-				refGivenBean.setSnipId((String)((BasicDBObject)obj).get("snipId"));
-				refGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
-				refGivenList.add(refGivenBean);
-			}
-		}
-		user.setRefGiven(refGivenList);
-
-		List<UserBean.VotesGivenBean> votesGivenList = new ArrayList<UserBean.VotesGivenBean>();
-
-		for (Object obj : votesGiven) {
-			UserBean.VotesGivenBean votesGivenBean = beanery.userVotesGivenBean().as();
-			votesGivenBean.setProposalId((String)((BasicDBObject)obj).get("proposalId"));
-			votesGivenBean.setDate((String)((BasicDBObject)obj).get("date"));
-			votesGivenList.add(votesGivenBean);
-		}
-		user.setVotesGiven(votesGivenList);
 
 		return user;
 	}
@@ -464,45 +425,8 @@ public class UserServiceImpl implements UserService {
 
 		}
 
-		BasicDBList repGivenList = new BasicDBList();
-
-		if (user.getRepGiven() != null) {
-
-			for (UserBean.RepGivenBean repGiven : user.getRepGiven()) {
-				BasicDBObject obj = new BasicDBObject("snipId", repGiven.getSnipId()).
-						append("date", repGiven.getDate());
-				repGivenList.add(obj);
-			}
-
-		}
-
-		BasicDBList refGivenList = new BasicDBList();
-
-		if (user.getRefGiven() != null) {
-
-			for (UserBean.RefGivenBean refGiven : user.getRefGiven()) {
-				BasicDBObject obj = new BasicDBObject("snipId", refGiven.getSnipId()).
-						append("date", refGiven.getDate());
-				refGivenList.add(obj);
-			}
-		}
-
-		BasicDBList votesGivenList = new BasicDBList();
-
-		if (user.getVotesGiven() != null) {
-
-			for (UserBean.VotesGivenBean votesGiven : user.getVotesGiven()) {
-				BasicDBObject obj = new BasicDBObject("proposalId", votesGiven.getProposalId()).
-						append("date", votesGiven.getDate());
-				votesGivenList.add(obj);
-			}
-		}
-
 		doc.append("titles", titlesList);
 		doc.append("friends", friendsList);
-		doc.append("repGiven", repGivenList);
-		doc.append("refGiven", refGivenList);
-		doc.append("votesGiven", votesGivenList);
 		return doc;
 	}
 

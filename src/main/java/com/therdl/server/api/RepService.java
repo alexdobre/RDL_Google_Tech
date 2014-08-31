@@ -21,5 +21,5 @@ public interface RepService {
 	 * @param email the user adding
 	 * @return the rep newly added
 	 */
-	RepBean addRep(String snipId, String email);
+	void addRep(String snipId, String email);
 }

@@ -5,6 +5,10 @@ package com.therdl.shared.beans;
  */
 public interface RepBean extends TokenizedBean {
 
+	String getId();
+
+	void setId(String id);
+
 	String getSnipId();
 
 	void setSnipId(String snipId);

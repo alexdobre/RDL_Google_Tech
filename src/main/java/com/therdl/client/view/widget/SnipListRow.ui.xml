@@ -119,12 +119,7 @@
 							</b:Column>
 						</b:Row>
 					</b:Column>
-					<b:Column size="MD_2">
-						<b:Badge ui:field="viewCount" addStyleNames="snipListRowBadge">
-							<b:Icon type="EYE"/>
-						</b:Badge>
-					</b:Column>
-					<b:Column size="MD_4">
+					<b:Column size="MD_6">
 						<b:Badge ui:field="creationDate" addStyleNames="snipListRowBadge"/>
 					</b:Column>
 				</b:Row>

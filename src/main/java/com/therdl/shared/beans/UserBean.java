@@ -77,18 +77,6 @@ public interface UserBean extends TokenizedBean {
 
 	void setFriends(List<FriendBean> friends);
 
-	List<RepGivenBean> getRepGiven();
-
-	void setRepGiven(List<RepGivenBean> repGiven);
-
-	List<RefGivenBean> getRefGiven();
-
-	void setRefGiven(List<RefGivenBean> refGiven);
-
-	List<VotesGivenBean> getVotesGiven();
-
-	void setVotesGiven(List<VotesGivenBean> votesGiven);
-
 	/**
 	 * nested interfaces
 	 */

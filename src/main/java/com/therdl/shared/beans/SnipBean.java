@@ -84,10 +84,6 @@ public interface SnipBean extends TokenizedBean {
 
 	void setCoreCat(String coreCat);
 
-	Integer getViews();
-
-	void setViews(Integer views);
-
 	Integer getRep();
 
 	void setRep(Integer rep);
@@ -119,10 +115,6 @@ public interface SnipBean extends TokenizedBean {
 	String getVotes();
 
 	void setVotes(String votes);
-
-	String getMoney();
-
-	void setMoney(String money);
 
 	Integer getIsRepGivenByUser();
 

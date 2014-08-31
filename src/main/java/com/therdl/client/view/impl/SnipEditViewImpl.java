@@ -318,7 +318,6 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		if (currentSnipBean == null || currentSnipBean.as().getId() == null || currentSnipBean.as().getId().equals("")) {
 			// sets counters to 0
 			newBean.as().setAuthor(currentUserBean.as().getName());
-			newBean.as().setViews(0);
 			newBean.as().setPosRef(0);
 			newBean.as().setNeutralRef(0);
 			newBean.as().setNegativeRef(0);

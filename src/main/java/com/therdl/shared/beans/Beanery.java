@@ -18,6 +18,8 @@ public interface Beanery extends AutoBeanFactory {
 
 	AutoBean<UserBean> userBean();
 
+	AutoBean<RepBean> repBean();
+
 	AutoBean<AuthUserBean> authBean();
 
 	AutoBean<CurrentUserBean> currentUserBean();
