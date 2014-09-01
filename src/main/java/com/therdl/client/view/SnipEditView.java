@@ -36,5 +36,7 @@ public interface SnipEditView extends RdlView, ValidatedView {
 
 	public void showHideImprovementPanels(Boolean show);
 
+	public void displayEmotions();
+
 	public Widget asWidget();
 }

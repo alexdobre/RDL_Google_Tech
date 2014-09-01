@@ -4,123 +4,20 @@
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:style>
-		.column {
-		border: 1px solid #000000;
-		text-align: center;
+		.modalB {
+		padding: 5px;
+		}
+		.modalF {
+		margin-top: 0px;
 		}
 	</ui:style>
 	<b:Container>
 		<b:Modal title="{i18n.emotionPickerTitle}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
 		         b:id="emotionPickerModal" ui:field="emotionPickerModal">
-			<b:ModalBody>
-				<b:Container fluid="true">
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionPASSION}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionBOREDOM}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionINTEREST}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionPANIC}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionDELIGHT}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionAVERSION}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionPOLITE}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionDOUBT}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionADMIRATION}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionENVY}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionAMUSED}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionINDIFFERENCE}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionHOPE}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionFEAR}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionGRATITUDE}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionANGER}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionJOY}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionSORROW}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionRELIEF}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionFRUSTRATION}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionCALM}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionSTRESS}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionLOVE}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionHATE}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-					<b:Row marginBottom="0">
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionSATISFACTION}" type="INFO"/>
-						</b:Column>
-						<b:Column addStyleNames="{style.column}" size="MD_6">
-							<b:Label text="{i18n.emotionSHAME}" type="PRIMARY"/>
-						</b:Column>
-					</b:Row>
-				</b:Container>
+			<b:ModalBody addStyleNames="{style.modalB}">
+				<b:Container fluid="true" ui:field="emoContainer"/>
 			</b:ModalBody>
-			<b:ModalFooter>
+			<b:ModalFooter addStyleNames="{style.modalF}">
 				<b:Row>
 					<b:Column size="MD_2">
 						<b:Button ui:field="btnReset" text="{i18n.reset}"/>

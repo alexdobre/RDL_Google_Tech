@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.therdl.client.view.common.EmotionTranslator;
+import com.therdl.shared.Emotion;
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
 import com.google.gwt.core.client.GWT;
@@ -73,6 +77,9 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 
 	@UiField
 	Button saveSnip, deleteSnip, btnEmotionPicker;
+
+	@UiField
+	Column emoColumn;
 
 	@UiField
 	Summernote richTextEditor;
@@ -201,7 +208,6 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 * @param snipBean
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
-		log.info("******************************* Snip Editor - populate with : " + snipBean);
 		if (snipBean == null) {
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
@@ -213,7 +219,6 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		configureForModule();
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
-		log.info("Setting content: **************** : " + currentSnipBean.as().getContent());
 		title.setText(currentSnipBean.as().getTitle());
 		richTextEditor.setCode(currentSnipBean.as().getContent());
 	}
@@ -366,9 +371,19 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	@UiHandler("btnEmotionPicker")
 	void onEmotionPicker(ClickEvent event) {
 		if(emotionPicker == null){
-			emotionPicker = new EmotionPicker();
+			emotionPicker = new EmotionPicker(this);
 		}
 		emotionPicker.show();
+	}
+
+	public void displayEmotions(){
+		emoColumn.clear();
+		for (String emoStr: emotionPicker.getSelectedEmotions()){
+			log.info("Displaying selected emotion: "+emoStr);
+			Span span = new Span();
+			span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
+			emoColumn.add(span);
+		}
 	}
 
 	/**
