@@ -32,7 +32,7 @@ import com.therdl.shared.beans.SnipBean;
  */
 public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(ImprovementsViewImpl.class.getName());
 
 	private static ImprovementsViewImplUiBinder uiBinder = GWT.create(ImprovementsViewImplUiBinder.class);
 

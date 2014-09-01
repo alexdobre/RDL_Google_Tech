@@ -29,6 +29,7 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.EmotionPicker;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
@@ -71,7 +72,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	org.gwtbootstrap3.client.ui.TextBox title;
 
 	@UiField
-	Button saveSnip, deleteSnip;
+	Button saveSnip, deleteSnip, btnEmotionPicker;
 
 	@UiField
 	Summernote richTextEditor;
@@ -80,6 +81,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 	private AutoBean<SnipBean> currentSnipBean;
+	private EmotionPicker emotionPicker;
 
 	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
@@ -199,6 +201,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 * @param snipBean
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
+		log.info("******************************* Snip Editor - populate with : " + snipBean);
 		if (snipBean == null) {
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
@@ -210,6 +213,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		configureForModule();
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
+		log.info("Setting content: **************** : " + currentSnipBean.as().getContent());
 		title.setText(currentSnipBean.as().getTitle());
 		richTextEditor.setCode(currentSnipBean.as().getContent());
 	}
@@ -357,6 +361,14 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 				presenter.onDeleteSnip(currentSnipBean, currentUserBean);
 			}
 		}
+	}
+
+	@UiHandler("btnEmotionPicker")
+	void onEmotionPicker(ClickEvent event) {
+		if(emotionPicker == null){
+			emotionPicker = new EmotionPicker();
+		}
+		emotionPicker.show();
 	}
 
 	/**

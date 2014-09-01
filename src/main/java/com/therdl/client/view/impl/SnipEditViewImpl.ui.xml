@@ -30,8 +30,11 @@
 					<b:PanelHeader>
 						<b:FormGroup>
 							<b:FormLabel for="formTitle" addStyleNames="col-lg-1" text="{i18n.title}:"/>
-							<g:FlowPanel addStyleNames="col-lg-11">
+							<g:FlowPanel addStyleNames="col-lg-6">
 								<b:TextBox b:id="formTitle" ui:field="title"/>
+							</g:FlowPanel>
+							<g:FlowPanel addStyleNames="col-lg-3">
+								<b:Button ui:field="btnEmotionPicker" text="{i18n.emotionPickerTitle}"/>
 							</g:FlowPanel>
 						</b:FormGroup>
 						<rdl:FormSuccess ui:field="formSuccess"/>
