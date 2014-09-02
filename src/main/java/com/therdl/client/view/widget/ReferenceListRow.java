@@ -20,7 +20,9 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.ViewUtils;
+import com.therdl.shared.Emotion;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RequestObserver;
@@ -55,6 +57,10 @@ public class ReferenceListRow extends Composite {
 
 	@UiField
 	Button refRepBtn;
+
+	@UiField
+	FlowPanel emoListPanel;
+
 	SnipView view;
 
 	private UIObject parent;
@@ -113,6 +119,13 @@ public class ReferenceListRow extends Composite {
 			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(referenceBean.as().getAuthor()));
 		}else {
 			ViewUtils.showHide(false,avatarImg);
+		}
+
+		emoListPanel.clear();
+		if (referenceBean.as().getEmotions() != null){
+			for (String emoStr: referenceBean.as().getEmotions()) {
+				emoListPanel.add(ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr)));
+			}
 		}
 	}
 

@@ -1,5 +1,20 @@
 package com.therdl.client.view.widget;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Container;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.Row;
+import org.gwtbootstrap3.client.ui.constants.ColumnSize;
+import org.gwtbootstrap3.client.ui.html.Span;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -7,25 +22,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.shared.Emotion;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Container;
-import org.gwtbootstrap3.client.ui.Heading;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.Row;
-import org.gwtbootstrap3.client.ui.constants.ColumnSize;
-import org.gwtbootstrap3.client.ui.constants.HeadingSize;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
+import com.therdl.shared.beans.SnipBean;
 
 /**
  * Widget for picking out emotions
@@ -48,20 +51,22 @@ public class EmotionPicker extends Composite {
 	Container emoContainer;
 
 	private SnipEditView parentView;
+	private AutoBean<SnipBean> currentSnipBean;
 
-	private List<String> selectedEmotions;
 	private List<LinkedGroupItem> posEmoList;
 	private List<LinkedGroupItem> negEmoList;
-	private Map<String, Emotion> emoMap;
+	private Map<LinkedGroupItem, EmoElements> emoMap;
 
-	public EmotionPicker(SnipEditView parentView) {
+	public EmotionPicker(SnipEditView parentView, AutoBean<SnipBean> currentSnipBean) {
+		log.info("EmotionPicker constructor BEGIN");
 		this.parentView = parentView;
+		this.currentSnipBean = currentSnipBean;
 		ourUiBinder.createAndBindUi(this);
-		selectedEmotions = new ArrayList<>();
 		populateListGroups();
 	}
 
 	public void show() {
+		refreshEmotions();
 		emotionPickerModal.show();
 	}
 
@@ -69,22 +74,26 @@ public class EmotionPicker extends Composite {
 		emotionPickerModal.hide();
 	}
 
-	public List<String> getSelectedEmotions() {
-		formSelectedEmotions();
-		return selectedEmotions;
-	}
-
-	public void setSelectedEmotions(List<String> selectedEmotions) {
-		this.selectedEmotions = selectedEmotions;
-	}
 
 	public void reset() {
-		selectedEmotions.clear();
-		for (LinkedGroupItem emo : posEmoList) {
-			emo.setActive(false);
+		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null){
+			currentSnipBean.as().getEmotions().clear();
 		}
-		for (LinkedGroupItem emo : negEmoList) {
-			emo.setActive(false);
+		for (Map.Entry entry : emoMap.entrySet()) {
+			EmoElements elements = (EmoElements)entry.getValue();
+			setActive(false, elements.getParent(), elements.getEmo(), elements.getLabel());
+		}
+	}
+
+	private void refreshEmotions() {
+		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null) {
+			for (Map.Entry entry : emoMap.entrySet()) {
+				EmoElements elements = (EmoElements)entry.getValue();
+				setActive(currentSnipBean.as().getEmotions().contains(elements.getEmo().name()),
+						elements.getParent(), elements.getEmo(), elements.getLabel());
+			}
+		} else {
+			reset();
 		}
 	}
 
@@ -97,24 +106,6 @@ public class EmotionPicker extends Composite {
 	public void onOkClicked(ClickEvent event) {
 		parentView.displayEmotions();
 		emotionPickerModal.hide();
-	}
-
-	private void formSelectedEmotions() {
-		log.info("Forming selected emotions");
-		selectedEmotions.clear();
-
-		for (int i = 0; i < posEmoList.size(); i++) {
-			LinkedGroupItem grpItem = posEmoList.get(i);
-			if (grpItem.isActive()) {
-				selectedEmotions.add(Emotion.servePosEmoList().get(i).name());
-			}
-		}
-		for (int i = 0; i < negEmoList.size(); i++) {
-			LinkedGroupItem grpItem = negEmoList.get(i);
-			if (grpItem.isActive()) {
-				selectedEmotions.add(Emotion.serveNegEmoList().get(i).name());
-			}
-		}
 	}
 
 	private void populateListGroups() {
@@ -137,31 +128,143 @@ public class EmotionPicker extends Composite {
 			negColumn.getElement().getStyle().setProperty("textAlign", "center");
 			emoRow.add(negColumn);
 
-			LinkedGroupItem posEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(posEmoList.get(i)));
+			LinkedGroupItem posEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(posEmoList.get(i)), posEmoList.get(i));
 			this.posEmoList.add(posEmo);
-			this.emoMap.put(posEmo.getText(), posEmoList.get(i));
 			posColumn.add(posEmo);
 
-			LinkedGroupItem negEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(negEmoList.get(i)));
+			LinkedGroupItem negEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(negEmoList.get(i)), negEmoList.get(i));
 			this.negEmoList.add(negEmo);
-			this.emoMap.put(negEmo.getText(), negEmoList.get(i));
 			negColumn.add(negEmo);
 		}
 	}
 
-	private LinkedGroupItem buildLinkedGroupItem(String text) {
+	private LinkedGroupItem buildLinkedGroupItem(String text, Emotion emo) {
 		LinkedGroupItem linkedGroupItem = new LinkedGroupItem();
-		Heading heading = new Heading(HeadingSize.H4);
-		heading.setText(text);
-		linkedGroupItem.getElement().getStyle().setProperty("padding", "2px");
+		FlowPanel flowPanel = new FlowPanel();
+		linkedGroupItem.add(flowPanel);
+
+		//Color square
+		Span colorSquare = new Span();
+		colorSquare.addStyleName("color-square");
+		colorSquare.getElement().getStyle().setProperty("backgroundColor", EmotionTranslator.getBackground(emo));
+		flowPanel.add(colorSquare);
+
+		//Text
+		Span label = new Span();
+		colorSquare.addStyleName("label-color");
+		label.setText(text);
+
+		//Parent
+		linkedGroupItem.addStyleName("emo-select");
 		linkedGroupItem.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent clickEvent) {
-				LinkedGroupItem source = ((LinkedGroupItem) clickEvent.getSource());
+				LinkedGroupItem source = ((LinkedGroupItem)clickEvent.getSource());
 				source.setActive(!source.isActive());
+				if (currentSnipBean.as().getEmotions() == null) {
+					currentSnipBean.as().setEmotions(new ArrayList<String>(1));
+				}
+				EmoElements elements = emoMap.get(source);
+				// if the item is now active
+				if (source.isActive()) {
+					log.info(elements.getEmo().name() + "is now active - adding to emo list");
+					if (!currentSnipBean.as().getEmotions().contains(elements.getEmo().name())) {
+						currentSnipBean.as().getEmotions().add(elements.getEmo().name());
+					}
+				} else {
+					log.info(elements.getEmo().name() + "is now inactive - removing from emo list");
+					if (currentSnipBean.as().getEmotions().contains(elements.getEmo().name())) {
+						currentSnipBean.as().getEmotions().remove(elements.getEmo().name());
+					}
+				}
+				setActive(source.isActive(), source, elements.getEmo(), elements.getLabel());
+				log.info("List status after click: " + currentSnipBean.as().getEmotions());
 			}
 		});
-		linkedGroupItem.add(heading);
+		flowPanel.add(label);
+
+		//add elements
+		EmoElements elements = new EmoElements(colorSquare, emo, linkedGroupItem, label);
+		if (currentSnipBean.as().getEmotions() != null && currentSnipBean.as().getEmotions().
+				contains(emo.name())) {
+			setActive(true, linkedGroupItem, emo, label);
+		} else {
+			setActive(false, linkedGroupItem, emo, label);
+		}
+		emoMap.put(linkedGroupItem, elements);
 		return linkedGroupItem;
+	}
+
+	private void setActive(boolean active, LinkedGroupItem item, Emotion emo, Span label) {
+		item.setActive(active);
+		if (item.isActive()) {
+			log.info("Showing active background");
+			item.getElement().getStyle().setProperty("backgroundColor",
+					EmotionTranslator.getBackground(emo));
+			//if emo is positive we keep the text black
+			if (Emotion.isPositive(emo)) {
+				label.getElement().getStyle().setProperty("color", "#000000");
+			}
+			//we remove the border
+			item.getElement().getStyle().setProperty("borderColor", "#ffffff");
+		} else {
+			log.info("Showing inactive background");
+			item.getElement().getStyle().setProperty("backgroundColor", "#ffffff");
+			item.getElement().getStyle().clearBorderColor();
+		}
+	}
+
+	private static class EmoElements {
+		private Span colorSquare;
+		private Emotion emo;
+		private LinkedGroupItem parent;
+		private Span label;
+
+		private EmoElements(Span colorSquare, Emotion emo, LinkedGroupItem parent, Span label) {
+			this.colorSquare = colorSquare;
+			this.emo = emo;
+			this.parent = parent;
+			this.label = label;
+		}
+
+		public Span getColorSquare() {
+			return colorSquare;
+		}
+
+		public void setColorSquare(Span colorSquare) {
+			this.colorSquare = colorSquare;
+		}
+
+		public Emotion getEmo() {
+			return emo;
+		}
+
+		public void setEmo(Emotion emo) {
+			this.emo = emo;
+		}
+
+		public LinkedGroupItem getParent() {
+			return parent;
+		}
+
+		public void setParent(LinkedGroupItem parent) {
+			this.parent = parent;
+		}
+
+		public Span getLabel() {
+			return label;
+		}
+
+		public void setLabel(Span label) {
+			this.label = label;
+		}
+	}
+
+	public AutoBean<SnipBean> getCurrentSnipBean() {
+		return currentSnipBean;
+	}
+
+	public void setCurrentSnipBean(AutoBean<SnipBean> currentSnipBean) {
+		this.currentSnipBean = currentSnipBean;
 	}
 }

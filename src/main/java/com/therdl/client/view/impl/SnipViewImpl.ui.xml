@@ -84,6 +84,7 @@
 				<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
 			</b:PanelHeader>
 			<b:Collapse b:id="snipCollapse">
+				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
 				<b:PanelBody ui:field="richTextArea"/>
 			</b:Collapse>
 			<b:PanelFooter>

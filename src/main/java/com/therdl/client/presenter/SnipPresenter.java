@@ -81,7 +81,6 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	private void prepareTheView(AutoBean<SnipBean> snipBean) {
 		log.info("SnipViewPresenter preparing the view, snipBean= " + snipBean);
 		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, snipBean);
-		boolean isLoggedIn = currentUserBean.as().isAuth();
 		boolean repGiven = snipBean.as().getIsRepGivenByUser() == 1;
 		view.showHideLikeOrEditButton(isAuthor, repGiven);
 		//reply button always appears - user is prompted to log in if not already logged

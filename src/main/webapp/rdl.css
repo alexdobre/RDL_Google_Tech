@@ -4,7 +4,6 @@ body {
     font-size:16px;
     font-family:"Open Sans",serif;
     overflow:scroll;
-    height:1200px;
 }
 
 .splashLogo {
@@ -81,6 +80,49 @@ div.text {
 
 .datePicker {
     margin: 0px;
+}
+
+.label-color {
+	padding: 2px 4px;
+	font-size: 12px;
+	font-weight: bold;
+	border-radius: 2px;
+	font-style: normal;
+}
+
+.labels {
+	display: inline-block;
+	vertical-align: 1px;
+	margin-bottom: 2px;
+}
+
+.labels .label {
+	display: inline-block;
+	padding: 3px 4px;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 1;
+	color: #fff;
+	border-radius: 2px;
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.color-square {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin-right: 5px;
+	margin-bottom: 2px;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+
+.emo-select {
+vertical-align: top;
+padding: 4px 0 4px 4px;
+text-align: left;
 }
 
 

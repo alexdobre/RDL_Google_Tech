@@ -12,6 +12,7 @@ import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 import org.gwtbootstrap3.client.ui.Panel;
 import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
 import com.google.gwt.core.client.GWT;
@@ -28,7 +29,9 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.PaginationHelper;
+import com.therdl.shared.Emotion;
 import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
@@ -96,6 +99,8 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	AnchorListItem listRange, nextPage, prevPage;
 	@UiField
 	LinkedGroup listGroup;
+	@UiField
+	FlowPanel emoListPanel;
 
 	private SnipListRow snipListRow;
 	private ArrayList<ReferenceListRow> itemList;
@@ -110,6 +115,7 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
+		emoListPanel.addStyleName("labels");
 		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
@@ -176,6 +182,10 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 			snipListRow.populate(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()));
 		}
 		snipViewCont.add(snipListRow);
+		emoListPanel.clear();
+		for (String emoStr: currentSnipBean.as().getEmotions()){
+			emoListPanel.add(ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr)));
+		}
 		richTextArea.getElement().setInnerHTML(snipBean.as().getContent());
 		showRef.setText(btnTextShow);
 		ViewUtils.hide(referenceCont);

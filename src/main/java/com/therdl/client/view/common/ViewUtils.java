@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.gwtbootstrap3.client.ui.html.Span;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.Emotion;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -156,6 +159,20 @@ public class ViewUtils {
 		}
 
 		return checkBoxList;
+	}
+
+	public static Span buildEmoSpan (Emotion emo){
+		Span emoSpan = new Span();
+		emoSpan.addStyleName("label");
+		emoSpan.getElement().getStyle().setProperty("backgroundColor", EmotionTranslator.getBackground(emo));
+		emoSpan.setText(EmotionTranslator.getMessage(emo));
+		//negative emotions have white text
+		if (!Emotion.isPositive(emo)){
+			emoSpan.getElement().getStyle().setProperty("color", "#ffffff");
+		}else {
+			emoSpan.getElement().getStyle().setProperty("color", "#000000");
+		}
+		return emoSpan;
 	}
 
 	public static void hide(UIObject uiObj) {

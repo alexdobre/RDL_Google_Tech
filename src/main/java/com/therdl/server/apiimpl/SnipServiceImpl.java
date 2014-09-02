@@ -9,8 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.therdl.server.api.RepService;
-import com.therdl.shared.beans.CurrentUserBean;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +22,11 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.therdl.server.api.RepService;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
 import com.therdl.server.data.DbProvider;
-import com.therdl.server.validator.TokenValidator;
 import com.therdl.shared.Constants;
-import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -161,17 +158,17 @@ public class SnipServiceImpl implements SnipsService {
 			query.put("_id", new ObjectId(id));
 			DBCollection coll = db.getCollection("rdlSnipData");
 			DBCursor cursor = coll.find(query);
-			if (cursor.hasNext()){
+			if (cursor.hasNext()) {
 				DBObject doc = cursor.next();
 				SnipBean snip = buildBeanObject(doc, currentUserEmail);
 				log.info("Found snip: " + snip);
 				return snip;
-			}else {
-				log.warn("Snip not found! for ID: "+id);
+			} else {
+				log.warn("Snip not found! for ID: " + id);
 				return null;
 			}
-		} catch (IllegalArgumentException e){
-			log.error(e.getMessage(),e);
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage(), e);
 			return null;
 		}
 	}
@@ -401,19 +398,23 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("proposalType", snip.getProposalType());
 		doc.append("proposalState", snip.getProposalState());
 
+		BasicDBList emotions = new BasicDBList();
+		if (snip.getEmotions() != null) {
+			for (String emotion : snip.getEmotions()) {
+				emotions.add(emotion);
+			}
+			doc.append("emotions", emotions);
+		}
+
 		BasicDBList links = new BasicDBList();
-
-		if (snip.getLinks() == null) {
-			snip.setLinks(new ArrayList<SnipBean.Link>());
+		if (snip.getLinks() != null) {
+			for (SnipBean.Link link : snip.getLinks()) {
+				BasicDBObject obj = new BasicDBObject("targetId", link.getTargetId()).
+						append("rank", link.getRank());
+				links.add(obj);
+			}
+			doc.append("links", links);
 		}
-
-		for (SnipBean.Link link : snip.getLinks()) {
-			BasicDBObject obj = new BasicDBObject("targetId", link.getTargetId()).
-					append("rank", link.getRank());
-			links.add(obj);
-		}
-
-		doc.append("links", links);
 
 		return doc;
 	}
@@ -451,27 +452,40 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setProposalType((String)doc.get("proposalType"));
 		snip.setProposalState((String)doc.get("proposalState"));
 		//see if current user already gave rep
-		if (currentUserEmail!= null && repService.getRep(snip.getId(),currentUserEmail) != null){
+		if (currentUserEmail != null && repService.getRep(snip.getId(), currentUserEmail) != null) {
 			snip.setIsRepGivenByUser(1);
-		}else {
+		} else {
 			snip.setIsRepGivenByUser(0);
 		}
 
-		List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
+		// set the Emotions
+
+		BasicDBList emotions = (BasicDBList)doc.get("emotions");
+		List<String> emoList = new ArrayList<>();
+		if (emotions != null){
+			for (Object obj : emotions) {
+				emoList.add(obj.toString());
+			}
+		}
+		snip.setEmotions(emoList);
 
 		// set the List<SnipBean.Links>
-		BasicDBList links = (BasicDBList)doc.get("links");
 
-		for (Object obj : links) {
-			SnipBean.Link titlesBean = beanery.snipLinksBean().as();
-			titlesBean.setTargetId((String)((BasicDBObject)obj).get("targetId"));
-			titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
-			linkList.add(titlesBean);
+		BasicDBList links = (BasicDBList)doc.get("links");
+		List<SnipBean.Link> linkList = new ArrayList<SnipBean.Link>();
+		if (links != null){
+			for (Object obj : links) {
+				SnipBean.Link titlesBean = beanery.snipLinksBean().as();
+				titlesBean.setTargetId((String)((BasicDBObject)obj).get("targetId"));
+				titlesBean.setRank((String)((BasicDBObject)obj).get("rank"));
+				linkList.add(titlesBean);
+			}
 		}
 		snip.setLinks(linkList);
+
 		snip.setAuthorSupporter(userService.isSupporter(snip.getAuthor()));
-		log.info("Set author supporter: "+snip.getAuthorSupporter()+" for snip with title: "+
-				snip.getTitle()+"/author: "+snip.getAuthor() );
+		log.info("Set author supporter: " + snip.getAuthorSupporter() + " for snip with title: " +
+				snip.getTitle() + "/author: " + snip.getAuthor());
 
 		return snip;
 	}

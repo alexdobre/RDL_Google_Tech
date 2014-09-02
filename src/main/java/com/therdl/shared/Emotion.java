@@ -39,6 +39,13 @@ public enum Emotion {
 		return negEmoList;
 	}
 
+	public static boolean isPositive(Emotion emo){
+		if (posEmoList == null){
+			buildPosEmoList();
+		}
+		return posEmoList.contains(emo);
+	}
+
 	private static void buildNegEmoList() {
 		negEmoList= new ArrayList<>(13);
 		negEmoList.add(BOREDOM);

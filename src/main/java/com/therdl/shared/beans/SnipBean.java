@@ -104,6 +104,10 @@ public interface SnipBean extends TokenizedBean {
 
 	void setReferenceType(String referenceType);
 
+	List<String> getEmotions();
+
+	void setEmotions(List<String> emoList);
+
 	List<Link> getLinks();
 
 	void setLinks(List<Link> links);

@@ -40,5 +40,37 @@ public class EmotionTranslator {
 		}
 		return null;
 	}
+
+	public static String getBackground(Emotion emo){
+		switch (emo){
+		case PASSION: return "#fad8c7";
+		case BOREDOM: return "#eb6420";
+		case INTEREST: return "#f7c6c7";
+		case PANIC: return "#e11d21";
+		case DELIGHT: return "#bfd4f2";
+		case AVERSION: return "#0052cc";
+		case POLITE: return "#fef2c0";
+		case DOUBT: return "#fbca04";
+		case ADMIRATION: return "#bfe5bf";
+		case ENVY: return "#009800";
+		case AMUSED: return "#d4c5f9";
+		case INDIFFERENCE: return "#5319e7";
+		case HOPE: return "#fef2c0";
+		case FEAR: return "#fbca04";
+		case GRATITUDE: return "#f7c6c7";
+		case ANGER: return "#e11d21";
+		case JOY: return "#bfdadc";
+		case SORROW: return "#006b75";
+		case RELIEF: return "#fad8c7";
+		case FRUSTRATION: return "#eb6420";
+		case CALM: return "#bfd4f2";
+		case STRESS: return "#0052cc";
+		case LOVE: return "#d4c5f9";
+		case HATE: return "#5319e7";
+		case SATISFACTION: return "#c7def8";
+		case SHAME: return "#207de5";
+		}
+		return null;
+	}
 }
 

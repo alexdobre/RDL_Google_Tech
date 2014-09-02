@@ -48,6 +48,11 @@ public class SnipViewValidator {
 				log.info("Snip type found invalid: "+bean.as().getSnipType());
 				return RDL.getI18n().formErrorSnipType();
 			}
+			//must have at least one emotion
+			if (bean.as().getEmotions() == null || bean.as().getEmotions().isEmpty()){
+				log.info("Must select at least one emotion");
+				return RDL.getI18n().formErrorNoEmotion();
+			}
 		}
 		log.info("Bean valid");
 		return null;

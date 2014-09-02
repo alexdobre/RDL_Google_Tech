@@ -76,9 +76,9 @@
 				</b:Row>
 			</b:Column>
 			<b:Column size="MD_8">
+				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
 				<g:FlowPanel ui:field="rightPanel" styleName="{style.rightPanel}">
 					<g:Label ui:field="refFlag" styleName="{style.refFlag}"></g:Label>
-
 					<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="refRepBtn" addStyleNames="{style.refRepBtn}"/>
 					<g:HTMLPanel ui:field="richTextAreaRef" styleName="{style.richTextArea}"/>
 				</g:FlowPanel>

@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.shared.Emotion;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.client.ui.constants.ButtonType;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
@@ -79,7 +83,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	Button saveSnip, deleteSnip, btnEmotionPicker;
 
 	@UiField
-	Column emoColumn;
+	FlowPanel emoListPanel;
 
 	@UiField
 	Summernote richTextEditor;
@@ -95,6 +99,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		log.info("SnipEditViewImpl constructor");
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
+		emoListPanel.addStyleName("labels");
 	}
 
 	private void configureForImprovement() {
@@ -209,13 +214,17 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
 		if (snipBean == null) {
+			log.info("Edit view populate BEGIN with null nip bean");
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
 			currentSnipBean.as().setAuthor(currentUserBean.as().getName());
 			currentSnipBean.as().setContent("");
 		} else {
+			log.info("Edit view populate BEGIN with emotions: "+snipBean.as().getEmotions());
 			this.currentSnipBean = snipBean;
 		}
+		if (emotionPicker!= null)  emotionPicker.setCurrentSnipBean(currentSnipBean);
+		displayEmotions();
 		configureForModule();
 		deleteSnip.getElement().getStyle().setProperty("display", "");
 		deleteSnip.getElement().getStyle().setProperty("marginLeft", "10px");
@@ -325,7 +334,6 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		}
 
 		if (currentSnipBean == null || currentSnipBean.as().getId() == null || currentSnipBean.as().getId().equals("")) {
-			// sets counters to 0
 			newBean.as().setAuthor(currentUserBean.as().getName());
 			newBean.as().setPosRef(0);
 			newBean.as().setNeutralRef(0);
@@ -338,7 +346,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 			presenter.submitBean(newBean, currentUserBean);
 		} else {
 			newBean.as().setId(currentSnipBean.as().getId());
-			presenter.submitEditedBean(newBean,currentUserBean);
+			presenter.submitEditedBean(newBean, currentUserBean);
 		}
 
 	}
@@ -371,20 +379,23 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	@UiHandler("btnEmotionPicker")
 	void onEmotionPicker(ClickEvent event) {
 		if(emotionPicker == null){
-			emotionPicker = new EmotionPicker(this);
+			emotionPicker = new EmotionPicker(this, currentSnipBean);
 		}
 		emotionPicker.show();
 	}
 
 	public void displayEmotions(){
-		emoColumn.clear();
-		for (String emoStr: emotionPicker.getSelectedEmotions()){
-			log.info("Displaying selected emotion: "+emoStr);
-			Span span = new Span();
-			span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
-			emoColumn.add(span);
+		emoListPanel.clear();
+		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null){
+			for (String emoStr: currentSnipBean.as().getEmotions()){
+				log.info("Displaying selected emotion: "+emoStr);
+				Span span = ViewUtils.buildEmoSpan (Emotion.valueOf(emoStr));
+				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
+				emoListPanel.add(span);
+			}
 		}
 	}
+
 
 	/**
 	 * checks if current snip has any reference, thread has posts or proposal has pledges or counters

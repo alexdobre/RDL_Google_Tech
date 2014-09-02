@@ -69,14 +69,9 @@
 							</g:FlowPanel>
 
 						</b:FormGroup>
+						<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
 					</b:PanelHeader>
 					<b:PanelBody addStyleNames="{style.noPadding}">
-						<b:Row>
-							<b:Column size="MD_3">
-								<b:FormLabel text="{i18n.emotions}:"/>
-							</b:Column>
-							<b:Column size="MD_9" ui:field="emoColumn"/>
-						</b:Row>
 						<summer:Summernote ui:field="richTextEditor"/>
 					</b:PanelBody>
 					<b:PanelFooter>
