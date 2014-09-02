@@ -37,6 +37,8 @@ public class EmotionTranslator {
 			case HATE: return RDL.getI18n().emotionHATE();
 			case SATISFACTION: return RDL.getI18n().emotionSATISFACTION();
 			case SHAME: return RDL.getI18n().emotionSHAME();
+			case CONFIDENCE: return RDL.getI18n().emotionCONFIDENCE();
+			case CONFUSION: return RDL.getI18n().emotionCONFUSION();
 		}
 		return null;
 	}
@@ -69,6 +71,8 @@ public class EmotionTranslator {
 		case HATE: return "#5319e7";
 		case SATISFACTION: return "#c7def8";
 		case SHAME: return "#207de5";
+		case CONFIDENCE: return "#bfdadc";
+		case CONFUSION: return "#006b75";
 		}
 		return null;
 	}

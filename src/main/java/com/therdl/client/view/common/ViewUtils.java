@@ -1,6 +1,7 @@
 package com.therdl.client.view.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,6 +28,19 @@ import com.therdl.shared.beans.UserBean;
  * Common methods used by views
  */
 public class ViewUtils {
+
+	private static List<String> pieceMealEmotions;
+
+	public static List<String> getPieceMealEmotions () {
+		if (pieceMealEmotions == null){
+			pieceMealEmotions = new ArrayList<>();
+			for (Emotion emo: Emotion.values()){
+				String[] emoShards = EmotionTranslator.getMessage(emo).split(",");
+				pieceMealEmotions.addAll(Arrays.asList(emoShards));
+			}
+		}
+		return pieceMealEmotions;
+	}
 
 	/**
 	 * Gets the expires date string from the title

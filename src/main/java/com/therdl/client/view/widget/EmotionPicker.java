@@ -1,23 +1,9 @@
 package com.therdl.client.view.widget;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Container;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.Row;
-import org.gwtbootstrap3.client.ui.constants.ColumnSize;
-import org.gwtbootstrap3.client.ui.html.Span;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -27,8 +13,29 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.common.EmotionTranslator;
+import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Container;
+import org.gwtbootstrap3.client.ui.DropDown;
+import org.gwtbootstrap3.client.ui.DropDownMenu;
+import org.gwtbootstrap3.client.ui.InputGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.Row;
+import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.constants.ColumnSize;
+import org.gwtbootstrap3.client.ui.html.Span;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Widget for picking out emotions
@@ -46,6 +53,15 @@ public class EmotionPicker extends Composite {
 
 	@UiField
 	Button btnReset, btnOk;
+
+	@UiField
+	TextBox emotionAutocomplete;
+
+	@UiField
+	InputGroup dropdownInputGroup;
+
+	@UiField
+	DropDownMenu autocompleteMenu;
 
 	@UiField
 	Container emoContainer;
@@ -76,11 +92,11 @@ public class EmotionPicker extends Composite {
 
 
 	public void reset() {
-		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null){
+		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null) {
 			currentSnipBean.as().getEmotions().clear();
 		}
 		for (Map.Entry entry : emoMap.entrySet()) {
-			EmoElements elements = (EmoElements)entry.getValue();
+			EmoElements elements = (EmoElements) entry.getValue();
 			setActive(false, elements.getParent(), elements.getEmo(), elements.getLabel());
 		}
 	}
@@ -88,7 +104,7 @@ public class EmotionPicker extends Composite {
 	private void refreshEmotions() {
 		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null) {
 			for (Map.Entry entry : emoMap.entrySet()) {
-				EmoElements elements = (EmoElements)entry.getValue();
+				EmoElements elements = (EmoElements) entry.getValue();
 				setActive(currentSnipBean.as().getEmotions().contains(elements.getEmo().name()),
 						elements.getParent(), elements.getEmo(), elements.getLabel());
 			}
@@ -108,6 +124,58 @@ public class EmotionPicker extends Composite {
 		emotionPickerModal.hide();
 	}
 
+	@UiHandler("emotionAutocomplete")
+	public void onKeyDown(KeyDownEvent keyDownEvent) {
+		autocompletePass();
+	}
+
+	private void autocompletePass() {
+		String currentText = emotionAutocomplete.getText();
+		autocompleteMenu.clear();
+		if (currentText == null || currentText.isEmpty()) return;
+		for (String emoShard : ViewUtils.getPieceMealEmotions()) {
+			if (emoShard.matches("(.*)" + currentText + "(.*)")) {
+				//we have a match
+				autocompleteMenu.add(buildAutocompleteItem(emoShard));
+			}
+		}
+		if (autocompleteMenu.getWidgetCount() != 0) {
+			dropdownInputGroup.addStyleName("open");
+		} else {
+			dropdownInputGroup.removeStyleName("open");
+		}
+	}
+
+	private AnchorListItem buildAutocompleteItem(String emoShard) {
+		AnchorListItem menuItem = new AnchorListItem();
+		menuItem.setText(emoShard);
+		menuItem.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent clickEvent) {
+				Anchor menuItem = (Anchor) clickEvent.getSource();
+				String emoShard = menuItem.getText();
+				//search for an emotion group to make active
+				for (Map.Entry entry : emoMap.entrySet()) {
+					EmoElements elements = (EmoElements) entry.getValue();
+					if (EmotionTranslator.getMessage(elements.getEmo()).contains(emoShard)) {
+						//we have a match
+						if (!elements.getParent().isActive()) {
+							setActive(true, elements.getParent(), elements.getEmo(), elements.getLabel());
+							// we add the backing bean emotion
+							if (currentSnipBean.as().getEmotions() == null){
+								currentSnipBean.as().setEmotions(new ArrayList<String>(1));
+							}
+							if (!currentSnipBean.as().getEmotions().contains(elements.getEmo().name())){
+								currentSnipBean.as().getEmotions().add(elements.getEmo().name());
+							}
+						}
+					}
+				}
+			}
+		});
+		return menuItem;
+	}
+
 	private void populateListGroups() {
 
 		List<Emotion> posEmoList = Emotion.servePosEmoList();
@@ -120,11 +188,11 @@ public class EmotionPicker extends Composite {
 			Row emoRow = new Row();
 			emoContainer.add(emoRow);
 			Column posColumn = new Column(ColumnSize.MD_6);
-			posColumn.getElement().getStyle().setProperty("padding", "2px");
+			posColumn.getElement().getStyle().setProperty("padding", "1px");
 			posColumn.getElement().getStyle().setProperty("textAlign", "center");
 			emoRow.add(posColumn);
 			Column negColumn = new Column(ColumnSize.MD_6);
-			negColumn.getElement().getStyle().setProperty("padding", "2px");
+			negColumn.getElement().getStyle().setProperty("padding", "1px");
 			negColumn.getElement().getStyle().setProperty("textAlign", "center");
 			emoRow.add(negColumn);
 
@@ -159,7 +227,7 @@ public class EmotionPicker extends Composite {
 		linkedGroupItem.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent clickEvent) {
-				LinkedGroupItem source = ((LinkedGroupItem)clickEvent.getSource());
+				LinkedGroupItem source = ((LinkedGroupItem) clickEvent.getSource());
 				source.setActive(!source.isActive());
 				if (currentSnipBean.as().getEmotions() == null) {
 					currentSnipBean.as().setEmotions(new ArrayList<String>(1));
@@ -197,18 +265,17 @@ public class EmotionPicker extends Composite {
 
 	private void setActive(boolean active, LinkedGroupItem item, Emotion emo, Span label) {
 		item.setActive(active);
+
 		if (item.isActive()) {
-			log.info("Showing active background");
 			item.getElement().getStyle().setProperty("backgroundColor",
 					EmotionTranslator.getBackground(emo));
 			//if emo is positive we keep the text black
 			if (Emotion.isPositive(emo)) {
-				label.getElement().getStyle().setProperty("color", "#000000");
+				label.getElement().getStyle().setProperty("color", "rgb(85, 85, 85)");
 			}
 			//we remove the border
 			item.getElement().getStyle().setProperty("borderColor", "#ffffff");
 		} else {
-			log.info("Showing inactive background");
 			item.getElement().getStyle().setProperty("backgroundColor", "#ffffff");
 			item.getElement().getStyle().clearBorderColor();
 		}

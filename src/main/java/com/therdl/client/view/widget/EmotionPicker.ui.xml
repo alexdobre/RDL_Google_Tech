@@ -8,13 +8,33 @@
 		padding: 5px;
 		}
 		.modalF {
-		margin-top: 0px;
+			margin-top: 0px;
+			padding: 5px;
+			padding-left: 20px;
+		}
+		.dispNone {
+		display: none;
+		}
+		.modalH{
+			padding: 5px;
+			padding-left: 20px;
 		}
 	</ui:style>
 	<b:Container>
 		<b:Modal title="{i18n.emotionPickerTitle}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
 		         b:id="emotionPickerModal" ui:field="emotionPickerModal">
+			<b:ModalHeader addStyleNames="{style.modalH}"/>
 			<b:ModalBody addStyleNames="{style.modalB}">
+				<b:Row>
+					<b:Column size="MD_8" offset="MD_2">
+						<b:InputGroup ui:field="dropdownInputGroup">
+							<b:InputGroupAddon icon="TH"/>
+							<b:TextBox ui:field="emotionAutocomplete"  placeholder="{i18n.emotionPickerAutocomplete}" autoComplete="false"/>
+							<b:Button dataToggle="DROPDOWN" addStyleNames="{style.dispNone}" >Dropdown</b:Button>
+							<b:DropDownMenu ui:field="autocompleteMenu"/>
+						</b:InputGroup>
+					</b:Column>
+				</b:Row>
 				<b:Container fluid="true" ui:field="emoContainer"/>
 			</b:ModalBody>
 			<b:ModalFooter addStyleNames="{style.modalF}">

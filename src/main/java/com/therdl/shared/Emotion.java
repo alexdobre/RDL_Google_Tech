@@ -20,7 +20,8 @@ public enum Emotion {
 	RELIEF, FRUSTRATION,
 	CALM, STRESS,
 	LOVE, HATE,
-	SATISFACTION, SHAME;
+	SATISFACTION, SHAME,
+	CONFIDENCE, CONFUSION;
 
 	private static List<Emotion> posEmoList;
 	private static List<Emotion> negEmoList;
@@ -61,6 +62,7 @@ public enum Emotion {
 		negEmoList.add(STRESS);
 		negEmoList.add(HATE);
 		negEmoList.add(SHAME);
+		negEmoList.add(CONFUSION);
 	}
 
 	private static void buildPosEmoList() {
@@ -78,5 +80,6 @@ public enum Emotion {
 		posEmoList.add(CALM);
 		posEmoList.add(LOVE);
 		posEmoList.add(SATISFACTION);
+		posEmoList.add(CONFIDENCE);
 	}
 }
