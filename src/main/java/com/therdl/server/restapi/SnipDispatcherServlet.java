@@ -268,10 +268,6 @@ public class SnipDispatcherServlet extends HttpServlet {
 		String viewerId = actionBean.as().getViewerId();
 		if (viewerId != null) {
 			bean.setIsRefGivenByUser(userService.isRefGivenForSnip(viewerId, actionBean.as().getId()));
-		} else {
-			// none logged users can't give a reputation and leave a reference
-			bean.setIsRepGivenByUser(1);
-			bean.setIsRefGivenByUser(1);
 		}
 
 		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);

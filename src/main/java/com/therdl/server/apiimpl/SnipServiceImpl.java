@@ -457,6 +457,7 @@ public class SnipServiceImpl implements SnipsService {
 		} else {
 			snip.setIsRepGivenByUser(0);
 		}
+		log.info("Have set rep given by user: "+snip.getIsRepGivenByUser());
 
 		// set the Emotions
 

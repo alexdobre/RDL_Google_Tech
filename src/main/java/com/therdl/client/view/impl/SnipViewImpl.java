@@ -1,54 +1,48 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import com.therdl.client.handler.ClickHandler;
-import com.therdl.client.view.ValidatedView;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Icon;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Panel;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.client.ui.html.Span;
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.handler.ClickHandler;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SnipView;
-import com.therdl.client.view.common.EmotionTranslator;
+import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.common.PaginationHelper;
-import com.therdl.client.view.widget.SnipActionWidget;
-import com.therdl.shared.Emotion;
-import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.ReferenceListRow;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
+import com.therdl.client.view.widget.SnipActionWidget;
 import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.shared.Constants;
+import com.therdl.shared.Emotion;
 import com.therdl.shared.Global;
-import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.RequestObserver;
+import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -118,7 +112,7 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
-		snipActionWidget = new SnipActionWidget(snipActionContainer);
+		snipActionWidget = new SnipActionWidget();
 		snipActionContainer.add(snipActionWidget);
 		emoListPanel.addStyleName("labels");
 		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
@@ -187,7 +181,7 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		}
 		snipViewCont.add(snipListRow);
 		emoListPanel.clear();
-		for (String emoStr: currentSnipBean.as().getEmotions()){
+		for (String emoStr : currentSnipBean.as().getEmotions()) {
 			emoListPanel.add(ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr)));
 		}
 		richTextArea.getElement().setInnerHTML(snipBean.as().getContent());
@@ -282,14 +276,18 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	}
 
 	@Override
-	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler){
-		if (isEdit == null){
+	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler) {
+		if (isEdit == null) {
 			snipActionWidget.showRepGiven(snipActionContainer);
-		} else if (isEdit){
-			snipActionWidget.showEditBtn(snipActionContainer,clickHandler);
-		}else {
+		} else if (isEdit) {
+			snipActionWidget.showEditBtn(snipActionContainer, clickHandler);
+		} else {
 			snipActionWidget.showRepBtn(snipActionContainer, clickHandler);
 		}
+	}
+
+	public void hideSnipAction() {
+		snipActionWidget.hide(snipActionContainer);
 	}
 
 	@Override

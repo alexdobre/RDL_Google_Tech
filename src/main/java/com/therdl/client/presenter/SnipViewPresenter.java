@@ -17,16 +17,19 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
+import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
-import com.therdl.shared.RequestObserver;
+import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LogInEvent;
 
 /**
  * SnipViewPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -39,7 +42,7 @@ import com.therdl.shared.beans.SnipBean;
  * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
  * @ String currentSnipId  used to retrieve the users correct snip
  */
-public class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
+public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
 
 	private static Logger log = Logger.getLogger(SnipViewPresenter.class.getName());
 
@@ -77,7 +80,6 @@ public class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements
 		viewSnipById();
 	}
 
-	@Override
 	public void editSnip(){
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
 			History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + currentSnipBean.as().getId());
@@ -86,16 +88,6 @@ public class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
 			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + currentSnipBean.as().getId());
 
-	}
-
-	private void prepareTheView(AutoBean<SnipBean> snipBean) {
-		log.info("SnipViewPresenter preparing the view, snipBean= " + snipBean);
-		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, snipBean);
-		boolean repGiven = snipBean.as().getIsRepGivenByUser() == 1;
-		//TODO showSnipAction logic
-		//view.showSnipAction(isAuthor, repGiven);
-		//reply button always appears - user is prompted to log in if not already logged
-		view.showHideReplyButton(true);
 	}
 
 	/**
@@ -129,14 +121,68 @@ public class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements
 					if (returnedBean == null) {
 						History.newItem(RDLConstants.Tokens.ERROR);
 					}else {
-						prepareTheView(returnedBean);
+						currentSnipBean = returnedBean;
 						view.viewSnip(returnedBean);
+						replyButtonLogic();
+						snipActionLogic(returnedBean);
 						container.add(view.asWidget());
 					}
 				}
 			});
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
+		}
+	}
+
+	protected void replyButtonLogic(){
+		//if the user is not logged in we do not show the reply button
+		if (currentUserBean == null || !currentUserBean.as().isAuth()){
+			view.showHideReplyButton(false);
+		} else {
+			boolean isAuthor = ViewUtils.isAuthor(currentUserBean, currentSnipBean);
+			showReplyIfAuthor (isAuthor);
+		}
+	}
+
+	protected abstract void showReplyIfAuthor( boolean isAuthor);
+
+	protected void snipActionLogic(AutoBean<SnipBean> returnedBean){
+		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, returnedBean);
+		boolean repGiven = returnedBean.as().getIsRepGivenByUser() == 1;
+		log.info("snipActionLogic isAuthor: "+isAuthor+" repGiven: "+repGiven);
+		//if the user is not logged in we do not show any action
+		if (currentUserBean == null || !currentUserBean.as().isAuth()){
+			view.hideSnipAction();
+			return;
+		}
+		//the user is author so we show the edit button
+		if (isAuthor){
+			view.showSnipAction(true, new ClickHandler() {
+				@Override
+				public void onClick(Object source) {
+					//we do not place validation here but we do place it on the server side
+					editSnip();
+				}
+			});
+		//the user has not logged in or has not given rep so we show the give rep button
+		} else if (!repGiven){
+			view.showSnipAction(false, new ClickHandler() {
+				@Override
+				public void onClick(Object source) {
+					//we do not place validation here but we do place it on the server side
+					giveSnipReputation(currentSnipId, new RequestObserver() {
+						@Override
+						public void onSuccess(String response) {
+							currentSnipBean.as().setRep(currentSnipBean.as().getRep()+1);
+							view.viewSnip(currentSnipBean);
+							view.showSnipAction(null,null);
+						}
+					});
+				}
+			});
+		//we show the rep given icon
+		} else {
+			view.showSnipAction(null,null);
 		}
 	}
 

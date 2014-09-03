@@ -20,12 +20,11 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.SnipView;
-import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.RequestObserver;
+import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 

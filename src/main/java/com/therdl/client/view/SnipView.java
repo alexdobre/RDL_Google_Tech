@@ -3,10 +3,9 @@ package com.therdl.client.view;
 import java.util.ArrayList;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.app.AppController;
 import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
-import com.therdl.shared.RequestObserver;
+import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.SnipBean;
 
 /**
@@ -20,8 +19,6 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 		public void populateReplies(AutoBean<SnipBean> searchOptionsBean);
 
 		public void giveSnipReputation(String id, final RequestObserver observer);
-
-		public void editSnip();
 
 	}
 
@@ -43,6 +40,8 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 	 * @param clickHandler the click handler to be invoked on user click
 	 */
 	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler);
+
+	public void hideSnipAction ();
 
 	public void showHideReplyButton(Boolean show);
 

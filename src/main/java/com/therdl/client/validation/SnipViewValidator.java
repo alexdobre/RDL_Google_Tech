@@ -73,5 +73,4 @@ public class SnipViewValidator {
 		}
 		return null;
 	}
-
 }

@@ -12,4 +12,10 @@ public class IdeaViewPresenter extends SnipViewPresenter{
 		super(snipView, appController, token);
 	}
 
+	@Override
+	protected void showReplyIfAuthor (boolean isAuthor){
+		//for ideas an author may not leave a reference to own snip
+		view.showHideReplyButton(!isAuthor);
+	}
+
 }

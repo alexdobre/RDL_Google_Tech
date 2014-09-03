@@ -1,5 +1,6 @@
 package com.therdl.client.view.widget;
 
+import com.google.gwt.user.client.ui.SimplePanel;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
@@ -19,9 +20,11 @@ public class SnipActionWidget extends Composite {
 	private Button repBtn;
 	private Button editBtn;
 	private Icon repGiven;
+	private Panel holder;
 
-	public SnipActionWidget( Panel parent){
-		initWidget(parent);
+	public SnipActionWidget(){
+		holder = new SimplePanel();
+		initWidget(holder);
 	}
 
 	public void showRepBtn(Panel parent, final ClickHandler clickHandler) {
@@ -63,9 +66,13 @@ public class SnipActionWidget extends Composite {
 		if (repGiven == null) {
 			repGiven = new Icon(IconType.CHECK);
 			repGiven.setSize(IconSize.TIMES2);
-			editBtn.addStyleName("repBtn");
-			editBtn.addStyleName("repGivenIcon");
+			repGiven.addStyleName("repBtn");
+			repGiven.addStyleName("repGivenIcon");
 		}
-		parent.add(editBtn);
+		parent.add(repGiven);
+	}
+
+	public void hide(Panel parent){
+		parent.clear();
 	}
 }
