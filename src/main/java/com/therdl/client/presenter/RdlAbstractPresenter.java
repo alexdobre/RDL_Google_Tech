@@ -16,7 +16,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.view.RdlView;
-import com.therdl.shared.LoginHandler;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
+import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.SnipBean;
@@ -20,7 +21,7 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 
 		public void giveSnipReputation(String id, final RequestObserver observer);
 
-		public AppController getController();
+		public void editSnip();
 
 	}
 
@@ -32,22 +33,16 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 
-	public void giveRepResponseHandler();
-
 	public void saveReferenceResponseHandler(String refType, String snipType);
 
 	public ReferenceSearchFilterWidget getFilter();
 
 	/**
-	 * In the bottom right corner of the view snip panel we can have one of three options
-	 * 1- user logged in and is author = edit button
-	 * 2- user logged in and rep already given = rep given icon
-	 * 3- user logged in and rep not given or user not logged in = like button
-	 *
-	 * @param isAuthor user is author (false if not logged in)
-	 * @param repGiven user already gave rep
+	 * Show the snip action
+	 * @param isEdit true if show edit button, false if show give rep, null if show rep given
+	 * @param clickHandler the click handler to be invoked on user click
 	 */
-	public void showHideLikeOrEditButton(Boolean isAuthor, Boolean repGiven);
+	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler);
 
 	public void showHideReplyButton(Boolean show);
 

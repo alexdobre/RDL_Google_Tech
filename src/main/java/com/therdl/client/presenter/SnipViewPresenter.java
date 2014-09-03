@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
@@ -22,16 +20,16 @@ import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
+import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
 /**
- * SnipPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
+ * SnipViewPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
  * this class will be extended to encapsulate all the snip related data in and out of the client
  * to be used for client to view a snip from the snip search view
@@ -41,17 +39,18 @@ import com.therdl.shared.beans.SnipBean;
  * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
  * @ String currentSnipId  used to retrieve the users correct snip
  */
-public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
+public class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
 
-	private static Logger log = Logger.getLogger(SnipPresenter.class.getName());
+	private static Logger log = Logger.getLogger(SnipViewPresenter.class.getName());
 
-	private Beanery beanery = GWT.create(Beanery.class);
-	private String currentSnipId;
-	private AutoBean<CurrentUserBean> currentUserBean;
-	private AutoBean<SnipBean> searchOptionsBean;
-	private HasWidgets container;
+	protected Beanery beanery = GWT.create(Beanery.class);
+	protected String currentSnipId;
+	protected AutoBean<CurrentUserBean> currentUserBean;
+	protected AutoBean<SnipBean> searchOptionsBean;
+	protected HasWidgets container;
+	protected AutoBean<SnipBean> currentSnipBean;
 
-	public SnipPresenter(SnipView snipView, AppController appController, String token) {
+	public SnipViewPresenter(SnipView snipView, AppController appController, String token) {
 		super(appController);
 		this.view = snipView;
 		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
@@ -78,11 +77,23 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 		viewSnipById();
 	}
 
+	@Override
+	public void editSnip(){
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+			History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + currentSnipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
+			History.newItem(RDLConstants.Tokens.THREAD_EDIT + ":" + currentSnipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + currentSnipBean.as().getId());
+
+	}
+
 	private void prepareTheView(AutoBean<SnipBean> snipBean) {
 		log.info("SnipViewPresenter preparing the view, snipBean= " + snipBean);
 		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, snipBean);
 		boolean repGiven = snipBean.as().getIsRepGivenByUser() == 1;
-		view.showHideLikeOrEditButton(isAuthor, repGiven);
+		//TODO showSnipAction logic
+		//view.showSnipAction(isAuthor, repGiven);
 		//reply button always appears - user is prompted to log in if not already logged
 		view.showHideReplyButton(true);
 	}
@@ -96,10 +107,10 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	 * boiler plate code to keep main java code cleaner and more maintainable
 	 */
 	private void viewSnipById() {
-		log.info("SnipPresenter viewSnipById currentSnipId=" + currentSnipId);
+		log.info("SnipViewPresenter viewSnipById currentSnipId=" + currentSnipId);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+		log.info("SnipViewPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
@@ -135,19 +146,19 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	 * @param bean representing reference object
 	 */
 	public void saveReference(AutoBean<SnipBean> bean) {
-		log.info("SnipPresenter submit reference to server");
+		log.info("SnipViewPresenter submit reference to server");
 		bean.as().setAction("saveReference");
 		final String refType = bean.as().getReferenceType();
 		final String snipType = bean.as().getSnipType();
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		log.info("SnipPresenter submit updateUrl: " + updateUrl);
+		log.info("SnipViewPresenter submit updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
 		try {
 			String json = AutoBeanCodex.encode(bean).getPayload();
-			log.info("SnipPresenter submit json: " + json);
+			log.info("SnipViewPresenter submit json: " + json);
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
 				public void onSuccess(Request request, Response response){
@@ -161,7 +172,7 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 
 	@Override
 	public void populateReplies(AutoBean<SnipBean> searchOptionsBean) {
-		log.info("SnipPresenter populateReplies currentSnipId=" + currentSnipId);
+		log.info("SnipViewPresenter populateReplies currentSnipId=" + currentSnipId);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -193,10 +204,10 @@ public class SnipPresenter extends RdlAbstractPresenter<SnipView> implements Pre
 	 */
 
 	public void giveSnipReputation(String id, final RequestObserver observer) {
-		log.info("SnipPresenter giveSnipReputation id=" + id);
+		log.info("SnipViewPresenter giveSnipReputation id=" + id);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		log.info("SnipPresenter viewSnipById  updateUrl: " + updateUrl);
+		log.info("SnipViewPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();

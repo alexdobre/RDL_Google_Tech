@@ -33,7 +33,7 @@ import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
-import com.therdl.shared.LoginHandler;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -54,7 +54,7 @@ public class SearchFilterWidget extends Composite {
 
 	private static SearchFilterWidgetUiBinder uiBinder = GWT.create(SearchFilterWidgetUiBinder.class);
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(SearchFilterWidget.class.getName());
 
 	@UiField
 	Button submit, getLinkBtn, createNewButton;

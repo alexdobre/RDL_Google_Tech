@@ -21,7 +21,7 @@ import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.impl.ForgotPasswordImpl;
 import com.therdl.client.view.impl.SignInViewImpl;
 import com.therdl.shared.Global;
-import com.therdl.shared.LoginHandler;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;

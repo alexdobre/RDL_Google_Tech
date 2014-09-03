@@ -1,4 +1,4 @@
-package com.therdl.shared;
+package com.therdl.client.handler;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.CurrentUserBean;

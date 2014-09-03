@@ -1,7 +1,7 @@
 package com.therdl.shared.events;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.therdl.shared.LoginHandler;
+import com.therdl.client.handler.LoginHandler;
 
 /**
  * User submits their credentials

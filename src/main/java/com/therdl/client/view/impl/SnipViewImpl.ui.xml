@@ -47,12 +47,6 @@
 		right: 0;
 		}
 
-		.repBtn {
-		float: right;
-		margin-right: 3px;
-		margin-top: -3px;
-		}
-
 		.loadingWidget {
 		text-align: center;
 		display: none;
@@ -64,9 +58,6 @@
 		border: 0px;
 		}
 
-		.repGivenIcon{
-		color: green;
-		}
 		.snipViewPanel{
 		margin-bottom: 5px;
 		}
@@ -101,14 +92,7 @@
 						<b:Column size="MD_5" offset="MD_2">
 							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
 						</b:Column>
-						<b:Column size="MD_1">
-							<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="repBtn"
-							          addStyleNames="{style.repBtn}"/>
-							<b:Button type="PRIMARY" icon="PENCIL" ui:field="editBtn"
-							          addStyleNames="{style.repBtn}"/>
-							<b:Icon type="CHECK" size="TIMES2" ui:field="repGivenIcon"
-							        addStyleNames="{style.repGivenIcon} {style.repBtn}"/>
-						</b:Column>
+						<b:Column size="MD_1" ui:field="snipActionContainer"/>
 					</b:Row>
 				</b:Container>
 			</b:PanelFooter>

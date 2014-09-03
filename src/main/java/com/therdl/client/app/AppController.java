@@ -12,21 +12,29 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.ContentNotFoundPresenter;
+import com.therdl.client.presenter.IdeaViewPresenter;
+import com.therdl.client.presenter.ImprovementViewPresenter;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
 import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
-import com.therdl.client.presenter.SnipPresenter;
+import com.therdl.client.presenter.SnipViewPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
+import com.therdl.client.presenter.ThreadViewPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
 import com.therdl.client.view.ContentNotFound;
+import com.therdl.client.view.IdeaView;
+import com.therdl.client.view.ImprovementView;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.ThreadView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.impl.ContentNotFoundImpl;
+import com.therdl.client.view.impl.IdeaViewImpl;
+import com.therdl.client.view.impl.ImprovementViewImpl;
 import com.therdl.client.view.impl.ImprovementsViewImpl;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
@@ -34,6 +42,7 @@ import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.SnipViewImpl;
 import com.therdl.client.view.impl.StoriesViewImpl;
+import com.therdl.client.view.impl.ThreadViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Global;
@@ -103,10 +112,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private RegisterView registerView;
 	private ProfileView profileView;
 
-	private SnipView snipView;
-	private SnipView threadView;
-
-	private SnipView proposalView;
+	private IdeaView ideaView;
+	private ThreadView threadView;
+	private ImprovementView proposalView;
 
 	public AppController() {
 		bind();
@@ -263,18 +271,17 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void showSnipView(String token) {
 		Global.moduleName = RDLConstants.Modules.IDEAS;
 		log.info("AppController Tokens.SNIP_VIEW");
-		if (snipView == null) {
-			snipView = new SnipViewImpl(currentUserBean, appMenu);
+		if (ideaView == null) {
+			ideaView = new IdeaViewImpl(currentUserBean, appMenu);
 		}
-		final SnipPresenter snipPresenter = new SnipPresenter(snipView, this, token);
+		final IdeaViewPresenter ideaViewPresenter = new IdeaViewPresenter(ideaView, this, token);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
 			}
-
 			public void onSuccess() {
-				snipPresenter.go(container, currentUserBean);
+				ideaViewPresenter.go(container, currentUserBean);
 			}
 		});
 	}
@@ -283,17 +290,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		Global.moduleName = RDLConstants.Modules.STORIES;
 		log.info("AppController Tokens.THREAD_VIEW token: " + token);
 		if (threadView == null) {
-			threadView = new SnipViewImpl(currentUserBean, appMenu);
+			threadView = new ThreadViewImpl(currentUserBean, appMenu);
 		}
-		final SnipPresenter snipPresenter = new SnipPresenter(threadView, this, token);
+		final ThreadViewPresenter threadViewPresenter = new ThreadViewPresenter(threadView, this, token);
 
 		GWT.runAsync(new RunAsyncCallback() {
+			public void onSuccess() {
+				threadViewPresenter.go(container, currentUserBean);
+			}
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
-			}
-
-			public void onSuccess() {
-				snipPresenter.go(container, currentUserBean);
 			}
 		});
 	}
@@ -499,17 +505,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
 		log.info("AppController Tokens.PROPOSAL_VIEW");
 		if (proposalView == null) {
-			proposalView = new SnipViewImpl(currentUserBean, appMenu);
+			proposalView = new ImprovementViewImpl(currentUserBean, appMenu);
 		}
-		final SnipPresenter snipPresenter = new SnipPresenter(proposalView, this, token);
+		final ImprovementViewPresenter improvementViewPresenter = new ImprovementViewPresenter(proposalView, this, token);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
-
 			public void onSuccess() {
-				snipPresenter.go(container, currentUserBean);
+				improvementViewPresenter.go(container, currentUserBean);
 			}
 		});
 	}

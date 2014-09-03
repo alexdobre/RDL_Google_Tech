@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.view.ValidatedView;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
@@ -31,6 +32,7 @@ import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.PaginationHelper;
+import com.therdl.client.view.widget.SnipActionWidget;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
@@ -41,7 +43,7 @@ import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.shared.Constants;
 import com.therdl.shared.Global;
-import com.therdl.shared.LoginHandler;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RequestObserver;
 import com.therdl.shared.beans.Beanery;
@@ -88,11 +90,11 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	@UiField
 	Summernote editorWidget;
 	@UiField
-	Button showRef, leaveRef, saveRef, closeRef, editBtn, repBtn;
+	Button showRef, leaveRef, saveRef, closeRef;
 	@UiField
 	RadioButton rb1, rb2, rb3, prb1, prb2;
 	@UiField
-	Icon repGivenIcon;
+	Column snipActionContainer;
 	@UiField
 	LoadingWidget loadingWidget;
 	@UiField
@@ -105,6 +107,7 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	private SnipListRow snipListRow;
 	private ArrayList<ReferenceListRow> itemList;
 	ReferenceSearchFilterWidget referenceSearchFilterWidget;
+	private SnipActionWidget snipActionWidget;
 
 	private AutoBean<SnipBean> searchOptionsBean;
 	String btnTextShow = RDL.i18n.showReferences();
@@ -115,6 +118,8 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
+		snipActionWidget = new SnipActionWidget(snipActionContainer);
+		snipActionContainer.add(snipActionWidget);
 		emoListPanel.addStyleName("labels");
 		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 
@@ -134,7 +139,6 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 
 			ViewUtils.hide(radioBtnParent);
 		}
-
 	}
 
 	@Override
@@ -260,36 +264,6 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		}
 	}
 
-	@UiHandler("repBtn")
-	public void onRepBtnClicked(ClickEvent event) {
-		presenter.giveSnipReputation(currentSnipBean.as().getId(), new RequestObserver() {
-			@Override
-			public void onSuccess(String response) {
-				giveRepResponseHandler();
-			}
-		});
-	}
-
-	@UiHandler("editBtn")
-	public void onEditBtnClicked(ClickEvent event) {
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-			History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + currentSnipBean.as().getId());
-		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
-			History.newItem(RDLConstants.Tokens.THREAD_EDIT + ":" + currentSnipBean.as().getId());
-		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + currentSnipBean.as().getId());
-	}
-
-	/**
-	 * when user clicks give reputation button, request is sent to increment reputation counter for the snip
-	 * in response handler call this function to hide button and also increment rep counter in the view
-	 */
-	public void giveRepResponseHandler() {
-		ViewUtils.hide(repBtn);
-		ViewUtils.show(repGivenIcon);
-		snipListRow.incrementRepCounter();
-	}
-
 	/**
 	 * when user clicks save reference button, request is sent to save reference and also the counter by refType is incremented
 	 * in response handler call this function to hide leave reference button and
@@ -308,16 +282,13 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	}
 
 	@Override
-	public void showHideLikeOrEditButton(Boolean isAuthor, Boolean repGiven) {
-		ViewUtils.hide(editBtn);
-		ViewUtils.hide(repBtn);
-		ViewUtils.hide(repGivenIcon);
-		if (isAuthor) {
-			ViewUtils.show(editBtn);
-		} else if (repGiven) {
-			ViewUtils.show(repGivenIcon);
-		} else {
-			ViewUtils.show(repBtn);
+	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler){
+		if (isEdit == null){
+			snipActionWidget.showRepGiven(snipActionContainer);
+		} else if (isEdit){
+			snipActionWidget.showEditBtn(snipActionContainer,clickHandler);
+		}else {
+			snipActionWidget.showRepBtn(snipActionContainer, clickHandler);
 		}
 	}
 
