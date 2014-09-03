@@ -11,8 +11,6 @@
 
 
 	<g:HTMLPanel>
-		<g:FlowPanel ui:field="socialPanel">
-
-		</g:FlowPanel>
+		<g:FlowPanel ui:field="socialPanel"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

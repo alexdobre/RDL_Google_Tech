@@ -253,12 +253,13 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		log.info("SnipViewPresenter giveSnipReputation id=" + id);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 
-		log.info("SnipViewPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
 		currentBean.as().setAction("giveRep");
 		currentBean.as().setId(id);
+		currentBean.as().setToken(currentUserBean.as().getToken());
+		currentBean.as().setAuthor(currentUserBean.as().getName());
 
 		String json = AutoBeanCodex.encode(currentBean).getPayload();
 		try {
