@@ -111,4 +111,11 @@ public interface UserService {
 	 * @return
 	 */
 	public Boolean isSupporter (String username);
+
+	/**
+	 * Increments a counter on the user
+	 * @param username the username
+	 * @param field field to increment
+	 */
+	public void incrementCounter(String username, String field);
 }

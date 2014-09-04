@@ -534,13 +534,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 * @param titleBeans user titles
 	 */
 	public void setCurrentUserBean(String name, String email, boolean state, List<UserBean.TitleBean> titleBeans,
-			boolean isRDLSupporter, String token) {
+			boolean isRDLSupporter, String token, Integer rep) {
 		this.currentUserBean.as().setAuth(state);
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
 		this.currentUserBean.as().setTitles(titleBeans);
 		this.currentUserBean.as().setIsRDLSupporter(isRDLSupporter);
 		this.currentUserBean.as().setToken(token);
+		this.currentUserBean.as().setRep(rep);
 	}
 
 

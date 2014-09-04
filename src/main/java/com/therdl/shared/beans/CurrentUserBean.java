@@ -67,6 +67,10 @@ public interface CurrentUserBean extends TokenizedBean {
 	 */
 	void setRegistered(boolean b);
 
+	Integer getRep();
+
+	void setRep(Integer rep);
+
 	List<UserBean.TitleBean> getTitles();
 
 	void setTitles(List<UserBean.TitleBean> titles);

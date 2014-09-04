@@ -159,6 +159,8 @@ public class SnipDispatcherServlet extends HttpServlet {
 		repService.addRep(repGivenBean.as().getSnipId(), email);
 
 		SnipBean bean = snipsService.incrementCounter(actionBean.as().getId(), RDLConstants.SnipFields.REP, email);
+		//we also add the rep to the user
+		userService.incrementCounter(bean.getAuthor(),RDLConstants.SnipFields.REP);
 
 		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
 		PrintWriter out = resp.getWriter();

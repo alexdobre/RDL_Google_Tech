@@ -128,7 +128,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean){
 					controller.setCurrentUserBean(returnedBean.as().getName(), returnedBean.as().getEmail(),
 							true, returnedBean.as().getTitles(), returnedBean.as().getIsRDLSupporter(),
-							returnedBean.as().getToken());
+							returnedBean.as().getToken(), returnedBean.as().getRep());
 
 					sidLogic(returnedBean);
 

@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
 		checkedUserBean.as().setTitles(ub.getTitles());
 		checkedUserBean.as().setToken(ub.getToken());
 		checkedUserBean.as().setIsRDLSupporter(ServerUtils.isRdlSupporter(ub));
+		checkedUserBean.as().setRep(ub.getRep());
 		log.info("User is RDL supporter?: " + checkedUserBean.as().getIsRDLSupporter());
 
 		log.info("Find user END OK: " + checkedUserBean.as().getEmail());
@@ -303,6 +304,26 @@ public class UserServiceImpl implements UserService {
 		if (ub == null)
 			return false;
 		return ServerUtils.isRdlSupporter(ub);
+	}
+
+	/**
+	 * increments counter for the given snip id
+	 *
+	 * @param username the user's name
+	 * @param field to increment. This can be viewCount, rep or positive/neutral/negative reference count
+	 * @return
+	 */
+	@Override
+	public void incrementCounter(String username, String field) {
+		DB db = getMongo();
+		DBCollection coll = db.getCollection("rdlUserData");
+
+		// build the search query
+		BasicDBObject searchQuery = new BasicDBObject().append("username", username);
+		DBObject modifier = new BasicDBObject(field, 1);
+		DBObject incQuery = new BasicDBObject("$inc", modifier);
+		// make update
+		DBObject dbObj = coll.findAndModify(searchQuery, incQuery);
 	}
 
 	/**

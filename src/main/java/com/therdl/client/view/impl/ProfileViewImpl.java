@@ -64,7 +64,7 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 	Button supporterBtn;
 
 	@UiField
-	FormControlStatic email, username;
+	FormControlStatic email, username, rep;
 
 	@UiField
 	Button changePassBtn, submitChangePassBtn;
@@ -94,6 +94,11 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 			this.currentUserBean = currentUserBean;
 			email.setText(currentUserBean.as().getEmail());
 			username.setText(currentUserBean.as().getName());
+			if (currentUserBean.as().getRep() != null){
+				rep.setText(currentUserBean.as().getRep().toString());
+			} else {
+				rep.setText("0");
+			}
 			supporterBtn.setVisible(true);
 			ViewUtils.showHide(false, formErrors);
 			ViewUtils.showHide(false, formSuccess);
