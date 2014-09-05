@@ -1,11 +1,10 @@
 package com.therdl.server.api;
 
 
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.SnipBean;
-
 import java.util.List;
+
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.beans.SnipBean;
 
 
 /**
@@ -56,7 +55,8 @@ public interface SnipsService {
 	/**
 	 * search snips for the given search options
 	 *
-	 * @param snip      search option data
+	 * @param snip             search option data
+	 * @param currentUserEmail used to search if the rep has been given by user, should be null if you do not care
 	 * @return list of SnipBean
 	 */
 	List<SnipBean> searchSnipsWith(SnipBean snip, String currentUserEmail);

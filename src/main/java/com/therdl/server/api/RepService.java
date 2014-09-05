@@ -18,8 +18,8 @@ public interface RepService {
 	/**
 	 * Adds rep with the current date
 	 * @param snipId the snip to add for
-	 * @param email the user adding
+	 * @param userEmail the user adding
 	 * @return the rep newly added
 	 */
-	void addRep(String snipId, String email);
+	void addRep(String snipId, String userEmail);
 }

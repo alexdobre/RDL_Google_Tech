@@ -58,13 +58,13 @@ public class RepServiceImpl implements RepService {
 	}
 
 	@Override
-	public void addRep(String snipId, String userId) {
-		log.info("RepServiceImpl addRep  snip : " + snipId + " user: " + userId);
+	public void addRep(String snipId, String userEmail) {
+		log.info("RepServiceImpl addRep  snip : " + snipId + " user: " );
 		DB db = dbProvider.getDb();
 
 		DBCollection coll = db.getCollection("rdlRep");
 
-		BasicDBObject doc = buildDbObject(snipId, userId);
+		BasicDBObject doc = buildDbObject(snipId, userEmail);
 		coll.insert(doc);
 	}
 
@@ -79,11 +79,11 @@ public class RepServiceImpl implements RepService {
 		return repBean;
 	}
 
-	private BasicDBObject buildDbObject(String snipId, String userId) {
+	private BasicDBObject buildDbObject(String snipId, String userEmail) {
 		BasicDBObject doc = new BasicDBObject();
 
 		doc.append("snipId", snipId);
-		doc.append("userId", userId);
+		doc.append("userId", userEmail);
 
 		SimpleDateFormat sdf = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
 		doc.append("dateCreated", sdf.format(new Date()));

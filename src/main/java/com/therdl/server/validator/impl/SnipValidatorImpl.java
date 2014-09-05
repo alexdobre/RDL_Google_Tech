@@ -96,17 +96,28 @@ public class SnipValidatorImpl implements SnipValidator {
 
 	@Override
 	public void validateCanSaveRef(AutoBean<SnipBean> snipBean) throws SnipValidationException, TokenInvalidException {
-		//must have a parent set and the parent must exist
 		validateSnipBean(snipBean);
-
+		//must have a parent set and the parent must exist
 		boolean parentValid = true;
+		SnipBean parent = null;
 		if (snipBean.as().getParentSnip() == null || snipBean.as().getParentSnip().equals("")){
 			parentValid = false;
 		} else {
-			SnipBean parent = snipsService.getSnip(snipBean.as().getParentSnip(), null);
+			parent = snipsService.getSnip(snipBean.as().getParentSnip(), null);
 			if (parent == null) parentValid = false;
 		}
 		if (!parentValid) throw new SnipValidationException(RDLConstants.ErrorCodes.C008);
+		//unless is post
+		if (!snipBean.as().getSnipType().equals(RDLConstants.SnipType.POST)){
+			//must not have already given a ref for the same parent (search for snips with parent ID and author)
+			AutoBean<SnipBean> query = beanery.snipBean();
+			query.as().setParentSnip(parent.getId());
+			query.as().setAuthor(snipBean.as().getAuthor());
+			List<SnipBean> resList= snipsService.searchSnipsWith(query.as(), null);
+			if (resList != null && !resList.isEmpty()){
+				throw new SnipValidationException(RDLConstants.ErrorCodes.C010);
+			}
+		}
 	}
 
 	@Override
