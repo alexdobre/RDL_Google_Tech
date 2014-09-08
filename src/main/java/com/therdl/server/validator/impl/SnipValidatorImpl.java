@@ -113,6 +113,9 @@ public class SnipValidatorImpl implements SnipValidator {
 			AutoBean<SnipBean> query = beanery.snipBean();
 			query.as().setParentSnip(parent.getId());
 			query.as().setAuthor(snipBean.as().getAuthor());
+			query.as().setPageIndex(0);
+			query.as().setSortField("author");
+			query.as().setSortOrder(1);
 			List<SnipBean> resList= snipsService.searchSnipsWith(query.as(), null);
 			if (resList != null && !resList.isEmpty()){
 				throw new SnipValidationException(RDLConstants.ErrorCodes.C010);

@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.EmotionView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.ViewUtils;
@@ -66,14 +67,14 @@ public class EmotionPicker extends Composite {
 	@UiField
 	Container emoContainer;
 
-	private SnipEditView parentView;
+	private EmotionView parentView;
 	private AutoBean<SnipBean> currentSnipBean;
 
 	private List<LinkedGroupItem> posEmoList;
 	private List<LinkedGroupItem> negEmoList;
 	private Map<LinkedGroupItem, EmoElements> emoMap;
 
-	public EmotionPicker(SnipEditView parentView, AutoBean<SnipBean> currentSnipBean) {
+	public EmotionPicker(EmotionView parentView, AutoBean<SnipBean> currentSnipBean) {
 		log.info("EmotionPicker constructor BEGIN");
 		this.parentView = parentView;
 		this.currentSnipBean = currentSnipBean;

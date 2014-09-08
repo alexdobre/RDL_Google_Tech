@@ -1,11 +1,23 @@
 package com.therdl.client.view.impl;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.html.Span;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -13,12 +25,16 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.handler.LoginHandler;
+import com.therdl.client.validation.SnipViewValidator;
+import com.therdl.client.view.EmotionView;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.ValidatedView;
+import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.EmotionPicker;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.ReferenceListRow;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
@@ -32,17 +48,6 @@ import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Panel;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -57,7 +62,7 @@ import java.util.logging.Logger;
  * used to call the backend to retrieve the full snip for this view, under construction
  * @ AppMenu appMenu the upper menu view
  */
-public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipView, PaginatedView, ValidatedView {
+public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipView, PaginatedView, ValidatedView, EmotionView {
 
 	private static Logger log = Logger.getLogger(SnipViewImpl.class.getName());
 
@@ -68,10 +73,12 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 
 	private static SnipViewImpllUiBinder uiBinder = GWT.create(SnipViewImpllUiBinder.class);
 
-	private SnipView.Presenter presenter;
+	protected SnipView.Presenter presenter;
 	private Beanery beanery = GWT.create(Beanery.class);
 
 	private AutoBean<SnipBean> currentSnipBean;
+	protected AutoBean<SnipBean> replyBean;
+
 
 	@UiField
 	FlowPanel snipViewCont, radioBtnParent, radioBtnParentProp;
@@ -82,9 +89,9 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	@UiField
 	PanelBody richTextArea;
 	@UiField
-	Summernote editorWidget;
+	Summernote editorWidgetReply;
 	@UiField
-	Button showRef, leaveRef, saveRef, closeRef;
+	Button showRef, leaveRef, saveRef, closeRef, btnEmotionPicker;
 	@UiField
 	RadioButton rb1, rb2, rb3, prb1, prb2;
 	@UiField
@@ -96,12 +103,13 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 	@UiField
 	LinkedGroup listGroup;
 	@UiField
-	FlowPanel emoListPanel;
+	FlowPanel emoListPanel, emoListPanelReply;
 
 	private SnipListRow snipListRow;
 	private ArrayList<ReferenceListRow> itemList;
 	ReferenceSearchFilterWidget referenceSearchFilterWidget;
 	private SnipActionWidget snipActionWidget;
+	private EmotionPicker emotionPicker;
 
 	private AutoBean<SnipBean> searchOptionsBean;
 	String btnTextShow = RDL.i18n.showReferences();
@@ -116,23 +124,6 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		snipActionContainer.add(snipActionWidget);
 		emoListPanel.addStyleName("labels");
 		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
-
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			ViewUtils.hide(radioBtnParentProp);
-		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			btnTextShow = RDL.i18n.showPosts();
-			btnTextHide = RDL.i18n.hidePosts();
-			snipType = RDLConstants.SnipType.POST;
-
-			ViewUtils.hide(radioBtnParent);
-			ViewUtils.hide(radioBtnParentProp);
-		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			btnTextShow = RDL.i18n.showPosts();
-			btnTextHide = RDL.i18n.hidePosts();
-			snipType = RDLConstants.SnipType.PLEDGE + "," + RDLConstants.SnipType.COUNTER;
-
-			ViewUtils.hide(radioBtnParent);
-		}
 	}
 
 	@Override
@@ -162,7 +153,6 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		listGroup.clear();
 		snipViewCont.clear();
 		refFilterParent.clear();
-		//  checkboxBtnParent.clear();
 	}
 
 	/**
@@ -215,17 +205,23 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		}
 	}
 
-	private void leaveRefHandler(AutoBean<CurrentUserBean> userBean) {
-		if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) && !userBean.as().getIsRDLSupporter()) {
-			Window.alert(RDL.i18n.pledgeCreateMsg());
-		} else {
-			ViewUtils.show(referenceCont);
-			ViewUtils.hide(refFilterParent);
-			closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
-			ViewUtils.hide(referenceListCont);
-			editorWidget.setCode("");
-			showRef.setText(btnTextShow);
+	@UiHandler("btnEmotionPicker")
+	void onEmotionPicker(ClickEvent event) {
+		if (emotionPicker == null) {
+			emotionPicker = new EmotionPicker(this, replyBean);
 		}
+		emotionPicker.show();
+	}
+
+	private void leaveRefHandler(AutoBean<CurrentUserBean> userBean) {
+		ViewUtils.show(referenceCont);
+		ViewUtils.hide(refFilterParent);
+		closeRef.getElement().getStyle().setProperty("marginLeft", "10px");
+		ViewUtils.hide(referenceListCont);
+		showRef.setText(btnTextShow);
+		replyBean = beanery.snipBean();
+		editorWidgetReply.setCode("");
+		log.info("Leave ref handler END with widget code: "+editorWidgetReply.getCode());
 	}
 
 	/**
@@ -255,6 +251,19 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 			ViewUtils.hide(referenceListCont);
 			ViewUtils.hide(refFilterParent);
 			showRef.setText(btnTextShow);
+		}
+	}
+
+	@Override
+	public void displayEmotions() {
+		emoListPanelReply.clear();
+		if (replyBean != null && replyBean.as().getEmotions() != null) {
+			for (String emoStr : replyBean.as().getEmotions()) {
+				log.info("Displaying selected emotion: " + emoStr);
+				Span span = ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr));
+				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
+				emoListPanelReply.add(span);
+			}
 		}
 	}
 
@@ -295,51 +304,34 @@ public class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipVi
 		ViewUtils.showHide(show, leaveRef);
 	}
 
-	/**
-	 * saves a reference
-	 * constructs bean object for reference and calls presenter's function to save created reference
-	 *
-	 * @param event
-	 */
 	@UiHandler("saveRef")
 	public void onSaveRefClicked(ClickEvent event) {
-		if (editorWidget.getCode().trim().equals("")) {
-			Window.alert("Reference content cannot be empty.");
+		formReplyBean();
+		setReplyType();
+		String validRes = SnipViewValidator.validateReply(replyBean, currentSnipBean);
+		if (validRes != null) {
+			setErrorMessage(validRes);
 			return;
 		}
-
-		AutoBean<SnipBean> newBean = beanery.snipBean();
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
-			String referenceType = RDLConstants.ReferenceType.POSITIVE;
-
-			if (rb2.getValue()) {
-				referenceType = RDLConstants.ReferenceType.NEUTRAL;
-			} else if (rb3.getValue()) {
-				referenceType = RDLConstants.ReferenceType.NEGATIVE;
-			}
-			newBean.as().setReferenceType(referenceType);
-			newBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
-		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			newBean.as().setSnipType(RDLConstants.SnipType.POST);
-		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			String proposalType = RDLConstants.SnipType.PLEDGE;
-			if (prb2.getValue()) {
-				proposalType = RDLConstants.SnipType.COUNTER;
-			}
-			newBean.as().setSnipType(proposalType);
-		}
-		// set data for reference object
-
-		newBean.as().setContent(editorWidget.getCode());
-		newBean.as().setAuthor(currentUserBean.as().getName());
-		newBean.as().setParentSnip(currentSnipBean.as().getId());
-		newBean.as().setRep(0);
-
-		// this is parent snip id
-		newBean.as().setId(currentSnipBean.as().getId());
-
-		presenter.saveReference(newBean);
+		presenter.saveReference(replyBean);
 	}
+
+	protected void formReplyBean() {
+		//this is a workaround for a strange UI bug where the code of the empty text editor is not empty
+		if ("<p><br></p>".equals(editorWidgetReply.getCode())){
+			replyBean.as().setContent(null);
+		}else {
+			replyBean.as().setContent(editorWidgetReply.getCode());
+		}
+		replyBean.as().setAuthor(currentUserBean.as().getName());
+		replyBean.as().setParentSnip(currentSnipBean.as().getId());
+		replyBean.as().setRep(0);
+		replyBean.as().setCoreCat(currentSnipBean.as().getCoreCat());
+		replyBean.as().setTitle("Re: " + currentSnipBean.as().getTitle());
+		replyBean.as().setToken(currentUserBean.as().getToken());
+	}
+
+	protected abstract void setReplyType();
 
 	/**
 	 * shows references in a tab panel with paging

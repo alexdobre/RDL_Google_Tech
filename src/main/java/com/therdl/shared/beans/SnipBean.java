@@ -39,13 +39,13 @@ public interface SnipBean extends TokenizedBean {
 	void setId(String id);
 
 	@NotEmpty
-	@Pattern(regexp = "^[a-zA-Z0-9_!,\"'-.].{0,200}")
+	@Pattern(regexp = "^[a-zA-Z0-9_!,\"'-.].{0,204}")
 	String getTitle();
 
 	void setTitle(String title);
 
 	@NotEmpty
-	@Pattern(regexp = ".{0,200000}")
+	@Pattern(regexp = ".{5,200000}")
 	String getContent();
 
 	void setContent(String content);

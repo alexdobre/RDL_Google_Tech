@@ -187,7 +187,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 		snipValidator.validateCanSaveRef(actionBean);
 		String email = getCurrentUserEmail();
 		// increments reference counter of parent snip for reference type (positive/neutral/negative)
-		String parentSnipId = actionBean.as().getId();
+		String parentSnipId = actionBean.as().getParentSnip();
 
 		String counterField = RDLConstants.SnipFields.POS_REF;
 		if (actionBean.as().getReferenceType() != null) {

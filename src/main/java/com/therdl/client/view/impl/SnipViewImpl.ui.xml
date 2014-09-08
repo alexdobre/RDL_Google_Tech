@@ -14,16 +14,20 @@
 		padding: 0px;
 		}
 
+		.marginTop{
+		margin-top: 5px;
+		}
+
+		.marginLeft {
+		margin-left: 20px;
+		}
+
 		.margin-fix {
 		margin-bottom: 0;
 		margin-top: 0;
 		padding-bottom: 2px;
 		padding-top: 0;
 		float: right;
-		}
-
-		.radioBtnParent {
-		margin: 3px;
 		}
 
 		.radioBtn {
@@ -100,22 +104,32 @@
 
 		<b:Panel ui:field="referenceCont">
 			<b:PanelBody addStyleNames="{style.noPadding}">
-				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParent">
-					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-					               text="{i18n.positive}"></g:RadioButton>
-					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-					               text="{i18n.neutral}"></g:RadioButton>
-					<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-					               text="{i18n.negative}"></g:RadioButton>
-				</g:FlowPanel>
+				<b:Row>
+					<g:FlowPanel addStyleNames="col-lg-6 {style.marginTop}" ui:field="radioBtnParent">
+						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
+						               text="{i18n.positive}"></g:RadioButton>
+						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
+						               text="{i18n.neutral}"></g:RadioButton>
+						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
+						               text="{i18n.negative}"></g:RadioButton>
+					</g:FlowPanel>
+					<g:FlowPanel addStyleNames="col-lg-6 {style.marginTop}" ui:field="radioBtnParentProp">
+						<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
+						               text="{i18n.pledge}"></g:RadioButton>
+						<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
+						               text="{i18n.counter}"></g:RadioButton>
+					</g:FlowPanel>
+					<g:FlowPanel addStyleNames="col-lg-6 {style.marginTop}">
+						<b:Button ui:field="btnEmotionPicker" text="{i18n.emotionPickerTitle}"/>
+					</g:FlowPanel>
+					<g:FlowPanel addStyleNames="col-lg-12 {style.marginLeft}">
+						<rdl:FormSuccess ui:field="formSuccess"/>
+						<rdl:FormErrors ui:field="formErrors"/>
+					</g:FlowPanel>
+				</b:Row>
 
-				<g:FlowPanel styleName="{style.radioBtnParent}" ui:field="radioBtnParentProp">
-					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-					               text="{i18n.pledge}"></g:RadioButton>
-					<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-					               text="{i18n.counter}"></g:RadioButton>
-				</g:FlowPanel>
-				<summer:Summernote ui:field="editorWidget"/>
+				<g:FlowPanel ui:field="emoListPanelReply" addStyleNames="col-lg-12 labels"/>
+				<summer:Summernote ui:field="editorWidgetReply"/>
 			</b:PanelBody>
 			<b:PanelFooter>
 				<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
@@ -127,8 +141,6 @@
 			<b:Column size="MD_3" ui:field="refFilterParent"/>
 			<b:Column size="MD_9" ui:field="referenceListCont">
 				<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
-				<rdl:FormErrors ui:field="formErrors"/>
-				<rdl:FormSuccess ui:field="formSuccess"/>
 				<b:Row>
 					<b:Column size="MD_6" offset="MD_6">
 						<b:Pagination addStyleNames="{style.margin-fix}">

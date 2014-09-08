@@ -16,7 +16,7 @@ import com.therdl.shared.beans.SnipBean;
  * @ AppMenu getAppMenu() returns the Nav-bar header using the user authorisation status
  * this method sets the options in the header/nav bar AppMenu widget
  */
-public interface SnipEditView extends RdlView, ValidatedView {
+public interface SnipEditView extends RdlView, ValidatedView, EmotionView {
 
 	public interface Presenter {
 		void onDeleteSnip(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean);
@@ -35,8 +35,6 @@ public interface SnipEditView extends RdlView, ValidatedView {
 	public void showHideIdeaTypes(Boolean show);
 
 	public void showHideImprovementPanels(Boolean show);
-
-	public void displayEmotions();
 
 	public Widget asWidget();
 }

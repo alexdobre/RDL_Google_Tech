@@ -3,6 +3,8 @@ package com.therdl.client.validation;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.shared.CoreCategory;
+import com.therdl.shared.Global;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.SnipBean;
 
@@ -56,6 +58,53 @@ public class SnipViewValidator {
 		}
 		log.info("Bean valid");
 		return null;
+	}
+
+	public static String validateReply(AutoBean<SnipBean> reply, AutoBean<SnipBean> parent){
+		log.info("Validating reply to parent: " + parent.as().getTitle() +" content: "+reply.as().getContent());
+		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		Set<ConstraintViolation<SnipBean>> violations = validator.validate(reply.as());
+		if (violations.iterator().hasNext()) {
+			ConstraintViolation violation = violations.iterator().next();
+			log.info("Bean invalid: " + violation.getPropertyPath() + " " + violation.getMessage());
+			return errorMessageMap.get(violation.getPropertyPath().toString());
+		} else {
+			//reply must have the proper parent set
+			if (reply.as().getParentSnip() == null || reply.as().getParentSnip().isEmpty() ||
+					!parent.as().getId().equals(reply.as().getParentSnip())){
+				return RDL.getI18n().formErrorProperReply();
+			}
+
+			//see if type is valid
+			if (!checkReplyType(reply)){
+				return RDL.getI18n().formErrorReplyType();
+			}
+
+			//must have at least one emotion
+			if (reply.as().getEmotions() == null || reply.as().getEmotions().isEmpty()){
+				log.info("Must select at least one emotion");
+				return RDL.getI18n().formErrorNoEmotion();
+			}
+		}
+		return null;
+	}
+
+	private static boolean checkReplyType (AutoBean<SnipBean> reply){
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+			if (!reply.as().getSnipType().equals(RDLConstants.SnipType.REFERENCE)){
+				return false;
+			}
+		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+			if (!reply.as().getSnipType().equals(RDLConstants.SnipType.POST)){
+				return false;
+			}
+		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+			if (!(reply.as().getSnipType().equals(RDLConstants.SnipType.COUNTER) ||
+					reply.as().getSnipType().equals(RDLConstants.SnipType.PLEDGE))){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
