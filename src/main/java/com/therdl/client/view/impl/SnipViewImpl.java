@@ -170,20 +170,22 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 			snipListRow.populate(snipBean, currentUserBean, SnipType.fromString(snipBean.as().getSnipType()));
 		}
 		snipViewCont.add(snipListRow);
+		//display emotions
 		emoListPanel.clear();
 		for (String emoStr : currentSnipBean.as().getEmotions()) {
 			emoListPanel.add(ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr)));
 		}
+		//display content
 		richTextArea.getElement().setInnerHTML(snipBean.as().getContent());
+		//references hidden
 		showRef.setText(btnTextShow);
 		ViewUtils.hide(referenceCont);
+		// call implementations or NO OP
+		onViewSnip();
+	}
 
-		if (Global.moduleName.equals(RDLConstants.Modules.STORIES) ||
-				Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			leaveRef.setText(RDL.i18n.reply());
-			saveRef.setText(RDL.i18n.savePost());
-		}
-
+	public void onViewSnip(){
+		//no op implementation
 	}
 
 	/**

@@ -168,6 +168,10 @@ public interface SnipBean extends TokenizedBean {
 
 	void setAuthorTitle(String authorTitle);
 
+	Boolean getCheckReply();
+
+	void setCheckReply(Boolean reply);
+
 	/**
 	 * nested interfaces
 	 */

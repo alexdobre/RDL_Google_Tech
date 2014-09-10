@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RDL;
 import com.therdl.client.view.IdeaView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Global;

@@ -41,7 +41,7 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 	 */
 	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler);
 
-	public void hideSnipAction ();
+	public void hideSnipAction();
 
 	public void showHideReplyButton(Boolean show);
 

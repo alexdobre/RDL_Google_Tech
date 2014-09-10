@@ -74,11 +74,11 @@ public interface UserService {
 	/**
 	 * checks if user wrote a reference to the snip with the given snipId
 	 *
-	 * @param email  user email
+	 * @param viewerUsername  user username
 	 * @param snipId snipId
 	 * @return Integer 1 or 0
 	 */
-	public Integer isRefGivenForSnip(String email, String snipId);
+	public Integer isRefGivenForSnip(String viewerUsername, String snipId);
 
 	/**
 	 * updates the user

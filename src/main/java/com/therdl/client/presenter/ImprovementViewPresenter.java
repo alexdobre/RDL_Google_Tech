@@ -14,6 +14,8 @@ public class ImprovementViewPresenter extends SnipViewPresenter{
 	@Override
 	protected void showReplyIfAuthor (boolean isAuthor){
 		//for improvements an author may not leave a reference to own improvement
-		view.showHideReplyButton(!isAuthor);
+		//they also may not leave a reference if they already replied
+		Boolean refGiven = currentSnipBean.as().getIsRefGivenByUser() == 1;
+		view.showHideReplyButton(!isAuthor || !refGiven);
 	}
 }

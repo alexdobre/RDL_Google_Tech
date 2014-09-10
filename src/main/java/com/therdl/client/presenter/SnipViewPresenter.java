@@ -18,18 +18,16 @@ import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.ClickHandler;
+import com.therdl.client.handler.RequestObserver;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
-import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInEvent;
 
 /**
  * SnipViewPresenter class ia a presenter in the Model View Presenter Design Pattern (MVP)
@@ -80,7 +78,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		viewSnipById();
 	}
 
-	public void editSnip(){
+	public void editSnip() {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
 			History.newItem(RDLConstants.Tokens.SNIP_EDIT + ":" + currentSnipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
@@ -109,18 +107,23 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		currentBean.as().setAction("viewSnip");
 		currentBean.as().setId(currentSnipId);
 
+		//if the user is logged in and if we are in the IDEAS or IMPROVEMENTS module we need to know if the user has
+		//given a reply so we set the viewer ID to be used in the search
 		if (controller.getCurrentUserBean().as().isAuth()) {
-			currentBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
+			if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) ||
+					Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+				currentBean.as().setViewerId(controller.getCurrentUserBean().as().getName());
+			}
 		}
 
 		String json = AutoBeanCodex.encode(currentBean).getPayload();
 		try {
 			requestBuilder.sendRequest(json, new BeanCallback<SnipBean>(SnipBean.class, view) {
 				@Override
-				public void onBeanReturned(AutoBean<SnipBean> returnedBean){
+				public void onBeanReturned(AutoBean<SnipBean> returnedBean) {
 					if (returnedBean == null) {
 						History.newItem(RDLConstants.Tokens.ERROR);
-					}else {
+					} else {
 						currentSnipBean = returnedBean;
 						view.viewSnip(returnedBean);
 						replyButtonLogic();
@@ -134,29 +137,29 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		}
 	}
 
-	protected void replyButtonLogic(){
+	protected void replyButtonLogic() {
 		//if the user is not logged in we do not show the reply button
-		if (currentUserBean == null || !currentUserBean.as().isAuth()){
+		if (currentUserBean == null || !currentUserBean.as().isAuth()) {
 			view.showHideReplyButton(false);
 		} else {
 			boolean isAuthor = ViewUtils.isAuthor(currentUserBean, currentSnipBean);
-			showReplyIfAuthor (isAuthor);
+			showReplyIfAuthor(isAuthor);
 		}
 	}
 
-	protected abstract void showReplyIfAuthor( boolean isAuthor);
+	protected abstract void showReplyIfAuthor(boolean isAuthor);
 
-	protected void snipActionLogic(AutoBean<SnipBean> returnedBean){
+	protected void snipActionLogic(AutoBean<SnipBean> returnedBean) {
 		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, returnedBean);
 		boolean repGiven = returnedBean.as().getIsRepGivenByUser() == 1;
-		log.info("snipActionLogic isAuthor: "+isAuthor+" repGiven: "+repGiven);
+		log.info("snipActionLogic isAuthor: " + isAuthor + " repGiven: " + repGiven);
 		//if the user is not logged in we do not show any action
-		if (currentUserBean == null || !currentUserBean.as().isAuth()){
+		if (currentUserBean == null || !currentUserBean.as().isAuth()) {
 			view.hideSnipAction();
 			return;
 		}
 		//the user is author so we show the edit button
-		if (isAuthor){
+		if (isAuthor) {
 			view.showSnipAction(true, new ClickHandler() {
 				@Override
 				public void onClick(Object source) {
@@ -164,8 +167,8 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 					editSnip();
 				}
 			});
-		//the user has not logged in or has not given rep so we show the give rep button
-		} else if (!repGiven){
+			//the user has not logged in or has not given rep so we show the give rep button
+		} else if (!repGiven) {
 			view.showSnipAction(false, new ClickHandler() {
 				@Override
 				public void onClick(Object source) {
@@ -173,16 +176,16 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 					giveSnipReputation(currentSnipId, new RequestObserver() {
 						@Override
 						public void onSuccess(String response) {
-							currentSnipBean.as().setRep(currentSnipBean.as().getRep()+1);
+							currentSnipBean.as().setRep(currentSnipBean.as().getRep() + 1);
 							view.viewSnip(currentSnipBean);
-							view.showSnipAction(null,null);
+							view.showSnipAction(null, null);
 						}
 					});
 				}
 			});
-		//we show the rep given icon
+			//we show the rep given icon
 		} else {
-			view.showSnipAction(null,null);
+			view.showSnipAction(null, null);
 		}
 	}
 
@@ -207,7 +210,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 			log.info("SnipViewPresenter submit json: " + json);
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onSuccess(Request request, Response response){
+				public void onSuccess(Request request, Response response) {
 					view.saveReferenceResponseHandler(refType, snipType);
 				}
 			});
@@ -227,15 +230,11 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		searchOptionsBean.as().setId(currentSnipId);
 		final int pageIndex = searchOptionsBean.as().getPageIndex();
 
-		if (controller.getCurrentUserBean().as().isAuth()) {
-			searchOptionsBean.as().setViewerId(controller.getCurrentUserBean().as().getEmail());
-		}
-
 		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
 		try {
 			requestBuilder.sendRequest(json, new SnipListCallback() {
 				@Override
-				public void onBeanListReturned (ArrayList<AutoBean<SnipBean>> beanList){
+				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
 					view.showReferences(beanList, pageIndex);
 					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
 				}
@@ -265,7 +264,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		try {
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onSuccess(Request request, Response response){
+				public void onSuccess(Request request, Response response) {
 					observer.onSuccess(response.getText());
 				}
 			});

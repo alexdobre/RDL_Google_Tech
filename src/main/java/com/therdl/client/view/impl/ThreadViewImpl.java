@@ -29,4 +29,10 @@ public class ThreadViewImpl extends SnipViewImpl implements ThreadView {
 	protected void setReplyType(){
 		replyBean.as().setSnipType(RDLConstants.SnipType.POST);
 	}
+
+	@Override
+	public void onViewSnip(){
+		leaveRef.setText(RDL.i18n.reply());
+		saveRef.setText(RDL.i18n.savePost());
+	}
 }

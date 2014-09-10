@@ -15,6 +15,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -24,6 +25,7 @@ import com.therdl.server.data.DbProvider;
 import com.therdl.server.util.EmailSender;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.server.validator.TokenValidator;
+import com.therdl.shared.Constants;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.AuthUserBean;
@@ -288,13 +290,32 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * checks if user wrote a reference to the snip with the given snipId
 	 *
-	 * @param email  user email
+	 * @param viewerId  user email
 	 * @param snipId snipId
 	 * @return Integer 1 or 0
 	 */
-	public Integer isRefGivenForSnip(String email, String snipId) {
+	public Integer isRefGivenForSnip(String viewerId, String snipId) {
+		//do a quick search if a user has given a reference (reply)
+		log.info("Searching isRefGivenForSnip viewerId: " + viewerId+ "snipId: "+snipId);
+		DB db = getMongo();
+		List<SnipBean> beans = new ArrayList<SnipBean>();
+		// built a simple query
+		BasicDBObject dbObject = new BasicDBObject();
+		dbObject.put("parentSnip", snipId);
+		dbObject.put("author", viewerId);
 
-		//TODO remove or change UserServiceImpl.isRefGivenForSnip
+		//use a minimal projection
+		BasicDBObject projection = new BasicDBObject();
+		projection.put("author", 1);
+
+		DBCollection coll = db.getCollection("rdlSnipData");
+		List<DBObject> objList = coll.find(dbObject, projection).toArray();
+
+		if (objList != null && !objList.isEmpty()){
+			log.info("Found list size: " + beans.size());
+			return 1;
+		}
+		log.info("Not found - return 0");
 		return 0;
 	}
 
