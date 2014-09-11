@@ -48,6 +48,8 @@ import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.BecomeRdlSupporterEvent;
+import com.therdl.shared.events.GuiEventBus;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -180,11 +182,12 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		//references hidden
 		showRef.setText(btnTextShow);
 		ViewUtils.hide(referenceCont);
+		hideMessages();
 		// call implementations or NO OP
 		onViewSnip();
 	}
 
-	public void onViewSnip(){
+	public void onViewSnip() {
 		//no op implementation
 	}
 
@@ -196,7 +199,12 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	@UiHandler("leaveRef")
 	public void onLeaveRefClicked(ClickEvent event) {
 		if (currentUserBean.as().isAuth()) {
-			leaveRefHandler(currentUserBean);
+			//if the user is not RDL supporter prompted to become one
+			if (!currentUserBean.as().getIsRDLSupporter() && !Global.moduleName.equals(RDLConstants.Modules.STORIES) ) {
+				GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
+			} else {
+				leaveRefHandler(currentUserBean);
+			}
 		} else {
 			appMenu.showLoginPopUp(new LoginHandler() {
 				@Override
@@ -223,7 +231,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		showRef.setText(btnTextShow);
 		replyBean = beanery.snipBean();
 		editorWidgetReply.setCode("");
-		log.info("Leave ref handler END with widget code: "+editorWidgetReply.getCode());
+		log.info("Leave ref handler END with widget code: " + editorWidgetReply.getCode());
 	}
 
 	/**
@@ -320,9 +328,9 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 
 	protected void formReplyBean() {
 		//this is a workaround for a strange UI bug where the code of the empty text editor is not empty
-		if ("<p><br></p>".equals(editorWidgetReply.getCode())){
+		if ("<p><br></p>".equals(editorWidgetReply.getCode())) {
 			replyBean.as().setContent(null);
-		}else {
+		} else {
 			replyBean.as().setContent(editorWidgetReply.getCode());
 		}
 		replyBean.as().setAuthor(currentUserBean.as().getName());

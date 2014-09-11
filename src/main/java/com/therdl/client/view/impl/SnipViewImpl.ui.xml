@@ -138,24 +138,28 @@
 		</b:Panel>
 
 		<b:Container>
-			<b:Column size="MD_3" ui:field="refFilterParent"/>
-			<b:Column size="MD_9" ui:field="referenceListCont">
-				<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
-				<b:Row>
-					<b:Column size="MD_6" offset="MD_6">
-						<b:Pagination addStyleNames="{style.margin-fix}">
-							<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
-							<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
-							<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
-						</b:Pagination>
-					</b:Column>
-				</b:Row>
-				<b:Row>
-					<b:Column size="MD_12">
-						<b:LinkedGroup ui:field="listGroup"/>
-					</b:Column>
-				</b:Row>
-			</b:Column>
+			<b:Row>
+				<b:Column size="MD_12" ui:field="refFilterParent"/>
+			</b:Row>
+			<b:Row>
+				<b:Column size="MD_12" ui:field="referenceListCont">
+					<rdl:LoadingWidget ui:field="loadingWidget" styleName="{style.loadingWidget}"></rdl:LoadingWidget>
+					<b:Row>
+						<b:Column size="MD_6" offset="MD_6">
+							<b:Pagination addStyleNames="{style.margin-fix}">
+								<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
+								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
+								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
+							</b:Pagination>
+						</b:Column>
+					</b:Row>
+					<b:Row>
+						<b:Column size="MD_12">
+							<b:LinkedGroup ui:field="listGroup"/>
+						</b:Column>
+					</b:Row>
+				</b:Column>
+			</b:Row>
 		</b:Container>
 	</b:Container>
 

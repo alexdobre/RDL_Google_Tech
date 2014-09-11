@@ -17,7 +17,7 @@ public class IdeaViewPresenter extends SnipViewPresenter{
 		//for ideas an author may not leave a reference to own snip
 		//they also may not leave a reference if they already replied
 		Boolean refGiven = currentSnipBean.as().getIsRefGivenByUser() == 1;
-		view.showHideReplyButton(!isAuthor || !refGiven);
+		view.showHideReplyButton(!isAuthor && !refGiven);
 	}
 
 }
