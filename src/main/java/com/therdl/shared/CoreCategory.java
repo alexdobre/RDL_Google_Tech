@@ -1,5 +1,7 @@
 package com.therdl.shared;
 
+import java.util.logging.Logger;
+
 /**
  * These are the colour coded eight categories for RDL
  * they form the core of the business and together aim to cover most if not all
@@ -41,6 +43,8 @@ public enum CoreCategory {
 	 * @return true if the string is a core category title
 	 */
 	public static boolean stringIsCateg (String toTest){
+		//special case for Psy tend
+		if (toTest.toLowerCase().equals(PSY_TEND.getShortName().toLowerCase())) return true;
 		try {
 			CoreCategory coreCat =  CoreCategory.valueOf(toTest.toUpperCase());
 			if (coreCat != null) return true;

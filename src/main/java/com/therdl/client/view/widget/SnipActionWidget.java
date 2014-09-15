@@ -1,5 +1,6 @@
 package com.therdl.client.view.widget;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.SimplePanel;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Icon;
@@ -22,6 +23,7 @@ public class SnipActionWidget extends Composite {
 	private Icon repGiven;
 	private Panel holder;
 
+
 	public SnipActionWidget(){
 		holder = new SimplePanel();
 		initWidget(holder);
@@ -29,12 +31,12 @@ public class SnipActionWidget extends Composite {
 
 	public void showRepBtn(Panel parent, final ClickHandler clickHandler) {
 		parent.clear();
-		if (repBtn == null) {
-			repBtn = new Button();
-			repBtn.setType(ButtonType.PRIMARY);
-			repBtn.setIcon(IconType.THUMBS_UP);
-			repBtn.addStyleName("repBtn");
-		}
+		//always create a new button to avoid click handler overlap
+		repBtn = new Button();
+		repBtn.setType(ButtonType.PRIMARY);
+		repBtn.setIcon(IconType.THUMBS_UP);
+		repBtn.addStyleName("repBtn");
+
 		repBtn.addClickHandler(new com.google.gwt.event.dom.client.ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -46,12 +48,12 @@ public class SnipActionWidget extends Composite {
 
 	public void showEditBtn(Panel parent, final ClickHandler clickHandler) {
 		parent.clear();
-		if (editBtn == null) {
-			editBtn = new Button();
-			editBtn.setType(ButtonType.PRIMARY);
-			editBtn.setIcon(IconType.PENCIL);
-			editBtn.addStyleName("repBtn");
-		}
+		//always create a new button to avoid click handler overlap
+		editBtn = new Button();
+		editBtn.setType(ButtonType.PRIMARY);
+		editBtn.setIcon(IconType.PENCIL);
+		editBtn.addStyleName("repBtn");
+
 		editBtn.addClickHandler(new com.google.gwt.event.dom.client.ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

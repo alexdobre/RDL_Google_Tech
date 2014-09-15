@@ -12,7 +12,6 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.StatusCallback;
@@ -24,7 +23,6 @@ import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.PaginationSnipsEvent;
 import com.therdl.shared.events.SnipViewEvent;
 
 /**
@@ -51,7 +49,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		this.view = view;
 		this.view.setPresenter(this);
 		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
-		log.info("currentSnipId at constructor time: "+currentSnipId+" from token: "+token);
+		log.info("currentSnipId at constructor time: " + currentSnipId + " from token: " + token);
 	}
 
 	@Override
@@ -107,7 +105,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	@Override
 	public void submitEditedBean(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
 		String validationResult = SnipViewValidator.validateSnipBean(bean);
-		if (validationResult != null ) {
+		if (validationResult != null) {
 			view.setErrorMessage(validationResult);
 			return;
 		}
@@ -127,7 +125,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			log.info("SnipEditPresenter submit json: " + json);
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onSuccess(Request request, Response response){
+				public void onSuccess(Request request, Response response) {
 					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
 				}
 			});
@@ -141,8 +139,8 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	public void onDeleteSnip(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
 		String id = bean.as().getId();
 		log.info("SnipEditPresenter onDelete: snip id " + id);
-		String validationResult = SnipViewValidator.validateCanDelete(bean,currentUserBean.as().getName());
-		if (validationResult != null ) {
+		String validationResult = SnipViewValidator.validateCanDelete(bean, currentUserBean.as().getName());
+		if (validationResult != null) {
 			view.setErrorMessage(validationResult);
 			return;
 		}
@@ -161,7 +159,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			log.info("SnipEditPresenter submit json: " + json);
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onSuccess(Request request, Response response){
+				public void onSuccess(Request request, Response response) {
 					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
 				}
 			});
@@ -177,7 +175,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	@Override
 	public void submitBean(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
 		String validationResult = SnipViewValidator.validateSnipBean(bean);
-		if (validationResult != null ) {
+		if (validationResult != null) {
 			view.setErrorMessage(validationResult);
 			return;
 		}
@@ -199,7 +197,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			log.info("SnipEditPresenter submit json: " + json);
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
-				public void onSuccess(Request request, Response response){
+				public void onSuccess(Request request, Response response) {
 					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
 				}
 			});
@@ -221,10 +219,12 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 
 		String json = AutoBeanCodex.encode(currentBean).getPayload();
 		try {
-			requestBuilder.sendRequest(json, new BeanCallback<SnipBean>(SnipBean.class,view) {
+			requestBuilder.sendRequest(json, new BeanCallback<SnipBean>(SnipBean.class, view) {
 				@Override
-				public void onBeanReturned(AutoBean<SnipBean> returnedBean){
+				public void onBeanReturned(AutoBean<SnipBean> returnedBean) {
 					view.populate(returnedBean);
+					log.info("View populate - END container: "+container);
+					container.clear();
 					container.add(view.asWidget());
 				}
 			});
