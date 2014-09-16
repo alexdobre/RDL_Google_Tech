@@ -6,7 +6,7 @@ package com.therdl.shared;
 public enum SnipType {
 	SNIP("snip"), FAST_CAP("fastCap"), MATERIAL("material"), HABIT("habit"), REFERENCE("reference"),
 	THREAD("thread"), POST("post"),
-	IMPROVEMENT("improvement"), PLEDGE("pledge");
+	IMPROVEMENT("improvement"), PLEDGE("pledge"), COUNTER("counter"), PROPOSAL("proposal");
 
 	private String snipType;
 

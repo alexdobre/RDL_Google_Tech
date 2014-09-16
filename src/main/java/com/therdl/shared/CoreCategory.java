@@ -45,6 +45,8 @@ public enum CoreCategory {
 	public static boolean stringIsCateg (String toTest){
 		//special case for Psy tend
 		if (toTest.toLowerCase().equals(PSY_TEND.getShortName().toLowerCase())) return true;
+		//special case for improvement
+		if (toTest.equals(RDLConstants.Modules.IMPROVEMENTS)) return true;
 		try {
 			CoreCategory coreCat =  CoreCategory.valueOf(toTest.toUpperCase());
 			if (coreCat != null) return true;

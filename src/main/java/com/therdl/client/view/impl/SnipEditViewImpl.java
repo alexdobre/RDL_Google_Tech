@@ -219,10 +219,14 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 			currentSnipBean.as().setTitle("");
 			currentSnipBean.as().setAuthor(currentUserBean.as().getName());
 			currentSnipBean.as().setContent("");
+			if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)){
+				currentSnipBean.as().setCoreCat(RDLConstants.Modules.IMPROVEMENTS);
+			}
 		} else {
 			log.info("Edit view populate BEGIN with emotions: "+snipBean.as().getEmotions());
 			this.currentSnipBean = snipBean;
 		}
+		hideMessages();
 		if (emotionPicker!= null)  emotionPicker.setCurrentSnipBean(currentSnipBean);
 		displayEmotions();
 		configureForModule();

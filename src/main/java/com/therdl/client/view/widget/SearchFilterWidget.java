@@ -15,6 +15,8 @@ import org.gwtbootstrap3.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -322,6 +324,13 @@ public class SearchFilterWidget extends Composite {
 	public void onSubmit(ClickEvent event) {
 		formSearchOptionBean();
 		view.doFilterSearch();
+	}
+
+	@UiHandler(value={"title", "pledgesCount", "countersCount", "posRef", "neutralRef", "negativeRef", "postCount", "snipRep", "author"})
+	public void onPassEnter(KeyDownEvent event) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+			onSubmit(null);
+		}
 	}
 
 	public void populateSearchOptions() {

@@ -147,12 +147,10 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		refFilterParent.add(referenceSearchFilterWidget);
 		ViewUtils.hide(refFilterParent);
 		ViewUtils.hide(referenceListCont);
-		listGroup.clear();
 	}
 
 	@Override
 	protected void onUnload() {
-		listGroup.clear();
 		snipViewCont.clear();
 		refFilterParent.clear();
 	}
@@ -177,6 +175,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		for (String emoStr : currentSnipBean.as().getEmotions()) {
 			emoListPanel.add(ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr)));
 		}
+		emoListPanelReply.clear();
 		//display content
 		richTextArea.getElement().setInnerHTML(snipBean.as().getContent());
 		//references hidden
@@ -349,7 +348,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	 * @param beanList list of references as bean objects
 	 */
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		log.info("Showing references: " + beanList);
+		log.info("Showing references: " + beanList.size());
 		this.searchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
 		showRef.setText(btnTextHide);
