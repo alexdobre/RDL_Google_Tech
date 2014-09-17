@@ -16,33 +16,33 @@
 				<b:Legend ui:field="filterLabel" text="{i18n.filterReferences}"/>
 
 				<b:FormGroup ui:field="typeGroup">
-					<b:FormLabel for="searchType" addStyleNames="col-lg-3" text="{i18n.type}"/>
-					<g:FlowPanel addStyleNames="col-lg-9" ui:field="refTypePanel"/>
+					<b:FormLabel for="searchType" addStyleNames="col-lg-4" text="{i18n.type}"/>
+					<g:FlowPanel addStyleNames="col-lg-5" ui:field="refTypePanel"/>
 				</b:FormGroup>
 
 				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-5" text="{i18n.reputation}"/>
-					<g:FlowPanel addStyleNames="col-lg-5">
+					<b:FormLabel addStyleNames="col-lg-4" text="{i18n.reputation}"/>
+					<g:FlowPanel addStyleNames="col-lg-3">
 						<b:TextBox ui:field="rep"/>
 					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-1" ui:field="repPanel"/>
 				</b:FormGroup>
 
 				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-5" text="{i18n.authorName}"/>
-					<g:FlowPanel addStyleNames="col-lg-5">
+					<b:FormLabel addStyleNames="col-lg-4" text="{i18n.authorName}"/>
+					<g:FlowPanel addStyleNames="col-lg-3">
 						<b:TextBox ui:field="authorName"/>
 					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-1" ui:field="authorNamePanel"/>
 				</b:FormGroup>
 
 				<b:FormGroup ui:field="proposalGroup">
-					<g:FlowPanel ui:field="proposalCheckboxPanel" addStyleNames="col-lg-5 col-md-offset-5"/>
+					<g:FlowPanel ui:field="proposalCheckboxPanel" addStyleNames="col-lg-5 col-md-offset-4"/>
 				</b:FormGroup>
 
 				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-5" text="{i18n.date}"/>
-					<g:FlowPanel addStyleNames="col-lg-5">
+					<b:FormLabel addStyleNames="col-lg-4" text="{i18n.date}"/>
+					<g:FlowPanel addStyleNames="col-lg-3">
 						<rdl:DateFilterWidget ui:field="dateFilterWidget"/>
 					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-1" ui:field="datePanel"/>

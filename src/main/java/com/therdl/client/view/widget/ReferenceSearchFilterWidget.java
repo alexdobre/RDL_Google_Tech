@@ -174,7 +174,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 				}
 			});
 
-			arrowPanel.getElement().getStyle().setProperty("float", "right");
+			arrowPanel.getElement().getStyle().setProperty("float", "left");
 			arrowPanel.getElement().getStyle().setProperty("marginTop", "2px");
 			flowPanels[i].add(arrowPanel);
 
