@@ -132,9 +132,11 @@ public class SnipListRow extends Composite {
 		pledgesCount.setText(snipBean.as().getPledges().toString());
 		countersCount.setText(snipBean.as().getCounters().toString());
 
+		if (snipBean.as().getCreationDate() != null){
 		Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
-		String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
-		creationDate.setText(dateString);
+			String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
+			creationDate.setText(dateString);
+		}
 
 		proposalType.setText(RDL.i18n.type() + ": " + snipBean.as().getProposalType());
 		proposalState.setText(RDL.i18n.state() + ": " + snipBean.as().getProposalState());
