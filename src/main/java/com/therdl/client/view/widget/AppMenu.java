@@ -16,6 +16,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.presenter.CommonPresenter;
 import com.therdl.client.presenter.ForgotPasswordPresenter;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.impl.ForgotPasswordImpl;
@@ -47,6 +48,7 @@ public class AppMenu extends Composite {
 	private SignInViewImpl signInView;
 	private ForgotPassword forgotPassword;
 	private SupportRdlPopup supportRdlPopup;
+	private CommonPresenter presenter;
 	LoginHandler loginHandler;
 
 	@UiField
@@ -78,9 +80,9 @@ public class AppMenu extends Composite {
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
 	}
 
-	public AppMenu() {
+	public AppMenu(final CommonPresenter presenter) {
 		initWidget(uiBinder.createAndBindUi(this));
-		logOut();
+		this.presenter = presenter;
 		GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
 			@Override
 			public void onLogInEvent(LogInEvent onLoginEvent) {
@@ -100,6 +102,8 @@ public class AppMenu extends Composite {
 				if (supportRdlPopup == null){
 					supportRdlPopup = new SupportRdlPopup();
 				}
+				supportRdlPopup.setTitle(event.getPopupTitle());
+				presenter.grabRdlSupporterTitleDesc(supportRdlPopup);
 				supportRdlPopup.show();
 			}
 		});

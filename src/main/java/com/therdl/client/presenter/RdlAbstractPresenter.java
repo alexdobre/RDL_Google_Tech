@@ -1,5 +1,6 @@
 package com.therdl.client.presenter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +16,13 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
+import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.handler.LoginHandler;
+import com.therdl.client.view.common.ViewUtils;
+import com.therdl.client.view.widget.SupportRdlPopup;
+import com.therdl.shared.CoreCategory;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -31,7 +37,7 @@ import com.therdl.shared.events.LoginFailEvent;
  * At the time of writing I'm placing the cookie login logic here
  * Created by Alex on 11/02/14.
  */
-public abstract class RdlAbstractPresenter<T extends RdlView> implements Presenter {
+public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonPresenter {
 
 	protected static Logger log = Logger.getLogger(RdlAbstractPresenter.class.getName());
 
@@ -189,6 +195,27 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements Present
 		} catch (RequestException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
+	}
+
+	/**
+	 * Searches for and returns the RDL Supporter title description from the DB
+	 * @param supportRdlPopup the popup to set the content in
+	 */
+	public void grabRdlSupporterTitleDesc(final SupportRdlPopup supportRdlPopup) {
+		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+		ViewUtils.populateDefaultSearchOptions(searchOptionsBean);
+		searchOptionsBean.as().setCoreCat(CoreCategory.GENERAL.getShortName());
+		searchOptionsBean.as().setTitle(RDLConstants.ContentMgmt.RDL_SUPP_TITLE);
+		searchOptionsBean.as().setAuthor(RDLConstants.ContentMgmt.OFFICIAL_AUTHOR);
+		searchOptionsBean.as().setSnipType(RDLConstants.SnipType.SNIP);
+
+		searchSnips(searchOptionsBean, new SnipListCallback() {
+
+			public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
+				supportRdlPopup.populateBody(beanList.get(0));
+			}
+
+		});
 	}
 
 	public AppController getController() {

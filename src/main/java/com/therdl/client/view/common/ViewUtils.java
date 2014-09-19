@@ -231,4 +231,15 @@ public class ViewUtils {
 		return "https://s3.amazonaws.com/RDL_Avatars/" +
 				ViewUtils.createAvatarName(userName) + ".jpg";
 	}
+
+	/**
+	 * Used when you just want to retrieve one or a few specific results
+	 * @param searchOptionsBean the empty bean
+	 */
+	public static void populateDefaultSearchOptions (AutoBean<SnipBean> searchOptionsBean) {
+		searchOptionsBean.as().setPageIndex(0);
+		searchOptionsBean.as().setSortOrder(1);
+		searchOptionsBean.as().setSortField("author");
+		searchOptionsBean.as().setReturnSnipContent(true);
+	}
 }

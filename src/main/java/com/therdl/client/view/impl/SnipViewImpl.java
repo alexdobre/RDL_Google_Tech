@@ -200,7 +200,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		if (currentUserBean.as().isAuth()) {
 			//if the user is not RDL supporter prompted to become one
 			if (!currentUserBean.as().getIsRDLSupporter() && !Global.moduleName.equals(RDLConstants.Modules.STORIES) ) {
-				GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
+				GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleLeaveRef()));
 			} else {
 				leaveRefHandler(currentUserBean);
 			}

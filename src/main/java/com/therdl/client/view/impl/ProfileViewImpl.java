@@ -147,7 +147,7 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 			}
 			uploadForm.show();
 		} else {
-			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
+			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleUploadImage()));
 		}
 	}
 
@@ -168,7 +168,7 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 
 	@UiHandler("supporterBtn")
 	void supporterBtnClick(ClickEvent e) {
-		GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
+		GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleDefault()));
 	}
 
 	public void setFormSuccessMsg(String msg) {

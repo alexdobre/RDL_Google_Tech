@@ -8,6 +8,7 @@ import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.CoreCategory;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -45,26 +46,29 @@ public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implemen
 		checkLogin();
 		container.clear();
 		view.getAppMenu().setHomeActive();
-		if (view.getSnipMap().get(CoreCategory.GENERAL) == null){
-			grabWelcomeSnip(CoreCategory.GENERAL);
+		if (view.getSnipMap().get(CoreCategory.GENERAL) == null) {
+			grabWelcomeSnip(CoreCategory.GENERAL, RDLConstants.ContentMgmt.RDL_WELCOME_TITLE);
 		}
 		container.add(view.asWidget());
 	}
 
-	public void grabWelcomeSnip(final CoreCategory coreCat){
-		AutoBean<SnipBean> searchOptionsBean = prepareSearchOptions(coreCat);
+	public void grabWelcomeSnip(final CoreCategory coreCat, String title) {
+		AutoBean<SnipBean> searchOptionsBean = prepareSearchOptions(coreCat, title);
 		super.searchSnips(searchOptionsBean, new SnipListCallback() {
 
-			public  void onBeanListReturned (ArrayList<AutoBean<SnipBean>> beanList){
+			public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
 				view.showWelcomeSnip(beanList.get(0), coreCat);
 			}
 		});
 	}
 
-	private AutoBean<SnipBean> prepareSearchOptions (CoreCategory coreCategory ){
+	private AutoBean<SnipBean> prepareSearchOptions(CoreCategory coreCategory, String title) {
 		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 		RDLUtils.buildDefaultWelcomeBean(searchOptionsBean);
 		searchOptionsBean.as().setCoreCat(coreCategory.getShortName());
+		if (title != null) {
+			searchOptionsBean.as().setTitle(title);
+		}
 
 		return searchOptionsBean;
 	}

@@ -3,9 +3,9 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<b:Container>
-		<b:Modal title="{i18n.becomeRdlSupporter}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		<b:Modal closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
 		         b:id="rdlSupporterModal" ui:field="rdlSupporterModal">
-			<b:ModalBody>
+			<b:ModalBody ui:field="modalBody">
 
 			</b:ModalBody>
 			<b:ModalFooter>

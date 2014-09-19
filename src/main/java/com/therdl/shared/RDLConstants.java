@@ -143,6 +143,12 @@ public interface RDLConstants {
 		String NEVER_EXPIRES = "never";
 	}
 
+	public interface ContentMgmt {
+		String OFFICIAL_AUTHOR = "RDL";
+		String RDL_SUPP_TITLE = "RDL Supporter Title";
+		String RDL_WELCOME_TITLE = "The RDL welcome message";
+	}
+
 	public interface ErrorCodes {
 		String GENERIC = "c000";
 		String C001 = "c001";

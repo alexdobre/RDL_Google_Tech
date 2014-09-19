@@ -2,6 +2,7 @@ package com.therdl.client.presenter;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.widget.SupportRdlPopup;
 import com.therdl.shared.beans.CurrentUserBean;
 
 

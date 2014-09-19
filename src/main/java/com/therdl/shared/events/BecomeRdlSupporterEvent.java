@@ -9,6 +9,12 @@ public class BecomeRdlSupporterEvent extends GwtEvent<BecomeRdlSupporterEventHan
 
 	public static GwtEvent.Type<BecomeRdlSupporterEventHandler> TYPE = new GwtEvent.Type<BecomeRdlSupporterEventHandler>();
 
+	private String popupTitle;
+
+	public BecomeRdlSupporterEvent(String popupTitle) {
+		this.popupTitle = popupTitle;
+	}
+
 	@Override
 	public GwtEvent.Type<BecomeRdlSupporterEventHandler> getAssociatedType() {
 		return TYPE;
@@ -17,5 +23,9 @@ public class BecomeRdlSupporterEvent extends GwtEvent<BecomeRdlSupporterEventHan
 	@Override
 	protected void dispatch(BecomeRdlSupporterEventHandler becomeRdlSupporterEventHandler) {
 		becomeRdlSupporterEventHandler.onSupporterEvent(this);
+	}
+
+	public String getPopupTitle() {
+		return popupTitle;
 	}
 }

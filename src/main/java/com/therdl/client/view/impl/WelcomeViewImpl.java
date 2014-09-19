@@ -144,7 +144,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.COMPATIBILITY)){
 			compatibilityModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.COMPATIBILITY);
+			presenter.grabWelcomeSnip(CoreCategory.COMPATIBILITY, null);
 		}
 	}
 
@@ -153,7 +153,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.CONNECTION)){
 			connectionModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.CONNECTION);
+			presenter.grabWelcomeSnip(CoreCategory.CONNECTION, null);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.EXTERIOR)){
 			exteriorModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.EXTERIOR);
+			presenter.grabWelcomeSnip(CoreCategory.EXTERIOR, null);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.EROTICISM)){
 			eroticismModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.EROTICISM);
+			presenter.grabWelcomeSnip(CoreCategory.EROTICISM, null);
 		}
 	}
 
@@ -180,7 +180,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.SEDUCTION)){
 			seductionModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.SEDUCTION);
+			presenter.grabWelcomeSnip(CoreCategory.SEDUCTION, null);
 		}
 	}
 
@@ -189,7 +189,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.PSY_TEND)){
 			psyTendModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.PSY_TEND);
+			presenter.grabWelcomeSnip(CoreCategory.PSY_TEND, null);
 		}
 	}
 
@@ -198,7 +198,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.AFFAIRS)){
 			affairsModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.AFFAIRS);
+			presenter.grabWelcomeSnip(CoreCategory.AFFAIRS, null);
 		}
 	}
 
@@ -207,7 +207,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 		if (snipMap.keySet().contains(CoreCategory.ABUSE)){
 			abuseModal.show();
 		}else {
-			presenter.grabWelcomeSnip(CoreCategory.ABUSE);
+			presenter.grabWelcomeSnip(CoreCategory.ABUSE, null);
 		}
 	}
 

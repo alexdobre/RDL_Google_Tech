@@ -16,9 +16,9 @@ import com.therdl.client.presenter.IdeaViewPresenter;
 import com.therdl.client.presenter.ImprovementViewPresenter;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
+import com.therdl.client.presenter.RdlAbstractPresenter;
 import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
-import com.therdl.client.presenter.SnipViewPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.presenter.ThreadViewPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
@@ -29,7 +29,6 @@ import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipEditView;
-import com.therdl.client.view.SnipView;
 import com.therdl.client.view.ThreadView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.impl.ContentNotFoundImpl;
@@ -40,7 +39,6 @@ import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
-import com.therdl.client.view.impl.SnipViewImpl;
 import com.therdl.client.view.impl.StoriesViewImpl;
 import com.therdl.client.view.impl.ThreadViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
@@ -89,7 +87,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private HasWidgets container;
 	private Beanery beanery = GWT.create(Beanery.class);
-	private AppMenu appMenu = new AppMenu();
+	private AppMenu appMenu;
 
 	/**
 	 * Current authentication rules are anyone can view but only registered user can edit
@@ -115,6 +113,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private IdeaView ideaView;
 	private ThreadView threadView;
 	private ImprovementView proposalView;
+
+	private RdlAbstractPresenter defaultPresenter;
 
 	public AppController() {
 		bind();
@@ -170,8 +170,17 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		this.container = rootContainer;
 		this.currentUserBean.as().setAuth(false);
 		this.currentUserBean.as().setRegistered(false);
+		if (defaultPresenter == null){
+			defaultPresenter = new RdlAbstractPresenter(this) {
+				@Override
+				public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
+					//noop implementation
+				}
+			};
+			appMenu = new AppMenu(defaultPresenter);
+		}
 		if ("".equals(History.getToken())) {
-			History.newItem(RDLConstants.Tokens.STORIES);
+			History.newItem(RDLConstants.Tokens.WELCOME);
 		} else {
 			History.fireCurrentHistoryState();
 		}
@@ -280,6 +289,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
 			}
+
 			public void onSuccess() {
 				ideaViewPresenter.go(container, currentUserBean);
 			}
@@ -298,6 +308,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onSuccess() {
 				threadViewPresenter.go(container, currentUserBean);
 			}
+
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
@@ -466,7 +477,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		});
 	}
 
-	private void showContentNotFound(){
+	private void showContentNotFound() {
 		log.info("AppController Tokens.ERROR ");
 		if (contentNotFound == null) {
 			contentNotFound = new ContentNotFoundImpl(appMenu);
@@ -513,6 +524,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
+
 			public void onSuccess() {
 				improvementViewPresenter.go(container, currentUserBean);
 			}
@@ -558,5 +570,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
 		this.currentUserBean.as().setToken(token);
+	}
+
+	public RdlAbstractPresenter getDefaultPresenter() {
+		return defaultPresenter;
 	}
 }

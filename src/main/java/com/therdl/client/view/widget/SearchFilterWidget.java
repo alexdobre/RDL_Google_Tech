@@ -532,7 +532,7 @@ public class SearchFilterWidget extends Composite {
 	private void createNewBtnHandler(String editPageToken, AutoBean<CurrentUserBean> userBean) {
 		if ((Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS) ||
 				Global.moduleName.equals(RDLConstants.Modules.IDEAS)) && !userBean.as().getIsRDLSupporter()) {
-			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent());
+			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleLeaveRef()));
 		} else {
 			History.newItem(editPageToken);
 		}
