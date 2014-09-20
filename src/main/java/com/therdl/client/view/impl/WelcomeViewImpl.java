@@ -41,7 +41,7 @@ import com.therdl.shared.beans.SnipBean;
  */
 public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(WelcomeViewImpl.class.getName());
 
 	interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
 	}

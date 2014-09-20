@@ -9,6 +9,7 @@
 	<p>
 		<span>Author: {{snipBean.author}}</span>
 		<span>Date: {{snipBean.creationDate}}</span>
+		<span>{{snipBean.emotions}}</span>
 	</p>
 	<div>{{{snipBean.content}}}</div>
 {{#renderNextPage}}
@@ -18,6 +19,7 @@
 	<p>
 		<span>Author: {{author}}</span>
 		<span>Date: {{creationDate}}</span>
+		<span>{{emotions}}</span>
 	</p>
 	<div>{{{content}}}</div>
 {{/repliesList}}

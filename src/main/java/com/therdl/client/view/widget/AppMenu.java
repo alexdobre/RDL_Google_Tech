@@ -1,14 +1,9 @@
 package com.therdl.client.view.widget;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.AnchorButton;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.NavbarBrand;
-import org.gwtbootstrap3.client.ui.NavbarHeader;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -16,13 +11,13 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.presenter.CommonPresenter;
 import com.therdl.client.presenter.ForgotPasswordPresenter;
 import com.therdl.client.view.ForgotPassword;
 import com.therdl.client.view.impl.ForgotPasswordImpl;
 import com.therdl.client.view.impl.SignInViewImpl;
 import com.therdl.shared.Global;
-import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
@@ -34,7 +29,13 @@ import com.therdl.shared.events.LogInEventEventHandler;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LogInOkEventEventHandler;
 import com.therdl.shared.events.LogOutEvent;
+import org.gwtbootstrap3.client.ui.AnchorButton;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.NavbarBrand;
+import org.gwtbootstrap3.client.ui.NavbarHeader;
+import org.gwtbootstrap3.client.ui.TextBox;
 
+import java.util.logging.Logger;
 
 /**
  * Application menu often referred  to as a 'NavBar' in a TwitterBootstrap scheme for example
@@ -63,9 +64,6 @@ public class AppMenu extends Composite {
 	AnchorListItem signUp;
 	@UiField
 	AnchorListItem login;
-
-
-	// auth flow
 	@UiField
 	AnchorButton userDetails;
 	@UiField
@@ -76,12 +74,15 @@ public class AppMenu extends Composite {
 	AnchorListItem profile;
 	@UiField
 	AnchorListItem out;
+	@UiField
+	TextBox searchSiteContent;
 
 	interface AppMenuUiBinder extends UiBinder<Widget, AppMenu> {
 	}
 
 	public AppMenu(final CommonPresenter presenter) {
 		initWidget(uiBinder.createAndBindUi(this));
+		logOut();
 		this.presenter = presenter;
 		GuiEventBus.EVENT_BUS.addHandler(LogInEvent.TYPE, new LogInEventEventHandler() {
 			@Override
@@ -151,6 +152,13 @@ public class AppMenu extends Composite {
 	public void onLoginClick(ClickEvent event) {
 		log.info("AppMenu: login");
 		GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
+	}
+
+	@UiHandler("searchSiteContent")
+	public void onSearchEnter(KeyDownEvent event) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+			History.newItem(RDLConstants.Tokens.CONTENT_SEARCH + ":" + searchSiteContent.getText());
+		}
 	}
 
 	private void allInactive() {
@@ -304,4 +312,7 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.fireEvent(new CredentialsSubmitEvent(emailTxt, passwordText, rememberMe, null, loginHandler));
 	}
 
+	public TextBox getSearchSiteTextBox() {
+		return searchSiteContent;
+	}
 }

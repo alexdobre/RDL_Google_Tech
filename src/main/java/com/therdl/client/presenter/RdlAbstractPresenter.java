@@ -1,10 +1,5 @@
 package com.therdl.client.presenter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -17,12 +12,13 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
-import com.therdl.client.view.RdlView;
 import com.therdl.client.handler.LoginHandler;
+import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.SupportRdlPopup;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
@@ -31,6 +27,11 @@ import com.therdl.shared.events.CredentialsSubmitEventHandler;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LoginFailEvent;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is the super class for all presenters. It contains common logic.
@@ -207,7 +208,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		searchOptionsBean.as().setCoreCat(CoreCategory.GENERAL.getShortName());
 		searchOptionsBean.as().setTitle(RDLConstants.ContentMgmt.RDL_SUPP_TITLE);
 		searchOptionsBean.as().setAuthor(RDLConstants.ContentMgmt.OFFICIAL_AUTHOR);
-		searchOptionsBean.as().setSnipType(RDLConstants.SnipType.SNIP);
+		searchOptionsBean.as().setSnipType(SnipType.CONTENT_MGMT.getSnipType());
 
 		searchSnips(searchOptionsBean, new SnipListCallback() {
 

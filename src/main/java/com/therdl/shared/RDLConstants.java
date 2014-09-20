@@ -38,6 +38,7 @@ public interface RDLConstants {
 		String PROPOSAL_EDIT = "proposalEdit";
 		String PROPOSAL_VIEW = "!proposalView";
 
+		String CONTENT_SEARCH = "contentSearch";
 	}
 
 	public interface BookmarkSearch {

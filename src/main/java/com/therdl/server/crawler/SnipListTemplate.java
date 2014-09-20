@@ -12,12 +12,14 @@ public class SnipListTemplate {
 	private List<SnipBean> snipsList;
 
 	private String nextPageLink;
+	private String moduleName;
 	private boolean renderNextPage;
 
-	public SnipListTemplate (List<SnipBean> snipBeans, String nextPageLink, boolean renderNextPage){
+	public SnipListTemplate (List<SnipBean> snipBeans, String nextPageLink, String moduleName, boolean renderNextPage){
 		this.snipsList = snipBeans;
 		this.nextPageLink = nextPageLink;
 		this.renderNextPage = renderNextPage;
+		this.moduleName = moduleName;
 	}
 
 	public List<SnipBean> getSnipsList() {
@@ -42,5 +44,13 @@ public class SnipListTemplate {
 
 	public void setRenderNextPage(boolean renderNextPage) {
 		this.renderNextPage = renderNextPage;
+	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 }

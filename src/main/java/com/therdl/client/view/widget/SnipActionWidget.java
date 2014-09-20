@@ -1,17 +1,15 @@
 package com.therdl.client.view.widget;
 
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.therdl.client.handler.ClickHandler;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.constants.IconSize;
 import org.gwtbootstrap3.client.ui.constants.IconType;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Panel;
-import com.therdl.client.handler.ClickHandler;
 
 /**
  * This widget contains the edit/rep/repGiven buttons display
@@ -24,7 +22,7 @@ public class SnipActionWidget extends Composite {
 	private Panel holder;
 
 
-	public SnipActionWidget(){
+	public SnipActionWidget() {
 		holder = new SimplePanel();
 		initWidget(holder);
 	}
@@ -74,7 +72,7 @@ public class SnipActionWidget extends Composite {
 		parent.add(repGiven);
 	}
 
-	public void hide(Panel parent){
+	public void hide(Panel parent) {
 		parent.clear();
 	}
 }

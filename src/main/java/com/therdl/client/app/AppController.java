@@ -12,6 +12,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.ContentNotFoundPresenter;
+import com.therdl.client.presenter.ContentSearchPresenter;
 import com.therdl.client.presenter.IdeaViewPresenter;
 import com.therdl.client.presenter.ImprovementViewPresenter;
 import com.therdl.client.presenter.Presenter;
@@ -23,6 +24,7 @@ import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.presenter.ThreadViewPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
 import com.therdl.client.view.ContentNotFound;
+import com.therdl.client.view.ContentSearchView;
 import com.therdl.client.view.IdeaView;
 import com.therdl.client.view.ImprovementView;
 import com.therdl.client.view.ProfileView;
@@ -32,6 +34,7 @@ import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.ThreadView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.impl.ContentNotFoundImpl;
+import com.therdl.client.view.impl.ContentSearchViewImpl;
 import com.therdl.client.view.impl.IdeaViewImpl;
 import com.therdl.client.view.impl.ImprovementViewImpl;
 import com.therdl.client.view.impl.ImprovementsViewImpl;
@@ -108,6 +111,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private SearchView improvementsView;
 
 	private RegisterView registerView;
+	private ContentSearchView contentSearchView;
 	private ProfileView profileView;
 
 	private IdeaView ideaView;
@@ -247,6 +251,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				break;
 			case RDLConstants.Tokens.PROFILE:
 				showProfile();
+				break;
+			case RDLConstants.Tokens.CONTENT_SEARCH:
+				showContentSearch(tokenSplit);
 				break;
 			case RDLConstants.Tokens.ERROR:
 				showContentNotFound();
@@ -465,7 +472,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
-		log.info("AppController Tokens.SERVICES ");
+		log.info("AppController Tokens.PROFILE ");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
@@ -473,6 +480,23 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onSuccess() {
 				profilePresenter.go(container, currentUserBean);
 
+			}
+		});
+	}
+
+	private void showContentSearch(String[] tokenSplit) {
+		if (contentSearchView == null) {
+			log.info("AppController contentSearchView == null ");
+			contentSearchView = new ContentSearchViewImpl(appMenu);
+		}
+		final ContentSearchPresenter contentSearchPresenter = new ContentSearchPresenter(contentSearchView, this,
+				tokenSplit.length >1?tokenSplit[1]:null);
+		log.info("AppController Tokens.CONTENT_SEARCH ");
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+			public void onSuccess() {
+				contentSearchPresenter.go(container, currentUserBean);
 			}
 		});
 	}
@@ -570,6 +594,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
 		this.currentUserBean.as().setToken(token);
+	}
+
+	public HasWidgets getRootContainer() {
+		return container;
+	}
+
+	public AppMenu getAppMenu() {
+		return appMenu;
 	}
 
 	public RdlAbstractPresenter getDefaultPresenter() {

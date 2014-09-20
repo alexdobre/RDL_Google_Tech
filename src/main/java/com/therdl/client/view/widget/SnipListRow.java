@@ -125,6 +125,13 @@ public class SnipListRow extends Composite {
 		rep.setText(snipBean.as().getRep() + "");
 		snipTitle.setText(snipBean.as().getTitle());
 
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
+			snipTitle.setHref("#"+RDLConstants.Tokens.SNIP_VIEW + ":" + snipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
+			snipTitle.setHref("#"+RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
+			snipTitle.setHref("#"+RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
+
 		posRef.setText(snipBean.as().getPosRef().toString());
 		neutRef.setText(snipBean.as().getNeutralRef().toString());
 		negRef.setText(snipBean.as().getNegativeRef().toString());
@@ -153,20 +160,6 @@ public class SnipListRow extends Composite {
 		} else {
 			snipImgParent.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
 		}
-	}
-
-	@UiHandler("snipTitle")
-	public void snipTitleCliked(ClickEvent event) {
-		triggerViewSnip();
-	}
-
-	private void triggerViewSnip() {
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-			History.newItem(RDLConstants.Tokens.SNIP_VIEW + ":" + snipBean.as().getId());
-		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
-			History.newItem(RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
-		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-			History.newItem(RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
 	}
 
 	public void incrementRepCounter() {

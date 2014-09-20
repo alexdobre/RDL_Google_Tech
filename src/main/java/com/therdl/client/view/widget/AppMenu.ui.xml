@@ -21,7 +21,7 @@
 				</b:NavbarNav>
 
 				<b:NavbarForm pull="LEFT">
-					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="Search Site Content"/>
+					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="{i18n.searchSiteContent}"/>
 				</b:NavbarForm>
 
 				<b:NavbarNav pull="RIGHT">

@@ -49,7 +49,8 @@ public class SnipListTemplateProcessor {
 
 		queryBean.as().setPageIndex(queryBean.as().getPageIndex() + 1);
 		SnipListTemplate template = new SnipListTemplate(snipList,
-				RDLUtils.builtTokenFromBean(queryBean, moduleName, null), shouldRenderNextPage(snipList));
+				RDLUtils.builtTokenFromBean(queryBean, moduleName, null),
+				translateModuleToView(moduleName), shouldRenderNextPage(snipList));
 
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mustache = mf.compile("mustache/snipList.mustache");
@@ -62,7 +63,8 @@ public class SnipListTemplateProcessor {
 		queryBean.as().setSortOrder(1);
 		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null);
 
-		SnipListTemplate template = new SnipListTemplate(snipList, null, false);
+		SnipListTemplate template = new SnipListTemplate(snipList,
+				translateModuleToView(RDLConstants.Tokens.WELCOME), null, false);
 
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mustache = mf.compile("mustache/welcome.mustache");
@@ -74,5 +76,15 @@ public class SnipListTemplateProcessor {
 			return false;
 		}
 		return true;
+	}
+
+	private String translateModuleToView (String moduleName) {
+		switch (moduleName) {
+			case RDLConstants.Tokens.WELCOME: return RDLConstants.Tokens.SNIP_VIEW;
+			case RDLConstants.Tokens.SNIPS: return RDLConstants.Tokens.SNIP_VIEW;
+			case RDLConstants.Tokens.STORIES: return RDLConstants.Tokens.THREAD_VIEW;
+			case RDLConstants.Tokens.IMPROVEMENTS: return RDLConstants.Tokens.PROPOSAL_VIEW;
+			default: return RDLConstants.Tokens.SNIP_VIEW;
+		}
 	}
 }

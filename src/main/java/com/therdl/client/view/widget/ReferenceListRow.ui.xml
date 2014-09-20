@@ -53,7 +53,7 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<b:Row>
-			<b:Column size="MD_4">
+			<b:Column size="MD_2">
 				<g:Image ui:field="avatarImg" width="100px" height="100px"/>
 				<b:Row>
 					<b:Column size="MD_12">
@@ -75,8 +75,8 @@
 					</b:Column>
 				</b:Row>
 			</b:Column>
-			<b:Column size="MD_8">
-				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
+			<b:Column size="MD_10">
+				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12 labels"/>
 				<g:FlowPanel ui:field="rightPanel" styleName="{style.rightPanel}">
 					<g:Label ui:field="refFlag" styleName="{style.refFlag}"></g:Label>
 					<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="refRepBtn" addStyleNames="{style.refRepBtn}"/>

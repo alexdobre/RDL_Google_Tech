@@ -302,3 +302,9 @@ noBorder{
 .repGivenIcon{
 	color: green;
 }
+
+.searchResultsFrame {
+	width: 100%;
+	height: 1200px;
+	border: 0px;
+}
