@@ -5,31 +5,40 @@ package com.therdl.server.data;
  */
 public class PaypalCredentials {
 
-	private String type;
-	private String url;
-	private String token;
+	private String username;
+	private String password;
+	private String signature;
+	private String mode;
 
-	public String getType() {
-		return type;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getToken() {
-		return token;
+	public String getSignature() {
+		return signature;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
 	}
 }

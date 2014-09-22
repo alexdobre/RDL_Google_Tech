@@ -215,7 +215,11 @@ public class SetExpressCheckout {
 			// need to construct redirect url using EC token from response.
 			// For example,
 			// `redirectURL="https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="+setExpressCheckoutResponse.getToken();`
-			response.sendRedirect(PayPalConstants.PAYPAL_SANDBOX_ACCOUNT_URL + setExpressCheckoutResponse.getToken());
+			if (PayPalConfiguration.getPaypalCredentials().getMode().equals(PayPalConstants.SANDBOX_MODE)){
+				response.sendRedirect(PayPalConstants.PAYPAL_SANDBOX_ACCOUNT_URL + setExpressCheckoutResponse.getToken());
+			} else {
+				response.sendRedirect(PayPalConstants.PAYPAL_PRODUCTION_ACCOUNT_URL + setExpressCheckoutResponse.getToken());
+			}
 			// Express Checkout Token
 			logger.info("EC Token:" + setExpressCheckoutResponse.getToken());
 		}

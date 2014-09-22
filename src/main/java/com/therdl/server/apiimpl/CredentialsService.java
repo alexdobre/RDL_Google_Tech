@@ -44,4 +44,23 @@ public class CredentialsService {
 		return cred;
 	}
 
+	public PaypalCredentials getPaypalCredentials() {
+		DB db = dbProvider.getDb();
+		//get the mail credentials from the DB
+		DBCollection coll = db.getCollection("paypalCredentials");
+
+		BasicDBObject query = new BasicDBObject();
+		query.put("uid", "2");
+
+		DBCursor cursor = coll.find(query);
+		DBObject doc = cursor.next();
+
+		PaypalCredentials cred = new PaypalCredentials();
+		cred.setMode((String) doc.get("mode"));
+		cred.setPassword((String)doc.get("password"));
+		cred.setSignature((String)doc.get("signature"));
+		cred.setUsername((String)doc.get("username"));
+		return cred;
+	}
+
 }

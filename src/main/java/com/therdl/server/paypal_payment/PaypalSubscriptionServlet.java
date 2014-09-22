@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.therdl.shared.Constants;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutResponseType;
@@ -21,6 +22,14 @@ public class PaypalSubscriptionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private SetExpressCheckout setExpressCheckout = new SetExpressCheckout();
+	private PayPalConfiguration paypalConfiguration;
+
+	@Inject
+	public PaypalSubscriptionServlet(PayPalConfiguration paypalConfiguration) {
+		//to make sure paypal credentials are initialized
+		log.info("PaypalConfig - INIT");
+		this.paypalConfiguration = paypalConfiguration;
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
