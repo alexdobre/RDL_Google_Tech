@@ -5,7 +5,9 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.therdl.client.app.AppController;
 import com.therdl.client.view.i18n.I18NConstants;
 
@@ -36,9 +38,23 @@ public class RDL implements EntryPoint {
 		});
 		AppController appController = new AppController();
 		RootLayoutPanel rp = RootLayoutPanel.get();
-		rp.setSize("100%", "3500px");
+		//panels added to make the root panel stretch dynamically based on content
+		SimplePanel p1 = new SimplePanel();
+		p1.getElement().getStyle().setProperty("overflow","auto");
+		p1.getElement().getStyle().setProperty("position","absolute");
+		p1.getElement().getStyle().setProperty("zoom","1");
+		p1.getElement().getStyle().setProperty("left","0px");
+		p1.getElement().getStyle().setProperty("top","0px");
+		p1.getElement().getStyle().setProperty("right","0px");
+		p1.getElement().getStyle().setProperty("bottom","0px");
+		rp.add(p1);
+		SimplePanel p2 = new SimplePanel();
+		p2.getElement().getStyle().setProperty("position","relative");
+		p2.getElement().getStyle().setProperty("zoom","1");
+		p1.add(p2);
+
 		//we let the appController take over
-		appController.go(rp);
+		appController.go(p2);
 	}
 
 }
