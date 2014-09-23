@@ -7,7 +7,8 @@ public enum SnipType {
 	SNIP("snip"), FAST_CAP("fastCap"), MATERIAL("material"), HABIT("habit"), REFERENCE("reference"),
 	THREAD("thread"), POST("post"),
 	IMPROVEMENT("improvement"), PLEDGE("pledge"), COUNTER("counter"), PROPOSAL("proposal"),
-	CONTENT_MGMT("contentMgmt"), PROFILE("profile");
+	CONTENT_MGMT("contentMgmt"), PROFILE("profile"),
+	TRIBUNAL("tribunal"), ABUSE_REPORT("abuseReport"), TRIBUNAL_COMMENT("tribunalComment");
 
 	private String snipType;
 

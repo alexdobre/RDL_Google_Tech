@@ -15,6 +15,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.SearchFilterWidget;
+import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -32,7 +33,7 @@ import com.therdl.shared.beans.SnipBean;
  */
 public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 
-	private static Logger log = Logger.getLogger("");
+	private static Logger log = Logger.getLogger(SnipSearchViewImpl.class.getName());
 
 	private static SnipSearchViewImplUiBinder uiBinder = GWT.create(SnipSearchViewImplUiBinder.class);
 
@@ -93,7 +94,7 @@ public class SnipSearchViewImpl extends AppMenuView implements SearchView {
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		if (snipList == null) {
-			snipList = new ListWidget(this, beanList, pageIndex);
+			snipList = new ListWidget(this, beanList, pageIndex, new SnipListRow());
 			snipListRowContainer.add(snipList);
 		} else {
 			snipList.populateList(this, beanList);

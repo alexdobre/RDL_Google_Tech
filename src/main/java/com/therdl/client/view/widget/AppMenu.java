@@ -59,6 +59,8 @@ public class AppMenu extends Composite {
 	@UiField
 	AnchorListItem stories;
 	@UiField
+	AnchorListItem tribunal;
+	@UiField
 	AnchorListItem improvements;
 	@UiField
 	AnchorListItem signUp;
@@ -165,6 +167,7 @@ public class AppMenu extends Composite {
 		home.removeStyleName("brandActive");
 		ideas.setActive(false);
 		stories.setActive(false);
+		tribunal.setActive(false);
 		improvements.setActive(false);
 		signUp.setActive(false);
 		login.setActive(false);
@@ -206,12 +209,18 @@ public class AppMenu extends Composite {
 		if (Global.moduleName == RDLConstants.Modules.STORIES) setStoriesActive();
 		if (Global.moduleName == RDLConstants.Modules.IDEAS) setIdeasActive();
 		if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
+		if (Global.moduleName == RDLConstants.Modules.TRIBUNAL) setTribunalActive();
 	}
 
 	/**
 	 * Sets the improvements element as active in the menu
 	 */
 	public void setImprovementsActive() {
+		allInactive();
+		tribunal.setActive(true);
+	}
+
+	public void setTribunalActive() {
 		allInactive();
 		improvements.setActive(true);
 	}

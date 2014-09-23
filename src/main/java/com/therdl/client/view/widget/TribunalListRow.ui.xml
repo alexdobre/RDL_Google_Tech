@@ -1,0 +1,43 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+		>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+
+	<b:Row>
+		<b:Column size="MD_1">
+			<g:Image ui:field="avatarImg" width="50px" height="50px"/>
+		</b:Column>
+		<b:Column size="MD_10">
+			<b:Row>
+				<b:Column size="MD_12">
+					<b:Heading size="H4" addStyleNames="snipTitle">
+						<b:Anchor ui:field="snipTitle"/>
+					</b:Heading>
+				</b:Column>
+			</b:Row>
+			<b:Row>
+				<b:Column size="MD_2">
+					<b:Badge ui:field="userName" addStyleNames="snipListRowBadge">
+						<b:Icon type="USER" addStyleNames="leftIcon"/>
+					</b:Badge>
+				</b:Column>
+				<b:Column size="MD_4">
+					<g:HTML>YEY / NAY goes here</g:HTML>
+				</b:Column>
+				<b:Column size="MD_6">
+					<b:Badge ui:field="creationDate" addStyleNames="snipListRowBadge"/>
+				</b:Column>
+			</b:Row>
+		</b:Column>
+		<b:Column size="MD_1">
+			<g:FlowPanel ui:field="snipImgParent" styleName="snipImgParent" width="40px"
+			             addStyleNames="img-circle">
+				<g:Image ui:field="snipImg" width="40px"/>
+			</g:FlowPanel>
+		</b:Column>
+
+	</b:Row>
+
+</ui:UiBinder>

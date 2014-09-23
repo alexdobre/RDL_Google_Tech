@@ -308,3 +308,16 @@ noBorder{
 	height: 1200px;
 	border: 0px;
 }
+.snipTitle{
+	margin-top: 0px;
+	margin-bottom: 2px;
+	font-weight: bold;
+}
+.leftIcon{
+	float: left;
+	padding-right: 5px;
+}
+.snipImgParent {
+	float: left;
+	width: 40px;
+}

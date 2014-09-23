@@ -15,6 +15,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.SearchFilterWidget;
+import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -92,7 +93,7 @@ public class ImprovementsViewImpl extends AppMenuView implements SearchView {
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		if (improvementsList == null) {
-			improvementsList = new ListWidget(this, beanList, pageIndex);
+			improvementsList = new ListWidget(this, beanList, pageIndex, new SnipListRow());
 			impListRowContainer.add(improvementsList);
 		} else {
 			improvementsList.populateList(this, beanList);

@@ -22,6 +22,7 @@ import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.presenter.ThreadViewPresenter;
+import com.therdl.client.presenter.TribunalPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
 import com.therdl.client.view.ContentNotFound;
 import com.therdl.client.view.ContentSearchView;
@@ -32,6 +33,7 @@ import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.ThreadView;
+import com.therdl.client.view.TribunalView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.impl.ContentNotFoundImpl;
 import com.therdl.client.view.impl.ContentSearchViewImpl;
@@ -44,6 +46,7 @@ import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.StoriesViewImpl;
 import com.therdl.client.view.impl.ThreadViewImpl;
+import com.therdl.client.view.impl.TribunalViewImpl;
 import com.therdl.client.view.impl.WelcomeViewImpl;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Global;
@@ -108,6 +111,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private SearchView searchView;
 	private SearchView storiesView;
+	private TribunalView tribunalView;
 	private SearchView improvementsView;
 
 	private RegisterView registerView;
@@ -230,6 +234,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				break;
 			case RDLConstants.Tokens.STORIES:
 				showStories(token);
+				break;
+			case RDLConstants.Tokens.TRIBUNAL:
+				showTribunal(token);
 				break;
 			case RDLConstants.Tokens.THREAD_EDIT:
 				showThreadEdit(token);
@@ -359,6 +366,23 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			public void onSuccess() {
 				storiesPresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showTribunal(String token) {
+		Global.moduleName = RDLConstants.Modules.TRIBUNAL;
+		log.info("AppController Tokens.TRIBUNAL");
+		if (tribunalView == null) {
+			tribunalView = new TribunalViewImpl(currentUserBean, appMenu);
+		}
+		final TribunalPresenter tribunalPresenter = new TribunalPresenter(tribunalView, this);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+			}
+			public void onSuccess() {
+				tribunalPresenter.go(container, currentUserBean);
 			}
 		});
 	}

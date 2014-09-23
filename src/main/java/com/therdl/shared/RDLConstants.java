@@ -31,6 +31,7 @@ public interface RDLConstants {
 		String ERROR = "error";
 
 		String STORIES = "!stories";
+		String TRIBUNAL = "tribunal";
 		String IMPROVEMENTS = "!improvements";
 		String THREAD_EDIT = "threadEdit";
 		String THREAD_VIEW = "!threadView";
@@ -107,6 +108,7 @@ public interface RDLConstants {
 		String IDEAS = "ideas";
 		String STORIES = "stories";
 		String IMPROVEMENTS = "Improvements";
+		String TRIBUNAL = "tribunal";
 	}
 
 	public interface ProposalType {

@@ -43,6 +43,10 @@ public class NameTokens {
 		return RDLConstants.Tokens.STORIES;
 	}
 
+	public static String getTribunal() {
+		return RDLConstants.Tokens.TRIBUNAL;
+	}
+
 	public static String getImprovements() {
 		return RDLConstants.Tokens.IMPROVEMENTS;
 	}

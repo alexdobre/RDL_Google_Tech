@@ -15,6 +15,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.SearchFilterWidget;
+import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -95,7 +96,7 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		log.info("On display snip list storiesList=" + storiesList);
 		if (storiesList == null) {
-			storiesList = new ListWidget(this, beanList, pageIndex);
+			storiesList = new ListWidget(this, beanList, pageIndex, new SnipListRow());
 			threadListRowContainer.add(storiesList);
 		} else {
 			storiesList.populateList(this, beanList);

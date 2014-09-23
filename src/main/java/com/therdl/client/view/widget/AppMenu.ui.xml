@@ -16,6 +16,8 @@
 					<b:AnchorListItem ui:field="ideas" targetHistoryToken="{nameTokens.getSnips}" text="{i18n.ideas}"/>
 					<b:AnchorListItem ui:field="stories" targetHistoryToken="{nameTokens.getStories}"
 					                  text="{i18n.stories}"/>
+					<b:AnchorListItem ui:field="tribunal" targetHistoryToken="{nameTokens.getTribunal}"
+					                  text="{i18n.tribunal}"/>
 					<b:AnchorListItem ui:field="improvements" targetHistoryToken="{nameTokens.getImprovements}"
 					                  text="{i18n.improvements}"/>
 				</b:NavbarNav>

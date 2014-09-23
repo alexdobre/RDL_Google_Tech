@@ -8,26 +8,24 @@ import org.gwtbootstrap3.client.ui.Badge;
 import org.gwtbootstrap3.client.ui.Row;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.shared.SnipType;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
+import com.therdl.client.view.impl.AbstractListRow;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
@@ -35,40 +33,35 @@ import com.therdl.shared.beans.SnipBean;
  * gwt widget for snip list row
  * constructor gets snipBean and logged userBean
  */
-public class SnipListRow extends Composite {
+public class SnipListRow extends AbstractListRow {
 	private static Logger log = Logger.getLogger(SnipListRow.class.getName());
 
-	interface SnipListRowUiBinder extends UiBinder<HTMLPanel, SnipListRow> {
+	interface SnipListRowUiBinder extends UiBinder<Widget, SnipListRow> {
 	}
 
 	private static SnipListRowUiBinder ourUiBinder = GWT.create(SnipListRowUiBinder.class);
 
-	private AutoBean<SnipBean> snipBean;
-	private AutoBean<CurrentUserBean> currentUserBean;
-	private SnipType snipType;
-
-	private UIObject parent;
-
-	@UiField
-	FlowPanel snipImgParent;
 	@UiField
 	Label proposalType, proposalState;
 	@UiField
-	Badge creationDate, postsCount, userName, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
+	Badge postsCount, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
 	@UiField
-	Image snipImg, avatarImg;
-	@UiField
-	Anchor snipTitle;
+	Image snipImg;
 	@UiField
 	Row likesRepliesPanel, referencesPanel, pledgeCounterPanel;
 
 	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType,
-	                   UIObject parent) {
-		this.parent = parent;
+			UIObject parent) {
+		super(snipBean, currentUserBean, snipType, parent);
 		initWidget(ourUiBinder.createAndBindUi(this));
 		populate(snipBean, currentUserBean, snipType);
 	}
 
+	public SnipListRow() {
+		//used for a seed instance
+	}
+
+	@Override
 	public void populate(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType) {
 		log.info("SnipListRow populate with title: " + snipBean.as().getTitle());
 		this.snipBean = snipBean;
@@ -86,7 +79,7 @@ public class SnipListRow extends Composite {
 		ViewUtils.hide(referencesPanel);
 		ViewUtils.hide(pledgeCounterPanel);
 
-		if (snipType == null){
+		if (snipType == null) {
 			snipType = SnipType.IMPROVEMENT;
 		}
 
@@ -112,11 +105,11 @@ public class SnipListRow extends Composite {
 			snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
 		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.PROPOSAL))
 			snipImg.setUrl(Resources.INSTANCE.ProposalImageGif().getSafeUri().asString());
-		if (snipBean.as().getAuthorSupporter()){
-			ViewUtils.showHide(true,avatarImg);
+		if (snipBean.as().getAuthorSupporter()) {
+			ViewUtils.showHide(true, avatarImg);
 			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(snipBean.as().getAuthor()));
-		}else {
-			ViewUtils.showHide(false,avatarImg);
+		} else {
+			ViewUtils.showHide(false, avatarImg);
 		}
 	}
 
@@ -126,11 +119,11 @@ public class SnipListRow extends Composite {
 		snipTitle.setText(snipBean.as().getTitle());
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-			snipTitle.setHref("#"+RDLConstants.Tokens.SNIP_VIEW + ":" + snipBean.as().getId());
+			snipTitle.setHref("#" + RDLConstants.Tokens.SNIP_VIEW + ":" + snipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
-			snipTitle.setHref("#"+RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
+			snipTitle.setHref("#" + RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
-			snipTitle.setHref("#"+RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
+			snipTitle.setHref("#" + RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
 
 		posRef.setText(snipBean.as().getPosRef().toString());
 		neutRef.setText(snipBean.as().getNeutralRef().toString());
@@ -139,8 +132,8 @@ public class SnipListRow extends Composite {
 		pledgesCount.setText(snipBean.as().getPledges().toString());
 		countersCount.setText(snipBean.as().getCounters().toString());
 
-		if (snipBean.as().getCreationDate() != null){
-		Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
+		if (snipBean.as().getCreationDate() != null) {
+			Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
 			String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
 			creationDate.setText(dateString);
 		}
@@ -149,18 +142,7 @@ public class SnipListRow extends Composite {
 		proposalState.setText(RDL.i18n.state() + ": " + snipBean.as().getProposalState());
 	}
 
-	private void doBackgroundColor() {
-		// sets background color for snip img and top color strip
-		if (!Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
-			for (CoreCategory item : CoreCategory.values()) {
-				if (item.getShortName().equals(snipBean.as().getCoreCat())) {
-					snipImgParent.getElement().getStyle().setProperty("backgroundColor", item.getColCode());
-				}
-			}
-		} else {
-			snipImgParent.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
-		}
-	}
+
 
 	public void incrementRepCounter() {
 		rep.setText(snipBean.as().getRep() + 1 + "");
@@ -175,7 +157,7 @@ public class SnipListRow extends Composite {
 			else if (refType.equals(RDLConstants.ReferenceType.NEGATIVE))
 				negRef.setText(snipBean.as().getNegativeRef() + 1 + "");
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
-			postsCount.setText(snipBean.as().getPosts() + 1 +  "");
+			postsCount.setText(snipBean.as().getPosts() + 1 + "");
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			if (snipType.equals(RDLConstants.SnipType.PLEDGE))
 				pledgesCount.setText(snipBean.as().getPledges() + 1 + "");
@@ -184,7 +166,8 @@ public class SnipListRow extends Composite {
 		}
 	}
 
-	public UIObject getParentObject() {
-		return parent;
+	public AbstractListRow makeRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean,
+			SnipType snipType, UIObject parent){
+		return new SnipListRow(snipBean, currentUserBean, snipType, parent);
 	}
 }
