@@ -87,6 +87,7 @@ public interface RDLConstants {
 		String PROPOSAL = "proposal";
 		String PLEDGE = "pledge";
 		String COUNTER = "counter";
+		String TRIBUNAL = "tribunal";
 	}
 
 	public interface SnipFields {
@@ -164,5 +165,7 @@ public interface RDLConstants {
 		String C008 = "c008";
 		String C009 = "c009";
 		String C010 = "c010";
+		String C011 = "c011";
+		String C012 = "c012";
 	}
 }

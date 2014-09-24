@@ -27,6 +27,9 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.LoginFailEvent;
+import com.therdl.shared.events.ReportAbuseEvent;
 
 /**
  * gwt widget class for reference row in snip view page
@@ -55,7 +58,7 @@ public class ReferenceListRow extends Composite {
 	Image avatarImg;
 
 	@UiField
-	Button refRepBtn;
+	Button refRepBtn, reportAbuse;
 
 	@UiField
 	FlowPanel emoListPanel;
@@ -141,5 +144,10 @@ public class ReferenceListRow extends Composite {
 				rep.setText(" " + (referenceBean.as().getRep() + 1));
 			}
 		});
+	}
+
+	@UiHandler("reportAbuse")
+	public void onReportAbuseClicked(ClickEvent event) {
+		GuiEventBus.EVENT_BUS.fireEvent(new ReportAbuseEvent(referenceBean.as().getId()));
 	}
 }

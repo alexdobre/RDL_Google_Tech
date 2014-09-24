@@ -17,4 +17,6 @@ public interface SnipValidator {
 	public void validateCanSaveRef(AutoBean<SnipBean> snipBean) throws SnipValidationException, TokenInvalidException;
 
 	public void validateCanGiveRep (AutoBean<SnipBean> snipBean) throws SnipValidationException, TokenInvalidException;
+
+	public SnipBean validateCanReportAbuse (AutoBean<SnipBean> actionBean)throws SnipValidationException, TokenInvalidException;
 }

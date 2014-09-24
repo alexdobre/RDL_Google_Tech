@@ -50,6 +50,7 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
+import com.therdl.shared.events.ReportAbuseEvent;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -93,7 +94,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	@UiField
 	Summernote editorWidgetReply;
 	@UiField
-	Button showRef, leaveRef, saveRef, closeRef, btnEmotionPicker;
+	Button showRef, leaveRef, saveRef, closeRef, btnEmotionPicker, reportAbuse;
 	@UiField
 	RadioButton rb1, rb2, rb3, prb1, prb2;
 	@UiField
@@ -220,6 +221,11 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 			emotionPicker = new EmotionPicker(this, replyBean);
 		}
 		emotionPicker.show();
+	}
+
+	@UiHandler("reportAbuse")
+	public void onReportAbuseClicked(ClickEvent event) {
+		GuiEventBus.EVENT_BUS.fireEvent(new ReportAbuseEvent(currentSnipBean.as().getId()));
 	}
 
 	private void leaveRefHandler(AutoBean<CurrentUserBean> userBean) {

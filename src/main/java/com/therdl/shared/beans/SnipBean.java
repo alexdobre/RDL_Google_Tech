@@ -172,6 +172,10 @@ public interface SnipBean extends TokenizedBean {
 
 	void setCheckReply(Boolean reply);
 
+	Integer getAbuseCount();
+
+	void setAbuseCount(Integer count);
+
 	/**
 	 * nested interfaces
 	 */

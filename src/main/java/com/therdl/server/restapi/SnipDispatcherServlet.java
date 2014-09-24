@@ -59,6 +59,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 	private UserService userService;
 	private SnipValidator snipValidator;
 	private RepService repService;
+	private SnipServletHelper helper;
 
 
 	/**
@@ -75,12 +76,13 @@ public class SnipDispatcherServlet extends HttpServlet {
 	 */
 	@Inject
 	public SnipDispatcherServlet(Provider<HttpSession> sessions, SnipsService snipsService, UserService userService,
-	                             SnipValidator snipValidator, RepService repService) {
+	                             SnipValidator snipValidator, RepService repService, SnipServletHelper helper) {
 		this.sessions = sessions;
 		this.snipsService = snipsService;
 		this.userService = userService;
 		this.snipValidator = snipValidator;
 		this.repService = repService;
+		this.helper = helper;
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 
 	}
@@ -138,6 +140,8 @@ public class SnipDispatcherServlet extends HttpServlet {
 				doGetRefList(resp, actionBean);
 			} else if (actionBean.as().getAction().equals("giveRep")) {
 				doGiveRep(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("reportAbuse")) {
+				doReportAbuse(resp, actionBean);
 			}
 		} catch (RdlCodedException e) {
 			log.info("Coded exception thrown: " + e.getClass().getName() + " code: " + e.getCode());
@@ -165,6 +169,13 @@ public class SnipDispatcherServlet extends HttpServlet {
 		AutoBean<SnipBean> autoBean = AutoBeanUtils.getAutoBean(bean);
 		PrintWriter out = resp.getWriter();
 		out.write(AutoBeanCodex.encode(autoBean).getPayload());
+	}
+
+	private void doReportAbuse(HttpServletResponse resp, AutoBean<SnipBean> actionBean)
+			throws IOException, TokenInvalidException, SnipValidationException {
+		log.info("Do report abuse - BEGIN: "+actionBean.as());
+		SnipBean contentBean = snipValidator.validateCanReportAbuse(actionBean);
+		helper.saveAbuseReport(actionBean, contentBean);
 	}
 
 	private void doGetRefList(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {

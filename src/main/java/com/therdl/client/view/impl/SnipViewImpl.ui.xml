@@ -93,8 +93,11 @@
 								<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
 							</b:ButtonGroup>
 						</b:Column>
-						<b:Column size="MD_5" offset="MD_2">
+						<b:Column size="MD_1" offset="MD_2">
 							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
+						</b:Column>
+						<b:Column size="MD_2" offset="MD_2">
+							<b:Button type="WARNING" icon="WARNING" text="{i18n.reportAbuse}" ui:field="reportAbuse"/>
 						</b:Column>
 						<b:Column size="MD_1" ui:field="snipActionContainer"/>
 					</b:Row>

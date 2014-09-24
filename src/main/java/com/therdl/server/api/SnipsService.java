@@ -85,4 +85,12 @@ public interface SnipsService {
 	 * @return references as a list of SnipBean object
 	 */
 	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail);
+
+	/**
+	 * checks if a user has already reported abuse on a snip
+	 * @param contentId the snip to check
+	 * @param userName the reporter's username
+	 * @return null if abuse has been reported, the abusive content otherwise
+	 */
+	public SnipBean hasReportedAbuse (String contentId, String userName);
 }

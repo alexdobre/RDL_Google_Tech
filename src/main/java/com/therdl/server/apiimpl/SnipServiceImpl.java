@@ -1,6 +1,7 @@
 package com.therdl.server.apiimpl;
 
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -349,6 +350,28 @@ public class SnipServiceImpl implements SnipsService {
 		}
 	}
 
+	@Override
+	public SnipBean hasReportedAbuse (String contentId, String userName) {
+		DB db = getMongo();
+		BasicDBObject query = new BasicDBObject();
+		query.put("_id", new ObjectId(contentId));
+		DBCollection coll = db.getCollection("rdlSnipData");
+
+		DBCursor cursor = coll.find(query);
+
+		if (cursor.hasNext()) {
+			DBObject doc = cursor.next();
+			List<String> abuseReportersList = (List<String>) doc.get("abuseReporters");
+			if (abuseReportersList!= null && abuseReportersList .contains(userName)) {
+				return null;
+			} else {
+				SnipBean snip = buildBeanObject(doc, null);
+				return  snip;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * makes current timestamp
 	 *
@@ -392,6 +415,7 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("parentSnip", snip.getParentSnip());
 		doc.append("votes", snip.getVotes());
 		doc.append("posts", snip.getPosts());
+		doc.append("abuseCount", snip.getAbuseCount());
 
 		doc.append("pledges", snip.getPledges());
 		doc.append("counters", snip.getCounters());
@@ -446,6 +470,7 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setVotes((String)doc.get("votes"));
 		snip.setParentSnip((String)doc.get("parentSnip"));
 		snip.setPosts(RDLUtils.parseInt(doc.get("posts")));
+		snip.setAbuseCount(RDLUtils.parseInt(doc.get("abuseCount")));
 
 		snip.setPledges(RDLUtils.parseInt(doc.get("pledges")));
 		snip.setCounters(RDLUtils.parseInt(doc.get("counters")));

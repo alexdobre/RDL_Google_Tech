@@ -8,4 +8,6 @@ import com.therdl.client.view.widget.SupportRdlPopup;
 public interface CommonPresenter extends Presenter{
 
 	void grabRdlSupporterTitleDesc(final SupportRdlPopup supportRdlPopup);
+
+	void reportAbuse(String contentId, String reason);
 }

@@ -40,7 +40,9 @@ public abstract class StatusCallback implements RequestCallback {
 
 	public void onErrorCodeReturned(String errorCode) {
 		log.info("Error code returned " + errorCode);
-		validatedView.setErrorMessage(ErrorCodeMapper.getI18nMessage(errorCode));
+		if (validatedView != null) {
+			validatedView.setErrorMessage(ErrorCodeMapper.getI18nMessage(errorCode));
+		}
 	}
 
 	public abstract void onSuccess(Request request, Response response);

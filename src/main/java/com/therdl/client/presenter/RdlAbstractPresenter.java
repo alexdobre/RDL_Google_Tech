@@ -1,9 +1,11 @@
 package com.therdl.client.presenter;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -12,6 +14,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
+import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ViewUtils;
@@ -202,6 +205,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 	 * Searches for and returns the RDL Supporter title description from the DB
 	 * @param supportRdlPopup the popup to set the content in
 	 */
+	@Override
 	public void grabRdlSupporterTitleDesc(final SupportRdlPopup supportRdlPopup) {
 		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 		ViewUtils.populateDefaultSearchOptions(searchOptionsBean);
@@ -217,6 +221,34 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 			}
 
 		});
+	}
+
+	@Override
+	public void reportAbuse(String contentId, String reason){
+		log.info("Report abuse on item: "+contentId+" reason: "+reason);
+		log.info("SnipSearchPresenter getSnipSearchResult");
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+
+		AutoBean<SnipBean> actionBean = beanery.snipBean();
+		actionBean.as().setAction("reportAbuse");
+		actionBean.as().setParentSnip(contentId);
+		actionBean.as().setContent(reason);
+		actionBean.as().setAuthor(getController().getCurrentUserBean().as().getName());
+		actionBean.as().setToken(getController().getCurrentUserBean().as().getToken());
+
+		String json = AutoBeanCodex.encode(actionBean).getPayload();
+		try {
+			requestBuilder.sendRequest(json, new StatusCallback(null) {
+				@Override
+				public void onSuccess(Request request, Response response) {
+					log.info("report abuse on success");
+				}
+			});
+		} catch (RequestException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+		}
 	}
 
 	public AppController getController() {

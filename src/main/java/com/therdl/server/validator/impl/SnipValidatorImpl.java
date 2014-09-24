@@ -60,7 +60,7 @@ public class SnipValidatorImpl implements SnipValidator {
 			Set<ConstraintViolation<SnipBean>> violations = validator.validate(snipBean.as());
 			if (!violations.isEmpty()) {
 				isValid = false;
-				log.info("violations: "+violations);
+				log.info("violations: " + violations);
 				// see if category is valid
 			} else if (!CoreCategory.stringIsCateg(snipBean.as().getCoreCat())) {
 				isValid = false;
@@ -84,7 +84,7 @@ public class SnipValidatorImpl implements SnipValidator {
 			isValid = false;
 			log.info("bean null");
 		}
-		log.info("validateSnipBean - END - isValid: "+isValid);
+		log.info("validateSnipBean - END - isValid: " + isValid);
 		if (!isValid) {
 			throw new SnipValidationException(RDLConstants.ErrorCodes.GENERIC);
 		}
@@ -146,5 +146,20 @@ public class SnipValidatorImpl implements SnipValidator {
 		if (repBean != null) {
 			throw new SnipValidationException(RDLConstants.ErrorCodes.C009);
 		}
+	}
+
+	@Override
+	public SnipBean validateCanReportAbuse(AutoBean<SnipBean> actionBean) throws SnipValidationException, TokenInvalidException {
+		UserBean userBean = tokenValidator.validateTokenViaUsername(actionBean.as().getAuthor(), actionBean.as().getToken());
+		//user must be RDL supporter
+		if (!ServerUtils.isRdlSupporter(userBean)) {
+			throw new SnipValidationException(RDLConstants.ErrorCodes.C011);
+		}
+		//has not reported abuse on this bean yet
+		SnipBean sb = snipsService.hasReportedAbuse(actionBean.as().getParentSnip(), userBean.getUsername());
+		if (sb == null) {
+			throw new SnipValidationException(RDLConstants.ErrorCodes.C012);
+		}
+		return sb;
 	}
 }

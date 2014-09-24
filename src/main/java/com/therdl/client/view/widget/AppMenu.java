@@ -29,6 +29,9 @@ import com.therdl.shared.events.LogInEventEventHandler;
 import com.therdl.shared.events.LogInOkEvent;
 import com.therdl.shared.events.LogInOkEventEventHandler;
 import com.therdl.shared.events.LogOutEvent;
+import com.therdl.shared.events.ReportAbuseEvent;
+import com.therdl.shared.events.ReportAbuseEventHandler;
+
 import org.gwtbootstrap3.client.ui.AnchorButton;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.NavbarBrand;
@@ -49,6 +52,7 @@ public class AppMenu extends Composite {
 	private SignInViewImpl signInView;
 	private ForgotPassword forgotPassword;
 	private SupportRdlPopup supportRdlPopup;
+	private ReportAbusePopup reportAbusePopup;
 	private CommonPresenter presenter;
 	LoginHandler loginHandler;
 
@@ -108,6 +112,15 @@ public class AppMenu extends Composite {
 				supportRdlPopup.setTitle(event.getPopupTitle());
 				presenter.grabRdlSupporterTitleDesc(supportRdlPopup);
 				supportRdlPopup.show();
+			}
+		});
+		GuiEventBus.EVENT_BUS.addHandler(ReportAbuseEvent.TYPE, new ReportAbuseEventHandler() {
+			@Override
+			public void onAbuseEvent(ReportAbuseEvent event) {
+				if (reportAbusePopup == null){
+					reportAbusePopup = new ReportAbusePopup(presenter);
+				}
+				reportAbusePopup.show(event.getContentId());
 			}
 		});
 	}
