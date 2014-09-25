@@ -108,6 +108,10 @@ public interface SnipBean extends TokenizedBean {
 
 	void setEmotions(List<String> emoList);
 
+	List<String> getAbuseReporters();
+
+	void setAbuseReporters(List<String> abuseList);
+
 	List<Link> getLinks();
 
 	void setLinks(List<Link> links);

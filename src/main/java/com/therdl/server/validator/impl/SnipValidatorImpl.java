@@ -151,9 +151,9 @@ public class SnipValidatorImpl implements SnipValidator {
 	@Override
 	public SnipBean validateCanReportAbuse(AutoBean<SnipBean> actionBean) throws SnipValidationException, TokenInvalidException {
 		UserBean userBean = tokenValidator.validateTokenViaUsername(actionBean.as().getAuthor(), actionBean.as().getToken());
-		//user must be RDL supporter
-		if (!ServerUtils.isRdlSupporter(userBean)) {
-			throw new SnipValidationException(RDLConstants.ErrorCodes.C011);
+		//user must have at least 5 rep
+		if (!(userBean.getRep() != null && userBean.getRep() >5)) {
+			throw new SnipValidationException(RDLConstants.ErrorCodes.C013);
 		}
 		//has not reported abuse on this bean yet
 		SnipBean sb = snipsService.hasReportedAbuse(actionBean.as().getParentSnip(), userBean.getUsername());

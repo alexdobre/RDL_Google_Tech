@@ -114,6 +114,8 @@ public class SnipServiceImpl implements SnipsService {
 			dbObject.put("pledges", new BasicDBObject("$gte", searchOptions.getPledges()));
 		if (searchOptions.getCounters() != null)
 			dbObject.put("counters", new BasicDBObject("$gte", searchOptions.getCounters()));
+		if (searchOptions.getAbuseCount() != null)
+			dbObject.put("abuseCount", new BasicDBObject("$gte", searchOptions.getAbuseCount()));
 
 		if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
 			dbObject.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
@@ -428,6 +430,14 @@ public class SnipServiceImpl implements SnipsService {
 				emotions.add(emotion);
 			}
 			doc.append("emotions", emotions);
+		}
+
+		BasicDBList abuseReporters = new BasicDBList();
+		if (snip.getAbuseReporters() != null) {
+			for (String abuseReporter : snip.getAbuseReporters()) {
+				abuseReporters.add(abuseReporter);
+			}
+			doc.append("abuseReporters", abuseReporters);
 		}
 
 		BasicDBList links = new BasicDBList();
