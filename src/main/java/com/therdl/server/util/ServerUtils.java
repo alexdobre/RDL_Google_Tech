@@ -1,5 +1,13 @@
 package com.therdl.server.util;
 
+import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.UserBean;
+import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,14 +15,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
-
-import org.mindrot.jbcrypt.BCrypt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.beans.Beanery;
-import com.therdl.shared.beans.UserBean;
 
 /**
  * Contains business logic common utility methods to be used on the server side
@@ -94,7 +94,7 @@ public class ServerUtils {
 	}
 
 	public static boolean isExpired(UserBean.TitleBean titleBean) {
-		log.info("Checking is expired on title date: "+titleBean.getExpires());
+		log.info("Checking is expired on title date: " + titleBean.getExpires());
 		if (RDLConstants.UserTitle.NEVER_EXPIRES.equals(titleBean.getExpires()))
 			return false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
@@ -130,7 +130,7 @@ public class ServerUtils {
 		//we generate a random sequence of 6 numbers
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < 6; i++) {
-			sb.append((int)(Math.random() * 10));
+			sb.append((int) (Math.random() * 10));
 		}
 
 		return sb.toString();
@@ -138,5 +138,19 @@ public class ServerUtils {
 
 	public static String generateUUID() {
 		return UUID.randomUUID().toString();
+	}
+
+	public static boolean isOneWeekOld(String date) throws ParseException {
+		log.info("check isOneWeekOld for date: "+date);
+		SimpleDateFormat sdf = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
+		long time = sdf.parse(date).getTime();
+		//7 days have passed
+		long sevenDays = (7 * 24 * 60 * 60 * 1000);
+		if ((new Date().getTime() - time) > sevenDays) {
+			log.info("check isOneWeekOld END return true");
+			return true;
+		}
+		log.info("check isOneWeekOld END return false");
+		return false;
 	}
 }

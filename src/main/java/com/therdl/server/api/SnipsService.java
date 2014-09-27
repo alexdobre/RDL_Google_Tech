@@ -18,7 +18,7 @@ public interface SnipsService {
 	 * @param id
 	 * @return
 	 */
-	SnipBean getSnip(String id, String currentUserEmail);
+	SnipBean getSnip(String id, String currentUserEmail, String currentUserName);
 
 	/**
 	 * creates the new snip
@@ -50,7 +50,7 @@ public interface SnipsService {
 	 * @param field to increment. This can be viewCount, rep or positive/neutral/negative reference count
 	 * @return
 	 */
-	SnipBean incrementCounter(String id, String field, String currentUserEmail);
+	SnipBean incrementCounter(String id, String field, String currentUserEmail, String currentUserName);
 
 	/**
 	 * search snips for the given search options
@@ -59,7 +59,7 @@ public interface SnipsService {
 	 * @param currentUserEmail used to search if the rep has been given by user, should be null if you do not care
 	 * @return list of SnipBean
 	 */
-	List<SnipBean> searchSnipsWith(SnipBean snip, String currentUserEmail);
+	List<SnipBean> searchSnipsWith(SnipBean snip, String currentUserEmail, String currentUserName);
 
 	/**
 	 * makes current timestamp
@@ -84,7 +84,7 @@ public interface SnipsService {
 	 * @param searchOptions to filter references
 	 * @return references as a list of SnipBean object
 	 */
-	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail);
+	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail, String currentUserName);
 
 	/**
 	 * checks if a user has already reported abuse on a snip
@@ -93,4 +93,11 @@ public interface SnipsService {
 	 * @return null if abuse has been reported, the abusive content otherwise
 	 */
 	public SnipBean hasReportedAbuse (String contentId, String userName);
+
+	/**
+	 * Search for abuse comments, a much simpler search that only returns comments
+	 * @param searchOptions the search options
+	 * @return the comments list
+	 */
+	public List<SnipBean> searchAbuseComments (SnipBean searchOptions);
 }

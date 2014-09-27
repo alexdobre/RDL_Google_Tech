@@ -39,10 +39,10 @@ public class SnipViewTemplateProcessor {
 
 	public void doProcess(final PrintWriter out, String query, String moduleName) throws IOException {
 		log.info("SnipViewTemplateProcessor - doProcess - BEGIN - query: " + query);
-		SnipBean snipBean = snipsService.getSnip(extractId(query), null);
+		SnipBean snipBean = snipsService.getSnip(extractId(query), null, null);
 		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, snipBean.getId());
 		queryBean.as().setReturnSnipContent(true);
-		List<SnipBean> repliesList = snipsService.searchSnipsWith(queryBean.as(), null);
+		List<SnipBean> repliesList = snipsService.searchSnipsWith(queryBean.as(), null, null);
 
 		queryBean.as().setPageIndex(queryBean.as().getPageIndex() + 1);
 		SnipViewTemplate template = new SnipViewTemplate(snipBean, repliesList,

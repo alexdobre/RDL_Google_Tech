@@ -61,13 +61,13 @@ public interface UserBean extends TokenizedBean {
 
 	void setPaypalId(String paypalId);
 
-	/**
-	 * methods below are composition for the Snip rdl schema
-	 */
-
 	Integer getRep();
 
 	void setRep(Integer rep);
+
+	String getDateCreated();
+
+	void setDateCreated(String dateCreated);
 
 	List<TitleBean> getTitles();
 

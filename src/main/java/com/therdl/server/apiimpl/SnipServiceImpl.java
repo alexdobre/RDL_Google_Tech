@@ -68,13 +68,67 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return list of SnipBean
 	 */
 	@Override
-	public List<SnipBean> searchSnipsWith(SnipBean searchOptions, String currentUserEmail) {
+	public List<SnipBean> searchSnipsWith(SnipBean searchOptions, String currentUserEmail, String currentUserName) {
 		log.info("Searching snips with options: " + searchOptions);
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
 		BasicDBObject dbObject = new BasicDBObject();
 		int pageIndex = searchOptions.getPageIndex();
+		addSearchItems(searchOptions, dbObject);
 
+		log.info("Search snips with query: " + dbObject);
+		BasicDBObject projection = new BasicDBObject();
+		if (!searchOptions.getReturnSnipContent()) {
+			projection.put("content", 0);
+		}
+		DBCollection coll = db.getCollection("rdlSnipData");
+		List<DBObject> objList = coll.find(dbObject, projection)
+				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
+				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
+				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
+
+		for (DBObject doc : objList) {
+			SnipBean snip = buildBeanObject(doc, currentUserEmail, currentUserName);
+			beans.add(snip);
+		}
+		log.info("Found list size: " + beans.size());
+		return beans;
+	}
+
+	/**
+	 * Search for abuse comments, a much simpler search that only returns comments
+	 * @param searchOptions the search options
+	 * @return the comments list
+	 */
+	@Override
+	public List<SnipBean> searchAbuseComments (SnipBean searchOptions) {
+		log.info("Searching abuse snips with options: " + searchOptions);
+		DB db = getMongo();
+		List<SnipBean> beans = new ArrayList<SnipBean>();
+		BasicDBObject dbObject = new BasicDBObject();
+		int pageIndex = searchOptions.getPageIndex();
+		addSearchItems(searchOptions, dbObject);
+
+		log.info("Search snips with query: " + dbObject);
+		BasicDBObject projection = new BasicDBObject();
+		//author must be anonymous
+		projection.put("author",0);
+
+		DBCollection coll = db.getCollection("rdlSnipData");
+		List<DBObject> objList = coll.find(dbObject, projection)
+				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
+				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
+				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
+
+		for (DBObject doc : objList) {
+			SnipBean snip = buildBeanObject(doc, null, null);
+			beans.add(snip);
+		}
+		log.info("Found list size: " + beans.size());
+		return beans;
+	}
+
+	private void addSearchItems(SnipBean searchOptions, BasicDBObject dbObject) {
 		if (searchOptions.getParentSnip() != null)
 			dbObject.put("parentSnip", searchOptions.getParentSnip());
 		if (searchOptions.getTitle() != null)
@@ -125,24 +179,6 @@ public class SnipServiceImpl implements SnipsService {
 		} else if (searchOptions.getDateTo() != null) {
 			dbObject.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
 		}
-
-		log.info("Search snips with query: " + dbObject);
-		BasicDBObject projection = new BasicDBObject();
-		if (!searchOptions.getReturnSnipContent()) {
-			projection.put("content", 0);
-		}
-		DBCollection coll = db.getCollection("rdlSnipData");
-		List<DBObject> objList = coll.find(dbObject, projection)
-				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder()))
-				.skip((pageIndex) * Constants.DEFAULT_PAGE_SIZE)
-				.limit(Constants.DEFAULT_PAGE_SIZE).toArray();
-
-		for (DBObject doc : objList) {
-			SnipBean snip = buildBeanObject(doc, currentUserEmail);
-			beans.add(snip);
-		}
-		log.info("Found list size: " + beans.size());
-		return beans;
 	}
 
 	/**
@@ -152,7 +188,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return
 	 */
 	@Override
-	public SnipBean getSnip(String id, String currentUserEmail) {
+	public SnipBean getSnip(String id, String currentUserEmail, String currentUserName) {
 		log.info("SnipServiceImpl getSnip  id: " + id);
 
 		try {
@@ -163,7 +199,7 @@ public class SnipServiceImpl implements SnipsService {
 			DBCursor cursor = coll.find(query);
 			if (cursor.hasNext()) {
 				DBObject doc = cursor.next();
-				SnipBean snip = buildBeanObject(doc, currentUserEmail);
+				SnipBean snip = buildBeanObject(doc, currentUserEmail, currentUserName);
 				log.info("Found snip: " + snip);
 				return snip;
 			} else {
@@ -245,7 +281,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return
 	 */
 	@Override
-	public SnipBean incrementCounter(String id, String field, String currentUserEmail) {
+	public SnipBean incrementCounter(String id, String field, String currentUserEmail, String currentUserName) {
 		DB db = getMongo();
 		DBCollection coll = db.getCollection("rdlSnipData");
 
@@ -255,7 +291,7 @@ public class SnipServiceImpl implements SnipsService {
 		DBObject incQuery = new BasicDBObject("$inc", modifier);
 		// make update
 		DBObject dbObj = coll.findAndModify(searchQuery, incQuery);
-		SnipBean snip = buildBeanObject(dbObj, currentUserEmail);
+		SnipBean snip = buildBeanObject(dbObj, currentUserEmail, currentUserName);
 		return snip;
 	}
 
@@ -275,7 +311,7 @@ public class SnipServiceImpl implements SnipsService {
 		DBObject listItem = new BasicDBObject("links", new BasicDBObject("targetId", linkAutoBean.as().getTargetId()).append("rank", linkAutoBean.as().getRank()));
 		DBObject updateQuery = new BasicDBObject("$push", listItem);
 		DBObject dbObj = coll.findAndModify(searchQuery, updateQuery);
-		SnipBean snip = buildBeanObject(dbObj, null);
+		SnipBean snip = buildBeanObject(dbObj, null, null);
 		return snip;
 	}
 
@@ -286,7 +322,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @return references as a list of SnipBean object
 	 */
 	@Override
-	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail) {
+	public List<SnipBean> getReferences(SnipBean searchOptions, String currentUserEmail, String currentUserName) {
 		log.info("Snip Service getReferences - BEGIN");
 		DB db = getMongo();
 		DBCollection coll = db.getCollection("rdlSnipData");
@@ -324,7 +360,7 @@ public class SnipServiceImpl implements SnipsService {
 
 		while (collDocs.hasNext()) {
 			DBObject doc = collDocs.next();
-			SnipBean snip = buildBeanObject(doc, currentUserEmail);
+			SnipBean snip = buildBeanObject(doc, currentUserEmail, currentUserName);
 			beans.add(snip);
 		}
 
@@ -367,7 +403,7 @@ public class SnipServiceImpl implements SnipsService {
 			if (abuseReportersList!= null && abuseReportersList .contains(userName)) {
 				return null;
 			} else {
-				SnipBean snip = buildBeanObject(doc, null);
+				SnipBean snip = buildBeanObject(doc, null, null);
 				return  snip;
 			}
 		}
@@ -459,7 +495,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * @param : DBObject doc
 	 * @return : SnipBean
 	 */
-	private SnipBean buildBeanObject(DBObject doc, String currentUserEmail) {
+	private SnipBean buildBeanObject(DBObject doc, String currentUserEmail, String currentUserName) {
 		SnipBean snip = beanery.snipBean().as();
 		// set the fields
 		snip.setId(doc.get("_id").toString());
@@ -491,6 +527,15 @@ public class SnipServiceImpl implements SnipsService {
 			snip.setIsRepGivenByUser(1);
 		} else {
 			snip.setIsRepGivenByUser(0);
+		}
+		// see if user already gave abuse report
+		if (currentUserName != null){
+			List<String> abuseReportersList = (List<String>) doc.get("abuseReporters");
+			if (abuseReportersList!= null && abuseReportersList.contains(currentUserName)) {
+				snip.setIsAbuseReportedByUser(1);
+			} else {
+				snip.setIsAbuseReportedByUser(0);
+			}
 		}
 		log.info("Have set rep given by user: "+snip.getIsRepGivenByUser());
 

@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
 		checkedUserBean.as().setToken(ub.getToken());
 		checkedUserBean.as().setIsRDLSupporter(ServerUtils.isRdlSupporter(ub));
 		checkedUserBean.as().setRep(ub.getRep());
+		checkedUserBean.as().setDateCreated(ub.getDateCreated());
 		log.info("User is RDL supporter?: " + checkedUserBean.as().getIsRDLSupporter());
 
 		log.info("Find user END OK: " + checkedUserBean.as().getEmail());
@@ -364,11 +365,9 @@ public class UserServiceImpl implements UserService {
 		user.setSid((String)doc.get("sid"));
 		user.setPaypalId((String)doc.get("paypalId"));
 		user.setRep(RDLUtils.parseInt(doc.get("rep")));
+		user.setDateCreated((String)doc.get("dateCreated"));
 		BasicDBList titles = (BasicDBList)doc.get("titles");
 		BasicDBList friends = (BasicDBList)doc.get("friends");
-		BasicDBList repGiven = (BasicDBList)doc.get("repGiven");
-		BasicDBList refGiven = (BasicDBList)doc.get("refGiven");
-		BasicDBList votesGiven = (BasicDBList)doc.get("votesGiven");
 
 		List<UserBean.TitleBean> titleList = new ArrayList<UserBean.TitleBean>();
 		for (Object obj : titles) {
@@ -432,6 +431,7 @@ public class UserServiceImpl implements UserService {
 		doc.append("paypalId", user.getPaypalId());
 		doc.append("rep", user.getRep());
 		doc.append("token", user.getToken());
+		doc.append("dateCreated", user.getDateCreated());
 
 		BasicDBList titlesList = new BasicDBList();
 

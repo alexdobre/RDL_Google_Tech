@@ -32,6 +32,10 @@ public interface CurrentUserBean extends TokenizedBean {
 
 	void setPaypalId(String paypalId);
 
+	String getDateCreated();
+
+	void setDateCreated(String dateCreated);
+
 	/**
 	 * this method is used to encapsulate the users authorisation status
 	 * goal is to minimise password transport

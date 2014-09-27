@@ -1,16 +1,17 @@
 package com.therdl.server.restapi;
 
-import java.util.ArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
+import com.therdl.server.api.SnipsService;
 import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 
 /**
  * The snip dispatcher servlet is getting quite large so we place helper methods in here
@@ -19,13 +20,24 @@ import com.therdl.shared.beans.SnipBean;
 public class SnipServletHelper {
 	final Logger log = LoggerFactory.getLogger(SnipDispatcherServlet.class);
 	private Beanery beanery;
+	private SnipsService snipsService;
 
-	public SnipServletHelper() {
+	@Inject
+	public SnipServletHelper(SnipsService snipsService) {
 		beanery = AutoBeanFactorySource.create(Beanery.class);
+		this.snipsService = snipsService;
 	}
 
 	public void saveAbuseReport(AutoBean<SnipBean> actionBean, SnipBean abusiveContent) {
 		log.info("saveAbuseReport begin " + actionBean.as());
+		//we now create and save the report
+		//- please note we must do this first cause the abusive content update will null the snipID (parent ID)
+		AutoBean<SnipBean> report = beanery.snipBean();
+		report.as().setParentSnip(abusiveContent.getId());
+		report.as().setSnipType(SnipType.ABUSE_REPORT.getSnipType());
+		report.as().setContent(actionBean.as().getContent());
+		snipsService.createSnip(report.as());
+
 		//we modify the content - firstly we increment the abuse counter
 		if (abusiveContent.getAbuseCount() == null) {
 			abusiveContent.setAbuseCount(1);
@@ -42,12 +54,7 @@ public class SnipServletHelper {
 		}
 		abusiveContent.getAbuseReporters().add(actionBean.as().getAuthor());
 		//we update the reported content
-		//TODO update reported abusive content
-		//we now create and save the report
-		AutoBean<SnipBean> report = beanery.snipBean();
-		report.as().setParentSnip(abusiveContent.getId());
-		report.as().setSnipType(SnipType.ABUSE_REPORT.getSnipType());
-		report.as().setContent(actionBean.as().getContent());
-		//TODO save abuse report
+		snipsService.updateSnip(abusiveContent);
+
 	}
 }

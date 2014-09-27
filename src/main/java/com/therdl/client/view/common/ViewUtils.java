@@ -1,15 +1,7 @@
 package com.therdl.client.view.common;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.gwtbootstrap3.client.ui.html.Span;
-
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -23,6 +15,15 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
+import org.gwtbootstrap3.client.ui.html.Span;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Common methods used by views
@@ -31,10 +32,10 @@ public class ViewUtils {
 
 	private static List<String> pieceMealEmotions;
 
-	public static List<String> getPieceMealEmotions () {
-		if (pieceMealEmotions == null){
+	public static List<String> getPieceMealEmotions() {
+		if (pieceMealEmotions == null) {
 			pieceMealEmotions = new ArrayList<>();
-			for (Emotion emo: Emotion.values()){
+			for (Emotion emo : Emotion.values()) {
 				String[] emoShards = EmotionTranslator.getMessage(emo).split(",");
 				pieceMealEmotions.addAll(Arrays.asList(emoShards));
 			}
@@ -44,13 +45,14 @@ public class ViewUtils {
 
 	/**
 	 * Gets the expires date string from the title
+	 *
 	 * @param currentUserBean the current user bean
-	 * @param titleName the title name to search for
+	 * @param titleName       the title name to search for
 	 * @return the date string or null if not found
 	 */
-	public static String getTitleExpiryDate (AutoBean<CurrentUserBean> currentUserBean, String titleName){
-		for (UserBean.TitleBean titleBean: currentUserBean.as().getTitles()){
-			if (titleName.equals(titleBean.getTitleName())){
+	public static String getTitleExpiryDate(AutoBean<CurrentUserBean> currentUserBean, String titleName) {
+		for (UserBean.TitleBean titleBean : currentUserBean.as().getTitles()) {
+			if (titleName.equals(titleBean.getTitleName())) {
 				return titleBean.getExpires();
 			}
 		}
@@ -175,15 +177,15 @@ public class ViewUtils {
 		return checkBoxList;
 	}
 
-	public static Span buildEmoSpan (Emotion emo){
+	public static Span buildEmoSpan(Emotion emo) {
 		Span emoSpan = new Span();
 		emoSpan.addStyleName("label");
 		emoSpan.getElement().getStyle().setProperty("backgroundColor", EmotionTranslator.getBackground(emo));
 		emoSpan.setText(EmotionTranslator.getMessage(emo));
 		//negative emotions have white text
-		if (!Emotion.isPositive(emo)){
+		if (!Emotion.isPositive(emo)) {
 			emoSpan.getElement().getStyle().setProperty("color", "#ffffff");
-		}else {
+		} else {
 			emoSpan.getElement().getStyle().setProperty("color", "#000000");
 		}
 		return emoSpan;
@@ -207,39 +209,84 @@ public class ViewUtils {
 
 	public static boolean isAuthor(AutoBean<CurrentUserBean> currentUserBean, AutoBean<SnipBean> snipBean) {
 		if (snipBean != null && snipBean.as() != null &&
-				currentUserBean != null && currentUserBean.as() != null && currentUserBean.as().getName() != null)  {
+				currentUserBean != null && currentUserBean.as() != null && currentUserBean.as().getName() != null) {
 			return currentUserBean.as().getName().equals(snipBean.as().getAuthor());
 		}
 		return false;
 	}
 
 	/**
-	 *
 	 * @param userName a correctly formatted user Name which is alphanumeric with spaces, must not be null
 	 * @return the avatar name replacing spaces with underscores
 	 */
-	public static String createAvatarName (String userName){
-		return userName.replace(" ","_");
+	public static String createAvatarName(String userName) {
+		return userName.replace(" ", "_");
 	}
 
 	/**
 	 * Builds a user's avatar image URL
+	 *
 	 * @param userName the user name
 	 * @return the avatar image URL
 	 */
-	public static String getAvatarImageUrl(String userName){
+	public static String getAvatarImageUrl(String userName) {
 		return "https://s3.amazonaws.com/RDL_Avatars/" +
 				ViewUtils.createAvatarName(userName) + ".jpg";
 	}
 
 	/**
 	 * Used when you just want to retrieve one or a few specific results
+	 *
 	 * @param searchOptionsBean the empty bean
 	 */
-	public static void populateDefaultSearchOptions (AutoBean<SnipBean> searchOptionsBean) {
+	public static void populateDefaultSearchOptions(AutoBean<SnipBean> searchOptionsBean) {
 		searchOptionsBean.as().setPageIndex(0);
 		searchOptionsBean.as().setSortOrder(1);
 		searchOptionsBean.as().setSortField("author");
 		searchOptionsBean.as().setReturnSnipContent(true);
+	}
+
+	/**
+	 * Calculates weather or not to show the abuse button
+	 *
+	 * @param currentUser the current logged in user
+	 * @param currentSnip the snip
+	 * @return false if the abuse button should not be shown, true otherwise
+	 */
+	public static boolean showReportAbuseLogic(AutoBean<CurrentUserBean> currentUser, AutoBean<SnipBean> currentSnip) {
+		//user not logged in
+		if (currentUser == null || currentUser.as() == null || !currentUser.as().isAuth()) {
+			return false;
+		}
+		if (currentSnip.as().getIsAbuseReportedByUser() == 1) {
+			return false;
+		}
+		//user must have at least 3 rep and be at least 1 week old or be an RDL supporter
+		if (currentUser.as().getIsRDLSupporter()) {
+			return true;
+		}
+		if ((currentUser.as().getRep() != null && currentUser.as().getRep() > 2) ||
+				isOneWeekOld(currentUser.as().getDateCreated())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * parses the date string and sees if the date is at least on week old
+	 *
+	 * @param date the string representation
+	 * @return true if the date is one week old
+	 */
+	public static boolean isOneWeekOld(String date) {
+		DateTimeFormat dtf = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN);
+		long time = dtf.parse(date).getTime();
+		//7 days have passed
+		long sevenDays = (7 * 24 * 60 * 60 * 1000);
+		if ((new Date().getTime() - time) > sevenDays) {
+			return true;
+		}
+		return false;
 	}
 }

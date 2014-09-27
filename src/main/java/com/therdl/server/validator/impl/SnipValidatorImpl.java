@@ -1,15 +1,5 @@
 package com.therdl.server.validator.impl;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -28,6 +18,15 @@ import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
 import com.therdl.shared.exceptions.SnipValidationException;
 import com.therdl.shared.exceptions.TokenInvalidException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Holds snips validation
@@ -99,7 +98,7 @@ public class SnipValidatorImpl implements SnipValidator {
 		AutoBean<SnipBean> searchOptions = beanery.snipBean();
 		searchOptions.as().setId(snipBean.as().getId());
 		//do the search
-		List<SnipBean> snipList = snipsService.getReferences(searchOptions.as(), null);
+		List<SnipBean> snipList = snipsService.getReferences(searchOptions.as(), null, null);
 		if (snipList != null && snipList.size() > 0) {
 			throw new SnipValidationException(RDLConstants.ErrorCodes.C007);
 		}
@@ -115,7 +114,7 @@ public class SnipValidatorImpl implements SnipValidator {
 		if (snipBean.as().getParentSnip() == null || snipBean.as().getParentSnip().equals("")) {
 			parentValid = false;
 		} else {
-			parent = snipsService.getSnip(snipBean.as().getParentSnip(), null);
+			parent = snipsService.getSnip(snipBean.as().getParentSnip(), null, null);
 			if (parent == null)
 				parentValid = false;
 		}
@@ -130,7 +129,7 @@ public class SnipValidatorImpl implements SnipValidator {
 			query.as().setPageIndex(0);
 			query.as().setSortField("author");
 			query.as().setSortOrder(1);
-			List<SnipBean> resList = snipsService.searchSnipsWith(query.as(), null);
+			List<SnipBean> resList = snipsService.searchSnipsWith(query.as(), null, null);
 			if (resList != null && !resList.isEmpty()) {
 				throw new SnipValidationException(RDLConstants.ErrorCodes.C010);
 			}
@@ -149,11 +148,15 @@ public class SnipValidatorImpl implements SnipValidator {
 	}
 
 	@Override
-	public SnipBean validateCanReportAbuse(AutoBean<SnipBean> actionBean) throws SnipValidationException, TokenInvalidException {
+	public SnipBean validateCanReportAbuse(AutoBean<SnipBean> actionBean) throws SnipValidationException, TokenInvalidException, ParseException {
 		UserBean userBean = tokenValidator.validateTokenViaUsername(actionBean.as().getAuthor(), actionBean.as().getToken());
-		//user must have at least 5 rep
-		if (!(userBean.getRep() != null && userBean.getRep() >5)) {
-			throw new SnipValidationException(RDLConstants.ErrorCodes.C013);
+		log.info("validateCanReportAbuse - BEGIN: rep:"+userBean.getRep());
+		//user must have at least 3 rep and be at least 1 week old or be an RDL supporter
+		if (!ServerUtils.isRdlSupporter(userBean)) {
+			if (!(userBean.getRep() != null && userBean.getRep() > 2) ||
+					!ServerUtils.isOneWeekOld(userBean.getDateCreated())) {
+				throw new SnipValidationException(RDLConstants.ErrorCodes.C013);
+			}
 		}
 		//has not reported abuse on this bean yet
 		SnipBean sb = snipsService.hasReportedAbuse(actionBean.as().getParentSnip(), userBean.getUsername());

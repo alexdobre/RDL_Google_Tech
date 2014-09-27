@@ -1,10 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.Date;
-
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Button;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -19,17 +14,23 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.handler.RequestObserver;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
-import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LoginFailEvent;
 import com.therdl.shared.events.ReportAbuseEvent;
+import com.therdl.shared.events.ShowAbuseCommentsEvent;
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.html.Paragraph;
+
+import java.util.Date;
 
 /**
  * gwt widget class for reference row in snip view page
@@ -44,24 +45,22 @@ public class ReferenceListRow extends Composite {
 
 	@UiField
 	FlowPanel rightPanel;
-
 	@UiField
 	HTMLPanel richTextAreaRef;
-
 	@UiField
 	Badge rep, userName, creationDate;
-
 	@UiField
 	Label refFlag;
-
 	@UiField
 	Image avatarImg;
-
 	@UiField
 	Button refRepBtn, reportAbuse;
-
 	@UiField
 	FlowPanel emoListPanel;
+	@UiField
+	Paragraph abuseWarning;
+	@UiField
+	Anchor abuseWarningAnchor;
 
 	SnipView view;
 
@@ -116,22 +115,25 @@ public class ReferenceListRow extends Composite {
 				ViewUtils.hide(refRepBtn);
 			}
 		}
-		if (referenceBean.as().getAuthorSupporter()){
-			ViewUtils.showHide(true,avatarImg);
+		if (referenceBean.as().getAuthorSupporter()) {
+			ViewUtils.showHide(true, avatarImg);
 			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(referenceBean.as().getAuthor()));
-		}else {
-			ViewUtils.showHide(false,avatarImg);
+		} else {
+			ViewUtils.showHide(false, avatarImg);
 		}
 
 		emoListPanel.clear();
-		if (referenceBean.as().getEmotions() != null){
-			for (String emoStr: referenceBean.as().getEmotions()) {
+		if (referenceBean.as().getEmotions() != null) {
+			for (String emoStr : referenceBean.as().getEmotions()) {
 				emoListPanel.add(ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr)));
 			}
 		}
+		ViewUtils.showHide(ViewUtils.showReportAbuseLogic(currentUserBean, referenceBean), reportAbuse);
+		ViewUtils.showHide(referenceBean.as().getAbuseCount()!=null && referenceBean.as().getAbuseCount()>0,
+				abuseWarning);
 	}
 
-	public UIObject getParentObject(){
+	public UIObject getParentObject() {
 		return parent;
 	}
 
@@ -149,5 +151,10 @@ public class ReferenceListRow extends Composite {
 	@UiHandler("reportAbuse")
 	public void onReportAbuseClicked(ClickEvent event) {
 		GuiEventBus.EVENT_BUS.fireEvent(new ReportAbuseEvent(referenceBean.as().getId()));
+	}
+
+	@UiHandler("abuseWarningAnchor")
+	public void abuseWarningClick(ClickEvent event) {
+		GuiEventBus.EVENT_BUS.fireEvent(new ShowAbuseCommentsEvent(referenceBean.as()));
 	}
 }

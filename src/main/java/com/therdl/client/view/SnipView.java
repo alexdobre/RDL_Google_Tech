@@ -26,7 +26,7 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 
 	public Presenter getPresenter();
 
-	public void viewSnip(AutoBean<SnipBean> snipBean);
+	public void populateSnip(AutoBean<SnipBean> snipBean);
 
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
 

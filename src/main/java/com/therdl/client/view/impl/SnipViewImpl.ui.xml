@@ -3,6 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
+             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
              xmlns:rdl="urn:import:com.therdl.client.view.widget"
 		>
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
@@ -80,6 +81,9 @@
 			</b:PanelHeader>
 			<b:Collapse b:id="snipCollapse">
 				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
+				<b.html:Paragraph emphasis="WARNING" ui:field="abuseWarning">
+					<b:Anchor icon="WARNING" iconSpin="true" text="{i18n.abuseWarning}" addStyleNames="text-warning" ui:field="abuseWarningAnchor"/>
+				</b.html:Paragraph>
 				<b:PanelBody ui:field="richTextArea"/>
 			</b:Collapse>
 			<b:PanelFooter>

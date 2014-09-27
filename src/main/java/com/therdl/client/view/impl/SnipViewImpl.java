@@ -3,6 +3,8 @@ package com.therdl.client.view.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.therdl.shared.events.ShowAbuseCommentsEvent;
+import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
@@ -10,6 +12,7 @@ import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 import org.gwtbootstrap3.client.ui.Panel;
 import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.html.Paragraph;
 import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
@@ -107,6 +110,10 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	LinkedGroup listGroup;
 	@UiField
 	FlowPanel emoListPanel, emoListPanelReply;
+	@UiField
+	Paragraph abuseWarning;
+	@UiField
+	Anchor abuseWarningAnchor;
 
 	private SnipListRow snipListRow;
 	private ArrayList<ReferenceListRow> itemList;
@@ -161,7 +168,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	 *
 	 * @param snipBean snip as SnipBean object
 	 */
-	public void viewSnip(AutoBean<SnipBean> snipBean) {
+	public void populateSnip(AutoBean<SnipBean> snipBean) {
 		this.currentSnipBean = snipBean;
 		// this is the top widget, like in the list widget
 		if (snipListRow == null) {
@@ -182,6 +189,9 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		//references hidden
 		showRef.setText(btnTextShow);
 		ViewUtils.hide(referenceCont);
+		ViewUtils.showHide(ViewUtils.showReportAbuseLogic(currentUserBean, currentSnipBean),reportAbuse);
+		ViewUtils.showHide(currentSnipBean.as().getAbuseCount()!=null && currentSnipBean.as().getAbuseCount()>0,
+				abuseWarning);
 		hideMessages();
 		// call implementations or NO OP
 		onViewSnip();
@@ -267,6 +277,11 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 			ViewUtils.hide(refFilterParent);
 			showRef.setText(btnTextShow);
 		}
+	}
+
+	@UiHandler("abuseWarningAnchor")
+	public void abuseWarningClick(ClickEvent event) {
+		GuiEventBus.EVENT_BUS.fireEvent(new ShowAbuseCommentsEvent(currentSnipBean.as()));
 	}
 
 	@Override

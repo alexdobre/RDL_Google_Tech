@@ -104,7 +104,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
-		currentBean.as().setAction("viewSnip");
+		currentBean.as().setAction("populateSnip");
 		currentBean.as().setId(currentSnipId);
 
 		//if the user is logged in and if we are in the IDEAS or IMPROVEMENTS module we need to know if the user has
@@ -125,7 +125,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 						History.newItem(RDLConstants.Tokens.ERROR);
 					} else {
 						currentSnipBean = returnedBean;
-						view.viewSnip(returnedBean);
+						view.populateSnip(returnedBean);
 						replyButtonLogic();
 						snipActionLogic(returnedBean);
 						container.add(view.asWidget());
@@ -177,7 +177,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 						@Override
 						public void onSuccess(String response) {
 							currentSnipBean.as().setRep(currentSnipBean.as().getRep() + 1);
-							view.viewSnip(currentSnipBean);
+							view.populateSnip(currentSnipBean);
 							view.showSnipAction(null, null);
 						}
 					});

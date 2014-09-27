@@ -1,11 +1,11 @@
 package com.therdl.shared;
 
-import java.util.logging.Logger;
-
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.logging.Logger;
 
 /**
  * This class contains java utility methods to be used throughout the project
@@ -60,24 +60,24 @@ public class RDLUtils {
 			token = token.replace("_escaped_fragment_=", "!");
 		if (token != null) {
 			switch (token) {
-			case RDLConstants.Tokens.SNIPS:
-				buildDefaultSnipsBean(searchOptionsBean);
-				break;
-			case RDLConstants.Tokens.STORIES:
-				buildDefaultStoriesBean(searchOptionsBean);
-				break;
-			case RDLConstants.Tokens.IMPROVEMENTS:
-				buildDefaultImprovementsBean(searchOptionsBean);
-				break;
-			case RDLConstants.Tokens.THREAD_VIEW:
-				buildDefaultThreadViewBean(searchOptionsBean);
-				break;
-			case RDLConstants.Tokens.SNIP_VIEW:
-				buildDefaultViewBean(searchOptionsBean);
-				break;
-			case RDLConstants.Tokens.PROPOSAL_VIEW:
-				buildDefaultViewBean(searchOptionsBean);
-				break;
+				case RDLConstants.Tokens.SNIPS:
+					buildDefaultSnipsBean(searchOptionsBean);
+					break;
+				case RDLConstants.Tokens.STORIES:
+					buildDefaultStoriesBean(searchOptionsBean);
+					break;
+				case RDLConstants.Tokens.IMPROVEMENTS:
+					buildDefaultImprovementsBean(searchOptionsBean);
+					break;
+				case RDLConstants.Tokens.THREAD_VIEW:
+					buildDefaultThreadViewBean(searchOptionsBean);
+					break;
+				case RDLConstants.Tokens.SNIP_VIEW:
+					buildDefaultViewBean(searchOptionsBean);
+					break;
+				case RDLConstants.Tokens.PROPOSAL_VIEW:
+					buildDefaultViewBean(searchOptionsBean);
+					break;
 			}
 		}
 	}

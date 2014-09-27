@@ -45,7 +45,7 @@ public class SnipListTemplateProcessor {
 		}
 		log.info("SnipListTemplateProcessor doProcess - BEGIN query: " + query);
 		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, null);
-		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null);
+		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null, null);
 
 		queryBean.as().setPageIndex(queryBean.as().getPageIndex() + 1);
 		SnipListTemplate template = new SnipListTemplate(snipList,
@@ -61,7 +61,7 @@ public class SnipListTemplateProcessor {
 		AutoBean<SnipBean> queryBean = beanery.snipBean();
 		RDLUtils.buildDefaultWelcomeBean(queryBean);
 		queryBean.as().setSortOrder(1);
-		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null);
+		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null, null);
 
 		SnipListTemplate template = new SnipListTemplate(snipList,
 				translateModuleToView(RDLConstants.Tokens.WELCOME), null, false);

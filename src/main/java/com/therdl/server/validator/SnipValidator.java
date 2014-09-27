@@ -5,6 +5,8 @@ import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.exceptions.SnipValidationException;
 import com.therdl.shared.exceptions.TokenInvalidException;
 
+import java.text.ParseException;
+
 /**
  * Holds snips validation
  */
@@ -18,5 +20,5 @@ public interface SnipValidator {
 
 	public void validateCanGiveRep (AutoBean<SnipBean> snipBean) throws SnipValidationException, TokenInvalidException;
 
-	public SnipBean validateCanReportAbuse (AutoBean<SnipBean> actionBean)throws SnipValidationException, TokenInvalidException;
+	public SnipBean validateCanReportAbuse (AutoBean<SnipBean> actionBean) throws SnipValidationException, TokenInvalidException, ParseException;
 }

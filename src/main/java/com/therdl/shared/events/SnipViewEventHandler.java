@@ -11,5 +11,4 @@ public interface SnipViewEventHandler extends EventHandler {
 
 	void onSnipSelectEvent(SnipViewEvent event);
 
-
 }

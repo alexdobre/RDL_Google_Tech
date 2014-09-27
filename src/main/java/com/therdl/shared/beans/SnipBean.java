@@ -56,7 +56,7 @@ public interface SnipBean extends TokenizedBean {
 
 	Boolean getAuthorSupporter();
 
-	void setAuthorSupporter( Boolean isSupporter);
+	void setAuthorSupporter(Boolean isSupporter);
 
 	String getCreationDate();
 
@@ -127,6 +127,10 @@ public interface SnipBean extends TokenizedBean {
 	Integer getIsRepGivenByUser();
 
 	void setIsRepGivenByUser(Integer repGiven);
+
+	Integer getIsAbuseReportedByUser();
+
+	void setIsAbuseReportedByUser(Integer abuseRep);
 
 	Integer getIsRefGivenByUser();
 

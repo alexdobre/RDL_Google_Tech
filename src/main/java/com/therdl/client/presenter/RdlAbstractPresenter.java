@@ -8,6 +8,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -18,6 +19,7 @@ import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ViewUtils;
+import com.therdl.client.view.widget.AbuseCommentsPopup;
 import com.therdl.client.view.widget.SupportRdlPopup;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -33,6 +35,7 @@ import com.therdl.shared.events.LoginFailEvent;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -132,13 +135,13 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 			String json = AutoBeanCodex.encode(authBean).getPayload();
 
 			log.info("RdlAbstractPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new BeanCallback<AuthUserBean>(AuthUserBean.class,null) {
+			requestBuilder.sendRequest(json, new BeanCallback<AuthUserBean>(AuthUserBean.class, null) {
 
 				@Override
-				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean){
+				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean) {
 					controller.setCurrentUserBean(returnedBean.as().getName(), returnedBean.as().getEmail(),
 							true, returnedBean.as().getTitles(), returnedBean.as().getIsRDLSupporter(),
-							returnedBean.as().getToken(), returnedBean.as().getRep());
+							returnedBean.as().getToken(), returnedBean.as().getRep(), returnedBean.as().getDateCreated());
 
 					sidLogic(returnedBean);
 
@@ -203,6 +206,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 
 	/**
 	 * Searches for and returns the RDL Supporter title description from the DB
+	 *
 	 * @param supportRdlPopup the popup to set the content in
 	 */
 	@Override
@@ -224,8 +228,8 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 	}
 
 	@Override
-	public void reportAbuse(String contentId, String reason){
-		log.info("Report abuse on item: "+contentId+" reason: "+reason);
+	public void reportAbuse(String contentId, String reason) {
+		log.info("Report abuse on item: " + contentId + " reason: " + reason);
 		log.info("SnipSearchPresenter getSnipSearchResult");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -244,7 +248,42 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 				@Override
 				public void onSuccess(Request request, Response response) {
 					log.info("report abuse on success");
+					getController().getAppMenu().getReportAbusePopup().hide();
+					History.fireCurrentHistoryState();
 				}
+			});
+		} catch (RequestException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+
+	public void showAbuseComments(SnipBean abusiveContent, final AbuseCommentsPopup popup) {
+
+		log.info("Retrieve abuse comments for: " + abusiveContent);
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+
+		AutoBean<SnipBean> actionBean = beanery.snipBean();
+		ViewUtils.populateDefaultSearchOptions(actionBean);
+		actionBean.as().setAction("abuseComments");
+		actionBean.as().setParentSnip(abusiveContent.getId());
+		actionBean.as().setSnipType(SnipType.ABUSE_REPORT.getSnipType());
+		actionBean.as().setToken(getController().getCurrentUserBean().as().getToken());
+
+		String json = AutoBeanCodex.encode(actionBean).getPayload();
+		try {
+			requestBuilder.sendRequest(json, new SnipListCallback() {
+
+				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
+					List<String> contentList = new ArrayList<>(beanList.size());
+					for (AutoBean<SnipBean> returnedBean : beanList) {
+						contentList.add(returnedBean.as().getContent());
+					}
+					popup.show();
+					popup.populateBody(contentList);
+				}
+
 			});
 		} catch (RequestException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);

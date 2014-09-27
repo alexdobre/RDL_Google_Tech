@@ -31,7 +31,8 @@ import com.therdl.shared.events.LogInOkEventEventHandler;
 import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.ReportAbuseEvent;
 import com.therdl.shared.events.ReportAbuseEventHandler;
-
+import com.therdl.shared.events.ShowAbuseCommentsEvent;
+import com.therdl.shared.events.ShowAbuseCommentsEventHandler;
 import org.gwtbootstrap3.client.ui.AnchorButton;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.NavbarBrand;
@@ -53,6 +54,7 @@ public class AppMenu extends Composite {
 	private ForgotPassword forgotPassword;
 	private SupportRdlPopup supportRdlPopup;
 	private ReportAbusePopup reportAbusePopup;
+	private AbuseCommentsPopup abuseCommentsPopup;
 	private CommonPresenter presenter;
 	LoginHandler loginHandler;
 
@@ -106,7 +108,7 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.addHandler(BecomeRdlSupporterEvent.TYPE, new BecomeRdlSupporterEventHandler() {
 			@Override
 			public void onSupporterEvent(BecomeRdlSupporterEvent event) {
-				if (supportRdlPopup == null){
+				if (supportRdlPopup == null) {
 					supportRdlPopup = new SupportRdlPopup();
 				}
 				supportRdlPopup.setTitle(event.getPopupTitle());
@@ -117,10 +119,19 @@ public class AppMenu extends Composite {
 		GuiEventBus.EVENT_BUS.addHandler(ReportAbuseEvent.TYPE, new ReportAbuseEventHandler() {
 			@Override
 			public void onAbuseEvent(ReportAbuseEvent event) {
-				if (reportAbusePopup == null){
+				if (reportAbusePopup == null) {
 					reportAbusePopup = new ReportAbusePopup(presenter);
 				}
 				reportAbusePopup.show(event.getContentId());
+			}
+		});
+		GuiEventBus.EVENT_BUS.addHandler(ShowAbuseCommentsEvent.TYPE, new ShowAbuseCommentsEventHandler() {
+			@Override
+			public void onCommentsEvent(ShowAbuseCommentsEvent event) {
+				if (abuseCommentsPopup == null) {
+					abuseCommentsPopup = new AbuseCommentsPopup();
+				}
+				presenter.showAbuseComments(event.getAbusiveContent(), abuseCommentsPopup);
 			}
 		});
 	}
@@ -230,12 +241,12 @@ public class AppMenu extends Composite {
 	 */
 	public void setImprovementsActive() {
 		allInactive();
-		tribunal.setActive(true);
+		improvements.setActive(true);
 	}
 
 	public void setTribunalActive() {
 		allInactive();
-		improvements.setActive(true);
+		tribunal.setActive(true);
 	}
 
 	/**
@@ -336,5 +347,9 @@ public class AppMenu extends Composite {
 
 	public TextBox getSearchSiteTextBox() {
 		return searchSiteContent;
+	}
+
+	public ReportAbusePopup getReportAbusePopup() {
+		return reportAbusePopup;
 	}
 }

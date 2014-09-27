@@ -3,6 +3,8 @@ package com.therdl.server.restapi;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -175,6 +177,7 @@ public class AuthServlet extends HttpServlet {
 		//generate a unique session ID
 		newUserBean.as().setSid(ServerUtils.generateUUID());
 		newUserBean.as().setUsername(authBean.as().getName());
+		newUserBean.as().setDateCreated(new SimpleDateFormat(RDLConstants.DATE_PATTERN).format(new Date()));
 		String password = authBean.as().getPassword();
 		String hash = ServerUtils.encryptString(password);
 		log.info("SessionServlet password hash = " + hash);
