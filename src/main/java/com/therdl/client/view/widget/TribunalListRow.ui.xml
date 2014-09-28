@@ -1,33 +1,37 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
 		>
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
 	<b:Row>
-		<b:Column size="MD_1">
-			<g:Image ui:field="avatarImg" width="50px" height="50px"/>
-		</b:Column>
-		<b:Column size="MD_10">
+		<b:Column size="MD_11">
 			<b:Row>
-				<b:Column size="MD_12">
+				<b:Column size="MD_10">
 					<b:Heading size="H4" addStyleNames="snipTitle">
 						<b:Anchor ui:field="snipTitle"/>
 					</b:Heading>
 				</b:Column>
+				<b:Column size="MD_2">
+					<b:Badge addStyleNames="snipListRowBadge" ui:field="votingText"/>
+				</b:Column>
 			</b:Row>
 			<b:Row>
+				<b:Column size="MD_1" offset="MD_1">
+					<g:FlowPanel>
+						<b.html:Paragraph emphasis="WARNING" ui:field="fraction" addStyleNames="noMargin"/>
+					</g:FlowPanel>
+				</b:Column>
+				<b:Column size="MD_8">
+					<b:Progress active="true" type="STRIPED" addStyleNames="tribunalRowProgress" ui:field="tribunalRowProgress">
+						<b:ProgressBar type="WARNING" percent="60" ui:field="yesAbuseProgress"/>
+						<b:ProgressBar type="SUCCESS" percent="40" ui:field="noAbuseProgress"/>
+					</b:Progress>
+				</b:Column>
 				<b:Column size="MD_2">
-					<b:Badge ui:field="userName" addStyleNames="snipListRowBadge">
-						<b:Icon type="USER" addStyleNames="leftIcon"/>
-					</b:Badge>
-				</b:Column>
-				<b:Column size="MD_4">
-					<g:HTML>YEY / NAY goes here</g:HTML>
-				</b:Column>
-				<b:Column size="MD_6">
-					<b:Badge ui:field="creationDate" addStyleNames="snipListRowBadge"/>
+					<b:Badge ui:field="displayDate" addStyleNames="snipListRowBadge"/>
 				</b:Column>
 			</b:Row>
 		</b:Column>

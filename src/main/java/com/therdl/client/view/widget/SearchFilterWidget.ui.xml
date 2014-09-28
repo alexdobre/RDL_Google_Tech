@@ -33,11 +33,6 @@
 		margin-bottom: 0px;
 		display: inline-block;
 		}
-
-		.dateFilterWidget {
-		float: left;
-		}
-
 	</ui:style>
 
 	<b:Form type="HORIZONTAL">
@@ -146,7 +141,7 @@
 							<b:FormLabel addStyleNames="col-lg-3" text="{i18n.date}"/>
 							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="datePanel">
 								<rdl:DateFilterWidget ui:field="dateFilterWidget"
-								                      styleName="{style.dateFilterWidget}"/>
+								                      styleName="dateFilterWidget"/>
 							</g:HorizontalPanel>
 						</b:FormGroup>
 

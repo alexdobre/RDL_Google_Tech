@@ -2,11 +2,10 @@ package com.therdl.client.view.common;
 
 import java.util.logging.Logger;
 
+import com.therdl.client.presenter.PaginationPresenter;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.widget.ListWidget;
 import com.therdl.shared.Constants;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.PaginationSnipsEvent;
 
 /**
  * Common methods used in pagination
@@ -14,20 +13,21 @@ import com.therdl.shared.events.PaginationSnipsEvent;
 public class PaginationHelper {
 	protected static Logger log = Logger.getLogger(PaginationHelper.class.getName());
 
-	public static void fireNextPageEvent (int pageIndex, String listRange, int currentListSize, int maxListSize){
+	public static void doNextPage(int pageIndex, String listRange, int currentListSize, int maxListSize,
+	                              PaginationPresenter paginationPresenter){
 		//do nothing if upper limit was reached
 		if (currentListSize < maxListSize){
 			return;
 		}else if (listRange.startsWith("Limit")){
 			return;
 		}
-		GuiEventBus.EVENT_BUS.fireEvent(new PaginationSnipsEvent(true, pageIndex));
+		paginationPresenter.doPagination(true, pageIndex);
 	}
 
-	public static void firePrevPageEvent (int pageIndex){
+	public static void doPrevPage(int pageIndex, PaginationPresenter paginationPresenter){
 		//do nothing if lower limit was reached
 		if (pageIndex == 0 ) return;
-		GuiEventBus.EVENT_BUS.fireEvent(new PaginationSnipsEvent(false, pageIndex));
+		paginationPresenter.doPagination(false, pageIndex);
 	}
 
 	public static void showPaginationOnView(int pageIndex, int listSize, PaginatedView view) {

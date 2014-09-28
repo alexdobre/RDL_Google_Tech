@@ -3,7 +3,6 @@ package com.therdl.client.view.widget;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Badge;
 import org.gwtbootstrap3.client.ui.Row;
 
@@ -11,8 +10,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
@@ -20,9 +17,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.cssbundles.Resources;
-import com.therdl.client.view.impl.AbstractListRow;
-import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.SnipType;
@@ -42,11 +36,11 @@ public class SnipListRow extends AbstractListRow {
 	private static SnipListRowUiBinder ourUiBinder = GWT.create(SnipListRowUiBinder.class);
 
 	@UiField
+	public Image avatarImg;
+	@UiField
 	Label proposalType, proposalState;
 	@UiField
-	Badge postsCount, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
-	@UiField
-	Image snipImg;
+	Badge userName, postsCount, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
 	@UiField
 	Row likesRepliesPanel, referencesPanel, pledgeCounterPanel;
 
@@ -70,8 +64,19 @@ public class SnipListRow extends AbstractListRow {
 
 		doBackgroundColor();
 		doTexts();
-		doImages();
+		doImages(snipBean.as().getSnipType());
 		showHide();
+	}
+
+	@Override
+	protected void doImages(String snipType) {
+		super.doImages(snipType);
+		if (snipBean.as().getAuthorSupporter()) {
+			ViewUtils.showHide(true, avatarImg);
+			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(snipBean.as().getAuthor()));
+		} else {
+			ViewUtils.showHide(false, avatarImg);
+		}
 	}
 
 	private void showHide() {
@@ -89,27 +94,6 @@ public class SnipListRow extends AbstractListRow {
 			ViewUtils.show(likesRepliesPanel);
 		} else if (snipType.isImprovement()) {
 			ViewUtils.show(pledgeCounterPanel);
-		}
-	}
-
-	private void doImages() {
-		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.SNIP))
-			snipImg.setUrl(Resources.INSTANCE.SnipImage().getSafeUri().asString());
-		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.FAST_CAP))
-			snipImg.setUrl(Resources.INSTANCE.FastCapImage().getSafeUri().asString());
-		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.HABIT))
-			snipImg.setUrl(Resources.INSTANCE.HabitImage().getSafeUri().asString());
-		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.MATERIAL))
-			snipImg.setUrl(Resources.INSTANCE.MaterialImage().getSafeUri().asString());
-		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.THREAD))
-			snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
-		if (snipBean.as().getSnipType().equals(RDLConstants.SnipType.PROPOSAL))
-			snipImg.setUrl(Resources.INSTANCE.ProposalImageGif().getSafeUri().asString());
-		if (snipBean.as().getAuthorSupporter()) {
-			ViewUtils.showHide(true, avatarImg);
-			avatarImg.setUrl(ViewUtils.getAvatarImageUrl(snipBean.as().getAuthor()));
-		} else {
-			ViewUtils.showHide(false, avatarImg);
 		}
 	}
 
@@ -135,7 +119,7 @@ public class SnipListRow extends AbstractListRow {
 		if (snipBean.as().getCreationDate() != null) {
 			Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(snipBean.as().getCreationDate());
 			String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
-			creationDate.setText(dateString);
+			displayDate.setText(dateString);
 		}
 
 		proposalType.setText(RDL.i18n.type() + ": " + snipBean.as().getProposalType());

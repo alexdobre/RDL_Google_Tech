@@ -1,12 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.Legend;
-import org.gwtbootstrap3.client.ui.TextBox;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -27,9 +20,12 @@ import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.PaginationSnipsEvent;
-import com.therdl.shared.events.PaginationSnipsEventHandler;
+import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.TextBox;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * gwt widget class for reference search filter, used in snip view page
@@ -87,15 +83,6 @@ public class ReferenceSearchFilterWidget extends Composite {
 			ViewUtils.hide(proposalGroup);
 		}
 		createSortArrows();
-
-		GuiEventBus.EVENT_BUS.addHandler(PaginationSnipsEvent.TYPE, new PaginationSnipsEventHandler() {
-			@Override
-			public void onPagination(PaginationSnipsEvent event) {
-				int newPageIndex = event.isNextPage() ? (event.getPageIndex() + 1) : (event.getPageIndex() - 1);
-				view.getSearchOptionsBean().as().setPageIndex(newPageIndex);
-				view.getPresenter().populateReplies(view.getSearchOptionsBean());
-			}
-		});
 	}
 
 	/**
@@ -193,9 +180,9 @@ public class ReferenceSearchFilterWidget extends Composite {
 		view.getPresenter().populateReplies(view.getSearchOptionsBean());
 	}
 
-	public void populateSearchOptions(){
+	public void populateSearchOptions() {
 		AutoBean<SnipBean> searchOptionsBean = view.getSearchOptionsBean();
-		if (searchOptionsBean.as().getRep() != null ) rep.setText(searchOptionsBean.as().getRep().toString());
+		if (searchOptionsBean.as().getRep() != null) rep.setText(searchOptionsBean.as().getRep().toString());
 		authorName.setText(searchOptionsBean.as().getAuthor());
 		dateFilterWidget.setDateFrom(searchOptionsBean.as().getDateFrom());
 		dateFilterWidget.setDateTo(searchOptionsBean.as().getDateTo());

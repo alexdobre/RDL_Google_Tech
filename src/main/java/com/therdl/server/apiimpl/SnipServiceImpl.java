@@ -1,7 +1,5 @@
 package com.therdl.server.apiimpl;
 
-
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,6 +73,7 @@ public class SnipServiceImpl implements SnipsService {
 		BasicDBObject dbObject = new BasicDBObject();
 		int pageIndex = searchOptions.getPageIndex();
 		addSearchItems(searchOptions, dbObject);
+		addSnipItems(searchOptions, dbObject);
 
 		log.info("Search snips with query: " + dbObject);
 		BasicDBObject projection = new BasicDBObject();
@@ -96,18 +95,20 @@ public class SnipServiceImpl implements SnipsService {
 	}
 
 	/**
-	 * Search for abuse comments, a much simpler search that only returns comments
+	 * Search for abuse content and comments, this search is different cause it does not return the author names
+	 * as a security measure
 	 * @param searchOptions the search options
 	 * @return the comments list
 	 */
 	@Override
-	public List<SnipBean> searchAbuseComments (SnipBean searchOptions) {
+	public List<SnipBean> searchAbuse(SnipBean searchOptions) {
 		log.info("Searching abuse snips with options: " + searchOptions);
 		DB db = getMongo();
 		List<SnipBean> beans = new ArrayList<SnipBean>();
 		BasicDBObject dbObject = new BasicDBObject();
 		int pageIndex = searchOptions.getPageIndex();
 		addSearchItems(searchOptions, dbObject);
+		addAbuseItems(searchOptions, dbObject);
 
 		log.info("Search snips with query: " + dbObject);
 		BasicDBObject projection = new BasicDBObject();
@@ -171,6 +172,9 @@ public class SnipServiceImpl implements SnipsService {
 		if (searchOptions.getAbuseCount() != null)
 			dbObject.put("abuseCount", new BasicDBObject("$gte", searchOptions.getAbuseCount()));
 
+	}
+
+	private void addSnipItems(SnipBean searchOptions, BasicDBObject dbObject) {
 		if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
 			dbObject.put("creationDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
 					.add("$lte", searchOptions.getDateTo() + " 23:59:59").get());
@@ -178,6 +182,21 @@ public class SnipServiceImpl implements SnipsService {
 			dbObject.put("creationDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
 		} else if (searchOptions.getDateTo() != null) {
 			dbObject.put("creationDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
+		}
+	}
+
+	private void addAbuseItems(SnipBean searchOptions, BasicDBObject dbObject){
+		if (searchOptions.getDateFrom() != null && searchOptions.getDateTo() != null) {
+			dbObject.put("votingExpiresDate", BasicDBObjectBuilder.start("$gte", searchOptions.getDateFrom())
+					.add("$lte", searchOptions.getDateTo() + " 23:59:59").get());
+		} else if (searchOptions.getDateFrom() != null) {
+			dbObject.put("votingExpiresDate", new BasicDBObject("$gte", searchOptions.getDateFrom()));
+		} else if (searchOptions.getDateTo() != null) {
+			dbObject.put("votingExpiresDate", new BasicDBObject("$lte", searchOptions.getDateTo() + " 23:59:59"));
+		}
+
+		if (searchOptions.getVotingExpired() != null){
+			dbObject.put("votingExpired",searchOptions.getVotingExpired());
 		}
 	}
 
@@ -441,6 +460,7 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("content", snip.getContent());
 		doc.append("author", snip.getAuthor());
 		doc.append("creationDate", snip.getCreationDate());
+		doc.append("votingExpiresDate", snip.getVotingExpiresDate());
 		doc.append("editDate", snip.getEditDate());
 		doc.append("snipType", snip.getSnipType());
 		doc.append("coreCat", snip.getCoreCat());
@@ -454,6 +474,9 @@ public class SnipServiceImpl implements SnipsService {
 		doc.append("votes", snip.getVotes());
 		doc.append("posts", snip.getPosts());
 		doc.append("abuseCount", snip.getAbuseCount());
+		doc.append("noAbuseCount", snip.getNoAbuseCount());
+		doc.append("previousSnipType", snip.getPreviousSnipType());
+		doc.append("votingExpired", snip.getVotingExpired());
 
 		doc.append("pledges", snip.getPledges());
 		doc.append("counters", snip.getCounters());
@@ -505,6 +528,7 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setContent((String)doc.get("content"));
 		snip.setCoreCat((String)doc.get("coreCat"));
 		snip.setCreationDate((String)doc.get("creationDate"));
+		snip.setVotingExpiresDate((String)doc.get("votingExpiresDate"));
 		snip.setEditDate((String)doc.get("editDate"));
 		snip.setNegativeRef(RDLUtils.parseInt(doc.get("negativeRef")));
 		snip.setNeutralRef(RDLUtils.parseInt(doc.get("neutralRef")));
@@ -517,6 +541,9 @@ public class SnipServiceImpl implements SnipsService {
 		snip.setParentSnip((String)doc.get("parentSnip"));
 		snip.setPosts(RDLUtils.parseInt(doc.get("posts")));
 		snip.setAbuseCount(RDLUtils.parseInt(doc.get("abuseCount")));
+		snip.setNoAbuseCount(RDLUtils.parseInt(doc.get("noAbuseCount")));
+		snip.setPreviousSnipType((String)doc.get("previousSnipType"));
+		snip.setVotingExpired((Boolean)doc.get("votingExpired"));
 
 		snip.setPledges(RDLUtils.parseInt(doc.get("pledges")));
 		snip.setCounters(RDLUtils.parseInt(doc.get("counters")));

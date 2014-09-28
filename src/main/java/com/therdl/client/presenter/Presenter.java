@@ -16,7 +16,7 @@ import com.therdl.shared.beans.CurrentUserBean;
  * AutoBean<CurrentUserBean> currentUserBean see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * this bean maintains client side user state information
  */
-public abstract interface Presenter {
+public interface Presenter {
 
 	public abstract void go(final HasWidgets container);
 

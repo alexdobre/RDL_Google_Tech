@@ -1,5 +1,6 @@
-package com.therdl.client.view.impl;
+package com.therdl.client.view.widget;
 
+import com.therdl.client.view.cssbundles.Resources;
 import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Badge;
 
@@ -27,13 +28,13 @@ public abstract class AbstractListRow extends Composite {
 	protected UIObject parent;
 
 	@UiField
-	public Image avatarImg;
-	@UiField
 	public Anchor snipTitle;
 	@UiField
-	public Badge userName, creationDate;
+	public Badge displayDate;
 	@UiField
 	public FlowPanel snipImgParent;
+	@UiField
+	public Image snipImg;
 
 	public abstract void populate(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType);
 
@@ -66,5 +67,20 @@ public abstract class AbstractListRow extends Composite {
 		} else {
 			snipImgParent.getElement().getStyle().setProperty("backgroundColor", "#658cd9");
 		}
+	}
+
+	protected void doImages(String snipType) {
+		if (snipType.equals(RDLConstants.SnipType.SNIP))
+			snipImg.setUrl(Resources.INSTANCE.SnipImage().getSafeUri().asString());
+		if (snipType.equals(RDLConstants.SnipType.FAST_CAP))
+			snipImg.setUrl(Resources.INSTANCE.FastCapImage().getSafeUri().asString());
+		if (snipType.equals(RDLConstants.SnipType.HABIT))
+			snipImg.setUrl(Resources.INSTANCE.HabitImage().getSafeUri().asString());
+		if (snipType.equals(RDLConstants.SnipType.MATERIAL))
+			snipImg.setUrl(Resources.INSTANCE.MaterialImage().getSafeUri().asString());
+		if (snipType.equals(RDLConstants.SnipType.THREAD))
+			snipImg.setUrl(Resources.INSTANCE.ThreadImageGif().getSafeUri().asString());
+		if (snipType.equals(RDLConstants.SnipType.PROPOSAL))
+			snipImg.setUrl(Resources.INSTANCE.ProposalImageGif().getSafeUri().asString());
 	}
 }

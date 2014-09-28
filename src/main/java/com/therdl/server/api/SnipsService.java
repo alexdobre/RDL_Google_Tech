@@ -99,5 +99,5 @@ public interface SnipsService {
 	 * @param searchOptions the search options
 	 * @return the comments list
 	 */
-	public List<SnipBean> searchAbuseComments (SnipBean searchOptions);
+	public List<SnipBean> searchAbuse(SnipBean searchOptions);
 }

@@ -39,6 +39,7 @@ public interface RDLConstants {
 		String PROPOSAL_EDIT = "proposalEdit";
 		String PROPOSAL_VIEW = "!proposalView";
 
+		String TRIBUNAL_VIEW = "tribunalView";
 		String CONTENT_SEARCH = "contentSearch";
 	}
 

@@ -321,3 +321,16 @@ noBorder{
 	float: left;
 	width: 40px;
 }
+
+.tribunalRowProgress {
+	height: 15px;
+	margin-bottom: 5px;
+}
+
+.noMargin {
+	margin: 0px;
+}
+
+.dateFilterWidget {
+	float: left;
+}

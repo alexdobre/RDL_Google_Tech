@@ -12,10 +12,11 @@
 
 			<b:Row>
 				<b:Column size="MD_3">
-					<g:HTML>Filter panel here</g:HTML>
+					<g:FlowPanel ui:field="snipSearchWidgetPanel"/>
 				</b:Column>
 				<b:Column size="MD_9">
-					<g:HTML>Search results here</g:HTML>
+					<rdl:LoadingWidget ui:field="loadingWidget"/>
+					<g:FlowPanel ui:field="snipListRowContainer"/>
 				</b:Column>
 			</b:Row>
 

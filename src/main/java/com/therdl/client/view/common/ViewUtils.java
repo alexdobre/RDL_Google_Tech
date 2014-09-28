@@ -289,4 +289,15 @@ public class ViewUtils {
 		}
 		return false;
 	}
+
+	/**
+	 * parses the date string and sees if the date is before or after today
+	 * @param date the date to parse
+	 * @return true if the date has past
+	 */
+	public static boolean isExpired (String date) {
+		DateTimeFormat dtf = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN);
+		Date parsed = dtf.parse(date);
+		return parsed.before(new Date());
+	}
 }

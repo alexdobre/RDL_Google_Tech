@@ -30,7 +30,7 @@ import com.therdl.shared.beans.SnipBean;
  */
 
 
-public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implements SearchView.Presenter {
+public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implements SearchView.Presenter, PaginationPresenter {
 
 	public SnipSearchPresenter(SearchView searchView, AppController controller, String token) {
 		super(controller);
@@ -67,5 +67,14 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 			}
 
 		});
+	}
+
+	@Override
+	public void doPagination(boolean isNextPage, int pageIndex) {
+		log.info("Search presenter - on pagination -BEGIN");
+		int newPageIndex = isNextPage ? (pageIndex + 1) : (pageIndex - 1);
+		view.getListWidget().setPageIndex(newPageIndex);
+		view.getCurrentSearchOptionsBean().as().setPageIndex(newPageIndex);
+		view.doFilterSearch();
 	}
 }

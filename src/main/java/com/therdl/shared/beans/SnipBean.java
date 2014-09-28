@@ -58,9 +58,17 @@ public interface SnipBean extends TokenizedBean {
 
 	void setAuthorSupporter(Boolean isSupporter);
 
+	Boolean getVotingExpired();
+
+	void setVotingExpired(Boolean votingExpired);
+
 	String getCreationDate();
 
 	void setCreationDate(String creationDate);
+
+	String getVotingExpiresDate();
+
+	void setVotingExpiresDate(String votingExpiresDate);
 
 	String getDateFrom();
 
@@ -78,6 +86,10 @@ public interface SnipBean extends TokenizedBean {
 	String getSnipType();
 
 	void setSnipType(String snipType);
+
+	String getPreviousSnipType();
+
+	void setPreviousSnipType(String snipType);
 
 	@NotEmpty
 	String getCoreCat();
@@ -183,6 +195,10 @@ public interface SnipBean extends TokenizedBean {
 	Integer getAbuseCount();
 
 	void setAbuseCount(Integer count);
+
+	Integer getNoAbuseCount();
+
+	void setNoAbuseCount(Integer count);
 
 	/**
 	 * nested interfaces

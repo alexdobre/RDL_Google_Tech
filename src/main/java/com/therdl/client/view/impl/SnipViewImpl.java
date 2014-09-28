@@ -415,14 +415,14 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	@UiHandler("nextPage")
 	public void nextPageClicked(ClickEvent event) {
 		log.info("Firing next page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
-		PaginationHelper.fireNextPageEvent(searchOptionsBean.as().getPageIndex(), listRange.getText(), itemList.size(),
-				Constants.DEFAULT_REFERENCE_PAGE_SIZE);
+		PaginationHelper.doNextPage(searchOptionsBean.as().getPageIndex(), listRange.getText(), itemList.size(),
+				Constants.DEFAULT_REFERENCE_PAGE_SIZE, presenter);
 	}
 
 	@UiHandler("prevPage")
 	public void prevPageClicked(ClickEvent event) {
 		log.info("Firing previous page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
-		PaginationHelper.firePrevPageEvent(searchOptionsBean.as().getPageIndex());
+		PaginationHelper.doPrevPage(searchOptionsBean.as().getPageIndex(), presenter);
 	}
 
 	@Override

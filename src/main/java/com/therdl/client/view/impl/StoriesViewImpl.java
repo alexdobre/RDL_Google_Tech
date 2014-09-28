@@ -96,10 +96,10 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		log.info("On display snip list storiesList=" + storiesList);
 		if (storiesList == null) {
-			storiesList = new ListWidget(this, beanList, pageIndex, new SnipListRow());
+			storiesList = new ListWidget(currentUserBean, beanList, pageIndex, new SnipListRow(), presenter);
 			threadListRowContainer.add(storiesList);
 		} else {
-			storiesList.populateList(this, beanList);
+			storiesList.populateList(currentUserBean, beanList);
 		}
 		this.currentSearchOptionsBean.as().setPageIndex(pageIndex);
 

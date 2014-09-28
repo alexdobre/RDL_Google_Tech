@@ -204,6 +204,23 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		}
 	}
 
+	public void searchAbuse(AutoBean<SnipBean> searchOptions, RequestCallback callback) {
+		log.info("SnipSearchPresenter getSnipSearchResult");
+		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+
+		searchOptions.as().setAction("searchAbuse");
+		log.info("SnipSearchPresenter searchSnips: " + searchOptions.as());
+
+		String json = AutoBeanCodex.encode(searchOptions).getPayload();
+		try {
+			requestBuilder.sendRequest(json, callback);
+		} catch (RequestException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+
 	/**
 	 * Searches for and returns the RDL Supporter title description from the DB
 	 *
@@ -266,7 +283,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 
 		AutoBean<SnipBean> actionBean = beanery.snipBean();
 		ViewUtils.populateDefaultSearchOptions(actionBean);
-		actionBean.as().setAction("abuseComments");
+		actionBean.as().setAction("searchAbuse");
 		actionBean.as().setParentSnip(abusiveContent.getId());
 		actionBean.as().setSnipType(SnipType.ABUSE_REPORT.getSnipType());
 		actionBean.as().setToken(getController().getCurrentUserBean().as().getToken());

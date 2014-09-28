@@ -1,17 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.Legend;
-import org.gwtbootstrap3.client.ui.TextBox;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,7 +10,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InsertPanel;
@@ -30,27 +17,36 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
-import com.therdl.client.handler.LoginHandler;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.PaginationSnipsEvent;
-import com.therdl.shared.events.PaginationSnipsEventHandler;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.TextBox;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * GWT widget class for search filter
  * creates GUI elements and handlers for them
  */
 
-public class SearchFilterWidget extends Composite {
+public class SearchFilterWidget extends AbstractSearchFilter {
 	interface SearchFilterWidgetUiBinder extends UiBinder<Widget, SearchFilterWidget> {
 	}
 
@@ -62,13 +58,10 @@ public class SearchFilterWidget extends Composite {
 	Button submit, getLinkBtn, createNewButton;
 
 	@UiField
-	TextBox title, pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, snipRep, author;
+	TextBox pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, snipRep, author;
 
 	@UiField
 	ListBox categoryList, proposalTypeList, proposalStateList;
-
-	@UiField
-	DateFilterWidget dateFilterWidget;
 
 	@UiField
 	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup, postsFormGroup, repFormGroup;
@@ -142,17 +135,6 @@ public class SearchFilterWidget extends Composite {
 		}
 
 		createSortArrows();
-
-		GuiEventBus.EVENT_BUS.addHandler(PaginationSnipsEvent.TYPE, new PaginationSnipsEventHandler() {
-			@Override
-			public void onPagination(PaginationSnipsEvent event) {
-				int newPageIndex = event.isNextPage() ? (event.getPageIndex() + 1) : (event.getPageIndex() - 1);
-				view.getListWidget().setPageIndex(newPageIndex);
-				view.getCurrentSearchOptionsBean().as().setPageIndex(newPageIndex);
-				view.doFilterSearch();
-			}
-		});
-
 	}
 
 	/**
@@ -326,7 +308,7 @@ public class SearchFilterWidget extends Composite {
 		view.doFilterSearch();
 	}
 
-	@UiHandler(value={"title", "pledgesCount", "countersCount", "posRef", "neutralRef", "negativeRef", "postCount", "snipRep", "author"})
+	@UiHandler(value = {"title", "pledgesCount", "countersCount", "posRef", "neutralRef", "negativeRef", "postCount", "snipRep", "author"})
 	public void onPassEnter(KeyDownEvent event) {
 		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 			onSubmit(null);

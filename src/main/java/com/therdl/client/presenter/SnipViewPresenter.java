@@ -40,7 +40,7 @@ import com.therdl.shared.beans.SnipBean;
  * @ AppController controller see  com.therdl.client.app.AppController javadoc header comments
  * @ String currentSnipId  used to retrieve the users correct snip
  */
-public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter {
+public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> implements Presenter, SnipView.Presenter, PaginationPresenter {
 
 	private static Logger log = Logger.getLogger(SnipViewPresenter.class.getName());
 
@@ -60,6 +60,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		this.view.setPresenter(this);
 		this.searchOptionsBean = RDLUtils.parseSearchToken(beanery, token, currentSnipId);
 		snipView.setSearchOptionsBean(searchOptionsBean);
+		snipView.setPresenter(this);
 	}
 
 	/**
@@ -247,7 +248,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	/**
 	 * gives reputation to the current snip, increments reputation counter and saves user id to ensure giving reputation per user/snip only once
 	 */
-
+	@Override
 	public void giveSnipReputation(String id, final RequestObserver observer) {
 		log.info("SnipViewPresenter giveSnipReputation id=" + id);
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
@@ -271,5 +272,12 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		} catch (RequestException e) {
 			log.info(e.getLocalizedMessage());
 		}
+	}
+
+	@Override
+	public void doPagination(boolean isNextPage, int pageIndex) {
+		int newPageIndex = isNextPage ? (pageIndex + 1) : (pageIndex - 1);
+		view.getSearchOptionsBean().as().setPageIndex(newPageIndex);
+		view.getPresenter().populateReplies(view.getSearchOptionsBean());
 	}
 }

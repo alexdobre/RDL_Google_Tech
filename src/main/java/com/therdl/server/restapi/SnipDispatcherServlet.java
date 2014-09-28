@@ -143,8 +143,8 @@ public class SnipDispatcherServlet extends HttpServlet {
 				doGiveRep(resp, actionBean);
 			} else if (actionBean.as().getAction().equals("reportAbuse")) {
 				doReportAbuse(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("abuseComments")) {
-				doAbuseComments(resp, actionBean);
+			} else if (actionBean.as().getAction().equals("searchAbuse")) {
+				doSearchAbuse(resp, actionBean);
 			}
 		} catch (RdlCodedException e) {
 			log.info("Coded exception thrown: " + e.getClass().getName() + " code: " + e.getCode());
@@ -317,8 +317,8 @@ public class SnipDispatcherServlet extends HttpServlet {
 		beanList.clear();
 	}
 
-	private void doAbuseComments (HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
-		List<SnipBean> beans = snipsService.searchAbuseComments(actionBean.as());
+	private void doSearchAbuse(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
+		List<SnipBean> beans = snipsService.searchAbuse(actionBean.as());
 		log.info("SnipDispatcherServlet: beans.size() " + beans.size());
 		log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
 
