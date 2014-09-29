@@ -81,7 +81,7 @@ public class TribunalListRow extends AbstractListRow {
 
 	private void doTexts() {
 		snipTitle.setText(snipBean.as().getTitle());
-		snipTitle.setHref("#" + RDLConstants.Tokens.TRIBUNAL_VIEW + ":" + snipBean.as().getId());
+		snipTitle.setHref("#" + RDLConstants.Tokens.TRIBUNAL_DETAIL + ":" + snipBean.as().getId());
 
 		if (snipBean.as().getVotingExpiresDate() != null) {
 			displayDate.setText(snipBean.as().getVotingExpiresDate());

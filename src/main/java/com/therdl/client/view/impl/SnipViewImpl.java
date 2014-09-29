@@ -74,10 +74,10 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 
 	private final AutoBean<CurrentUserBean> currentUserBean;
 
-	interface SnipViewImpllUiBinder extends UiBinder<Widget, SnipViewImpl> {
+	interface SnipViewImplUiBinder extends UiBinder<Widget, SnipViewImpl> {
 	}
 
-	private static SnipViewImpllUiBinder uiBinder = GWT.create(SnipViewImpllUiBinder.class);
+	private static SnipViewImplUiBinder uiBinder = GWT.create(SnipViewImplUiBinder.class);
 
 	protected SnipView.Presenter presenter;
 	private Beanery beanery = GWT.create(Beanery.class);

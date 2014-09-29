@@ -334,3 +334,25 @@ noBorder{
 .dateFilterWidget {
 	float: left;
 }
+
+.noPadding{
+	padding: 0px;
+}
+
+.snipViewPanel{
+	margin-bottom: 5px;
+}
+.padLeft{
+	padding-left:10px;
+}
+
+.loadingWidget {
+	text-align: center;
+	display: none;
+}
+.marginTop{
+	margin-top: 5px;
+}
+.marginLeft {
+	margin-left: 20px;
+}

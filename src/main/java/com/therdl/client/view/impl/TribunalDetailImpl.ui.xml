@@ -9,92 +9,43 @@
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
-	<ui:style>
-		.margin-fix {
-		margin-bottom: 0;
-		margin-top: 0;
-		padding-bottom: 2px;
-		padding-top: 0;
-		float: right;
-		}
-
-		.radioBtn {
-		margin-left: 13px;
-		}
-
-		.radioBtn label, .checkBoxBtn label {
-		margin-left: 3px;
-		margin-bottom: 0px;
-		display: inline-block;
-		}
-
-		@external .checkBoxBtn;
-		.checkBoxBtn {
-		margin-left: 13px;
-		display: inline-block;
-		}
-
-		.checkboxBtnParent {
-		position: absolute;
-		right: 0;
-		}
-	</ui:style>
-
 	<b:Container>
 		<g:SimplePanel ui:field="appMenuPanel"/>
 		<g:FlowPanel addStyleNames="push"/>
 
 		<b:Panel addStyleNames="snipViewPanel">
 			<b:PanelHeader>
-				<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
+				<g:FlowPanel ui:field="abuseCont"></g:FlowPanel>
 			</b:PanelHeader>
 			<b:Collapse b:id="snipCollapse">
 				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
-				<b.html:Paragraph emphasis="WARNING" ui:field="abuseWarning">
-					<b:Anchor icon="WARNING" iconSpin="true" text="{i18n.abuseWarning}" addStyleNames="text-warning" ui:field="abuseWarningAnchor"/>
-				</b.html:Paragraph>
-				<b:PanelBody ui:field="richTextArea"/>
+				<b:PanelBody ui:field="textContentArea"/>
 			</b:Collapse>
 			<b:PanelFooter>
 				<b:Container fluid="true">
 					<b:Row>
 						<b:Column size="MD_4">
 							<b:ButtonGroup>
-								<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
+								<b:Button ui:field="showComments" text="{i18n.showComments}"/>
 							</b:ButtonGroup>
 							<b:ButtonGroup addStyleNames="padLeft">
-								<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+								<b:Button ui:field="leaveComment" text="{i18n.reply}"/>
 							</b:ButtonGroup>
 						</b:Column>
 						<b:Column size="MD_1" offset="MD_2">
 							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
 						</b:Column>
 						<b:Column size="MD_2" offset="MD_2">
-							<b:Button type="WARNING" icon="WARNING" text="{i18n.reportAbuse}" ui:field="reportAbuse"/>
+							<g:HTML>Vote on abuse goes here</g:HTML>
 						</b:Column>
-						<b:Column size="MD_1" ui:field="snipActionContainer"/>
 					</b:Row>
 				</b:Container>
 			</b:PanelFooter>
 		</b:Panel>
 
-		<b:Panel ui:field="referenceCont">
+		<b:Panel ui:field="leaveCommentCont">
 			<b:PanelBody addStyleNames="noPadding">
 				<b:Row>
-					<g:FlowPanel addStyleNames="col-lg-6 marginTop" ui:field="radioBtnParent">
-						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-						               text="{i18n.positive}"></g:RadioButton>
-						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-						               text="{i18n.neutral}"></g:RadioButton>
-						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-						               text="{i18n.negative}"></g:RadioButton>
-					</g:FlowPanel>
-					<g:FlowPanel addStyleNames="col-lg-6 marginTop" ui:field="radioBtnParentProp">
-						<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-						               text="{i18n.pledge}"></g:RadioButton>
-						<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-						               text="{i18n.counter}"></g:RadioButton>
-					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-6 marginTop">
 						<b:Button ui:field="btnEmotionPicker" text="{i18n.emotionPickerTitle}"/>
 					</g:FlowPanel>
@@ -105,21 +56,18 @@
 				</b:Row>
 
 				<g:FlowPanel ui:field="emoListPanelReply" addStyleNames="col-lg-12 labels"/>
-				<summer:Summernote ui:field="editorWidgetReply"/>
+				<b:TextArea ui:field="commentTextArea" maxLength="750" visibleLines="5"/>
 			</b:PanelBody>
 			<b:PanelFooter>
-				<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
-				<b:Button ui:field="closeRef" text="{i18n.close}"/>
+				<b:Button ui:field="saveComment" text="{i18n.saveReference}"/>
+				<b:Button ui:field="cancelComment" text="{i18n.cancel}"/>
 			</b:PanelFooter>
 		</b:Panel>
 
 		<b:Container>
 			<b:Row>
-				<b:Column size="MD_12" ui:field="refFilterParent"/>
-			</b:Row>
-			<b:Row>
-				<b:Column size="MD_12" ui:field="referenceListCont">
-					<rdl:LoadingWidget ui:field="loadingWidget" styleName="loadingWidget"></rdl:LoadingWidget>
+				<b:Column size="MD_12" ui:field="commentsCont">
+					<rdl:LoadingWidget ui:field="loadingWidget" styleName="loadingWidget"/>
 					<b:Row>
 						<b:Column size="MD_6" offset="MD_6">
 							<b:Pagination addStyleNames="{style.margin-fix}">
@@ -138,5 +86,4 @@
 			</b:Row>
 		</b:Container>
 	</b:Container>
-
 </ui:UiBinder>
