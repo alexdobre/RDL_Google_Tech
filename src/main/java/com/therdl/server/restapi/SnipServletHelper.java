@@ -35,12 +35,14 @@ public class SnipServletHelper {
 
 	public void saveAbuseReport(AutoBean<SnipBean> actionBean, SnipBean abusiveContent) {
 		log.info("saveAbuseReport begin " + actionBean.as());
+		SimpleDateFormat sdf = new SimpleDateFormat(RDLConstants.DATE_PATTERN_EXTENDED);
 		//we now create and save the report
 		//- please note we must do this first cause the abusive content update will null the snipID (parent ID)
 		AutoBean<SnipBean> report = beanery.snipBean();
 		report.as().setParentSnip(abusiveContent.getId());
 		report.as().setSnipType(SnipType.ABUSE_REPORT.getSnipType());
 		report.as().setContent(actionBean.as().getContent());
+		report.as().setCreationDate(sdf.format(new Date()));
 		snipsService.createSnip(report.as());
 
 		//we modify the content - firstly we increment the abuse counter
@@ -56,7 +58,7 @@ public class SnipServletHelper {
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(new Date());
 			cal.add(Calendar.DAY_OF_WEEK, 7);
-			abusiveContent.setVotingExpiresDate(new SimpleDateFormat(RDLConstants.DATE_PATTERN).format(cal.getTime()));
+			abusiveContent.setVotingExpiresDate(sdf.format(cal.getTime()));
 			//set expiry flag
 			abusiveContent.setVotingExpired(false);
 			abusiveContent.setSnipType(SnipType.TRIBUNAL.getSnipType());

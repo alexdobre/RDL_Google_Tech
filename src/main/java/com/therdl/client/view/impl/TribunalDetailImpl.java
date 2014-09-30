@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 import org.gwtbootstrap3.client.ui.Panel;
@@ -31,6 +32,7 @@ import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.EmotionPicker;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.client.view.widget.TribunalCommentRow;
@@ -56,13 +58,14 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 
 	private static TribunalDetailImplUiBinder uiBinder = GWT.create(TribunalDetailImplUiBinder.class);
 
-	protected TribunalDetailImpl.Presenter presenter;
+	protected TribunalDetailImpl.Presenter tribunalPresenter;
 	private Beanery beanery = GWT.create(Beanery.class);
 	private TribunalListRow tribunalListRow;
 	private AutoBean<SnipBean> currentSnipBean;
 	protected AutoBean<SnipBean> replyBean;
 	private AutoBean<SnipBean> searchOptionsBean;
 	private ArrayList<TribunalCommentRow> itemList;
+	private EmotionPicker emotionPicker;
 
 	@UiField
 	FlowPanel emoListPanel, emoListPanelReply, abuseCont;
@@ -71,9 +74,11 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	@UiField
 	LoadingWidget loadingWidget;
 	@UiField
-	Button showComments, leaveComment, saveComment, cancelComment;
+	Button showComments, leaveComment, saveComment, cancelComment, btnEmotionPicker;
 	@UiField
-	Panel commentsCont, leaveCommentCont;
+	Panel leaveCommentCont;
+	@UiField
+	Column commentsCont;
 	@UiField
 	LinkedGroup listGroup;
 	@UiField
@@ -87,6 +92,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 		this.currentUserBean = currentUserBean;
 		this.searchOptionsBean = beanery.snipBean();
 		emoListPanel.addStyleName("labels");
+		itemList = new ArrayList<TribunalCommentRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
 	}
 
 	@Override
@@ -112,6 +118,30 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 		}
 	}
 
+	@UiHandler("btnEmotionPicker")
+	void onEmotionPicker(ClickEvent event) {
+		if (emotionPicker == null) {
+			emotionPicker = new EmotionPicker(this, replyBean);
+		}
+		emotionPicker.show();
+	}
+
+	@UiHandler("leaveComment")
+	public void onLeaveCommentClicked(ClickEvent event) {
+		ViewUtils.show(leaveCommentCont);
+		ViewUtils.hide(commentsCont);
+		replyBean = beanery.snipBean();
+	}
+
+	@UiHandler("showComments")
+	public void onShowCommentsClicked(ClickEvent event) {
+		if (showComments.getText().equals(RDL.getI18n().showComments())) {
+			tribunalPresenter.populateReplies(searchOptionsBean);
+		} else {
+			ViewUtils.hide(commentsCont);
+		}
+	}
+
 	@UiHandler("saveComment")
 	public void onSaveCommentClicked(ClickEvent event) {
 		formReplyBean();
@@ -120,7 +150,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 			setErrorMessage(validRes);
 			return;
 		}
-		presenter.saveComment(replyBean);
+		tribunalPresenter.saveComment(replyBean);
 	}
 
 	@UiHandler("cancelComment")
@@ -235,6 +265,24 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	}
 
 	@Override
+	public void populateSnip(AutoBean<SnipBean> snipBean) {
+		populateDetails(snipBean);
+	}
+
+	@Override
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+		showComments(beanList, pageIndex);
+	}
+
+	public void setTribunalPresenter(TribunalDetail.Presenter presenter) {
+		this.tribunalPresenter = presenter;
+	}
+
+	public TribunalDetail.Presenter getTribunalPresenter() {
+		return tribunalPresenter;
+	}
+
+	@Override
 	public AutoBean<SnipBean> getSearchOptionsBean() {
 		return null;
 	}
@@ -252,16 +300,6 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	public SnipView.Presenter getPresenter() {
 		//NOOP
 		return null;
-	}
-
-	@Override
-	public void populateSnip(AutoBean<SnipBean> snipBean) {
-		populateDetails(snipBean);
-	}
-
-	@Override
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		showComments(beanList, pageIndex);
 	}
 
 	@Override
@@ -285,12 +323,8 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 		//NOOP
 	}
 
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
-	}
-
 	@Override
-	public Presenter getTribunalPresenter() {
-		return presenter;
+	public void setPresenter(Presenter presenter) {
+		//NOOP
 	}
 }

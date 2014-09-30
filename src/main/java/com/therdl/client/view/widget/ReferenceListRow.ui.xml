@@ -9,19 +9,6 @@
 		.leftPanel {
 		width: 60px;
 		margin-left: 10px;
-
-		}
-
-		.rightPanel {
-		border: 0;
-		position: relative;
-		}
-
-		.richTextArea {
-		width: 100%;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		border: 0;
 		}
 
 		.userImg {
@@ -88,9 +75,9 @@
 				<b.html:Paragraph emphasis="WARNING" ui:field="abuseWarning">
 					<b:Anchor icon="WARNING" iconSpin="true" text="{i18n.abuseWarning}" addStyleNames="text-warning" ui:field="abuseWarningAnchor"/>
 				</b.html:Paragraph>
-				<g:FlowPanel ui:field="rightPanel" styleName="{style.rightPanel}">
+				<g:FlowPanel styleName="rightPanel">
 					<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="refRepBtn" addStyleNames="{style.refRepBtn}"/>
-					<g:HTMLPanel ui:field="richTextAreaRef" styleName="{style.richTextArea}"/>
+					<g:HTMLPanel ui:field="richTextAreaRef" styleName="richTextArea"/>
 				</g:FlowPanel>
 			</b:Column>
 		</b:Row>

@@ -46,7 +46,7 @@
 		<b:Panel ui:field="leaveCommentCont">
 			<b:PanelBody addStyleNames="noPadding">
 				<b:Row>
-					<g:FlowPanel addStyleNames="col-lg-6 marginTop">
+					<g:FlowPanel addStyleNames="col-lg-6 col-offset-2 marginTop">
 						<b:Button ui:field="btnEmotionPicker" text="{i18n.emotionPickerTitle}"/>
 					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-12 marginLeft">
@@ -59,7 +59,7 @@
 				<b:TextArea ui:field="commentTextArea" maxLength="750" visibleLines="5"/>
 			</b:PanelBody>
 			<b:PanelFooter>
-				<b:Button ui:field="saveComment" text="{i18n.saveReference}"/>
+				<b:Button ui:field="saveComment" text="{i18n.saveComment}"/>
 				<b:Button ui:field="cancelComment" text="{i18n.cancel}"/>
 			</b:PanelFooter>
 		</b:Panel>
@@ -70,7 +70,7 @@
 					<rdl:LoadingWidget ui:field="loadingWidget" styleName="loadingWidget"/>
 					<b:Row>
 						<b:Column size="MD_6" offset="MD_6">
-							<b:Pagination addStyleNames="{style.margin-fix}">
+							<b:Pagination addStyleNames="margin-fix">
 								<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
 								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
 								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>

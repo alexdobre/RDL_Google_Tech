@@ -19,6 +19,7 @@ import com.therdl.client.RDL;
 public interface RDLConstants {
 
 	String DATE_PATTERN = "yyyy-MM-dd";
+	String DATE_PATTERN_EXTENDED = "yyyy-MM-dd HH:mm:ss";
 
 	public interface Tokens {
 		String WELCOME = "!welcome";

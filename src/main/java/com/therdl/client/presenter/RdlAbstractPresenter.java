@@ -114,7 +114,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		log.info("RdlAbstractPresenter doLogIn BEGIN  emailTxt  " + emailTxt + " sid: " + sid);
 		//used in inner class logic
 		final Boolean innerRememberMe = rememberMe;
-		final Boolean innerIsCookieLogin = emailTxt == null;
+		final Boolean innerIsCookieLogin = (emailTxt == null);
 
 		String authUrl = GWT.getModuleBaseURL() + "getSession";
 
@@ -158,8 +158,9 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 				private void sidLogic(AutoBean<AuthUserBean> returnedBean) {
 					//if this was not a cookie login we do logic to change the cookie if necessary
 					if (!innerIsCookieLogin) {
+						log.info("Was not a cookie log in - performing SID logic");
 						//if there is no cookie and remember me was set we create a new cookie
-						if (innerRememberMe && Cookies.getCookie("sid") == null) {
+						if (innerRememberMe) {
 							log.info("RememberMe = true and SID cookie null -> setting new cookie with sid: " + returnedBean.as().getSid());
 							//set session cookie for 14 day expiry.
 							String sessionID = returnedBean.as().getSid();
@@ -167,7 +168,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 							Date expires = new Date(System.currentTimeMillis() + DURATION);
 							Cookies.setCookie("sid", sessionID, expires, null, "/", false);
 						}//if the user unchecks the RememberMe box then we remove the cookie
-						else if (!innerRememberMe) {
+						else {
 							log.info("RememberMe = false -> removing cookie");
 							Cookies.removeCookie("sid");
 						}

@@ -44,8 +44,6 @@ public class ReferenceListRow extends Composite {
 	private AutoBean<SnipBean> referenceBean;
 
 	@UiField
-	FlowPanel rightPanel;
-	@UiField
 	HTMLPanel richTextAreaRef;
 	@UiField
 	Badge rep, userName, creationDate;
@@ -81,8 +79,8 @@ public class ReferenceListRow extends Composite {
 		richTextAreaRef.getElement().setInnerHTML(referenceBean.as().getContent());
 		userName.setText(referenceBean.as().getAuthor());
 		rep.setText(referenceBean.as().getRep().toString());
-		Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSSS").parse(referenceBean.as().getCreationDate());
-		String dateString = DateTimeFormat.getFormat("MMM d, y  HH:mm").format(date);
+		Date date = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN_EXTENDED).parse(referenceBean.as().getCreationDate());
+		String dateString = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN_EXTENDED).format(date);
 		creationDate.setText(dateString);
 
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {

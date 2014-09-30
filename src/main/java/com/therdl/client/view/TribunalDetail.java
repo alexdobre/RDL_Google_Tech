@@ -16,13 +16,12 @@ public interface TribunalDetail extends RdlView, PaginatedView, ValidatedView, S
 		public void saveComment(AutoBean<SnipBean> bean);
 
 		public void populateReplies(AutoBean<SnipBean> searchOptionsBean);
-
-		public void giveSnipReputation(String id, final RequestObserver observer);
 	}
 
 	void setPresenter(Presenter presenter);
 
 	public TribunalDetail.Presenter getTribunalPresenter();
+	public void setTribunalPresenter (TribunalDetail.Presenter presenter);
 
 	public void populateDetails(AutoBean<SnipBean> snipBean);
 

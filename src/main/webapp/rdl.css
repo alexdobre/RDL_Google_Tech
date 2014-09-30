@@ -356,3 +356,20 @@ noBorder{
 .marginLeft {
 	margin-left: 20px;
 }
+.margin-fix {
+	margin-bottom: 0;
+	margin-top: 0;
+	padding-bottom: 2px;
+	padding-top: 0;
+	float: right;
+}
+.richTextArea {
+	width: 100%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 0;
+}
+.rightPanel {
+	border: 0;
+	position: relative;
+}
