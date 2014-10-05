@@ -179,7 +179,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 			throws IOException, TokenInvalidException, SnipValidationException, ParseException {
 		log.info("Do report abuse - BEGIN: " + actionBean.as());
 		SnipBean contentBean = snipValidator.validateCanReportAbuse(actionBean);
-		helper.saveAbuseReport(actionBean, contentBean);
+		helper.dispatchAbuseActionRequest(actionBean, contentBean);
 	}
 
 	private void doGetRefList(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {

@@ -261,6 +261,16 @@ public class ViewUtils {
 		if (currentSnip.as().getIsAbuseReportedByUser() == 1) {
 			return false;
 		}
+		return isAllowedAbuseAction(currentUser);
+
+	}
+
+	/**
+	 * user must have at least 3 rep and be at least 1 week old or be an RDL supporter
+	 * @param currentUser the current user
+	 * @return
+	 */
+	public static boolean isAllowedAbuseAction(AutoBean<CurrentUserBean> currentUser) {
 		//user must have at least 3 rep and be at least 1 week old or be an RDL supporter
 		if (currentUser.as().getIsRDLSupporter()) {
 			return true;
@@ -272,6 +282,7 @@ public class ViewUtils {
 			return false;
 		}
 	}
+
 
 	/**
 	 * parses the date string and sees if the date is at least on week old

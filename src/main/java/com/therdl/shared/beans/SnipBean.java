@@ -124,6 +124,10 @@ public interface SnipBean extends TokenizedBean {
 
 	void setAbuseReporters(List<String> abuseList);
 
+	List<String> getAbuseReportersNo();
+
+	void setAbuseReportersNo(List<String> abuseList);
+
 	List<Link> getLinks();
 
 	void setLinks(List<Link> links);
@@ -143,6 +147,14 @@ public interface SnipBean extends TokenizedBean {
 	Integer getIsAbuseReportedByUser();
 
 	void setIsAbuseReportedByUser(Integer abuseRep);
+
+	/**
+	 * If the user voted no this content is not abusive
+	 * @return
+	 */
+	Integer getIsAbuseReportedNoByUser();
+
+	void setIsAbuseReportedNoByUser(Integer abuseRep);
 
 	Integer getIsRefGivenByUser();
 

@@ -1,18 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Panel;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.client.ui.TextArea;
-import org.gwtbootstrap3.client.ui.html.Span;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -43,6 +30,19 @@ import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.LinkedGroup;
+import org.gwtbootstrap3.client.ui.LinkedGroupItem;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.TextArea;
+import org.gwtbootstrap3.client.ui.html.Paragraph;
+import org.gwtbootstrap3.client.ui.html.Span;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * User views the details of a tribunal item
@@ -85,6 +85,10 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	PanelBody textContentArea;
 	@UiField
 	TextArea commentTextArea;
+	@UiField
+	Button yesVoteAbuse, noVoteAbuse;
+	@UiField
+	Paragraph yesVotedAbuse, noVotedAbuse;
 
 	public TribunalDetailImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
@@ -139,6 +143,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 			tribunalPresenter.populateReplies(searchOptionsBean);
 		} else {
 			ViewUtils.hide(commentsCont);
+			showComments.setText(RDL.getI18n().showComments());
 		}
 	}
 
@@ -156,6 +161,16 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	@UiHandler("cancelComment")
 	public void onCancelCommentClicked(ClickEvent event) {
 		ViewUtils.hide(leaveCommentCont);
+	}
+
+	@UiHandler("yesVoteAbuse")
+	public void onYesVoteAbuse(ClickEvent event) {
+		log.info("onYesVoteAbuse clicked");
+	}
+
+	@UiHandler("noVoteAbuse")
+	public void onNoVoteAbuse(ClickEvent event) {
+		log.info("onNoVoteAbuse clicked");
 	}
 
 
@@ -242,7 +257,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 		showComments.setText(RDL.getI18n().showComments());
 		ViewUtils.hide(leaveCommentCont);
 		ViewUtils.hide(commentsCont);
-		//TODO vote on abuse logic
+		tribunalPresenter.abuseVoteDisplayLogic(yesVoteAbuse, noVoteAbuse, yesVotedAbuse, noVotedAbuse);
 		hideMessages();
 	}
 

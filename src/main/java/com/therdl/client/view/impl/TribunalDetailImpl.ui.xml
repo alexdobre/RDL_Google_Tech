@@ -35,8 +35,13 @@
 						<b:Column size="MD_1" offset="MD_2">
 							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
 						</b:Column>
-						<b:Column size="MD_2" offset="MD_2">
-							<g:HTML>Vote on abuse goes here</g:HTML>
+						<b:Column size="MD_2">
+							<b:Button type="WARNING" text="{i18n.yesVoteAbuse}" ui:field="yesVoteAbuse"/>
+							<b.html:Paragraph emphasis="WARNING" text="{i18n.yesVotedAbuse}" ui:field="yesVotedAbuse"/>
+						</b:Column>
+						<b:Column size="MD_2" offset="MD_1">
+							<b:Button type="SUCCESS" text="{i18n.noVoteAbuse}" ui:field="noVoteAbuse"/>
+							<b.html:Paragraph emphasis="SUCCESS" text="{i18n.noVotedAbuse}" ui:field="noVotedAbuse"/>
 						</b:Column>
 					</b:Row>
 				</b:Container>

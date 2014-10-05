@@ -491,12 +491,20 @@ public class SnipServiceImpl implements SnipsService {
 			doc.append("emotions", emotions);
 		}
 
-		BasicDBList abuseReporters = new BasicDBList();
 		if (snip.getAbuseReporters() != null) {
+			BasicDBList abuseReporters = new BasicDBList();
 			for (String abuseReporter : snip.getAbuseReporters()) {
 				abuseReporters.add(abuseReporter);
 			}
 			doc.append("abuseReporters", abuseReporters);
+		}
+
+		if (snip.getAbuseReportersNo() != null) {
+			BasicDBList abuseReportersNo = new BasicDBList();
+			for (String abuseReporter : snip.getAbuseReportersNo()) {
+				abuseReportersNo.add(abuseReporter);
+			}
+			doc.append("abuseReportersNo", abuseReportersNo);
 		}
 
 		BasicDBList links = new BasicDBList();
@@ -555,16 +563,24 @@ public class SnipServiceImpl implements SnipsService {
 		} else {
 			snip.setIsRepGivenByUser(0);
 		}
-		// see if user already gave abuse report
+		// see if user already gave abuse report YES
 		if (currentUserName != null){
 			List<String> abuseReportersList = (List<String>) doc.get("abuseReporters");
 			if (abuseReportersList!= null && abuseReportersList.contains(currentUserName)) {
-				snip.setIsAbuseReportedByUser(1);
+				snip.setIsAbuseReportedByUser(new Integer(1));
 			} else {
-				snip.setIsAbuseReportedByUser(0);
+				snip.setIsAbuseReportedByUser(new Integer(0));
 			}
 		}
-		log.info("Have set rep given by user: "+snip.getIsRepGivenByUser());
+		// see if user already gave abuse report NO
+		if (currentUserName != null){
+			List<String> abuseReportersList = (List<String>) doc.get("abuseReportersNo");
+			if (abuseReportersList!= null && abuseReportersList.contains(currentUserName)) {
+				snip.setIsAbuseReportedNoByUser(new Integer(1));
+			} else {
+				snip.setIsAbuseReportedNoByUser(new Integer(0));
+			}
+		}
 
 		// set the Emotions
 
