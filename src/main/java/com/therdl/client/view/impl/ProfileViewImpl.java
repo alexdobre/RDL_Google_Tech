@@ -23,6 +23,7 @@ import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.Input;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
 import java.util.Date;
 
@@ -59,27 +60,20 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 
 	@UiField
 	FocusPanel profileImagePanel;
-
 	@UiField
-	Button supporterBtn;
-
+	Button supporterBtn, updateProfileDec, changePassBtn, submitChangePassBtn;
 	@UiField
 	FormControlStatic email, username, rep;
-
-	@UiField
-	Button changePassBtn, submitChangePassBtn;
-
 	@UiField
 	Image avatarImage;
-
 	@UiField
 	Modal changePassModal;
-
 	@UiField
 	Paragraph titleExpiresParagraph;
-
 	@UiField
 	Input oldPassword, newPassword, confirmNewPassword;
+	@UiField
+	Summernote richTextEditor;
 
 	public ProfileViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);

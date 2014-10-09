@@ -3,6 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
+             xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
@@ -28,27 +29,40 @@
 				</g:FocusPanel>
 			</b:Column>
 			<b:Column size="MD_8">
-				<b:Form>
-					<b:FieldSet>
-						<b:Legend text="{i18n.yourProfile}"/>
-						<rdl:FormSuccess ui:field="formSuccess"/>
-						<b:FormGroup>
-							<b:FormLabel for="formEmail" text="{i18n.email}"/>
-							<b:FormControlStatic b:id="formEmail" ui:field="email"/>
-						</b:FormGroup>
-						<b:FormGroup>
-							<b:FormLabel for="formUsername" text="{i18n.userName}"/>
-							<b:FormControlStatic b:id="formUsername" ui:field="username"/>
-						</b:FormGroup>
-						<b:FormGroup>
-							<b:FormLabel for="formRep" text="{i18n.reputation}"/>
-							<b:FormControlStatic b:id="formRep" ui:field="rep"/>
-						</b:FormGroup>
-						<b:Button text="{i18n.changePassword}" ui:field="changePassBtn"/>
-					</b:FieldSet>
-				</b:Form>
+				<b:Panel>
+					<b:PanelHeader>
+						<b:Heading size="H3" text="{i18n.publicProfileDescription}"/>
+					</b:PanelHeader>
+					<b:PanelBody addStyleNames="noPadding">
+						<summer:Summernote ui:field="richTextEditor"/>
+					</b:PanelBody>
+					<b:PanelFooter>
+						<b:Button ui:field="updateProfileDec" text="{i18n.update}"/>
+					</b:PanelFooter>
+				</b:Panel>
 			</b:Column>
 		</b:Row>
+
+		<b:Form type="INLINE">
+			<b:FieldSet>
+				<b:Legend text="{i18n.yourProfile}"/>
+				<rdl:FormSuccess ui:field="formSuccess"/>
+				<b:FormGroup addStyleNames="padLeft padRight">
+					<b:FormLabel for="formEmail" text="{i18n.email}"/>
+					<b:FormControlStatic b:id="formEmail" ui:field="email"/>
+				</b:FormGroup>
+				<b:FormGroup addStyleNames="padRight">
+					<b:FormLabel for="formUsername" text="{i18n.userName}"/>
+					<b:FormControlStatic b:id="formUsername" ui:field="username"/>
+				</b:FormGroup>
+				<b:FormGroup addStyleNames="padLeft padRight">
+					<b:FormLabel for="formRep" text="{i18n.reputation}"/>
+					<b:FormControlStatic b:id="formRep" ui:field="rep"/>
+				</b:FormGroup>
+				<b:Button text="{i18n.changePassword}" ui:field="changePassBtn" addStyleNames="padLeft"/>
+			</b:FieldSet>
+		</b:Form>
+
 		<b:Panel>
 			<b:PanelBody>
 				<b:Row>

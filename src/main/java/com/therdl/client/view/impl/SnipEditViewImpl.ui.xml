@@ -10,16 +10,9 @@
 	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 	<ui:style>
-		.noMargin{
-		margin-bottom: 0px;
-		}
 		.textAlignRight{
 		text-align: right;
 		}
-		.noPadding{
-		padding: 0px;
-		}
-
 	</ui:style>
 
 	<b:Container>
@@ -39,7 +32,7 @@
 						</b:FormGroup>
 						<rdl:FormSuccess ui:field="formSuccess"/>
 						<rdl:FormErrors ui:field="formErrors"/>
-						<b:FormGroup addStyleNames="{style.noMargin}">
+						<b:FormGroup addStyleNames="noMargin">
 							<g:FlowPanel ui:field="categoryListPanel" addStyleNames="col-lg-4">
 								<b:Row>
 									<b:Column size="MD_3" addStyleNames="{style.textAlignRight}">
@@ -71,7 +64,7 @@
 						</b:FormGroup>
 						<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
 					</b:PanelHeader>
-					<b:PanelBody addStyleNames="{style.noPadding}">
+					<b:PanelBody addStyleNames="noPadding">
 						<summer:Summernote ui:field="richTextEditor"/>
 					</b:PanelBody>
 					<b:PanelFooter>

@@ -345,6 +345,9 @@ noBorder{
 .padLeft{
 	padding-left:10px;
 }
+.padRight{
+	padding-right:10px;
+}
 
 .loadingWidget {
 	text-align: center;
