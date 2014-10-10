@@ -2,6 +2,11 @@ package com.therdl.client.presenter.runt;
 
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.view.ProfileView;
+import com.therdl.client.view.ValidatedView;
+import com.therdl.shared.beans.CurrentUserBean;
+
 /**
  * Logic behind the user's profile description
  */
@@ -10,13 +15,17 @@ public interface ProfileDescRunt {
 	/**
 	 * Populates the profile description for a user. If no description is found or if
 	 * the description is empty then it uses a default description message.
-	 * @param summernote
+	 *
 	 */
-	public void grabProfileDesc (Summernote summernote);
+	public void grabProfileDesc(final ProfileView view, AutoBean<CurrentUserBean> currentUserBean);
 
 	/**
-	 * Updates the profile description for the given user
-	 * @param summernote
+	 * Updates the profile description for the given user and displays a message
+	 *
+	 * @param content       the content of the description
+	 * @param username
+	 * @param token
+	 * @param validatedView the validated view to display the success or error message
 	 */
-	public void updateProfileDesc (Summernote summernote);
+	public void updateProfileDesc(String content, String username, String token, ValidatedView validatedView);
 }

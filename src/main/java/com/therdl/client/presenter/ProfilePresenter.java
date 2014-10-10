@@ -12,6 +12,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
+import com.therdl.client.presenter.runt.ProfileDescRunt;
 import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.common.ErrorCodeMapper;
@@ -31,10 +32,13 @@ import com.therdl.shared.beans.CurrentUserBean;
 public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implements ProfileView.Presenter {
 
 	private Beanery beanery = GWT.create(Beanery.class);
+	private ProfileDescRunt profileDescRunt;
+	private AutoBean<CurrentUserBean> currentUserBean;
 
-	public ProfilePresenter(ProfileView servicesView, AppController controller) {
+	public ProfilePresenter(ProfileView servicesView, AppController controller, ProfileDescRunt profileDescRunt) {
 		super(controller);
 		this.view = servicesView;
+		this.profileDescRunt = profileDescRunt;
 		servicesView.setPresenter(this);
 	}
 
@@ -48,9 +52,11 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		checkLogin();
+		this.currentUserBean = currentUserBean;
 		container.clear();
 		view.populateView(currentUserBean);
 		container.add(view.asWidget());
+		profileDescRunt.grabProfileDesc(view, currentUserBean);
 	}
 
 
@@ -60,6 +66,11 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 		if (validRes != null) return validRes;
 		submitChangePass(currentUserBean.as().getName(), currentUserBean.as().getToken(), oldPass, newPass, newPassConfirm);
 		return null;
+	}
+
+	@Override
+	public void updateProfile(String content) {
+		profileDescRunt.updateProfileDesc(content, currentUserBean.as().getName(), currentUserBean.as().getToken(), view);
 	}
 
 	public void submitChangePass(String username, String token, String oldPass, String newPass, String newPassConfirm) {

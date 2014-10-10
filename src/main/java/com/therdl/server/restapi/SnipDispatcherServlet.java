@@ -123,27 +123,27 @@ public class SnipDispatcherServlet extends HttpServlet {
 		AutoBean<SnipBean> actionBean = AutoBeanCodex.decode(beanery, SnipBean.class, sb.toString());
 		sb.setLength(0);
 		try {
-			if (actionBean.as().getAction().equals("search")) {
+			if (actionBean.as().getAction().equals(RDLConstants.SnipAction.SEARCH)) {
 				doSearch(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("getSnip")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.GET_SNIP )) {
 				doGetSnip(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("populateSnip")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.VIEW_SNIP)) {
 				doViewSnip(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("save")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.SAVE)) {
 				out.write(doSave(actionBean));
-			} else if (actionBean.as().getAction().equals("update")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.UPDATE)) {
 				out.write(doUpdate(actionBean));
-			} else if (actionBean.as().getAction().equals("delete")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.DELETE)) {
 				out.write(doDelete(actionBean));
-			} else if (actionBean.as().getAction().equals("saveReference")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.SAVE_REF)) {
 				doSaveRef(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("getReferences")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.GET_REF)) {
 				doGetRefList(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("giveRep")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.GIVE_REP)) {
 				doGiveRep(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("reportAbuse")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.REPORT_ABUSE)) {
 				doReportAbuse(resp, actionBean);
-			} else if (actionBean.as().getAction().equals("searchAbuse")) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.SEARCH_ABUSE)) {
 				doSearchAbuse(resp, actionBean);
 			}
 		} catch (RdlCodedException e) {

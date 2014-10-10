@@ -6,6 +6,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipListCallback;
+import com.therdl.client.presenter.func.FuncFactory;
+import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -54,7 +56,8 @@ public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implemen
 
 	public void grabWelcomeSnip(final CoreCategory coreCat, String title) {
 		AutoBean<SnipBean> searchOptionsBean = prepareSearchOptions(coreCat, title);
-		super.searchSnips(searchOptionsBean, new SnipListCallback() {
+		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+		grabSnipFunc.searchSnips(searchOptionsBean, new SnipListCallback() {
 
 			public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
 				view.showWelcomeSnip(beanList.get(0), coreCat);

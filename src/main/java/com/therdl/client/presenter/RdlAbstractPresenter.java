@@ -17,6 +17,8 @@ import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.LoginHandler;
+import com.therdl.client.presenter.func.FuncFactory;
+import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AbuseCommentsPopup;
@@ -47,11 +49,8 @@ import java.util.logging.Logger;
 public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonPresenter {
 
 	protected static Logger log = Logger.getLogger(RdlAbstractPresenter.class.getName());
-
 	protected AppController controller;
-
 	protected Beanery beanery = GWT.create(Beanery.class);
-
 	protected T view;
 
 	public RdlAbstractPresenter(AppController controller) {
@@ -188,23 +187,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		}
 	}
 
-	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, RequestCallback callback) {
-		log.info("SnipSearchPresenter getSnipSearchResult");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
-
-		searchOptionsBean.as().setAction("search");
-		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
-
-		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
-		try {
-			requestBuilder.sendRequest(json, callback);
-		} catch (RequestException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
-		}
-	}
-
 	public void searchAbuse(AutoBean<SnipBean> searchOptions, RequestCallback callback) {
 		log.info("SnipSearchPresenter getSnipSearchResult");
 		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
@@ -236,7 +218,8 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		searchOptionsBean.as().setAuthor(RDLConstants.ContentMgmt.OFFICIAL_AUTHOR);
 		searchOptionsBean.as().setSnipType(SnipType.CONTENT_MGMT.getSnipType());
 
-		searchSnips(searchOptionsBean, new SnipListCallback() {
+		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+		grabSnipFunc.searchSnips(searchOptionsBean, new SnipListCallback() {
 
 			public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
 				supportRdlPopup.populateBody(beanList.get(0));

@@ -25,6 +25,7 @@ import com.therdl.client.presenter.ThreadViewPresenter;
 import com.therdl.client.presenter.TribunalDetailPresenter;
 import com.therdl.client.presenter.TribunalPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
+import com.therdl.client.presenter.runt.impl.ProfileDescRuntImpl;
 import com.therdl.client.view.ContentNotFound;
 import com.therdl.client.view.ContentSearchView;
 import com.therdl.client.view.IdeaView;
@@ -519,7 +520,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			profileView = new ProfileViewImpl(currentUserBean, appMenu);
 		}
 
-		final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this);
+		final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this, new ProfileDescRuntImpl());
 		log.info("AppController Tokens.PROFILE ");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {

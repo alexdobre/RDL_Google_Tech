@@ -26,6 +26,7 @@ import org.gwtbootstrap3.client.ui.html.Paragraph;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 
 /**
@@ -45,6 +46,7 @@ import java.util.Date;
  * also to prompt the uses to click to initiate the upload
  */
 public class ProfileViewImpl extends AbstractValidatedAppMenuView implements ProfileView {
+	protected static Logger log = Logger.getLogger(ProfileViewImpl.class.getName());
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 
@@ -165,6 +167,11 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 		GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleDefault()));
 	}
 
+	@UiHandler("updateProfileDec")
+	void updateProfileClicked(ClickEvent e) {
+		presenter.updateProfile(richTextEditor.getCode());
+	}
+
 	public void setFormSuccessMsg(String msg) {
 		formSuccess.setSuccessMessage(msg);
 		changePassModal.hide();
@@ -182,4 +189,9 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 		this.presenter = presenter;
 	}
 
+	@Override
+	public void populateProfileDescription (String content) {
+		log.info("populateProfileDescription with content: "+content);
+		richTextEditor.setCode(content);
+	}
 }

@@ -42,11 +42,11 @@
 				</b:Panel>
 			</b:Column>
 		</b:Row>
-
+		<rdl:FormSuccess ui:field="formSuccess"/>
+		<rdl:FormErrors ui:field="formErrors"/>
 		<b:Form type="INLINE">
 			<b:FieldSet>
 				<b:Legend text="{i18n.yourProfile}"/>
-				<rdl:FormSuccess ui:field="formSuccess"/>
 				<b:FormGroup addStyleNames="padLeft padRight">
 					<b:FormLabel for="formEmail" text="{i18n.email}"/>
 					<b:FormControlStatic b:id="formEmail" ui:field="email"/>
@@ -109,7 +109,6 @@
 								<b:Input type="PASSWORD" ui:field="confirmNewPassword"/>
 							</g:FlowPanel>
 						</b:FormGroup>
-						<rdl:FormErrors ui:field="formErrors"/>
 					</b:FieldSet>
 				</b:Form>
 			</b:ModalBody>

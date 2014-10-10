@@ -1,5 +1,7 @@
 package com.therdl.client.view;
 
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.CurrentUserBean;
 
@@ -14,7 +16,7 @@ import com.therdl.shared.beans.CurrentUserBean;
  * this method sets the options in the header/nav bar
  * @ setAvatarWhenViewIsNotNull( ) sets the avatar image when the profile view comes into focus
  */
-public interface ProfileView extends RdlView {
+public interface ProfileView extends RdlView, ValidatedView {
 
 
 	public interface Presenter {
@@ -27,6 +29,8 @@ public interface ProfileView extends RdlView {
 		 */
 		public String changePassword(AutoBean<CurrentUserBean> currentUserBean,
 		                             String oldPass, String newPass, String newPassConfirm);
+
+		public void updateProfile(String content);
 	}
 
 	void setPresenter(Presenter presenter);
@@ -36,4 +40,6 @@ public interface ProfileView extends RdlView {
 	public void setFormSuccessMsg (String msg);
 
 	public void setChangePassErrorMsg (String msg);
+
+	public void populateProfileDescription (String content);
 }

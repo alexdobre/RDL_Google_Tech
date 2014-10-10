@@ -70,8 +70,11 @@ public class SnipValidatorImpl implements SnipValidator {
 				log.info("snip type invalid");
 				//see if there is at least one emotion
 			} else if (snipBean.as().getEmotions() == null || snipBean.as().getEmotions().isEmpty()) {
-				isValid = false;
-				log.info("emotions invalid");
+				//special case for internal snips
+				if (!RDLConstants.INTERNAL.equals(snipBean.as().getCoreCat())) {
+					isValid = false;
+					log.info("emotions invalid");
+				}
 				//finally see if user is RDL supporter trying to modify
 			} else if (SnipType.isSpecialAccess(snipBean.as().getSnipType())) {
 				if (!ServerUtils.isRdlSupporter(userBean)) {

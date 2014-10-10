@@ -20,6 +20,7 @@ public interface RDLConstants {
 
 	String DATE_PATTERN = "yyyy-MM-dd";
 	String DATE_PATTERN_EXTENDED = "yyyy-MM-dd HH:mm:ss";
+	String INTERNAL = "internal";
 
 	public interface Tokens {
 		String WELCOME = "!welcome";
@@ -42,6 +43,20 @@ public interface RDLConstants {
 
 		String TRIBUNAL_DETAIL = "tribunalDetail";
 		String CONTENT_SEARCH = "contentSearch";
+	}
+
+	public interface SnipAction {
+		String SEARCH = "search";
+		String GET_SNIP = "getSnip";
+		String VIEW_SNIP = "populateSnip";
+		String SAVE = "save";
+		String UPDATE = "update";
+		String DELETE = "delete";
+		String SAVE_REF = "saveReference";
+		String GET_REF = "getReferences";
+		String GIVE_REP = "giveRep";
+		String REPORT_ABUSE = "reportAbuse";
+		String SEARCH_ABUSE = "searchAbuse";
 	}
 
 	public interface BookmarkSearch {

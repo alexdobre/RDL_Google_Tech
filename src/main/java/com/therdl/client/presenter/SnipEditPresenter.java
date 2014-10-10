@@ -15,6 +15,8 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.StatusCallback;
+import com.therdl.client.presenter.func.FuncFactory;
+import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Global;
@@ -179,31 +181,17 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			view.setErrorMessage(validationResult);
 			return;
 		}
-		bean.as().setAction("save");
-		bean.as().setToken(currentUserBean.as().getToken());
-
 		log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
+		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+		grabSnipFunc.createSnip(bean, currentUserBean.as().getToken(), new StatusCallback(view) {
+			@Override
+			public void onSuccess(Request request, Response response) {
+				GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
+			}
+		});
 
-		// now submit to server
-		log.info("SnipEditPresenter submit to server");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
-		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
-
-		try {
-			String json = AutoBeanCodex.encode(bean).getPayload();
-			log.info("SnipEditPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new StatusCallback(view) {
-				@Override
-				public void onSuccess(Request request, Response response) {
-					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
-				}
-			});
-		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
-		}
+		bean.as().setAction(RDLConstants.SnipAction.SAVE);
+		bean.as().setToken(currentUserBean.as().getToken());
 	}
 
 	private void findSnipById(String snipId) {

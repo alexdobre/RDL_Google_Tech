@@ -260,7 +260,7 @@ public class SnipServiceImpl implements SnipsService {
 	 * updates the snip
 	 *
 	 * @param snip : Bean  to update
-	 * @return
+	 * @return the updated snip ID
 	 */
 	@Override
 	public String updateSnip(SnipBean snip) {
