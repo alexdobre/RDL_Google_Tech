@@ -237,7 +237,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		requestBuilder.setHeader("Content-Type", "application/json");
 
 		AutoBean<SnipBean> actionBean = beanery.snipBean();
-		actionBean.as().setAction("reportAbuse");
+		actionBean.as().setAction(RDLConstants.SnipAction.REPORT_ABUSE);
 		actionBean.as().setParentSnip(contentId);
 		actionBean.as().setContent(reason);
 		actionBean.as().setAuthor(getController().getCurrentUserBean().as().getName());

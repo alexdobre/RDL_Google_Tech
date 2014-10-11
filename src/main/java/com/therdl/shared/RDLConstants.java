@@ -22,6 +22,8 @@ public interface RDLConstants {
 	String DATE_PATTERN_EXTENDED = "yyyy-MM-dd HH:mm:ss";
 	String DATE_PATTERN_HYPER_EXTENDED = "yyyy-MM-dd HH:mm:ss.SSSS";
 	String INTERNAL = "internal";
+	String LICENSE_TITLE = "RDL License";
+	String RDL_OFFICIAL_USER = "RDL";
 
 	public interface Tokens {
 		String WELCOME = "!welcome";
@@ -32,6 +34,7 @@ public interface RDLConstants {
 		String PROFILE = "profile";
 		String PUBLIC_PROFILE = "publicProfile";
 		String SNIP_VIEW = "!snipView";
+		String LICENSE = "license";
 		String ERROR = "error";
 
 		String STORIES = "!stories";
@@ -129,6 +132,7 @@ public interface RDLConstants {
 		String STORIES = "stories";
 		String IMPROVEMENTS = "Improvements";
 		String TRIBUNAL = "tribunal";
+		String LICENSE = "license";
 	}
 
 	public interface ProposalType {

@@ -28,7 +28,6 @@ public interface WelcomeView extends RdlView{
 		 * Grabs the welcome snip based on the core category passed in
 		 * @param coreCat the core category for which to grab
 		 * @param title the title of the snip - may be NULL
-		 * @return the grabbed snip
 		 */
 		public void grabWelcomeSnip(final CoreCategory coreCat, String title);
 	}

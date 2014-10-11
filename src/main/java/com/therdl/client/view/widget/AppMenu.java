@@ -61,27 +61,11 @@ public class AppMenu extends Composite {
 	@UiField
 	NavbarBrand home;
 	@UiField
-	AnchorListItem ideas;
-	@UiField
-	AnchorListItem stories;
-	@UiField
-	AnchorListItem tribunal;
-	@UiField
-	AnchorListItem improvements;
-	@UiField
-	AnchorListItem signUp;
-	@UiField
-	AnchorListItem login;
+	AnchorListItem ideas, stories, improvements, tribunal, license, signUp, login, email, profile, out;
 	@UiField
 	AnchorButton userDetails;
 	@UiField
 	NavbarHeader user;
-	@UiField
-	AnchorListItem email;
-	@UiField
-	AnchorListItem profile;
-	@UiField
-	AnchorListItem out;
 	@UiField
 	TextBox searchSiteContent;
 
@@ -193,6 +177,7 @@ public class AppMenu extends Composite {
 		stories.setActive(false);
 		tribunal.setActive(false);
 		improvements.setActive(false);
+		license.setActive(false);
 		signUp.setActive(false);
 		login.setActive(false);
 	}
@@ -231,9 +216,10 @@ public class AppMenu extends Composite {
 
 	public void setActive() {
 		if (Global.moduleName == RDLConstants.Modules.STORIES) setStoriesActive();
-		if (Global.moduleName == RDLConstants.Modules.IDEAS) setIdeasActive();
-		if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
-		if (Global.moduleName == RDLConstants.Modules.TRIBUNAL) setTribunalActive();
+		else if (Global.moduleName == RDLConstants.Modules.IDEAS) setIdeasActive();
+		else if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
+		else if (Global.moduleName == RDLConstants.Modules.TRIBUNAL) setTribunalActive();
+		else if (Global.moduleName == RDLConstants.Modules.LICENSE) setLicenseActive();
 	}
 
 	/**
@@ -247,6 +233,11 @@ public class AppMenu extends Composite {
 	public void setTribunalActive() {
 		allInactive();
 		tribunal.setActive(true);
+	}
+
+	public void setLicenseActive() {
+		allInactive();
+		license.setActive(true);
 	}
 
 	/**

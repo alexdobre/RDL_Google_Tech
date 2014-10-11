@@ -25,6 +25,10 @@
 				<b:NavbarForm pull="LEFT">
 					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="{i18n.searchSiteContent}"/>
 				</b:NavbarForm>
+				<b:NavbarNav pull="LEFT">
+					<b:AnchorListItem ui:field="license" targetHistoryToken="{nameTokens.getLicense}"
+					                  text="{i18n.license}"/>
+				</b:NavbarNav>
 
 				<b:NavbarNav pull="RIGHT">
 					<b:AnchorListItem ui:field="login" text="{i18n.logIn}"/>

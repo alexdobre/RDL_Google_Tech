@@ -67,4 +67,8 @@ public class NameTokens {
 		return RDLConstants.Tokens.PROPOSAL_VIEW;
 	}
 
+	public static String getLicense() {
+		return RDLConstants.Tokens.LICENSE;
+	}
+
 }

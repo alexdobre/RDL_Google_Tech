@@ -64,7 +64,8 @@ public class SnipServletHelper {
 		//we modify the content - firstly we increment the abuse counter
 		incrementAbuseCount(true, abusiveContent);
 		// if we reach 3 reports we send it to the tribunal
-		if (abusiveContent.getAbuseCount() == 3) {
+		//special case if the author is RDL
+		if (abusiveContent.getAbuseCount() == 3 && !RDLConstants.RDL_OFFICIAL_USER.equals(abusiveContent.getAuthor())) {
 			abusiveContent.setPreviousSnipType(abusiveContent.getSnipType());
 			//run the expiry date forwards one week
 			Calendar cal = new GregorianCalendar();

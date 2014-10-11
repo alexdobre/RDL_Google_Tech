@@ -1,8 +1,5 @@
 package com.therdl.client.app;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -15,6 +12,7 @@ import com.therdl.client.presenter.ContentNotFoundPresenter;
 import com.therdl.client.presenter.ContentSearchPresenter;
 import com.therdl.client.presenter.IdeaViewPresenter;
 import com.therdl.client.presenter.ImprovementViewPresenter;
+import com.therdl.client.presenter.LicensePresenter;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
 import com.therdl.client.presenter.PublicProfilePresenter;
@@ -31,6 +29,7 @@ import com.therdl.client.view.ContentNotFound;
 import com.therdl.client.view.ContentSearchView;
 import com.therdl.client.view.IdeaView;
 import com.therdl.client.view.ImprovementView;
+import com.therdl.client.view.LicenseView;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.PublicProfileView;
 import com.therdl.client.view.RegisterView;
@@ -45,6 +44,7 @@ import com.therdl.client.view.impl.ContentSearchViewImpl;
 import com.therdl.client.view.impl.IdeaViewImpl;
 import com.therdl.client.view.impl.ImprovementViewImpl;
 import com.therdl.client.view.impl.ImprovementsViewImpl;
+import com.therdl.client.view.impl.LicenseViewImpl;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.client.view.impl.PublicProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
@@ -67,6 +67,9 @@ import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
 import com.therdl.shared.events.SnipViewEvent;
 import com.therdl.shared.events.SnipViewEventHandler;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * While the overall application follows the Model View Presenter(MVP) design pattern
@@ -130,6 +133,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private IdeaView ideaView;
 	private ThreadView threadView;
 	private ImprovementView proposalView;
+	private LicenseView licenseView;
 
 	private RdlAbstractPresenter defaultPresenter;
 
@@ -187,7 +191,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		this.container = rootContainer;
 		this.currentUserBean.as().setAuth(false);
 		this.currentUserBean.as().setRegistered(false);
-		if (defaultPresenter == null){
+		if (defaultPresenter == null) {
 			defaultPresenter = new RdlAbstractPresenter(this) {
 				@Override
 				public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
@@ -229,63 +233,66 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("App controller module name: " + moduleName);
 		if (moduleName != null) {
 			switch (moduleName) {
-			case RDLConstants.Tokens.WELCOME:
-				showWelcomeView();
-				break;
-			case RDLConstants.Tokens.SNIP_VIEW:
-				showSnipView(token);
-				break;
-			case RDLConstants.Tokens.THREAD_VIEW:
-				showThreadView(token);
-				break;
-			case RDLConstants.Tokens.SNIPS:
-				showSnips(token);
-				break;
-			case RDLConstants.Tokens.STORIES:
-				showStories(token);
-				break;
-			case RDLConstants.Tokens.TRIBUNAL:
-				showTribunal(token);
-				break;
-			case RDLConstants.Tokens.TRIBUNAL_DETAIL:
-				showTribunalDetail(token);
-				break;
-			case RDLConstants.Tokens.THREAD_EDIT:
-				showThreadEdit(token);
-				break;
-			case RDLConstants.Tokens.IMPROVEMENTS:
-				showImprovements(token);
-				break;
-			case RDLConstants.Tokens.PROPOSAL_EDIT:
-				showProposalEdit(token);
-				break;
-			case RDLConstants.Tokens.PROPOSAL_VIEW:
-				showProposalView(token);
-				break;
-			case RDLConstants.Tokens.SNIP_EDIT:
-				showSnipEdit(token);
-				break;
-			case RDLConstants.Tokens.SIGN_UP:
-				showSignUp();
-				break;
-			case RDLConstants.Tokens.PROFILE:
-				showProfile();
-				break;
-			case RDLConstants.Tokens.PUBLIC_PROFILE:
-				showPublicProfile(tokenSplit);
-				break;
-			case RDLConstants.Tokens.CONTENT_SEARCH:
-				showContentSearch(tokenSplit);
-				break;
-			case RDLConstants.Tokens.ERROR:
-				showContentNotFound();
-				break;
-			case RDLConstants.Tokens.LOG_OUT:
-				showLogOut();
-				break;
-			default:
-				showWelcomeView();
-				break;
+				case RDLConstants.Tokens.WELCOME:
+					showWelcomeView();
+					break;
+				case RDLConstants.Tokens.SNIP_VIEW:
+					showSnipView(token);
+					break;
+				case RDLConstants.Tokens.THREAD_VIEW:
+					showThreadView(token);
+					break;
+				case RDLConstants.Tokens.SNIPS:
+					showSnips(token);
+					break;
+				case RDLConstants.Tokens.STORIES:
+					showStories(token);
+					break;
+				case RDLConstants.Tokens.TRIBUNAL:
+					showTribunal(token);
+					break;
+				case RDLConstants.Tokens.TRIBUNAL_DETAIL:
+					showTribunalDetail(token);
+					break;
+				case RDLConstants.Tokens.THREAD_EDIT:
+					showThreadEdit(token);
+					break;
+				case RDLConstants.Tokens.IMPROVEMENTS:
+					showImprovements(token);
+					break;
+				case RDLConstants.Tokens.PROPOSAL_EDIT:
+					showProposalEdit(token);
+					break;
+				case RDLConstants.Tokens.PROPOSAL_VIEW:
+					showProposalView(token);
+					break;
+				case RDLConstants.Tokens.SNIP_EDIT:
+					showSnipEdit(token);
+					break;
+				case RDLConstants.Tokens.SIGN_UP:
+					showSignUp();
+					break;
+				case RDLConstants.Tokens.PROFILE:
+					showProfile();
+					break;
+				case RDLConstants.Tokens.PUBLIC_PROFILE:
+					showPublicProfile(tokenSplit);
+					break;
+				case RDLConstants.Tokens.LICENSE:
+					showLicense();
+					break;
+				case RDLConstants.Tokens.CONTENT_SEARCH:
+					showContentSearch(tokenSplit);
+					break;
+				case RDLConstants.Tokens.ERROR:
+					showContentNotFound();
+					break;
+				case RDLConstants.Tokens.LOG_OUT:
+					showLogOut();
+					break;
+				default:
+					showWelcomeView();
+					break;
 			}
 		}
 	}
@@ -396,6 +403,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
+
 			public void onSuccess() {
 				tribunalPresenter.go(container, currentUserBean);
 			}
@@ -413,6 +421,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
+
 			public void onSuccess() {
 				tribunalDetailPresenter.go(container, currentUserBean);
 			}
@@ -542,17 +551,31 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showPublicProfile(String[] tokenSplit) {
 		if (publicProfileView == null) {
-			log.info("AppController profileView == null ");
 			publicProfileView = new PublicProfileViewImpl(currentUserBean, appMenu);
 		}
 		final PublicProfilePresenter publicProfilePresenter = new PublicProfilePresenter(publicProfileView, this,
-				tokenSplit.length >1?tokenSplit[1]:null);
-		log.info("AppController Tokens.CONTENT_SEARCH ");
+				tokenSplit.length > 1 ? tokenSplit[1] : null);
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
+
 			public void onSuccess() {
 				publicProfilePresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showLicense() {
+		if (licenseView == null) {
+			licenseView = new LicenseViewImpl(currentUserBean, appMenu);
+		}
+		final LicensePresenter licensePresenter = new LicensePresenter(licenseView, this);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				licensePresenter.go(container, currentUserBean);
 			}
 		});
 	}
@@ -563,11 +586,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			contentSearchView = new ContentSearchViewImpl(appMenu);
 		}
 		final ContentSearchPresenter contentSearchPresenter = new ContentSearchPresenter(contentSearchView, this,
-				tokenSplit.length >1?tokenSplit[1]:null);
+				tokenSplit.length > 1 ? tokenSplit[1] : null);
 		log.info("AppController Tokens.CONTENT_SEARCH ");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
+
 			public void onSuccess() {
 				contentSearchPresenter.go(container, currentUserBean);
 			}
@@ -643,7 +667,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 * @param titleBeans user titles
 	 */
 	public void setCurrentUserBean(String name, String email, boolean state, List<UserBean.TitleBean> titleBeans,
-			boolean isRDLSupporter, String token, Integer rep, String dateCreated) {
+	                               boolean isRDLSupporter, String token, Integer rep, String dateCreated) {
 		this.currentUserBean.as().setAuth(state);
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);
