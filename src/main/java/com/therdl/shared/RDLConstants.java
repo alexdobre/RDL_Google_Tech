@@ -20,6 +20,7 @@ public interface RDLConstants {
 
 	String DATE_PATTERN = "yyyy-MM-dd";
 	String DATE_PATTERN_EXTENDED = "yyyy-MM-dd HH:mm:ss";
+	String DATE_PATTERN_HYPER_EXTENDED = "yyyy-MM-dd HH:mm:ss.SSSS";
 	String INTERNAL = "internal";
 
 	public interface Tokens {
@@ -29,6 +30,7 @@ public interface RDLConstants {
 		String LOG_OUT = "logOut";
 		String SIGN_UP = "signUp";
 		String PROFILE = "profile";
+		String PUBLIC_PROFILE = "publicProfile";
 		String SNIP_VIEW = "!snipView";
 		String ERROR = "error";
 

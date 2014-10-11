@@ -62,7 +62,7 @@
 							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
 						</b:Column>
 						<b:Column size="MD_2" offset="MD_2">
-							<b:Button type="WARNING" icon="WARNING" text="{i18n.reportAbuse}" ui:field="reportAbuse"/>
+							<b:Button type="WARNING" icon="WARNING" text="{i18n.reportAbuse}" size="SMALL" ui:field="reportAbuse"/>
 						</b:Column>
 						<b:Column size="MD_1" ui:field="snipActionContainer"/>
 					</b:Row>

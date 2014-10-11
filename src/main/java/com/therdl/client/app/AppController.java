@@ -17,6 +17,7 @@ import com.therdl.client.presenter.IdeaViewPresenter;
 import com.therdl.client.presenter.ImprovementViewPresenter;
 import com.therdl.client.presenter.Presenter;
 import com.therdl.client.presenter.ProfilePresenter;
+import com.therdl.client.presenter.PublicProfilePresenter;
 import com.therdl.client.presenter.RdlAbstractPresenter;
 import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
@@ -31,6 +32,7 @@ import com.therdl.client.view.ContentSearchView;
 import com.therdl.client.view.IdeaView;
 import com.therdl.client.view.ImprovementView;
 import com.therdl.client.view.ProfileView;
+import com.therdl.client.view.PublicProfileView;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.SnipEditView;
@@ -44,6 +46,7 @@ import com.therdl.client.view.impl.IdeaViewImpl;
 import com.therdl.client.view.impl.ImprovementViewImpl;
 import com.therdl.client.view.impl.ImprovementsViewImpl;
 import com.therdl.client.view.impl.ProfileViewImpl;
+import com.therdl.client.view.impl.PublicProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
@@ -122,6 +125,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private RegisterView registerView;
 	private ContentSearchView contentSearchView;
 	private ProfileView profileView;
+	private PublicProfileView publicProfileView;
 
 	private IdeaView ideaView;
 	private ThreadView threadView;
@@ -266,6 +270,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				break;
 			case RDLConstants.Tokens.PROFILE:
 				showProfile();
+				break;
+			case RDLConstants.Tokens.PUBLIC_PROFILE:
+				showPublicProfile(tokenSplit);
 				break;
 			case RDLConstants.Tokens.CONTENT_SEARCH:
 				showContentSearch(tokenSplit);
@@ -529,6 +536,23 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onSuccess() {
 				profilePresenter.go(container, currentUserBean);
 
+			}
+		});
+	}
+
+	private void showPublicProfile(String[] tokenSplit) {
+		if (publicProfileView == null) {
+			log.info("AppController profileView == null ");
+			publicProfileView = new PublicProfileViewImpl(currentUserBean, appMenu);
+		}
+		final PublicProfilePresenter publicProfilePresenter = new PublicProfilePresenter(publicProfileView, this,
+				tokenSplit.length >1?tokenSplit[1]:null);
+		log.info("AppController Tokens.CONTENT_SEARCH ");
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+			public void onSuccess() {
+				publicProfilePresenter.go(container, currentUserBean);
 			}
 		});
 	}

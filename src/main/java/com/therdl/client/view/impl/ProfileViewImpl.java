@@ -17,6 +17,7 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
+import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormControlStatic;
 import org.gwtbootstrap3.client.ui.Image;
@@ -75,13 +76,14 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 	@UiField
 	Input oldPassword, newPassword, confirmNewPassword;
 	@UiField
-	Summernote richTextEditor;
+	Summernote profileDesc;
+	@UiField
+	Anchor viewPublicProfile;
 
 	public ProfileViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = cUserBean;
-
 		populateView(currentUserBean);
 	}
 
@@ -90,7 +92,7 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 			this.currentUserBean = currentUserBean;
 			email.setText(currentUserBean.as().getEmail());
 			username.setText(currentUserBean.as().getName());
-			if (currentUserBean.as().getRep() != null){
+			if (currentUserBean.as().getRep() != null) {
 				rep.setText(currentUserBean.as().getRep().toString());
 			} else {
 				rep.setText("0");
@@ -112,6 +114,7 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 				ViewUtils.showHide(false, titleExpiresParagraph);
 				ViewUtils.showHide(true, supporterBtn);
 			}
+			viewPublicProfile.setHref("#" + RDLConstants.Tokens.PUBLIC_PROFILE + ":" + currentUserBean.as().getName());
 		}
 	}
 
@@ -169,7 +172,7 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 
 	@UiHandler("updateProfileDec")
 	void updateProfileClicked(ClickEvent e) {
-		presenter.updateProfile(richTextEditor.getCode());
+		presenter.updateProfile(profileDesc.getCode());
 	}
 
 	public void setFormSuccessMsg(String msg) {
@@ -190,8 +193,9 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 	}
 
 	@Override
-	public void populateProfileDescription (String content) {
-		log.info("populateProfileDescription with content: "+content);
-		richTextEditor.setCode(content);
+	public void populateProfileDescription(String content) {
+		log.info("populateProfileDescription with content: " + content);
+		profileDesc.setCode(content);
+		profileDesc.reconfigure();
 	}
 }

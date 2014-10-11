@@ -58,9 +58,10 @@
 				</b:Row>
 				<b:Row>
 					<b:Column size="MD_2">
-						<b:Badge ui:field="userName" addStyleNames="snipListRowBadge">
-							<b:Icon type="USER" addStyleNames="leftIcon"/>
-						</b:Badge>
+							<b:Badge ui:field="userName" addStyleNames="snipListRowBadge">
+								<b:Icon type="USER" addStyleNames="leftIcon"/>
+								<b:Anchor ui:field="userNameLink"/>
+							</b:Badge>
 					</b:Column>
 					<b:Column size="MD_4">
 						<b:Row ui:field="likesRepliesPanel">

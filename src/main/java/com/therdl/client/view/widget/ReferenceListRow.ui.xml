@@ -48,6 +48,7 @@
 					<b:Column size="MD_12">
 						<b:Badge ui:field="userName" addStyleNames="snipListRowBadge">
 							<b:Icon type="USER" addStyleNames="leftIcon"/>
+							<b:Anchor ui:field="userNameLink"/>
 						</b:Badge>
 					</b:Column>
 				</b:Row>

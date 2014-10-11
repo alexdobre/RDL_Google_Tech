@@ -58,7 +58,7 @@ public class ReferenceListRow extends Composite {
 	@UiField
 	Paragraph abuseWarning;
 	@UiField
-	Anchor abuseWarningAnchor;
+	Anchor abuseWarningAnchor, userNameLink;
 
 	SnipView view;
 
@@ -77,9 +77,8 @@ public class ReferenceListRow extends Composite {
 
 		// sets values from referenceBean for UI elements from ui binder
 		richTextAreaRef.getElement().setInnerHTML(referenceBean.as().getContent());
-		userName.setText(referenceBean.as().getAuthor());
 		rep.setText(referenceBean.as().getRep().toString());
-		Date date = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN_EXTENDED).parse(referenceBean.as().getCreationDate());
+		Date date = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN_HYPER_EXTENDED).parse(referenceBean.as().getCreationDate());
 		String dateString = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN_EXTENDED).format(date);
 		creationDate.setText(dateString);
 
@@ -120,6 +119,15 @@ public class ReferenceListRow extends Composite {
 			ViewUtils.showHide(false, avatarImg);
 		}
 
+		if (referenceBean.as().getAuthorSupporter()) {
+			userName.setText("");
+			userNameLink.setHref("#" + RDLConstants.Tokens.PUBLIC_PROFILE + ":" + referenceBean.as().getAuthor());
+			userNameLink.setText(referenceBean.as().getAuthor());
+		} else {
+			userName.setText(referenceBean.as().getAuthor());
+			userNameLink.setText("");
+			userNameLink.setHref("");
+		}
 		emoListPanel.clear();
 		if (referenceBean.as().getEmotions() != null) {
 			for (String emoStr : referenceBean.as().getEmotions()) {

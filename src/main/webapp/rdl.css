@@ -349,6 +349,10 @@ noBorder{
 	padding-right:10px;
 }
 
+.floatRight{
+	float: right;
+}
+
 .loadingWidget {
 	text-align: center;
 	display: none;

@@ -1,9 +1,5 @@
 package com.therdl.client.presenter.runt.impl;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
@@ -21,6 +17,8 @@ import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.logging.Logger;
 
 /**
  * Logic behind the user's profile description
@@ -72,6 +70,11 @@ public class ProfileDescRuntImpl implements ProfileDescRunt {
 		}
 	}
 
+	/**
+	 * Builds the search options bean to retrieve a user's profile
+	 *
+	 * @param username the user's name
+	 */
 	private AutoBean<SnipBean> buildUserProfileSearchOptions(String username) {
 		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 		searchOptionsBean.as().setAuthor(username);

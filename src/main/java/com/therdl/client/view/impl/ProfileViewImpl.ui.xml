@@ -34,10 +34,11 @@
 						<b:Heading size="H3" text="{i18n.publicProfileDescription}"/>
 					</b:PanelHeader>
 					<b:PanelBody addStyleNames="noPadding">
-						<summer:Summernote ui:field="richTextEditor"/>
+						<summer:Summernote ui:field="profileDesc"/>
 					</b:PanelBody>
 					<b:PanelFooter>
 						<b:Button ui:field="updateProfileDec" text="{i18n.update}"/>
+						<b:Anchor ui:field="viewPublicProfile" text="{i18n.viewPublicProfile}" addStyleNames="floatRight"/>
 					</b:PanelFooter>
 				</b:Panel>
 			</b:Column>

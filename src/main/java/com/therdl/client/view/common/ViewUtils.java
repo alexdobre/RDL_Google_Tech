@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
@@ -258,7 +259,8 @@ public class ViewUtils {
 		if (currentUser == null || currentUser.as() == null || !currentUser.as().isAuth()) {
 			return false;
 		}
-		if (currentSnip.as().getIsAbuseReportedByUser() == 1) {
+		if (currentSnip == null || currentSnip.as() == null || currentSnip.as().getIsAbuseReportedByUser() == null ||
+				currentSnip.as().getIsAbuseReportedByUser() == 1) {
 			return false;
 		}
 		return isAllowedAbuseAction(currentUser);

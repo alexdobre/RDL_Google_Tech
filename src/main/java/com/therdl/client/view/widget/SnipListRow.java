@@ -3,6 +3,7 @@ package com.therdl.client.view.widget;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Badge;
 import org.gwtbootstrap3.client.ui.Row;
 
@@ -43,6 +44,8 @@ public class SnipListRow extends AbstractListRow {
 	Badge userName, postsCount, rep, posRef, neutRef, negRef, pledgesCount, countersCount;
 	@UiField
 	Row likesRepliesPanel, referencesPanel, pledgeCounterPanel;
+	@UiField
+	Anchor userNameLink;
 
 	public SnipListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType,
 			UIObject parent) {
@@ -98,7 +101,7 @@ public class SnipListRow extends AbstractListRow {
 	}
 
 	private void doTexts() {
-		userName.setText(snipBean.as().getAuthor());
+
 		rep.setText(snipBean.as().getRep() + "");
 		snipTitle.setText(snipBean.as().getTitle());
 
@@ -108,6 +111,16 @@ public class SnipListRow extends AbstractListRow {
 			snipTitle.setHref("#" + RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
 			snipTitle.setHref("#" + RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
+
+		if (snipBean.as().getAuthorSupporter()) {
+			userName.setText("");
+			userNameLink.setHref("#" + RDLConstants.Tokens.PUBLIC_PROFILE + ":" + snipBean.as().getAuthor());
+			userNameLink.setText(snipBean.as().getAuthor());
+		} else {
+			userName.setText(snipBean.as().getAuthor());
+			userNameLink.setText("");
+			userNameLink.setHref("");
+		}
 
 		posRef.setText(snipBean.as().getPosRef().toString());
 		neutRef.setText(snipBean.as().getNeutralRef().toString());

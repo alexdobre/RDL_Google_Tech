@@ -54,9 +54,10 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 		checkLogin();
 		this.currentUserBean = currentUserBean;
 		container.clear();
+		profileDescRunt.grabProfileDesc(view, currentUserBean);
+		log.info("Populate VIEW - BEGIN");
 		view.populateView(currentUserBean);
 		container.add(view.asWidget());
-		profileDescRunt.grabProfileDesc(view, currentUserBean);
 	}
 
 
