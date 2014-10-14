@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.handler.ClickHandler;
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.EmotionView;
 import com.therdl.client.view.PaginatedView;
@@ -285,7 +286,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	}
 
 	@Override
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, ReplyRunt replyRunt) {
 		showComments(beanList, pageIndex);
 	}
 

@@ -62,6 +62,8 @@ public interface RDLConstants {
 		String GIVE_REP = "giveRep";
 		String REPORT_ABUSE = "reportAbuse";
 		String SEARCH_ABUSE = "searchAbuse";
+
+		String SNIP_SERVLET_URL = "getSnips";
 	}
 
 	public interface BookmarkSearch {

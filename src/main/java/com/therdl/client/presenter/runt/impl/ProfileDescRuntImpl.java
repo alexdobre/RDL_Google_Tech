@@ -61,7 +61,7 @@ public class ProfileDescRuntImpl implements ProfileDescRunt {
 			});
 		} else {
 			profileDesc.as().setContent(content);
-			grabSnipFunc.updateSnip(profileDesc, new StatusCallback(validatedView) {
+			grabSnipFunc.updateSnip(profileDesc, token, new StatusCallback(validatedView) {
 				@Override
 				public void onSuccess(Request request, Response response) {
 					validatedView.setSuccessMessage(RDL.getI18n().profileDescriptionUpdateSuccess());

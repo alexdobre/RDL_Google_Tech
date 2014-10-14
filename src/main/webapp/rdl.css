@@ -99,7 +99,6 @@ input.search-query {
 form.form-search {
     position: relative;
     top:0;
-
 }
 
 form.form-search:before {
@@ -376,7 +375,23 @@ noBorder{
 	padding-bottom: 5px;
 	border: 0;
 }
-.rightPanel {
-	border: 0;
-	position: relative;
+.posRelative {
+	position:relative;
+}
+.refFlag {
+	height: 30px;
+	width: 65px;
+	border: 1px solid #000;
+	right: 3px;
+	top: 3px;
+	padding-left: 6px;
+	padding-top: 3px;
+	color: #fff;
+	position: absolute;
+}
+
+.replySnipAction {
+	position: absolute;
+	bottom: 3px;
+	right: 3px;
 }

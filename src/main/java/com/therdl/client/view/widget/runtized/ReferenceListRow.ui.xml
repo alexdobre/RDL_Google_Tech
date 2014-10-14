@@ -6,11 +6,6 @@
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
 	<ui:style>
-		.leftPanel {
-		width: 60px;
-		margin-left: 10px;
-		}
-
 		.userImg {
 		width: 94px;
 		margin: 3px 0px 0px 3px
@@ -21,26 +16,13 @@
 		width: 130px;
 		}
 
-		.refFlag {
-		height: 30px;
-		width: 65px;
-		border: 1px solid #000;
-		position: absolute;
-		right: 0;
-		padding-left: 6px;
-		padding-top: 3px;
-		color: #fff;
-		}
-
-		.refRepBtn {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		margin-bottom: 3px;
-		}
 
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel addStyleNames="posRelative">
+		<g:Label ui:field="refFlag" addStyleNames="refFlag"></g:Label>
+		<g:SimplePanel ui:field="snipActionPanel" addStyleNames="replySnipAction">
+			<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="refRepBtn" />
+		</g:SimplePanel>
 		<b:Row>
 			<b:Column size="MD_2">
 				<g:Image ui:field="avatarImg" width="100px" height="100px"/>
@@ -72,14 +54,10 @@
 			</b:Column>
 			<b:Column size="MD_10">
 				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12 labels"/>
-				<g:Label ui:field="refFlag" styleName="{style.refFlag}"></g:Label>
 				<b.html:Paragraph emphasis="WARNING" ui:field="abuseWarning">
 					<b:Anchor icon="WARNING" iconSpin="true" text="{i18n.abuseWarning}" addStyleNames="text-warning" ui:field="abuseWarningAnchor"/>
 				</b.html:Paragraph>
-				<g:FlowPanel styleName="rightPanel">
-					<b:Button type="PRIMARY" icon="THUMBS_UP" ui:field="refRepBtn" addStyleNames="{style.refRepBtn}"/>
-					<g:HTMLPanel ui:field="richTextAreaRef" styleName="richTextArea"/>
-				</g:FlowPanel>
+				<g:HTMLPanel ui:field="richTextAreaRef" styleName="richTextArea"/>
 			</b:Column>
 		</b:Row>
 	</g:HTMLPanel>

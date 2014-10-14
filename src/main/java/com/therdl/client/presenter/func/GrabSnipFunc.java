@@ -27,7 +27,7 @@ public interface GrabSnipFunc {
 	 * @param statusCallback
 	 * @return null if update successful, the error code otherwise
 	 */
-	public void updateSnip(AutoBean<SnipBean> updatedSnip, StatusCallback statusCallback);
+	public void updateSnip(AutoBean<SnipBean> updatedSnip, String token, StatusCallback statusCallback);
 
 	/**
 	 * Creates a new snip on the server

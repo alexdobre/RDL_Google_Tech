@@ -189,7 +189,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 
 	public void searchAbuse(AutoBean<SnipBean> searchOptions, RequestCallback callback) {
 		log.info("SnipSearchPresenter getSnipSearchResult");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
@@ -232,7 +232,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 	public void reportAbuse(String contentId, String reason) {
 		log.info("Report abuse on item: " + contentId + " reason: " + reason);
 		log.info("SnipSearchPresenter getSnipSearchResult");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
@@ -261,7 +261,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 	public void showAbuseComments(SnipBean abusiveContent, final AbuseCommentsPopup popup) {
 
 		log.info("Retrieve abuse comments for: " + abusiveContent);
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 

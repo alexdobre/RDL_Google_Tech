@@ -19,6 +19,7 @@ import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.handler.RequestObserver;
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
@@ -50,10 +51,12 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	protected AutoBean<SnipBean> searchOptionsBean;
 	protected HasWidgets container;
 	protected AutoBean<SnipBean> currentSnipBean;
+	protected ReplyRunt replyRunt;
 
-	public SnipViewPresenter(SnipView snipView, AppController appController, String token) {
+	public SnipViewPresenter(SnipView snipView, AppController appController, String token, ReplyRunt replyRunt) {
 		super(appController);
 		this.view = snipView;
+		this.replyRunt = replyRunt;
 		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
 		log.info("currentSnipId at constructor time: " + currentSnipId + " from token: " + token);
 		this.controller = appController;
@@ -99,7 +102,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	 */
 	private void viewSnipById() {
 		log.info("SnipViewPresenter viewSnipById currentSnipId=" + currentSnipId);
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
 		log.info("SnipViewPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -200,7 +203,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		bean.as().setAction("saveReference");
 		final String refType = bean.as().getReferenceType();
 		final String snipType = bean.as().getSnipType();
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
 		log.info("SnipViewPresenter submit updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -223,7 +226,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	@Override
 	public void populateReplies(AutoBean<SnipBean> searchOptionsBean) {
 		log.info("SnipViewPresenter populateReplies currentSnipId=" + currentSnipId);
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
@@ -236,7 +239,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 			requestBuilder.sendRequest(json, new SnipListCallback() {
 				@Override
 				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
-					view.showReferences(beanList, pageIndex);
+					view.showReferences(beanList, pageIndex, replyRunt);
 					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
 				}
 			});
@@ -251,7 +254,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	@Override
 	public void giveSnipReputation(String id, final RequestObserver observer) {
 		log.info("SnipViewPresenter giveSnipReputation id=" + id);
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");

@@ -1,7 +1,5 @@
 package com.therdl.client.presenter.runt;
 
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.ValidatedView;

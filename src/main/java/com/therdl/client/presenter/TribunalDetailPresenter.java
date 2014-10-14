@@ -15,9 +15,11 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.TribunalDetail;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
+import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
@@ -32,8 +34,8 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 	public static final String VOTE_YES="YES";
 	public static final String VOTE_NO="NO";
 
-	public TribunalDetailPresenter(TribunalDetail tribunalDetail, AppController appController, String token) {
-		super(tribunalDetail, appController, token);
+	public TribunalDetailPresenter(TribunalDetail tribunalDetail, AppController appController, String token, ReplyRunt replyRunt) {
+		super(tribunalDetail, appController, token, replyRunt);
 		tribunalDetail.setTribunalPresenter(this);
 	}
 
@@ -80,7 +82,7 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 	                      Paragraph yesVotedAbuse, Paragraph noVotedAbuse) {
 
 		log.info("Vote abuse -BEGIN voted:  "+vote+" on item: "+currentSnipBean.as().getId());
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
@@ -114,14 +116,13 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 			});
 		} catch (RequestException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
-	}
-	
+		}
 	}
 
 	@Override
 	public void populateReplies(AutoBean<SnipBean> searchOptionsBean) {
 		log.info("Retrieve abuse comments for: " + searchOptionsBean.as());
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		formRepliesSearchOptions(searchOptionsBean);
@@ -133,7 +134,7 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 			requestBuilder.sendRequest(json, new SnipListCallback() {
 
 				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
-					view.showReferences(beanList, pageIndex);
+					view.showReferences(beanList, pageIndex, replyRunt);
 					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
 				}
 

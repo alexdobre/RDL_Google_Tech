@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.shared.events.ShowAbuseCommentsEvent;
 import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
@@ -39,7 +40,7 @@ import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.EmotionPicker;
 import com.therdl.client.view.widget.LoadingWidget;
-import com.therdl.client.view.widget.ReferenceListRow;
+import com.therdl.client.view.widget.runtized.ReferenceListRow;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.client.view.widget.SnipActionWidget;
 import com.therdl.client.view.widget.SnipListRow;
@@ -368,7 +369,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	 *
 	 * @param beanList list of references as bean objects
 	 */
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, ReplyRunt replyRunt) {
 		log.info("Showing references: " + beanList.size());
 		this.searchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
@@ -383,12 +384,12 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 			if (itemList.size() >= j + 1) {
 				//if yes we just populate the existing item
 				referenceListRow = itemList.get(j);
-				referenceListRow.populate(beanList.get(j), this.currentUserBean, this);
+				referenceListRow.populate(beanList.get(j), this.currentUserBean, this, replyRunt);
 				ViewUtils.show(referenceListRow.getParentObject());
 			} else {
 				//otherwise we create a new item
 				LinkedGroupItem listItem = new LinkedGroupItem();
-				referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this, listItem);
+				referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this, listItem, replyRunt);
 				itemList.add(referenceListRow);
 				listItem.setPaddingBottom(2);
 				listItem.setPaddingTop(2);
@@ -397,6 +398,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 				listItem.add(referenceListRow);
 				listGroup.add(listItem);
 			}
+			replyRunt.decorateReference(referenceListRow);
 		}
 		//finally we hide unused items
 		hideUnusedItems(beanList);

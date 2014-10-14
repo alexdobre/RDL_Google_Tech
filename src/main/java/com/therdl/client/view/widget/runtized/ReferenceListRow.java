@@ -1,4 +1,4 @@
-package com.therdl.client.view.widget;
+package com.therdl.client.view.widget.runtized;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,10 +11,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.handler.RequestObserver;
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.SnipView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Emotion;
@@ -42,6 +44,7 @@ public class ReferenceListRow extends Composite {
 	private static ReferenceListRowUiBinder ourUiBinder = GWT.create(ReferenceListRowUiBinder.class);
 
 	private AutoBean<SnipBean> referenceBean;
+	private ReplyRunt replyRunt;
 
 	@UiField
 	HTMLPanel richTextAreaRef;
@@ -59,21 +62,25 @@ public class ReferenceListRow extends Composite {
 	Paragraph abuseWarning;
 	@UiField
 	Anchor abuseWarningAnchor, userNameLink;
+	@UiField
+	SimplePanel snipActionPanel;
 
 	SnipView view;
 
 	private UIObject parent;
 
 	public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view,
-	                        UIObject parent) {
+	                        UIObject parent, ReplyRunt replyRunt) {
 		this.parent = parent;
 		initWidget(ourUiBinder.createAndBindUi(this));
-		populate(referenceBean, currentUserBean, view);
+		populate(referenceBean, currentUserBean, view, replyRunt);
 	}
 
-	public void populate(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view) {
+	public void populate(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view,
+			ReplyRunt replyRunt) {
 		this.referenceBean = referenceBean;
 		this.view = view;
+		this.replyRunt = replyRunt;
 
 		// sets values from referenceBean for UI elements from ui binder
 		richTextAreaRef.getElement().setInnerHTML(referenceBean.as().getContent());
@@ -91,8 +98,6 @@ public class ReferenceListRow extends Composite {
 				refFlag.setText(RDL.i18n.negative());
 
 			refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(referenceBean.as().getReferenceType()));
-
-			ViewUtils.hide(refRepBtn);
 		} else {
 
 			if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
@@ -106,10 +111,6 @@ public class ReferenceListRow extends Composite {
 					refFlag.setText(RDL.i18n.counter());
 					refFlag.getElement().getStyle().setProperty("backgroundColor", RDLConstants.ReferenceType.colorCodes.get(RDLConstants.ReferenceType.NEGATIVE));
 				}
-			}
-
-			if (!currentUserBean.as().isAuth() || referenceBean.as().getAuthor().equals(currentUserBean.as().getName()) || (referenceBean.as().getIsRepGivenByUser() != null && referenceBean.as().getIsRepGivenByUser() == 1)) {
-				ViewUtils.hide(refRepBtn);
 			}
 		}
 		if (referenceBean.as().getAuthorSupporter()) {
@@ -162,5 +163,13 @@ public class ReferenceListRow extends Composite {
 	@UiHandler("abuseWarningAnchor")
 	public void abuseWarningClick(ClickEvent event) {
 		GuiEventBus.EVENT_BUS.fireEvent(new ShowAbuseCommentsEvent(referenceBean.as()));
+	}
+
+	public void setReplyRunt( ReplyRunt replyRunt) {
+		this.replyRunt = replyRunt;
+	}
+
+	public SimplePanel getSnipActionPanel () {
+		return snipActionPanel;
 	}
 }

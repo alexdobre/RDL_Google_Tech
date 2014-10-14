@@ -111,31 +111,14 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			view.setErrorMessage(validationResult);
 			return;
 		}
-		bean.as().setAction("update");
-		bean.as().setToken(currentUserBean.as().getToken());
-		log.info("SnipEditPresenter submitBean bean : " + bean.as().getTitle() + ";snipType=" + bean.as().getSnipType());
-		log.info("SnipEditPresenter submit to server");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
-
-		log.info("SnipEditPresenter submit updateUrl: " + updateUrl);
-		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
-		// now submit to server
-		try {
-
-			String json = AutoBeanCodex.encode(bean).getPayload();
-			log.info("SnipEditPresenter submit json: " + json);
-			requestBuilder.sendRequest(json, new StatusCallback(view) {
-				@Override
-				public void onSuccess(Request request, Response response) {
-					GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
-				}
-			});
-		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
-		}
+		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+		grabSnipFunc.updateSnip(bean, currentUserBean.as().getToken(),new StatusCallback(view) {
+			@Override
+			public void onSuccess(Request request, Response response) {
+				GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
+			}
+		});
 	}
-
 
 	@Override
 	public void onDeleteSnip(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
@@ -146,7 +129,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			view.setErrorMessage(validationResult);
 			return;
 		}
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
 		log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
@@ -196,7 +179,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 
 	private void findSnipById(String snipId) {
 		log.info("SnipEditPresenter findSnipById");
-		String updateUrl = GWT.getModuleBaseURL() + "getSnips";
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
 		log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));

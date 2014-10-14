@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.presenter.PaginationPresenter;
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
 import com.therdl.client.handler.RequestObserver;
 import com.therdl.shared.beans.SnipBean;
@@ -29,7 +30,7 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 
 	public void populateSnip(AutoBean<SnipBean> snipBean);
 
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex);
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, ReplyRunt replyRunt);
 
 	public void saveReferenceResponseHandler(String refType, String snipType);
 
