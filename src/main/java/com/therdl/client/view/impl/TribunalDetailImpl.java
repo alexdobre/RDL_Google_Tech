@@ -23,6 +23,7 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.EmotionPicker;
 import com.therdl.client.view.widget.LoadingWidget;
 import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
+import com.therdl.client.view.widget.SnipActionWidget;
 import com.therdl.client.view.widget.TribunalCommentRow;
 import com.therdl.client.view.widget.TribunalListRow;
 import com.therdl.shared.Constants;
@@ -286,7 +287,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	}
 
 	@Override
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, ReplyRunt replyRunt) {
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		showComments(beanList, pageIndex);
 	}
 
@@ -330,13 +331,9 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	}
 
 	@Override
-	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler) {
+	public SnipActionWidget getSnipActionWidget() {
 		//NOOP
-	}
-
-	@Override
-	public void hideSnipAction() {
-		//NOOP
+		return null;
 	}
 
 	@Override

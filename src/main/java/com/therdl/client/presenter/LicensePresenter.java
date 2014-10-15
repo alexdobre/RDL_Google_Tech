@@ -5,8 +5,6 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipCallback;
-import com.therdl.client.presenter.func.FuncFactory;
-import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.view.LicenseView;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.RDLConstants;
@@ -32,7 +30,7 @@ public class LicensePresenter extends RdlAbstractPresenter<LicenseView> implemen
 		checkLogin();
 		this.currentUserBean = currentUserBean;
 		container.clear();
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+
 		AutoBean<SnipBean> searchOptionsBean = buildLicenseSearchOptions();
 
 		grabSnipFunc.grabSnip(searchOptionsBean, new SnipCallback() {

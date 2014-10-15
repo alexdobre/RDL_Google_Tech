@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
+import com.therdl.client.app.RuntFactory;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
@@ -51,12 +52,10 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	protected AutoBean<SnipBean> searchOptionsBean;
 	protected HasWidgets container;
 	protected AutoBean<SnipBean> currentSnipBean;
-	protected ReplyRunt replyRunt;
 
-	public SnipViewPresenter(SnipView snipView, AppController appController, String token, ReplyRunt replyRunt) {
+	public SnipViewPresenter(SnipView snipView, AppController appController, String token) {
 		super(appController);
 		this.view = snipView;
-		this.replyRunt = replyRunt;
 		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
 		log.info("currentSnipId at constructor time: " + currentSnipId + " from token: " + token);
 		this.controller = appController;
@@ -154,43 +153,23 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 	protected abstract void showReplyIfAuthor(boolean isAuthor);
 
 	protected void snipActionLogic(AutoBean<SnipBean> returnedBean) {
-		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, returnedBean);
-		boolean repGiven = returnedBean.as().getIsRepGivenByUser() == 1;
-		log.info("snipActionLogic isAuthor: " + isAuthor + " repGiven: " + repGiven);
-		//if the user is not logged in we do not show any action
-		if (currentUserBean == null || !currentUserBean.as().isAuth()) {
-			view.hideSnipAction();
-			return;
-		}
-		//the user is author so we show the edit button
-		if (isAuthor) {
-			view.showSnipAction(true, new ClickHandler() {
-				@Override
-				public void onClick(Object source) {
-					//we do not place validation here but we do place it on the server side
-					editSnip();
-				}
-			});
-			//the user has not logged in or has not given rep so we show the give rep button
-		} else if (!repGiven) {
-			view.showSnipAction(false, new ClickHandler() {
-				@Override
-				public void onClick(Object source) {
-					//we do not place validation here but we do place it on the server side
-					giveSnipReputation(currentSnipId, new RequestObserver() {
-						@Override
-						public void onSuccess(String response) {
-							currentSnipBean.as().setRep(currentSnipBean.as().getRep() + 1);
-							view.populateSnip(currentSnipBean);
-							view.showSnipAction(null, null);
-						}
-					});
-				}
-			});
-			//we show the rep given icon
-		} else {
-			view.showSnipAction(null, null);
-		}
+		final ReplyRunt replyRunt = RuntFactory.createReplyRunt(currentUserBean, view);
+		replyRunt.snipActionLogic(currentUserBean, currentSnipBean, view.getSnipActionWidget(),
+				new ClickHandler() {
+					@Override
+					public void onClick(Object source) {
+						//we do not place validation here but we do place it on the server side
+						editSnip();
+					}
+				},
+				new RequestObserver() {
+					@Override
+					public void onSuccess(String response) {
+						currentSnipBean.as().setRep(currentSnipBean.as().getRep() + 1);
+						view.populateSnip(currentSnipBean);
+						replyRunt.showSnipAction(null, view.getSnipActionWidget(), null);
+					}
+				});
 	}
 
 	/**
@@ -239,37 +218,8 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 			requestBuilder.sendRequest(json, new SnipListCallback() {
 				@Override
 				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
-					view.showReferences(beanList, pageIndex, replyRunt);
+					view.showReferences(beanList, pageIndex);
 					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
-				}
-			});
-		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
-		}
-	}
-
-	/**
-	 * gives reputation to the current snip, increments reputation counter and saves user id to ensure giving reputation per user/snip only once
-	 */
-	@Override
-	public void giveSnipReputation(String id, final RequestObserver observer) {
-		log.info("SnipViewPresenter giveSnipReputation id=" + id);
-		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
-
-		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
-		AutoBean<SnipBean> currentBean = beanery.snipBean();
-		currentBean.as().setAction("giveRep");
-		currentBean.as().setId(id);
-		currentBean.as().setToken(currentUserBean.as().getToken());
-		currentBean.as().setAuthor(currentUserBean.as().getName());
-
-		String json = AutoBeanCodex.encode(currentBean).getPayload();
-		try {
-			requestBuilder.sendRequest(json, new StatusCallback(view) {
-				@Override
-				public void onSuccess(Request request, Response response) {
-					observer.onSuccess(response.getText());
 				}
 			});
 		} catch (RequestException e) {

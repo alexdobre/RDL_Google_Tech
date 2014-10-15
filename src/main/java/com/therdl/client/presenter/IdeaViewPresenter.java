@@ -9,8 +9,8 @@ import com.therdl.client.view.SnipView;
  */
 public class IdeaViewPresenter extends SnipViewPresenter{
 
-	public IdeaViewPresenter(SnipView snipView, AppController appController, String token, ReplyRunt replyRunt) {
-		super(snipView, appController, token, replyRunt);
+	public IdeaViewPresenter(SnipView snipView, AppController appController, String token) {
+		super(snipView, appController, token);
 	}
 
 	@Override

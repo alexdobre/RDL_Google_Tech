@@ -389,15 +389,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	}
 
 	public void displayEmotions(){
-		emoListPanel.clear();
-		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null){
-			for (String emoStr: currentSnipBean.as().getEmotions()){
-				log.info("Displaying selected emotion: "+emoStr);
-				Span span = ViewUtils.buildEmoSpan (Emotion.valueOf(emoStr));
-				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
-				emoListPanel.add(span);
-			}
-		}
+		ViewUtils.displayEmotions(emoListPanel,currentSnipBean);
 	}
 
 

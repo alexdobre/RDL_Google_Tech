@@ -1,23 +1,5 @@
 package com.therdl.client.view.common;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DecoratedPopupPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.UIObject;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.shared.Emotion;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.SnipType;
-import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.beans.SnipBean;
-import com.therdl.shared.beans.UserBean;
-import org.gwtbootstrap3.client.ui.html.Span;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,6 +7,25 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.gwtbootstrap3.client.ui.html.Span;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.UIObject;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.Emotion;
+import com.therdl.shared.RDLConstants;
+import com.therdl.shared.beans.CurrentUserBean;
+import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.UserBean;
 
 /**
  * Common methods used by views
@@ -80,7 +81,7 @@ public class ViewUtils {
 
 	private static void positionRelative(ClickEvent event, PopupPanel dialog) {
 		// Reposition the popup relative to the button
-		Widget source = (Widget) event.getSource();
+		Widget source = (Widget)event.getSource();
 		int left = source.getAbsoluteLeft() + 10;
 		int top = source.getAbsoluteTop() + 10;
 		dialog.setPopupPosition(left, top);
@@ -93,10 +94,10 @@ public class ViewUtils {
 		Iterator itHm = RDLConstants.ProposalType.proposalTypeHm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry) itHm.next();
+			Map.Entry pairs = (Map.Entry)itHm.next();
 
-			proposalTypeList.addItem((String) pairs.getValue());
-			proposalTypeList.setValue(i, (String) pairs.getKey());
+			proposalTypeList.addItem((String)pairs.getValue());
+			proposalTypeList.setValue(i, (String)pairs.getKey());
 			i++;
 		}
 	}
@@ -108,10 +109,10 @@ public class ViewUtils {
 		Iterator itHm = RDLConstants.ProposalState.proposalStateHm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry) itHm.next();
+			Map.Entry pairs = (Map.Entry)itHm.next();
 
-			proposalStateList.addItem((String) pairs.getValue());
-			proposalStateList.setValue(i, (String) pairs.getKey());
+			proposalStateList.addItem((String)pairs.getValue());
+			proposalStateList.setValue(i, (String)pairs.getKey());
 			i++;
 		}
 	}
@@ -166,11 +167,11 @@ public class ViewUtils {
 		Iterator itHm = hm.entrySet().iterator();
 		int i = 0;
 		while (itHm.hasNext()) {
-			Map.Entry pairs = (Map.Entry) itHm.next();
-			CheckBox checkBox = new CheckBox((String) pairs.getValue());
+			Map.Entry pairs = (Map.Entry)itHm.next();
+			CheckBox checkBox = new CheckBox((String)pairs.getValue());
 			checkBox.setStyleName("checkBoxBtn");
 			checkBox.setValue(true);
-			checkBox.setName((String) pairs.getKey());
+			checkBox.setName((String)pairs.getKey());
 			checkBoxList.add(checkBox);
 			parentPanel.add(checkBox);
 		}
@@ -269,6 +270,7 @@ public class ViewUtils {
 
 	/**
 	 * user must have at least 3 rep and be at least 1 week old or be an RDL supporter
+	 *
 	 * @param currentUser the current user
 	 * @return
 	 */
@@ -305,12 +307,30 @@ public class ViewUtils {
 
 	/**
 	 * parses the date string and sees if the date is before or after today
+	 *
 	 * @param date the date to parse
 	 * @return true if the date has past
 	 */
-	public static boolean isExpired (String date) {
+	public static boolean isExpired(String date) {
 		DateTimeFormat dtf = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN);
 		Date parsed = dtf.parse(date);
 		return parsed.before(new Date());
+	}
+
+	/**
+	 * Displays emotions in a given panel
+	 *
+	 * @param emoListPanel    the panel to display in
+	 * @param currentSnipBean the current bean with emotions
+	 */
+	public static void displayEmotions(Panel emoListPanel, AutoBean<SnipBean> currentSnipBean) {
+		emoListPanel.clear();
+		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null) {
+			for (String emoStr : currentSnipBean.as().getEmotions()) {
+				Span span = ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr));
+				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
+				emoListPanel.add(span);
+			}
+		}
 	}
 }

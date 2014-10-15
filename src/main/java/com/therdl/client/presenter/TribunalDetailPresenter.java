@@ -34,8 +34,8 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 	public static final String VOTE_YES="YES";
 	public static final String VOTE_NO="NO";
 
-	public TribunalDetailPresenter(TribunalDetail tribunalDetail, AppController appController, String token, ReplyRunt replyRunt) {
-		super(tribunalDetail, appController, token, replyRunt);
+	public TribunalDetailPresenter(TribunalDetail tribunalDetail, AppController appController, String token) {
+		super(tribunalDetail, appController, token);
 		tribunalDetail.setTribunalPresenter(this);
 	}
 
@@ -134,7 +134,7 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 			requestBuilder.sendRequest(json, new SnipListCallback() {
 
 				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
-					view.showReferences(beanList, pageIndex, replyRunt);
+					view.showReferences(beanList, pageIndex);
 					PaginationHelper.showPaginationOnView(pageIndex, beanList.size(), view);
 				}
 

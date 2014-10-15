@@ -1,5 +1,6 @@
-package com.therdl.client.presenter.func;
+package com.therdl.client.app;
 
+import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.presenter.func.impl.GrabSnipFuncImpl;
 
 /**

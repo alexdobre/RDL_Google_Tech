@@ -8,8 +8,8 @@ import com.therdl.client.view.SnipView;
  * Presenter for the Improvements module (Improvement)
  */
 public class ImprovementViewPresenter extends SnipViewPresenter{
-	public ImprovementViewPresenter(SnipView snipView, AppController appController, String token, ReplyRunt replyRunt) {
-		super(snipView, appController, token, replyRunt);
+	public ImprovementViewPresenter(SnipView snipView, AppController appController, String token) {
+		super(snipView, appController, token);
 	}
 
 	@Override

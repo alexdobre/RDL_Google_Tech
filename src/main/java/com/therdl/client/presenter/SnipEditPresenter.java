@@ -15,8 +15,6 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.StatusCallback;
-import com.therdl.client.presenter.func.FuncFactory;
-import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.shared.Global;
@@ -111,7 +109,6 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			view.setErrorMessage(validationResult);
 			return;
 		}
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
 		grabSnipFunc.updateSnip(bean, currentUserBean.as().getToken(),new StatusCallback(view) {
 			@Override
 			public void onSuccess(Request request, Response response) {
@@ -165,7 +162,6 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			return;
 		}
 		log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
 		grabSnipFunc.createSnip(bean, currentUserBean.as().getToken(), new StatusCallback(view) {
 			@Override
 			public void onSuccess(Request request, Response response) {

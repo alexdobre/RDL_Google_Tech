@@ -5,8 +5,6 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipCallback;
-import com.therdl.client.presenter.func.FuncFactory;
-import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.view.PublicProfileView;
 import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -32,7 +30,7 @@ public class PublicProfilePresenter extends RdlAbstractPresenter<PublicProfileVi
 		checkLogin();
 		this.currentUserBean = currentUserBean;
 		container.clear();
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+
 		AutoBean<SnipBean> searchOptionsBean = buildUserProfileSearchOptions(username);
 
 		grabSnipFunc.grabSnip(searchOptionsBean, new SnipCallback() {

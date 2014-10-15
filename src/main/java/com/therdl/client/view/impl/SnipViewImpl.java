@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.therdl.client.app.RuntFactory;
 import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.shared.events.ShowAbuseCommentsEvent;
 import org.gwtbootstrap3.client.ui.Anchor;
@@ -315,19 +316,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		ViewUtils.hide(referenceCont);
 	}
 
-	@Override
-	public void showSnipAction(Boolean isEdit, ClickHandler clickHandler) {
-		if (isEdit == null) {
-			snipActionWidget.showRepGiven(snipActionContainer);
-		} else if (isEdit) {
-			snipActionWidget.showEditBtn(snipActionContainer, clickHandler);
-		} else {
-			snipActionWidget.showRepBtn(snipActionContainer, clickHandler);
-		}
-	}
-
-	public void hideSnipAction() {
-		snipActionWidget.hide(snipActionContainer);
+	public SnipActionWidget getSnipActionWidget() {
+		return snipActionWidget;
 	}
 
 	@Override
@@ -369,7 +359,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	 *
 	 * @param beanList list of references as bean objects
 	 */
-	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex, ReplyRunt replyRunt) {
+	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
 		log.info("Showing references: " + beanList.size());
 		this.searchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
@@ -384,12 +374,16 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 			if (itemList.size() >= j + 1) {
 				//if yes we just populate the existing item
 				referenceListRow = itemList.get(j);
-				referenceListRow.populate(beanList.get(j), this.currentUserBean, this, replyRunt);
+				ReplyRunt replyRunt = RuntFactory.createReplyRunt(this.currentUserBean, referenceListRow);
+				referenceListRow.populate(beanList.get(j), this.currentUserBean, replyRunt);
 				ViewUtils.show(referenceListRow.getParentObject());
+				replyRunt.decorateReference(referenceListRow);
 			} else {
 				//otherwise we create a new item
 				LinkedGroupItem listItem = new LinkedGroupItem();
-				referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, this, listItem, replyRunt);
+				referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, listItem, null);
+				ReplyRunt replyRunt = RuntFactory.createReplyRunt(this.currentUserBean, referenceListRow);
+				referenceListRow.setReplyRunt(replyRunt);
 				itemList.add(referenceListRow);
 				listItem.setPaddingBottom(2);
 				listItem.setPaddingTop(2);
@@ -397,8 +391,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 				listItem.setPaddingRight(2);
 				listItem.add(referenceListRow);
 				listGroup.add(listItem);
+				replyRunt.decorateReference(referenceListRow);
 			}
-			replyRunt.decorateReference(referenceListRow);
 		}
 		//finally we hide unused items
 		hideUnusedItems(beanList);

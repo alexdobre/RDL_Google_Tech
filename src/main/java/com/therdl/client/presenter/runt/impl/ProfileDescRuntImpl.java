@@ -7,7 +7,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
 import com.therdl.client.callback.SnipCallback;
 import com.therdl.client.callback.StatusCallback;
-import com.therdl.client.presenter.func.FuncFactory;
+import com.therdl.client.app.FuncFactory;
 import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.presenter.runt.ProfileDescRunt;
 import com.therdl.client.view.ProfileView;
@@ -28,10 +28,14 @@ public class ProfileDescRuntImpl implements ProfileDescRunt {
 
 	private Beanery beanery = GWT.create(Beanery.class);
 	private AutoBean<SnipBean> profileDesc;
+	private GrabSnipFunc grabSnipFunc;
+
+	public ProfileDescRuntImpl () {
+		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+	}
 
 	@Override
 	public void grabProfileDesc(final ProfileView view, AutoBean<CurrentUserBean> currentUserBean) {
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
 		AutoBean<SnipBean> searchOptionsBean = buildUserProfileSearchOptions(currentUserBean.as().getName());
 
 		grabSnipFunc.grabSnip(searchOptionsBean, new SnipCallback() {
@@ -50,7 +54,6 @@ public class ProfileDescRuntImpl implements ProfileDescRunt {
 
 	@Override
 	public void updateProfileDesc(String content, String username, String token, final ValidatedView validatedView) {
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
 		if (profileDesc == null || profileDesc.as().getId() == null) {
 			//this must be the first time the user saves the profile desc so we build it for him
 			grabSnipFunc.createSnip(buildProfileBean(content, username), token, new StatusCallback(validatedView) {

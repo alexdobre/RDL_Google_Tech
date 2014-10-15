@@ -27,8 +27,8 @@ public class SnipActionWidget extends Composite {
 		initWidget(holder);
 	}
 
-	public void showRepBtn(Panel parent, final ClickHandler clickHandler) {
-		parent.clear();
+	public void showRepBtn(final ClickHandler clickHandler) {
+		holder.clear();
 		//always create a new button to avoid click handler overlap
 		repBtn = new Button();
 		repBtn.setType(ButtonType.PRIMARY);
@@ -41,11 +41,11 @@ public class SnipActionWidget extends Composite {
 				clickHandler.onClick(event.getSource());
 			}
 		});
-		parent.add(repBtn);
+		holder.add(repBtn);
 	}
 
-	public void showEditBtn(Panel parent, final ClickHandler clickHandler) {
-		parent.clear();
+	public void showEditBtn(final ClickHandler clickHandler) {
+		holder.clear();
 		//always create a new button to avoid click handler overlap
 		editBtn = new Button();
 		editBtn.setType(ButtonType.PRIMARY);
@@ -58,21 +58,21 @@ public class SnipActionWidget extends Composite {
 				clickHandler.onClick(event.getSource());
 			}
 		});
-		parent.add(editBtn);
+		holder.add(editBtn);
 	}
 
-	public void showRepGiven(Panel parent) {
-		parent.clear();
+	public void showRepGiven() {
+		holder.clear();
 		if (repGiven == null) {
 			repGiven = new Icon(IconType.CHECK);
 			repGiven.setSize(IconSize.TIMES2);
 			repGiven.addStyleName("repBtn");
 			repGiven.addStyleName("repGivenIcon");
 		}
-		parent.add(repGiven);
+		holder.add(repGiven);
 	}
 
-	public void hide(Panel parent) {
-		parent.clear();
+	public void hide() {
+		holder.clear();
 	}
 }

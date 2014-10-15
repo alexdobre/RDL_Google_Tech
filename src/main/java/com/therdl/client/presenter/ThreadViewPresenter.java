@@ -8,8 +8,8 @@ import com.therdl.client.view.SnipView;
  * Presenter for the Forum module (Thread)
  */
 public class ThreadViewPresenter extends SnipViewPresenter{
-	public ThreadViewPresenter(SnipView snipView, AppController appController, String token, ReplyRunt replyRunt) {
-		super(snipView, appController, token, replyRunt);
+	public ThreadViewPresenter(SnipView snipView, AppController appController, String token) {
+		super(snipView, appController, token);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import com.therdl.client.callback.BeanCallback;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.LoginHandler;
-import com.therdl.client.presenter.func.FuncFactory;
+import com.therdl.client.app.FuncFactory;
 import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ViewUtils;
@@ -52,6 +52,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 	protected AppController controller;
 	protected Beanery beanery = GWT.create(Beanery.class);
 	protected T view;
+	protected GrabSnipFunc grabSnipFunc;
 
 	public RdlAbstractPresenter(AppController controller) {
 		this.controller = controller;
@@ -62,6 +63,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 						event.getRememberMe(), event.getSid(), event.getLoginHandler());
 			}
 		});
+		grabSnipFunc = FuncFactory.createGrabSnipFunc();
 	}
 
 	@Override
@@ -218,7 +220,6 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		searchOptionsBean.as().setAuthor(RDLConstants.ContentMgmt.OFFICIAL_AUTHOR);
 		searchOptionsBean.as().setSnipType(SnipType.CONTENT_MGMT.getSnipType());
 
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
 		grabSnipFunc.searchSnips(searchOptionsBean, new SnipListCallback() {
 
 			public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {

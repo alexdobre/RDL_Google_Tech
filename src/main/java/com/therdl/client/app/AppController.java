@@ -321,7 +321,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (ideaView == null) {
 			ideaView = new IdeaViewImpl(currentUserBean, appMenu);
 		}
-		final IdeaViewPresenter ideaViewPresenter = new IdeaViewPresenter(ideaView, this, token, new ReplyRuntImpl());
+		final IdeaViewPresenter ideaViewPresenter = new IdeaViewPresenter(ideaView, this, token);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
@@ -340,7 +340,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (threadView == null) {
 			threadView = new ThreadViewImpl(currentUserBean, appMenu);
 		}
-		final ThreadViewPresenter threadViewPresenter = new ThreadViewPresenter(threadView, this, token, new ReplyRuntImpl());
+		final ThreadViewPresenter threadViewPresenter = new ThreadViewPresenter(threadView, this, token);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onSuccess() {
@@ -418,8 +418,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (tribunalDetail == null) {
 			tribunalDetail = new TribunalDetailImpl(currentUserBean, appMenu);
 		}
-		final TribunalDetailPresenter tribunalDetailPresenter = new TribunalDetailPresenter(tribunalDetail, this, token,
-				new ReplyRuntImpl());
+		final TribunalDetailPresenter tribunalDetailPresenter = new TribunalDetailPresenter(tribunalDetail, this, token);
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
@@ -642,8 +641,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (proposalView == null) {
 			proposalView = new ImprovementViewImpl(currentUserBean, appMenu);
 		}
-		final ImprovementViewPresenter improvementViewPresenter = new ImprovementViewPresenter(proposalView, this,
-				token, new ReplyRuntImpl());
+		final ImprovementViewPresenter improvementViewPresenter = new ImprovementViewPresenter(proposalView, this, token);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {

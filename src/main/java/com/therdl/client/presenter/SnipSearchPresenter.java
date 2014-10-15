@@ -6,8 +6,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipListCallback;
-import com.therdl.client.presenter.func.FuncFactory;
-import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.shared.RDLUtils;
@@ -60,7 +58,6 @@ public class SnipSearchPresenter extends RdlAbstractPresenter<SearchView> implem
 	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean) {
 		log.info("grabWelcomeSnip searchSnips: " + searchOptionsBean.as());
 
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
 		grabSnipFunc.searchSnips(searchOptionsBean, new SnipListCallback() {
 
 			public  void onBeanListReturned (ArrayList<AutoBean<SnipBean>> beanList){

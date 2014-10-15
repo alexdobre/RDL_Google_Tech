@@ -1,5 +1,13 @@
 package com.therdl.client.view.widget.runtized;
 
+import java.util.Date;
+
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.html.Paragraph;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -15,10 +23,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.handler.RequestObserver;
 import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.common.ViewUtils;
+import com.therdl.client.view.impl.AbstractValidatedView;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
@@ -27,17 +36,12 @@ import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.ReportAbuseEvent;
 import com.therdl.shared.events.ShowAbuseCommentsEvent;
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.html.Paragraph;
-
-import java.util.Date;
 
 /**
  * gwt widget class for reference row in snip view page
  */
-public class ReferenceListRow extends Composite {
+public class ReferenceListRow extends AbstractValidatedView implements ValidatedView {
+
 	interface ReferenceListRowUiBinder extends UiBinder<HTMLPanel, ReferenceListRow> {
 	}
 
@@ -55,7 +59,7 @@ public class ReferenceListRow extends Composite {
 	@UiField
 	Image avatarImg;
 	@UiField
-	Button refRepBtn, reportAbuse;
+	Button reportAbuse;
 	@UiField
 	FlowPanel emoListPanel;
 	@UiField
@@ -64,22 +68,21 @@ public class ReferenceListRow extends Composite {
 	Anchor abuseWarningAnchor, userNameLink;
 	@UiField
 	SimplePanel snipActionPanel;
-
-	SnipView view;
+	@UiField
+	Column refContent, editRefContent;
 
 	private UIObject parent;
 
-	public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view,
+	public ReferenceListRow(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean,
 	                        UIObject parent, ReplyRunt replyRunt) {
 		this.parent = parent;
 		initWidget(ourUiBinder.createAndBindUi(this));
-		populate(referenceBean, currentUserBean, view, replyRunt);
+		populate(referenceBean, currentUserBean, replyRunt);
 	}
 
-	public void populate(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean, SnipView view,
+	public void populate(AutoBean<SnipBean> referenceBean, AutoBean<CurrentUserBean> currentUserBean,
 			ReplyRunt replyRunt) {
 		this.referenceBean = referenceBean;
-		this.view = view;
 		this.replyRunt = replyRunt;
 
 		// sets values from referenceBean for UI elements from ui binder
@@ -138,21 +141,14 @@ public class ReferenceListRow extends Composite {
 		ViewUtils.showHide(ViewUtils.showReportAbuseLogic(currentUserBean, referenceBean), reportAbuse);
 		ViewUtils.showHide(referenceBean.as().getAbuseCount()!=null && referenceBean.as().getAbuseCount()>0,
 				abuseWarning);
+		ViewUtils.hide(editRefContent);
+		editRefContent.clear();
+		ViewUtils.show(refContent);
+		hideMessages();
 	}
 
 	public UIObject getParentObject() {
 		return parent;
-	}
-
-	@UiHandler("refRepBtn")
-	public void onRepBtnClicked(ClickEvent event) {
-		view.getPresenter().giveSnipReputation(referenceBean.as().getId(), new RequestObserver() {
-			@Override
-			public void onSuccess(String response) {
-				ViewUtils.hide(refRepBtn);
-				rep.setText(" " + (referenceBean.as().getRep() + 1));
-			}
-		});
 	}
 
 	@UiHandler("reportAbuse")
@@ -172,4 +168,18 @@ public class ReferenceListRow extends Composite {
 	public SimplePanel getSnipActionPanel () {
 		return snipActionPanel;
 	}
+
+	public AutoBean<SnipBean> getReferenceBean() {
+		return referenceBean;
+	}
+
+	public Column getRefContent() {
+		return refContent;
+	}
+
+	public Column getEditRefContent() {
+		return editRefContent;
+	}
+
+
 }
