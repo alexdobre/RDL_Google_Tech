@@ -45,6 +45,7 @@ public class LicensePresenter extends RdlAbstractPresenter<LicenseView> implemen
 		});
 
 		container.add(view.asWidget());
+		view.getAppMenu().setActive();
 	}
 
 	private AutoBean<SnipBean> buildLicenseSearchOptions() {

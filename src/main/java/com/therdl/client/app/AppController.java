@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.presenter.ContentNotFoundPresenter;
 import com.therdl.client.presenter.ContentSearchPresenter;
+import com.therdl.client.presenter.FaqPresenter;
 import com.therdl.client.presenter.IdeaViewPresenter;
 import com.therdl.client.presenter.ImprovementViewPresenter;
 import com.therdl.client.presenter.LicensePresenter;
@@ -29,6 +30,7 @@ import com.therdl.client.presenter.runt.impl.ProfileDescRuntImpl;
 import com.therdl.client.presenter.runt.impl.ReplyRuntImpl;
 import com.therdl.client.view.ContentNotFound;
 import com.therdl.client.view.ContentSearchView;
+import com.therdl.client.view.FaqView;
 import com.therdl.client.view.IdeaView;
 import com.therdl.client.view.ImprovementView;
 import com.therdl.client.view.LicenseView;
@@ -43,6 +45,7 @@ import com.therdl.client.view.TribunalView;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.impl.ContentNotFoundImpl;
 import com.therdl.client.view.impl.ContentSearchViewImpl;
+import com.therdl.client.view.impl.FaqViewImpl;
 import com.therdl.client.view.impl.IdeaViewImpl;
 import com.therdl.client.view.impl.ImprovementViewImpl;
 import com.therdl.client.view.impl.ImprovementsViewImpl;
@@ -136,6 +139,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private ThreadView threadView;
 	private ImprovementView proposalView;
 	private LicenseView licenseView;
+	private FaqView faqView;
 
 	private RdlAbstractPresenter defaultPresenter;
 
@@ -282,6 +286,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					break;
 				case RDLConstants.Tokens.LICENSE:
 					showLicense();
+					break;
+				case RDLConstants.Tokens.FAQ:
+					showFaq();
 					break;
 				case RDLConstants.Tokens.CONTENT_SEARCH:
 					showContentSearch(tokenSplit);
@@ -571,6 +578,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (licenseView == null) {
 			licenseView = new LicenseViewImpl(currentUserBean, appMenu);
 		}
+		Global.moduleName = RDLConstants.Modules.LICENSE;
 		final LicensePresenter licensePresenter = new LicensePresenter(licenseView, this);
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
@@ -578,6 +586,22 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			public void onSuccess() {
 				licensePresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showFaq() {
+		if (faqView == null) {
+			faqView = new FaqViewImpl(currentUserBean, appMenu);
+		}
+		Global.moduleName = RDLConstants.Modules.FAQ;
+		final FaqPresenter faqPresenter = new FaqPresenter(faqView, this);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				faqPresenter.go(container, currentUserBean);
 			}
 		});
 	}

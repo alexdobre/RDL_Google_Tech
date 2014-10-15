@@ -71,4 +71,8 @@ public class NameTokens {
 		return RDLConstants.Tokens.LICENSE;
 	}
 
+	public static String getFaq() {
+		return RDLConstants.Tokens.FAQ;
+	}
+
 }

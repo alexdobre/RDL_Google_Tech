@@ -35,6 +35,7 @@ public interface RDLConstants {
 		String PUBLIC_PROFILE = "publicProfile";
 		String SNIP_VIEW = "!snipView";
 		String LICENSE = "license";
+		String FAQ = "faq";
 		String ERROR = "error";
 
 		String STORIES = "!stories";
@@ -135,6 +136,7 @@ public interface RDLConstants {
 		String IMPROVEMENTS = "Improvements";
 		String TRIBUNAL = "tribunal";
 		String LICENSE = "license";
+		String FAQ = "faq";
 	}
 
 	public interface ProposalType {

@@ -61,7 +61,7 @@ public class AppMenu extends Composite {
 	@UiField
 	NavbarBrand home;
 	@UiField
-	AnchorListItem ideas, stories, improvements, tribunal, license, signUp, login, email, profile, out;
+	AnchorListItem ideas, stories, improvements, tribunal, license, faq, signUp, login, email, profile, out;
 	@UiField
 	AnchorButton userDetails;
 	@UiField
@@ -178,6 +178,7 @@ public class AppMenu extends Composite {
 		tribunal.setActive(false);
 		improvements.setActive(false);
 		license.setActive(false);
+		faq.setActive(false);
 		signUp.setActive(false);
 		login.setActive(false);
 	}
@@ -220,6 +221,7 @@ public class AppMenu extends Composite {
 		else if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
 		else if (Global.moduleName == RDLConstants.Modules.TRIBUNAL) setTribunalActive();
 		else if (Global.moduleName == RDLConstants.Modules.LICENSE) setLicenseActive();
+		else if (Global.moduleName == RDLConstants.Modules.FAQ) setFaqActive();
 	}
 
 	/**
@@ -238,6 +240,11 @@ public class AppMenu extends Composite {
 	public void setLicenseActive() {
 		allInactive();
 		license.setActive(true);
+	}
+
+	public void setFaqActive() {
+		allInactive();
+		faq.setActive(true);
 	}
 
 	/**
