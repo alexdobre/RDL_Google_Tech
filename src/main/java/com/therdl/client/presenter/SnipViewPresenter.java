@@ -79,6 +79,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		this.currentUserBean = currentUserBean;
 		container.clear();
 		viewSnipById();
+		view.getAppMenu().setActive();
 	}
 
 	public void editSnip() {
