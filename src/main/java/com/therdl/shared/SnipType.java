@@ -8,7 +8,8 @@ public enum SnipType {
 	THREAD("thread"), POST("post"),
 	IMPROVEMENT("improvement"), PLEDGE("pledge"), COUNTER("counter"), PROPOSAL("proposal"),
 	CONTENT_MGMT("contentMgmt"), PROFILE("profile"),
-	TRIBUNAL("tribunal"), ABUSE_REPORT("abuseReport");
+	TRIBUNAL("tribunal"), ABUSE_REPORT("abuseReport"),
+	FAQ("faq");
 
 	private String snipType;
 
