@@ -152,4 +152,9 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 		searchOptionsBean.as().setSortField("creationDate");
 		searchOptionsBean.as().setReturnSnipContent(true);
 	}
+
+	@Override
+	protected void snipActionLogic(AutoBean<SnipBean> returnedBean) {
+		//noop
+	}
 }
