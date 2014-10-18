@@ -31,7 +31,7 @@ public class ProfileDescRuntImpl implements ProfileDescRunt {
 	private GrabSnipFunc grabSnipFunc;
 
 	public ProfileDescRuntImpl () {
-		GrabSnipFunc grabSnipFunc = FuncFactory.createGrabSnipFunc();
+		grabSnipFunc = FuncFactory.createGrabSnipFunc();
 	}
 
 	@Override
