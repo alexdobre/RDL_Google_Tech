@@ -16,4 +16,11 @@ public interface FaqView extends RdlView{
 	void setPresenter(Presenter presenter);
 
 	public void populateFaq (List<AutoBean<SnipBean>> faqList);
+
+	/**
+	 * Is the FAQ list already populated
+	 *
+	 * @return true if the list has already been populated
+	 */
+	public boolean isPopulated ();
 }

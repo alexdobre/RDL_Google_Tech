@@ -3,11 +3,14 @@ package com.therdl.client.presenter.func;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.callback.SnipCallback;
+import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.RequestObserver;
 import com.therdl.client.view.ValidatedView;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.List;
 
 /**
  * Functionality related to getting snips from the server
@@ -60,4 +63,10 @@ public interface GrabSnipFunc {
 	 */
 	public void giveSnipReputation(String id, AutoBean<CurrentUserBean> currentUserBean, ValidatedView validatedView,
 			final RequestObserver observer);
+
+	/**
+	 * Grabs the FAQ list from the server
+	 * @return
+	 */
+	public void grabFaqList (SnipListCallback callback);
 }

@@ -63,6 +63,7 @@ public interface RDLConstants {
 		String GIVE_REP = "giveRep";
 		String REPORT_ABUSE = "reportAbuse";
 		String SEARCH_ABUSE = "searchAbuse";
+		String GET_FAQ = "getFaq";
 
 		String SNIP_SERVLET_URL = "getSnips";
 	}

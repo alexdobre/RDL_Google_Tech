@@ -11,52 +11,8 @@
 	<b:Container addStyleNames="push">
 		<g:SimplePanel ui:field="appMenuPanel"/>
 
-		<b:PanelGroup b:id="accordion">
-			<b:Panel>
-				<b:PanelHeader>
-					<b:Heading size="H4">
-						<b:Anchor dataToggle="COLLAPSE" dataParent="#accordion" dataTarget="#collapseOne"
-						          text="Collapse Group #1"/>
-					</b:Heading>
-				</b:PanelHeader>
-				<b:PanelCollapse b:id="collapseOne" in="true">
-					<b:PanelBody>
-						<b.html:Paragraph>
-							I am the content of Collapse Group #1.
-						</b.html:Paragraph>
-					</b:PanelBody>
-				</b:PanelCollapse>
-			</b:Panel>
-			<b:Panel>
-				<b:PanelHeader>
-					<b:Heading size="H4">
-						<b:Anchor dataToggle="COLLAPSE" dataParent="#accordion" dataTarget="#collapseTwo"
-						          text="Collapse Group #2"/>
-					</b:Heading>
-				</b:PanelHeader>
-				<b:PanelCollapse b:id="collapseTwo">
-					<b:PanelBody>
-						<b.html:Paragraph>
-							I am the content of Collapse Group #1.
-						</b.html:Paragraph>
-					</b:PanelBody>
-				</b:PanelCollapse>
-			</b:Panel>
-			<b:Panel>
-				<b:PanelHeader>
-					<b:Heading size="H4">
-						<b:Anchor icon="ANCHOR" dataToggle="COLLAPSE" dataParent="#accordion"
-						          dataTarget="#collapseThree" text="Collapse Group #3"/>
-					</b:Heading>
-				</b:PanelHeader>
-				<b:PanelCollapse b:id="collapseThree">
-					<b:PanelBody>
-						<b.html:Paragraph>
-							I am the content of Collapse Group #1.
-						</b.html:Paragraph>
-					</b:PanelBody>
-				</b:PanelCollapse>
-			</b:Panel>
+		<b:PanelGroup b:id="accordion" ui:field="panelGroup">
+
 		</b:PanelGroup>
 	</b:Container>
 

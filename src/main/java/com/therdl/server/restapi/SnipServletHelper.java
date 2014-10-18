@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * The snip dispatcher servlet is getting quite large so we place helper methods in here
@@ -80,7 +81,26 @@ public class SnipServletHelper {
 		addUserToList(actionBean.as().getAuthor(), abusiveContent, true);
 		//we update the reported content
 		snipsService.updateSnip(abusiveContent);
+	}
 
+	/**
+	 * Grabs the FAQ list from the database
+	 *
+	 * @return the list found
+	 */
+	public List<SnipBean> getFaqList() {
+		SnipBean searchOptions = buildFaqSearchOptions();
+		List<SnipBean> faqList = snipsService.searchSnipsSansPag(searchOptions);
+		return faqList;
+	}
+
+	private SnipBean buildFaqSearchOptions() {
+		AutoBean<SnipBean> searchOptions = beanery.snipBean();
+		searchOptions.as().setSnipType(SnipType.FAQ.getSnipType());
+		searchOptions.as().setReturnSnipContent(true);
+		searchOptions.as().setSortField("title");
+		searchOptions.as().setSortOrder(1);
+		return searchOptions.as();
 	}
 
 	private void saveAbuseComment(AutoBean<SnipBean> actionBean, SnipBean abusiveContent, SimpleDateFormat sdf) {

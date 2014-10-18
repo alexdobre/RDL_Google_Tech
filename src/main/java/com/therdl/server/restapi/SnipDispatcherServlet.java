@@ -125,7 +125,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 		try {
 			if (actionBean.as().getAction().equals(RDLConstants.SnipAction.SEARCH)) {
 				doSearch(resp, actionBean);
-			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.GET_SNIP )) {
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.GET_SNIP)) {
 				doGetSnip(resp, actionBean);
 			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.VIEW_SNIP)) {
 				doViewSnip(resp, actionBean);
@@ -143,6 +143,8 @@ public class SnipDispatcherServlet extends HttpServlet {
 				doGiveRep(resp, actionBean);
 			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.REPORT_ABUSE)) {
 				doReportAbuse(resp, actionBean);
+			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.GET_FAQ)) {
+				doGetFaq(resp, actionBean);
 			} else if (actionBean.as().getAction().equals(RDLConstants.SnipAction.SEARCH_ABUSE)) {
 				doSearchAbuse(resp, actionBean);
 			}
@@ -302,7 +304,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 	}
 
 	private void doSearch(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
-		List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(),  getCurrentUserEmail(), getCurrentUserName());
+		List<SnipBean> beans = snipsService.searchSnipsWith(actionBean.as(), getCurrentUserEmail(), getCurrentUserName());
 		log.info("SnipDispatcherServlet: beans.size() " + beans.size());
 		log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
 
@@ -310,24 +312,29 @@ public class SnipDispatcherServlet extends HttpServlet {
 
 		log.info("SnipDispatcherServlet: beanList.size() " + beanList.size());
 
-		Gson gson = new Gson();
-		log.info(gson.toJson(beanList));
-		PrintWriter out = resp.getWriter();
-		out.write(gson.toJson(beanList));
-		beanList.clear();
+		writeListToOutput(resp, beanList);
+	}
+
+	private void doGetFaq(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
+		//no validation cause everyone can view the FAQ list
+		log.info("SnipDispatcherServlet - get FAQ");
+		List<SnipBean> beans = helper.getFaqList();
+		log.info("FAQ list size " + beans.size());
+		ArrayList<HashMap<String, String>> beanList = getBeanList(beans);
+		writeListToOutput(resp, beanList);
 	}
 
 	private void doSearchAbuse(HttpServletResponse resp, AutoBean<SnipBean> actionBean) throws IOException {
 		List<SnipBean> beans = snipsService.searchAbuse(actionBean.as());
 		log.info("SnipDispatcherServlet: beans.size() " + beans.size());
-		log.info("SnipDispatcherServlet: actionBean.as().getAction() getall " + actionBean.as().getAction());
-
+		log.info("SnipDispatcherServlet: actionBean.as().getAction() getAll " + actionBean.as().getAction());
 		ArrayList<HashMap<String, String>> beanList = getBeanList(beans);
-
 		log.info("SnipDispatcherServlet: beanList.size() " + beanList.size());
+		writeListToOutput(resp, beanList);
+	}
 
+	private void writeListToOutput(HttpServletResponse resp, ArrayList<HashMap<String, String>> beanList) throws IOException {
 		Gson gson = new Gson();
-		log.info(gson.toJson(beanList));
 		PrintWriter out = resp.getWriter();
 		out.write(gson.toJson(beanList));
 		beanList.clear();

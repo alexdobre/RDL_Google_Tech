@@ -1,9 +1,5 @@
 package com.therdl.client.presenter.func.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -24,6 +20,10 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Functionality related to getting snips from the server
@@ -82,12 +82,31 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 
 	@Override
 	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean, RequestCallback callback) {
-		log.info("SnipSearchPresenter getSnipSearchResult");
+		log.info("GrabSnipFunc searchSnips");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 
-		searchOptionsBean.as().setAction("search");
+		searchOptionsBean.as().setAction(RDLConstants.SnipAction.SEARCH);
+		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
+
+		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
+		try {
+			requestBuilder.sendRequest(json, callback);
+		} catch (RequestException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+
+	@Override
+	public void grabFaqList(SnipListCallback callback) {
+		log.info("GrabSnipFunc grabFaqList");
+		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+
+		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
+		searchOptionsBean.as().setAction(RDLConstants.SnipAction.GET_FAQ);
 		log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
 
 		String json = AutoBeanCodex.encode(searchOptionsBean).getPayload();
@@ -103,7 +122,7 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 	 */
 	@Override
 	public void giveSnipReputation(String id, AutoBean<CurrentUserBean> currentUserBean, ValidatedView validatedView,
-			final RequestObserver observer) {
+	                               final RequestObserver observer) {
 		log.info("GrabSnipFunc giveSnipReputation id=" + id);
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 

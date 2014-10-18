@@ -94,6 +94,33 @@ public class SnipServiceImpl implements SnipsService {
 		return beans;
 	}
 
+	@Override
+	public List<SnipBean> searchSnipsSansPag (SnipBean searchOptions) {
+		log.info("Searching snips sans pag with options: " + searchOptions);
+		DB db = getMongo();
+		List<SnipBean> beans = new ArrayList<SnipBean>();
+		BasicDBObject dbObject = new BasicDBObject();
+
+		addSearchItems(searchOptions, dbObject);
+		addSnipItems(searchOptions, dbObject);
+
+		log.info("Search snips with query: " + dbObject);
+		BasicDBObject projection = new BasicDBObject();
+		if (!searchOptions.getReturnSnipContent()) {
+			projection.put("content", 0);
+		}
+		DBCollection coll = db.getCollection("rdlSnipData");
+		List<DBObject> objList = coll.find(dbObject, projection)
+				.sort(new BasicDBObject(searchOptions.getSortField(), searchOptions.getSortOrder())).toArray();
+
+		for (DBObject doc : objList) {
+			SnipBean snip = buildBeanObject(doc, null, null);
+			beans.add(snip);
+		}
+		log.info("Found list size: " + beans.size());
+		return beans;
+	}
+
 	/**
 	 * Search for abuse content and comments, this search is different cause it does not return the author names
 	 * as a security measure

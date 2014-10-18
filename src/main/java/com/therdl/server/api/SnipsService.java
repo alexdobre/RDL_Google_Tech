@@ -62,6 +62,15 @@ public interface SnipsService {
 	List<SnipBean> searchSnipsWith(SnipBean snip, String currentUserEmail, String currentUserName);
 
 	/**
+	 * Searches for snips and returns the full list without pagination
+	 * TO BE USED SPARINGLY AND NEVER DIRECTLY EXPOSED TO THE OUTSIDE
+	 *
+	 * @param searchOptions the search parameters
+	 * @return the snip list found, empty list if nothing found
+	 */
+	List<SnipBean> searchSnipsSansPag (SnipBean searchOptions);
+
+	/**
 	 * makes current timestamp
 	 *
 	 * @return current timestamp as String
