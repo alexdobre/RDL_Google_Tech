@@ -61,7 +61,10 @@ public class SearchFilterWidget extends AbstractSearchFilter {
 	TextBox pledgesCount, countersCount, posRef, neutralRef, negativeRef, postCount, snipRep, author;
 
 	@UiField
-	ListBox categoryList, proposalTypeList, proposalStateList;
+	ListBox proposalTypeList, proposalStateList;
+
+	@UiField
+	org.gwtbootstrap3.client.ui.ListBox categoryList;
 
 	@UiField
 	FormGroup typeFormGroup, proposalTypeFormGroup, proposalStateFormGroup, categoryFormGroup, pledgesFormGroup, countersFormGroup, refFormGroup, postsFormGroup, repFormGroup;
@@ -104,15 +107,11 @@ public class SearchFilterWidget extends AbstractSearchFilter {
 
 			createTypeFilter();
 
-			posRef.getElement().getStyle().setProperty("border", "1px solid green");
-			neutralRef.getElement().getStyle().setProperty("border", "1px solid grey");
-			negativeRef.getElement().getStyle().setProperty("border", "1px solid red");
-
 			hideUnusedItems();
 
 			filterLabel.setText(RDL.i18n.filterSnips());
 
-			createCategoryList();
+			ViewUtils.createCategoryList(categoryList);
 
 		} else if (Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
 			editPageToken = RDLConstants.Tokens.THREAD_EDIT;
@@ -121,7 +120,7 @@ public class SearchFilterWidget extends AbstractSearchFilter {
 
 			filterLabel.setText(RDL.i18n.filterThreads());
 
-			createCategoryList();
+			ViewUtils.createCategoryList(categoryList);
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			editPageToken = RDLConstants.Tokens.PROPOSAL_EDIT;
 
@@ -234,19 +233,6 @@ public class SearchFilterWidget extends AbstractSearchFilter {
 		}
 
 
-	}
-
-	/**
-	 * creates category list for snips
-	 */
-	void createCategoryList() {
-		//   categoryList.addItem("Select a category");
-		int i = 0;
-		for (CoreCategory item : CoreCategory.values()) {
-			categoryList.addItem(item.getShortName());
-			categoryList.setValue(i, item.getShortName());
-			i++;
-		}
 	}
 
 	private void hideUnusedItems() {

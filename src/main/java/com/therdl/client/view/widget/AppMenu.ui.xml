@@ -13,6 +13,7 @@
 			</b:NavbarHeader>
 			<b:NavbarCollapse b:id="navbar-collapse">
 				<b:NavbarNav>
+					<b:AnchorListItem ui:field="services" targetHistoryToken="{nameTokens.getServices}" text="{i18n.services}"/>
 					<b:AnchorListItem ui:field="ideas" targetHistoryToken="{nameTokens.getSnips}" text="{i18n.ideas}"/>
 					<b:AnchorListItem ui:field="stories" targetHistoryToken="{nameTokens.getStories}"
 					                  text="{i18n.stories}"/>
@@ -23,7 +24,7 @@
 				</b:NavbarNav>
 
 				<b:NavbarForm pull="LEFT">
-					<b:TextBox ui:field="searchSiteContent" width="400px" placeholder="{i18n.searchSiteContent}"/>
+					<b:TextBox ui:field="searchSiteContent" width="300px" placeholder="{i18n.searchSiteContent}"/>
 				</b:NavbarForm>
 				<b:NavbarNav pull="LEFT">
 					<b:AnchorListItem ui:field="license" targetHistoryToken="{nameTokens.getLicense}"

@@ -15,6 +15,10 @@ public class NameTokens {
 		return RDLConstants.Tokens.WELCOME;
 	}
 
+	public static String getServices() {
+		return RDLConstants.Tokens.SERVICES;
+	}
+
 	public static String getSnips() {
 		return RDLConstants.Tokens.SNIPS;
 	}

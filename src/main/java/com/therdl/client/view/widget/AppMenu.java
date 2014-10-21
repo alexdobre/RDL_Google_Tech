@@ -1,5 +1,13 @@
 package com.therdl.client.view.widget;
 
+import java.util.logging.Logger;
+
+import org.gwtbootstrap3.client.ui.AnchorButton;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.NavbarBrand;
+import org.gwtbootstrap3.client.ui.NavbarHeader;
+import org.gwtbootstrap3.client.ui.TextBox;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -33,13 +41,6 @@ import com.therdl.shared.events.ReportAbuseEvent;
 import com.therdl.shared.events.ReportAbuseEventHandler;
 import com.therdl.shared.events.ShowAbuseCommentsEvent;
 import com.therdl.shared.events.ShowAbuseCommentsEventHandler;
-import org.gwtbootstrap3.client.ui.AnchorButton;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.NavbarBrand;
-import org.gwtbootstrap3.client.ui.NavbarHeader;
-import org.gwtbootstrap3.client.ui.TextBox;
-
-import java.util.logging.Logger;
 
 /**
  * Application menu often referred  to as a 'NavBar' in a TwitterBootstrap scheme for example
@@ -61,7 +62,7 @@ public class AppMenu extends Composite {
 	@UiField
 	NavbarBrand home;
 	@UiField
-	AnchorListItem ideas, stories, improvements, tribunal, license, faq, signUp, login, email, profile, out;
+	AnchorListItem services, ideas, stories, improvements, tribunal, license, faq, signUp, login, email, profile, out;
 	@UiField
 	AnchorButton userDetails;
 	@UiField
@@ -133,7 +134,6 @@ public class AppMenu extends Composite {
 		} else {
 			logOut();
 		}
-
 	}
 
 	public void logIn(AutoBean<CurrentUserBean> currentUserBean) {
@@ -173,6 +173,7 @@ public class AppMenu extends Composite {
 
 	private void allInactive() {
 		home.removeStyleName("brandActive");
+		services.setActive(false);
 		ideas.setActive(false);
 		stories.setActive(false);
 		tribunal.setActive(false);
@@ -199,52 +200,26 @@ public class AppMenu extends Composite {
 		home.addStyleName("brandActive");
 	}
 
-	/**
-	 * Sets the ideas element as active in the menu
-	 */
-	public void setIdeasActive() {
-		allInactive();
-		ideas.setActive(true);
-	}
-
-	/**
-	 * Sets the stories element as active in the menu
-	 */
-	public void setStoriesActive() {
-		allInactive();
-		stories.setActive(true);
-	}
-
 	public void setActive() {
-		if (Global.moduleName == RDLConstants.Modules.STORIES) setStoriesActive();
-		else if (Global.moduleName == RDLConstants.Modules.IDEAS) setIdeasActive();
-		else if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS) setImprovementsActive();
-		else if (Global.moduleName == RDLConstants.Modules.TRIBUNAL) setTribunalActive();
-		else if (Global.moduleName == RDLConstants.Modules.LICENSE) setLicenseActive();
-		else if (Global.moduleName == RDLConstants.Modules.FAQ) setFaqActive();
+		if ((Global.moduleName == RDLConstants.Modules.SERVICES))
+			setActive(services);
+		else if (Global.moduleName == RDLConstants.Modules.STORIES)
+			setActive(stories);
+		else if (Global.moduleName == RDLConstants.Modules.IDEAS)
+			setActive(ideas);
+		else if (Global.moduleName == RDLConstants.Modules.IMPROVEMENTS)
+			setActive(improvements);
+		else if (Global.moduleName == RDLConstants.Modules.TRIBUNAL)
+			setActive(tribunal);
+		else if (Global.moduleName == RDLConstants.Modules.LICENSE)
+			setActive(license);
+		else if (Global.moduleName == RDLConstants.Modules.FAQ)
+			setActive(faq);
 	}
 
-	/**
-	 * Sets the improvements element as active in the menu
-	 */
-	public void setImprovementsActive() {
+	private void setActive(AnchorListItem item) {
 		allInactive();
-		improvements.setActive(true);
-	}
-
-	public void setTribunalActive() {
-		allInactive();
-		tribunal.setActive(true);
-	}
-
-	public void setLicenseActive() {
-		allInactive();
-		license.setActive(true);
-	}
-
-	public void setFaqActive() {
-		allInactive();
-		faq.setActive(true);
+		item.setActive(true);
 	}
 
 	/**

@@ -72,7 +72,7 @@
 						<b:FormGroup ui:field="proposalTypeFormGroup">
 							<b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}"/>
 							<g:FlowPanel addStyleNames="col-lg-9">
-								<g:ListBox ui:field="proposalTypeList" multipleSelect="true"
+								<b:ListBox ui:field="proposalTypeList" multipleSelect="true"
 								           addStyleNames="col-lg-8"/>
 							</g:FlowPanel>
 						</b:FormGroup>
@@ -80,7 +80,7 @@
 						<b:FormGroup ui:field="proposalStateFormGroup">
 							<b:FormLabel addStyleNames="col-lg-2" text="{i18n.state}"/>
 							<g:FlowPanel addStyleNames="col-lg-10">
-								<g:ListBox ui:field="proposalStateList" multipleSelect="true"
+								<b:ListBox ui:field="proposalStateList" multipleSelect="true"
 								           addStyleNames="col-lg-8"/>
 							</g:FlowPanel>
 						</b:FormGroup>
@@ -88,7 +88,7 @@
 						<b:FormGroup ui:field="categoryFormGroup">
 							<b:FormLabel addStyleNames="col-lg-2" text="{i18n.category}"/>
 							<g:FlowPanel addStyleNames="col-lg-10">
-								<g:ListBox ui:field="categoryList" multipleSelect="true" addStyleNames="col-lg-10"/>
+								<b:ListBox ui:field="categoryList" multipleSelect="true" addStyleNames="col-lg-10"/>
 							</g:FlowPanel>
 						</b:FormGroup>
 
@@ -110,15 +110,15 @@
 							<b:FormLabel for="searchCounters" addStyleNames="col-lg-3" text="{i18n.ref}"/>
 							<g:HorizontalPanel addStyleNames="col-lg-9" ui:field="refPanel">
 								<g:HorizontalPanel ui:field="posRefPanel" addStyleNames="col-lg-10">
-									<b:TextBox ui:field="posRef"/>
+									<b:TextBox ui:field="posRef" addStyleNames="posRefSearch"/>
 								</g:HorizontalPanel>
 
 								<g:HorizontalPanel ui:field="neutralRefPanel" addStyleNames="col-lg-10">
-									<b:TextBox ui:field="neutralRef"/>
+									<b:TextBox ui:field="neutralRef" addStyleNames="neutralRefSearch"/>
 								</g:HorizontalPanel>
 
 								<g:HorizontalPanel ui:field="negativeRefPanel" addStyleNames="col-lg-10">
-									<b:TextBox ui:field="negativeRef"/>
+									<b:TextBox ui:field="negativeRef" addStyleNames="negativeRefSearch"/>
 								</g:HorizontalPanel>
 							</g:HorizontalPanel>
 						</b:FormGroup>

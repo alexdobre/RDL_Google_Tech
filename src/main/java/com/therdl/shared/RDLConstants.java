@@ -27,6 +27,7 @@ public interface RDLConstants {
 
 	public interface Tokens {
 		String WELCOME = "!welcome";
+		String SERVICES = "services";
 		String SNIPS = "!snips";
 		String SNIP_EDIT = "snipEdit";
 		String LOG_OUT = "logOut";
@@ -132,6 +133,7 @@ public interface RDLConstants {
 	}
 
 	public interface Modules {
+		String SERVICES = "services";
 		String IDEAS = "ideas";
 		String STORIES = "stories";
 		String IMPROVEMENTS = "Improvements";

@@ -1,5 +1,8 @@
 package com.therdl.client.app;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -19,15 +22,14 @@ import com.therdl.client.presenter.ProfilePresenter;
 import com.therdl.client.presenter.PublicProfilePresenter;
 import com.therdl.client.presenter.RdlAbstractPresenter;
 import com.therdl.client.presenter.RegisterPresenter;
+import com.therdl.client.presenter.ServicesPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.presenter.ThreadViewPresenter;
 import com.therdl.client.presenter.TribunalDetailPresenter;
 import com.therdl.client.presenter.TribunalPresenter;
 import com.therdl.client.presenter.WelcomePresenter;
-import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.presenter.runt.impl.ProfileDescRuntImpl;
-import com.therdl.client.presenter.runt.impl.ReplyRuntImpl;
 import com.therdl.client.view.ContentNotFound;
 import com.therdl.client.view.ContentSearchView;
 import com.therdl.client.view.FaqView;
@@ -38,6 +40,7 @@ import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.PublicProfileView;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
+import com.therdl.client.view.ServicesView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.ThreadView;
 import com.therdl.client.view.TribunalDetail;
@@ -53,6 +56,7 @@ import com.therdl.client.view.impl.LicenseViewImpl;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.client.view.impl.PublicProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
+import com.therdl.client.view.impl.ServicesViewImpl;
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
 import com.therdl.client.view.impl.StoriesViewImpl;
@@ -72,9 +76,6 @@ import com.therdl.shared.events.LogOutEvent;
 import com.therdl.shared.events.LogOutEventEventHandler;
 import com.therdl.shared.events.SnipViewEvent;
 import com.therdl.shared.events.SnipViewEventHandler;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * While the overall application follows the Model View Presenter(MVP) design pattern
@@ -121,6 +122,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
 	private WelcomeView welcomeView;
+	private ServicesView servicesView;
 	private ContentNotFound contentNotFound;
 	private SnipEditView snipEditView;
 
@@ -239,69 +241,72 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		log.info("App controller module name: " + moduleName);
 		if (moduleName != null) {
 			switch (moduleName) {
-				case RDLConstants.Tokens.WELCOME:
-					showWelcomeView();
-					break;
-				case RDLConstants.Tokens.SNIP_VIEW:
-					showSnipView(token);
-					break;
-				case RDLConstants.Tokens.THREAD_VIEW:
-					showThreadView(token);
-					break;
-				case RDLConstants.Tokens.SNIPS:
-					showSnips(token);
-					break;
-				case RDLConstants.Tokens.STORIES:
-					showStories(token);
-					break;
-				case RDLConstants.Tokens.TRIBUNAL:
-					showTribunal(token);
-					break;
-				case RDLConstants.Tokens.TRIBUNAL_DETAIL:
-					showTribunalDetail(token);
-					break;
-				case RDLConstants.Tokens.THREAD_EDIT:
-					showThreadEdit(token);
-					break;
-				case RDLConstants.Tokens.IMPROVEMENTS:
-					showImprovements(token);
-					break;
-				case RDLConstants.Tokens.PROPOSAL_EDIT:
-					showProposalEdit(token);
-					break;
-				case RDLConstants.Tokens.PROPOSAL_VIEW:
-					showProposalView(token);
-					break;
-				case RDLConstants.Tokens.SNIP_EDIT:
-					showSnipEdit(token);
-					break;
-				case RDLConstants.Tokens.SIGN_UP:
-					showSignUp();
-					break;
-				case RDLConstants.Tokens.PROFILE:
-					showProfile();
-					break;
-				case RDLConstants.Tokens.PUBLIC_PROFILE:
-					showPublicProfile(tokenSplit);
-					break;
-				case RDLConstants.Tokens.LICENSE:
-					showLicense();
-					break;
-				case RDLConstants.Tokens.FAQ:
-					showFaq();
-					break;
-				case RDLConstants.Tokens.CONTENT_SEARCH:
-					showContentSearch(tokenSplit);
-					break;
-				case RDLConstants.Tokens.ERROR:
-					showContentNotFound();
-					break;
-				case RDLConstants.Tokens.LOG_OUT:
-					showLogOut();
-					break;
-				default:
-					showWelcomeView();
-					break;
+			case RDLConstants.Tokens.WELCOME:
+				showWelcomeView();
+				break;
+			case RDLConstants.Tokens.SNIP_VIEW:
+				showSnipView(token);
+				break;
+			case RDLConstants.Tokens.THREAD_VIEW:
+				showThreadView(token);
+				break;
+			case RDLConstants.Tokens.SERVICES:
+				showSnervices(token);
+				break;
+			case RDLConstants.Tokens.SNIPS:
+				showSnips(token);
+				break;
+			case RDLConstants.Tokens.STORIES:
+				showStories(token);
+				break;
+			case RDLConstants.Tokens.TRIBUNAL:
+				showTribunal(token);
+				break;
+			case RDLConstants.Tokens.TRIBUNAL_DETAIL:
+				showTribunalDetail(token);
+				break;
+			case RDLConstants.Tokens.THREAD_EDIT:
+				showThreadEdit(token);
+				break;
+			case RDLConstants.Tokens.IMPROVEMENTS:
+				showImprovements(token);
+				break;
+			case RDLConstants.Tokens.PROPOSAL_EDIT:
+				showProposalEdit(token);
+				break;
+			case RDLConstants.Tokens.PROPOSAL_VIEW:
+				showProposalView(token);
+				break;
+			case RDLConstants.Tokens.SNIP_EDIT:
+				showSnipEdit(token);
+				break;
+			case RDLConstants.Tokens.SIGN_UP:
+				showSignUp();
+				break;
+			case RDLConstants.Tokens.PROFILE:
+				showProfile();
+				break;
+			case RDLConstants.Tokens.PUBLIC_PROFILE:
+				showPublicProfile(tokenSplit);
+				break;
+			case RDLConstants.Tokens.LICENSE:
+				showLicense();
+				break;
+			case RDLConstants.Tokens.FAQ:
+				showFaq();
+				break;
+			case RDLConstants.Tokens.CONTENT_SEARCH:
+				showContentSearch(tokenSplit);
+				break;
+			case RDLConstants.Tokens.ERROR:
+				showContentNotFound();
+				break;
+			case RDLConstants.Tokens.LOG_OUT:
+				showLogOut();
+				break;
+			default:
+				showWelcomeView();
+				break;
 			}
 		}
 	}
@@ -360,9 +365,30 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		});
 	}
 
+	private void showSnervices(String token) {
+		Global.moduleName = RDLConstants.Modules.SERVICES;
+		log.info("AppController Tokens.SERVICES");
+		if (servicesView == null) {
+			servicesView = new ServicesViewImpl(currentUserBean, appMenu);
+		}
+
+		final ServicesPresenter servicesPresenter = new ServicesPresenter(servicesView, this);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SERVICES);
+			}
+
+			public void onSuccess() {
+				servicesPresenter.go(container, currentUserBean);
+			}
+		});
+
+	}
+
 	private void showSnips(String token) {
 		Global.moduleName = RDLConstants.Modules.IDEAS;
-		log.info("AppController Tokens.SNIPS");
+		log.info("AppController Tokens.IDEAS");
 		if (searchView == null) {
 			searchView = new SnipSearchViewImpl(currentUserBean, appMenu);
 		}
@@ -375,9 +401,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			}
 
 			public void onSuccess() {
-
 				snipSearchPresenter.go(container, currentUserBean);
-
 			}
 		});
 	}
@@ -693,7 +717,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	 * @param titleBeans user titles
 	 */
 	public void setCurrentUserBean(String name, String email, boolean state, List<UserBean.TitleBean> titleBeans,
-	                               boolean isRDLSupporter, String token, Integer rep, String dateCreated) {
+			boolean isRDLSupporter, String token, Integer rep, String dateCreated) {
 		this.currentUserBean.as().setAuth(state);
 		this.currentUserBean.as().setName(name);
 		this.currentUserBean.as().setEmail(email);

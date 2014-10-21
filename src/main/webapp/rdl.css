@@ -398,3 +398,30 @@ noBorder{
 	bottom: 3px;
 	right: 3px;
 }
+
+.posRefSearch {
+	border: 1px solid green;
+}
+
+.neutralRefSearch {
+	border: 1px solid grey;
+}
+
+.negativeRefSearch {
+	border: 1px solid red;
+}
+
+.dateFromInput {
+	margin-bottom: 3px;
+}
+.dateToInput {
+}
+.sortBitHolder {
+	width: 30px;
+}
+.sortIconInactive {
+	color: grey;
+}
+.sortIconActive {
+	color: black;
+}

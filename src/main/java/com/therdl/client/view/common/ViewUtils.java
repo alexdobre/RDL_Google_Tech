@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -331,6 +332,18 @@ public class ViewUtils {
 				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
 				emoListPanel.add(span);
 			}
+		}
+	}
+
+	/**
+	 * creates category list for snips
+	 */
+	public static void createCategoryList(ListBox categoryList) {
+		int i = 0;
+		for (CoreCategory item : CoreCategory.values()) {
+			categoryList.addItem(item.getShortName());
+			categoryList.setValue(i, item.getShortName());
+			i++;
 		}
 	}
 }
