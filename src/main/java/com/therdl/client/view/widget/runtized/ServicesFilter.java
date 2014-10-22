@@ -37,16 +37,22 @@ public class ServicesFilter extends Composite {
 	@UiField
 	SortBit authorSortBit, dateSortBit;
 
+	private AutoBean<SnipBean> searchOptions;
+
 	public ServicesFilter() {
 		initWidget(uiBinder.createAndBindUi(this));
 		ViewUtils.createCategoryList(categoryList);
 	}
 
 	public void populate(AutoBean<SnipBean> searchOptionsBean) {
-		//TODO implement ServicesFilter.populate
+		this.searchOptions = searchOptionsBean;
 	}
 
 	public void setServiceFilterRunt(ServiceFilterRunt serviceFilterRunt) {
 		this.serviceFilterRunt = serviceFilterRunt;
+	}
+
+	public AutoBean<SnipBean> getSearchOptions() {
+		return searchOptions;
 	}
 }

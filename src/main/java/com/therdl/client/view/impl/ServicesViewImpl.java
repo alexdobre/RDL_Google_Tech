@@ -8,8 +8,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.ServicesView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.ListWidget;
 import com.therdl.client.view.widget.runtized.ServicesFilter;
-import com.therdl.client.view.widget.runtized.ServicesList;
 import com.therdl.shared.beans.CurrentUserBean;
 
 /**
@@ -28,28 +28,17 @@ public class ServicesViewImpl extends AppMenuView implements ServicesView {
 	private ServicesView.Presenter presenter;
 	private AutoBean<CurrentUserBean> currentUserBean;
 	private ServicesFilter servicesFilter;
-	private ServicesList servicesList;
+	private ListWidget listWidget;
 
 	public ServicesViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
-		this.currentUserBean = currentUserBean;
-		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = cUserBean;
+		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-	}
-
-	public ServicesList getServicesList() {
-		return servicesList;
-	}
-
-	public void setServicesList(ServicesList servicesList) {
-		serviceListPanel.clear();
-		serviceListPanel.add(servicesList);
-		this.servicesList = servicesList;
 	}
 
 	public ServicesFilter getServicesFilter() {
@@ -60,5 +49,15 @@ public class ServicesViewImpl extends AppMenuView implements ServicesView {
 		serviceSearchFilterPanel.clear();
 		serviceSearchFilterPanel.add(servicesFilter);
 		this.servicesFilter = servicesFilter;
+	}
+
+	public ListWidget getListWidget() {
+		return listWidget;
+	}
+
+	public void setListWidget(ListWidget listWidget) {
+		serviceListPanel.clear();
+		serviceListPanel.add(listWidget);
+		this.listWidget = listWidget;
 	}
 }

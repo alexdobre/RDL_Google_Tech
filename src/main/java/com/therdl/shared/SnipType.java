@@ -9,7 +9,8 @@ public enum SnipType {
 	IMPROVEMENT("improvement"), PLEDGE("pledge"), COUNTER("counter"), PROPOSAL("proposal"),
 	CONTENT_MGMT("contentMgmt"), PROFILE("profile"),
 	TRIBUNAL("tribunal"), ABUSE_REPORT("abuseReport"),
-	FAQ("faq");
+	FAQ("faq"),
+	SERVICE("service");
 
 	private String snipType;
 
@@ -51,15 +52,18 @@ public enum SnipType {
 
 	/**
 	 * Tests if the given string is the title of a snip type
+	 *
 	 * @param toTest the string to test
 	 * @return true if the string is a core category title
 	 */
-	public static boolean stringIsType (String toTest){
+	public static boolean stringIsType(String toTest) {
 		try {
-			SnipType snipType =  SnipType.fromString(toTest);
-			if (snipType != null) return true;
-			else return false;
-		} catch (Exception e){
+			SnipType snipType = SnipType.fromString(toTest);
+			if (snipType != null)
+				return true;
+			else
+				return false;
+		} catch (Exception e) {
 			return false;
 		}
 	}

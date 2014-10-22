@@ -4,7 +4,6 @@ import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.presenter.runt.ServiceFilterRunt;
 import com.therdl.client.view.widget.runtized.ReplyEditWidget;
 import com.therdl.client.view.widget.runtized.ServicesFilter;
-import com.therdl.client.view.widget.runtized.ServicesList;
 
 /**
  * Because the AppController is getting a bit bloated we place the long lived widget implementations inside this
@@ -18,7 +17,6 @@ public class WidgetHolder {
 
 	private ReplyEditWidget replyEditWidget;
 	private ServicesFilter servicesFilter;
-	private ServicesList servicesList;
 
 	private WidgetHolder(AppController controller) {
 		this.controller = controller;
@@ -51,12 +49,5 @@ public class WidgetHolder {
 		}
 		servicesFilter.setServiceFilterRunt(serviceFilterRunt);
 		return servicesFilter;
-	}
-
-	public ServicesList getServicesList() {
-		if (servicesList == null) {
-			servicesList = new ServicesList();
-		}
-		return servicesList;
 	}
 }
