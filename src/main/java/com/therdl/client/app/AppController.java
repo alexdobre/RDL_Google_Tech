@@ -23,6 +23,7 @@ import com.therdl.client.presenter.PublicProfilePresenter;
 import com.therdl.client.presenter.RdlAbstractPresenter;
 import com.therdl.client.presenter.RegisterPresenter;
 import com.therdl.client.presenter.ServicesPresenter;
+import com.therdl.client.presenter.ServicesViewPresenter;
 import com.therdl.client.presenter.SnipEditPresenter;
 import com.therdl.client.presenter.SnipSearchPresenter;
 import com.therdl.client.presenter.ThreadViewPresenter;
@@ -40,6 +41,7 @@ import com.therdl.client.view.ProfileView;
 import com.therdl.client.view.PublicProfileView;
 import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.SearchView;
+import com.therdl.client.view.ServiceView;
 import com.therdl.client.view.ServicesView;
 import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.ThreadView;
@@ -56,6 +58,7 @@ import com.therdl.client.view.impl.LicenseViewImpl;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.client.view.impl.PublicProfileViewImpl;
 import com.therdl.client.view.impl.RegisterViewImpl;
+import com.therdl.client.view.impl.ServiceViewImpl;
 import com.therdl.client.view.impl.ServicesViewImpl;
 import com.therdl.client.view.impl.SnipEditViewImpl;
 import com.therdl.client.view.impl.SnipSearchViewImpl;
@@ -137,6 +140,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private ProfileView profileView;
 	private PublicProfileView publicProfileView;
 
+	private ServiceView serviceView;
 	private IdeaView ideaView;
 	private ThreadView threadView;
 	private ImprovementView proposalView;
@@ -184,6 +188,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					History.newItem(RDLConstants.Tokens.THREAD_VIEW + ":" + event.getSnipId());
 				else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
 					History.newItem(RDLConstants.Tokens.PROPOSAL_VIEW + ":" + event.getSnipId());
+				else if (Global.moduleName.equals(RDLConstants.Modules.SERVICES))
+					History.newItem(RDLConstants.Tokens.SERVICE_VIEW + ":" + event.getSnipId());
 			}
 		});
 	}
@@ -244,6 +250,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			case RDLConstants.Tokens.WELCOME:
 				showWelcomeView();
 				break;
+			case RDLConstants.Tokens.SERVICE_VIEW:
+				showServiceView(token);
+				break;
 			case RDLConstants.Tokens.SNIP_VIEW:
 				showSnipView(token);
 				break;
@@ -276,6 +285,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				break;
 			case RDLConstants.Tokens.PROPOSAL_VIEW:
 				showProposalView(token);
+				break;
+			case RDLConstants.Tokens.SERVICE_EDIT:
+				showServiceEdit(token);
 				break;
 			case RDLConstants.Tokens.SNIP_EDIT:
 				showSnipEdit(token);
@@ -323,6 +335,25 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			public void onSuccess() {
 				welcomePresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showServiceView(String token) {
+		Global.moduleName = RDLConstants.Modules.SERVICES;
+		log.info("AppController Tokens.SERVICE_VIEW");
+		if (serviceView == null) {
+			serviceView = new ServiceViewImpl(currentUserBean, appMenu);
+		}
+		final ServicesViewPresenter servicesViewPresenter = new ServicesViewPresenter(serviceView, this, token);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SERVICE_VIEW);
+			}
+
+			public void onSuccess() {
+				servicesViewPresenter.go(container, currentUserBean);
 			}
 		});
 	}
@@ -519,6 +550,25 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					snipEditPresenter.go(container, currentUserBean);
 				} else {
 					History.newItem(RDLConstants.Tokens.WELCOME);
+				}
+			}
+		});
+	}
+
+	private void showServiceEdit(String token) {
+		Global.moduleName = RDLConstants.Modules.SERVICES;
+		if (snipEditView == null) {
+			snipEditView = new SnipEditViewImpl(currentUserBean, appMenu);
+		}
+		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, this, token);
+
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				if (currentUserBean.as().isAuth()) {
+					snipEditPresenter.go(container, currentUserBean);
 				}
 			}
 		});

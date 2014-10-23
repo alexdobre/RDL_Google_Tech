@@ -91,7 +91,7 @@ public class SnipListRow extends AbstractListRow {
 			snipType = SnipType.IMPROVEMENT;
 		}
 
-		if (snipType.isIdea()) {
+		if (snipType.isIdea() || snipType.isService()) {
 			ViewUtils.show(referencesPanel);
 		} else if (snipType.isStory()) {
 			ViewUtils.show(likesRepliesPanel);
@@ -111,6 +111,8 @@ public class SnipListRow extends AbstractListRow {
 			snipTitle.setHref("#" + RDLConstants.Tokens.THREAD_VIEW + ":" + snipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
 			snipTitle.setHref("#" + RDLConstants.Tokens.PROPOSAL_VIEW + ":" + snipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.SERVICES))
+			snipTitle.setHref("#" + RDLConstants.Tokens.SERVICE_VIEW + ":" + snipBean.as().getId());
 
 		if (snipBean.as().getAuthorSupporter()) {
 			userName.setText("");

@@ -70,6 +70,8 @@ public abstract class AbstractListRow extends Composite {
 	}
 
 	protected void doImages(String snipType) {
+		if (snipType.equals(SnipType.SERVICE.getSnipType()))
+			snipImg.setUrl(Resources.INSTANCE.TagImageGif().getSafeUri().asString());
 		if (snipType.equals(RDLConstants.SnipType.SNIP))
 			snipImg.setUrl(Resources.INSTANCE.SnipImage().getSafeUri().asString());
 		if (snipType.equals(RDLConstants.SnipType.FAST_CAP))

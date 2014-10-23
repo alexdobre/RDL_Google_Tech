@@ -27,26 +27,31 @@
 
 		<b:FormGroup>
 			<b:FormLabel addStyleNames="col-lg-3" text="{i18n.ref}"/>
-			<g:HorizontalPanel addStyleNames="col-lg-9" ui:field="refPanel">
-				<g:HorizontalPanel addStyleNames="col-lg-10">
-					<b:TextBox ui:field="posRef" placeholder="{i18n.positive}" addStyleNames="posRefSearch"/>
-				</g:HorizontalPanel>
-
-				<g:HorizontalPanel addStyleNames="col-lg-10">
-					<b:TextBox ui:field="neutralRef" placeholder="{i18n.neutral}" addStyleNames="neutralRefSearch"/>
-				</g:HorizontalPanel>
-
-				<g:HorizontalPanel addStyleNames="col-lg-10">
-					<b:TextBox ui:field="negativeRef" placeholder="{i18n.negative}" addStyleNames="negativeRefSearch"/>
-				</g:HorizontalPanel>
-			</g:HorizontalPanel>
+			<g:SimplePanel addStyleNames="col-lg-6">
+				<b:TextBox ui:field="posRef" placeholder="{i18n.positive}" addStyleNames="posRefSearch"/>
+			</g:SimplePanel>
+			<rdlr:SortBit ui:field="posRefSortBit"/>
+		</b:FormGroup>
+		<b:FormGroup>
+			<b:FormLabel addStyleNames="col-lg-3" text=""/>
+			<g:SimplePanel addStyleNames="col-lg-6">
+				<b:TextBox ui:field="neutralRef" placeholder="{i18n.neutral}" addStyleNames="neutralRefSearch"/>
+			</g:SimplePanel>
+			<rdlr:SortBit ui:field="neutrRefSortBit"/>
+		</b:FormGroup>
+		<b:FormGroup>
+			<b:FormLabel addStyleNames="col-lg-3" text=""/>
+			<g:SimplePanel addStyleNames="col-lg-6">
+				<b:TextBox ui:field="negativeRef" placeholder="{i18n.negative}" addStyleNames="negativeRefSearch"/>
+			</g:SimplePanel>
+			<rdlr:SortBit ui:field="negRefSortBit"/>
 		</b:FormGroup>
 
 		<b:FormGroup>
 			<b:FormLabel addStyleNames="col-lg-3" text="{i18n.date}"/>
-			<g:HorizontalPanel addStyleNames="col-lg-6">
+			<g:SimplePanel addStyleNames="col-lg-6">
 				<rdlr:DateFromTo ui:field="dateFromTo"/>
-			</g:HorizontalPanel>
+			</g:SimplePanel>
 			<rdlr:SortBit ui:field="dateSortBit"/>
 		</b:FormGroup>
 

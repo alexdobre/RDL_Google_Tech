@@ -75,6 +75,13 @@ public enum SnipType {
 		return false;
 	}
 
+	public boolean isService() {
+		if (this.equals(SERVICE)) {
+			return true;
+		}
+		return false;
+	}
+
 	public boolean isStory() {
 		if (this.equals(THREAD) || this.equals(REFERENCE)) {
 			return true;

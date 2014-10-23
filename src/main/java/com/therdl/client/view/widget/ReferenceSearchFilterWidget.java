@@ -71,7 +71,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 		initWidget(ourUiBinder.createAndBindUi(this));
 		this.view = viewArg;
 
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
 			initRefTypeCheckboxes();
 		} else {
 			ViewUtils.hide(typeGroup);
@@ -223,7 +223,7 @@ public class ReferenceSearchFilterWidget extends Composite {
 			searchOptionsBean.as().setDateTo(dateFilterWidget.getDateTo());
 		else searchOptionsBean.as().setDateTo(null);
 
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
 			searchOptionsBean.as().setReferenceType(ViewUtils.getCheckedFlags(checkBoxList));
 			searchOptionsBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
 

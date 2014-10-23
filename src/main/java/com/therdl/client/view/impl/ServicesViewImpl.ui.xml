@@ -14,10 +14,11 @@
 
 			<b:Row>
 				<b:Column size="MD_3">
-					<g:FlowPanel ui:field="serviceSearchFilterPanel"/>
+					<g:FlowPanel ui:field="snipSearchWidgetPanel"/>
 				</b:Column>
 				<b:Column size="MD_9">
-					<g:FlowPanel ui:field="serviceListPanel"/>
+					<rdl:LoadingWidget ui:field="loadingWidget"/>
+					<g:FlowPanel ui:field="snipListRowContainer"/>
 				</b:Column>
 			</b:Row>
 

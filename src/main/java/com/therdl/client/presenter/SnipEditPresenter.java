@@ -67,7 +67,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		view.showHideCategories(false);
 		view.showHideIdeaTypes(false);
 
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
 			//idea edit has categories and idea types
 			view.showHideCategories(true);
 			view.showHideIdeaTypes(true);

@@ -133,6 +133,14 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		selectSnipTypeRadio();
 	}
 
+	private void configureForService() {
+		if (!isCategoryListInit) {
+			createCategoryList();
+			isCategoryListInit = true;
+		}
+		selectCategory();
+	}
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
@@ -219,6 +227,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 			currentSnipBean.as().setTitle("");
 			currentSnipBean.as().setAuthor(currentUserBean.as().getName());
 			currentSnipBean.as().setContent("");
+			//TODO investigate what sort of hack is below
 			if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)){
 				currentSnipBean.as().setCoreCat(RDLConstants.Modules.IMPROVEMENTS);
 			}
@@ -243,6 +252,8 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 			configureForStory();
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			configureForImprovement();
+		} else if (Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
+			configureForService();
 		}
 	}
 
@@ -332,9 +343,11 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 			newBean.as().setCoreCat(categoryList.getItemText(categoryList.getSelectedIndex()));
 		} else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			newBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
-
 			newBean.as().setProposalType(proposalTypeList.getValue(proposalTypeList.getSelectedIndex()));
 			newBean.as().setProposalState(proposalStateList.getValue(proposalStateList.getSelectedIndex()));
+		} else if (Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
+			newBean.as().setSnipType(RDLConstants.SnipType.SERVICE);
+			newBean.as().setCoreCat(categoryList.getItemText(categoryList.getSelectedIndex()));
 		}
 
 		if (currentSnipBean == null || currentSnipBean.as().getId() == null || currentSnipBean.as().getId().equals("")) {

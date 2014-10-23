@@ -109,14 +109,12 @@ public class ListWidget extends Composite implements PaginatedView {
 
 	@UiHandler("nextPage")
 	public void nextPageClicked(ClickEvent event) {
-		log.info("Firing next page event from pageIndex: " + pageIndex);
 		PaginationHelper.doNextPage(pageIndex, listRange.getText(), itemList.size(),
 				Constants.DEFAULT_PAGE_SIZE, paginationPresenter);
 	}
 
 	@UiHandler("prevPage")
 	public void prevPageClicked(ClickEvent event) {
-		log.info("Firing previous page event from pageIndex: " + pageIndex);
 		PaginationHelper.doPrevPage(pageIndex, paginationPresenter);
 	}
 

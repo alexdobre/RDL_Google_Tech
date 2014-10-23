@@ -33,6 +33,10 @@ public class WidgetHolder {
 		return holder;
 	}
 
+	public AppController getController() {
+		return controller;
+	}
+
 
 	public ReplyEditWidget getReplyEditWidget(ReplyRunt replyRunt) {
 		if (replyEditWidget == null) {

@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.app.WidgetHolder;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.RDLConstants;
@@ -345,5 +346,9 @@ public class ViewUtils {
 			categoryList.setValue(i, item.getShortName());
 			i++;
 		}
+	}
+
+	public static AutoBean<CurrentUserBean> getCurrentUserBean() {
+		return WidgetHolder.getHolder().getController().getCurrentUserBean();
 	}
 }

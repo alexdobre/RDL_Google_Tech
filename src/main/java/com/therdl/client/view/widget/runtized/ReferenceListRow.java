@@ -92,7 +92,7 @@ public class ReferenceListRow extends AbstractValidatedView implements Validated
 		String dateString = DateTimeFormat.getFormat(RDLConstants.DATE_PATTERN_EXTENDED).format(date);
 		creationDate.setText(dateString);
 
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
 			if (referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.POSITIVE))
 				refFlag.setText(RDL.i18n.positive());
 			else if (referenceBean.as().getReferenceType().equals(RDLConstants.ReferenceType.NEUTRAL))

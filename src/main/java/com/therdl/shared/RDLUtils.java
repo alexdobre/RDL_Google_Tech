@@ -75,6 +75,9 @@ public class RDLUtils {
 				case RDLConstants.Tokens.SNIP_VIEW:
 					buildDefaultViewBean(searchOptionsBean);
 					break;
+				case RDLConstants.Tokens.SERVICE_VIEW:
+					buildDefaultViewBean(searchOptionsBean);
+					break;
 				case RDLConstants.Tokens.PROPOSAL_VIEW:
 					buildDefaultViewBean(searchOptionsBean);
 					break;
@@ -129,6 +132,12 @@ public class RDLUtils {
 		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
 		searchOptionsBean.as().setSortOrder(-1);
 		searchOptionsBean.as().setSnipType(RDLConstants.SnipType.PROPOSAL);
+	}
+
+	public static void buildDefaultServicesBean(AutoBean<SnipBean> searchOptionsBean) {
+		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
+		searchOptionsBean.as().setSortOrder(-1);
+		searchOptionsBean.as().setSnipType(RDLConstants.SnipType.SERVICE);
 	}
 
 	public static void buildDefaultSnipsBean(AutoBean<SnipBean> searchOptionsBean) {

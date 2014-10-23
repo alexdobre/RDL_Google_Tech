@@ -30,11 +30,13 @@ public interface RDLConstants {
 		String SERVICES = "services";
 		String SNIPS = "!snips";
 		String SNIP_EDIT = "snipEdit";
+		String SERVICE_EDIT = "serviceEdit";
 		String LOG_OUT = "logOut";
 		String SIGN_UP = "signUp";
 		String PROFILE = "profile";
 		String PUBLIC_PROFILE = "publicProfile";
 		String SNIP_VIEW = "!snipView";
+		String SERVICE_VIEW = "serviceView";
 		String LICENSE = "license";
 		String FAQ = "faq";
 		String ERROR = "error";
@@ -104,6 +106,7 @@ public interface RDLConstants {
 	}
 
 	public interface SnipType {
+		String SERVICE = "service";
 		String SNIP = "snip";
 		String HABIT = "habit";
 		String FAST_CAP = "fastCap";

@@ -89,6 +89,8 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 			History.newItem(RDLConstants.Tokens.THREAD_EDIT + ":" + currentSnipBean.as().getId());
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))
 			History.newItem(RDLConstants.Tokens.PROPOSAL_EDIT + ":" + currentSnipBean.as().getId());
+		else if (Global.moduleName.equals(RDLConstants.Modules.SERVICES))
+			History.newItem(RDLConstants.Tokens.SERVICE_EDIT + ":" + currentSnipBean.as().getId());
 
 	}
 
@@ -111,11 +113,12 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView> i
 		currentBean.as().setAction("populateSnip");
 		currentBean.as().setId(currentSnipId);
 
-		//if the user is logged in and if we are in the IDEAS or IMPROVEMENTS module we need to know if the user has
-		//given a reply so we set the viewer ID to be used in the search
+		//if the user is logged in and if we are in the IDEAS, SERVICES or IMPROVEMENTS module we need to know
+		// if the user has given a reply so we set the viewer ID to be used in the search
 		if (controller.getCurrentUserBean().as().isAuth()) {
 			if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) ||
-					Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+					Global.moduleName.equals(RDLConstants.Modules.SERVICES) ||
+						Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 				currentBean.as().setViewerId(controller.getCurrentUserBean().as().getName());
 			}
 		}
