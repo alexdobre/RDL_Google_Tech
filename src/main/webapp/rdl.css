@@ -425,3 +425,7 @@ noBorder{
 .sortIconActive {
 	color: black;
 }
+
+.sortIconInActive {
+	color: #E6E6E6;
+}

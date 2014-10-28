@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.therdl.client.app.AppController;
+import com.therdl.client.app.LogicHolder;
 import com.therdl.client.app.WidgetHolder;
 import com.therdl.client.view.i18n.I18NConstants;
 
@@ -55,6 +56,7 @@ public class RDL implements EntryPoint {
 		p1.add(p2);
 
 		WidgetHolder.initHolder(appController);
+		LogicHolder.initHolder(appController);
 		//we let the appController take over
 		appController.go(p2);
 	}

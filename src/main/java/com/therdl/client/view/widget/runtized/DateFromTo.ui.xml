@@ -7,9 +7,9 @@
 
 	<g:FlowPanel>
 		<b2:DateTimePicker minView="MONTH" autoClose="true" position="TOP_RIGHT" placeholder="{i18n.dateFrom}"
-		                   addStyleNames="dateFromInput" format="mm/dd/yyyy"/>
+		                   addStyleNames="dateFromInput" format="yyyy-mm-dd" ui:field="dateFrom"/>
 		<b2:DateTimePicker minView="MONTH" autoClose="true" position="BOTTOM_RIGHT" placeholder="{i18n.dateTo}"
-		                   addStyleNames="dateToInput" format="mm/dd/yyyy"/>
+		                   addStyleNames="dateToInput" format="yyyy-mm-dd" ui:field="dateTo"/>
 	</g:FlowPanel>
 
 </ui:UiBinder>

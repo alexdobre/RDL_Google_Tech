@@ -6,7 +6,7 @@
 	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
 
 	<g:FlowPanel addStyleNames="sortBitHolder col-lg-1 noPadding">
-		<b:Icon type="ARROW_CIRCLE_DOWN" size="TIMES2" addStyleNames="sortIconActive"/>
+		<b:Anchor ui:field="anchor" icon="ARROW_CIRCLE_DOWN" iconSize="TIMES2" addStyleNames="sortIconActive" />
 	</g:FlowPanel>
 
 </ui:UiBinder>

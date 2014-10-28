@@ -18,7 +18,6 @@ import com.therdl.client.app.WidgetHolder;
 import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.presenter.runt.ServiceFilterRunt;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
@@ -68,7 +67,7 @@ public class ServicesFilter extends Composite {
 	@UiHandler("createNewButton")
 	void onCreateNewButtonClick(ClickEvent event) {
 		AutoBean<CurrentUserBean> currentUserBean = ViewUtils.getCurrentUserBean();
-		if (currentUserBean != null &&  currentUserBean.as().isAuth()) {
+		if (currentUserBean != null && currentUserBean.as().isAuth()) {
 			createNewBtnHandler(currentUserBean);
 		} else {
 			WidgetHolder.getHolder().getController().getAppMenu().showLoginPopUp(new LoginHandler() {
@@ -83,7 +82,7 @@ public class ServicesFilter extends Composite {
 
 	@UiHandler("filter")
 	public void onSubmit(ClickEvent event) {
-		//TODO implement search filter on submit
+		serviceFilterRunt.filterSearch();
 	}
 
 	private void createNewBtnHandler(AutoBean<CurrentUserBean> userBean) {
@@ -100,5 +99,49 @@ public class ServicesFilter extends Composite {
 
 	public AutoBean<SnipBean> getSearchOptions() {
 		return searchOptions;
+	}
+
+	public TextBox getAuthor() {
+		return author;
+	}
+
+	public TextBox getPosRef() {
+		return posRef;
+	}
+
+	public TextBox getNeutralRef() {
+		return neutralRef;
+	}
+
+	public TextBox getNegativeRef() {
+		return negativeRef;
+	}
+
+	public DateFromTo getDateFromTo() {
+		return dateFromTo;
+	}
+
+	public SortBit getAuthorSortBit() {
+		return authorSortBit;
+	}
+
+	public SortBit getDateSortBit() {
+		return dateSortBit;
+	}
+
+	public SortBit getPosRefSortBit() {
+		return posRefSortBit;
+	}
+
+	public SortBit getNeutrRefSortBit() {
+		return neutrRefSortBit;
+	}
+
+	public SortBit getNegRefSortBit() {
+		return negRefSortBit;
+	}
+
+	public ListBox getCategoryList() {
+		return categoryList;
 	}
 }
