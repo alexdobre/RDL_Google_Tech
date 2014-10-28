@@ -1,5 +1,7 @@
 package com.therdl.client.view;
 
+
+import com.google.gwt.user.client.ui.Panel;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.AuthUserBean;
 
@@ -20,4 +22,6 @@ public interface RegisterView extends RdlView, ValidatedView {
 	}
 
 	void setPresenter(Presenter presenter);
+
+	public Panel getSignUpMessage();
 }

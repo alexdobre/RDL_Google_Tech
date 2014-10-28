@@ -10,7 +10,9 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.RDL;
 import com.therdl.client.app.AppController;
+import com.therdl.client.app.RuntFactory;
 import com.therdl.client.callback.BeanCallback;
+import com.therdl.client.presenter.runt.ContentMgmtRunt;
 import com.therdl.client.validation.UserViewValidator;
 import com.therdl.client.view.RegisterView;
 import com.therdl.shared.RDLConstants;
@@ -29,9 +31,12 @@ import com.therdl.shared.beans.CurrentUserBean;
  */
 public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implements RegisterView.Presenter {
 
+	private ContentMgmtRunt contentMgmtRunt;
+
 	public RegisterPresenter(RegisterView registerView, AppController appController) {
 		super(appController);
 		this.view = registerView;
+		contentMgmtRunt = RuntFactory.createContentMgmgtRunt();
 		registerView.setPresenter(this);
 	}
 
@@ -47,6 +52,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 		checkLogin();
 		container.clear();
 		view.hideMessages();
+		contentMgmtRunt.displaySignInMsg(view.getSignUpMessage());
 		container.add(view.asWidget());
 	}
 
@@ -65,7 +71,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	@Override
 	public void submitNewUser(AutoBean<AuthUserBean> bean) {
 		String validationResult = UserViewValidator.validateAuthUserBean(bean);
-		if (validationResult != null ) {
+		if (validationResult != null) {
 			view.setErrorMessage(validationResult);
 			return;
 		}
@@ -77,9 +83,9 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 		String json = AutoBeanCodex.encode(bean).getPayload();
 
 		try {
-			requestBuilder.sendRequest(json, new BeanCallback<AuthUserBean>(AuthUserBean.class,view) {
+			requestBuilder.sendRequest(json, new BeanCallback<AuthUserBean>(AuthUserBean.class, view) {
 				@Override
-				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean){
+				public void onBeanReturned(AutoBean<AuthUserBean> returnedBean) {
 					// on success user is authorised on sign up
 					getController().setCurrentUserBean(returnedBean.as().getName(), returnedBean.as().getEmail(),
 							true, returnedBean.as().getToken());
@@ -93,4 +99,5 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 			log.info(e.getLocalizedMessage());
 		}
 	}
+
 }

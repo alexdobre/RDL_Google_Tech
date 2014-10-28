@@ -1,7 +1,9 @@
 package com.therdl.client.app;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.presenter.runt.ContentMgmtRunt;
 import com.therdl.client.presenter.runt.ReplyRunt;
+import com.therdl.client.presenter.runt.impl.ContentMgmtRuntImpl;
 import com.therdl.client.presenter.runt.impl.ReplyRuntImpl;
 import com.therdl.client.view.ValidatedView;
 import com.therdl.shared.beans.CurrentUserBean;
@@ -13,5 +15,9 @@ public class RuntFactory {
 
 	public static ReplyRunt createReplyRunt(AutoBean<CurrentUserBean> currentUserBean, ValidatedView validatedView) {
 		return new ReplyRuntImpl(currentUserBean, validatedView);
+	}
+
+	public static ContentMgmtRunt createContentMgmgtRunt(){
+		return new ContentMgmtRuntImpl();
 	}
 }

@@ -7,42 +7,51 @@
 
 	<b:Container addStyleNames="push">
 		<g:SimplePanel ui:field="appMenuPanel"/>
-		<b:Form type="HORIZONTAL">
-			<b:FieldSet>
-				<rdl:FormSuccess ui:field="formSuccess"/>
-				<b:Legend text="{i18n.enterUserDetails}"/>
-				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-2" text="{i18n.userName}"/>
-					<g:FlowPanel addStyleNames="col-lg-4">
-						<b:TextBox ui:field="userName"/>
-					</g:FlowPanel>
-				</b:FormGroup>
-				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-2" text="{i18n.email}"/>
-					<g:FlowPanel addStyleNames="col-lg-4">
-						<b:TextBox ui:field="email"/>
-					</g:FlowPanel>
-				</b:FormGroup>
-				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-2" text="{i18n.password}"/>
-					<g:FlowPanel addStyleNames="col-lg-4">
-						<b:Input type="PASSWORD" ui:field="psswd"/>
-					</g:FlowPanel>
-				</b:FormGroup>
-				<b:FormGroup>
-					<b:FormLabel addStyleNames="col-lg-2" text="{i18n.confirmPassword}"/>
-					<g:FlowPanel addStyleNames="col-lg-4">
-						<b:Input type="PASSWORD" ui:field="cpsswd"/>
-					</g:FlowPanel>
-				</b:FormGroup>
-				<rdl:FormErrors ui:field="formErrors"/>
-				<b:FormGroup>
-					<g:FlowPanel addStyleNames="col-lg-4 col-lg-offset-2">
-						<b:Button ui:field="submitBtn" type="DEFAULT" text="{i18n.submit}"/>
-					</g:FlowPanel>
-				</b:FormGroup>
-			</b:FieldSet>
-		</b:Form>
+		<b:Row>
+			<b:Column size="MD_4">
+				<b:Form type="HORIZONTAL">
+					<b:FieldSet>
+						<rdl:FormSuccess ui:field="formSuccess"/>
+						<b:Legend text="{i18n.enterUserDetails}"/>
+						<b:FormGroup>
+							<b:FormLabel addStyleNames="col-lg-4" text="{i18n.userName}"/>
+							<g:FlowPanel addStyleNames="col-lg-8">
+								<b:TextBox ui:field="userName"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+						<b:FormGroup>
+							<b:FormLabel addStyleNames="col-lg-4" text="{i18n.email}"/>
+							<g:FlowPanel addStyleNames="col-lg-8">
+								<b:TextBox ui:field="email"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+						<b:FormGroup>
+							<b:FormLabel addStyleNames="col-lg-4" text="{i18n.password}"/>
+							<g:FlowPanel addStyleNames="col-lg-8">
+								<b:Input type="PASSWORD" ui:field="psswd"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+						<b:FormGroup>
+							<b:FormLabel addStyleNames="col-lg-4" text="{i18n.confirmPassword}"/>
+							<g:FlowPanel addStyleNames="col-lg-8">
+								<b:Input type="PASSWORD" ui:field="cpsswd"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+						<rdl:FormErrors ui:field="formErrors"/>
+						<b:FormGroup>
+							<g:FlowPanel addStyleNames="col-lg-4 col-lg-offset-4">
+								<b:Button ui:field="submitBtn" type="DEFAULT" text="{i18n.submit}"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+					</b:FieldSet>
+				</b:Form>
+			</b:Column>
+			<b:Column size="MD_8">
+				<b:Panel >
+					<b:PanelBody ui:field="signUpMessage"/>
+				</b:Panel>
+			</b:Column>
+		</b:Row>
 	</b:Container>
 
 </ui:UiBinder>

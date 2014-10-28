@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.TextBox;
 
 import com.google.gwt.core.client.GWT;
@@ -11,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.RegisterView;
@@ -46,18 +48,16 @@ public class RegisterViewImpl extends AbstractValidatedAppMenuView implements Re
 
 	@UiField
 	TextBox userName;
-
 	@UiField
 	TextBox email;
-
 	@UiField
 	Input psswd;
-
 	@UiField
 	Input cpsswd;
-
 	@UiField
 	Button submitBtn;
+	@UiField
+	PanelBody signUpMessage;
 
 	public RegisterViewImpl(AppMenu appMenu) {
 		super(appMenu);
@@ -99,4 +99,8 @@ public class RegisterViewImpl extends AbstractValidatedAppMenuView implements Re
 		this.presenter = presenter;
 	}
 
+	@Override
+	public Panel getSignUpMessage() {
+		return signUpMessage;
+	}
 }
