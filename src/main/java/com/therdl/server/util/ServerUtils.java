@@ -31,7 +31,7 @@ public class ServerUtils {
 	 * @param beanery  used to create a new title if necessary
 	 */
 	public static void extendTitle(UserBean userBean, String title, Beanery beanery) {
-		List<UserBean.TitleBean> titleBeans = new ArrayList<>();
+		List<UserBean.TitleBean> titleBeans = new ArrayList<UserBean.TitleBean>();
 		UserBean.TitleBean foundTitle = null;
 		for (UserBean.TitleBean titleBean : titleBeans) {
 			if (titleBean.getTitleName().equals(title)) {
@@ -63,7 +63,7 @@ public class ServerUtils {
 	 * @param beanery         used to create a new title if necessary
 	 */
 	public static void extendTitle(String timeCreated, String nextPaymentDate, UserBean userBean, String title, Beanery beanery) {
-		List<UserBean.TitleBean> titleBeans = new ArrayList<>();
+		List<UserBean.TitleBean> titleBeans = new ArrayList<UserBean.TitleBean>();
 		UserBean.TitleBean foundTitle = null;
 		for (UserBean.TitleBean titleBean : titleBeans) {
 			if (titleBean.getTitleName().equals(title)) {

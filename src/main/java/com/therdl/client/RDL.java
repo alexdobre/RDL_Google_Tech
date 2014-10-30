@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.therdl.client.app.AppController;
 import com.therdl.client.app.LogicHolder;
 import com.therdl.client.app.WidgetHolder;
+import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.client.view.i18n.I18NConstants;
 
 /**
@@ -57,6 +59,9 @@ public class RDL implements EntryPoint {
 
 		WidgetHolder.initHolder(appController);
 		LogicHolder.initHolder(appController);
+		// Inject the contents of the CSS file
+		Resources.INSTANCE.rdlCss().ensureInjected();
+		StyleInjector.inject(Resources.INSTANCE.rdlMediaCss().getText());
 		//we let the appController take over
 		appController.go(p2);
 	}

@@ -181,9 +181,9 @@ public class EmotionPicker extends Composite {
 
 		List<Emotion> posEmoList = Emotion.servePosEmoList();
 		List<Emotion> negEmoList = Emotion.serveNegEmoList();
-		this.posEmoList = new ArrayList<>(13);
-		this.negEmoList = new ArrayList<>(13);
-		this.emoMap = new HashMap<>(26);
+		this.posEmoList = new ArrayList<LinkedGroupItem>(13);
+		this.negEmoList = new ArrayList<LinkedGroupItem>(13);
+		this.emoMap = new HashMap<LinkedGroupItem, EmoElements> (26);
 
 		for (int i = 0; i < posEmoList.size(); i++) {
 			Row emoRow = new Row();

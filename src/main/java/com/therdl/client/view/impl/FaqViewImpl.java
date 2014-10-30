@@ -46,7 +46,7 @@ public class FaqViewImpl extends AppMenuView implements FaqView {
 
 	@Override
 	public void populateFaq(List<AutoBean<SnipBean>> faqList) {
-		faqPanelList = new ArrayList<>(faqList.size());
+		faqPanelList = new ArrayList<FaqPanel>(faqList.size());
 		panelGroup.clear();
 		for (AutoBean<SnipBean> faqBean : faqList) {
 			FaqPanel faqPanel = new FaqPanel();

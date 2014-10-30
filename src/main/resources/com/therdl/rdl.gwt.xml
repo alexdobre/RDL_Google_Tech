@@ -35,7 +35,6 @@
     <set-property name="gwt.logging.systemHandler" value="${logging.enabled}"/>
     <set-property name="gwt.logging.developmentModeHandler" value="${logging.enabled}"/>
     <set-property name="gwt.logging.consoleHandler" value="${logging.enabled}"/>
-    <stylesheet src='../rdl.css' />
 
     <entry-point class='com.therdl.client.RDL'/>
 

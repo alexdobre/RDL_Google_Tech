@@ -612,7 +612,7 @@ public class SnipServiceImpl implements SnipsService {
 		// set the Emotions
 
 		BasicDBList emotions = (BasicDBList)doc.get("emotions");
-		List<String> emoList = new ArrayList<>();
+		List<String> emoList = new ArrayList<String>();
 		if (emotions != null){
 			for (Object obj : emotions) {
 				emoList.add(obj.toString());

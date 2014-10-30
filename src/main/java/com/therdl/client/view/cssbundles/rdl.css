@@ -279,15 +279,6 @@ form.form-search:before {
 .rightIcon{
 	padding-left: 3px;
 }
-.push {
-	padding-top: 55px;
-}
-
-@media (max-width: 1199px ) and (min-width: 768px ) {
-	.push {
-		padding-top: 110px;
-	}
-}
 
 noBorder{
 	border: 0px;
@@ -428,4 +419,9 @@ noBorder{
 
 .sortIconInActive {
 	color: #E6E6E6;
+}
+
+.socialPanel {
+    margin-top: 10px;
+    margin-left: 50px;
 }

@@ -3,8 +3,6 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:rdl='urn:import:com.therdl.client.view.widget'>
-	<ui:style src="../cssbundles/searchView.css"/>
-
 
 	<b:Container>
 		<g:SimplePanel ui:field="appMenuPanel"/>
@@ -13,7 +11,7 @@
 			<b:Row>
 				<b:Column size="MD_3">
 					<g:FlowPanel ui:field="snipSearchWidgetPanel"/>
-					<rdl:SocialPanel styleName="{style.socialPanel}"/>
+					<rdl:SocialPanel styleName="socialPanel"/>
 				</b:Column>
 				<b:Column size="MD_9">
 					<rdl:LoadingWidget ui:field="loadingWidget"/>

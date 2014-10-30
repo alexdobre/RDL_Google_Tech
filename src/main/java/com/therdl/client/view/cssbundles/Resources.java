@@ -2,7 +2,9 @@ package com.therdl.client.view.cssbundles;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.TextResource;
 
 
 /**
@@ -17,6 +19,13 @@ public interface Resources extends ClientBundle {
 	//Is necessary instantiates the Resources using GWT.create(Class) technique is used
 	// under the hood to instruct the compiler to use deferred binding.
 	public static final Resources INSTANCE = GWT.create(Resources.class);
+
+	@CssResource.NotStrict
+	@Source("rdl.css")
+	public CssResource rdlCss();
+
+	@Source("rdlMedia.css")
+	TextResource rdlMediaCss();
 
 	@Source("imagebund/RDL_logo_med_no_text.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)

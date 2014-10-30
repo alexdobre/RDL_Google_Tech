@@ -278,7 +278,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 			requestBuilder.sendRequest(json, new SnipListCallback() {
 
 				public void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList) {
-					List<String> contentList = new ArrayList<>(beanList.size());
+					List<String> contentList = new ArrayList<String>(beanList.size());
 					for (AutoBean<SnipBean> returnedBean : beanList) {
 						contentList.add(returnedBean.as().getContent());
 					}

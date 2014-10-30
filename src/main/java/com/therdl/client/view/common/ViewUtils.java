@@ -38,7 +38,7 @@ public class ViewUtils {
 
 	public static List<String> getPieceMealEmotions() {
 		if (pieceMealEmotions == null) {
-			pieceMealEmotions = new ArrayList<>();
+			pieceMealEmotions = new ArrayList<String>();
 			for (Emotion emo : Emotion.values()) {
 				String[] emoShards = EmotionTranslator.getMessage(emo).split(",");
 				pieceMealEmotions.addAll(Arrays.asList(emoShards));

@@ -48,7 +48,7 @@ public enum Emotion {
 	}
 
 	private static void buildNegEmoList() {
-		negEmoList= new ArrayList<>(13);
+		negEmoList= new ArrayList<Emotion>(13);
 		negEmoList.add(BOREDOM);
 		negEmoList.add(PANIC);
 		negEmoList.add(AVERSION);
@@ -66,7 +66,7 @@ public enum Emotion {
 	}
 
 	private static void buildPosEmoList() {
-		posEmoList= new ArrayList<>(13);
+		posEmoList= new ArrayList<Emotion>(13);
 		posEmoList.add(PASSION);
 		posEmoList.add(INTEREST);
 		posEmoList.add(DELIGHT);
