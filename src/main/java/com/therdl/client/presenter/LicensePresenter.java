@@ -51,7 +51,7 @@ public class LicensePresenter extends RdlAbstractPresenter<LicenseView> implemen
 	private AutoBean<SnipBean> buildLicenseSearchOptions() {
 		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 		searchOptionsBean.as().setCoreCat(CoreCategory.GENERAL.getShortName());
-		searchOptionsBean.as().setSnipType(SnipType.SNIP.getSnipType());
+		searchOptionsBean.as().setSnipType(SnipType.CONTENT_MGMT.getSnipType());
 		searchOptionsBean.as().setTitle(RDLConstants.LICENSE_TITLE);
 		return searchOptionsBean;
 	}
