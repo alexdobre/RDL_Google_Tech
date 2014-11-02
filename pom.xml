@@ -14,7 +14,7 @@
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.7.0</gwtVersion>
+        <gwtVersion>2.6.1</gwtVersion>
         <!-- GWT needs at least java 1.5 -->
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -132,13 +132,13 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-            <version>${gwtVersion}-rc1</version>
+            <version>${gwtVersion}</version>
             <!--scope>runtime</scope-->
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${gwtVersion}-rc1</version>
+            <version>${gwtVersion}</version>
             <!--scope>provided</scope-->
         </dependency>
         <dependency>
@@ -219,7 +219,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwtVersion}-beta1</version>
+                <version>${gwtVersion}</version>
                 <executions>
                     <execution>
                         <goals>
