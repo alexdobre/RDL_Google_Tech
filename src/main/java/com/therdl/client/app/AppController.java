@@ -248,7 +248,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		if (moduleName != null) {
 			switch (moduleName) {
 			case RDLConstants.Tokens.WELCOME:
-				showWelcomeView();
+				showWelcomeView(tokenSplit);
 				break;
 			case RDLConstants.Tokens.SERVICE_VIEW:
 				showServiceView(token);
@@ -317,18 +317,18 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				showLogOut();
 				break;
 			default:
-				showWelcomeView();
+				showWelcomeView(null);
 				break;
 			}
 		}
 	}
 
-	private void showWelcomeView() {
+	private void showWelcomeView(String[] tokenSplit) {
 		log.info("AppController Tokens.WELCOME");
 		if (welcomeView == null) {
 			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
 		}
-		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this, tokenSplit);
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
@@ -721,7 +721,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
 		}
 
-		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this);
+		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this, null);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {

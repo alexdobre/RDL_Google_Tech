@@ -51,6 +51,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	private Presenter presenter;
 	private AutoBean<CurrentUserBean> currentUser;
 	private Map<CoreCategory,AutoBean<SnipBean>> snipMap = new HashMap<CoreCategory,AutoBean<SnipBean>>();
+	private CoreCategory delayedDisplay;
 
 	@UiField
 	Image logo;
@@ -92,6 +93,36 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 		log.info("WelcomeViewImpl setPresenter");
+	}
+
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		if (delayedDisplay != null) {
+			if (CoreCategory.COMPATIBILITY.equals(delayedDisplay)) {
+				onCompatibilityCattClick(null);
+			} else if (CoreCategory.CONNECTION.equals(delayedDisplay)) {
+				onConnectionCatClick(null);
+			} else if (CoreCategory.EXTERIOR.equals(delayedDisplay)) {
+				onExteriorCatClick(null);
+			}else if (CoreCategory.EROTICISM.equals(delayedDisplay)) {
+				onEroticismCatClick(null);
+			} else if (CoreCategory.SEDUCTION.equals(delayedDisplay)) {
+				onSeductionCatClick(null);
+			} else if (CoreCategory.PSY_TEND.equals(delayedDisplay)) {
+				onPsyTendCatClick(null);
+			} else if (CoreCategory.AFFAIRS.equals(delayedDisplay)) {
+				onAffairsCatClick(null);
+			} else if (CoreCategory.ABUSE.equals(delayedDisplay)) {
+				onAbuseCatClick(null);
+			}
+			delayedDisplay = null;
+		}
+	}
+
+	@Override
+	public void setDelayedDisplay(CoreCategory cat) {
+		delayedDisplay = cat;
 	}
 
 	@Override

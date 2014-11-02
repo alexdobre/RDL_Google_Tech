@@ -27,10 +27,21 @@ import com.therdl.shared.beans.SnipBean;
 
 public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implements WelcomeView.Presenter {
 
-	public WelcomePresenter(WelcomeView welcomeView, AppController controller) {
+	private CoreCategory displayCat;
+
+	public WelcomePresenter(WelcomeView welcomeView, AppController controller, String[] tokenSplit) {
 		super(controller);
 		this.view = welcomeView;
 		this.view.setPresenter(this);
+		if (tokenSplit != null && tokenSplit.length > 1) {
+			if (CoreCategory.stringIsCateg(tokenSplit[1])){
+				displayCat = CoreCategory.fromString(tokenSplit[1]);
+				//display cat cannot be GENERAL
+				if (CoreCategory.GENERAL.equals(displayCat)) {
+					displayCat = null;
+				}
+			}
+		}
 	}
 
 	/**
@@ -49,6 +60,7 @@ public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implemen
 		if (view.getSnipMap().get(CoreCategory.GENERAL) == null) {
 			grabWelcomeSnip(CoreCategory.GENERAL, RDLConstants.ContentMgmt.RDL_WELCOME_TITLE);
 		}
+		view.setDelayedDisplay(displayCat);
 		container.add(view.asWidget());
 	}
 

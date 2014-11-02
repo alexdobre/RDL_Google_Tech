@@ -36,6 +36,8 @@ public interface WelcomeView extends RdlView{
 
 	Widget asWidget();
 
+	void setDelayedDisplay(CoreCategory cat);
+
 	/**
 	 * Shows the user the welcome snip
 	 * @param coreCat

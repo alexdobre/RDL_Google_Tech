@@ -58,6 +58,14 @@ public enum CoreCategory {
 		}
 	}
 
+	public static CoreCategory fromString(String str) {
+		try {
+			return CoreCategory.valueOf(str);
+		} catch (Exception e) {
+			return GENERAL;
+		}
+	}
+
 	public String getShortName() {
 		return shortName;
 	}
