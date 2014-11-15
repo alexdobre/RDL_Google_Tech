@@ -1,44 +1,30 @@
 package com.therdl.server.paypal_payment;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.inject.Provider;
-import javax.servlet.http.HttpSession;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
-import com.paypal.exception.ClientActionRequiredException;
-import com.paypal.exception.HttpErrorException;
-import com.paypal.exception.InvalidCredentialException;
-import com.paypal.exception.InvalidResponseDataException;
-import com.paypal.exception.MissingCredentialException;
-import com.paypal.exception.SSLConfigurationException;
+import com.paypal.exception.*;
 import com.paypal.sdk.exceptions.OAuthException;
 import com.therdl.server.api.UserService;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileReq;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileRequestType;
 import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileResponseType;
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.AutoBillType;
-import urn.ebay.apis.eBLBaseComponents.BillingPeriodDetailsType;
-import urn.ebay.apis.eBLBaseComponents.BillingPeriodType;
-import urn.ebay.apis.eBLBaseComponents.CreateRecurringPaymentsProfileRequestDetailsType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.ErrorType;
-import urn.ebay.apis.eBLBaseComponents.RecurringPaymentsProfileDetailsType;
-import urn.ebay.apis.eBLBaseComponents.ScheduleDetailsType;
+import urn.ebay.apis.eBLBaseComponents.*;
+
+import javax.inject.Provider;
+import javax.servlet.http.HttpSession;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 // # CreateRecurringPaymentsProfile API
 // The CreateRecurringPaymentsProfile API operation creates a recurring
@@ -123,7 +109,7 @@ public class CreateRecurringPaymentsProfile {
 		// If the billing period is SemiMonth, the billing frequency must be 1.`
 		// * `Billing Amount`
 		BillingPeriodDetailsType paymentPeriod = new BillingPeriodDetailsType(
-				BillingPeriodType.MONTH, frequency, billingAmount); //monthly payment
+				PayPalConstants.BILLING_PERIOD, frequency, billingAmount); //monthly payment
 
 		//(Optional) Information about activating a profile, such as whether there is an initial non-recurring payment amount
 		// immediately due upon profile creation and how to override a pending profile PayPal suspends when the initial
@@ -255,6 +241,8 @@ public class CreateRecurringPaymentsProfile {
 			logger.info("Profile ID:" + paypalProfileId);
 
 			String userId = (String)session.get().getAttribute("userid");
+
+			logger.info("USER ID : " + userId);
 			//update the paypal Id for querying when IPN was established
 			UserBean userBean = userService.getUserByEmail(userId);
 			userBean.setPaypalId(paypalProfileId);

@@ -1,19 +1,5 @@
 package com.therdl.server.paypal_payment;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Provider;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
@@ -23,6 +9,19 @@ import com.therdl.server.util.ServerUtils;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.UserBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Provider;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Singleton
 public class PayPalIPNServlet extends HttpServlet {
@@ -106,13 +105,25 @@ public class PayPalIPNServlet extends HttpServlet {
 	private void processRecurringPayment(String profileId, String nextPaymentDate) {
 
 		UserBean userBean = userService.getUserByPayPalId(profileId);
+		SimpleDateFormat rdlDateFormat = new SimpleDateFormat(RDLConstants.DATE_PATTERN);
+		SimpleDateFormat paypalDateFormat = new SimpleDateFormat("HH:mm:ss MMM d, yyyy z", Locale.ENGLISH);
 
-		log.info("Expiration : " + nextPaymentDate);
+		try {
+			Date paymentDate = paypalDateFormat.parse(nextPaymentDate);
+			List<UserBean.TitleBean> titleBeans = userBean.getTitles();
+			for (UserBean.TitleBean titleBean : titleBeans) {
+				titleBean.setExpires(rdlDateFormat.format(paymentDate.getTime()));
+				log.info("Expiration : " + rdlDateFormat.format(paymentDate.getTime()));
+			}
+			userBean.setTitles(titleBeans);
+			userService.updateUser(userBean);
 
-		List<UserBean.TitleBean> titleBeans = userBean.getTitles();
-		for (UserBean.TitleBean titleBean : titleBeans) {
-			titleBean.setExpires(nextPaymentDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		userService.updateUser(userBean);
+
+
+
+
 	}
 }
