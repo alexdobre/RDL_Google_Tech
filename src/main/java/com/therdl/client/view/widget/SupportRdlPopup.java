@@ -1,10 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.ModalBody;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -12,12 +7,13 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
 
 /**
  * Popup shown to the user to become an RDL supporter
  */
 public class SupportRdlPopup extends Composite {
-	private static Logger log = Logger.getLogger(SupportRdlPopup.class.getName());
 
 	interface SupportRdlPopupUiBinder extends UiBinder<Widget, SupportRdlPopup> {
 	}
@@ -55,7 +51,7 @@ public class SupportRdlPopup extends Composite {
 		return populated;
 	}
 
-	public void setTitle(String title){
+	public void setTitle(String title) {
 		rdlSupporterModal.setTitle(title);
 	}
 

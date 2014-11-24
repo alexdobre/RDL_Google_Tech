@@ -1,8 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,6 +13,8 @@ import com.therdl.client.view.widget.SnipListRow;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
+
 /**
  * SnipSearchViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
  * see http://www.gwtproject.org/articles/mvp-architecture.html#view
@@ -28,8 +27,6 @@ import com.therdl.shared.beans.SnipBean;
  * @ AutoBean<SnipBean> currentSearchOptionsBean for autobeans see see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  */
 public class SnipSearchViewImpl extends AbstractSnipSearch implements SearchView {
-
-	private static Logger log = Logger.getLogger(SnipSearchViewImpl.class.getName());
 
 	private static SnipSearchViewImplUiBinder uiBinder = GWT.create(SnipSearchViewImplUiBinder.class);
 

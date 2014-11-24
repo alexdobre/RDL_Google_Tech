@@ -9,14 +9,10 @@ import com.therdl.client.view.ContentSearchView;
 import com.therdl.client.view.widget.AppMenu;
 import org.gwtbootstrap3.client.ui.Column;
 
-import java.util.logging.Logger;
-
 /**
  * The user searches for site content via google custom search
  */
 public class ContentSearchViewImpl extends AppMenuView implements ContentSearchView {
-
-	private static Logger log = Logger.getLogger(ContentSearchViewImpl.class.getName());
 
 	interface ContentSearchViewImplUiBinder extends UiBinder<Widget, ContentSearchViewImpl> {
 	}

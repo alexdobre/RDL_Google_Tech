@@ -11,14 +11,11 @@ import org.gwtbootstrap3.client.ui.ModalBody;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Popup contains previous abuse comments
  */
 public class AbuseCommentsPopup extends Composite {
-
-	private static Logger log = Logger.getLogger(AbuseCommentsPopup.class.getName());
 
 	interface AbuseCommentsPopupUiBinder extends UiBinder<Widget, AbuseCommentsPopup> {
 	}

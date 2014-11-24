@@ -1,24 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.therdl.client.view.common.EmotionTranslator;
-import com.therdl.shared.Emotion;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Icon;
-import org.gwtbootstrap3.client.ui.ListBox;
-import org.gwtbootstrap3.client.ui.constants.ButtonType;
-import org.gwtbootstrap3.client.ui.constants.IconType;
-import org.gwtbootstrap3.client.ui.html.Span;
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
@@ -44,7 +25,11 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
+import java.util.*;
 
 /**
  * @ Presenter,  a presenter type see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
@@ -55,11 +40,9 @@ import com.therdl.shared.beans.SnipBean;
  */
 public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements SnipEditView {
 
-	private static Logger log = Logger.getLogger(SnipEditViewImpl.class.getName());
 	private Beanery beanery = GWT.create(Beanery.class);
 
-	@UiTemplate("SnipEditViewImpl.ui.xml")
-	interface SnipEditViewUiBinder extends UiBinder<Widget, SnipEditViewImpl> {
+	@UiTemplate("SnipEditViewImpl.ui.xml") interface SnipEditViewUiBinder extends UiBinder<Widget, SnipEditViewImpl> {
 	}
 
 	private static SnipEditViewUiBinder uiBinder = GWT.create(SnipEditViewUiBinder.class);
@@ -96,7 +79,6 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 
 	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
-		log.info("SnipEditViewImpl constructor");
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
 		emoListPanel.addStyleName("labels");
@@ -181,9 +163,9 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		Iterator iterator = radioBtnLabels.entrySet().iterator();
 		// init radio button and corresponding image
 		while (iterator.hasNext()) {
-			Map.Entry mEntry = (Map.Entry) iterator.next();
+			Map.Entry mEntry = (Map.Entry)iterator.next();
 
-			Image img = new Image(((ImageResource) imageResources.get(mEntry.getKey())).getSafeUri().asString());
+			Image img = new Image(((ImageResource)imageResources.get(mEntry.getKey())).getSafeUri().asString());
 			img.setWidth("40px");
 			img.setHeight("40px");
 			img.setStyleName("snipTypeImg");
@@ -222,21 +204,20 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 */
 	public void populate(AutoBean<SnipBean> snipBean) {
 		if (snipBean == null) {
-			log.info("Edit view populate BEGIN with null nip bean");
 			this.currentSnipBean = beanery.snipBean();
 			currentSnipBean.as().setTitle("");
 			currentSnipBean.as().setAuthor(currentUserBean.as().getName());
 			currentSnipBean.as().setContent("");
 			//TODO investigate what sort of hack is below
-			if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)){
+			if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 				currentSnipBean.as().setCoreCat(RDLConstants.Modules.IMPROVEMENTS);
 			}
 		} else {
-			log.info("Edit view populate BEGIN with emotions: "+snipBean.as().getEmotions());
 			this.currentSnipBean = snipBean;
 		}
 		hideMessages();
-		if (emotionPicker!= null)  emotionPicker.setCurrentSnipBean(currentSnipBean);
+		if (emotionPicker != null)
+			emotionPicker.setCurrentSnipBean(currentSnipBean);
 		displayEmotions();
 		configureForModule();
 		deleteSnip.getElement().getStyle().setProperty("display", "");
@@ -320,8 +301,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 * @param event
 	 */
 
-	@UiHandler("saveSnip")
-	void onSaveSnip(ClickEvent event) {
+	@UiHandler("saveSnip") void onSaveSnip(ClickEvent event) {
 		AutoBean<SnipBean> newBean = beanery.snipBean();
 		if (currentSnipBean != null) {
 			newBean = currentSnipBean;
@@ -350,7 +330,8 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 			newBean.as().setCoreCat(categoryList.getItemText(categoryList.getSelectedIndex()));
 		}
 
-		if (currentSnipBean == null || currentSnipBean.as().getId() == null || currentSnipBean.as().getId().equals("")) {
+		if (currentSnipBean == null || currentSnipBean.as().getId() == null || currentSnipBean.as().getId()
+				.equals("")) {
 			newBean.as().setAuthor(currentUserBean.as().getName());
 			newBean.as().setPosRef(0);
 			newBean.as().setNeutralRef(0);
@@ -373,8 +354,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 *
 	 * @param event
 	 */
-	@UiHandler("deleteSnip")
-	void onDeleteSnip(ClickEvent event) {
+	@UiHandler("deleteSnip") void onDeleteSnip(ClickEvent event) {
 		if (currentSnipBean != null) {
 			/**
 			 * if snip has some reference o not allow to delete it. Show popup message instead
@@ -393,18 +373,16 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 		}
 	}
 
-	@UiHandler("btnEmotionPicker")
-	void onEmotionPicker(ClickEvent event) {
-		if(emotionPicker == null){
+	@UiHandler("btnEmotionPicker") void onEmotionPicker(ClickEvent event) {
+		if (emotionPicker == null) {
 			emotionPicker = new EmotionPicker(this, currentSnipBean);
 		}
 		emotionPicker.show();
 	}
 
-	public void displayEmotions(){
-		ViewUtils.displayEmotions(emoListPanel,currentSnipBean);
+	public void displayEmotions() {
+		ViewUtils.displayEmotions(emoListPanel, currentSnipBean);
 	}
-
 
 	/**
 	 * checks if current snip has any reference, thread has posts or proposal has pledges or counters
@@ -413,7 +391,8 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	 */
 	private boolean hasLinks() {
 		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS))
-			return currentSnipBean.as().getPosRef() > 0 || currentSnipBean.as().getNeutralRef() > 0 || currentSnipBean.as().getNegativeRef() > 0;
+			return currentSnipBean.as().getPosRef() > 0 || currentSnipBean.as().getNeutralRef() > 0
+					|| currentSnipBean.as().getNegativeRef() > 0;
 		else if (Global.moduleName.equals(RDLConstants.Modules.STORIES))
 			return currentSnipBean.as().getPosts() > 0;
 		else if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS))

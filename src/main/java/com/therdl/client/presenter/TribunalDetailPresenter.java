@@ -1,21 +1,13 @@
 package com.therdl.client.presenter;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.http.client.*;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.therdl.client.app.AppController;
 import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
-import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.TribunalDetail;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
@@ -24,15 +16,15 @@ import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 
+import java.util.ArrayList;
+
 /**
  * User views a tribunal item details
  */
 public class TribunalDetailPresenter extends SnipViewPresenter implements TribunalDetail.Presenter {
 
-	private static Logger log = Logger.getLogger(TribunalDetailPresenter.class.getName());
-
-	public static final String VOTE_YES="YES";
-	public static final String VOTE_NO="NO";
+	public static final String VOTE_YES = "YES";
+	public static final String VOTE_NO = "NO";
 
 	public TribunalDetailPresenter(TribunalDetail tribunalDetail, AppController appController, String token) {
 		super(tribunalDetail, appController, token);
@@ -51,17 +43,17 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 
 	@Override
 	public void abuseVoteDisplayLogic(Button yesVoteAbuse, Button noVoteAbuse,
-	                                  Paragraph yesVotedAbuse, Paragraph noVotedAbuse) {
+			Paragraph yesVotedAbuse, Paragraph noVotedAbuse) {
 		boolean display = true;
 		boolean votedYes = false;
 		boolean votedNo = false;
 		//user must be logged in
 		if (currentUserBean == null || !currentUserBean.as().isAuth()) {
 			display = false;
-		//user must be allowed to vote = isAllowedAbuseAction
+			//user must be allowed to vote = isAllowedAbuseAction
 		} else if (ViewUtils.isAllowedAbuseAction(currentUserBean)) {
 			display = false;
-		//user must not have voted already (test if voted YES)
+			//user must not have voted already (test if voted YES)
 		} else if (currentSnipBean.as().getIsAbuseReportedByUser() == 1) {
 			display = false;
 			votedYes = true;
@@ -79,9 +71,9 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 
 	@Override
 	public void abuseVote(final String vote, Button yesVoteAbuse, Button noVoteAbuse,
-	                      Paragraph yesVotedAbuse, Paragraph noVotedAbuse) {
+			Paragraph yesVotedAbuse, Paragraph noVotedAbuse) {
 
-		log.info("Vote abuse -BEGIN voted:  "+vote+" on item: "+currentSnipBean.as().getId());
+		Log.info("Vote abuse -BEGIN voted:  " + vote + " on item: " + currentSnipBean.as().getId());
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -103,7 +95,7 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 			requestBuilder.sendRequest(json, new StatusCallback(null) {
 				@Override
 				public void onSuccess(Request request, Response response) {
-					log.info("vote abuse on success");
+					Log.info("vote abuse on success");
 					if (VOTE_YES.equals(vote)) {
 						currentSnipBean.as().setIsAbuseReportedByUser(1);
 						currentSnipBean.as().setAbuseCount(currentSnipBean.as().getAbuseCount() + 1);
@@ -115,13 +107,13 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 				}
 			});
 		} catch (RequestException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			Log.error(e.getMessage(), e);
 		}
 	}
 
 	@Override
 	public void populateReplies(AutoBean<SnipBean> searchOptionsBean) {
-		log.info("Retrieve abuse comments for: " + searchOptionsBean.as());
+		Log.info("Retrieve abuse comments for: " + searchOptionsBean.as());
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -140,11 +132,11 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 
 			});
 		} catch (RequestException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			Log.error(e.getMessage(), e);
 		}
 	}
 
-	private void formRepliesSearchOptions (AutoBean<SnipBean> searchOptionsBean) {
+	private void formRepliesSearchOptions(AutoBean<SnipBean> searchOptionsBean) {
 		searchOptionsBean.as().setAction("searchAbuse");
 		searchOptionsBean.as().setToken(getController().getCurrentUserBean().as().getToken());
 		searchOptionsBean.as().setPageIndex(0);

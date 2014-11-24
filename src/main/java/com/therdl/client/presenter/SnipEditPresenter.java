@@ -1,13 +1,10 @@
 package com.therdl.client.presenter;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -39,7 +36,8 @@ import com.therdl.shared.events.SnipViewEvent;
  * @ String currentSnipId  used to retrieve the users correct snip
  */
 
-public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implements SnipEditView.Presenter, ValueChangeHandler<String> {
+public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView>
+		implements SnipEditView.Presenter, ValueChangeHandler<String> {
 
 	private String currentSnipId;
 	private HasWidgets container;
@@ -49,12 +47,12 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		this.view = view;
 		this.view.setPresenter(this);
 		this.currentSnipId = RDLUtils.extractCurrentSnipId(token);
-		log.info("currentSnipId at constructor time: " + currentSnipId + " from token: " + token);
+		Log.info("currentSnipId at constructor time: " + currentSnipId + " from token: " + token);
 	}
 
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		log.info("SnipSearchPresenter go");
+		Log.info("SnipSearchPresenter go");
 		this.container = container;
 		checkLogin();
 		container.clear();
@@ -62,12 +60,12 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		showHide();
 	}
 
-
 	private void showHide() {
 		view.showHideCategories(false);
 		view.showHideIdeaTypes(false);
 
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName.equals(RDLConstants.Modules.SERVICES)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS) || Global.moduleName
+				.equals(RDLConstants.Modules.SERVICES)) {
 			//idea edit has categories and idea types
 			view.showHideCategories(true);
 			view.showHideIdeaTypes(true);
@@ -109,7 +107,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			view.setErrorMessage(validationResult);
 			return;
 		}
-		grabSnipFunc.updateSnip(bean, currentUserBean.as().getToken(),new StatusCallback(view) {
+		grabSnipFunc.updateSnip(bean, currentUserBean.as().getToken(), new StatusCallback(view) {
 			@Override
 			public void onSuccess(Request request, Response response) {
 				GuiEventBus.EVENT_BUS.fireEvent(new SnipViewEvent(response.getText()));
@@ -120,7 +118,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	@Override
 	public void onDeleteSnip(AutoBean<SnipBean> bean, AutoBean<CurrentUserBean> currentUserBean) {
 		String id = bean.as().getId();
-		log.info("SnipEditPresenter onDelete: snip id " + id);
+		Log.info("SnipEditPresenter onDelete: snip id " + id);
 		String validationResult = SnipViewValidator.validateCanDelete(bean, currentUserBean.as().getName());
 		if (validationResult != null) {
 			view.setErrorMessage(validationResult);
@@ -128,7 +126,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		}
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
-		log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
+		Log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		try {
@@ -138,7 +136,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			actionBean.as().setId(id);
 			String json = AutoBeanCodex.encode(actionBean).getPayload();
 
-			log.info("SnipEditPresenter submit json: " + json);
+			Log.info("SnipEditPresenter submit json: " + json);
 			requestBuilder.sendRequest(json, new StatusCallback(view) {
 				@Override
 				public void onSuccess(Request request, Response response) {
@@ -146,7 +144,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 				}
 			});
 		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
+			Log.info(e.getLocalizedMessage());
 		}
 	}
 
@@ -161,7 +159,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 			view.setErrorMessage(validationResult);
 			return;
 		}
-		log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
+		Log.info("SnipEditPresenter submitBean bean : title : " + bean.as().getTitle());
 		grabSnipFunc.createSnip(bean, currentUserBean.as().getToken(), new StatusCallback(view) {
 			@Override
 			public void onSuccess(Request request, Response response) {
@@ -174,10 +172,10 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 	}
 
 	private void findSnipById(String snipId) {
-		log.info("SnipEditPresenter findSnipById");
+		Log.info("SnipEditPresenter findSnipById");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
-		log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
+		Log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
@@ -190,13 +188,13 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 				@Override
 				public void onBeanReturned(AutoBean<SnipBean> returnedBean) {
 					view.populate(returnedBean);
-					log.info("View populate - END container: "+container);
+					Log.info("View populate - END container: " + container);
 					container.clear();
 					container.add(view.asWidget());
 				}
 			});
 		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
+			Log.info(e.getLocalizedMessage());
 		}
 	}
 
@@ -204,10 +202,9 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView> implem
 		return view;
 	}
 
-
 	@Override
 	public void onValueChange(ValueChangeEvent<String> stringValueChangeEvent) {
-		log.info("SnipEditPresenter  onValueChange" + stringValueChangeEvent.getValue());
+		Log.info("SnipEditPresenter  onValueChange" + stringValueChangeEvent.getValue());
 		if (stringValueChangeEvent.getValue().equals("snips")) {
 
 			if (!getController().getCurrentUserBean().as().isAuth()) {

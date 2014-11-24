@@ -1,12 +1,6 @@
 package com.therdl.client.view.impl;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.TextBox;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -22,16 +16,14 @@ import com.therdl.client.view.SignInView;
 import com.therdl.client.view.common.ErrorCodeMapper;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.RDLConstants;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInOkEvent;
-import com.therdl.shared.events.LogInOkEventEventHandler;
-import com.therdl.shared.events.LoginFailEvent;
-import com.therdl.shared.events.LoginFailEventHandler;
-
+import com.therdl.shared.events.*;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 /**
  * SignInViewImpl extends PopupPanel is a pop up embedded in the Welcome view
- * <p/>
  * fields below are standard GWT form fields for user sign-up
  *
  * @ TextBox  email  String used as the unique identifier in the database
@@ -39,8 +31,6 @@ import com.therdl.shared.events.LoginFailEventHandler;
  */
 
 public class SignInViewImpl extends AbstractValidatedView implements SignInView {
-
-	private static Logger log = Logger.getLogger(SignInViewImpl.class.getName());
 
 	private final AppMenu appMenu;
 
@@ -87,7 +77,7 @@ public class SignInViewImpl extends AbstractValidatedView implements SignInView 
 
 			@Override
 			public void onLogFailEvent(LoginFailEvent loginFailEvent) {
-				log.info("Sign in view setting error code: "+loginFailEvent.getFailureCode());
+				Log.info("Sign in view setting error code: " + loginFailEvent.getFailureCode());
 				setErrorMessage(ErrorCodeMapper.getI18nMessage(loginFailEvent.getFailureCode()));
 			}
 		});
@@ -127,7 +117,6 @@ public class SignInViewImpl extends AbstractValidatedView implements SignInView 
 	 * Handler for form submit
 	 *
 	 * @param event Standard GWT ClickEvent
-	 *              <p/>
 	 *              welcomeViewImpl.onSubmit(eMail, psswd ) submits bean for sign-in in
 	 *              com.therdl.server.restapi.SessionServlet class
 	 */
@@ -151,13 +140,13 @@ public class SignInViewImpl extends AbstractValidatedView implements SignInView 
 	}
 
 	private void onSubmit() {
-		log.info("SignInViewImpl onSubmit");
+		Log.info("SignInViewImpl onSubmit");
 
 		String eMail = email.getText();
 		String password = this.password.getText();
 		Boolean rememberMe = this.rememberMe.getValue();
 
-		log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
+		Log.info("SignInViewImpl onSubmit eMail password " + eMail + " : " + password);
 
 		if (eMail != null && !eMail.equals("Email") && password != null && !this.password.equals("password")) {
 			appMenu.onSubmit(eMail, password, rememberMe);

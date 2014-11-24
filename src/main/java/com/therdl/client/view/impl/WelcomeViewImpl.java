@@ -1,15 +1,5 @@
 package com.therdl.client.view.impl;
 
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.ModalBody;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -23,6 +13,13 @@ import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * WelcomeViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -41,8 +38,6 @@ import com.therdl.shared.beans.SnipBean;
  */
 public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
-	private static Logger log = Logger.getLogger(WelcomeViewImpl.class.getName());
-
 	interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
 	}
 
@@ -50,7 +45,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
 	private Presenter presenter;
 	private AutoBean<CurrentUserBean> currentUser;
-	private Map<CoreCategory,AutoBean<SnipBean>> snipMap = new HashMap<CoreCategory,AutoBean<SnipBean>>();
+	private Map<CoreCategory, AutoBean<SnipBean>> snipMap = new HashMap<CoreCategory, AutoBean<SnipBean>>();
 	private CoreCategory delayedDisplay;
 
 	@UiField
@@ -92,7 +87,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-		log.info("WelcomeViewImpl setPresenter");
 	}
 
 	@Override
@@ -105,7 +99,7 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 				onConnectionCatClick(null);
 			} else if (CoreCategory.EXTERIOR.equals(delayedDisplay)) {
 				onExteriorCatClick(null);
-			}else if (CoreCategory.EROTICISM.equals(delayedDisplay)) {
+			} else if (CoreCategory.EROTICISM.equals(delayedDisplay)) {
 				onEroticismCatClick(null);
 			} else if (CoreCategory.SEDUCTION.equals(delayedDisplay)) {
 				onSeductionCatClick(null);
@@ -127,38 +121,38 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
 	@Override
 	public void showWelcomeSnip(AutoBean<SnipBean> welcomeSnip, CoreCategory coreCat) {
-		snipMap.put(coreCat,welcomeSnip);
+		snipMap.put(coreCat, welcomeSnip);
 		if (coreCat.equals(CoreCategory.GENERAL)) {
 			welcomeMessage.getElement().setInnerHTML(welcomeSnip.as().getContent());
-		} else if (coreCat.equals(CoreCategory.COMPATIBILITY)){
+		} else if (coreCat.equals(CoreCategory.COMPATIBILITY)) {
 			compatibilityModal.setTitle(welcomeSnip.as().getTitle());
 			compatibilityModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			compatibilityModal.show();
-		} else if (coreCat.equals(CoreCategory.CONNECTION)){
+		} else if (coreCat.equals(CoreCategory.CONNECTION)) {
 			connectionModal.setTitle(welcomeSnip.as().getTitle());
 			connectionModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			connectionModal.show();
-		} else if (coreCat.equals(CoreCategory.EXTERIOR)){
+		} else if (coreCat.equals(CoreCategory.EXTERIOR)) {
 			exteriorModal.setTitle(welcomeSnip.as().getTitle());
 			exteriorModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			exteriorModal.show();
-		} else if (coreCat.equals(CoreCategory.EROTICISM)){
+		} else if (coreCat.equals(CoreCategory.EROTICISM)) {
 			eroticismModal.setTitle(welcomeSnip.as().getTitle());
 			eroticismModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			eroticismModal.show();
-		} else if (coreCat.equals(CoreCategory.SEDUCTION)){
+		} else if (coreCat.equals(CoreCategory.SEDUCTION)) {
 			seductionModal.setTitle(welcomeSnip.as().getTitle());
 			seductionModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			seductionModal.show();
-		} else if (coreCat.equals(CoreCategory.PSY_TEND)){
+		} else if (coreCat.equals(CoreCategory.PSY_TEND)) {
 			psyTendModal.setTitle(welcomeSnip.as().getTitle());
 			psyTendModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			psyTendModal.show();
-		} else if (coreCat.equals(CoreCategory.AFFAIRS)){
+		} else if (coreCat.equals(CoreCategory.AFFAIRS)) {
 			affairsModal.setTitle(welcomeSnip.as().getTitle());
 			affairsModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			affairsModal.show();
-		} else if (coreCat.equals(CoreCategory.ABUSE)){
+		} else if (coreCat.equals(CoreCategory.ABUSE)) {
 			abuseModal.setTitle(welcomeSnip.as().getTitle());
 			abuseModalBody.getElement().setInnerHTML(welcomeSnip.as().getContent());
 			abuseModal.show();
@@ -172,72 +166,72 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	 */
 	@UiHandler("compatibilityCat")
 	public void onCompatibilityCattClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.COMPATIBILITY)){
+		if (snipMap.keySet().contains(CoreCategory.COMPATIBILITY)) {
 			compatibilityModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.COMPATIBILITY, null);
 		}
 	}
 
 	@UiHandler("connectionCat")
 	public void onConnectionCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.CONNECTION)){
+		if (snipMap.keySet().contains(CoreCategory.CONNECTION)) {
 			connectionModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.CONNECTION, null);
 		}
 	}
 
 	@UiHandler("exteriorCat")
 	public void onExteriorCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.EXTERIOR)){
+		if (snipMap.keySet().contains(CoreCategory.EXTERIOR)) {
 			exteriorModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.EXTERIOR, null);
 		}
 	}
 
 	@UiHandler("eroticismCat")
 	public void onEroticismCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.EROTICISM)){
+		if (snipMap.keySet().contains(CoreCategory.EROTICISM)) {
 			eroticismModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.EROTICISM, null);
 		}
 	}
 
 	@UiHandler("seductionCat")
 	public void onSeductionCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.SEDUCTION)){
+		if (snipMap.keySet().contains(CoreCategory.SEDUCTION)) {
 			seductionModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.SEDUCTION, null);
 		}
 	}
 
 	@UiHandler("psyTendCat")
 	public void onPsyTendCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.PSY_TEND)){
+		if (snipMap.keySet().contains(CoreCategory.PSY_TEND)) {
 			psyTendModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.PSY_TEND, null);
 		}
 	}
 
 	@UiHandler("affairsCat")
 	public void onAffairsCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.AFFAIRS)){
+		if (snipMap.keySet().contains(CoreCategory.AFFAIRS)) {
 			affairsModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.AFFAIRS, null);
 		}
 	}
 
 	@UiHandler("abuseCat")
 	public void onAbuseCatClick(ClickEvent event) {
-		if (snipMap.keySet().contains(CoreCategory.ABUSE)){
+		if (snipMap.keySet().contains(CoreCategory.ABUSE)) {
 			abuseModal.show();
-		}else {
+		} else {
 			presenter.grabWelcomeSnip(CoreCategory.ABUSE, null);
 		}
 	}

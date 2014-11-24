@@ -1,13 +1,14 @@
 package com.therdl.client.presenter.runt.impl;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
+import com.therdl.client.app.FuncFactory;
 import com.therdl.client.callback.SnipCallback;
 import com.therdl.client.callback.StatusCallback;
-import com.therdl.client.app.FuncFactory;
 import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.presenter.runt.ProfileDescRunt;
 import com.therdl.client.view.ProfileView;
@@ -18,19 +19,16 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.logging.Logger;
-
 /**
  * Logic behind the user's profile description
  */
 public class ProfileDescRuntImpl implements ProfileDescRunt {
-	protected static Logger log = Logger.getLogger(ProfileDescRuntImpl.class.getName());
 
 	private Beanery beanery = GWT.create(Beanery.class);
 	private AutoBean<SnipBean> profileDesc;
 	private GrabSnipFunc grabSnipFunc;
 
-	public ProfileDescRuntImpl () {
+	public ProfileDescRuntImpl() {
 		grabSnipFunc = FuncFactory.createGrabSnipFunc();
 	}
 
@@ -42,7 +40,7 @@ public class ProfileDescRuntImpl implements ProfileDescRunt {
 			@Override
 			public void onSnipBeanReturned(AutoBean<SnipBean> snipBean) {
 				if (snipBean == null) {
-					log.info("user profile null - setting default");
+					Log.info("user profile null - setting default");
 					view.populateProfileDescription(RDL.getI18n().defaultProfileDescription());
 				} else {
 					view.populateProfileDescription(snipBean.as().getContent());

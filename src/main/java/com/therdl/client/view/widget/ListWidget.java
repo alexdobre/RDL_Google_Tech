@@ -21,7 +21,6 @@ import org.gwtbootstrap3.client.ui.LinkedGroup;
 import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * ListWidget class creates list of SnipListRow widgets with tabs for the given list of snips
@@ -31,7 +30,6 @@ public class ListWidget extends Composite implements PaginatedView {
 	interface ListWidgetUiBinder extends UiBinder<HTMLPanel, ListWidget> {
 	}
 
-	private static Logger log = Logger.getLogger("ListWidget");
 	private static ListWidgetUiBinder ourUiBinder = GWT.create(ListWidgetUiBinder.class);
 
 	@UiField
@@ -46,7 +44,7 @@ public class ListWidget extends Composite implements PaginatedView {
 	private PaginationPresenter paginationPresenter;
 
 	public ListWidget(AutoBean<CurrentUserBean> currentUserBean, ArrayList<AutoBean<SnipBean>> beanList,
-	                  int pageIndex, AbstractListRow seedInstance, PaginationPresenter paginationPresenter) {
+			int pageIndex, AbstractListRow seedInstance, PaginationPresenter paginationPresenter) {
 		this.pageIndex = pageIndex;
 		this.paginationPresenter = paginationPresenter;
 		initWidget(ourUiBinder.createAndBindUi(this));
@@ -56,8 +54,6 @@ public class ListWidget extends Composite implements PaginatedView {
 	}
 
 	public void populateList(AutoBean<CurrentUserBean> currentUserBean, ArrayList<AutoBean<SnipBean>> beanList) {
-		log.info("ListWidget populate list itemList:");
-
 		for (int j = 0; j < beanList.size(); j++) {
 			//we first see is we already have an item created
 			if (itemList.size() >= j + 1) {

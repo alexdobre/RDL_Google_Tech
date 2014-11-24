@@ -1,7 +1,6 @@
 package com.therdl.client.presenter;
 
-import java.util.ArrayList;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.app.AppController;
@@ -19,10 +18,13 @@ import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
+
 /**
  * The services presenter
  */
-public class ServicesPresenter extends RdlAbstractPresenter<ServicesView> implements ServicesView.Presenter, ServiceFilterRunt {
+public class ServicesPresenter extends RdlAbstractPresenter<ServicesView>
+		implements ServicesView.Presenter, ServiceFilterRunt {
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 
@@ -68,7 +70,7 @@ public class ServicesPresenter extends RdlAbstractPresenter<ServicesView> implem
 
 	@Override
 	public void doPagination(boolean isNextPage, int pageIndex) {
-		log.info("Search presenter - on pagination -BEGIN");
+		Log.info("Search presenter - on pagination -BEGIN");
 		int newPageIndex = isNextPage ? (pageIndex + 1) : (pageIndex - 1);
 		view.getListWidget().setPageIndex(newPageIndex);
 		view.getCurrentSearchOptionsBean().as().setPageIndex(newPageIndex);
@@ -82,7 +84,7 @@ public class ServicesPresenter extends RdlAbstractPresenter<ServicesView> implem
 	 */
 	@Override
 	public void searchSnips(final AutoBean<SnipBean> searchOptionsBean) {
-		log.info("grabWelcomeSnip searchSnips: " + searchOptionsBean.as());
+		Log.info("grabWelcomeSnip searchSnips: " + searchOptionsBean.as());
 
 		grabSnipFunc.searchSnips(searchOptionsBean, new SnipListCallback() {
 
