@@ -5,15 +5,11 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
-import java.util.logging.Logger;
-
 /**
  * This class contains java utility methods to be used throughout the project
  */
 
 public class RDLUtils {
-
-	private static Logger log = Logger.getLogger(RDLUtils.class.getName());
 
 	/**
 	 * This method is an enhanced parseInt checking for null and empty strings
@@ -60,27 +56,27 @@ public class RDLUtils {
 			token = token.replace("_escaped_fragment_=", "!");
 		if (token != null) {
 			switch (token) {
-				case RDLConstants.Tokens.SNIPS:
-					buildDefaultSnipsBean(searchOptionsBean);
-					break;
-				case RDLConstants.Tokens.STORIES:
-					buildDefaultStoriesBean(searchOptionsBean);
-					break;
-				case RDLConstants.Tokens.IMPROVEMENTS:
-					buildDefaultImprovementsBean(searchOptionsBean);
-					break;
-				case RDLConstants.Tokens.THREAD_VIEW:
-					buildDefaultThreadViewBean(searchOptionsBean);
-					break;
-				case RDLConstants.Tokens.SNIP_VIEW:
-					buildDefaultViewBean(searchOptionsBean);
-					break;
-				case RDLConstants.Tokens.SERVICE_VIEW:
-					buildDefaultViewBean(searchOptionsBean);
-					break;
-				case RDLConstants.Tokens.PROPOSAL_VIEW:
-					buildDefaultViewBean(searchOptionsBean);
-					break;
+			case RDLConstants.Tokens.SNIPS:
+				buildDefaultSnipsBean(searchOptionsBean);
+				break;
+			case RDLConstants.Tokens.STORIES:
+				buildDefaultStoriesBean(searchOptionsBean);
+				break;
+			case RDLConstants.Tokens.IMPROVEMENTS:
+				buildDefaultImprovementsBean(searchOptionsBean);
+				break;
+			case RDLConstants.Tokens.THREAD_VIEW:
+				buildDefaultThreadViewBean(searchOptionsBean);
+				break;
+			case RDLConstants.Tokens.SNIP_VIEW:
+				buildDefaultViewBean(searchOptionsBean);
+				break;
+			case RDLConstants.Tokens.SERVICE_VIEW:
+				buildDefaultViewBean(searchOptionsBean);
+				break;
+			case RDLConstants.Tokens.PROPOSAL_VIEW:
+				buildDefaultViewBean(searchOptionsBean);
+				break;
 			}
 		}
 	}
@@ -100,7 +96,6 @@ public class RDLUtils {
 	 * @return the ID or null if ID not found
 	 */
 	public static String extractCurrentSnipId(String token) {
-		log.info("extractCurrentSnipId - current token: " + token);
 		String[] tokenSplit = token.split(":");
 		if (tokenSplit.length > 1)
 			return tokenSplit[1];
@@ -196,7 +191,6 @@ public class RDLUtils {
 				}
 			}
 		}
-		log.info("Built bean from token: " + searchOptionsBean.as());
 	}
 
 	public static String builtTokenFromBean(AutoBean<SnipBean> searchOptionsBean, String moduleName, String id) {
@@ -205,52 +199,67 @@ public class RDLUtils {
 			sb.append(':').append(id);
 		}
 		if (searchOptionsBean.as().getParentSnip() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.PARENT).append('=').append(searchOptionsBean.as().getParentSnip());
+			sb.append(':').append(RDLConstants.BookmarkSearch.PARENT).append('=')
+					.append(searchOptionsBean.as().getParentSnip());
 		}
 		if (searchOptionsBean.as().getTitle() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.TITLE).append('=').append(searchOptionsBean.as().getTitle());
+			sb.append(':').append(RDLConstants.BookmarkSearch.TITLE).append('=')
+					.append(searchOptionsBean.as().getTitle());
 		}
 		if (searchOptionsBean.as().getCoreCat() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.CORE_CAT).append('=').append(searchOptionsBean.as().getCoreCat());
+			sb.append(':').append(RDLConstants.BookmarkSearch.CORE_CAT).append('=')
+					.append(searchOptionsBean.as().getCoreCat());
 		}
 		if (searchOptionsBean.as().getPosRef() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.POS_REF).append('=').append(searchOptionsBean.as().getPosRef());
+			sb.append(':').append(RDLConstants.BookmarkSearch.POS_REF).append('=')
+					.append(searchOptionsBean.as().getPosRef());
 		}
 		if (searchOptionsBean.as().getNeutralRef() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.NEUTRAL_REF).append('=').append(searchOptionsBean.as().getNeutralRef());
+			sb.append(':').append(RDLConstants.BookmarkSearch.NEUTRAL_REF).append('=')
+					.append(searchOptionsBean.as().getNeutralRef());
 		}
 		if (searchOptionsBean.as().getPosts() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.POSTS).append('=').append(searchOptionsBean.as().getPosts());
+			sb.append(':').append(RDLConstants.BookmarkSearch.POSTS).append('=')
+					.append(searchOptionsBean.as().getPosts());
 		}
 		if (searchOptionsBean.as().getRep() != null) {
 			sb.append(':').append(RDLConstants.BookmarkSearch.REP).append('=').append(searchOptionsBean.as().getRep());
 		}
 		if (searchOptionsBean.as().getAuthor() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.AUTHOR).append('=').append(searchOptionsBean.as().getAuthor());
+			sb.append(':').append(RDLConstants.BookmarkSearch.AUTHOR).append('=')
+					.append(searchOptionsBean.as().getAuthor());
 		}
 		if (searchOptionsBean.as().getDateFrom() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.DATE_FROM).append('=').append(searchOptionsBean.as().getDateFrom());
+			sb.append(':').append(RDLConstants.BookmarkSearch.DATE_FROM).append('=')
+					.append(searchOptionsBean.as().getDateFrom());
 		}
 		if (searchOptionsBean.as().getDateTo() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.DATE_TO).append('=').append(searchOptionsBean.as().getDateTo());
+			sb.append(':').append(RDLConstants.BookmarkSearch.DATE_TO).append('=')
+					.append(searchOptionsBean.as().getDateTo());
 		}
 		if (searchOptionsBean.as().getSortField() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.SORT_FIELD).append('=').append(searchOptionsBean.as().getSortField());
+			sb.append(':').append(RDLConstants.BookmarkSearch.SORT_FIELD).append('=')
+					.append(searchOptionsBean.as().getSortField());
 		}
 		if (searchOptionsBean.as().getSortOrder() != 0) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.SORT_ORDER).append('=').append(searchOptionsBean.as().getSortOrder());
+			sb.append(':').append(RDLConstants.BookmarkSearch.SORT_ORDER).append('=')
+					.append(searchOptionsBean.as().getSortOrder());
 		}
 		if (searchOptionsBean.as().getSnipType() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.SNIP_TYPE).append('=').append(searchOptionsBean.as().getSnipType());
+			sb.append(':').append(RDLConstants.BookmarkSearch.SNIP_TYPE).append('=')
+					.append(searchOptionsBean.as().getSnipType());
 		}
 		if (searchOptionsBean.as().getProposalType() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.PROPOSAL_TYPE).append('=').append(searchOptionsBean.as().getProposalType());
+			sb.append(':').append(RDLConstants.BookmarkSearch.PROPOSAL_TYPE).append('=')
+					.append(searchOptionsBean.as().getProposalType());
 		}
 		if (searchOptionsBean.as().getProposalState() != null) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.PROPOSAL_STATE).append('=').append(searchOptionsBean.as().getProposalState());
+			sb.append(':').append(RDLConstants.BookmarkSearch.PROPOSAL_STATE).append('=')
+					.append(searchOptionsBean.as().getProposalState());
 		}
 		if (searchOptionsBean.as().getPageIndex() != -1) {
-			sb.append(':').append(RDLConstants.BookmarkSearch.PAGE).append('=').append(searchOptionsBean.as().getPageIndex());
+			sb.append(':').append(RDLConstants.BookmarkSearch.PAGE).append('=')
+					.append(searchOptionsBean.as().getPageIndex());
 		}
 
 		return sb.toString();

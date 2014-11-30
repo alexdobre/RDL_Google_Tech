@@ -1,12 +1,8 @@
 package com.therdl.client.presenter;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -55,28 +51,31 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 		this.currentUserBean = currentUserBean;
 		container.clear();
 		profileDescRunt.grabProfileDesc(view, currentUserBean);
-		log.info("Populate VIEW - BEGIN");
+		Log.info("Populate VIEW - BEGIN");
 		view.populateView(currentUserBean);
 		container.add(view.asWidget());
 	}
 
-
 	@Override
-	public String changePassword(AutoBean<CurrentUserBean> currentUserBean, String oldPass, String newPass, String newPassConfirm) {
+	public String changePassword(AutoBean<CurrentUserBean> currentUserBean, String oldPass, String newPass,
+			String newPassConfirm) {
 		String validRes = UserViewValidator.validateChangePassInput(oldPass, newPass, newPassConfirm);
-		if (validRes != null) return validRes;
-		submitChangePass(currentUserBean.as().getName(), currentUserBean.as().getToken(), oldPass, newPass, newPassConfirm);
+		if (validRes != null)
+			return validRes;
+		submitChangePass(currentUserBean.as().getName(), currentUserBean.as().getToken(), oldPass, newPass,
+				newPassConfirm);
 		return null;
 	}
 
 	@Override
 	public void updateProfile(String content) {
-		profileDescRunt.updateProfileDesc(content, currentUserBean.as().getName(), currentUserBean.as().getToken(), view);
+		profileDescRunt
+				.updateProfileDesc(content, currentUserBean.as().getName(), currentUserBean.as().getToken(), view);
 	}
 
 	public void submitChangePass(String username, String token, String oldPass, String newPass, String newPassConfirm) {
 		String submitUrl = GWT.getModuleBaseURL() + "getSession";
-		log.info("RegisterPresenter submitNewUser with  updateUrl: " + submitUrl);
+		Log.info("RegisterPresenter submitNewUser with  updateUrl: " + submitUrl);
 
 		//populate the bean to send to server
 		AutoBean<AuthUserBean> userBean = beanery.authBean();
@@ -96,7 +95,7 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 
 				@Override
 				public void onResponseReceived(Request request, Response response) {
-					log.info("ProfilePresenter submitChangePass onResponseReceived: " + response.getText());
+					Log.info("ProfilePresenter submitChangePass onResponseReceived: " + response.getText());
 					if (response.getText().equals("success")) {
 						view.setFormSuccessMsg(RDL.getI18n().formSuccessPassChange());
 					} else {
@@ -106,13 +105,13 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 
 				@Override
 				public void onError(Request request, Throwable exception) {
-					log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
+					Log.info("UpdateServiceImpl initialUpdate onError)" + exception.getLocalizedMessage());
 					view.setChangePassErrorMsg(RDL.getI18n().serverErrorC000());
 				}
 			});
 
 		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
+			Log.info(e.getLocalizedMessage());
 		}
 	}
 }

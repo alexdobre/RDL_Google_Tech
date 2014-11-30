@@ -1,13 +1,6 @@
 package com.therdl.client.view.widget;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.AnchorButton;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.NavbarBrand;
-import org.gwtbootstrap3.client.ui.NavbarHeader;
-import org.gwtbootstrap3.client.ui.TextBox;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -28,26 +21,13 @@ import com.therdl.client.view.impl.SignInViewImpl;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
-import com.therdl.shared.events.BecomeRdlSupporterEvent;
-import com.therdl.shared.events.BecomeRdlSupporterEventHandler;
-import com.therdl.shared.events.CredentialsSubmitEvent;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogInEvent;
-import com.therdl.shared.events.LogInEventEventHandler;
-import com.therdl.shared.events.LogInOkEvent;
-import com.therdl.shared.events.LogInOkEventEventHandler;
-import com.therdl.shared.events.LogOutEvent;
-import com.therdl.shared.events.ReportAbuseEvent;
-import com.therdl.shared.events.ReportAbuseEventHandler;
-import com.therdl.shared.events.ShowAbuseCommentsEvent;
-import com.therdl.shared.events.ShowAbuseCommentsEventHandler;
+import com.therdl.shared.events.*;
+import org.gwtbootstrap3.client.ui.*;
 
 /**
  * Application menu often referred  to as a 'NavBar' in a TwitterBootstrap scheme for example
  */
 public class AppMenu extends Composite {
-
-	private static Logger log = Logger.getLogger("");
 
 	private static AppMenuUiBinder uiBinder = GWT.create(AppMenuUiBinder.class);
 
@@ -129,7 +109,7 @@ public class AppMenu extends Composite {
 
 	public void setAppMenu(AutoBean<CurrentUserBean> currentUserBean) {
 		if (currentUserBean.as().isAuth()) {
-			log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
+			Log.info("ProfileViewImpl setAppMenu auth true " + currentUserBean.as().getName());
 			logIn(currentUserBean);
 		} else {
 			logOut();
@@ -137,7 +117,7 @@ public class AppMenu extends Composite {
 	}
 
 	public void logIn(AutoBean<CurrentUserBean> currentUserBean) {
-		log.info("AppMenu logIn: " + currentUserBean);
+		Log.info("AppMenu logIn: " + currentUserBean);
 		setLogOutVisible(true);
 		setSignUpVisible(false);
 		setUserInfoVisible(true);
@@ -148,19 +128,19 @@ public class AppMenu extends Composite {
 
 	@UiHandler("profile")
 	public void onProfileClick(ClickEvent event) {
-		log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
+		Log.info("AppMenu: History.newItem RDLConstants.Tokens PROFILE");
 		History.newItem(RDLConstants.Tokens.PROFILE + ":" + user.getTitle());
 	}
 
 	@UiHandler("out")
 	public void onLogoutClick(ClickEvent event) {
-		log.info("AppMenu: logout");
+		Log.info("AppMenu: logout");
 		GuiEventBus.EVENT_BUS.fireEvent(new LogOutEvent());
 	}
 
 	@UiHandler("login")
 	public void onLoginClick(ClickEvent event) {
-		log.info("AppMenu: login");
+		Log.info("AppMenu: login");
 		GuiEventBus.EVENT_BUS.fireEvent(new LogInEvent());
 	}
 
@@ -278,13 +258,12 @@ public class AppMenu extends Composite {
 	}
 
 	public void logOut() {
-		log.info("AppMenu logOut");
+		Log.info("AppMenu logOut");
 		this.setLogOutVisible(false);
 		this.setSignUpVisible(true);
 		this.setUserInfoVisible(false);
 		this.setLogInVisible(true);
 	}
-
 
 	/**
 	 * creates and shows login popup and sets its parameters
@@ -309,13 +288,14 @@ public class AppMenu extends Composite {
 	}
 
 	/**
-	 * called form signin view pop up to initiate log in flow
+	 * called form sign in view pop up to initiate log in flow
 	 *
 	 * @param emailTxt     supplied credential
 	 * @param passwordText supplied credential
 	 */
 	public void onSubmit(String emailTxt, String passwordText, Boolean rememberMe) {
-		GuiEventBus.EVENT_BUS.fireEvent(new CredentialsSubmitEvent(emailTxt, passwordText, rememberMe, null, loginHandler));
+		GuiEventBus.EVENT_BUS
+				.fireEvent(new CredentialsSubmitEvent(emailTxt, passwordText, rememberMe, null, loginHandler));
 	}
 
 	public TextBox getSearchSiteTextBox() {

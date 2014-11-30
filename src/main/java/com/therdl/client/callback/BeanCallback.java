@@ -1,7 +1,6 @@
 package com.therdl.client.callback;
 
-import java.util.logging.Logger;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
@@ -19,8 +18,6 @@ import com.therdl.shared.beans.Beanery;
  */
 public abstract class BeanCallback<T> implements RequestCallback {
 
-	protected static Logger log = Logger.getLogger(BeanCallback.class.getName());
-
 	private Beanery beanery = GWT.create(Beanery.class);
 	private Class expectedClass;
 	private ValidatedView validatedView;
@@ -32,7 +29,7 @@ public abstract class BeanCallback<T> implements RequestCallback {
 
 	@Override
 	public void onResponseReceived(Request request, Response response) {
-		log.info("BeanCallback onResponseReceived: " + response.getText());
+		Log.info("BeanCallback onResponseReceived: " + response.getText());
 		if (response.getText().startsWith("c")) {
 			//means we have an error code
 			onErrorCodeReturned(response.getText());
@@ -47,7 +44,7 @@ public abstract class BeanCallback<T> implements RequestCallback {
 	}
 
 	public void onErrorCodeReturned(String errorCode) {
-		log.info("Error code returned " + errorCode);
+		Log.info("Error code returned " + errorCode);
 		validatedView.setErrorMessage(ErrorCodeMapper.getI18nMessage(errorCode));
 	}
 
@@ -55,7 +52,7 @@ public abstract class BeanCallback<T> implements RequestCallback {
 
 	@Override
 	public void onError(Request request, Throwable exception) {
-		log.info("ForgotPasswordPresenter onError)" + exception.getLocalizedMessage());
+		Log.info("ForgotPasswordPresenter onError)" + exception.getLocalizedMessage());
 		onErrorCodeReturned(RDLConstants.ErrorCodes.GENERIC);
 	}
 }

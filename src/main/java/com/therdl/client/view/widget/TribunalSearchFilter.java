@@ -13,8 +13,6 @@ import com.therdl.client.view.TribunalView;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.InlineCheckBox;
 
-import java.util.logging.Logger;
-
 /**
  * The tribunal view search filter
  */
@@ -24,8 +22,6 @@ public class TribunalSearchFilter extends AbstractSearchFilter {
 	}
 
 	private static TribunalSearchFilterUiBinder uiBinder = GWT.create(TribunalSearchFilterUiBinder.class);
-
-	private static Logger log = Logger.getLogger(TribunalSearchFilter.class.getName());
 
 	@UiField
 	InlineCheckBox votingActive, votingInActive;
@@ -43,7 +39,7 @@ public class TribunalSearchFilter extends AbstractSearchFilter {
 		view.doFilterSearch();
 	}
 
-	@UiHandler(value = {"title"})
+	@UiHandler(value = { "title" })
 	public void onPassEnter(KeyDownEvent event) {
 		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 			onSubmit(null);
@@ -78,7 +74,8 @@ public class TribunalSearchFilter extends AbstractSearchFilter {
 			searchOptionsBean.as().setTitle(null);
 		}
 
-		if ((votingActive.getValue() && votingInActive.getValue()) || (!votingActive.getValue() && !votingInActive.getValue())) {
+		if ((votingActive.getValue() && votingInActive.getValue()) || (!votingActive.getValue() && !votingInActive
+				.getValue())) {
 			searchOptionsBean.as().setVotingExpired(null);
 		} else if (votingActive.getValue() && !votingInActive.getValue()) {
 			searchOptionsBean.as().setVotingExpired(false);

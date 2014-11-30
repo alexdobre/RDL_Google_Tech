@@ -1,12 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.client.ui.TextBox;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,6 +12,10 @@ import com.therdl.client.view.RegisterView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 /**
  * RegisterViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -34,9 +31,6 @@ import com.therdl.shared.beans.Beanery;
  * @ Button submitBtn
  */
 public class RegisterViewImpl extends AbstractValidatedAppMenuView implements RegisterView {
-
-	private static Logger log = Logger.getLogger(RegisterViewImpl.class.getName());
-
 	interface RegisterViewImplUiBinder extends UiBinder<Widget, RegisterViewImpl> {
 	}
 
@@ -66,7 +60,6 @@ public class RegisterViewImpl extends AbstractValidatedAppMenuView implements Re
 		appMenu.setSignUpActive();
 	}
 
-
 	/**
 	 * Handler for form submit
 	 *
@@ -77,7 +70,6 @@ public class RegisterViewImpl extends AbstractValidatedAppMenuView implements Re
 	 */
 	@UiHandler("submitBtn")
 	public void onSubmit(ClickEvent event) {
-		log.info("RegisterViewImpl onSubmit verifying fields");
 		AutoBean<AuthUserBean> newUserBean = formAuthUserBean();
 		presenter.submitNewUser(newUserBean);
 	}

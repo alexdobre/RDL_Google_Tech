@@ -1,8 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,13 +8,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.ListWidget;
-import com.therdl.client.view.widget.LoadingWidget;
-import com.therdl.client.view.widget.SearchFilterWidget;
-import com.therdl.client.view.widget.SnipListRow;
+import com.therdl.client.view.widget.*;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
 
 /**
  * ImprovementsViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -26,14 +21,11 @@ import com.therdl.shared.beans.SnipBean;
  *
  * @ Presenter presenter the  presenter for this view
  * see http://www.gwtproject.org/articles/mvp-architecture.html#presenter
- * <p/>
  * fields below are standard GWT UIBinder display elements
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
  */
 public class ImprovementsViewImpl extends AppMenuView implements SearchView {
-
-	private static Logger log = Logger.getLogger(ImprovementsViewImpl.class.getName());
 
 	private static ImprovementsViewImplUiBinder uiBinder = GWT.create(ImprovementsViewImplUiBinder.class);
 

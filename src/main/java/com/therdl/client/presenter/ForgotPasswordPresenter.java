@@ -1,7 +1,6 @@
 package com.therdl.client.presenter;
 
-import java.util.logging.Logger;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
@@ -22,7 +21,6 @@ import com.therdl.shared.beans.Beanery;
 
 public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 
-	protected static Logger log = Logger.getLogger(ForgotPasswordPresenter.class.getName());
 	private Beanery beanery = GWT.create(Beanery.class);
 	private ForgotPassword view;
 
@@ -43,7 +41,8 @@ public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 
 		//validate the bean
 		String validationResult = UserViewValidator.validateAuthUserBean(bean);
-		if (validationResult != null ) return validationResult;
+		if (validationResult != null)
+			return validationResult;
 
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(forgotUrl));
 		requestBuilder.setHeader("Content-Type", "application/json");
@@ -58,7 +57,7 @@ public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 
 			});
 		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
+			Log.info(e.getLocalizedMessage());
 		}
 		return null;
 	}

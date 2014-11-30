@@ -1,25 +1,20 @@
 package com.therdl.client.view.widget;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Modal;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.impl.AbstractValidatedView;
 import com.therdl.client.view.impl.ProfileViewImpl;
 import com.therdl.shared.beans.CurrentUserBean;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
 
 /**
  * this class will handle the file upload as a pop up
@@ -34,8 +29,6 @@ import com.therdl.shared.beans.CurrentUserBean;
  * as this class is a pop up it needs a reference to its parent container to call back to
  */
 public class AvatarUploadPopUp extends AbstractValidatedView {
-
-	private static Logger sLogger = Logger.getLogger("AvatarUploadPopUp");
 
 	interface AvatarUploadPopUpUiBinder extends UiBinder<Widget, AvatarUploadPopUp> {
 	}
@@ -67,7 +60,6 @@ public class AvatarUploadPopUp extends AbstractValidatedView {
 		profileUpLoadFormPanel.show();
 	}
 
-
 	/**
 	 * note as we are using the gwt form upload widget we break the mvp here in a small way only
 	 * FileUpload upload see http://www.gwtproject.org/javadoc/latest/com/google/gwt/user/client/ui/FileUpload.html
@@ -90,10 +82,9 @@ public class AvatarUploadPopUp extends AbstractValidatedView {
 		});
 		uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-				sLogger.info("Apparently file uploaded successfully"+event.getResults());
-				if (event.getResults().contains("ERROR")){
+				if (event.getResults().contains("ERROR")) {
 					setErrorMessage(RDL.getI18n().imageUploadError());
-				}else {
+				} else {
 					profileUpLoadFormPanel.hide();
 					mainView.refreshImage();
 				}
@@ -103,8 +94,7 @@ public class AvatarUploadPopUp extends AbstractValidatedView {
 		uploadForm.setStyleName("uploadForm");
 	}
 
-	@UiHandler("submitBtn")
-	void handleSubmit(ClickEvent e) {
+	@UiHandler("submitBtn") void handleSubmit(ClickEvent e) {
 		uploadForm.submit();
 	}
 

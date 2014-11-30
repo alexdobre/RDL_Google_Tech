@@ -1,18 +1,15 @@
 package com.therdl.client.presenter.runt.impl;
 
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Column;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.app.FuncFactory;
 import com.therdl.client.app.WidgetHolder;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.ClickHandler;
 import com.therdl.client.handler.RequestObserver;
-import com.therdl.client.app.FuncFactory;
 import com.therdl.client.presenter.func.GrabSnipFunc;
 import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.view.ValidatedView;
@@ -22,12 +19,12 @@ import com.therdl.client.view.widget.runtized.ReferenceListRow;
 import com.therdl.client.view.widget.runtized.ReplyEditWidget;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Column;
 
 /**
  * Deals with logic behind replies, references etc.
  */
 public class ReplyRuntImpl implements ReplyRunt {
-	protected static Logger log = Logger.getLogger(ReplyRuntImpl.class.getName());
 	private AutoBean<CurrentUserBean> currentUserBean;
 	private GrabSnipFunc grabSnipFunc;
 	private ValidatedView validatedView;
@@ -60,7 +57,7 @@ public class ReplyRuntImpl implements ReplyRunt {
 						rebuildReferenceRow();
 					}
 				}
-				);
+		);
 	}
 
 	@Override
@@ -68,7 +65,7 @@ public class ReplyRuntImpl implements ReplyRunt {
 			final SnipActionWidget snipActionWidget, ClickHandler editHandler, final RequestObserver requestObserver) {
 		boolean isAuthor = ViewUtils.isAuthor(currentUserBean, snipBean);
 		boolean repGiven = snipBean.as().getIsRepGivenByUser() == 1;
-		log.info("snipActionLogic isAuthor: " + isAuthor + " repGiven: " + repGiven);
+		Log.info("snipActionLogic isAuthor: " + isAuthor + " repGiven: " + repGiven);
 		//if the user is not logged in we do not show any action
 		if (currentUserBean == null || !currentUserBean.as().isAuth()) {
 			snipActionWidget.hide();
@@ -80,14 +77,15 @@ public class ReplyRuntImpl implements ReplyRunt {
 			//the user has not logged in or has not given rep so we show the give rep button
 		} else if (!repGiven) {
 			showSnipAction(false, snipActionWidget,
-				new ClickHandler() {
-					@Override
-					public void onClick(Object source) {
-						//we do not place validation here but we do place it on the server side
-						grabSnipFunc.giveSnipReputation(snipBean.as().getId(), currentUserBean, validatedView, requestObserver);
-						showSnipAction(null, snipActionWidget, null);
+					new ClickHandler() {
+						@Override
+						public void onClick(Object source) {
+							//we do not place validation here but we do place it on the server side
+							grabSnipFunc.giveSnipReputation(snipBean.as().getId(), currentUserBean, validatedView,
+									requestObserver);
+							showSnipAction(null, snipActionWidget, null);
+						}
 					}
-				}
 			);
 			//we show the rep given icon
 		} else {
@@ -120,13 +118,13 @@ public class ReplyRuntImpl implements ReplyRunt {
 
 	@Override
 	public void cancelEditReference() {
-		log.info("Reply runt cancel edit reference");
+		Log.info("Reply runt cancel edit reference");
 		rebuildReferenceRow();
 	}
 
 	@Override
 	public void saveEditedReference() {
-		log.info("Reply runt saveEditedReference");
+		Log.info("Reply runt saveEditedReference");
 		grabSnipFunc.updateSnip(referenceListRow.getReferenceBean(), currentUserBean.as().getToken(),
 				new StatusCallback(validatedView) {
 					@Override

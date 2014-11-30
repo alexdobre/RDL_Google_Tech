@@ -1,8 +1,6 @@
 package com.therdl.client.app;
 
-import java.util.List;
-import java.util.logging.Logger;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -11,62 +9,10 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.client.presenter.ContentNotFoundPresenter;
-import com.therdl.client.presenter.ContentSearchPresenter;
-import com.therdl.client.presenter.FaqPresenter;
-import com.therdl.client.presenter.IdeaViewPresenter;
-import com.therdl.client.presenter.ImprovementViewPresenter;
-import com.therdl.client.presenter.LicensePresenter;
-import com.therdl.client.presenter.Presenter;
-import com.therdl.client.presenter.ProfilePresenter;
-import com.therdl.client.presenter.PublicProfilePresenter;
-import com.therdl.client.presenter.RdlAbstractPresenter;
-import com.therdl.client.presenter.RegisterPresenter;
-import com.therdl.client.presenter.ServicesPresenter;
-import com.therdl.client.presenter.ServicesViewPresenter;
-import com.therdl.client.presenter.SnipEditPresenter;
-import com.therdl.client.presenter.SnipSearchPresenter;
-import com.therdl.client.presenter.ThreadViewPresenter;
-import com.therdl.client.presenter.TribunalDetailPresenter;
-import com.therdl.client.presenter.TribunalPresenter;
-import com.therdl.client.presenter.WelcomePresenter;
+import com.therdl.client.presenter.*;
 import com.therdl.client.presenter.runt.impl.ProfileDescRuntImpl;
-import com.therdl.client.view.ContentNotFound;
-import com.therdl.client.view.ContentSearchView;
-import com.therdl.client.view.FaqView;
-import com.therdl.client.view.IdeaView;
-import com.therdl.client.view.ImprovementView;
-import com.therdl.client.view.LicenseView;
-import com.therdl.client.view.ProfileView;
-import com.therdl.client.view.PublicProfileView;
-import com.therdl.client.view.RegisterView;
-import com.therdl.client.view.SearchView;
-import com.therdl.client.view.ServiceView;
-import com.therdl.client.view.ServicesView;
-import com.therdl.client.view.SnipEditView;
-import com.therdl.client.view.ThreadView;
-import com.therdl.client.view.TribunalDetail;
-import com.therdl.client.view.TribunalView;
-import com.therdl.client.view.WelcomeView;
-import com.therdl.client.view.impl.ContentNotFoundImpl;
-import com.therdl.client.view.impl.ContentSearchViewImpl;
-import com.therdl.client.view.impl.FaqViewImpl;
-import com.therdl.client.view.impl.IdeaViewImpl;
-import com.therdl.client.view.impl.ImprovementViewImpl;
-import com.therdl.client.view.impl.ImprovementsViewImpl;
-import com.therdl.client.view.impl.LicenseViewImpl;
-import com.therdl.client.view.impl.ProfileViewImpl;
-import com.therdl.client.view.impl.PublicProfileViewImpl;
-import com.therdl.client.view.impl.RegisterViewImpl;
-import com.therdl.client.view.impl.ServiceViewImpl;
-import com.therdl.client.view.impl.ServicesViewImpl;
-import com.therdl.client.view.impl.SnipEditViewImpl;
-import com.therdl.client.view.impl.SnipSearchViewImpl;
-import com.therdl.client.view.impl.StoriesViewImpl;
-import com.therdl.client.view.impl.ThreadViewImpl;
-import com.therdl.client.view.impl.TribunalDetailImpl;
-import com.therdl.client.view.impl.TribunalViewImpl;
-import com.therdl.client.view.impl.WelcomeViewImpl;
+import com.therdl.client.view.*;
+import com.therdl.client.view.impl.*;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
@@ -74,11 +20,9 @@ import com.therdl.shared.RDLUtils;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.events.GuiEventBus;
-import com.therdl.shared.events.LogOutEvent;
-import com.therdl.shared.events.LogOutEventEventHandler;
-import com.therdl.shared.events.SnipViewEvent;
-import com.therdl.shared.events.SnipViewEventHandler;
+import com.therdl.shared.events.*;
+
+import java.util.List;
 
 /**
  * While the overall application follows the Model View Presenter(MVP) design pattern
@@ -107,8 +51,6 @@ import com.therdl.shared.events.SnipViewEventHandler;
  * with the correct paramaters (eg menu options) for that users given  authorisation status (eg logged in)
  */
 public class AppController implements Presenter, ValueChangeHandler<String> {
-
-	private static Logger log = Logger.getLogger(AppController.class.getName());
 
 	private HasWidgets container;
 	private Beanery beanery = GWT.create(Beanery.class);
@@ -164,7 +106,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		History.addValueChangeHandler(this);
 
-		log.info("AppController bind() addValueChangeHandler");
+		Log.info("AppController bind() addValueChangeHandler");
 
 		// logout event handler
 		GuiEventBus.EVENT_BUS.addHandler(LogOutEvent.TYPE, new LogOutEventEventHandler() {
@@ -237,14 +179,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
-		log.info("AppController onValueChange token before split is  " + token);
+		Log.info("AppController onValueChange token before split is  " + token);
 		String[] tokenSplit = token.split(":");
 
 		String moduleName = null;
 		if (tokenSplit.length != 0) {
 			moduleName = tokenSplit[0];
 		}
-		log.info("App controller module name: " + moduleName);
+		Log.info("App controller module name: " + moduleName);
 		if (moduleName != null) {
 			switch (moduleName) {
 			case RDLConstants.Tokens.WELCOME:
@@ -324,7 +266,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	}
 
 	private void showWelcomeView(String[] tokenSplit) {
-		log.info("AppController Tokens.WELCOME");
+		Log.info("AppController Tokens.WELCOME");
 		if (welcomeView == null) {
 			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
 		}
@@ -341,7 +283,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showServiceView(String token) {
 		Global.moduleName = RDLConstants.Modules.SERVICES;
-		log.info("AppController Tokens.SERVICE_VIEW");
+		Log.info("AppController Tokens.SERVICE_VIEW");
 		if (serviceView == null) {
 			serviceView = new ServiceViewImpl(currentUserBean, appMenu);
 		}
@@ -349,7 +291,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SERVICE_VIEW);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SERVICE_VIEW);
 			}
 
 			public void onSuccess() {
@@ -360,7 +302,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showSnipView(String token) {
 		Global.moduleName = RDLConstants.Modules.IDEAS;
-		log.info("AppController Tokens.SNIP_VIEW");
+		Log.info("AppController Tokens.SNIP_VIEW");
 		if (ideaView == null) {
 			ideaView = new IdeaViewImpl(currentUserBean, appMenu);
 		}
@@ -368,7 +310,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
 			}
 
 			public void onSuccess() {
@@ -379,7 +321,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showThreadView(String token) {
 		Global.moduleName = RDLConstants.Modules.STORIES;
-		log.info("AppController Tokens.THREAD_VIEW token: " + token);
+		Log.info("AppController Tokens.THREAD_VIEW token: " + token);
 		if (threadView == null) {
 			threadView = new ThreadViewImpl(currentUserBean, appMenu);
 		}
@@ -391,14 +333,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			}
 
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
 		});
 	}
 
 	private void showSnervices(String token) {
 		Global.moduleName = RDLConstants.Modules.SERVICES;
-		log.info("AppController Tokens.SERVICES");
+		Log.info("AppController Tokens.SERVICES");
 		if (servicesView == null) {
 			servicesView = new ServicesViewImpl(currentUserBean, appMenu);
 		}
@@ -407,7 +349,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SERVICES);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SERVICES);
 			}
 
 			public void onSuccess() {
@@ -419,7 +361,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showSnips(String token) {
 		Global.moduleName = RDLConstants.Modules.IDEAS;
-		log.info("AppController Tokens.IDEAS");
+		Log.info("AppController Tokens.IDEAS");
 		if (searchView == null) {
 			searchView = new SnipSearchViewImpl(currentUserBean, appMenu);
 		}
@@ -428,7 +370,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.SNIPS);
 			}
 
 			public void onSuccess() {
@@ -439,7 +381,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showStories(String token) {
 		Global.moduleName = RDLConstants.Modules.STORIES;
-		log.info("AppController Tokens.STORIES");
+		Log.info("AppController Tokens.STORIES");
 		if (storiesView == null) {
 			storiesView = new StoriesViewImpl(currentUserBean, appMenu);
 		}
@@ -447,7 +389,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
 
 			public void onSuccess() {
@@ -458,14 +400,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showTribunal(String token) {
 		Global.moduleName = RDLConstants.Modules.TRIBUNAL;
-		log.info("AppController Tokens.TRIBUNAL");
+		Log.info("AppController Tokens.TRIBUNAL");
 		if (tribunalView == null) {
 			tribunalView = new TribunalViewImpl(currentUserBean, appMenu);
 		}
 		final TribunalPresenter tribunalPresenter = new TribunalPresenter(tribunalView, this);
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
 
 			public void onSuccess() {
@@ -476,14 +418,15 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showTribunalDetail(String token) {
 		Global.moduleName = RDLConstants.Modules.TRIBUNAL;
-		log.info("AppController Tokens.TRIBUNAL_DETAIL");
+		Log.info("AppController Tokens.TRIBUNAL_DETAIL");
 		if (tribunalDetail == null) {
 			tribunalDetail = new TribunalDetailImpl(currentUserBean, appMenu);
 		}
-		final TribunalDetailPresenter tribunalDetailPresenter = new TribunalDetailPresenter(tribunalDetail, this, token);
+		final TribunalDetailPresenter tribunalDetailPresenter = new TribunalDetailPresenter(tribunalDetail, this,
+				token);
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
 
 			public void onSuccess() {
@@ -498,15 +441,15 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			snipEditView = new SnipEditViewImpl(currentUserBean, appMenu);
 		}
 		final SnipEditPresenter snipEditPresenter = new SnipEditPresenter(snipEditView, this, token);
-		log.info("Doing async call...");
+		Log.info("Doing async call...");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
 
 			public void onSuccess() {
 				if (currentUserBean.as().isAuth()) {
-					log.info("Invoking snip edit presenter...");
+					Log.info("Invoking snip edit presenter...");
 					snipEditPresenter.go(container, currentUserBean);
 				} else {
 					History.newItem(RDLConstants.Tokens.ERROR);
@@ -517,7 +460,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showImprovements(String token) {
 		Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
-		log.info("AppController Tokens.IMPROVEMENTS");
+		Log.info("AppController Tokens.IMPROVEMENTS");
 		if (improvementsView == null) {
 			improvementsView = new ImprovementsViewImpl(currentUserBean, appMenu);
 		}
@@ -525,7 +468,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.WELCOME);
 			}
 
 			public void onSuccess() {
@@ -601,7 +544,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		}
 
 		final RegisterPresenter registerPresenter = new RegisterPresenter(registerView, this);
-		log.info("AppController Tokens.SIGN_UP ");
+		Log.info("AppController Tokens.SIGN_UP ");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
@@ -615,12 +558,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showProfile() {
 		if (profileView == null) {
-			log.info("AppController profileView == null ");
+			Log.info("AppController profileView == null ");
 			profileView = new ProfileViewImpl(currentUserBean, appMenu);
 		}
 
 		final ProfilePresenter profilePresenter = new ProfilePresenter(profileView, this, new ProfileDescRuntImpl());
-		log.info("AppController Tokens.PROFILE ");
+		Log.info("AppController Tokens.PROFILE ");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
@@ -682,12 +625,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showContentSearch(String[] tokenSplit) {
 		if (contentSearchView == null) {
-			log.info("AppController contentSearchView == null ");
+			Log.info("AppController contentSearchView == null ");
 			contentSearchView = new ContentSearchViewImpl(appMenu);
 		}
 		final ContentSearchPresenter contentSearchPresenter = new ContentSearchPresenter(contentSearchView, this,
 				tokenSplit.length > 1 ? tokenSplit[1] : null);
-		log.info("AppController Tokens.CONTENT_SEARCH ");
+		Log.info("AppController Tokens.CONTENT_SEARCH ");
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
 			}
@@ -699,7 +642,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	}
 
 	private void showContentNotFound() {
-		log.info("AppController Tokens.ERROR ");
+		Log.info("AppController Tokens.ERROR ");
 		if (contentNotFound == null) {
 			contentNotFound = new ContentNotFoundImpl(appMenu);
 		}
@@ -715,7 +658,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	}
 
 	private void showLogOut() {
-		log.info("AppController Tokens.LOG_OUT ");
+		Log.info("AppController Tokens.LOG_OUT ");
 
 		if (welcomeView == null) {
 			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
@@ -735,15 +678,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void showProposalView(String token) {
 		Global.moduleName = RDLConstants.Modules.IMPROVEMENTS;
-		log.info("AppController Tokens.PROPOSAL_VIEW");
+		Log.info("AppController Tokens.PROPOSAL_VIEW");
 		if (proposalView == null) {
 			proposalView = new ImprovementViewImpl(currentUserBean, appMenu);
 		}
-		final ImprovementViewPresenter improvementViewPresenter = new ImprovementViewPresenter(proposalView, this, token);
+		final ImprovementViewPresenter improvementViewPresenter = new ImprovementViewPresenter(proposalView, this,
+				token);
 
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onFailure(Throwable caught) {
-				log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
+				Log.info("AppController GWT.runAsync onFailure " + RDLConstants.Tokens.THREAD_VIEW);
 			}
 
 			public void onSuccess() {
@@ -755,7 +699,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	public AutoBean<CurrentUserBean> getCurrentUserBean() {
 		return currentUserBean;
 	}
-
 
 	/**
 	 * sets the currentUserBean for the  view in the WelcomePresenter dologin method
@@ -777,7 +720,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		this.currentUserBean.as().setRep(rep);
 		this.currentUserBean.as().setDateCreated(dateCreated);
 	}
-
 
 	/**
 	 * set in the RegisterPresenter onResponseReceived for  the server callback 'submitNewUser'

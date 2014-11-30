@@ -17,18 +17,11 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.FormControlStatic;
-import org.gwtbootstrap3.client.ui.Image;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
 
 import java.util.Date;
-import java.util.logging.Logger;
-
 
 /**
  * ProfileViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -47,7 +40,6 @@ import java.util.logging.Logger;
  * also to prompt the uses to click to initiate the upload
  */
 public class ProfileViewImpl extends AbstractValidatedAppMenuView implements ProfileView {
-	protected static Logger log = Logger.getLogger(ProfileViewImpl.class.getName());
 
 	private AutoBean<CurrentUserBean> currentUserBean;
 
@@ -57,7 +49,6 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 	private static ProfileViewImplUiBinder uiBinder = GWT.create(ProfileViewImplUiBinder.class);
 
 	private ProfileView.Presenter presenter;
-
 
 	private AvatarUploadPopUp uploadForm;
 
@@ -132,26 +123,24 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 		avatarImage.setUrl(url + "?" + new Date().getTime());
 	}
 
-
 	/**
 	 * shows the avatar upload widget
 	 *
 	 * @param e Standard GWT ClickEvent
 	 */
-	@UiHandler("profileImagePanel")
-	void handleClick(ClickEvent e) {
+	@UiHandler("profileImagePanel") void handleClick(ClickEvent e) {
 		if (currentUserBean.as().getIsRDLSupporter()) {
 			if (uploadForm == null) {
 				uploadForm = new AvatarUploadPopUp(currentUserBean, this);
 			}
 			uploadForm.show();
 		} else {
-			GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleUploadImage()));
+			GuiEventBus.EVENT_BUS
+					.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleUploadImage()));
 		}
 	}
 
-	@UiHandler("submitChangePassBtn")
-	void handleSubmitNewPass(ClickEvent e) {
+	@UiHandler("submitChangePassBtn") void handleSubmitNewPass(ClickEvent e) {
 		String msg = presenter.changePassword(currentUserBean,
 				oldPassword.getText(), newPassword.getText(), confirmNewPassword.getText());
 		if (msg != null) {
@@ -159,19 +148,16 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 		}
 	}
 
-	@UiHandler("changePassBtn")
-	void handleChangePass(ClickEvent e) {
+	@UiHandler("changePassBtn") void handleChangePass(ClickEvent e) {
 		ViewUtils.showHide(false, formErrors);
 		changePassModal.show();
 	}
 
-	@UiHandler("supporterBtn")
-	void supporterBtnClick(ClickEvent e) {
+	@UiHandler("supporterBtn") void supporterBtnClick(ClickEvent e) {
 		GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleDefault()));
 	}
 
-	@UiHandler("updateProfileDec")
-	void updateProfileClicked(ClickEvent e) {
+	@UiHandler("updateProfileDec") void updateProfileClicked(ClickEvent e) {
 		presenter.updateProfile(profileDesc.getCode());
 	}
 
@@ -194,7 +180,6 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 
 	@Override
 	public void populateProfileDescription(String content) {
-		log.info("populateProfileDescription with content: " + content);
 		profileDesc.setCode(content);
 		profileDesc.reconfigure();
 	}

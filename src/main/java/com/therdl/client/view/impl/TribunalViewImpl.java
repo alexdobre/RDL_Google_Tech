@@ -14,14 +14,11 @@ import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * The tribunal view
  */
 public class TribunalViewImpl extends AbstractSnipSearch implements TribunalView {
-
-	private static Logger log = Logger.getLogger(TribunalViewImpl.class.getName());
 
 	private static TribunalViewImplUiBinder uiBinder = GWT.create(TribunalViewImplUiBinder.class);
 
@@ -40,7 +37,6 @@ public class TribunalViewImpl extends AbstractSnipSearch implements TribunalView
 
 	private TribunalView.Presenter presenter;
 	private TribunalSearchFilter tribunalSearchFilter;
-
 
 	public TribunalViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);

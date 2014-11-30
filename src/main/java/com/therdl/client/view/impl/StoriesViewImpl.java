@@ -1,8 +1,5 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,14 +8,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.SearchView;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.ListWidget;
-import com.therdl.client.view.widget.LoadingWidget;
-import com.therdl.client.view.widget.SearchFilterWidget;
-import com.therdl.client.view.widget.SnipListRow;
+import com.therdl.client.view.widget.*;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
+import java.util.ArrayList;
 
 /**
  * StoriesViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -32,8 +27,6 @@ import com.therdl.shared.beans.SnipBean;
  * maintains client side state
  */
 public class StoriesViewImpl extends AppMenuView implements SearchView {
-
-	private static Logger log = Logger.getLogger("StoriesViewImpl");
 
 	private static StoriesViewImplUiBinder uiBinder = GWT.create(StoriesViewImplUiBinder.class);
 
@@ -94,7 +87,6 @@ public class StoriesViewImpl extends AppMenuView implements SearchView {
 
 	@Override
 	public void displaySnipList(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		log.info("On display snip list storiesList=" + storiesList);
 		if (storiesList == null) {
 			storiesList = new ListWidget(currentUserBean, beanList, pageIndex, new SnipListRow(), presenter);
 			threadListRowContainer.add(storiesList);

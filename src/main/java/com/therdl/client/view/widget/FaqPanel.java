@@ -11,14 +11,10 @@ import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.PanelCollapse;
 
-import java.util.logging.Logger;
-
 /**
  * A simple collapsible panel to hold an FAQ question
  */
 public class FaqPanel extends Composite {
-
-	private static Logger log = Logger.getLogger(FaqPanel.class.getName());
 
 	interface FaqPanelUiBinder extends UiBinder<Widget, FaqPanel> {
 	}
@@ -43,7 +39,7 @@ public class FaqPanel extends Composite {
 	 */
 	public void populate(AutoBean<SnipBean> faqBean) {
 		question.setText(faqBean.as().getTitle());
-		question.setDataTarget("#"+faqBean.as().getId());
+		question.setDataTarget("#" + faqBean.as().getId());
 		answer.setId(faqBean.as().getId());
 		answerBody.getElement().setInnerHTML(faqBean.as().getContent());
 	}

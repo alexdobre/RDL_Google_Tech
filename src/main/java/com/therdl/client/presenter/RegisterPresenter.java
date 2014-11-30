@@ -1,5 +1,6 @@
 package com.therdl.client.presenter;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
@@ -67,7 +68,6 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	 *              password String password these credentilas will be used as identifiers for subsequent login
 	 */
 
-
 	@Override
 	public void submitNewUser(AutoBean<AuthUserBean> bean) {
 		String validationResult = UserViewValidator.validateAuthUserBean(bean);
@@ -96,7 +96,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 			});
 
 		} catch (RequestException e) {
-			log.info(e.getLocalizedMessage());
+			Log.info(e.getLocalizedMessage());
 		}
 	}
 

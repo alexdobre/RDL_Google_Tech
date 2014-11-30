@@ -1,23 +1,6 @@
 package com.therdl.client.view.impl;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import com.therdl.client.app.RuntFactory;
-import com.therdl.client.presenter.runt.ReplyRunt;
-import com.therdl.shared.events.ShowAbuseCommentsEvent;
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Panel;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.client.ui.html.Paragraph;
-import org.gwtbootstrap3.client.ui.html.Span;
-import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -28,8 +11,9 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.handler.ClickHandler;
+import com.therdl.client.app.RuntFactory;
 import com.therdl.client.handler.LoginHandler;
+import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.EmotionView;
 import com.therdl.client.view.PaginatedView;
@@ -38,24 +22,22 @@ import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.PaginationHelper;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.EmotionPicker;
-import com.therdl.client.view.widget.LoadingWidget;
+import com.therdl.client.view.widget.*;
 import com.therdl.client.view.widget.runtized.ReferenceListRow;
-import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
-import com.therdl.client.view.widget.SnipActionWidget;
-import com.therdl.client.view.widget.SnipListRow;
-import com.therdl.shared.Constants;
-import com.therdl.shared.Emotion;
-import com.therdl.shared.Global;
-import com.therdl.shared.RDLConstants;
-import com.therdl.shared.SnipType;
+import com.therdl.shared.*;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.ReportAbuseEvent;
+import com.therdl.shared.events.ShowAbuseCommentsEvent;
+import org.gwtbootstrap3.client.ui.*;
+import org.gwtbootstrap3.client.ui.html.Paragraph;
+import org.gwtbootstrap3.client.ui.html.Span;
+import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+
+import java.util.ArrayList;
 
 /**
  * SnipViewImpl class ia a view in the Model View Presenter Design Pattern (MVP)
@@ -70,9 +52,8 @@ import com.therdl.shared.events.ReportAbuseEvent;
  * used to call the backend to retrieve the full snip for this view, under construction
  * @ AppMenu appMenu the upper menu view
  */
-public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implements SnipView, PaginatedView, ValidatedView, EmotionView {
-
-	private static Logger log = Logger.getLogger(SnipViewImpl.class.getName());
+public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
+		implements SnipView, PaginatedView, ValidatedView, EmotionView {
 
 	private final AutoBean<CurrentUserBean> currentUserBean;
 
@@ -86,7 +67,6 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 
 	private AutoBean<SnipBean> currentSnipBean;
 	protected AutoBean<SnipBean> replyBean;
-
 
 	@UiField
 	FlowPanel snipViewCont, radioBtnParent, radioBtnParentProp;
@@ -191,8 +171,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		//references hidden
 		showRef.setText(btnTextShow);
 		ViewUtils.hide(referenceCont);
-		ViewUtils.showHide(ViewUtils.showReportAbuseLogic(currentUserBean, currentSnipBean),reportAbuse);
-		ViewUtils.showHide(currentSnipBean.as().getAbuseCount()!=null && currentSnipBean.as().getAbuseCount()>0,
+		ViewUtils.showHide(ViewUtils.showReportAbuseLogic(currentUserBean, currentSnipBean), reportAbuse);
+		ViewUtils.showHide(currentSnipBean.as().getAbuseCount() != null && currentSnipBean.as().getAbuseCount() > 0,
 				abuseWarning);
 		hideMessages();
 		// call implementations or NO OP
@@ -212,8 +192,9 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	public void onLeaveRefClicked(ClickEvent event) {
 		if (currentUserBean.as().isAuth()) {
 			//if the user is not RDL supporter prompted to become one
-			if (!currentUserBean.as().getIsRDLSupporter() && !Global.moduleName.equals(RDLConstants.Modules.STORIES) ) {
-				GuiEventBus.EVENT_BUS.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleLeaveRef()));
+			if (!currentUserBean.as().getIsRDLSupporter() && !Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+				GuiEventBus.EVENT_BUS
+						.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleLeaveRef()));
 			} else {
 				leaveRefHandler(currentUserBean);
 			}
@@ -227,8 +208,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		}
 	}
 
-	@UiHandler("btnEmotionPicker")
-	void onEmotionPicker(ClickEvent event) {
+	@UiHandler("btnEmotionPicker") void onEmotionPicker(ClickEvent event) {
 		if (emotionPicker == null) {
 			emotionPicker = new EmotionPicker(this, replyBean);
 		}
@@ -248,7 +228,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		showRef.setText(btnTextShow);
 		replyBean = beanery.snipBean();
 		editorWidgetReply.setCode("");
-		log.info("Leave ref handler END with widget code: " + editorWidgetReply.getCode());
+		Log.info("Leave ref handler END with widget code: " + editorWidgetReply.getCode());
 	}
 
 	/**
@@ -291,7 +271,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 		emoListPanelReply.clear();
 		if (replyBean != null && replyBean.as().getEmotions() != null) {
 			for (String emoStr : replyBean.as().getEmotions()) {
-				log.info("Displaying selected emotion: " + emoStr);
+				Log.info("Displaying selected emotion: " + emoStr);
 				Span span = ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr));
 				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
 				emoListPanelReply.add(span);
@@ -360,7 +340,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 	 * @param beanList list of references as bean objects
 	 */
 	public void showReferences(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		log.info("Showing references: " + beanList.size());
+		Log.info("Showing references: " + beanList.size());
 		this.searchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
 		showRef.setText(btnTextHide);
@@ -410,14 +390,14 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView implemen
 
 	@UiHandler("nextPage")
 	public void nextPageClicked(ClickEvent event) {
-		log.info("Firing next page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
+		Log.info("Firing next page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
 		PaginationHelper.doNextPage(searchOptionsBean.as().getPageIndex(), listRange.getText(), itemList.size(),
 				Constants.DEFAULT_REFERENCE_PAGE_SIZE, presenter);
 	}
 
 	@UiHandler("prevPage")
 	public void prevPageClicked(ClickEvent event) {
-		log.info("Firing previous page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
+		Log.info("Firing previous page event from pageIndex: " + searchOptionsBean.as().getPageIndex());
 		PaginationHelper.doPrevPage(searchOptionsBean.as().getPageIndex(), presenter);
 	}
 

@@ -1,5 +1,6 @@
 package com.therdl.client.view.widget;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,23 +13,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.EmotionView;
-import com.therdl.client.view.SnipEditView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Container;
-import org.gwtbootstrap3.client.ui.DropDown;
-import org.gwtbootstrap3.client.ui.DropDownMenu;
-import org.gwtbootstrap3.client.ui.InputGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.Row;
-import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.constants.ColumnSize;
 import org.gwtbootstrap3.client.ui.html.Span;
 
@@ -36,13 +25,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Widget for picking out emotions
  */
 public class EmotionPicker extends Composite {
-	private static Logger log = Logger.getLogger(EmotionPicker.class.getName());
 
 	interface EmotionPickerUiBinder extends UiBinder<Widget, EmotionPicker> {
 	}
@@ -75,7 +62,6 @@ public class EmotionPicker extends Composite {
 	private Map<LinkedGroupItem, EmoElements> emoMap;
 
 	public EmotionPicker(EmotionView parentView, AutoBean<SnipBean> currentSnipBean) {
-		log.info("EmotionPicker constructor BEGIN");
 		this.parentView = parentView;
 		this.currentSnipBean = currentSnipBean;
 		ourUiBinder.createAndBindUi(this);
@@ -91,13 +77,12 @@ public class EmotionPicker extends Composite {
 		emotionPickerModal.hide();
 	}
 
-
 	public void reset() {
 		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null) {
 			currentSnipBean.as().getEmotions().clear();
 		}
 		for (Map.Entry entry : emoMap.entrySet()) {
-			EmoElements elements = (EmoElements) entry.getValue();
+			EmoElements elements = (EmoElements)entry.getValue();
 			setActive(false, elements.getParent(), elements.getEmo(), elements.getLabel());
 		}
 	}
@@ -105,7 +90,7 @@ public class EmotionPicker extends Composite {
 	private void refreshEmotions() {
 		if (currentSnipBean != null && currentSnipBean.as().getEmotions() != null) {
 			for (Map.Entry entry : emoMap.entrySet()) {
-				EmoElements elements = (EmoElements) entry.getValue();
+				EmoElements elements = (EmoElements)entry.getValue();
 				setActive(currentSnipBean.as().getEmotions().contains(elements.getEmo().name()),
 						elements.getParent(), elements.getEmo(), elements.getLabel());
 			}
@@ -133,7 +118,8 @@ public class EmotionPicker extends Composite {
 	private void autocompletePass() {
 		String currentText = emotionAutocomplete.getText();
 		autocompleteMenu.clear();
-		if (currentText == null || currentText.isEmpty()) return;
+		if (currentText == null || currentText.isEmpty())
+			return;
 		for (String emoShard : ViewUtils.getPieceMealEmotions()) {
 			if (emoShard.matches("(.*)" + currentText + "(.*)")) {
 				//we have a match
@@ -153,20 +139,20 @@ public class EmotionPicker extends Composite {
 		menuItem.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent clickEvent) {
-				Anchor menuItem = (Anchor) clickEvent.getSource();
+				Anchor menuItem = (Anchor)clickEvent.getSource();
 				String emoShard = menuItem.getText();
 				//search for an emotion group to make active
 				for (Map.Entry entry : emoMap.entrySet()) {
-					EmoElements elements = (EmoElements) entry.getValue();
+					EmoElements elements = (EmoElements)entry.getValue();
 					if (EmotionTranslator.getMessage(elements.getEmo()).contains(emoShard)) {
 						//we have a match
 						if (!elements.getParent().isActive()) {
 							setActive(true, elements.getParent(), elements.getEmo(), elements.getLabel());
 							// we add the backing bean emotion
-							if (currentSnipBean.as().getEmotions() == null){
+							if (currentSnipBean.as().getEmotions() == null) {
 								currentSnipBean.as().setEmotions(new ArrayList<String>(1));
 							}
-							if (!currentSnipBean.as().getEmotions().contains(elements.getEmo().name())){
+							if (!currentSnipBean.as().getEmotions().contains(elements.getEmo().name())) {
 								currentSnipBean.as().getEmotions().add(elements.getEmo().name());
 							}
 						}
@@ -183,7 +169,7 @@ public class EmotionPicker extends Composite {
 		List<Emotion> negEmoList = Emotion.serveNegEmoList();
 		this.posEmoList = new ArrayList<LinkedGroupItem>(13);
 		this.negEmoList = new ArrayList<LinkedGroupItem>(13);
-		this.emoMap = new HashMap<LinkedGroupItem, EmoElements> (26);
+		this.emoMap = new HashMap<LinkedGroupItem, EmoElements>(26);
 
 		for (int i = 0; i < posEmoList.size(); i++) {
 			Row emoRow = new Row();
@@ -197,11 +183,13 @@ public class EmotionPicker extends Composite {
 			negColumn.getElement().getStyle().setProperty("textAlign", "center");
 			emoRow.add(negColumn);
 
-			LinkedGroupItem posEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(posEmoList.get(i)), posEmoList.get(i));
+			LinkedGroupItem posEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(posEmoList.get(i)),
+					posEmoList.get(i));
 			this.posEmoList.add(posEmo);
 			posColumn.add(posEmo);
 
-			LinkedGroupItem negEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(negEmoList.get(i)), negEmoList.get(i));
+			LinkedGroupItem negEmo = buildLinkedGroupItem(EmotionTranslator.getMessage(negEmoList.get(i)),
+					negEmoList.get(i));
 			this.negEmoList.add(negEmo);
 			negColumn.add(negEmo);
 		}
@@ -228,7 +216,7 @@ public class EmotionPicker extends Composite {
 		linkedGroupItem.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent clickEvent) {
-				LinkedGroupItem source = ((LinkedGroupItem) clickEvent.getSource());
+				LinkedGroupItem source = ((LinkedGroupItem)clickEvent.getSource());
 				source.setActive(!source.isActive());
 				if (currentSnipBean.as().getEmotions() == null) {
 					currentSnipBean.as().setEmotions(new ArrayList<String>(1));
@@ -236,18 +224,18 @@ public class EmotionPicker extends Composite {
 				EmoElements elements = emoMap.get(source);
 				// if the item is now active
 				if (source.isActive()) {
-					log.info(elements.getEmo().name() + "is now active - adding to emo list");
+					Log.info(elements.getEmo().name() + "is now active - adding to emo list");
 					if (!currentSnipBean.as().getEmotions().contains(elements.getEmo().name())) {
 						currentSnipBean.as().getEmotions().add(elements.getEmo().name());
 					}
 				} else {
-					log.info(elements.getEmo().name() + "is now inactive - removing from emo list");
+					Log.info(elements.getEmo().name() + "is now inactive - removing from emo list");
 					if (currentSnipBean.as().getEmotions().contains(elements.getEmo().name())) {
 						currentSnipBean.as().getEmotions().remove(elements.getEmo().name());
 					}
 				}
 				setActive(source.isActive(), source, elements.getEmo(), elements.getLabel());
-				log.info("List status after click: " + currentSnipBean.as().getEmotions());
+				Log.info("List status after click: " + currentSnipBean.as().getEmotions());
 			}
 		});
 		flowPanel.add(label);

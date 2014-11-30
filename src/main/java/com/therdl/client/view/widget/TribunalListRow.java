@@ -18,14 +18,10 @@ import org.gwtbootstrap3.client.ui.ProgressBar;
 import org.gwtbootstrap3.client.ui.constants.ProgressType;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 
-import java.util.logging.Logger;
-
 /**
  * The tribunal list row
  */
 public class TribunalListRow extends AbstractListRow {
-
-	private static Logger log = Logger.getLogger(TribunalListRow.class.getName());
 
 	interface TribunalListRowUiBinder extends UiBinder<Widget, TribunalListRow> {
 	}
@@ -42,7 +38,7 @@ public class TribunalListRow extends AbstractListRow {
 	Badge votingText;
 
 	public TribunalListRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType,
-	                       UIObject parent) {
+			UIObject parent) {
 		super(snipBean, currentUserBean, snipType, parent);
 		initWidget(ourUiBinder.createAndBindUi(this));
 		populate(snipBean, currentUserBean, snipType);
@@ -54,7 +50,6 @@ public class TribunalListRow extends AbstractListRow {
 
 	@Override
 	public void populate(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType) {
-		log.info("TribunalListRow populate with title: " + snipBean.as().getTitle());
 		this.snipBean = snipBean;
 		this.currentUserBean = currentUserBean;
 		this.snipType = snipType;
@@ -67,7 +62,8 @@ public class TribunalListRow extends AbstractListRow {
 	}
 
 	@Override
-	public AbstractListRow makeRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType, UIObject parent) {
+	public AbstractListRow makeRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean,
+			SnipType snipType, UIObject parent) {
 		return new TribunalListRow(snipBean, currentUserBean, snipType, parent);
 	}
 
@@ -101,8 +97,8 @@ public class TribunalListRow extends AbstractListRow {
 		fraction.setText(yesAbuse + "/" + noAbuse);
 	}
 
-	private void setActive(){
-		if (ViewUtils.isExpired(snipBean.as().getVotingExpiresDate())){
+	private void setActive() {
+		if (ViewUtils.isExpired(snipBean.as().getVotingExpiresDate())) {
 			tribunalRowProgress.setActive(false);
 			tribunalRowProgress.setType(ProgressType.DEFAULT);
 			votingText.setText(RDL.getI18n().votingHasEndedOn());

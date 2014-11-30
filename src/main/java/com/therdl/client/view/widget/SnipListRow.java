@@ -1,12 +1,5 @@
 package com.therdl.client.view.widget;
 
-import java.util.Date;
-import java.util.logging.Logger;
-
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.Badge;
-import org.gwtbootstrap3.client.ui.Row;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -23,13 +16,17 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Badge;
+import org.gwtbootstrap3.client.ui.Row;
+
+import java.util.Date;
 
 /**
  * gwt widget for snip list row
  * constructor gets snipBean and logged userBean
  */
 public class SnipListRow extends AbstractListRow {
-	private static Logger log = Logger.getLogger(SnipListRow.class.getName());
 
 	interface SnipListRowUiBinder extends UiBinder<Widget, SnipListRow> {
 	}
@@ -60,7 +57,6 @@ public class SnipListRow extends AbstractListRow {
 
 	@Override
 	public void populate(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean, SnipType snipType) {
-		log.info("SnipListRow populate with title: " + snipBean.as().getTitle());
 		this.snipBean = snipBean;
 		this.currentUserBean = currentUserBean;
 		this.snipType = snipType;
@@ -141,8 +137,6 @@ public class SnipListRow extends AbstractListRow {
 		proposalState.setText(RDL.i18n.state() + ": " + snipBean.as().getProposalState());
 	}
 
-
-
 	public void incrementRepCounter() {
 		rep.setText(snipBean.as().getRep() + 1 + "");
 	}
@@ -166,7 +160,7 @@ public class SnipListRow extends AbstractListRow {
 	}
 
 	public AbstractListRow makeRow(AutoBean<SnipBean> snipBean, AutoBean<CurrentUserBean> currentUserBean,
-			SnipType snipType, UIObject parent){
+			SnipType snipType, UIObject parent) {
 		return new SnipListRow(snipBean, currentUserBean, snipType, parent);
 	}
 }

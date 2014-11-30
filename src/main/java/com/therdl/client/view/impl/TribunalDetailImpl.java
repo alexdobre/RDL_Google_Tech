@@ -1,5 +1,6 @@
 package com.therdl.client.view.impl;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,49 +10,28 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
-import com.therdl.client.handler.ClickHandler;
-import com.therdl.client.presenter.runt.ReplyRunt;
 import com.therdl.client.validation.SnipViewValidator;
-import com.therdl.client.view.EmotionView;
-import com.therdl.client.view.PaginatedView;
-import com.therdl.client.view.SnipView;
-import com.therdl.client.view.TribunalDetail;
-import com.therdl.client.view.ValidatedView;
+import com.therdl.client.view.*;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.ViewUtils;
-import com.therdl.client.view.widget.AppMenu;
-import com.therdl.client.view.widget.EmotionPicker;
-import com.therdl.client.view.widget.LoadingWidget;
-import com.therdl.client.view.widget.ReferenceSearchFilterWidget;
-import com.therdl.client.view.widget.SnipActionWidget;
-import com.therdl.client.view.widget.TribunalCommentRow;
-import com.therdl.client.view.widget.TribunalListRow;
+import com.therdl.client.view.widget.*;
 import com.therdl.shared.Constants;
 import com.therdl.shared.Emotion;
 import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
-import org.gwtbootstrap3.client.ui.Panel;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.client.ui.TextArea;
+import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 import org.gwtbootstrap3.client.ui.html.Span;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * User views the details of a tribunal item
  */
-public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements TribunalDetail, PaginatedView, ValidatedView, EmotionView {
-
-	private static Logger log = Logger.getLogger(TribunalDetailImpl.class.getName());
+public class TribunalDetailImpl extends AbstractValidatedAppMenuView
+		implements TribunalDetail, PaginatedView, ValidatedView, EmotionView {
 
 	private final AutoBean<CurrentUserBean> currentUserBean;
 
@@ -124,8 +104,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 		}
 	}
 
-	@UiHandler("btnEmotionPicker")
-	void onEmotionPicker(ClickEvent event) {
+	@UiHandler("btnEmotionPicker") void onEmotionPicker(ClickEvent event) {
 		if (emotionPicker == null) {
 			emotionPicker = new EmotionPicker(this, replyBean);
 		}
@@ -167,14 +146,13 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 
 	@UiHandler("yesVoteAbuse")
 	public void onYesVoteAbuse(ClickEvent event) {
-		log.info("onYesVoteAbuse clicked");
+		Log.info("onYesVoteAbuse clicked");
 	}
 
 	@UiHandler("noVoteAbuse")
 	public void onNoVoteAbuse(ClickEvent event) {
-		log.info("onNoVoteAbuse clicked");
+		Log.info("onNoVoteAbuse clicked");
 	}
-
 
 	protected void formReplyBean() {
 
@@ -194,7 +172,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 	 * @param beanList list of references as bean objects
 	 */
 	public void showComments(ArrayList<AutoBean<SnipBean>> beanList, int pageIndex) {
-		log.info("Showing references: " + beanList.size());
+		Log.info("Showing references: " + beanList.size());
 		this.searchOptionsBean.as().setPageIndex(pageIndex);
 		ViewUtils.hide(loadingWidget);
 		showComments.setText(RDL.getI18n().hideComments());
@@ -268,7 +246,7 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView implements 
 		emoListPanelReply.clear();
 		if (replyBean != null && replyBean.as().getEmotions() != null) {
 			for (String emoStr : replyBean.as().getEmotions()) {
-				log.info("Displaying selected emotion: " + emoStr);
+				Log.info("Displaying selected emotion: " + emoStr);
 				Span span = ViewUtils.buildEmoSpan(Emotion.valueOf(emoStr));
 				span.setText(EmotionTranslator.getMessage(Emotion.valueOf(emoStr)));
 				emoListPanelReply.add(span);

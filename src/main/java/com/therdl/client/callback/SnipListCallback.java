@@ -1,8 +1,6 @@
 package com.therdl.client.callback;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
@@ -14,12 +12,12 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.ArrayList;
+
 /**
  * A call back containing a list of snips
  */
-public abstract class SnipListCallback implements RequestCallback{
-
-	protected static Logger log = Logger.getLogger(SnipListCallback.class.getName());
+public abstract class SnipListCallback implements RequestCallback {
 
 	private Beanery beanery = GWT.create(Beanery.class);
 
@@ -39,12 +37,11 @@ public abstract class SnipListCallback implements RequestCallback{
 		onBeanListReturned(beanList);
 	}
 
-	public abstract void onBeanListReturned (ArrayList<AutoBean<SnipBean>> beanList);
-
+	public abstract void onBeanListReturned(ArrayList<AutoBean<SnipBean>> beanList);
 
 	@Override
 	public void onError(Request request, Throwable exception) {
-		log.info("SnipListCallback initialUpdate onError)" + exception.getLocalizedMessage());
+		Log.info("SnipListCallback initialUpdate onError)" + exception.getLocalizedMessage());
 	}
 
 }
