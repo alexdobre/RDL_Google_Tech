@@ -7,6 +7,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.therdl.server.data.AwsS3Credentials;
+import com.therdl.server.data.CoinbaseCredentials;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.PaypalCredentials;
 
@@ -60,6 +61,23 @@ public class CredentialsService {
 		cred.setPassword((String)doc.get("password"));
 		cred.setSignature((String)doc.get("signature"));
 		cred.setUsername((String)doc.get("username"));
+		return cred;
+	}
+
+	public CoinbaseCredentials getCoinBaseCredentials() {
+		DB db = dbProvider.getDb();
+		//get the coinbase credentials from the DB
+		DBCollection coll = db.getCollection("coinbaseCredentials");
+
+		BasicDBObject query = new BasicDBObject();
+		query.put("uid", "1");
+
+		DBCursor cursor = coll.find(query);
+		DBObject doc = cursor.next();
+
+		CoinbaseCredentials cred = new CoinbaseCredentials();
+		cred.setClientId((String) doc.get("client_id"));
+		cred.setClientSecret((String) doc.get("client_secret"));
 		return cred;
 	}
 

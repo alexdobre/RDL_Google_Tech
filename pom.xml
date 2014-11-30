@@ -206,6 +206,13 @@
             <version>2.9.115</version>
         </dependency>
 
+        <!--Bitcoin-CoinBase SDK -->
+        <dependency>
+            <groupId>com.coinbase.api</groupId>
+            <artifactId>coinbase-java</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -235,6 +242,7 @@
                 <configuration>
                     <runTarget>/</runTarget>
                     <port>8080</port>
+                    <server>:ssl</server>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <i18nMessagesBundle>com.therdl.client.view.i18n.I18NConstants</i18nMessagesBundle>
 	                <systemProperties>

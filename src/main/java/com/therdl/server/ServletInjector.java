@@ -11,6 +11,7 @@ import com.therdl.server.api.UserService;
 import com.therdl.server.apiimpl.RepServiceImpl;
 import com.therdl.server.apiimpl.SnipServiceImpl;
 import com.therdl.server.apiimpl.UserServiceImpl;
+import com.therdl.server.bitcoin_payment.*;
 import com.therdl.server.crawler.CrawlFilter;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.DbProviderImpl;
@@ -71,6 +72,11 @@ public class ServletInjector extends GuiceServletContextListener {
 				serve(PayPalConstants.PAYPAL_IPN_NOTIFY_URL).with(PayPalIPNServlet.class);
 				serve(PayPalConstants.PAYPAL_CHECKOUT_URL).with(PaypalSubscriptionServlet.class);
 				serve(PayPalConstants.PAYPAL_RETURN_URL).with(PaypalSubscriptionCallbackServlet.class);
+
+				serve(CoinbasePaymentConstants.COINBASE_CHECKOUT__URL).with(CoinbaseRequestServlet.class);
+				serve(CoinbasePaymentConstants.COINBASE_CALLBACK_URL).with(CoinbaseCallbackServlet.class);
+				serve(CoinbasePaymentConstants.COINBASE_RECURRING_PAYMENT_URL).with(CoinbaseRecurringPaymentServlet.class);
+				serve(CoinbasePaymentConstants.COINBASE_CREATE_PROFILE_URL).with(CoinbaseCreateProfileServlet.class);
 			}
 		});
 	}
