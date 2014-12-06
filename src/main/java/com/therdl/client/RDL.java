@@ -29,6 +29,7 @@ public class RDL implements EntryPoint {
 	public static final I18NConstants i18n = GWT.create(I18NConstants.class);
 
 	public void onModuleLoad() {
+
 		//Initialize logging
 		Log.setUncaughtExceptionHandler();
 

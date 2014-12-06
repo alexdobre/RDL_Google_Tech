@@ -16,6 +16,6 @@ public class CoinbasePaymentConstants {
 
     public static final String COINBASE_SCOPE = "user+recurring_payments+request+balance+buttons";
     public static final String COINBASE_FULL_CALLBACK_URL = COINBASE_DEV_URL + COINBASE_CALLBACK_URL;
-    public static final String COINBASE_AUTHORIZE_URL = "https://www.coinbase.com/oauth/authorize";
-    public static final String COINBASE_REQUEST_TOKEN_ENDPOINT_URL = "https://www.coinbase.com/oauth/token"; // endpoint for requesting tokens
+    public static final String COINBASE_AUTHORIZE_URL = "http://www.coinbase.com/oauth/authorize";
+    public static final String COINBASE_REQUEST_TOKEN_ENDPOINT_URL = "http://www.coinbase.com/oauth/token"; // endpoint for requesting tokens
 }

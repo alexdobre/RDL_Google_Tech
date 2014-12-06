@@ -22,6 +22,14 @@
     </properties>
 
     <dependencies>
+
+        <!-- super dev mode -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>5.0.3</version>
+        </dependency>
+
         <!-- password hashing -->
         <dependency>
             <groupId>org.mindrot</groupId>
@@ -62,13 +70,13 @@
             <version>2.4</version>
         </dependency>
 
-	    <!--AWS AMAZON -->
+        <!--AWS AMAZON -->
 
-	    <dependency>
-		    <groupId>com.amazonaws</groupId>
-		    <artifactId>aws-java-sdk</artifactId>
-		    <version>1.8.7</version>
-	    </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.8.7</version>
+        </dependency>
 
         <!-- for java collections -->
         <dependency>
@@ -137,43 +145,48 @@
             <!--scope>provided</scope-->
         </dependency>
         <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwtVersion}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
 
-	    <dependency>
-		    <groupId>org.gwtbootstrap3</groupId>
-		    <artifactId>gwtbootstrap3</artifactId>
-		    <version>0.8.1</version>
-	    </dependency>
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3</artifactId>
+            <version>0.8.1</version>
+        </dependency>
 
-	    <dependency>
-		    <groupId>org.gwtbootstrap3</groupId>
-		    <artifactId>gwtbootstrap3-extras</artifactId>
-		    <version>0.8.1</version>
-	    </dependency>
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3-extras</artifactId>
+            <version>0.8.1</version>
+        </dependency>
 
-	    <dependency>
-		    <groupId>com.github.spullara.mustache.java</groupId>
-		    <artifactId>compiler</artifactId>
-		    <version>0.8.16</version>
-	    </dependency>
+        <dependency>
+            <groupId>com.github.spullara.mustache.java</groupId>
+            <artifactId>compiler</artifactId>
+            <version>0.8.16</version>
+        </dependency>
 
-	    <!-- Validation -->
-	    <dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-validator</artifactId>
-		    <version>4.1.0.Final</version>
-	    </dependency>
+        <!-- Validation -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.1.0.Final</version>
+        </dependency>
 
-	    <dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-validator</artifactId>
-		    <version>4.1.0.Final</version>
-		    <classifier>sources</classifier>
-	    </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.1.0.Final</version>
+            <classifier>sources</classifier>
+        </dependency>
 
         <!-- Logging -->
         <dependency>
@@ -187,12 +200,24 @@
             <version>1.7.7</version>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.7</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
 
-	    <!--PayPal Merchant SDK -->
+        <!--PayPal Merchant SDK -->
         <dependency>
             <groupId>com.paypal.sdk</groupId>
             <artifactId>merchantsdk</artifactId>
@@ -205,7 +230,6 @@
             <artifactId>coinbase-java</artifactId>
             <version>1.5.0</version>
         </dependency>
-
 
     </dependencies>
 
@@ -236,14 +260,15 @@
                     <runTarget>/</runTarget>
                     <port>8080</port>
                     <server>:ssl</server>
+                    <codeServerPort>8081</codeServerPort>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <i18nMessagesBundle>com.therdl.client.view.i18n.I18NConstants</i18nMessagesBundle>
-	                <systemProperties>
-		                <systemProperty>
-			                <name>log4j.ignoreTCL</name>
-			                <value>true</value>
-		                </systemProperty>
-	                </systemProperties>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>log4j.ignoreTCL</name>
+                            <value>true</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
 
@@ -292,60 +317,60 @@
         </plugins>
 
     </build>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<property>
-					<name>environment</name>
-					<value>dev</value>
-				</property>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<logging.level>DEBUG</logging.level>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>**/*rdl.gwt.xml</include>
-							<include>**/*log4j.properties</include>
-							<include>**/*.mustache</include>
-						</includes>
-						<filtering>true</filtering>
-					</resource>
-				</resources>
-				<defaultGoal>process-resources</defaultGoal>
-			</build>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<activation>
-				<property>
-					<name>environment</name>
-					<value>prod</value>
-				</property>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>dev</value>
+                </property>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <logging.level>DEBUG</logging.level>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>**/*rdl.gwt.xml</include>
+                            <include>**/*log4j.properties</include>
+                            <include>**/*.mustache</include>
+                        </includes>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+                <defaultGoal>process-resources</defaultGoal>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>prod</value>
+                </property>
                 <activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<logging.level>OFF</logging.level>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>**/*rdl.gwt.xml</include>
-							<include>**/*log4j.properties</include>
-							<include>**/*.mustache</include>
-						</includes>
-						<filtering>true</filtering>
-					</resource>
-				</resources>
-				<defaultGoal>process-resources</defaultGoal>
-			</build>
-		</profile>
-	</profiles>
+            </activation>
+            <properties>
+                <logging.level>OFF</logging.level>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>**/*rdl.gwt.xml</include>
+                            <include>**/*log4j.properties</include>
+                            <include>**/*.mustache</include>
+                        </includes>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+                <defaultGoal>process-resources</defaultGoal>
+            </build>
+        </profile>
+    </profiles>
 </project>
