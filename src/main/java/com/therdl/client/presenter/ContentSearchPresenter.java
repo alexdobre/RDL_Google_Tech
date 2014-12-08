@@ -31,7 +31,7 @@ public class ContentSearchPresenter extends RdlAbstractPresenter<ContentSearchVi
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		container.clear();
 		getController().getAppMenu().getSearchSiteTextBox().setText(searchStr);
 		view.getResultsContainer().clear();

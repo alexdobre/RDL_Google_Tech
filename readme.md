@@ -35,6 +35,10 @@ cd .../jboss-as-7.1.1.Final/standalone/configuration
 vi standalone.xml
 "enable-welcome-root="false" instead of "true".
 
+To enable client side logging you must go to com/therdl/rdl.gwt.xml and manually set the inherit to:
+<inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/>
+We tried to do this via maven profiles but so far we have been unsuccessful.
+
 
 
 http://www.davidghedini.com/pg/entry/install_jboss_7_on_centos

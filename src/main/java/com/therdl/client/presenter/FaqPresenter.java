@@ -29,7 +29,7 @@ public class FaqPresenter extends RdlAbstractPresenter<FaqView> implements FaqVi
 
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		this.currentUserBean = currentUserBean;
 		container.clear();
 

@@ -28,7 +28,7 @@ public class TribunalPresenter extends RdlAbstractPresenter<TribunalView>
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		Log.info("SnipSearchPresenter go adding view");
-		checkLogin();
+		checkLogin(null);
 		container.clear();
 		view.getAppMenu().setActive();
 		if (view.getCurrentSearchOptionsBean() == null) {

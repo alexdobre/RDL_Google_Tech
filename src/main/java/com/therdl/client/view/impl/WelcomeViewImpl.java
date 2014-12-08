@@ -7,6 +7,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.widget.AppMenu;
@@ -36,6 +38,7 @@ import java.util.Map;
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
  */
+@Singleton
 public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
 	interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
@@ -44,7 +47,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	private static WelcomeViewImplUiBinder uiBinder = GWT.create(WelcomeViewImplUiBinder.class);
 
 	private Presenter presenter;
-	private AutoBean<CurrentUserBean> currentUser;
 	private Map<CoreCategory, AutoBean<SnipBean>> snipMap = new HashMap<CoreCategory, AutoBean<SnipBean>>();
 	private CoreCategory delayedDisplay;
 
@@ -59,10 +61,10 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	@UiField
 	Column welcomeMessage;
 
-	public WelcomeViewImpl(AutoBean<CurrentUserBean> currentUser, AppMenu appMenu) {
+	@Inject
+	public WelcomeViewImpl(AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
-		this.currentUser = currentUser;
 		logo.setStyleName("splashLogo");
 
 		//core category buttons

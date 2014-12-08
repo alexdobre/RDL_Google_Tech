@@ -19,7 +19,7 @@ public class ContentNotFoundPresenter extends RdlAbstractPresenter<ContentNotFou
 
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		container.clear();
 		container.add(view.asWidget());
 	}

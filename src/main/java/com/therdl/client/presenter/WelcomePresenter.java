@@ -54,7 +54,7 @@ public class WelcomePresenter extends RdlAbstractPresenter<WelcomeView> implemen
 
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		container.clear();
 		view.getAppMenu().setHomeActive();
 		if (view.getSnipMap().get(CoreCategory.GENERAL) == null) {

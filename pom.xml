@@ -37,7 +37,7 @@
             <version>0.3m</version>
         </dependency>
 
-        <!-- MongDB java driver to hook up to MongoDB server -->
+        <!-- MongoDB java driver to hook up to MongoDB server -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
@@ -188,6 +188,13 @@
             <classifier>sources</classifier>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>1.5.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>com.allen-sauer.gwt.log</groupId>
@@ -324,9 +331,6 @@
 				</property>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			<properties>
-				<logging.level>DEBUG</logging.level>
-			</properties>
 			<build>
 				<resources>
 					<resource>
@@ -351,9 +355,6 @@
 				</property>
                 <activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<logging.level>OFF</logging.level>
-			</properties>
 			<build>
 				<resources>
 					<resource>

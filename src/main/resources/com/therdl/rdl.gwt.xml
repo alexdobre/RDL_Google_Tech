@@ -27,9 +27,11 @@
     <inherits name='com.google.gwt.http.HTTP'/>
     <inherits name='com.google.gwt.json.JSON'/>
     <inherits name="com.google.common.collect.Collect"/>
+    <inherits name="com.google.gwt.inject.Inject"/>
 
-    <!--<inherits name="com.allen_sauer.gwt.log.gwt-log-${logging.level}" />-->
-    <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
+    <!--Please see https://code.google.com/p/gwt-log/wiki/GettingStarted#Working_examples -->
+    <!-- <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/> -->
+    <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/>
 
     <entry-point class='com.therdl.client.RDL'/>
 

@@ -11,6 +11,8 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.presenter.CommonPresenter;

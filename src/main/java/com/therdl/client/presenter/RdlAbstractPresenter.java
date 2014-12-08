@@ -61,19 +61,21 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		container.add(view.asWidget());
 	}
 
-	public void checkLogin() {
+	public void checkLogin(final LoginHandler loginCallback) {
 		Log.info("RDL abstract presenter check login is auth: " + getController().getCurrentUserBean().as().isAuth());
 		if (getController().getCurrentUserBean().as().isAuth()) {
-			//do nothing
+			if (loginCallback != null) {
+				loginCallback.onSuccess(getController().getCurrentUserBean());
+			}
 		} else {
-			loginCookieCheck();
+			loginCookieCheck(loginCallback);
 		}
 	}
 
 	/**
 	 * Checks if the SID cookie is active and logs in if it is
 	 */
-	private void loginCookieCheck() {
+	private void loginCookieCheck(LoginHandler loginHandler) {
 		if (!controller.getCurrentUserBean().as().isAuth()) {
 			Log.info("RdlAbstractPresenter loginCookieCheck");
 			//check the cookie
@@ -81,9 +83,12 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 			if (sessionID != null) {
 				Log.info("Found cookie with SID " + sessionID);
 				//check if the SID is found and authenticate the user
-				doLogIn(null, null, true, sessionID, null);
+				doLogIn(null, null, true, sessionID, loginHandler);
 			} else {
 				view.getAppMenu().logOut();
+				if (loginHandler != null) {
+					loginHandler.onSuccess(controller.getCurrentUserBean());
+				}
 			}
 		}
 	}

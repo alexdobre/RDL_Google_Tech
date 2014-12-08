@@ -29,9 +29,8 @@ public class LicenseViewImpl extends AppMenuView implements LicenseView {
 
 	public LicenseViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
-		this.currentUserBean = currentUserBean;
-		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = cUserBean;
+		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override

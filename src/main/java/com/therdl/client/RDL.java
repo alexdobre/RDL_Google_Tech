@@ -22,6 +22,8 @@ import com.therdl.client.view.i18n.I18NConstants;
  */
 public class RDL implements EntryPoint {
 
+	private final RdlGinjector injector = GWT.create(RdlGinjector.class);
+
 	public static I18NConstants getI18n() {
 		return i18n;
 	}
@@ -32,8 +34,8 @@ public class RDL implements EntryPoint {
 
 		//Initialize logging
 		Log.setUncaughtExceptionHandler();
+		AppController appController = injector.getAppController();
 
-		AppController appController = new AppController();
 		RootLayoutPanel rp = RootLayoutPanel.get();
 		//panels added to make the root panel stretch dynamically based on content
 		SimplePanel p1 = new SimplePanel();
@@ -50,12 +52,13 @@ public class RDL implements EntryPoint {
 		p2.getElement().getStyle().setProperty("zoom", "1");
 		p1.add(p2);
 
-		WidgetHolder.initHolder(appController);
-		LogicHolder.initHolder(appController);
 		// Inject the contents of the CSS file
 		Resources.INSTANCE.rdlCss().ensureInjected();
 		StyleInjector.inject(Resources.INSTANCE.rdlMediaCss().getText());
 		//we let the appController take over
+		appController.setInjector(injector);
+		WidgetHolder.initHolder(appController);
+		LogicHolder.initHolder(appController);
 		appController.go(p2);
 	}
 

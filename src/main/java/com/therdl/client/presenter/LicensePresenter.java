@@ -27,7 +27,7 @@ public class LicensePresenter extends RdlAbstractPresenter<LicenseView> implemen
 
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		this.currentUserBean = currentUserBean;
 		container.clear();
 

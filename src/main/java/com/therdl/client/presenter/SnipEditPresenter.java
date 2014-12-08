@@ -54,7 +54,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView>
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
 		Log.info("SnipSearchPresenter go");
 		this.container = container;
-		checkLogin();
+		checkLogin(null);
 		container.clear();
 		loadEditor();
 		showHide();

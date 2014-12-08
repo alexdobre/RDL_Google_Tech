@@ -8,7 +8,10 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.therdl.client.RdlGinjector;
 import com.therdl.client.presenter.*;
 import com.therdl.client.presenter.runt.impl.ProfileDescRuntImpl;
 import com.therdl.client.view.*;
@@ -50,11 +53,13 @@ import java.util.List;
  * created and by examining the authorisation status of the user put in focus for the user if user is authorised
  * with the correct paramaters (eg menu options) for that users given  authorisation status (eg logged in)
  */
+@Singleton
 public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private HasWidgets container;
 	private Beanery beanery = GWT.create(Beanery.class);
 	private AppMenu appMenu;
+	private RdlGinjector injector;
 
 	/**
 	 * Current authentication rules are anyone can view but only registered user can edit
@@ -88,11 +93,17 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private ImprovementView proposalView;
 	private LicenseView licenseView;
 	private FaqView faqView;
+	private SubscribeView subscribeView;
 
 	private RdlAbstractPresenter defaultPresenter;
 
+	@Inject
 	public AppController() {
 		bind();
+	}
+
+	public void setInjector(RdlGinjector injector) {
+		this.injector = injector;
 	}
 
 	/**
@@ -192,6 +203,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			case RDLConstants.Tokens.WELCOME:
 				showWelcomeView(tokenSplit);
 				break;
+			case RDLConstants.Tokens.SUBSCRIBE:
+				showSubscribeView();
+				break;
 			case RDLConstants.Tokens.SERVICE_VIEW:
 				showServiceView(token);
 				break;
@@ -268,7 +282,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void showWelcomeView(String[] tokenSplit) {
 		Log.info("AppController Tokens.WELCOME");
 		if (welcomeView == null) {
-			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
+			welcomeView = new WelcomeViewImpl(appMenu);
 		}
 		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this, tokenSplit);
 		GWT.runAsync(new RunAsyncCallback() {
@@ -277,6 +291,22 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			public void onSuccess() {
 				welcomePresenter.go(container, currentUserBean);
+			}
+		});
+	}
+
+	private void showSubscribeView() {
+		Log.info("AppController Tokens.SUBSCRIBE");
+		if (subscribeView == null) {
+			subscribeView = new SubscribeViewImpl(appMenu);
+		}
+		final SubscribePresenter subscribePresenter = new SubscribePresenter(subscribeView, this);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				subscribePresenter.go(container, currentUserBean);
 			}
 		});
 	}
@@ -661,7 +691,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		Log.info("AppController Tokens.LOG_OUT ");
 
 		if (welcomeView == null) {
-			welcomeView = new WelcomeViewImpl(currentUserBean, appMenu);
+			welcomeView = new WelcomeViewImpl(appMenu);
 		}
 
 		final WelcomePresenter welcomePresenter = new WelcomePresenter(welcomeView, this, null);

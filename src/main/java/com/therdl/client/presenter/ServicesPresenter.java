@@ -42,7 +42,7 @@ public class ServicesPresenter extends RdlAbstractPresenter<ServicesView>
 
 	@Override
 	public void go(HasWidgets container, final AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		this.currentUserBean = currentUserBean;
 		container.clear();
 		if (view.getCurrentSearchOptionsBean() == null) {

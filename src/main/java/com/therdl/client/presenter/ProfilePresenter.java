@@ -47,7 +47,7 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		this.currentUserBean = currentUserBean;
 		container.clear();
 		profileDescRunt.grabProfileDesc(view, currentUserBean);

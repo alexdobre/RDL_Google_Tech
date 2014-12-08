@@ -50,7 +50,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 	 */
 	@Override
 	public void go(HasWidgets container, AutoBean<CurrentUserBean> currentUserBean) {
-		checkLogin();
+		checkLogin(null);
 		container.clear();
 		view.hideMessages();
 		contentMgmtRunt.displaySignInMsg(view.getSignUpMessage());
