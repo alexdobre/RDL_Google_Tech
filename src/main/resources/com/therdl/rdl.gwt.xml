@@ -31,7 +31,7 @@
 
     <!--Please see https://code.google.com/p/gwt-log/wiki/GettingStarted#Working_examples -->
     <!-- <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/> -->
-    <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/>
+    <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF"/>
 
     <entry-point class='com.therdl.client.RDL'/>
 
