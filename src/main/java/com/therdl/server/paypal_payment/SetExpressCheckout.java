@@ -158,7 +158,6 @@ public class SetExpressCheckout {
 			billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_USD);
 		}
 
-		billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_USD);
 		List<BillingAgreementDetailsType> billList = new ArrayList<BillingAgreementDetailsType>();
 		billList.add(billingAgreement);
 		setExpressCheckoutRequestDetails.setBillingAgreementDetails(billList);

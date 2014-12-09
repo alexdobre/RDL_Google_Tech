@@ -96,10 +96,4 @@ public class SupportRdlPopup extends Composite {
         ancSupporter.setHref("/rdl/paypalCheckout?cur=EUR");
     }
 
-//    @UiHandler("radButUsd")
-//    void handleRadButUsd(ClickEvent e) {
-//
-//        ancSupporter.setHref("href=/rdl/paypalCheckout?cur=USD");
-//    }
-
 }

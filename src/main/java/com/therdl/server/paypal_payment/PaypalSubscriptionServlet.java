@@ -44,7 +44,7 @@ public class PaypalSubscriptionServlet extends HttpServlet {
 
 		String currency = request.getParameter("cur");
 
-		request.setAttribute(PayPalConstants.CURRENCY, currency);
+		session.get().setAttribute(PayPalConstants.CURRENCY, currency);
 
 		StringBuffer url = new StringBuffer();
 		url.append("http://");
