@@ -82,9 +82,24 @@ public class CreateRecurringPaymentsProfile {
 		// `Note:
 		// All amounts in the CreateRecurringPaymentsProfile request must have
 		// the same currency.`
-		BasicAmountType billingAmount = new BasicAmountType(
-				CurrencyCodeType.USD, PayPalConstants.CHARGE_AMOUNT);
+		BasicAmountType billingAmount;
+		String billingDesc;
+		String currency = session.get().getAttribute(PayPalConstants.CURRENCY).toString();
+		if(currency.equals("GBP"))   {
+			billingAmount = new BasicAmountType(
+					CurrencyCodeType.GBP, PayPalConstants.CHARGE_AMOUNT_GBP);
+			billingDesc = PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_GBP;
 
+		} else if(currency.equals("EUR"))   {
+			billingAmount = new BasicAmountType(
+					CurrencyCodeType.EUR, PayPalConstants.CHARGE_AMOUNT_EUR);
+			billingDesc = PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_EUR;
+
+		} else {
+			billingAmount = new BasicAmountType(
+					CurrencyCodeType.USD, PayPalConstants.CHARGE_AMOUNT_USD);
+			billingDesc = PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_USD;
+		}
 		// Regular payment period for this schedule which takes mandatory
 		// params:
 		//
@@ -129,7 +144,7 @@ public class CreateRecurringPaymentsProfile {
 		// agreement description included in the SetExpressCheckout request.`
 		// * `Payment Period`
 		ScheduleDetailsType scheduleDetails = new ScheduleDetailsType();
-		scheduleDetails.setDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION);
+		scheduleDetails.setDescription(billingDesc);
 		scheduleDetails.setPaymentPeriod(paymentPeriod);
 		scheduleDetails.setAutoBillOutstandingAmount(AutoBillType.ADDTONEXTBILLING);
 		scheduleDetails.setMaxFailedPayments(failedBillingAttempts);

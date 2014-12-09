@@ -1,35 +1,25 @@
 package com.therdl.server.paypal_payment;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.paypal.exception.*;
+import com.paypal.sdk.exceptions.OAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-
-import com.paypal.exception.ClientActionRequiredException;
-import com.paypal.exception.HttpErrorException;
-import com.paypal.exception.InvalidCredentialException;
-import com.paypal.exception.InvalidResponseDataException;
-import com.paypal.exception.MissingCredentialException;
-import com.paypal.exception.SSLConfigurationException;
-import com.paypal.sdk.exceptions.OAuthException;
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutReq;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutRequestType;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutResponseType;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.BillingAgreementDetailsType;
-import urn.ebay.apis.eBLBaseComponents.BillingCodeType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.ErrorType;
-import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
-import urn.ebay.apis.eBLBaseComponents.SetExpressCheckoutRequestDetailsType;
+import urn.ebay.apis.eBLBaseComponents.*;
+
+import javax.inject.Provider;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 //# SetExpressCheckout API
 // The SetExpressCheckout API operation initiates an Express Checkout
@@ -42,7 +32,7 @@ public class SetExpressCheckout {
 	public SetExpressCheckout() {
 	}
 
-	public SetExpressCheckoutResponseType setExpressCheckout(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
+	public SetExpressCheckoutResponseType setExpressCheckout(HttpServletRequest request, HttpServletResponse response, String url, Provider<HttpSession> session) throws IOException {
 
 		String returnURL = url + PayPalConstants.PAYPAL_RETURN_URL;
 		String cancelURL = url + PayPalConstants.PAYPAL_CANCEL_URL;
@@ -157,7 +147,18 @@ public class SetExpressCheckout {
 				 *   buyer is billed at "9.99 per month for 2 years".
 				   Character length and limitations: 127 single-byte alphanumeric characters
 				 */
-		billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION);
+		String currency = session.get().getAttribute(PayPalConstants.CURRENCY).toString();
+		if(currency.equals("GBP"))   {
+			billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_GBP);
+
+		} else if(currency.equals("EUR"))   {
+			billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_EUR);
+
+		} else {
+			billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_USD);
+		}
+
+		billingAgreement.setBillingAgreementDescription(PayPalConstants.BILLING_AGREEMENT_DESCRIPTION_USD);
 		List<BillingAgreementDetailsType> billList = new ArrayList<BillingAgreementDetailsType>();
 		billList.add(billingAgreement);
 		setExpressCheckoutRequestDetails.setBillingAgreementDetails(billList);

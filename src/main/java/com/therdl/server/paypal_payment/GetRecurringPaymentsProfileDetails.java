@@ -1,12 +1,9 @@
 package com.therdl.server.paypal_payment;
 
-import com.paypal.exception.ClientActionRequiredException;
-import com.paypal.exception.HttpErrorException;
-import com.paypal.exception.InvalidCredentialException;
-import com.paypal.exception.InvalidResponseDataException;
-import com.paypal.exception.MissingCredentialException;
-import com.paypal.exception.SSLConfigurationException;
+import com.paypal.exception.*;
 import com.paypal.sdk.exceptions.OAuthException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.GetRecurringPaymentsProfileDetailsReq;
 import urn.ebay.api.PayPalAPI.GetRecurringPaymentsProfileDetailsRequestType;
@@ -15,14 +12,12 @@ import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * # GetRecurringPaymentsProfileDetails API
- * Obtain information about a recurring payments profile.
- * download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
- */
+* # GetRecurringPaymentsProfileDetails API
+* Obtain information about a recurring payments profile.
+* download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
+*/
 public class GetRecurringPaymentsProfileDetails {
 	final Logger logger = LoggerFactory.getLogger(GetRecurringPaymentsProfileDetails.class);
 

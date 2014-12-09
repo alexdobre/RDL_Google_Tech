@@ -1,35 +1,19 @@
 package com.therdl.server.paypal_payment;
 
+import com.paypal.exception.*;
+import com.paypal.sdk.exceptions.OAuthException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+import urn.ebay.api.PayPalAPI.*;
+import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+import urn.ebay.apis.eBLBaseComponents.*;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-
-import com.paypal.exception.ClientActionRequiredException;
-import com.paypal.exception.HttpErrorException;
-import com.paypal.exception.InvalidCredentialException;
-import com.paypal.exception.InvalidResponseDataException;
-import com.paypal.exception.MissingCredentialException;
-import com.paypal.exception.SSLConfigurationException;
-import com.paypal.sdk.exceptions.OAuthException;
-import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentReq;
-import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentRequestType;
-import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentResponseType;
-import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsResponseType;
-import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
-import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.DoExpressCheckoutPaymentRequestDetailsType;
-import urn.ebay.apis.eBLBaseComponents.ErrorType;
-import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
-import urn.ebay.apis.eBLBaseComponents.PaymentInfoType;
 
 //# DoExpressCheckout API
 // The DoExpressCheckoutPayment API operation completes an Express Checkout
@@ -86,8 +70,9 @@ public class DoExpressCheckout {
 		// 3-character currency codes for any of the supported PayPal
 		// currencies.
 		// * `Amount`
+
 		BasicAmountType orderTotal1 = new BasicAmountType(CurrencyCodeType.USD,
-				PayPalConstants.CHARGE_AMOUNT);
+				PayPalConstants.CHARGE_AMOUNT_USD);
 		paymentDetails1.setOrderTotal(orderTotal1);
 		paymentDetails1.setButtonSource("PayPal_SDK");
 

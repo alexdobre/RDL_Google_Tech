@@ -37,7 +37,7 @@
             <version>0.3m</version>
         </dependency>
 
-        <!-- MongoDB java driver to hook up to MongoDB server -->
+        <!-- MongDB java driver to hook up to MongoDB server -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
@@ -70,13 +70,13 @@
             <version>2.4</version>
         </dependency>
 
-	    <!--AWS AMAZON -->
+        <!--AWS AMAZON -->
 
-	    <dependency>
-		    <groupId>com.amazonaws</groupId>
-		    <artifactId>aws-java-sdk</artifactId>
-		    <version>1.8.7</version>
-	    </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.8.7</version>
+        </dependency>
 
         <!-- for java collections -->
         <dependency>
@@ -319,6 +319,9 @@
 				</property>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			<properties>
+				<logging.level>DEBUG</logging.level>
+			</properties>
 			<build>
 				<resources>
 					<resource>
@@ -343,6 +346,9 @@
 				</property>
                 <activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<logging.level>OFF</logging.level>
+			</properties>
 			<build>
 				<resources>
 					<resource>
