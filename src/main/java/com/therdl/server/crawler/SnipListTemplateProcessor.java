@@ -43,6 +43,12 @@ public class SnipListTemplateProcessor {
 			doProcessWelcome(out);
 			return;
 		}
+
+		if (moduleName.equals(RDLConstants.Tokens.LICENSE)) {
+			doProcessLicense(out);
+			return;
+		}
+
 		log.info("SnipListTemplateProcessor doProcess - BEGIN query: " + query);
 		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, null);
 		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null, null);
@@ -71,6 +77,20 @@ public class SnipListTemplateProcessor {
 		mustache.execute(out, template).flush();
 	}
 
+	private void doProcessLicense(final PrintWriter out) throws IOException {
+		AutoBean<SnipBean> queryBean = beanery.snipBean();
+		RDLUtils.buildLicenseBean(queryBean);
+		queryBean.as().setSortOrder(1);
+		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null, null);
+
+		SnipListTemplate template = new SnipListTemplate(snipList,
+				translateModuleToView(RDLConstants.Tokens.LICENSE), null, false);
+
+		MustacheFactory mf = new DefaultMustacheFactory();
+		Mustache mustache = mf.compile("mustache/license.mustache");
+		mustache.execute(out, template).flush();
+	}
+
 	private boolean shouldRenderNextPage(List<SnipBean> snipList) {
 		if (snipList == null || snipList.size() < Constants.DEFAULT_PAGE_SIZE) {
 			return false;
@@ -84,6 +104,7 @@ public class SnipListTemplateProcessor {
 			case RDLConstants.Tokens.SNIPS: return RDLConstants.Tokens.SNIP_VIEW;
 			case RDLConstants.Tokens.STORIES: return RDLConstants.Tokens.THREAD_VIEW;
 			case RDLConstants.Tokens.IMPROVEMENTS: return RDLConstants.Tokens.PROPOSAL_VIEW;
+			case RDLConstants.Tokens.LICENSE: return RDLConstants.Tokens.LICENSE_VIEW;
 			default: return RDLConstants.Tokens.SNIP_VIEW;
 		}
 	}

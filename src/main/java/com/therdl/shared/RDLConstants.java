@@ -38,7 +38,8 @@ public interface RDLConstants {
 		String PUBLIC_PROFILE = "publicProfile";
 		String SNIP_VIEW = "!snipView";
 		String SERVICE_VIEW = "serviceView";
-		String LICENSE = "license";
+		String LICENSE = "!license";
+		String LICENSE_VIEW = "licenseView";
 		String FAQ = "faq";
 		String ERROR = "error";
 

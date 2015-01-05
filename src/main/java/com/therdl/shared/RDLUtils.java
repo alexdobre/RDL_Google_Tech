@@ -112,6 +112,17 @@ public class RDLUtils {
 		searchOptionsBean.as().setReturnSnipContent(true);
 	}
 
+	public static void buildLicenseBean(AutoBean<SnipBean> searchOptionsBean) {
+		searchOptionsBean.as().setAuthor("RDL");
+		searchOptionsBean.as().setAction("search");
+		searchOptionsBean.as().setPageIndex(0);
+		searchOptionsBean.as().setSortField("creationDate");
+		searchOptionsBean.as().setSortOrder(-1);
+		searchOptionsBean.as().setSnipType("contentMgmt");
+		searchOptionsBean.as().setTitle("RDL License");
+		searchOptionsBean.as().setReturnSnipContent(true);
+	}
+
 	public static void buildDefaultViewBean(AutoBean<SnipBean> searchOptionsBean) {
 		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
 		searchOptionsBean.as().setSortOrder(1);
