@@ -123,6 +123,16 @@ public class RDLUtils {
 		searchOptionsBean.as().setReturnSnipContent(true);
 	}
 
+	public static void buildFaqBean(AutoBean<SnipBean> searchOptionsBean) {
+		searchOptionsBean.as().setAuthor("RDL");
+		searchOptionsBean.as().setAction("search");
+		searchOptionsBean.as().setPageIndex(0);
+		searchOptionsBean.as().setSortField("creationDate");
+		searchOptionsBean.as().setSortOrder(-1);
+		searchOptionsBean.as().setSnipType("faq");
+		searchOptionsBean.as().setReturnSnipContent(true);
+	}
+
 	public static void buildDefaultViewBean(AutoBean<SnipBean> searchOptionsBean) {
 		searchOptionsBean.as().setSortField(RDLConstants.SnipFields.CREATION_DATE);
 		searchOptionsBean.as().setSortOrder(1);

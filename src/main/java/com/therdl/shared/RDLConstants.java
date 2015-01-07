@@ -40,7 +40,8 @@ public interface RDLConstants {
 		String SERVICE_VIEW = "serviceView";
 		String LICENSE = "!license";
 		String LICENSE_VIEW = "licenseView";
-		String FAQ = "faq";
+		String FAQ = "!faq";
+		String FAQ_VIEW = "faqView";
 		String ERROR = "error";
 
 		String STORIES = "!stories";
