@@ -29,11 +29,12 @@ public class SupportRdlPopup extends Composite {
     @UiField
     ModalBody modalBody;
 
-    @UiField
-    RadioButton radButUsd;
 
     @UiField
     Anchor ancSupporter;
+
+    @UiField
+    RadioButton radButUsd;
     @UiField
     RadioButton radButGbp;
     @UiField
@@ -45,6 +46,7 @@ public class SupportRdlPopup extends Composite {
         initWidget(ourUiBinder.createAndBindUi(this));
 
         radButUsd.setActive(true);
+        ancSupporter.setHref("/rdl/paypalCheckout?cur=USD");
     }
 
     public void show() {

@@ -1,13 +1,17 @@
 package com.therdl.client.view.impl;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 import com.therdl.client.view.SubscribeView;
 import com.therdl.client.view.widget.AppMenu;
 import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.RadioButton;
 
 /**
  * The subscribe view
@@ -29,9 +33,22 @@ public class SubscribeViewImpl extends AppMenuView implements SubscribeView {
 	@UiField
 	Column footer;
 
+	@UiField
+	Anchor ancSupporter;
+
+	@UiField
+	RadioButton radButUsd;
+	@UiField
+	RadioButton radButGbp;
+	@UiField
+	RadioButton radButEur;
+
 	public SubscribeViewImpl(AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
+
+		radButUsd.setActive(true);
+		ancSupporter.setHref("/rdl/paypalCheckout?cur=USD");
 	}
 
 	@Override
@@ -57,5 +74,30 @@ public class SubscribeViewImpl extends AppMenuView implements SubscribeView {
 	@Override
 	public PanelBody getDescBody() {
 		return descBody;
+	}
+
+	@UiHandler("radButUsd")
+	void handleRadButUsd(ClickEvent e) {
+		radButUsd.setActive(true);
+		radButGbp.setActive(false);
+		radButEur.setActive(false);
+
+		ancSupporter.setHref("/rdl/paypalCheckout?cur=USD");
+	}
+
+	@UiHandler("radButGbp")
+	void handleRadButGbp(ClickEvent e) {
+		radButUsd.setActive(false);
+		radButGbp.setActive(true);
+		radButEur.setActive(false);
+		ancSupporter.setHref("/rdl/paypalCheckout?cur=GBP");
+	}
+
+	@UiHandler("radButEur")
+	void handleRadButEur(ClickEvent e) {
+		radButUsd.setActive(false);
+		radButGbp.setActive(false);
+		radButEur.setActive(true);
+		ancSupporter.setHref("/rdl/paypalCheckout?cur=EUR");
 	}
 }
