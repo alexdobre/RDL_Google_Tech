@@ -34,7 +34,6 @@ public class SocialPanel extends Composite {
 		socialPanel.add(createAnchor(Resources.INSTANCE.facebookImage(), Constants.FACEBOOK_URL));
 		socialPanel.add(createAnchor(Resources.INSTANCE.twitterImage(), Constants.TWITTER_URL));
 		socialPanel.add(createAnchor(Resources.INSTANCE.youtubeImage(), Constants.YOUTUBE_URL));
-		socialPanel.add(createAnchor(Resources.INSTANCE.redditImage(), Constants.REDDIT_URL));
 	}
 
 	/**
