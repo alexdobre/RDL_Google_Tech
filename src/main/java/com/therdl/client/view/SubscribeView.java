@@ -1,7 +1,5 @@
 package com.therdl.client.view;
 
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.PanelBody;
 
@@ -29,5 +27,7 @@ public interface SubscribeView extends RdlView {
 	public Column getFooter();
 
 	public PanelBody getDescBody();
+
+	public PanelBody getSubscribeFooter();
 
 }

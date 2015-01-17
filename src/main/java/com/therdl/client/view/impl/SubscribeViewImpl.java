@@ -11,6 +11,7 @@ import com.therdl.client.view.SubscribeView;
 import com.therdl.client.view.widget.AppMenu;
 import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.PanelFooter;
 import org.gwtbootstrap3.client.ui.RadioButton;
 
 /**
@@ -43,6 +44,9 @@ public class SubscribeViewImpl extends AppMenuView implements SubscribeView {
 	@UiField
 	RadioButton radButEur;
 
+	@UiField
+	PanelBody subscribeFooter;
+
 	public SubscribeViewImpl(AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -74,6 +78,11 @@ public class SubscribeViewImpl extends AppMenuView implements SubscribeView {
 	@Override
 	public PanelBody getDescBody() {
 		return descBody;
+	}
+
+	@Override
+	public PanelBody getSubscribeFooter() {
+		return subscribeFooter;
 	}
 
 	@UiHandler("radButUsd")

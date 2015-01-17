@@ -1,7 +1,6 @@
 package com.therdl.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.RDL;
@@ -60,12 +59,16 @@ public class SubscribePresenter extends RdlAbstractPresenter<SubscribeView> impl
 						view.getDescBody().clear();
 						view.getDescBody().add(new Paragraph(RDL.getI18n().alreadySupporter()));
 						view.setPopulated(false);
+
+						view.getSubscribeFooter().setVisible(false);
 					} else {
 						//3. user is logged in and not supporter -> populate the description
 						Log.debug("User logged in - and is NOT supporter");
 						if (!view.isPopulated()) {
 							grabRdlSupporterTitleDesc();
 						}
+
+						view.getSubscribeFooter().setVisible(true);
 					}
 				}
 			Log.debug("Supporter login handler -END");

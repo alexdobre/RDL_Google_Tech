@@ -13,7 +13,7 @@
                 <b:Panel>
                     <b:PanelBody ui:field="descBody">
                     </b:PanelBody>
-                    <b:PanelFooter>
+                    <b:PanelBody ui:field="subscribeFooter">
                         <b:Row>
                             <b:Column size="MD_3" ui:field="footer">
                                 <g:Anchor ui:field="ancSupporter" text="{i18n.becomeRdlSupporter}" href="/rdl/paypalCheckout"/>
@@ -31,7 +31,7 @@
                                 </b:InputGroup>
                             </b:Column>
                         </b:Row>
-                    </b:PanelFooter>
+                    </b:PanelBody>
                 </b:Panel>
             </b:Column>
         </b:Row>
