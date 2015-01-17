@@ -96,10 +96,6 @@ public interface Resources extends ClientBundle {
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
 	ImageResource twitterImage();
 
-	@Source("imagebund/reddit.png")
-	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
-	ImageResource redditImage();
-
 	@Source("imagebund/youtube.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
 	ImageResource youtubeImage();

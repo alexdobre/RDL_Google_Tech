@@ -13,9 +13,8 @@ public class Constants {
 	public static final int DEFAULT_REFERENCE_PAGE_SIZE = 10;
 
 	public static final String FACEBOOK_URL = "https://www.facebook.com/therdl";
-	public static final String TWITTER_URL = "https://twitter.com/RDLSocial";
-	public static final String YOUTUBE_URL = "http://www.youtube.com/user/AlexTheRDL";
-	public static final String REDDIT_URL = "http://www.reddit.com/user/RDLSocial";
+	public static final String TWITTER_URL = "https://twitter.com/TheRDLCurator";
+	public static final String YOUTUBE_URL = "https://www.youtube.com/channel/UCDRBFnE3tXLHY6mDLnRpA9g";
 
 	public static final String MAIN_PAGE = "/rdl.html";
 	public static final String ERROR_PAGE = "/error.jsp";
