@@ -28,7 +28,7 @@ public interface RDLConstants {
 	public interface Tokens {
 		String WELCOME = "!welcome";
 		String SUBSCRIBE = "supporter";
-		String SERVICES = "services";
+		String SERVICES = "!services";
 		String SNIPS = "!snips";
 		String SNIP_EDIT = "snipEdit";
 		String SERVICE_EDIT = "serviceEdit";
@@ -37,7 +37,7 @@ public interface RDLConstants {
 		String PROFILE = "profile";
 		String PUBLIC_PROFILE = "publicProfile";
 		String SNIP_VIEW = "!snipView";
-		String SERVICE_VIEW = "serviceView";
+		String SERVICE_VIEW = "!serviceView";
 		String LICENSE = "!license";
 		String LICENSE_VIEW = "licenseView";
 		String FAQ = "!faq";

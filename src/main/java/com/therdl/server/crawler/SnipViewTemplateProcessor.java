@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import com.therdl.shared.RDLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,11 @@ public class SnipViewTemplateProcessor {
 	}
 
 	public void doProcess(final PrintWriter out, String query, String moduleName) throws IOException {
+		if (moduleName.equals(RDLConstants.Tokens.SERVICE_VIEW)) {
+			doProcessServiceView(out, query, moduleName);
+			return;
+		}
+
 		log.info("SnipViewTemplateProcessor - doProcess - BEGIN - query: " + query);
 		SnipBean snipBean = snipsService.getSnip(extractId(query), null, null);
 		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, snipBean.getId());
@@ -50,6 +56,22 @@ public class SnipViewTemplateProcessor {
 
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mustache = mf.compile("mustache/snipView.mustache");
+		mustache.execute(out, template).flush();
+	}
+
+	private void doProcessServiceView(final PrintWriter out, String query, String moduleName) throws IOException {
+		log.info("SnipViewTemplateProcessor Service- doProcess - BEGIN - query: " + query);
+		SnipBean snipBean = snipsService.getSnip(extractId(query), null, null);
+		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, snipBean.getId());
+		queryBean.as().setReturnSnipContent(true);
+		List<SnipBean> repliesList = snipsService.searchSnipsWith(queryBean.as(), null, null);
+
+		queryBean.as().setPageIndex(queryBean.as().getPageIndex() + 1);
+		ServiceViewTemplate template = new ServiceViewTemplate(snipBean, repliesList,
+				RDLUtils.builtTokenFromBean(queryBean, moduleName, extractId(query)), shouldRenderNextPage(repliesList));
+
+		MustacheFactory mf = new DefaultMustacheFactory();
+		Mustache mustache = mf.compile("mustache/serviceView.mustache");
 		mustache.execute(out, template).flush();
 	}
 

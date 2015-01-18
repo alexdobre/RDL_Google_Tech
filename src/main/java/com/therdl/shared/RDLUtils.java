@@ -59,6 +59,9 @@ public class RDLUtils {
 			case RDLConstants.Tokens.SNIPS:
 				buildDefaultSnipsBean(searchOptionsBean);
 				break;
+			case RDLConstants.Tokens.SERVICES:
+				buildDefaultServicesBean(searchOptionsBean);
+				break;
 			case RDLConstants.Tokens.STORIES:
 				buildDefaultStoriesBean(searchOptionsBean);
 				break;

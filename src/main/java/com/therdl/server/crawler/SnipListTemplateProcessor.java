@@ -54,6 +54,22 @@ public class SnipListTemplateProcessor {
 			return;
 		}
 
+		if (moduleName.contains("service")) {
+			log.info("SnipListTemplateProcessor Service doProcess - BEGIN query: " + query);
+			AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, null);
+			List<SnipBean> serviceList = snipsService.searchSnipsWith(queryBean.as(), null, null);
+
+			queryBean.as().setPageIndex(queryBean.as().getPageIndex() + 1);
+			ServiceListTemplate template = new ServiceListTemplate(serviceList,
+					RDLUtils.builtTokenFromBean(queryBean, moduleName, null),
+					translateModuleToView(moduleName), shouldRenderNextPage(serviceList));
+
+			MustacheFactory mf = new DefaultMustacheFactory();
+			Mustache mustache = mf.compile("mustache/serviceList.mustache");
+			mustache.execute(out, template).flush();
+			return;
+		}
+
 		log.info("SnipListTemplateProcessor doProcess - BEGIN query: " + query);
 		AutoBean<SnipBean> queryBean = RDLUtils.parseSearchToken(beanery, query, null);
 		List<SnipBean> snipList = snipsService.searchSnipsWith(queryBean.as(), null, null);
@@ -125,6 +141,7 @@ public class SnipListTemplateProcessor {
 			case RDLConstants.Tokens.IMPROVEMENTS: return RDLConstants.Tokens.PROPOSAL_VIEW;
 			case RDLConstants.Tokens.LICENSE: return RDLConstants.Tokens.LICENSE_VIEW;
 			case RDLConstants.Tokens.FAQ: return RDLConstants.Tokens.FAQ_VIEW;
+			case RDLConstants.Tokens.SERVICES: return RDLConstants.Tokens.SERVICE_VIEW;
 			default: return RDLConstants.Tokens.SNIP_VIEW;
 		}
 	}

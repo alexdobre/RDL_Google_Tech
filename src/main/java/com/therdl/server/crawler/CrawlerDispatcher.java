@@ -49,6 +49,11 @@ public class CrawlerDispatcher {
 			moduleName = RDLConstants.Tokens.LICENSE;
 		} else if (query.contains("faq")) {
 			moduleName = RDLConstants.Tokens.FAQ;
+		} else if (query.contains("services")) {
+			moduleName = RDLConstants.Tokens.SERVICES;
+		} else if (query.contains("serviceView")) {
+			moduleName = RDLConstants.Tokens.SERVICE_VIEW;
+			isView = true;
 		}
 
 
