@@ -7,13 +7,10 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.WelcomeView;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.shared.CoreCategory;
-import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
@@ -38,7 +35,6 @@ import java.util.Map;
  * @ AutoBean<CurrentUserBean> currentUser  see http://code.google.com/p/google-web-toolkit/wiki/AutoBean
  * maintains client side state
  */
-@Singleton
 public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 
 	interface WelcomeViewImplUiBinder extends UiBinder<Widget, WelcomeViewImpl> {
@@ -61,7 +57,6 @@ public class WelcomeViewImpl extends AppMenuView implements WelcomeView {
 	@UiField
 	Column welcomeMessage;
 
-	@Inject
 	public WelcomeViewImpl(AppMenu appMenu) {
 		super(appMenu);
 		initWidget(uiBinder.createAndBindUi(this));

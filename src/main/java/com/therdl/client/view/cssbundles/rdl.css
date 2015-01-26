@@ -82,6 +82,113 @@ div.text {
 	vertical-align: middle;
 }
 
+.explore-title {
+text-align: center;
+font-size: 38px;
+margin-bottom: 20px;
+margin-left: 10px;
+font-family: 'Open Sans', serif;
+line-height: 1em;
+color: #0052cc;
+clear: both;
+letter-spacing: -2px;
+font-style: normal;
+font-weight: 800;
+}
+
+.explore-sub-title {
+font-size: 28px;
+}
+
+.explore-link {
+	display: inline-block;
+    border-radius: 5px;
+    vertical-align: middle;
+    font-family: 'Open Sans', serif;
+    font-size: 38px;
+    font-weight: 700;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+.e1 {
+background-color: #eb6420;
+color: white;
+border: 2px solid #eb6420;
+}
+
+.e1:hover {
+background-color: #EEA37D;
+color: black;
+}
+
+.e2 {
+background-color: #e11d21;
+color: white;
+border: 2px solid #e11d21;
+}
+
+.e2:hover {
+background-color: #DF9798;
+color: black;
+}
+
+.e3 {
+background-color: #1C6DE8;
+color: white;
+border: 2px solid #1C6DE8;
+}
+
+.e3:hover {
+background-color: #6890CB;
+color: black;
+}
+
+.e4 {
+background-color: #fbca04;
+color: white;
+border: 2px solid #fbca04;
+}
+
+.e4:hover {
+background-color: #FFE685;
+color: black;
+}
+
+.e5 {
+background-color: #009800;
+color: white;
+border: 2px solid #009800;
+}
+
+.e5:hover {
+background-color: #479B47;
+color: black;
+}
+
+.e6 {
+background-color: #5319e7;
+color: white;
+border: 2px solid #5319e7;
+}
+
+.e6:hover {
+background-color: #9676E6;
+color: black;
+}
+.textCenter {
+text-align: center;
+}
+
+.paddingBot20 {
+padding-bottom: 20px;
+}
+.paddingTop20 {
+padding-top: 20px;
+}
+
 .emo-select {
 vertical-align: top;
 padding: 2px 0 2px 4px;

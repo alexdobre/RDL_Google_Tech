@@ -71,6 +71,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private AutoBean<CurrentUserBean> currentUserBean = beanery.currentUserBean();
 
+	private ExploreView exploreView;
+
 	private WelcomeView welcomeView;
 	private ServicesView servicesView;
 	private ContentNotFound contentNotFound;
@@ -168,7 +170,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			appMenu = new AppMenu(defaultPresenter);
 		}
 		if ("".equals(History.getToken())) {
-			History.newItem(RDLConstants.Tokens.WELCOME);
+			History.newItem(RDLConstants.Tokens.EXPLORE);
 		} else {
 			History.fireCurrentHistoryState();
 		}
@@ -200,6 +202,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		Log.info("App controller module name: " + moduleName);
 		if (moduleName != null) {
 			switch (moduleName) {
+			case RDLConstants.Tokens.EXPLORE:
+				showExploreView(tokenSplit);
+				break;
 			case RDLConstants.Tokens.WELCOME:
 				showWelcomeView(tokenSplit);
 				break;
@@ -273,10 +278,26 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				showLogOut();
 				break;
 			default:
-				showWelcomeView(null);
+				showExploreView(null);
 				break;
 			}
 		}
+	}
+
+	private void showExploreView(String[] tokenSplit) {
+		Log.info("AppController Tokens.EXPLORE");
+		if (exploreView == null) {
+			exploreView = new ExploreViewImpl(appMenu);
+		}
+		final ExplorePresenter explorePresenter = new ExplorePresenter(exploreView, this, tokenSplit);
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess() {
+				explorePresenter.go(container, currentUserBean);
+			}
+		});
 	}
 
 	private void showWelcomeView(String[] tokenSplit) {

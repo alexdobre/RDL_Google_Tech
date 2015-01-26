@@ -26,6 +26,7 @@ public interface RDLConstants {
 	String RDL_OFFICIAL_USER = "RDL";
 
 	public interface Tokens {
+		String EXPLORE = "explore";
 		String WELCOME = "!welcome";
 		String SUBSCRIBE = "supporter";
 		String SERVICES = "!services";

@@ -153,7 +153,7 @@ public class AppMenu extends Composite {
 		}
 	}
 
-	private void allInactive() {
+	public void allInactive() {
 		home.removeStyleName("brandActive");
 		services.setActive(false);
 		ideas.setActive(false);
