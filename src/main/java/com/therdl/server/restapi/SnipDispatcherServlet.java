@@ -10,6 +10,7 @@ import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.RepService;
 import com.therdl.server.api.SnipsService;
 import com.therdl.server.api.UserService;
+import com.therdl.server.util.MessageThrottle;
 import com.therdl.server.validator.SnipValidator;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.Beanery;
@@ -201,6 +202,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 	private void doSaveRef(HttpServletResponse resp, AutoBean<SnipBean> actionBean)
 			throws IOException, TokenInvalidException, SnipValidationException {
 		log.info("SnipDispatcherServlet: saveReference");
+		//snipValidator.validateCanPost(actionBean,sessions);
 		snipValidator.validateCanSaveRef(actionBean);
 		String email = getCurrentUserEmail();
 		// increments reference counter of parent snip for reference type (positive/neutral/negative)
@@ -271,6 +273,16 @@ public class SnipDispatcherServlet extends HttpServlet {
 		log.info("SnipDispatcherServlet: actionBean.as().getAction() save " + actionBean.as().getAction());
 		// action bean is actually a bean to be submitted for saving
 		log.info("SnipDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getTitle());
+		MessageThrottle throttle = new MessageThrottle(sessions.get());
+		throttle.updateTimeSend();
+		if (!throttle.canPostMessage()) {
+			throw new SnipValidationException(RDLConstants.ErrorCodes.C015);
+		}
+		throttle.resetMessageCounter();
+		if (throttle.isUserSpamming()) {
+			userService.blockUser((String)sessions.get().getAttribute("userId"),"spam");
+		}
+		//snipValidator.validateCanPost(actionBean,sessions);
 		snipValidator.validateSnipBean(actionBean);
 		actionBean.as().setCreationDate(snipsService.makeTimeStamp());
 		String toReturn = snipsService.createSnip(actionBean.as());

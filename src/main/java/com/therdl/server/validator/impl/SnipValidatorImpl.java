@@ -1,11 +1,14 @@
 package com.therdl.server.validator.impl;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 import com.therdl.server.api.RepService;
 import com.therdl.server.api.SnipsService;
+import com.therdl.server.api.UserService;
+import com.therdl.server.util.MessageThrottle;
 import com.therdl.server.util.ServerUtils;
 import com.therdl.server.validator.SnipValidator;
 import com.therdl.server.validator.TokenValidator;
@@ -21,6 +24,7 @@ import com.therdl.shared.exceptions.TokenInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -39,13 +43,15 @@ public class SnipValidatorImpl implements SnipValidator {
 	private TokenValidator tokenValidator;
 	private RepService repService;
 	private SnipsService snipsService;
+	private UserService userService;
 	private Beanery beanery;
 
 	@Inject
-	public SnipValidatorImpl(TokenValidator tokenValidator, RepService repService, SnipsService snipsService) {
+	public SnipValidatorImpl(TokenValidator tokenValidator,UserService userService, RepService repService, SnipsService snipsService) {
 		this.tokenValidator = tokenValidator;
 		this.repService = repService;
 		this.snipsService = snipsService;
+		this.userService = userService;
 		beanery = AutoBeanFactorySource.create(Beanery.class);
 	}
 
@@ -150,6 +156,26 @@ public class SnipValidatorImpl implements SnipValidator {
 		}
 	}
 
+	/**
+	 *
+	 * @param snipBean
+	 * @param session
+	 * @throws SnipValidationException
+	 * @throws TokenInvalidException
+	 */
+	public void validateCanPost(AutoBean<SnipBean> snipBean, javax.inject.Provider<HttpSession> session) throws SnipValidationException, TokenInvalidException {
+		log.info("validateCanPost - BEGIN: rep:"+snipBean.as().getAuthor());
+		MessageThrottle throttle = new MessageThrottle(session.get());
+		throttle.updateTimeSend();
+		if (!throttle.canPostMessage()) {
+			throw new SnipValidationException(RDLConstants.ErrorCodes.C015);
+		}
+		throttle.resetMessageCounter();
+		if (throttle.isUserSpamming()) {
+			userService.blockUser((String)session.get().getAttribute("userid"),"spam");
+		}
+	}
+
 	@Override
 	public SnipBean validateCanReportAbuse(AutoBean<SnipBean> actionBean) throws SnipValidationException, TokenInvalidException, ParseException {
 		UserBean userBean = tokenValidator.validateTokenViaUsername(actionBean.as().getAuthor(), actionBean.as().getToken());
@@ -168,4 +194,5 @@ public class SnipValidatorImpl implements SnipValidator {
 		}
 		return sb;
 	}
+
 }

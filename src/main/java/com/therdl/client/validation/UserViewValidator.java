@@ -26,7 +26,7 @@ public class UserViewValidator {
 		errorMessageMap.put("email", RDL.getI18n().formErrorEmailFormat());
 		errorMessageMap.put("password", RDL.getI18n().formErrorPasswordFormat());
 		errorMessageMap.put("name", RDL.getI18n().formErrorUsernameFormat());
-	}
+		}
 
 	public static String validateAuthUserBean(AutoBean<AuthUserBean> bean) {
 		Log.info("Validating AuthUserBean: " + AutoBeanCodex.encode(bean).getPayload());

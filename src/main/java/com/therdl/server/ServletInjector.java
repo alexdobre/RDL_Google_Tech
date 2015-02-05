@@ -58,7 +58,6 @@ public class ServletInjector extends GuiceServletContextListener {
 				bind(SnipsService.class).to(SnipServiceImpl.class);
 				bind(RepService.class).to(RepServiceImpl.class);
 				bind(UserService.class).to(UserServiceImpl.class);
-				bind(SnipValidator.class).to(SnipValidatorImpl.class);
 				bind(TokenValidator.class).to(TokenValidatorImpl.class);
 				bind(UserValidator.class).to(UserValidatorImpl.class);
 				bind(SnipValidator.class).to(SnipValidatorImpl.class);

@@ -5,6 +5,8 @@ import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 
+import java.util.Random;
+
 /**
  * This class contains java utility methods to be used throughout the project
  */
@@ -286,6 +288,15 @@ public class RDLUtils {
 					.append(searchOptionsBean.as().getPageIndex());
 		}
 
+		return sb.toString();
+	}
+
+	public static String generateRandomPassword(int len) {
+		 String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		Random rnd = new Random();
+		StringBuilder sb = new StringBuilder( len );
+		for( int i = 0; i < len; i++ )
+			sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
 		return sb.toString();
 	}
 }

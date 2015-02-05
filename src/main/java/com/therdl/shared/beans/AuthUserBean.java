@@ -61,6 +61,10 @@ public interface AuthUserBean extends TokenizedBean {
 
 	void setDateCreated(String dateCreated);
 
+	String getStatus();
+
+	void setStatus(String status);
+
 	/**
 	 * this method is used to encapsulate the users authorisation status
 	 * goal is to minimise password transport

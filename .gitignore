@@ -13,3 +13,4 @@ RemoteSystemsTempFiles
 *.iml
 *.zip
 *.launch
+.gitignore

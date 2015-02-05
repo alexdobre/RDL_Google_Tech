@@ -22,12 +22,14 @@ import com.therdl.client.view.widget.EmotionPicker;
 import com.therdl.shared.CoreCategory;
 import com.therdl.shared.Global;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.SummerCustomToolbar;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.summernote.client.ui.Summernote;
+import org.gwtbootstrap3.extras.summernote.client.ui.base.Toolbar;
 
 import java.util.*;
 
@@ -68,7 +70,7 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	@UiField
 	FlowPanel emoListPanel;
 
-	@UiField
+	@UiField(provided = true)
 	Summernote richTextEditor;
 
 	private List<RadioButton> snipTypeRadioBtnList;
@@ -78,7 +80,10 @@ public class SnipEditViewImpl extends AbstractValidatedAppMenuView implements Sn
 	private EmotionPicker emotionPicker;
 
 	public SnipEditViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
+
 		super(appMenu);
+		this.richTextEditor = new Summernote();
+		this.richTextEditor.setToolbar(new SummerCustomToolbar());
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
 		emoListPanel.addStyleName("labels");

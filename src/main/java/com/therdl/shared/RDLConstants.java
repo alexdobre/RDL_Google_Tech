@@ -56,6 +56,8 @@ public interface RDLConstants {
 
 		String TRIBUNAL_DETAIL = "tribunalDetail";
 		String CONTENT_SEARCH = "contentSearch";
+
+		Integer MAX_LOGIN_ATTEMPT = 5;
 	}
 
 	public interface SnipAction {
@@ -206,5 +208,7 @@ public interface RDLConstants {
 		String C011 = "c011";
 		String C012 = "c012";
 		String C013 = "c013";
+		String C014 = "c014";
+		String C015 = "c015";
 	}
 }

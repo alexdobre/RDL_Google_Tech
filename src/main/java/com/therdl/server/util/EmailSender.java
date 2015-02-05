@@ -13,6 +13,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.therdl.shared.RDLUtils;
+import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +87,75 @@ public class EmailSender {
 		}
 	}
 
+	public static void sendBlockAccount(String email,DB db) throws RDLSendEmailException  {
+		String newPass = RDLUtils.generateRandomPassword(8);
+		String subject = "RDL Account Block";
+		String message = "Your RDL account has been block due to several login attempts. Please reset your Password.. Your new password is: " + newPass + " . Please go to www.therdl.com to log in and change it.";
+		EmailSender.sendMail(subject, message, email, db);
+	}
+
+	public static void sendBlockAccountToAdmin(String email, DB db) throws RDLSendEmailException  {
+		String subject = "RDL Spam Culprit";
+		String message = "Email: " + email + " is suspected to be spamming.";
+		EmailSender.sendMail(subject, message, email, db);
+	}
+
+	/**
+	 * Sends an e-mail to user
+	 *
+	 * @param subject
+	 * @param message
+	 * @param email
+	 * @param db
+	 */
+	public static void sendMail( String subject,String message,String email, DB db) throws RDLSendEmailException {
+		//get the mail credentials from the DB
+		DBCollection coll = db.getCollection("mailCredentials");
+
+		BasicDBObject query = new BasicDBObject();
+		query.put("uid", 1);
+
+		DBCursor cursor = coll.find(query);
+		DBObject doc = cursor.next();
+
+		String from = (String)doc.get("from");
+		String to = email;
+		//String subject = "RDL Account Block";
+		//String message = "Your RDL account has been block due to several login attempts. Please reset your Password.. Your new password is: " + newPass + " . Please go to www.therdl.com to log in and change it.";
+		String login = (String)doc.get("login");
+		String password = (String)doc.get("password");
+
+		try {
+			Properties props = new Properties();
+			props.setProperty("mail.host", (String)doc.get("mailHost"));
+			props.setProperty("mail.smtp.port", "" + ((Double)doc.get("smtpPort")).intValue());
+			props.setProperty("mail.smtp.auth", "true");
+			props.setProperty("mail.smtp.starttls.enable", "true");
+
+			Authenticator auth = new SMTPAuthenticator(login, password);
+
+			Session session = Session.getInstance(props, auth);
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setText(message);
+			msg.setSubject(subject);
+			msg.setFrom(new InternetAddress(from));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			Transport.send(msg);
+		} catch (AuthenticationFailedException ex) {
+			log.error("Authentication failed", ex);
+			throw new RDLSendEmailException();
+
+		} catch (AddressException ex) {
+			log.error("Wrong email address", ex);
+			throw new RDLSendEmailException();
+
+		} catch (MessagingException ex) {
+			log.error("Message exception", ex);
+			throw new RDLSendEmailException();
+		}
+	}
+
 	private static class SMTPAuthenticator extends Authenticator {
 
 		private PasswordAuthentication authentication;
@@ -97,5 +168,7 @@ public class EmailSender {
 			return authentication;
 		}
 	}
+
+
 
 }

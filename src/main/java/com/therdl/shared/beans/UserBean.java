@@ -77,6 +77,24 @@ public interface UserBean extends TokenizedBean {
 
 	void setFriends(List<FriendBean> friends);
 
+	//flag for invalid attempt
+	Integer getLoginAttempt();
+
+	void setLoginAttempt(Integer attempt);
+
+	String getStatus(); //identifier if user is active or not
+
+	void setStatus(String status);
+
+	public String getDateSend();
+
+	public void setDateSend(String date);
+
+	public Integer getPostCount();
+
+	public void setPostCount(Integer ctr);
+
+
 	/**
 	 * nested interfaces
 	 */
@@ -143,4 +161,9 @@ public interface UserBean extends TokenizedBean {
 
 		public void setDate(String date);
 	}
+
+
+
+
+
 }

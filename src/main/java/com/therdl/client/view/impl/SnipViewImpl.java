@@ -76,7 +76,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	Column refFilterParent, referenceListCont;
 	@UiField
 	PanelBody richTextArea;
-	@UiField
+	@UiField(provided = true)
 	Summernote editorWidgetReply;
 	@UiField
 	Button showRef, leaveRef, saveRef, closeRef, btnEmotionPicker, reportAbuse;
@@ -110,6 +110,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 
 	public SnipViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(appMenu);
+		editorWidgetReply = new Summernote();
+		editorWidgetReply.setToolbar(new SummerCustomToolbar());
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
 		snipActionWidget = new SnipActionWidget();

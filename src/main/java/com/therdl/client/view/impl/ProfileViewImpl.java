@@ -14,6 +14,7 @@ import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AppMenu;
 import com.therdl.client.view.widget.AvatarUploadPopUp;
 import com.therdl.shared.RDLConstants;
+import com.therdl.shared.SummerCustomToolbar;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
@@ -66,13 +67,15 @@ public class ProfileViewImpl extends AbstractValidatedAppMenuView implements Pro
 	Paragraph titleExpiresParagraph;
 	@UiField
 	Input oldPassword, newPassword, confirmNewPassword;
-	@UiField
+	@UiField(provided = true)
 	Summernote profileDesc;
 	@UiField
 	Anchor viewPublicProfile;
 
 	public ProfileViewImpl(AutoBean<CurrentUserBean> cUserBean, AppMenu appMenu) {
 		super(appMenu);
+		profileDesc = new Summernote();
+		profileDesc.setToolbar(new SummerCustomToolbar());
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = cUserBean;
 		populateView(currentUserBean);

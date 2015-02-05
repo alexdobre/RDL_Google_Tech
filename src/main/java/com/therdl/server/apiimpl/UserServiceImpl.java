@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.therdl.shared.exceptions.*;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -32,8 +33,6 @@ import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.exceptions.RDLSendEmailException;
-import com.therdl.shared.exceptions.TokenInvalidException;
 
 /**
  * A User Service implementation with basic crud methods for managing
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
 		AutoBean<AuthUserBean> checkedUserBean = beanery.authBean();
 		UserBean ub = getUserByEmail(bean.getEmail());
 
-		if (ub != null) {
+		if (ub != null && ub.getStatus().equals("Active")) {
 			if (BCrypt.checkpw(pass, ub.getPassHash())) {
 				ub.setToken(tokenValidator.createToken());
 				if (bean.getRememberMe()) {
@@ -79,12 +78,35 @@ public class UserServiceImpl implements UserService {
 				} else {
 					ub.setSid(null);
 				}
-				updateUser(ub);
-				return transformUserBeanInAuthUserBean(checkedUserBean, ub);
+				ub.setStatus("Active");
+			//	updateUser(ub);
+			//	return transformUserBeanInAuthUserBean(checkedUserBean, ub);
+
 			}  // end hash if
+			else { //update the login attempt of the user
+				try {
+						//check if attempt is equal or greater than 5
+						if (ub.getLoginAttempt() >= RDLConstants.Tokens.MAX_LOGIN_ATTEMPT) {
+							//block user and send email
+							ub.setStatus("D");
+							checkedUserBean.as().setStatus("D");
+							EmailSender.sendBlockAccount(ub.getEmail(),dbProvider.getDb());
+
+						}else	{
+							ub.setLoginAttempt(ub.getLoginAttempt()+1);
+						}
+					}catch(Exception e) {
+					e.printStackTrace();
+					log.error(e.getMessage());
+				}
+
+			}
+			updateUser(ub);
+			return transformUserBeanInAuthUserBean(checkedUserBean, ub);
 		}  // end email if
 
 		checkedUserBean.as().setAction("NotOkUser");
+		checkedUserBean.as().setStatus("D");
 		log.info("Find user END NOK: " + bean.getEmail());
 		return checkedUserBean;
 	}
@@ -100,6 +122,7 @@ public class UserServiceImpl implements UserService {
 		checkedUserBean.as().setIsRDLSupporter(ServerUtils.isRdlSupporter(ub));
 		checkedUserBean.as().setRep(ub.getRep());
 		checkedUserBean.as().setDateCreated(ub.getDateCreated());
+		checkedUserBean.as().setStatus(ub.getStatus());
 		log.info("User is RDL supporter?: " + checkedUserBean.as().getIsRDLSupporter());
 
 		log.info("Find user END OK: " + checkedUserBean.as().getEmail());
@@ -358,16 +381,19 @@ public class UserServiceImpl implements UserService {
 		UserBean user = beanery.userBean().as();
 
 		user.setId(doc.get("_id").toString());
-		user.setUsername((String)doc.get("username"));
-		user.setPassHash((String)doc.get("passHash"));
-		user.setEmail((String)doc.get("email"));
-		user.setToken((String)doc.get("token"));
-		user.setSid((String)doc.get("sid"));
-		user.setPaypalId((String)doc.get("paypalId"));
+		user.setUsername((String) doc.get("username"));
+		user.setPassHash((String) doc.get("passHash"));
+		user.setEmail((String) doc.get("email"));
+		user.setToken((String) doc.get("token"));
+		user.setSid((String) doc.get("sid"));
+		user.setPaypalId((String) doc.get("paypalId"));
 		user.setRep(RDLUtils.parseInt(doc.get("rep")));
-		user.setDateCreated((String)doc.get("dateCreated"));
+		user.setDateCreated((String) doc.get("dateCreated"));
+		user.setLoginAttempt(RDLUtils.parseInt(doc.get("loginAttempt")));
+		user.setStatus((String)doc.get("status"));
 		BasicDBList titles = (BasicDBList)doc.get("titles");
 		BasicDBList friends = (BasicDBList)doc.get("friends");
+
 
 		List<UserBean.TitleBean> titleList = new ArrayList<UserBean.TitleBean>();
 		for (Object obj : titles) {
@@ -432,6 +458,8 @@ public class UserServiceImpl implements UserService {
 		doc.append("rep", user.getRep());
 		doc.append("token", user.getToken());
 		doc.append("dateCreated", user.getDateCreated());
+		doc.append("loginAttempt",user.getLoginAttempt());
+		doc.append("status",user.getStatus());
 
 		BasicDBList titlesList = new BasicDBList();
 
@@ -470,6 +498,22 @@ public class UserServiceImpl implements UserService {
 		doc.append("titles", titlesList);
 		doc.append("friends", friendsList);
 		return doc;
+	}
+
+	/**
+	 *
+	 * @param email
+	 * @param option
+	 */
+	public void blockUser(String email, String option) {
+		try {
+			UserBean ub = getUserByEmail(email);
+			ub.setStatus("D");
+			this.updateUser(ub);
+			EmailSender.sendBlockAccountToAdmin(email, dbProvider.getDb());
+		}catch(Exception rdlsend) {
+			rdlsend.printStackTrace();
+		}
 	}
 
 	private DB getMongo() {

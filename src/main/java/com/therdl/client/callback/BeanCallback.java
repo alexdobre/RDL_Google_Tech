@@ -16,7 +16,7 @@ import com.therdl.shared.beans.Beanery;
 /**
  * A call back containing one bean
  */
-public abstract class BeanCallback<T> implements RequestCallback {
+public abstract class 		BeanCallback<T> implements RequestCallback {
 
 	private Beanery beanery = GWT.create(Beanery.class);
 	private Class expectedClass;

@@ -159,8 +159,13 @@ public class AuthServlet extends HttpServlet {
 
 		//update user hash password
 		userBean.setPassHash(newPassHash);
+
+		//activate and set the login attempt to 0
+		userBean.setStatus("Active");
+		userBean.setLoginAttempt(0);
 		//update the user
 		userService.updateUser(userBean);
+
 
 		//return an email since it is registered
 		authBean.as().setEmail(userBean.getEmail());
@@ -183,6 +188,8 @@ public class AuthServlet extends HttpServlet {
 		log.info("SessionServlet password hash = " + hash);
 		newUserBean.as().setPassHash(hash);
 		newUserBean.as().setRep(authBean.as().getRep());
+		newUserBean.as().setLoginAttempt(0); //initialize login Attempt
+		newUserBean.as().setStatus("Active");
 		userService.createUser(newUserBean.as());
 		authBean.as().setAuth(true);
 		authBean.as().setAction("newUserOk");
@@ -221,16 +228,23 @@ public class AuthServlet extends HttpServlet {
 		session.get().setAttribute("userid", userBean.as().getEmail());
 		session.get().setAttribute("sid", userBean.as().getSid());
 		session.get().setAttribute("username", userBean.as().getName());
+		session.get().setAttribute("timeSend","");
+		session.get().setAttribute("msgCtr",0);
+		session.get().setAttribute("spamWarning",0);
+		session.get().setAttribute("spamTimeStart","");
 	}
 
 	private void processCheckedUser(AutoBean<AuthUserBean> checkedUser) throws UserValidationException {
 		log.info("processCheckedUser " + checkedUser.as().toString());
+		if (checkedUser.as().getStatus()!=null && !checkedUser.as().getStatus().equals("Active"))
+			throw new UserValidationException(RDLConstants.ErrorCodes.C014);
 		if (checkedUser.as().getAction().equals("OkUser")) {
 
 			checkedUser.as().setAuth(true);
 			// we can use this server side to obtain userId from session
 			session.get().setAttribute("userid", checkedUser.as().getEmail());
 			session.get().setAttribute("name", checkedUser.as().getName());
+
 		} else {
 			throw new UserValidationException(RDLConstants.ErrorCodes.C006);
 		}

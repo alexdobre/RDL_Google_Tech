@@ -2,11 +2,7 @@ package com.therdl.server.api;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.shared.beans.AuthUserBean;
-import com.therdl.shared.beans.SnipBean;
 import com.therdl.shared.beans.UserBean;
-import com.therdl.shared.exceptions.TokenInvalidException;
-
-import java.util.List;
 
 
 /**
@@ -118,4 +114,10 @@ public interface UserService {
 	 * @param field field to increment
 	 */
 	public void incrementCounter(String username, String field);
+
+	/**
+	 * block the user and notify
+	 * @param email
+	 */
+	public void blockUser(String email,String option);
 }

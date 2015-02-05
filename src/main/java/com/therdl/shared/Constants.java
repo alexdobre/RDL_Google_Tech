@@ -18,4 +18,10 @@ public class Constants {
 
 	public static final String MAIN_PAGE = "/rdl.html";
 	public static final String ERROR_PAGE = "/error.jsp";
+
+	public static final Integer MAXMESSAGESENT = 3;
+	public static final String 	ADMINEMAIL = "alx.dobre@gmail.com";
+
+	public static final Integer MESSAGETIMELIMIT = 1; //IN MINUTES
+	public static final Integer SPAMTIMELIMTE = 60; //IN MINUTES;
 }
