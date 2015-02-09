@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
 				} else {
 					ub.setSid(null);
 				}
+				ub.setLoginAttempt(0);
 				ub.setStatus("Active");
 			//	updateUser(ub);
 			//	return transformUserBeanInAuthUserBean(checkedUserBean, ub);

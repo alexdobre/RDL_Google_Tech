@@ -273,16 +273,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 		log.info("SnipDispatcherServlet: actionBean.as().getAction() save " + actionBean.as().getAction());
 		// action bean is actually a bean to be submitted for saving
 		log.info("SnipDispatcherServlet:submitted bean for saving recieved  " + actionBean.as().getTitle());
-		MessageThrottle throttle = new MessageThrottle(sessions.get());
-		throttle.updateTimeSend();
-		if (!throttle.canPostMessage()) {
-			throw new SnipValidationException(RDLConstants.ErrorCodes.C015);
-		}
-		throttle.resetMessageCounter();
-		if (throttle.isUserSpamming()) {
-			userService.blockUser((String)sessions.get().getAttribute("userId"),"spam");
-		}
-		//snipValidator.validateCanPost(actionBean,sessions);
+		snipValidator.validateCanPost(actionBean,sessions);
 		snipValidator.validateSnipBean(actionBean);
 		actionBean.as().setCreationDate(snipsService.makeTimeStamp());
 		String toReturn = snipsService.createSnip(actionBean.as());

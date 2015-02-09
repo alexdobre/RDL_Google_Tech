@@ -40,7 +40,7 @@ public class MessageThrottle {
     public  boolean canPostMessage() {
         log.info("canPostMessage - BEGIN");
          String timeSend = (String)session.getAttribute("timeSend");
-        Integer msgCtr = Integer.parseInt((String)session.getAttribute("msgCtr"));
+        Integer msgCtr = (Integer)session.getAttribute("msgCtr");
         long interval =  minutesDiff(getItemDate(getCurrentDateString()), getItemDate(timeSend));
         log.info("canPostMessage :" + interval + " msgCtr :" + msgCtr + " timeSend :" + timeSend);
         if (msgCtr <= 3 && interval < 1) {
@@ -48,7 +48,7 @@ public class MessageThrottle {
         }
          else {
             //if user reach its limit update the spamCoutner
-            Integer spamCounter = Integer.parseInt((String)session.getAttribute("spamWarning"));
+            Integer spamCounter = (Integer)session.getAttribute("spamWarning");
 //            session.setAttribute("spamTimeStart",this.getCurrentDateString());
             session.setAttribute("spamWarning",spamCounter+1);
             this.updateSpammingTime();
@@ -63,15 +63,25 @@ public class MessageThrottle {
      *
      */
     public void updateTimeSend() {
-
+    	log.info("updateTimeSend - BEGIN");
+    	Integer msgCtr = (Integer)session.getAttribute("msgCtr");
        String timeSend = (String)session.getAttribute("timeSend");
         if (timeSend.isEmpty()) { //first send of messsage
             session.setAttribute("timeSend",this.getCurrentDateString());
             session.setAttribute("msgCtr",1);
+        }else {
+        //session.setAttribute("timeSend",this.getCurrentDateString());
+	        msgCtr = (Integer)session.getAttribute("msgCtr");
+	        long interval =  minutesDiff(getItemDate(getCurrentDateString()), getItemDate(timeSend));
+	        if (msgCtr <= 3 && interval >= 1) {
+	            //reset the counter
+	        	session.setAttribute("msgCtr",0);
+	        	session.setAttribute("timeSend",this.getCurrentDateString());
+	        }
         }
-        session.setAttribute("timeSend",this.getCurrentDateString());
-        Integer msgCtr = Integer.parseInt((String) session.getAttribute("msgCtr"));
-        session.setAttribute("msgCtr",msgCtr+1);
+        session.setAttribute("msgCtr",msgCtr + 1);
+        
+       
     }
 
     /**
@@ -137,7 +147,7 @@ public class MessageThrottle {
      * check the spamwarning within a user
      */
     public boolean isUserSpamming() {
-        Integer spamWarning = Integer.parseInt((String)this.session.getAttribute("spamWarning"));
+        Integer spamWarning = (Integer)this.session.getAttribute("spamWarning");
         String currentDate = this.getCurrentDateString();
         String spamStart = (String)session.getAttribute("spamTimeStart");
         int interval = minutesDiff(getItemDate(currentDate), getItemDate(spamStart));
@@ -155,7 +165,7 @@ public class MessageThrottle {
             session.setAttribute("spamTimeStart",this.getCurrentDateString());
          }else {
             //chheck the spaming counter
-            Integer spamCounter = Integer.parseInt((String)session.getAttribute("spamWarning"));
+            Integer spamCounter = (Integer)session.getAttribute("spamWarning");
             String currentDate = this.getCurrentDateString();
             String spamStart = (String)session.getAttribute("spamTimeStart");
             int interval = minutesDiff(getItemDate(currentDate), getItemDate(spamStart));

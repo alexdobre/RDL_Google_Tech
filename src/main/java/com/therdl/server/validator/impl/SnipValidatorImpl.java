@@ -173,6 +173,7 @@ public class SnipValidatorImpl implements SnipValidator {
 		throttle.resetMessageCounter();
 		if (throttle.isUserSpamming()) {
 			userService.blockUser((String)session.get().getAttribute("userid"),"spam");
+			throw new SnipValidationException(RDLConstants.ErrorCodes.C016);
 		}
 	}
 

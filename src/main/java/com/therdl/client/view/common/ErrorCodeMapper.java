@@ -26,6 +26,8 @@ public class ErrorCodeMapper {
 		case RDLConstants.ErrorCodes.C012: return RDL.getI18n().serverErrorC012();
 		case RDLConstants.ErrorCodes.C013: return RDL.getI18n().serverErrorC013();
 		case RDLConstants.ErrorCodes.C014: return RDL.getI18n().serverErrorC014();
+		case RDLConstants.ErrorCodes.C015: return RDL.getI18n().serverErrorC015();
+		case RDLConstants.ErrorCodes.C016: return RDL.getI18n().serverErrorC016();
 		default: return "Error "+errorCode;
 		}
 	}

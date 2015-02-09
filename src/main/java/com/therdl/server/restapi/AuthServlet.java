@@ -244,7 +244,7 @@ public class AuthServlet extends HttpServlet {
 			// we can use this server side to obtain userId from session
 			session.get().setAttribute("userid", checkedUser.as().getEmail());
 			session.get().setAttribute("name", checkedUser.as().getName());
-
+			
 		} else {
 			throw new UserValidationException(RDLConstants.ErrorCodes.C006);
 		}
