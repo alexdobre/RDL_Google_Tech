@@ -32,11 +32,13 @@
     <!--Please see https://code.google.com/p/gwt-log/wiki/GettingStarted#Working_examples -->
     <!-- <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/> -->
     <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF"/>
+    <!-- Deferred binding to optimize Core based on user agent. -->
+    <inherits name="com.google.gwt.core.CoreWithUserAgent"/>
 
     <entry-point class='com.therdl.client.RDL'/>
 
-    <!-- firefox  chrome  ie8  -->
-    <set-property name="user.agent" value="gecko1_8, safari, ie8"/>
+    <!-- firefox  chrome ie -->
+    <set-property name="user.agent" value="gecko1_8, safari, ie8, ie9, ie10"/>
 
     <source path='client'/>
     <source path='shared'/>
