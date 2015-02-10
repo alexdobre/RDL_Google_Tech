@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
 		UserBean ub = getUserByEmail(bean.getEmail());
 
 		if (ub != null && ub.getStatus().equals("Active")) {
+			checkedUserBean.as().setStatus(ub.getStatus());
 			if (BCrypt.checkpw(pass, ub.getPassHash())) {
 				ub.setToken(tokenValidator.createToken());
 				if (bean.getRememberMe()) {
@@ -80,8 +81,8 @@ public class UserServiceImpl implements UserService {
 				}
 				ub.setLoginAttempt(0);
 				ub.setStatus("Active");
-			//	updateUser(ub);
-			//	return transformUserBeanInAuthUserBean(checkedUserBean, ub);
+				updateUser(ub);
+				return transformUserBeanInAuthUserBean(checkedUserBean, ub);
 
 			}  // end hash if
 			else { //update the login attempt of the user
@@ -100,14 +101,12 @@ public class UserServiceImpl implements UserService {
 					e.printStackTrace();
 					log.error(e.getMessage());
 				}
-
+				updateUser(ub);	
 			}
-			updateUser(ub);
-			return transformUserBeanInAuthUserBean(checkedUserBean, ub);
 		}  // end email if
 
 		checkedUserBean.as().setAction("NotOkUser");
-		checkedUserBean.as().setStatus("D");
+//		checkedUserBean.as().setStatus("D");
 		log.info("Find user END NOK: " + bean.getEmail());
 		return checkedUserBean;
 	}

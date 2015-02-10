@@ -26,13 +26,7 @@
     <servlet-name>RdlGoogleTechServlet</servlet-name>
     <url-pattern>/rdlgoogletech</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description>Sample Servlet</description>
-    <display-name>RdlGoogleTechServlet</display-name>
-    <servlet-name>RdlGoogleTechServlet</servlet-name>
-    <servlet-class>com.example.myproject.RdlGoogleTechServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
+   <servlet-mapping>
     <servlet-name>RdlGoogleTechServlet</servlet-name>
     <url-pattern>/rdlgoogletech</url-pattern>
   </servlet-mapping>

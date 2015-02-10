@@ -78,6 +78,16 @@ public class MessageThrottle {
 	        	session.setAttribute("msgCtr",0);
 	        	session.setAttribute("timeSend",this.getCurrentDateString());
 	        }
+	        Integer spamCounter = (Integer)session.getAttribute("spamWarning");
+	        if (spamCounter < 3) {
+	        	if (msgCtr > 3 && interval >=1) {
+	        		//rest the msg if the user is not yet block due to suspicious spamming
+	        		session.setAttribute("msgCtr", 0);
+	        		session.setAttribute("timeSend",this.getCurrentDateString());
+	        	}
+	        }
+	        
+//	        if (msgCtr > 3 && s)
         }
         session.setAttribute("msgCtr",msgCtr + 1);
         
@@ -172,6 +182,7 @@ public class MessageThrottle {
             if ( spamCounter < 3 && interval >=60 ) { //reset the spaming counter
                 session.setAttribute("spamWarning",0);
                 session.setAttribute("spamTimeStart","");
+                session.setAttribute("msgCtr", 0); //also reset the msg counter;
             }
         }
 

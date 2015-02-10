@@ -248,6 +248,7 @@ public class AuthServlet extends HttpServlet {
 		} else {
 			throw new UserValidationException(RDLConstants.ErrorCodes.C006);
 		}
+		
 	}
 
 }
