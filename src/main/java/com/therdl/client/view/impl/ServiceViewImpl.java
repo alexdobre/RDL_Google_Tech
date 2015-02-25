@@ -3,6 +3,7 @@ package com.therdl.client.view.impl;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.therdl.client.view.ServiceView;
 import com.therdl.client.view.widget.AppMenu;
+import com.therdl.client.view.widget.SocialPanel;
 import com.therdl.shared.RDLConstants;
 import com.therdl.shared.beans.CurrentUserBean;
 
@@ -11,6 +12,7 @@ import com.therdl.shared.beans.CurrentUserBean;
  */
 public class ServiceViewImpl extends SnipViewImpl implements ServiceView {
 
+		
 	public ServiceViewImpl(AutoBean<CurrentUserBean> currentUserBean, AppMenu appMenu) {
 		super(currentUserBean, appMenu);
 		radioBtnParentProp.clear();

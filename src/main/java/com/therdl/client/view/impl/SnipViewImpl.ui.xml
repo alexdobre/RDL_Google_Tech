@@ -1,20 +1,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
-             xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
-             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
-             xmlns:rdl="urn:import:com.therdl.client.view.widget"
-		>
-	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
-	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+	xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
+	xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html" xmlns:rdl="urn:import:com.therdl.client.view.widget">
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources" />
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants' />
 
 	<ui:style>
 		.radioBtn {
 		margin-left: 13px;
 		}
 
-		.radioBtn label, .checkBoxBtn label {
+		.radioBtn label, .checkBoxBtn
+		label {
 		margin-left: 3px;
 		margin-bottom: 0px;
 		display: inline-block;
@@ -23,7 +21,8 @@
 		@external .checkBoxBtn;
 		.checkBoxBtn {
 		margin-left: 13px;
-		display: inline-block;
+		display:
+		inline-block;
 		}
 
 		.checkboxBtnParent {
@@ -33,39 +32,47 @@
 	</ui:style>
 
 	<b:Container>
-		<g:SimplePanel ui:field="appMenuPanel"/>
-		<g:FlowPanel addStyleNames="push"/>
+		<g:SimplePanel ui:field="appMenuPanel" />
+		<g:SimplePanel ui:field="socialNetwork" />
+		<g:FlowPanel addStyleNames="push" />
 
 		<b:Panel addStyleNames="snipViewPanel">
 			<b:PanelHeader>
 				<g:FlowPanel ui:field="snipViewCont"></g:FlowPanel>
 			</b:PanelHeader>
 			<b:Collapse b:id="snipCollapse">
-				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12"/>
+				<g:FlowPanel ui:field="emoListPanel" addStyleNames="col-lg-12" />
 				<b.html:Paragraph emphasis="WARNING" ui:field="abuseWarning">
-					<b:Anchor icon="WARNING" iconSpin="true" text="{i18n.abuseWarning}" addStyleNames="text-warning" ui:field="abuseWarningAnchor"/>
+					<b:Anchor icon="WARNING" iconSpin="true" text="{i18n.abuseWarning}"
+						addStyleNames="text-warning" ui:field="abuseWarningAnchor" />
 				</b.html:Paragraph>
-				<b:PanelBody ui:field="richTextArea"/>
+				<b:PanelBody ui:field="richTextArea" />
 			</b:Collapse>
 			<b:PanelFooter>
 				<b:Container fluid="true">
 					<b:Row>
 						<b:Column size="MD_4">
 							<b:ButtonGroup>
-								<b:Button ui:field="showRef" text="{i18n.showReferences}"/>
+								<b:Button ui:field="showRef" text="{i18n.showReferences}" />
 							</b:ButtonGroup>
 							<b:ButtonGroup addStyleNames="padLeft">
-								<b:Button ui:field="leaveRef" text="{i18n.leaveReference}"/>
+								<b:Button ui:field="leaveRef" text="{i18n.leaveReference}" />
+							</b:ButtonGroup>
+							<b:ButtonGroup addStyleNames="padLeft">
+								<b:Button ui:field="share" text="{i18n.share}" />
 							</b:ButtonGroup>
 						</b:Column>
 						<b:Column size="MD_1" offset="MD_2">
-							<b:Button dataToggle="COLLAPSE" icon="CARET_UP" dataTarget="#snipCollapse"/>
+							<b:Button dataToggle="COLLAPSE" icon="CARET_UP"
+								dataTarget="#snipCollapse" />
 						</b:Column>
 						<b:Column size="MD_2" offset="MD_2">
-							<b:Button type="WARNING" icon="WARNING" text="{i18n.reportAbuse}" size="SMALL" ui:field="reportAbuse"/>
+							<b:Button type="WARNING" icon="WARNING" text="{i18n.reportAbuse}"
+								size="SMALL" ui:field="reportAbuse" />
 						</b:Column>
-						<b:Column size="MD_1" ui:field="snipActionContainer"/>
+						<b:Column size="MD_1" ui:field="snipActionContainer" />
 					</b:Row>
+					
 				</b:Container>
 			</b:PanelFooter>
 		</b:Panel>
@@ -73,62 +80,72 @@
 		<b:Panel ui:field="referenceCont">
 			<b:PanelBody addStyleNames="noPadding">
 				<b:Row>
-					<g:FlowPanel addStyleNames="col-lg-6 marginTop" ui:field="radioBtnParent">
-						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" checked="true" ui:field="rb1"
-						               text="{i18n.positive}"></g:RadioButton>
-						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb2"
-						               text="{i18n.neutral}"></g:RadioButton>
-						<g:RadioButton name="refFlag" styleName="{style.radioBtn}" ui:field="rb3"
-						               text="{i18n.negative}"></g:RadioButton>
+					<g:FlowPanel addStyleNames="col-lg-6 marginTop"
+						ui:field="radioBtnParent">
+						<g:RadioButton name="refFlag" styleName="{style.radioBtn}"
+							checked="true" ui:field="rb1" text="{i18n.positive}"></g:RadioButton>
+						<g:RadioButton name="refFlag" styleName="{style.radioBtn}"
+							ui:field="rb2" text="{i18n.neutral}"></g:RadioButton>
+						<g:RadioButton name="refFlag" styleName="{style.radioBtn}"
+							ui:field="rb3" text="{i18n.negative}"></g:RadioButton>
 					</g:FlowPanel>
-					<g:FlowPanel addStyleNames="col-lg-6 marginTop" ui:field="radioBtnParentProp">
-						<g:RadioButton name="propFlag" styleName="{style.radioBtn}" checked="true" ui:field="prb1"
-						               text="{i18n.pledge}"></g:RadioButton>
-						<g:RadioButton name="propFlag" styleName="{style.radioBtn}" ui:field="prb2"
-						               text="{i18n.counter}"></g:RadioButton>
+					<g:FlowPanel addStyleNames="col-lg-6 marginTop"
+						ui:field="radioBtnParentProp">
+						<g:RadioButton name="propFlag" styleName="{style.radioBtn}"
+							checked="true" ui:field="prb1" text="{i18n.pledge}"></g:RadioButton>
+						<g:RadioButton name="propFlag" styleName="{style.radioBtn}"
+							ui:field="prb2" text="{i18n.counter}"></g:RadioButton>
 					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-6 marginTop">
-						<b:Button ui:field="btnEmotionPicker" text="{i18n.emotionPickerTitle}"/>
+						<b:Button ui:field="btnEmotionPicker" text="{i18n.emotionPickerTitle}" />
 					</g:FlowPanel>
 					<g:FlowPanel addStyleNames="col-lg-12 marginLeft">
-						<rdl:FormSuccess ui:field="formSuccess"/>
-						<rdl:FormErrors ui:field="formErrors"/>
+						<rdl:FormSuccess ui:field="formSuccess" />
+						<rdl:FormErrors ui:field="formErrors" />
 					</g:FlowPanel>
 				</b:Row>
 
-				<g:FlowPanel ui:field="emoListPanelReply" addStyleNames="col-lg-12 labels"/>
-				<summer:Summernote ui:field="editorWidgetReply"/>
+				<g:FlowPanel ui:field="emoListPanelReply" addStyleNames="col-lg-12 labels" />
+				<summer:Summernote ui:field="editorWidgetReply" />
 			</b:PanelBody>
 			<b:PanelFooter>
-				<b:Button ui:field="saveRef" text="{i18n.saveReference}"/>
-				<b:Button ui:field="closeRef" text="{i18n.close}"/>
+				<b:Button ui:field="saveRef" text="{i18n.saveReference}" />
+				<b:Button ui:field="closeRef" text="{i18n.close}" />
 			</b:PanelFooter>
 		</b:Panel>
 
 		<b:Container>
 			<b:Row>
-				<b:Column size="MD_12" ui:field="refFilterParent"/>
+				<b:Column size="MD_12" ui:field="refFilterParent" />
 			</b:Row>
 			<b:Row>
 				<b:Column size="MD_12" ui:field="referenceListCont">
-					<rdl:LoadingWidget ui:field="loadingWidget" styleName="loadingWidget"></rdl:LoadingWidget>
+					<rdl:LoadingWidget ui:field="loadingWidget"
+						styleName="loadingWidget"></rdl:LoadingWidget>
 					<b:Row>
 						<b:Column size="MD_6" offset="MD_6">
 							<b:Pagination addStyleNames="margin-fix">
-								<b:AnchorListItem ui:field="listRange" addStyleNames="disabled"/>
-								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT"/>
-								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT"/>
+								<b:AnchorListItem ui:field="listRange"
+									addStyleNames="disabled" />
+								<b:AnchorListItem ui:field="prevPage" icon="ANGLE_DOUBLE_LEFT" />
+								<b:AnchorListItem ui:field="nextPage" icon="ANGLE_DOUBLE_RIGHT" />
 							</b:Pagination>
 						</b:Column>
 					</b:Row>
 					<b:Row>
 						<b:Column size="MD_12">
-							<b:LinkedGroup ui:field="listGroup"/>
+							<b:LinkedGroup ui:field="listGroup" />
 						</b:Column>
 					</b:Row>
 				</b:Column>
 			</b:Row>
 		</b:Container>
+		 
+		<b:Container>
+		    <b:Row>
+			  <b:Column size="MD_4" ui:field="socialPanelContainer" />
+			</b:Row>
+		</b:Container> 
 	</b:Container>
 
 </ui:UiBinder>

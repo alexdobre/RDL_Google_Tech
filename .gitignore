@@ -14,3 +14,9 @@ RemoteSystemsTempFiles
 *.zip
 *.launch
 .gitignore
+WebContent/*
+src/main/webapp/rdl/*
+src/main/webapp/META-INF/*
+src/main/webapp/WEB-INF/deploy
+src/main/gwt-unitCache/*
+src/main/java/com/example/*

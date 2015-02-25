@@ -18,6 +18,7 @@ import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.EmotionView;
 import com.therdl.client.view.PaginatedView;
 import com.therdl.client.view.SnipView;
+import com.therdl.client.view.SocialPanelView;
 import com.therdl.client.view.ValidatedView;
 import com.therdl.client.view.common.EmotionTranslator;
 import com.therdl.client.view.common.PaginationHelper;
@@ -32,6 +33,7 @@ import com.therdl.shared.events.BecomeRdlSupporterEvent;
 import com.therdl.shared.events.GuiEventBus;
 import com.therdl.shared.events.ReportAbuseEvent;
 import com.therdl.shared.events.ShowAbuseCommentsEvent;
+
 import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 import org.gwtbootstrap3.client.ui.html.Span;
@@ -53,7 +55,7 @@ import java.util.ArrayList;
  * @ AppMenu appMenu the upper menu view
  */
 public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
-		implements SnipView, PaginatedView, ValidatedView, EmotionView {
+		implements SnipView, PaginatedView, ValidatedView, EmotionView,SocialPanelView {
 
 	private final AutoBean<CurrentUserBean> currentUserBean;
 
@@ -96,12 +98,18 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	Paragraph abuseWarning;
 	@UiField
 	Anchor abuseWarningAnchor;
+	
+	@UiField
+	Button share;
+	
+	private SocialPanel socialPanel;
 
 	private SnipListRow snipListRow;
 	private ArrayList<ReferenceListRow> itemList;
 	ReferenceSearchFilterWidget referenceSearchFilterWidget;
 	private SnipActionWidget snipActionWidget;
 	private EmotionPicker emotionPicker;
+	
 
 	private AutoBean<SnipBean> searchOptionsBean;
 	String btnTextShow = RDL.i18n.showReferences();
@@ -115,6 +123,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
 		snipActionWidget = new SnipActionWidget();
+		socialPanel = new SocialPanel();
+//		socialPanelContainer.add(socialPanel);
 		snipActionContainer.add(snipActionWidget);
 		emoListPanel.addStyleName("labels");
 		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
@@ -184,6 +194,14 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	public void onViewSnip() {
 		//no op implementation
 	}
+	
+	@UiHandler("share")
+	public void showSocialNetworks() {
+		ViewUtils.showHide(true, socialPanel);
+	};
+	
+	
+	
 
 	/**
 	 * handler of the leave reference button. Opens an editor for creating new reference
