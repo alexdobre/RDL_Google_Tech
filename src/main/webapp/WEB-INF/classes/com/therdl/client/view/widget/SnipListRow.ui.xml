@@ -1,0 +1,139 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+		>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+
+	<ui:style>
+		.colorStripe {
+		height: 5px;
+		}
+
+		.label {
+		padding-left: 0px;
+		}
+
+		.secondColDiv {
+		margin: 0 20px 2px 20px;
+		float: left;
+		}
+
+		.buttonPanel {
+		float: left;
+		margin-top: 30px;
+		margin-left: 20px;
+		display: none;
+		}
+
+		.editBtnParent {
+		margin-top: 5px;
+		display: none;
+		}
+
+		.titleLink {
+		cursor: pointer;
+		}
+		.rightIcon{
+		padding-left: 5px;
+		}
+
+		.displayNone{
+		display: none;
+		}
+	</ui:style>
+
+	<g:HTMLPanel>
+		<b:Row>
+			<b:Column size="MD_1">
+				<g:Image ui:field="avatarImg" width="50px" height="50px"/>
+			</b:Column>
+			<b:Column size="MD_10">
+				<b:Row>
+					<b:Column size="MD_12">
+						<b:Heading size="H4" addStyleNames="snipTitle">
+							<b:Anchor ui:field="snipTitle"/>
+						</b:Heading>
+					</b:Column>
+				</b:Row>
+				<b:Row>
+					<b:Column size="MD_2">
+							<b:Badge ui:field="userName" addStyleNames="snipListRowBadge">
+								<b:Icon type="USER" addStyleNames="leftIcon"/>
+								<b:Anchor ui:field="userNameLink"/>
+							</b:Badge>
+					</b:Column>
+					<b:Column size="MD_4">
+						<b:Row ui:field="likesRepliesPanel">
+							<b:Column size="MD_6">
+								<b:Badge ui:field="rep" addStyleNames="snipListRowBadge">
+									<b:Icon type="THUMBS_UP" addStyleNames="{style.rightIcon}"/>
+								</b:Badge>
+							</b:Column>
+							<b:Column size="MD_6">
+								<b:Badge ui:field="postsCount" addStyleNames="snipListRowBadge">
+									<b:Icon type="COMMENT"/>
+								</b:Badge>
+							</b:Column>
+						</b:Row>
+						<b:Row ui:field="referencesPanel">
+							<b:Column size="MD_4">
+								<b:Badge ui:field="posRef" addStyleNames="snipListRowBadge posRefBadge">
+									<b:Icon type="PLUS" addStyleNames="leftIcon"/>
+								</b:Badge>
+							</b:Column>
+							<b:Column size="MD_4">
+								<b:Badge ui:field="neutRef" addStyleNames="snipListRowBadge">
+									<b:Icon type="EXCHANGE" addStyleNames="leftIcon"/>
+								</b:Badge>
+							</b:Column>
+							<b:Column size="MD_4">
+								<b:Badge ui:field="negRef" addStyleNames="snipListRowBadge negRefBadge">
+									<b:Icon type="MINUS" addStyleNames="leftIcon"/>
+								</b:Badge>
+							</b:Column>
+						</b:Row>
+						<b:Row ui:field="pledgeCounterPanel">
+							<b:Column size="MD_6">
+								<b:Badge ui:field="pledgesCount" addStyleNames="snipListRowBadge posRefBadge">
+									<b:Icon type="ARROW_UP" addStyleNames="leftIcon"/>
+								</b:Badge>
+							</b:Column>
+							<b:Column size="MD_6">
+								<b:Badge ui:field="countersCount" addStyleNames="snipListRowBadge negRefBadge">
+									<b:Icon type="ARROW_DOWN" addStyleNames="leftIcon"/>
+								</b:Badge>
+							</b:Column>
+						</b:Row>
+					</b:Column>
+					<b:Column size="MD_6">
+						<b:Badge ui:field="displayDate" addStyleNames="snipListRowBadge"/>
+					</b:Column>
+				</b:Row>
+			</b:Column>
+			<b:Column size="MD_1">
+				<g:FlowPanel ui:field="snipImgParent" styleName="snipImgParent" width="40px"
+				             addStyleNames="img-circle">
+					<g:Image ui:field="snipImg" width="40px"/>
+				</g:FlowPanel>
+			</b:Column>
+
+		</b:Row>
+		<div style="border: solid 1px #333;font-size: 12px;margin-top: 5px;border-top: none; display: none">
+			<g:FlowPanel ui:field="colorStripe" styleName="{style.colorStripe}"></g:FlowPanel>
+			<div style="padding: 5px;height:80px;">
+
+
+				<div style="float: left;margin-left: 3px;position:relative;width:450px;">
+
+					<div style="float:left;position:absolute;left:73%;top:0px;">
+						<g:FlowPanel>
+							<g:Label ui:field="proposalType" styleName="{style.label}"/>
+							<g:Label ui:field="proposalState" styleName="{style.label}"/>
+						</g:FlowPanel>
+					</div>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

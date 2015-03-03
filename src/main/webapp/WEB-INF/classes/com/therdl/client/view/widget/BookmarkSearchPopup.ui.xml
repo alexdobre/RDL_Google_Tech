@@ -1,0 +1,33 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:style>
+		@external .bookmarkSearchPopup;
+		.bookmarkSearchPopup {
+		margin: 0;
+		border: 1px solid grey;
+		width: 280px;
+		height: 100px;
+		padding: 10px;
+		background-color: white !important;
+		}
+
+		.pasteLinkLabel {
+		padding-left: 0px;
+		font-size: 13px;
+		}
+
+		.getLinkTextBox {
+		margin-top: 10px;
+		width: 250px;
+		}
+
+	</ui:style>
+
+	<g:HTMLPanel>
+		<g:FlowPanel>
+			<g:Label text="{i18n.pasteLink}" styleName="{style.pasteLinkLabel}"></g:Label>
+			<g:TextBox ui:field="getLinkTextBox" styleName="{style.getLinkTextBox}"></g:TextBox>
+		</g:FlowPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

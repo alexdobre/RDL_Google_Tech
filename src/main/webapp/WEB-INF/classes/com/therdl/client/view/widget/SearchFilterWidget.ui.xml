@@ -1,0 +1,167 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+             xmlns:rdl="urn:import:com.therdl.client.view.widget"
+		>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:style>
+		@external .getLinkPopup;
+		.getLinkPopup {
+		margin: 0;
+		}
+
+		@external .arrowImg;
+		.arrowImg {
+		display: block;
+		}
+
+		@external .arrowParent;
+		.arrowParent {
+		margin-top: 5px;
+		}
+
+		@external .checkBoxBtn;
+		.checkBoxBtn {
+		margin-left: 13px;
+		display: inline-block;
+		}
+
+		.checkBoxBtn label {
+		margin-left: 3px;
+		margin-bottom: 0px;
+		display: inline-block;
+		}
+	</ui:style>
+
+	<b:Form type="HORIZONTAL">
+		<b:Legend ui:field="filterLabel"/>
+
+		<b:FormGroup>
+			<b:FormLabel for="searchTitle" addStyleNames="col-lg-3" text="{i18n.title}"/>
+			<g:FlowPanel addStyleNames="col-lg-9">
+				<b:TextBox ui:field="title" b:id="searchTitle"/>
+			</g:FlowPanel>
+		</b:FormGroup>
+
+		<b:FormGroup>
+			<b:FormLabel for="searchAuthor" addStyleNames="col-lg-3" text="{i18n.author}"/>
+			<g:FlowPanel addStyleNames="col-lg-7">
+				<b:TextBox ui:field="author" b:id="searchAuthor"/>
+			</g:FlowPanel>
+			<g:FlowPanel addStyleNames="col-lg-2" ui:field="authorPanel"/>
+		</b:FormGroup>
+
+		<b:PanelGroup b:id="accordion">
+			<b:Panel>
+				<b:PanelHeader>
+					<b:Container>
+						<b:Anchor dataToggle="COLLAPSE" dataParent="#accordion" dataTarget="#collapseOne"
+						          text="{i18n.otherOptions}"/>
+					</b:Container>
+				</b:PanelHeader>
+				<b:PanelCollapse b:id="collapseOne" in="false">
+					<b:PanelBody>
+
+						<b:FormGroup ui:field="typeFormGroup">
+							<b:FormLabel addStyleNames="col-lg-2" text="{i18n.type}"/>
+							<g:FlowPanel addStyleNames="col-lg-10" ui:field="typePanel"/>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="proposalTypeFormGroup">
+							<b:FormLabel addStyleNames="col-lg-3" text="{i18n.type}"/>
+							<g:FlowPanel addStyleNames="col-lg-9">
+								<b:ListBox ui:field="proposalTypeList" multipleSelect="true"
+								           addStyleNames="col-lg-8"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="proposalStateFormGroup">
+							<b:FormLabel addStyleNames="col-lg-2" text="{i18n.state}"/>
+							<g:FlowPanel addStyleNames="col-lg-10">
+								<b:ListBox ui:field="proposalStateList" multipleSelect="true"
+								           addStyleNames="col-lg-8"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="categoryFormGroup">
+							<b:FormLabel addStyleNames="col-lg-2" text="{i18n.category}"/>
+							<g:FlowPanel addStyleNames="col-lg-10">
+								<b:ListBox ui:field="categoryList" multipleSelect="true" addStyleNames="col-lg-10"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="pledgesFormGroup">
+							<b:FormLabel for="searchPledges" addStyleNames="col-lg-3" text="{i18n.pledges}"/>
+							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="pledgesPanel">
+								<b:TextBox ui:field="pledgesCount" b:id="searchPledges"/>
+							</g:HorizontalPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="countersFormGroup">
+							<b:FormLabel for="searchCounters" addStyleNames="col-lg-3" text="{i18n.counters}"/>
+							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="countersPanel">
+								<b:TextBox ui:field="countersCount" b:id="searchCounters"/>
+							</g:HorizontalPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="refFormGroup">
+							<b:FormLabel for="searchCounters" addStyleNames="col-lg-3" text="{i18n.ref}"/>
+							<g:HorizontalPanel addStyleNames="col-lg-9" ui:field="refPanel">
+								<g:HorizontalPanel ui:field="posRefPanel" addStyleNames="col-lg-10">
+									<b:TextBox ui:field="posRef" addStyleNames="posRefSearch"/>
+								</g:HorizontalPanel>
+
+								<g:HorizontalPanel ui:field="neutralRefPanel" addStyleNames="col-lg-10">
+									<b:TextBox ui:field="neutralRef" addStyleNames="neutralRefSearch"/>
+								</g:HorizontalPanel>
+
+								<g:HorizontalPanel ui:field="negativeRefPanel" addStyleNames="col-lg-10">
+									<b:TextBox ui:field="negativeRef" addStyleNames="negativeRefSearch"/>
+								</g:HorizontalPanel>
+							</g:HorizontalPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="postsFormGroup">
+							<b:FormLabel for="searchPosts" addStyleNames="col-lg-3" text="{i18n.posts}"/>
+							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="postPanel">
+								<b:TextBox ui:field="postCount" b:id="searchPosts"/>
+							</g:HorizontalPanel>
+						</b:FormGroup>
+
+						<b:FormGroup ui:field="repFormGroup">
+							<b:FormLabel for="searchRep" addStyleNames="col-lg-3" text="{i18n.reputation}"/>
+							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="repPanel">
+								<b:TextBox ui:field="snipRep" b:id="searchRep"/>
+							</g:HorizontalPanel>
+						</b:FormGroup>
+
+						<b:FormGroup>
+							<b:FormLabel addStyleNames="col-lg-3" text="{i18n.date}"/>
+							<g:HorizontalPanel addStyleNames="col-lg-6" ui:field="datePanel">
+								<rdl:DateFilterWidget ui:field="dateFilterWidget"
+								                      styleName="dateFilterWidget"/>
+							</g:HorizontalPanel>
+						</b:FormGroup>
+
+					</b:PanelBody>
+				</b:PanelCollapse>
+			</b:Panel>
+
+		</b:PanelGroup>
+		<b:Container>
+			<b:ButtonToolBar>
+				<b:ButtonGroup>
+					<b:Button ui:field="getLinkBtn" text="{i18n.link}"/>
+				</b:ButtonGroup>
+				<b:ButtonGroup>
+					<b:Button ui:field="submit" text="{i18n.filter}"/>
+				</b:ButtonGroup>
+				<b:ButtonGroup>
+					<b:Button ui:field="createNewButton" text="{i18n.createNew}"/>
+				</b:ButtonGroup>
+			</b:ButtonToolBar>
+		</b:Container>
+	</b:Form>
+</ui:UiBinder> 

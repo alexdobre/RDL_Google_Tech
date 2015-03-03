@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{snipBean.title}}</title>
+</head>
+<body>
+	<p>Title: {{snipBean.title}}</p>
+	<p>
+		<span>Author: {{snipBean.author}}</span>
+		<span>Date: {{snipBean.creationDate}}</span>
+		<span>{{snipBean.emotions}}</span>
+	</p>
+	<div>{{{snipBean.content}}}</div>
+{{#renderNextPage}}
+	<a href="/#{{nextPageLink}}">NextPage</a>
+{{/renderNextPage}}
+{{#repliesList}}
+	<p>
+		<span>Author: {{author}}</span>
+		<span>Date: {{creationDate}}</span>
+		<span>{{emotions}}</span>
+	</p>
+	<div>{{{content}}}</div>
+{{/repliesList}}
+</body>
+</html>

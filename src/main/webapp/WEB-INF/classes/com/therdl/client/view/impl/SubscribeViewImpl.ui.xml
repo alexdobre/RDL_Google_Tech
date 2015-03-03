@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+        >
+    <ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+    <ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+
+    <b:Container addStyleNames="push">
+        <g:SimplePanel ui:field="appMenuPanel"/>
+        <b:Row>
+            <b:Column size="MD_12">
+                <b:Panel>
+                    <b:PanelBody ui:field="descBody">
+                    </b:PanelBody>
+                    <b:PanelBody ui:field="subscribeFooter">
+                        <b:Row>
+                            <b:Column size="MD_3" ui:field="footer">
+                                <g:Anchor ui:field="ancSupporter" text="{i18n.becomeRdlSupporter}" href="/rdl/paypalCheckout"/>
+                            </b:Column>
+
+                        </b:Row>
+                        <b:Row>
+                            <b:Column size="MD_3">
+                                <b:InputGroup>
+                                    <b:InputGroupButton>
+                                        <b:RadioButton ui:field="radButUsd" text="USD"></b:RadioButton>
+                                        <b:RadioButton ui:field="radButGbp" text="GBP"></b:RadioButton>
+                                        <b:RadioButton ui:field="radButEur" text="EUR"></b:RadioButton>
+                                    </b:InputGroupButton>
+                                </b:InputGroup>
+                            </b:Column>
+                        </b:Row>
+                    </b:PanelBody>
+                </b:Panel>
+            </b:Column>
+        </b:Row>
+    </b:Container>
+
+</ui:UiBinder>

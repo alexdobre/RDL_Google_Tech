@@ -1,0 +1,124 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+             xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html"
+             xmlns:summer="urn:import:org.gwtbootstrap3.extras.summernote.client.ui"
+             xmlns:rdl='urn:import:com.therdl.client.view.widget'>
+	<ui:with field='i18n' type='com.therdl.client.view.i18n.I18NConstants'/>
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources"/>
+
+	<ui:style>
+		.checkIcon{
+		color: green;
+		}
+	</ui:style>
+
+	<b:Container addStyleNames="push">
+		<g:SimplePanel ui:field="appMenuPanel"/>
+		<b:Row>
+			<b:Column size="MD_4">
+				<g:FocusPanel ui:field="profileImagePanel">
+					<b:BlockQuote addStyleNames="noBorder">
+						<b.html:Paragraph>
+							<b:Image type="THUMBNAIL" ui:field="avatarImage"/>
+						</b.html:Paragraph>
+						<b.html:Paragraph text="{i18n.avatarImgAlt}"/>
+						<b.html:Paragraph text="{i18n.clickToUpload}"/>
+					</b:BlockQuote>
+				</g:FocusPanel>
+			</b:Column>
+			<b:Column size="MD_8">
+				<b:Panel>
+					<b:PanelHeader>
+						<b:Heading size="H3" text="{i18n.publicProfileDescription}"/>
+					</b:PanelHeader>
+					<b:PanelBody addStyleNames="noPadding">
+						<summer:Summernote ui:field="profileDesc"/>
+					</b:PanelBody>
+					<b:PanelFooter>
+						<b:Button ui:field="updateProfileDec" text="{i18n.update}"/>
+						<b:Anchor ui:field="viewPublicProfile" text="{i18n.viewPublicProfile}" addStyleNames="floatRight"/>
+					</b:PanelFooter>
+				</b:Panel>
+			</b:Column>
+		</b:Row>
+		<rdl:FormSuccess ui:field="formSuccess"/>
+		<rdl:FormErrors ui:field="formErrors"/>
+		<b:Form type="INLINE">
+			<b:FieldSet>
+				<b:Legend text="{i18n.yourProfile}"/>
+				<b:FormGroup addStyleNames="padLeft padRight">
+					<b:FormLabel for="formEmail" text="{i18n.email}"/>
+					<b:FormControlStatic b:id="formEmail" ui:field="email"/>
+				</b:FormGroup>
+				<b:FormGroup addStyleNames="padRight">
+					<b:FormLabel for="formUsername" text="{i18n.userName}"/>
+					<b:FormControlStatic b:id="formUsername" ui:field="username"/>
+				</b:FormGroup>
+				<b:FormGroup addStyleNames="padLeft padRight">
+					<b:FormLabel for="formRep" text="{i18n.reputation}"/>
+					<b:FormControlStatic b:id="formRep" ui:field="rep"/>
+				</b:FormGroup>
+				<b:Button text="{i18n.changePassword}" ui:field="changePassBtn" addStyleNames="padLeft"/>
+			</b:FieldSet>
+		</b:Form>
+
+		<b:Panel>
+			<b:PanelBody>
+				<b:Row>
+					<b:Column size="MD_1">
+						<b:Icon type="CHECK" size="TIMES2" addStyleNames="{style.checkIcon}"/>
+					</b:Column>
+					<b:Column size="MD_1">
+						<b:Image type="CIRCLE" url='{res.rdlSupporter.getSafeUri.asString}'/>
+					</b:Column>
+					<b:Column size="MD_2">
+						<b:Lead text="{i18n.userTitleRdlSupporter}"/>
+					</b:Column>
+					<b:Column size="MD_6">
+						<b.html:Paragraph text="{i18n.userTitleDescRdlSupporter1} {i18n.userTitleDescRdlSupporter2}"/>
+					</b:Column>
+					<b:Column size="MD_2">
+						<b:Button ui:field="supporterBtn" text="Gain Title"/>
+						<b.html:Paragraph ui:field="titleExpiresParagraph"/>
+					</b:Column>
+				</b:Row>
+			</b:PanelBody>
+		</b:Panel>
+
+		<b:Modal title="{i18n.changePassword}" closable="true" fade="true" dataBackdrop="STATIC" dataKeyboard="true"
+		         b:id="changePassModal" ui:field="changePassModal">
+			<b:ModalBody>
+				<b:Form>
+					<b:FieldSet>
+						<b:FormGroup>
+							<b:FormLabel text="{i18n.oldPassword}"/>
+							<g:FlowPanel>
+								<b:Input type="PASSWORD" ui:field="oldPassword"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+						<b:FormGroup>
+							<b:FormLabel text="{i18n.newPassword}"/>
+							<g:FlowPanel>
+								<b:Input type="PASSWORD" ui:field="newPassword"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+						<b:FormGroup>
+							<b:FormLabel text="{i18n.confirmNewPassword}"/>
+							<g:FlowPanel>
+								<b:Input type="PASSWORD" ui:field="confirmNewPassword"/>
+							</g:FlowPanel>
+						</b:FormGroup>
+					</b:FieldSet>
+				</b:Form>
+			</b:ModalBody>
+			<b:ModalFooter>
+				<g:FlowPanel>
+					<b:Button ui:field="submitChangePassBtn" type="DEFAULT" text="{i18n.submit}"/>
+				</g:FlowPanel>
+			</b:ModalFooter>
+		</b:Modal>
+	</b:Container>
+
+</ui:UiBinder>

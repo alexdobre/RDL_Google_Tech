@@ -1,0 +1,63 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+	xmlns:b.html="urn:import:org.gwtbootstrap3.client.ui.html">
+
+	<ui:with field="res" type="com.therdl.client.view.cssbundles.Resources" />
+
+	<ui:style>
+
+		@external .imgSocial;
+		.imgSocial {
+		padding-left: 5px;
+		}
+		@external .fb-button;
+		.fb-button {
+			background: url(images/facebook.gif);
+			-webkit-background-size: cover;
+ 			 -moz-background-size: cover;
+  			-o-background-size: cover;
+ 			 background-size: cover;
+    		width:40px;
+			height:40px;
+   			
+		}
+		@external .twitter-button;
+		.twitter-button {
+			background: url(images/twitter.gif);
+			-webkit-background-size: cover;
+ 			 -moz-background-size: cover;
+  			-o-background-size: cover;
+ 			 background-size: cover;
+    		width:40px;
+			height:40px;
+   			
+		}
+		@external .youtube-button;
+		.youtube-button {
+			background: url(images/youtube.png);
+			-webkit-background-size: cover;
+ 			 -moz-background-size: cover;
+  			-o-background-size: cover;
+ 			 background-size: cover;
+    		width:40px;
+			height:40px;
+   			
+		}
+
+	</ui:style>
+
+	<g:HTMLPanel>
+	   
+		<div id="fb-root"></div>
+		
+	<g:FlowPanel ui:field="socialPanel"></g:FlowPanel>
+	
+	<b:Button ui:field="fbButton"/>
+	<b:Button ui:field="twitterButton"/>
+	<b:Button ui:field="youtubeButton"/>
+
+	
+		</g:HTMLPanel>
+
+</ui:UiBinder>

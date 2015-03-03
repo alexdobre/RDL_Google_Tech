@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The Relationship Driving License</title>
+</head>
+<body>
+{{#renderNextPage}}
+	<a href="/#{{nextPageLink}}">NextPage</a>
+{{/renderNextPage}}
+
+{{#snipsList}}
+	<p>
+		<a href="/#{{moduleName}}:{{id}}">{{title}}</a>
+	</p>
+	<p>
+		<span>Author: {{author}}</span>
+		<span>Date: {{creationDate}}</span>
+	</p>
+{{/snipsList}}
+</body>
+</html>
