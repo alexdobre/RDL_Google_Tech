@@ -35,4 +35,5 @@ public class ThreadViewImpl extends SnipViewImpl implements ThreadView {
 		leaveRef.setText(RDL.i18n.reply());
 		saveRef.setText(RDL.i18n.savePost());
 	}
+
 }

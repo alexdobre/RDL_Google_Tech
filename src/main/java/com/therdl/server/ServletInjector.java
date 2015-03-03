@@ -61,7 +61,7 @@ public class ServletInjector extends GuiceServletContextListener {
 				bind(TokenValidator.class).to(TokenValidatorImpl.class);
 				bind(UserValidator.class).to(UserValidatorImpl.class);
 				bind(SnipValidator.class).to(SnipValidatorImpl.class);
-
+				
 				filter("/*").through(CrawlFilter.class);
 
 				serve("/rdl/getSnips").with(SnipDispatcherServlet.class);
@@ -76,6 +76,8 @@ public class ServletInjector extends GuiceServletContextListener {
 				serve(CoinbasePaymentConstants.COINBASE_CALLBACK_URL).with(CoinbaseCallbackServlet.class);
 				serve(CoinbasePaymentConstants.COINBASE_RECURRING_PAYMENT_URL).with(CoinbaseRecurringPaymentServlet.class);
 				serve(CoinbasePaymentConstants.COINBASE_CREATE_PROFILE_URL).with(CoinbaseCreateProfileServlet.class);
+				
+				
 			}
 		});
 	}

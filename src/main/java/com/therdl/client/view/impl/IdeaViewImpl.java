@@ -33,4 +33,6 @@ public class IdeaViewImpl extends SnipViewImpl implements IdeaView {
 		replyBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
 
 	}
+
+	
 }

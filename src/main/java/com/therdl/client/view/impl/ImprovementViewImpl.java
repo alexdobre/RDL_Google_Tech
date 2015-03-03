@@ -31,4 +31,6 @@ public class ImprovementViewImpl extends SnipViewImpl implements ImprovementView
 			replyBean.as().setSnipType(RDLConstants.SnipType.PLEDGE);
 		}
 	}
+
+	
 }

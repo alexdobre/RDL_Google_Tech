@@ -14,6 +14,7 @@ import com.therdl.client.RDL;
 import com.therdl.client.app.RuntFactory;
 import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.presenter.runt.ReplyRunt;
+import com.therdl.client.social.facebook.SharePanel;
 import com.therdl.client.validation.SnipViewValidator;
 import com.therdl.client.view.EmotionView;
 import com.therdl.client.view.PaginatedView;
@@ -100,9 +101,9 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	Anchor abuseWarningAnchor;
 	
 	@UiField
-	Button share;
+	FlowPanel socialContainer;
 	
-	private SocialPanel socialPanel;
+	SharePanel socialPanel;
 
 	private SnipListRow snipListRow;
 	private ArrayList<ReferenceListRow> itemList;
@@ -123,8 +124,9 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 		initWidget(uiBinder.createAndBindUi(this));
 		this.currentUserBean = currentUserBean;
 		snipActionWidget = new SnipActionWidget();
-		socialPanel = new SocialPanel();
-//		socialPanelContainer.add(socialPanel);
+		socialPanel = new SharePanel();
+		socialPanel.setCurrentUserBean(currentUserBean);
+		socialContainer.add(socialPanel);
 		snipActionContainer.add(snipActionWidget);
 		emoListPanel.addStyleName("labels");
 		itemList = new ArrayList<ReferenceListRow>(Constants.DEFAULT_REFERENCE_PAGE_SIZE);
@@ -149,6 +151,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 		refFilterParent.add(referenceSearchFilterWidget);
 		ViewUtils.hide(refFilterParent);
 		ViewUtils.hide(referenceListCont);
+//		ViewUtils.hide(socialPanelContainer);
 	}
 
 	@Override
@@ -189,20 +192,15 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 		hideMessages();
 		// call implementations or NO OP
 		onViewSnip();
+		socialPanel.setSnipBean(this.currentSnipBean);
 	}
 
 	public void onViewSnip() {
 		//no op implementation
 	}
 	
-	@UiHandler("share")
-	public void showSocialNetworks() {
-		ViewUtils.showHide(true, socialPanel);
-	};
+		
 	
-	
-	
-
 	/**
 	 * handler of the leave reference button. Opens an editor for creating new reference
 	 *

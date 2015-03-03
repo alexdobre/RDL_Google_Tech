@@ -30,4 +30,6 @@ public class ServiceViewImpl extends SnipViewImpl implements ServiceView {
 		replyBean.as().setReferenceType(referenceType);
 		replyBean.as().setSnipType(RDLConstants.SnipType.REFERENCE);
 	}
+
+	
 }

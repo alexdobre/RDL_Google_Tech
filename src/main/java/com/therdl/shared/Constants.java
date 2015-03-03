@@ -24,4 +24,10 @@ public class Constants {
 
 	public static final Integer MESSAGETIMELIMIT = 1; //IN MINUTES
 	public static final Integer SPAMTIMELIMTE = 60; //IN MINUTES;
+	
+	public static final String FACEBOOK_SHARE_URL = "rdl/socialnetwork";
+	
+	public static final String FACEBOOK_API_KEY = "1441464832811562";
+	
+	public static final String APP_URL = "www.therdl.com";
 }

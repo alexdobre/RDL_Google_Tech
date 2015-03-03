@@ -33,7 +33,7 @@
 
 	<b:Container>
 		<g:SimplePanel ui:field="appMenuPanel" />
-		<g:SimplePanel ui:field="socialNetwork" />
+	
 		<g:FlowPanel addStyleNames="push" />
 
 		<b:Panel addStyleNames="snipViewPanel">
@@ -59,7 +59,8 @@
 								<b:Button ui:field="leaveRef" text="{i18n.leaveReference}" />
 							</b:ButtonGroup>
 							<b:ButtonGroup addStyleNames="padLeft">
-								<b:Button ui:field="share" text="{i18n.share}" />
+								<b:Button dataToggle="COLLAPSE" icon="SHARE"
+								dataTarget="#shareCollapse" text="{i18n.share}" />
 							</b:ButtonGroup>
 						</b:Column>
 						<b:Column size="MD_1" offset="MD_2">
@@ -75,8 +76,15 @@
 					
 				</b:Container>
 			</b:PanelFooter>
+			<b:Collapse b:id="shareCollapse" toggle="false">
+				
+			    	<b:Container>
+			    	    <g:FlowPanel ui:field="socialContainer"></g:FlowPanel>
+					    
+					</b:Container> 
+			</b:Collapse>
 		</b:Panel>
-
+		
 		<b:Panel ui:field="referenceCont">
 			<b:PanelBody addStyleNames="noPadding">
 				<b:Row>
@@ -141,11 +149,7 @@
 			</b:Row>
 		</b:Container>
 		 
-		<b:Container>
-		    <b:Row>
-			  <b:Column size="MD_4" ui:field="socialPanelContainer" />
-			</b:Row>
-		</b:Container> 
+	
 	</b:Container>
 
 </ui:UiBinder>
