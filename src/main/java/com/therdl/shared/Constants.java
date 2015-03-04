@@ -27,7 +27,7 @@ public class Constants {
 	
 	public static final String FACEBOOK_SHARE_URL = "rdl/socialnetwork";
 	
-	public static final String FACEBOOK_API_KEY = "1441464832811562";
+	public static final String FACEBOOK_API_KEY = "1568442000092974";
 	
 	public static final String APP_URL = "www.therdl.com";
 }

@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.CustomButton.Face;
 import com.google.web.bindery.autobean.shared.AutoBean;
-import com.reveregroup.gwt.facebook4gwt.FacebookStory;
 import com.therdl.client.social.facebook.Facebook;
 import com.therdl.client.view.cssbundles.Resources;
 import com.therdl.shared.Constants;

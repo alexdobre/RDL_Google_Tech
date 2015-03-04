@@ -13,14 +13,36 @@
 		}
 		@external .fb-button;
 		.fb-button {
-			display: -moz-inline-block;
-			display:inline-block;
-			padding:1px 20px 0 5px;
-			height:70px;
-			width:60px;
-			border:1px solid #d8dfea;
-			background:url("images/facebook.img") no-repeat top right;
-			text-decoration: none;
+			background: url(images/facebook.gif);
+			-webkit-background-size: cover;
+ 			 -moz-background-size: cover;
+  			-o-background-size: cover;
+ 			 background-size: cover;
+    		width:40px;
+			height:40px;
+   			
+		}
+		@external .twitter-button;
+		.twitter-button {
+			background: url(images/twitter.gif);
+			-webkit-background-size: cover;
+ 			 -moz-background-size: cover;
+  			-o-background-size: cover;
+ 			 background-size: cover;
+    		width:40px;
+			height:40px;
+   			
+		}
+		@external .youtube-button;
+		.youtube-button {
+			background: url(images/youtube.png);
+			-webkit-background-size: cover;
+ 			 -moz-background-size: cover;
+  			-o-background-size: cover;
+ 			 background-size: cover;
+    		width:40px;
+			height:40px;
+   			
 		}
 
 	</ui:style>
@@ -30,11 +52,12 @@
 		<div id="fb-root"></div>
 		
 	<g:FlowPanel ui:field="socialPanel"></g:FlowPanel>
-	<b:ButtonGroup>
-	 <b:Button ui:field="fbButton"/>
-		<b:Button ui:field="twitterButton"/>
 	
-	</b:ButtonGroup>
+	<b:Button ui:field="fbButton"/>
+	<b:Button ui:field="twitterButton"/>
+	<b:Button ui:field="youtubeButton"/>
+
+	
 		</g:HTMLPanel>
 
 </ui:UiBinder>

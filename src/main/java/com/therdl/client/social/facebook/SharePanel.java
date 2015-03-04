@@ -48,7 +48,7 @@ public class SharePanel extends Composite{
 	FlowPanel socialPanel;
 	
 	public SharePanel() {
-		Facebook.init("1568442000092974");
+		Facebook.init(Constants.FACEBOOK_API_KEY);
 		initWidget(ourUiBinder.createAndBindUi(this));
 		socialPanel.add(createAnchor(Resources.INSTANCE.facebookImage(), Constants.FACEBOOK_URL));
 		socialPanel.add(createAnchor(Resources.INSTANCE.twitterImage(), Constants.TWITTER_URL));

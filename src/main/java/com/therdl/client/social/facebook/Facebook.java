@@ -4,8 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.reveregroup.gwt.facebook4gwt.events.FacebookLoginEvent;
-import com.reveregroup.gwt.facebook4gwt.events.FacebookLoginHandler;
+
 
 public class Facebook
 {
@@ -71,19 +70,20 @@ public class Facebook
      */
     public static boolean isLoggedIn()
     {
-	return getConnectionStatus() == ConnectState.CONNECTED;
+//    	return getConnectionStatus() == ConnectState.CONNECTED;
+    	return false;
     }
 
     /**
      * A Facebook login handler is fired whenever the Facebook connection status
      * changes. For example when a user logs in or logs out.
      */
-    public static HandlerRegistration addLoginHandler(FacebookLoginHandler handler)
-    {
-	HandlerRegistration hr = getHandlerManager().addHandler(FacebookLoginEvent.getType(), handler);
-	startConnectionListeners();
-	return hr;
-    }
+//    public static HandlerRegistration addLoginHandler(FacebookLoginHandler handler)
+//    {
+//	HandlerRegistration hr = getHandlerManager().addHandler(FacebookLoginEvent.getType(), handler);
+//	startConnectionListeners();
+//	return hr;
+//    }
 
     /**
      * Possible states for the Facebook connection
@@ -113,22 +113,22 @@ public class Facebook
      * Get the current status of the Facebook connection. See the
      * ConnectionState enum for possible values.
      */
-    public static native ConnectState getConnectionStatus() /*-{
-        if ($wnd.FB.Connect && $wnd.FB.Connect.get_status().get_isReady()) {
-        	var status = $wnd.FB.Connect.get_status().result;
-        	if (status == $wnd.FB.ConnectState.connected) {
-        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::CONNECTED;
-        	} else if (status == $wnd.FB.ConnectState.userNotLoggedIn) {
-        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::USER_NOT_LOGGED_IN;
-        	} else if (status == $wnd.FB.ConnectState.appNotAuthorized) {
-        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::APP_NOT_AUTHORIZED;
-        	} else {
-        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::PENDING;
-        	}
-        } else {
-        	return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::PENDING;
-        }
-    }-*/;
+//    public static native ConnectState getConnectionStatus() /*-{
+//        if ($wnd.FB.Connect && $wnd.FB.Connect.get_status().get_isReady()) {
+//        	var status = $wnd.FB.Connect.get_status().result;
+//        	if (status == $wnd.FB.ConnectState.connected) {
+//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::CONNECTED;
+//        	} else if (status == $wnd.FB.ConnectState.userNotLoggedIn) {
+//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::USER_NOT_LOGGED_IN;
+//        	} else if (status == $wnd.FB.ConnectState.appNotAuthorized) {
+//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::APP_NOT_AUTHORIZED;
+//        	} else {
+//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::PENDING;
+//        	}
+//        } else {
+//        	return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::PENDING;
+//        }
+//    }-*/;
 
     private static native void startConnectionListeners() /*-{
         if (!$wnd.FB.GWT_connectionStatusChanged) {
@@ -162,7 +162,7 @@ public class Facebook
     public static native void login(AsyncCallback<Boolean> callback) /*-{
         $wnd.FB_RequireFeatures(["Connect"], function() {
         	$wnd.FB.Connect.requireSession(function() {
-        		@com.reveregroup.gwt.facebook4gwt.Facebook::loginCallback(Lcom/google/gwt/user/client/rpc/AsyncCallback;)(callback);
+//        		@com.reveregroup.gwt.facebook4gwt.Facebook::loginCallback(Lcom/google/gwt/user/client/rpc/AsyncCallback;)(callback);
         	});
         });
     }-*/;
