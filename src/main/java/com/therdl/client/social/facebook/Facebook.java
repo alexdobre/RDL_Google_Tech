@@ -109,46 +109,7 @@ public class Facebook
 	PENDING;
     }
 
-    /**
-     * Get the current status of the Facebook connection. See the
-     * ConnectionState enum for possible values.
-     */
-//    public static native ConnectState getConnectionStatus() /*-{
-//        if ($wnd.FB.Connect && $wnd.FB.Connect.get_status().get_isReady()) {
-//        	var status = $wnd.FB.Connect.get_status().result;
-//        	if (status == $wnd.FB.ConnectState.connected) {
-//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::CONNECTED;
-//        	} else if (status == $wnd.FB.ConnectState.userNotLoggedIn) {
-//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::USER_NOT_LOGGED_IN;
-//        	} else if (status == $wnd.FB.ConnectState.appNotAuthorized) {
-//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::APP_NOT_AUTHORIZED;
-//        	} else {
-//        		return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::PENDING;
-//        	}
-//        } else {
-//        	return @com.reveregroup.gwt.facebook4gwt.Facebook.ConnectState::PENDING;
-//        }
-//    }-*/;
-
-    private static native void startConnectionListeners() /*-{
-        if (!$wnd.FB.GWT_connectionStatusChanged) {
-        	$wnd.FB.GWT_connectionStatusChanged = function() {
-        		@com.reveregroup.gwt.facebook4gwt.Facebook::connectionStatusChanged()();
-        	};
-        	$wnd.FB_RequireFeatures(["Connect"], function() {
-        		$wnd.FB.Connect.get_status().add_changed($wnd.FB.GWT_connectionStatusChanged);
-        		$wnd.FB.GWT_connectionStatusChanged();
-        	});
-        	$wnd.FB.GWT_connectionStatusChanged();
-        }
-    }-*/;
-
-    @SuppressWarnings("unused")
-    private static void connectionStatusChanged()
-    {
-//	FacebookLoginEvent event = new FacebookLoginEvent(getConnectionStatus());
-//	getHandlerManager().fireEvent(event);
-    }
+ 
 
     /**
      * If no facebook user is logged in, present the login dialog.
@@ -159,14 +120,7 @@ public class Facebook
      *            result value is true if the login is successful and false if
      *            it is not.
      */
-    public static native void login(AsyncCallback<Boolean> callback) /*-{
-        $wnd.FB_RequireFeatures(["Connect"], function() {
-        	$wnd.FB.Connect.requireSession(function() {
-//        		@com.reveregroup.gwt.facebook4gwt.Facebook::loginCallback(Lcom/google/gwt/user/client/rpc/AsyncCallback;)(callback);
-        	});
-        });
-    }-*/;
-
+  
     @SuppressWarnings("unused")
     private static void loginCallback(AsyncCallback<Boolean> callback)
     {
