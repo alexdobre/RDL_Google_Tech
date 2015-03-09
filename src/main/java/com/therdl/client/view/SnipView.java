@@ -42,4 +42,5 @@ public interface SnipView extends RdlView, PaginatedView, ValidatedView {
 
 	public void setSearchOptionsBean(AutoBean<SnipBean> searchOptionsBean);
 
+
 }

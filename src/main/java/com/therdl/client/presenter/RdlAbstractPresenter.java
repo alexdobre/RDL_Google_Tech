@@ -2,6 +2,7 @@ package com.therdl.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
@@ -15,6 +16,7 @@ import com.therdl.client.callback.SnipListCallback;
 import com.therdl.client.callback.StatusCallback;
 import com.therdl.client.handler.LoginHandler;
 import com.therdl.client.presenter.func.GrabSnipFunc;
+import com.therdl.client.social.facebook.Facebook;
 import com.therdl.client.view.RdlView;
 import com.therdl.client.view.common.ViewUtils;
 import com.therdl.client.view.widget.AbuseCommentsPopup;
@@ -24,7 +26,9 @@ import com.therdl.shared.RDLConstants;
 import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.AuthUserBean;
 import com.therdl.shared.beans.Beanery;
+import com.therdl.shared.beans.JSOModel;
 import com.therdl.shared.beans.SnipBean;
+import com.therdl.shared.beans.SocialNetworkBean;
 import com.therdl.shared.events.*;
 
 import java.util.ArrayList;
@@ -42,6 +46,8 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 	protected Beanery beanery = GWT.create(Beanery.class);
 	protected T view;
 	protected GrabSnipFunc grabSnipFunc;
+	
+	protected String FACEBOOK_API_KEY;
 
 	public RdlAbstractPresenter(AppController controller) {
 		this.controller = controller;
@@ -53,6 +59,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 			}
 		});
 		grabSnipFunc = FuncFactory.createGrabSnipFunc();
+		getFacebookApiKey();
 	}
 
 	@Override
@@ -289,6 +296,41 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		}
 	}
 
+	//initialize facebook here
+	private void getFacebookApiKey() {
+		String updateUrl = GWT.getModuleBaseURL() + "socialnetwork";
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
+		requestBuilder.setHeader("Content-Type", "application/json");
+		AutoBean<SocialNetworkBean> socialBean = beanery.socialNetworkBean();
+		socialBean.as().setName("facebook");
+		try {
+			String json = AutoBeanCodex.encode(socialBean).getPayload();
+			Log.info("SnipViewPresenter submit json: " + json);
+			requestBuilder.sendRequest(json,new RequestCallback() {
+				
+				@Override
+				public void onResponseReceived(Request request, Response response) {
+					Log.info(response.getText());
+						JsArray<JSOModel> data =
+								JSOModel.arrayFromJson(response.getText());
+
+						ArrayList<JSOModel> jSonList = new ArrayList<JSOModel>();
+						data.get(0).get(1+"");
+						FACEBOOK_API_KEY=data.get(0).get(1+"");
+						Facebook.init(FACEBOOK_API_KEY);
+				}
+				
+				@Override
+				public void onError(Request request, Throwable exception) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		} catch (RequestException e) {
+			Log.info(e.getLocalizedMessage());
+		}
+	}
+	
 	public AppController getController() {
 		return controller;
 	}

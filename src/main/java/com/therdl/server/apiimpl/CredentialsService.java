@@ -10,6 +10,7 @@ import com.therdl.server.data.AwsS3Credentials;
 import com.therdl.server.data.CoinbaseCredentials;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.PaypalCredentials;
+import com.therdl.server.data.SocialNetworkCredentials;
 
 import javax.inject.Inject;
 
@@ -79,6 +80,24 @@ public class CredentialsService {
 		cred.setClientId((String) doc.get("client_id"));
 		cred.setClientSecret((String) doc.get("client_secret"));
 		return cred;
+	}
+	
+	public SocialNetworkCredentials getFaceBookCredentials() {
+		SocialNetworkCredentials socialNetworkCredentials = new SocialNetworkCredentials();
+		
+		DB db = dbProvider.getDb();
+		//get the coinbase credentials from the DB
+		DBCollection coll = db.getCollection("socialNetworkCredentials");
+
+		BasicDBObject query = new BasicDBObject();
+		query.put("name", "facebook");
+
+		DBCursor cursor = coll.find(query);
+		DBObject doc = cursor.next();
+		socialNetworkCredentials.setApiKey((String) doc.get("apiKey"));
+		socialNetworkCredentials.setSecretKey((String) doc.get("secretKey"));
+		return socialNetworkCredentials;
+
 	}
 
 }

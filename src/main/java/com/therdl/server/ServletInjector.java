@@ -15,6 +15,7 @@ import com.therdl.server.bitcoin_payment.*;
 import com.therdl.server.crawler.CrawlFilter;
 import com.therdl.server.data.DbProvider;
 import com.therdl.server.data.DbProviderImpl;
+import com.therdl.server.data.SocialNetworkCredentials;
 import com.therdl.server.paypal_payment.PayPalConstants;
 import com.therdl.server.paypal_payment.PayPalIPNServlet;
 import com.therdl.server.paypal_payment.PaypalSubscriptionCallbackServlet;
@@ -23,6 +24,7 @@ import com.therdl.server.restapi.AmazonS3UploadServlet;
 import com.therdl.server.restapi.AuthServlet;
 import com.therdl.server.restapi.GcseServlet;
 import com.therdl.server.restapi.SnipDispatcherServlet;
+import com.therdl.server.restapi.SocialNetworkServlet;
 import com.therdl.server.validator.SnipValidator;
 import com.therdl.server.validator.TokenValidator;
 import com.therdl.server.validator.UserValidator;
@@ -76,7 +78,7 @@ public class ServletInjector extends GuiceServletContextListener {
 				serve(CoinbasePaymentConstants.COINBASE_CALLBACK_URL).with(CoinbaseCallbackServlet.class);
 				serve(CoinbasePaymentConstants.COINBASE_RECURRING_PAYMENT_URL).with(CoinbaseRecurringPaymentServlet.class);
 				serve(CoinbasePaymentConstants.COINBASE_CREATE_PROFILE_URL).with(CoinbaseCreateProfileServlet.class);
-				
+				serve("/rdl/socialnetwork").with(SocialNetworkServlet.class);
 				
 			}
 		});

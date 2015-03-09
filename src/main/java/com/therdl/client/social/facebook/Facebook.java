@@ -39,7 +39,7 @@ public class Facebook
     private static native void init(String APIKey, String xdReceiver) /*-{
         window.fbAsyncInit = function() {
 		    FB.init({
-		      appId      : '1568442000092974',
+		      appId      : APIKey,
 		      xfbml      : true,
 		      version    : 'v2.2'
 		    });

@@ -21,6 +21,7 @@ import com.therdl.shared.SnipType;
 import com.therdl.shared.beans.Beanery;
 import com.therdl.shared.beans.CurrentUserBean;
 import com.therdl.shared.beans.SnipBean;
+
 import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.html.Paragraph;
 import org.gwtbootstrap3.client.ui.html.Span;
@@ -318,4 +319,5 @@ public class TribunalDetailImpl extends AbstractValidatedAppMenuView
 	public void setPresenter(Presenter presenter) {
 		//NOOP
 	}
+
 }
