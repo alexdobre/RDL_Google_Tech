@@ -122,7 +122,7 @@ public class AmazonS3UploadServlet extends HttpServlet {
 
 			ObjectMetadata om = new ObjectMetadata();
 			om.setContentLength(itemFile.getSize());
-			String keyName = uuidValue + ".jpg";
+			String keyName = uuidValue;
 
 			s3client.putObject(new PutObjectRequest(S3_BUCKET_NAME, keyName, itemFile.getInputStream(), om));
 			s3client.setObjectAcl(S3_BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);

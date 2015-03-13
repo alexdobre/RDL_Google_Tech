@@ -116,12 +116,12 @@ public class EmotionPicker extends Composite {
 	}
 
 	private void autocompletePass() {
-		String currentText = emotionAutocomplete.getText();
+		String currentText = emotionAutocomplete.getText().toLowerCase();
 		autocompleteMenu.clear();
 		if (currentText == null || currentText.isEmpty())
 			return;
 		for (String emoShard : ViewUtils.getPieceMealEmotions()) {
-			if (emoShard.matches("(.*)" + currentText + "(.*)")) {
+			if (emoShard.toLowerCase().matches("(.*)" + currentText + "(.*)")) {
 				//we have a match
 				autocompleteMenu.add(buildAutocompleteItem(emoShard));
 			}

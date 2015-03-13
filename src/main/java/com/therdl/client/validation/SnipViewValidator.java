@@ -54,6 +54,12 @@ public class SnipViewValidator {
 				Log.info("Must select at least one emotion");
 				return RDL.getI18n().formErrorNoEmotion();
 			}
+			//length of content 5-200k char
+			int contentLength = bean.as().getContent().length();
+			Log.info("Content length: "+contentLength);
+			if (contentLength < 5 || contentLength > 200000) {
+				return RDL.getI18n().formErrorContentFormat();
+			}
 		}
 		Log.info("Bean valid");
 		return null;

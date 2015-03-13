@@ -234,8 +234,7 @@ public class ViewUtils {
 	 * @return the avatar image URL
 	 */
 	public static String getAvatarImageUrl(String userName) {
-		return "https://s3.amazonaws.com/RDL_Avatars/" +
-				ViewUtils.createAvatarName(userName) + ".jpg";
+		return "https://s3.amazonaws.com/RDL_Avatars/" + ViewUtils.createAvatarName(userName);
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class AvatarFileValidatorImpl {
 	public static boolean isImageValid(FileItem itemFile) throws IOException{
 		log.info("AvatarFileValidation isImageValid BEGIN ");
 		//only jpeg
-		if (!itemFile.getContentType().equals("image/jpeg")){
+		if (!itemFile.getContentType().startsWith("image")){
 			return false;
 		}
 		if (itemFile.getSize() > 1024 * 50){

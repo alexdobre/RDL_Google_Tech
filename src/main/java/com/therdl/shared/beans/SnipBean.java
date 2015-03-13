@@ -45,7 +45,6 @@ public interface SnipBean extends TokenizedBean {
 	void setTitle(String title);
 
 	@NotEmpty
-	@Pattern(regexp = ".{5,200000}")
 	String getContent();
 
 	void setContent(String content);
