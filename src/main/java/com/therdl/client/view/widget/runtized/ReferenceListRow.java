@@ -77,6 +77,7 @@ public class ReferenceListRow extends AbstractValidatedView implements Validated
 	                        UIObject parent, ReplyRunt replyRunt) {
 		this.parent = parent;
 		initWidget(ourUiBinder.createAndBindUi(this));
+		snipActionPanel.getElement().getStyle().setProperty("zIndex","1000");
 		populate(referenceBean, currentUserBean, replyRunt);
 	}
 

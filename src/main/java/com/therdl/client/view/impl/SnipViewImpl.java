@@ -89,7 +89,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	@UiField
 	AnchorListItem listRange, nextPage, prevPage;
 	@UiField
-	LinkedGroup listGroup;
+	ListGroup listGroup;
 	@UiField
 	FlowPanel emoListPanel, emoListPanelReply;
 	@UiField
@@ -362,7 +362,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 				replyRunt.decorateReference(referenceListRow);
 			} else {
 				//otherwise we create a new item
-				LinkedGroupItem listItem = new LinkedGroupItem();
+				ListGroupItem listItem = new ListGroupItem();
 				referenceListRow = new ReferenceListRow(beanList.get(j), currentUserBean, listItem, null);
 				ReplyRunt replyRunt = RuntFactory.createReplyRunt(this.currentUserBean, referenceListRow);
 				referenceListRow.setReplyRunt(replyRunt);
