@@ -78,7 +78,7 @@ public class RegisterPresenter extends RdlAbstractPresenter<RegisterView> implem
 
 		String updateUrl = GWT.getModuleBaseURL() + "getSession";
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		bean.as().setAction("signUp");
 		String json = AutoBeanCodex.encode(bean).getPayload();
 

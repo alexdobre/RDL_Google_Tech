@@ -47,7 +47,7 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 		Log.info("GrabSnipFuncImpl save snip");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		try {
 			String json = AutoBeanCodex.encode(createSnip).getPayload();
@@ -64,7 +64,7 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 		Log.info("GrabSnipFuncImpl update snip");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		try {
 			String json = AutoBeanCodex.encode(updatedSnip).getPayload();
 			Log.info("SnipEditPresenter submit json: " + json);
@@ -79,7 +79,7 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 		Log.info("GrabSnipFunc searchSnips");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		searchOptionsBean.as().setAction(RDLConstants.SnipAction.SEARCH);
 		Log.info("SnipSearchPresenter searchSnips: " + searchOptionsBean.as());
@@ -97,7 +97,7 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 		Log.info("GrabSnipFunc grabFaqList");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		AutoBean<SnipBean> searchOptionsBean = beanery.snipBean();
 		searchOptionsBean.as().setAction(RDLConstants.SnipAction.GET_FAQ);
@@ -121,7 +121,7 @@ public class GrabSnipFuncImpl implements GrabSnipFunc {
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
 		currentBean.as().setAction("giveRep");
 		currentBean.as().setId(id);

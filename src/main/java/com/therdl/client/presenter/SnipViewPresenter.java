@@ -103,7 +103,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView>
 
 		Log.info("SnipViewPresenter viewSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
 		currentBean.as().setAction("populateSnip");
 		currentBean.as().setId(currentSnipId);
@@ -185,7 +185,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView>
 
 		Log.info("SnipViewPresenter submit updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		try {
 			String json = AutoBeanCodex.encode(bean).getPayload();
@@ -206,7 +206,7 @@ public abstract class SnipViewPresenter extends RdlAbstractPresenter<SnipView>
 		Log.info("SnipViewPresenter populateReplies currentSnipId=" + currentSnipId);
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		searchOptionsBean.as().setAction("getReferences");
 		searchOptionsBean.as().setId(currentSnipId);

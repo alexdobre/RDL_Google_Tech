@@ -45,7 +45,7 @@ public class ForgotPasswordPresenter implements ForgotPassword.Presenter {
 			return validationResult;
 
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(forgotUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		String json = AutoBeanCodex.encode(bean).getPayload();
 
 		try {

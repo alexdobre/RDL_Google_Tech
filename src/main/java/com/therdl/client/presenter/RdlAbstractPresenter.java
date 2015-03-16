@@ -116,7 +116,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 
 		Log.info("RdlAbstractPresenter submit updateUrl: " + authUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(authUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		try {
 			AutoBean<AuthUserBean> authBean = beanery.authBean();
 			if (sid != null && emailTxt == null) {
@@ -190,7 +190,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		Log.info("SnipSearchPresenter getSnipSearchResult");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		searchOptions.as().setAction("searchAbuse");
 		Log.info("SnipSearchPresenter searchSnips: " + searchOptions.as());
@@ -232,7 +232,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		Log.info("SnipSearchPresenter getSnipSearchResult");
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		AutoBean<SnipBean> actionBean = beanery.snipBean();
 		actionBean.as().setAction(RDLConstants.SnipAction.REPORT_ABUSE);
@@ -261,7 +261,7 @@ public abstract class RdlAbstractPresenter<T extends RdlView> implements CommonP
 		Log.info("Retrieve abuse comments for: " + abusiveContent);
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		AutoBean<SnipBean> actionBean = beanery.snipBean();
 		ViewUtils.populateDefaultSearchOptions(actionBean);

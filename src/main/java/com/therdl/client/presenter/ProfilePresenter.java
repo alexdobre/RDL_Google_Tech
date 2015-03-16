@@ -86,7 +86,7 @@ public class ProfilePresenter extends RdlAbstractPresenter<ProfileView> implemen
 		userBean.as().setPasswordConfirm(newPassConfirm);
 
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(submitUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		userBean.as().setAction("changePass");
 		String json = AutoBeanCodex.encode(userBean).getPayload();
 		try {

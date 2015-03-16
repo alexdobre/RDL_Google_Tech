@@ -84,7 +84,7 @@ public class AuthServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		resp.setContentType("application/json");
+		resp.setContentType("application/json; charset=UTF-8");
 		// we need the path to the avatar file wherever it is deployed by jboss or wherever the application is running
 		String contextRoot = getServletContext().getRealPath("/");
 

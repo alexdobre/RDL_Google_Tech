@@ -128,7 +128,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView>
 
 		Log.info("SnipEditPresenter onDeleteSnip updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		try {
 			AutoBean<SnipBean> actionBean = beanery.snipBean();
 			actionBean.as().setAction("delete");
@@ -177,7 +177,7 @@ public class SnipEditPresenter extends RdlAbstractPresenter<SnipEditView>
 
 		Log.info("SnipEditPresenter findSnipById  updateUrl: " + updateUrl);
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		AutoBean<SnipBean> currentBean = beanery.snipBean();
 		currentBean.as().setAction("getSnip");
 		currentBean.as().setId(snipId);

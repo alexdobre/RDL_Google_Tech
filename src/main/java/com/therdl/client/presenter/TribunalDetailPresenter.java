@@ -76,7 +76,7 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 		Log.info("Vote abuse -BEGIN voted:  " + vote + " on item: " + currentSnipBean.as().getId());
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		AutoBean<SnipBean> actionBean = beanery.snipBean();
 		actionBean.as().setAction("reportAbuse");
@@ -116,7 +116,7 @@ public class TribunalDetailPresenter extends SnipViewPresenter implements Tribun
 		Log.info("Retrieve abuse comments for: " + searchOptionsBean.as());
 		String updateUrl = GWT.getModuleBaseURL() + RDLConstants.SnipAction.SNIP_SERVLET_URL;
 		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, URL.encode(updateUrl));
-		requestBuilder.setHeader("Content-Type", "application/json");
+		requestBuilder.setHeader("Content-Type", "application/json; charset=UTF-8");
 		formRepliesSearchOptions(searchOptionsBean);
 
 		final int pageIndex = searchOptionsBean.as().getPageIndex();

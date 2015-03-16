@@ -108,7 +108,7 @@ public class SnipDispatcherServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("application/json");
+		resp.setContentType("application/json; charset=UTF-8");
 
 		// get the json
 		StringBuilder sb = new StringBuilder();
