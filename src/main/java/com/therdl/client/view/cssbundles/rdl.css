@@ -366,6 +366,11 @@ form.form-search:before {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
 }
 
+.panel-default>.panel-heading .badge {
+    color: grey;
+    background-color: white;
+}
+
 /*********************** RDL CUSTOM *************************************/
 
 .snipListRowBadge{

@@ -16,9 +16,9 @@
                     <b:Column size="MD_6">
                         <b:InputGroup>
                             <b:InputGroupButton>
-                                <b:RadioButton ui:field="radButUsd" text="USD"></b:RadioButton>
-                                <b:RadioButton ui:field="radButGbp" text="GBP"></b:RadioButton>
-                                <b:RadioButton ui:field="radButEur" text="EUR"></b:RadioButton>
+                                <b:RadioButton name="cryp" ui:field="radButUsd" text="USD"></b:RadioButton>
+                                <b:RadioButton name="cryp" ui:field="radButGbp" text="GBP"></b:RadioButton>
+                                <b:RadioButton name="cryp" ui:field="radButEur" text="EUR"></b:RadioButton>
                             </b:InputGroupButton>
                         </b:InputGroup>
                     </b:Column>

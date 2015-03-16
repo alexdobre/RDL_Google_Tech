@@ -49,8 +49,8 @@ public class AmazonS3UploadServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -7720246048637220075L;
 	private static final int THRESHOLD_SIZE = 1024 * 10;  // 10kB
-	private static final int MAX_FILE_SIZE = 1024 * 10; // 10kB
-	private static final int MAX_REQUEST_SIZE = 1024 * 50; // 50kb
+	private static final int MAX_FILE_SIZE = 1024 * 50; // 50kB
+	private static final int MAX_REQUEST_SIZE = 1024 * 100; // 50kb
 	private static String AMAZON_ACCESS_KEY;
 	private static String AMAZON_SECRET_KEY;
 	private static final String S3_BUCKET_NAME = "RDL_Avatars";
