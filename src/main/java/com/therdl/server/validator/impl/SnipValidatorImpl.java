@@ -83,6 +83,7 @@ public class SnipValidatorImpl implements SnipValidator {
 				}
 				//finally see if user is RDL supporter trying to modify
 			} else if (SnipType.isSpecialAccess(snipBean.as().getSnipType())) {
+				log.info("Check special access for snip type: "+snipBean.as().getSnipType());
 				if (!ServerUtils.isRdlSupporter(userBean)) {
 					isValid = false;
 					log.info("user not RDL supporter");

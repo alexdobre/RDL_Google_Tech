@@ -61,7 +61,7 @@ public class EmailSender {
 			props.setProperty("mail.host", (String)doc.get("mailHost"));
 			props.setProperty("mail.smtp.port", "" + ((Double)doc.get("smtpPort")).intValue());
 			props.setProperty("mail.smtp.auth", "true");
-			props.setProperty("mail.smtp.starttls.enable", "true");
+			props.setProperty("mail.smtp.starttls.enable", "false");
 
 			Authenticator auth = new SMTPAuthenticator(login, password);
 
@@ -130,7 +130,7 @@ public class EmailSender {
 			props.setProperty("mail.host", (String)doc.get("mailHost"));
 			props.setProperty("mail.smtp.port", "" + ((Double)doc.get("smtpPort")).intValue());
 			props.setProperty("mail.smtp.auth", "true");
-			props.setProperty("mail.smtp.starttls.enable", "true");
+			props.setProperty("mail.smtp.starttls.enable", "false");
 
 			Authenticator auth = new SMTPAuthenticator(login, password);
 

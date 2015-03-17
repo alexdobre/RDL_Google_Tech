@@ -194,7 +194,9 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	public void onLeaveRefClicked(ClickEvent event) {
 		if (currentUserBean.as().isAuth()) {
 			//if the user is not RDL supporter prompted to become one
-			if (!currentUserBean.as().getIsRDLSupporter() && !Global.moduleName.equals(RDLConstants.Modules.STORIES)) {
+			if (!currentUserBean.as().getIsRDLSupporter()
+					&& !Global.moduleName.equals(RDLConstants.Modules.STORIES)
+					&& !Global.moduleName.equals(RDLConstants.Modules.IDEAS)) {
 				GuiEventBus.EVENT_BUS
 						.fireEvent(new BecomeRdlSupporterEvent(RDL.getI18n().rdlSupporterPopupTitleLeaveRef()));
 			} else {
@@ -213,6 +215,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	@UiHandler("btnEmotionPicker") void onEmotionPicker(ClickEvent event) {
 		if (emotionPicker == null) {
 			emotionPicker = new EmotionPicker(this, replyBean);
+		} else {
+			emotionPicker.setCurrentSnipBean(replyBean);
 		}
 		emotionPicker.show();
 	}
@@ -230,6 +234,8 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 		showRef.setText(btnTextShow);
 		replyBean = beanery.snipBean();
 		editorWidgetReply.setCode("");
+		emotionPicker.setCurrentSnipBean(replyBean);
+		emotionPicker.reset();
 		Log.info("Leave ref handler END with widget code: " + editorWidgetReply.getCode());
 	}
 
@@ -290,8 +296,7 @@ public abstract class SnipViewImpl extends AbstractValidatedAppMenuView
 	 * @param snipType saved snip type, can be reference/post/pledge/counter
 	 */
 	public void saveReferenceResponseHandler(String refType, String snipType) {
-		if (Global.moduleName.equals(RDLConstants.Modules.IDEAS)
-				|| Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
+		if (Global.moduleName.equals(RDLConstants.Modules.IMPROVEMENTS)) {
 			ViewUtils.hide(leaveRef);
 		}
 		snipListRow.incrementRefCounterByRefType(refType, snipType);

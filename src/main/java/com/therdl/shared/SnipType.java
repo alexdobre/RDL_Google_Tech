@@ -35,7 +35,7 @@ public enum SnipType {
 
 	/**
 	 * Determines if the snip type is part of the RDL supporter modules of the app
-	 * at the time of writing these are the Snips module and the Improvements module
+	 * at the time of writing these are the Services module and the Improvements module
 	 * along with the user profile which can be modified at any time but will only be
 	 * viewed by other users if RDL supporter
 	 *
@@ -43,11 +43,13 @@ public enum SnipType {
 	 * @return
 	 */
 	public static Boolean isSpecialAccess(String typeName) {
-		if (THREAD.getSnipType().equals(typeName) || POST.getSnipType().equals(typeName) ||
-				PROFILE.getSnipType().equals(typeName)) {
-			return false;
+		if (IMPROVEMENT.getSnipType().equals(typeName) || PLEDGE.getSnipType().equals(typeName) ||
+				COUNTER.getSnipType().equals(typeName) || PROPOSAL.getSnipType().equals(typeName) ||
+				CONTENT_MGMT.getSnipType().equals(typeName) || FAQ.getSnipType().equals(typeName) ||
+				PROFILE.getSnipType().equals(typeName) || SERVICE.getSnipType().equals(typeName)) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**

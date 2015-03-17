@@ -57,6 +57,7 @@ div.text {
 	display: inline-block;
 	vertical-align: 1px;
 	margin-bottom: 2px;
+    z-index: 100;
 }
 
 .labels .label {
